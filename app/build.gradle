@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+
+android
+{
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    packagingOptions
+    {
+        exclude 'jsr305_annotations/Jsr305_annotations.gwt.xml'
+        exclude 'build-data.properties'
+    }
+
+    defaultConfig
+    {
+        applicationId "co.biogram.main"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        resConfigs "en"
+    }
+
+    signingConfigs
+    {
+        release
+        {
+            keyAlias BioAlias
+            keyPassword BioPassword
+            storeFile file('C:/Users/pc/Desktop/Ali/Android3/app/SignKey.jks')
+            storePassword BioPassword
+        }
+    }
+
+    buildTypes
+    {
+        release
+        {
+            debuggable true
+            minifyEnabled false
+            jniDebuggable true
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+
+            //debuggable false
+            //minifyEnabled true
+            //jniDebuggable false
+            //zipAlignEnabled true
+            //shrinkResources true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies
+{
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.google.android.gms:play-services-auth:10.2.1'
+    compile 'com.google.android.gms:play-services-maps:10.2.1'
+
+    compile 'com.amitshekhar.android:android-networking:1.0.0'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.3'
+    compile 'com.squareup.leakcanary:leakcanary-android:1.5'
+}
+
+apply plugin: 'com.google.gms.google-services'

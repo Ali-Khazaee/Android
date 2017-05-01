@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "590625045379",
+    "project_id": "biogram-38b0a"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590625045379:android:6fb67b9a003b348e",
+        "android_client_info": {
+          "package_name": "co.biogram.main"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590625045379-k70ptnkhj49baeo5mkprpod9as58srme.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.biogram.main",
+            "certificate_hash": "dc1f2e67c2af26e674ce964718090a934466bb22"
+          }
+        },
+        {
+          "client_id": "590625045379-9pgbc6r8v0794rij59jj50o1gp6ijnvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDk6q6zfPlHe7oQTqVomrp5gBtDQbuNHss"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

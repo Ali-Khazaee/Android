@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ColorPrimary">#000</color>
+    <color name="ColorPrimaryDark">#000</color>
+    <color name="ColorAccent">#000</color>
+
+    <color name="Black">#000</color>
+    <color name="Black1">#111</color>
+    <color name="Black2">#222</color>
+    <color name="Black3">#333</color>
+    <color name="Black4">#444</color>
+
+    <color name="Gray9">#555</color>
+    <color name="Gray8">#666</color>
+    <color name="Gray7">#777</color>
+    <color name="Gray6">#888</color>
+    <color name="Gray5">#999</color>
+    <color name="Gray4">#aaa</color>
+    <color name="Gray3">#bbb</color>
+    <color name="Gray2">#ccc</color>
+    <color name="Gray1">#ddd</color>
+    <color name="Gray">#eee</color>
+
+    <color name="White">#fff</color>
+    <color name="White1">#fefefe</color>
+    <color name="White2">#fdfdfd</color>
+    <color name="White3">#fcfcfc</color>
+    <color name="White4">#fbfbfb</color>
+    <color name="White5">#fafafa</color>
+
+    <color name="Toast">#d3eaf9</color>
+    <color name="RedLike">#de1e5a</color>
+
+    <color name="CoverColor1">#1da1f2</color>
+    <color name="CoverColor2">#49babf</color>
+    <color name="CoverColor3">#e3007b</color>
+    <color name="CoverColor4">#00709e</color>
+    <color name="CoverColor5">#e8641b</color>
+    <color name="CoverColor6">#960014</color>
+
+    <color name="BlueLight">#1da1f2</color>
+    <color name="BlueGray">#cbd6dc</color>
+    <color name="BlueGray2">#a9bac4</color>
+
+</resources>

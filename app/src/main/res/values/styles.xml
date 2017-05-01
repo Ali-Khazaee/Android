@@ -1,0 +1,13 @@
+<resources>
+    <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorAccent">@color/ColorAccent</item>
+    </style>
+
+    <style name="GeneralEditTextTheme">
+        <item name="colorControlNormal">@color/Gray2</item>
+        <item name="colorControlActivated">@color/BlueLight</item>
+    </style>
+</resources>
+

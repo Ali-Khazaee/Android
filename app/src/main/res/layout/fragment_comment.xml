@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionBarHeight">
+
+        <ImageView
+            android:id="@+id/ImageViewBack"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:padding="12dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_back_blue" />
+
+        <TextView
+            android:id="@+id/TextViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Comment"
+            android:textColor="@color/Black"
+            android:layout_toEndOf="@+id/ImageViewBack"
+            android:layout_toRightOf="@+id/ImageViewBack"
+            android:textSize="@dimen/FontLarge"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/ViewBlankLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/RelativeLayoutHeader"
+        android:background="@color/Gray2" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/SwipeRefreshLayoutComment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ViewBlankLine"
+        android:layout_above="@+id/ViewBlankLine2">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RecyclerViewComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <View
+        android:id="@+id/ViewBlankLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/RelativeLayoutFooter"
+        android:background="@color/Gray2" />
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutFooter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionBarHeight"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/EditTextComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Write Your Comment"
+            android:maxLength="150"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_toLeftOf="@+id/RelativeLayoutSend"
+            android:layout_toStartOf="@+id/RelativeLayoutSend"
+            android:background="@null"
+            android:textSize="@dimen/FontMedium" />
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayoutSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <ImageView
+                android:id="@+id/ImageViewSend"
+                android:layout_width="40dp"
+                android:layout_height="56dp"
+                android:scaleType="fitCenter"
+                android:padding="5dp"
+                android:src="@drawable/ic_send_gray"
+                android:contentDescription="@null" />
+
+            <co.biogram.main.misc.LoadingView
+                android:id="@+id/LoadingViewComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                app:LB_Color="@color/BlueLight" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White"
+        android:layout_below="@+id/ViewBlankLine"
+        android:visibility="gone">
+
+        <co.biogram.main.misc.LoadingView
+            android:id="@+id/LoadingViewCommentRoot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            app:LB_Color="@color/BlueGray2" />
+
+        <TextView
+            android:id="@+id/TextViewTryAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/FontLarge"
+            android:textColor="@color/Black"
+            android:text="@string/GeneralTryAgain" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

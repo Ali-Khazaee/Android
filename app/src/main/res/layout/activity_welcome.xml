@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/ViewHeader"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@color/BlueLight" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="65dp"
+                android:contentDescription="@null"
+                android:background="@drawable/ic_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ActivityWelcomeHeader1"
+                android:textSize="@dimen/FontSmall"
+                android:textColor="@color/White" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/ActivityWelcomeHeader2"
+                android:textSize="@dimen/FontSmall"
+                android:textColor="@color/White" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/ButtonSignUp"
+            android:layout_width="270dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/ViewHeader"
+            android:background="@drawable/bg_button"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/ActivityWelcomeSignUp"
+            android:textSize="@dimen/FontLarge"
+            android:textColor="@color/White"
+            android:textAllCaps="false"
+            style="@style/Widget.AppCompat.Button.Borderless" />
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayoutOR"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/ButtonSignUp">
+
+            <View
+                android:layout_width="115dp"
+                android:layout_height="1dp"
+                android:background="@color/BlueGray"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/TextViewOR"
+                android:layout_toEndOf="@+id/TextViewOR" />
+
+            <TextView
+                android:id="@+id/TextViewOR"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="@string/ActivityWelcomeOR"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/BlueGray"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="115dp"
+                android:layout_height="1dp"
+                android:background="@color/BlueGray"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/TextViewOR"
+                android:layout_toStartOf="@+id/TextViewOR" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayoutGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/RelativeLayoutOR">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_google" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ActivityWelcomeSignInGoogle"
+                android:textColor="@color/BlueLight"
+                android:textSize="@dimen/FontMedium"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ActivityWelcomeTerm1"
+            android:layout_above="@+id/TextViewTerm"
+            android:textColor="@color/BlueGray"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/FontMedium" />
+
+        <TextView
+            android:id="@+id/TextViewTerm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ViewBlankLine"
+            android:text="@string/ActivityWelcomeTerm2"
+            android:textStyle="bold"
+            android:textColor="@color/BlueGray"
+            android:textSize="@dimen/FontMedium"
+            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true" />
+
+        <View
+            android:id="@+id/ViewBlankLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/Gray2"
+            android:layout_above="@+id/LinearLayoutSignIn" />
+
+        <LinearLayout
+            android:id="@+id/LinearLayoutSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ActionBarHeight"
+            android:background="@color/White5"
+            android:gravity="center"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ActivityWelcomeFooter1"
+                android:textSize="@dimen/FontMedium"
+                android:textColor="@color/Black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ActivityWelcomeFooter2"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/BlueLight"
+                android:textSize="@dimen/FontMedium" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/FrameLayoutContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+</ScrollView>
