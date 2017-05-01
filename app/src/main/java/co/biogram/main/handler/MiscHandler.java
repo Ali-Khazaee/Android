@@ -155,26 +155,6 @@ public class MiscHandler
             ((InputMethodManager) A.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static int GetBackGroundColor(String Name)
-    {
-        if (Name.startsWith("a") || Name.startsWith("b") || Name.startsWith("c") || Name.startsWith("d") || Name.startsWith("y"))
-            return R.color.CoverColor1;
-
-        if (Name.startsWith("e") || Name.startsWith("f") || Name.startsWith("g") || Name.startsWith("h"))
-            return R.color.CoverColor2;
-
-        if (Name.startsWith("i") || Name.startsWith("j") || Name.startsWith("k") || Name.startsWith("l"))
-            return R.color.CoverColor3;
-
-        if (Name.startsWith("m") || Name.startsWith("n") || Name.startsWith("o") || Name.startsWith("p") || Name.startsWith("z"))
-            return R.color.CoverColor4;
-
-        if (Name.startsWith("q") || Name.startsWith("r") || Name.startsWith("s") || Name.startsWith("t"))
-            return R.color.CoverColor5;
-
-        return R.color.CoverColor6;
-    }
-
     public static void Log(String Message)
     {
         Log.e("Bio", Message);

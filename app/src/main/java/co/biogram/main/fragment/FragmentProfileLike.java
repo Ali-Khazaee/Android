@@ -46,11 +46,12 @@ public class FragmentProfileLike extends Fragment
         Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
         Root.setClickable(true);
 
-        postAdapter = new PostAdapter((AppCompatActivity) getActivity(), PostList, "FragmentProfilePost");
+        postAdapter = new PostAdapter((AppCompatActivity) getActivity(), PostList, "FragmentProfileLike");
 
         RecyclerView RecyclerViewPost = new RecyclerView(App.GetContext());
         RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewPost.setAdapter(postAdapter);
+        RecyclerViewPost.setNestedScrollingEnabled(false);
         RecyclerViewPost.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
@@ -72,7 +73,7 @@ public class FragmentProfileLike extends Fragment
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                     .Param("Skip", String.valueOf(PostList.size()))
                     .Param("ID", ID)
-                    .Tag("FragmentProfilePost")
+                    .Tag("FragmentProfileLike")
                     .Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
@@ -115,6 +116,8 @@ public class FragmentProfileLike extends Fragment
             }
         });
 
+        Root.addView(RecyclerViewPost);
+
         RelativeLayoutLoading = new RelativeLayout(App.GetContext());
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
@@ -151,7 +154,7 @@ public class FragmentProfileLike extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Cancel("FragmentProfilePost");
+        RequestHandler.Cancel("FragmentProfileLike");
     }
 
     private void RetrieveDataFromServer()
@@ -168,7 +171,7 @@ public class FragmentProfileLike extends Fragment
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_LIKE))
         .Header("TOKEN", SharedHandler.GetString("TOKEN"))
         .Param("ID", ID)
-        .Tag("FragmentProfilePost")
+        .Tag("FragmentProfileLike")
         .Build(new RequestHandler.OnCompleteCallBack()
         {
             @Override

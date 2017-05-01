@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.util.Linkify;
@@ -63,7 +64,7 @@ public class FragmentProfile extends Fragment
         Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
         Root.setClickable(true);
 
-        final StickyScrollView ScrollLayout = new StickyScrollView(App.GetContext());
+        StickyScrollView ScrollLayout = new StickyScrollView(App.GetContext());
         ScrollLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ScrollLayout.setVerticalScrollBarEnabled(false);
         ScrollLayout.setHorizontalScrollBarEnabled(false);
@@ -268,31 +269,16 @@ public class FragmentProfile extends Fragment
 
         RelativeLayoutFollowing.addView(TextViewFollowing);
 
-        final View ViewBlankLine2 = new View(App.GetContext());
+        View ViewBlankLine2 = new View(App.GetContext());
         ViewBlankLine2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(5)));
         ViewBlankLine2.setBackgroundResource(R.color.Gray);
 
         LinearLayoutMain2.addView(ViewBlankLine2);
 
-        ViewPagerWrapContentHeight ViewPagerProfile = new ViewPagerWrapContentHeight(App.GetContext());
+        ViewPager ViewPagerProfile = new ViewPager(App.GetContext());
         ViewPagerProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         ViewPagerProfile.setId(MiscHandler.GenerateViewID());
         ViewPagerProfile.setAdapter(new ProfileAdapter(getChildFragmentManager()));
-        ViewPagerProfile.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
-            @Override
-            public void onPageScrollStateChanged(int state) { }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
-
-            @Override
-            public void onPageSelected(int position)
-            {
-
-                ScrollLayout.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
 
         TabLayout TabLayoutProfile = new TabLayout(getActivity());
         TabLayoutProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
@@ -405,34 +391,35 @@ public class FragmentProfile extends Fragment
         });
     }
 
-    private class ProfileAdapter extends FragmentPagerAdapter
+    private class ProfileAdapter extends FragmentStatePagerAdapter
     {
-        private List<String> TitleList = new ArrayList<>();
-        private List<Fragment> FragmentList = new ArrayList<>();
-
         ProfileAdapter(FragmentManager fm)
         {
             super(fm);
-
-            FragmentList.add(new FragmentProfilePost());
-            FragmentList.add(new FragmentProfileComment());
-            FragmentList.add(new FragmentProfileLike());
-
-            TitleList.add("POST");
-            TitleList.add("COMMENT");
-            TitleList.add("LIKE");
         }
 
         @Override
         public Fragment getItem(int position)
         {
-            return FragmentList.get(position);
+            switch (position)
+            {
+                case 0:  return new FragmentProfilePost();
+                case 1:  return new FragmentProfileComment();
+                case 2:  return new FragmentProfileLike();
+                default: return null;
+            }
         }
 
         @Override
         public CharSequence getPageTitle(int position)
         {
-            return TitleList.get(position);
+            switch (position)
+            {
+                case 0:  return "POST";
+                case 1:  return "COMMENT";
+                case 2:  return "LIKE";
+                default: return "";
+            }
         }
 
         @Override

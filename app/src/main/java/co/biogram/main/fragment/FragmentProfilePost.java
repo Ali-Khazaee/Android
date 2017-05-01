@@ -51,6 +51,7 @@ public class FragmentProfilePost extends Fragment
         RecyclerView RecyclerViewPost = new RecyclerView(App.GetContext());
         RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewPost.setAdapter(postAdapter);
+        RecyclerViewPost.setNestedScrollingEnabled(false);
         RecyclerViewPost.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
@@ -87,7 +88,7 @@ public class FragmentProfilePost extends Fragment
                                 MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
                                 return;
                             }
-                            MiscHandler.Log(Response);
+
                             try
                             {
                                 JSONObject Result = new JSONObject(Response);
@@ -106,7 +107,7 @@ public class FragmentProfilePost extends Fragment
                                 }
                             }
                             catch (Exception e)
-                            {MiscHandler.Log(e.toString());
+                            {
                                 // Leave Me Alone
                             }
                         }
@@ -114,6 +115,8 @@ public class FragmentProfilePost extends Fragment
                 }
             }
         });
+
+        Root.addView(RecyclerViewPost);
 
         RelativeLayoutLoading = new RelativeLayout(App.GetContext());
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -181,7 +184,7 @@ public class FragmentProfilePost extends Fragment
                     LoadingViewData.Stop();
                     return;
                 }
-                MiscHandler.Log(Response);
+
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -200,7 +203,7 @@ public class FragmentProfilePost extends Fragment
                     }
                 }
                 catch (Exception e)
-                {MiscHandler.Log(e.toString());
+                {
                     // Leave Me Alone
                 }
 
