@@ -1,3 +1,18 @@
 # BioGram Client For Android
 
-> Looking for partner to doing this Social Network
+# Features
+
+ - **Write Public Post**
+ 
+ - **Post Categorization**
+ 
+ - **Upload Image - Video - Message - Link**
+ 
+ - **Search By Tag - Username - ID**
+ 
+ - **HashTag And Tag**
+ 
+ - **Public Profile**
+ 
+ - **And Many More ...**
+
