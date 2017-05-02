@@ -33,7 +33,7 @@ public class FragmentProfilePost extends Fragment
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
-
+    RecyclerView RecyclerViewPost;
     private boolean IsBottom = false;
     private PostAdapter postAdapter;
     private List<PostAdapter.Struct> PostList = new ArrayList<>();
@@ -48,7 +48,7 @@ public class FragmentProfilePost extends Fragment
 
         postAdapter = new PostAdapter((AppCompatActivity) getActivity(), PostList, "FragmentProfilePost");
 
-        RecyclerView RecyclerViewPost = new RecyclerView(App.GetContext());
+        RecyclerViewPost = new RecyclerView(App.GetContext());
         RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewPost.setAdapter(postAdapter);
         RecyclerViewPost.setNestedScrollingEnabled(false);

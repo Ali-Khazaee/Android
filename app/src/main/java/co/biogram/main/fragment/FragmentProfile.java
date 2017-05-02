@@ -5,18 +5,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,9 +22,6 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
@@ -37,8 +30,6 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
-import co.biogram.main.misc.StickyScrollView;
-import co.biogram.main.misc.ViewPagerWrapContentHeight;
 
 public class FragmentProfile extends Fragment
 {
@@ -56,6 +47,14 @@ public class FragmentProfile extends Fragment
     private TextView TextViewFollowerCount;
     private TextView TextViewFollowingCount;
 
+    private TextView TextViewTabPost;
+    private View ViewTabPost;
+    private TextView TextViewTabComment;
+    private View ViewTabComment;
+    private TextView TextViewTabLike;
+    private View ViewTabLike;
+    private int FrameLayoutID = MiscHandler.GenerateViewID();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -64,7 +63,7 @@ public class FragmentProfile extends Fragment
         Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
         Root.setClickable(true);
 
-        StickyScrollView ScrollLayout = new StickyScrollView(App.GetContext());
+        ScrollView ScrollLayout = new ScrollView(App.GetContext());
         ScrollLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ScrollLayout.setVerticalScrollBarEnabled(false);
         ScrollLayout.setHorizontalScrollBarEnabled(false);
@@ -275,23 +274,104 @@ public class FragmentProfile extends Fragment
 
         LinearLayoutMain2.addView(ViewBlankLine2);
 
-        ViewPager ViewPagerProfile = new ViewPager(App.GetContext());
-        ViewPagerProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        ViewPagerProfile.setId(MiscHandler.GenerateViewID());
-        ViewPagerProfile.setAdapter(new ProfileAdapter(getChildFragmentManager()));
+        LinearLayout LinearLayoutTab = new LinearLayout(App.GetContext());
+        LinearLayoutTab.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+        LinearLayoutTab.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
 
-        TabLayout TabLayoutProfile = new TabLayout(getActivity());
-        TabLayoutProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
-        TabLayoutProfile.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
-        TabLayoutProfile.setupWithViewPager(ViewPagerProfile);
-        TabLayoutProfile.setTag("sticky");
-        TabLayoutProfile.setTabMode(TabLayout.MODE_FIXED);
-        TabLayoutProfile.setTabGravity(TabLayout.GRAVITY_FILL);
-        TabLayoutProfile.setSelectedTabIndicatorColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
-        TabLayoutProfile.setTabTextColors(ContextCompat.getColor(App.GetContext(), R.color.Gray7), ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        LinearLayoutMain2.addView(LinearLayoutTab);
 
-        LinearLayoutMain2.addView(TabLayoutProfile);
-        LinearLayoutMain2.addView(ViewPagerProfile);
+        RelativeLayout RelativeLayoutTabPost = new RelativeLayout(App.GetContext());
+        RelativeLayoutTabPost.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        RelativeLayoutTabPost.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        RelativeLayoutTabPost.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(1); } });
+
+        LinearLayoutTab.addView(RelativeLayoutTabPost);
+
+        RelativeLayout.LayoutParams TextViewTabPostParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTabPostParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        TextViewTabPost = new TextView(getActivity());
+        TextViewTabPost.setLayoutParams(TextViewTabPostParam);
+        TextViewTabPost.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewTabPost.setText("POST");
+        TextViewTabPost.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15));
+        TextViewTabPost.setId(MiscHandler.GenerateViewID());
+        TextViewTabPost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+        RelativeLayoutTabPost.addView(TextViewTabPost);
+
+        RelativeLayout.LayoutParams ViewTabPostParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.DpToPx(2));
+        ViewTabPostParam.addRule(RelativeLayout.BELOW, TextViewTabPost.getId());
+
+        ViewTabPost = new View(App.GetContext());
+        ViewTabPost.setLayoutParams(ViewTabPostParam);
+        ViewTabPost.setBackgroundResource(R.color.BlueLight);
+
+        RelativeLayoutTabPost.addView(ViewTabPost);
+
+        RelativeLayout RelativeLayoutTabComment = new RelativeLayout(App.GetContext());
+        RelativeLayoutTabComment.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        RelativeLayoutTabComment.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        RelativeLayoutTabComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(2); } });
+
+        LinearLayoutTab.addView(RelativeLayoutTabComment);
+
+        RelativeLayout.LayoutParams TextViewTabCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTabCommentParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        TextViewTabComment = new TextView(getActivity());
+        TextViewTabComment.setLayoutParams(TextViewTabCommentParam);
+        TextViewTabComment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewTabComment.setText("COMMENT");
+        TextViewTabComment.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15));
+        TextViewTabComment.setId(MiscHandler.GenerateViewID());
+        TextViewTabComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+        RelativeLayoutTabComment.addView(TextViewTabComment);
+
+        RelativeLayout.LayoutParams ViewTabCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.DpToPx(2));
+        ViewTabCommentParam.addRule(RelativeLayout.BELOW, TextViewTabComment.getId());
+
+        ViewTabComment = new View(App.GetContext());
+        ViewTabComment.setLayoutParams(ViewTabCommentParam);
+        ViewTabComment.setBackgroundResource(R.color.BlueLight);
+
+        RelativeLayoutTabComment.addView(ViewTabComment);
+
+        RelativeLayout RelativeLayoutTabLike = new RelativeLayout(App.GetContext());
+        RelativeLayoutTabLike.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        RelativeLayoutTabLike.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        RelativeLayoutTabLike.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(3); } });
+
+        LinearLayoutTab.addView(RelativeLayoutTabLike);
+
+        RelativeLayout.LayoutParams TextViewTabLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTabLikeParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        TextViewTabLike = new TextView(getActivity());
+        TextViewTabLike.setLayoutParams(TextViewTabLikeParam);
+        TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewTabLike.setText("LIKE");
+        TextViewTabLike.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15));
+        TextViewTabLike.setId(MiscHandler.GenerateViewID());
+        TextViewTabLike.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+        RelativeLayoutTabLike.addView(TextViewTabLike);
+
+        RelativeLayout.LayoutParams ViewTabLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.DpToPx(2));
+        ViewTabLikeParam.addRule(RelativeLayout.BELOW, TextViewTabLike.getId());
+
+        ViewTabLike = new View(App.GetContext());
+        ViewTabLike.setLayoutParams(ViewTabLikeParam);
+        ViewTabLike.setBackgroundResource(R.color.BlueLight);
+
+        RelativeLayoutTabLike.addView(ViewTabLike);
+
+        FrameLayout FrameLayoutTab = new FrameLayout(App.GetContext());
+        FrameLayoutTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        FrameLayoutTab.setId(FrameLayoutID);
+
+        LinearLayoutMain2.addView(FrameLayoutTab);
 
         RelativeLayoutLoading = new RelativeLayout(App.GetContext());
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -330,6 +410,38 @@ public class FragmentProfile extends Fragment
     {
         super.onPause();
         RequestHandler.Cancel("FragmentProfile");
+    }
+
+    private void ChangeTab(int Tab)
+    {
+        TextViewTabPost.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray7));
+        ViewTabPost.setBackgroundResource(R.color.White);
+        TextViewTabComment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray7));
+        ViewTabComment.setBackgroundResource(R.color.White);
+        TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray7));
+        ViewTabLike.setBackgroundResource(R.color.White);
+
+        Fragment fragment = new FragmentProfilePost();
+
+        switch (Tab)
+        {
+            case 1:
+                TextViewTabPost.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                ViewTabPost.setBackgroundResource(R.color.BlueLight);
+            break;
+            case 2:
+                fragment = new FragmentProfileComment();
+                TextViewTabComment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                ViewTabComment.setBackgroundResource(R.color.BlueLight);
+            break;
+            case 3:
+                fragment = new FragmentProfileLike();
+                TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                ViewTabLike.setBackgroundResource(R.color.BlueLight);
+            break;
+        }
+
+        getChildFragmentManager().beginTransaction().add(FrameLayoutID, fragment, fragment.getClass().getSimpleName()).addToBackStack(fragment.getClass().getSimpleName()).commit();
     }
 
     private void RetrieveDataFromServer()
@@ -378,6 +490,8 @@ public class FragmentProfile extends Fragment
                         TextViewFollowingCount.setText(Data.getString("Following"));
                         TextViewFollowerCount.setText(Data.getString("Follower"));
                     }
+
+                    ChangeTab(1);
                 }
                 catch (Exception e)
                 {
@@ -389,43 +503,5 @@ public class FragmentProfile extends Fragment
                 LoadingViewData.Stop();
             }
         });
-    }
-
-    private class ProfileAdapter extends FragmentStatePagerAdapter
-    {
-        ProfileAdapter(FragmentManager fm)
-        {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position)
-        {
-            switch (position)
-            {
-                case 0:  return new FragmentProfilePost();
-                case 1:  return new FragmentProfileComment();
-                case 2:  return new FragmentProfileLike();
-                default: return null;
-            }
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position)
-        {
-            switch (position)
-            {
-                case 0:  return "POST";
-                case 1:  return "COMMENT";
-                case 2:  return "LIKE";
-                default: return "";
-            }
-        }
-
-        @Override
-        public int getCount()
-        {
-            return 3;
-        }
     }
 }
