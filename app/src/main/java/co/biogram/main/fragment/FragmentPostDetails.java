@@ -605,7 +605,7 @@ public class FragmentPostDetails extends Fragment
 
         Loading = new LoadingView(App.GetContext());
         Loading.setLayoutParams(LoadingParam);
-        Loading.SetColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        Loading.SetColor(R.color.BlueGray2);
 
         ContentLink.addView(Loading);
 
@@ -937,7 +937,7 @@ public class FragmentPostDetails extends Fragment
 
         LoadingPage = new LoadingView(App.GetContext());
         LoadingPage.setLayoutParams(LoadingPageParam);
-        LoadingPage.SetColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        LoadingPage.SetColor(R.color.BlueGray2);
 
         Root.addView(LoadingPage);
 

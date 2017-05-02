@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,6 +18,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 
+import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 
@@ -115,7 +117,7 @@ public class LoadingView extends View
 
     public void SetColor(int color)
     {
-        Color = color;
+        Color = ContextCompat.getColor(App.GetContext(), color);
     }
 
     private void UpdateDots()

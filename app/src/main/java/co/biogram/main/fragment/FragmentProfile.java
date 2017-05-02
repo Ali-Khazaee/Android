@@ -384,7 +384,7 @@ public class FragmentProfile extends Fragment
 
         LoadingViewData = new LoadingView(App.GetContext());
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
-        LoadingViewData.SetColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        LoadingViewData.SetColor(R.color.BlueGray2);
 
         RelativeLayoutLoading.addView(LoadingViewData);
 

@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -31,6 +32,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,9 +41,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,13 +88,146 @@ import co.biogram.main.misc.LoadingView;
 
 public class FragmentProfileEdit extends AppCompatActivity
 {
+    private RelativeLayout RelativeLayoutLoading;
+    private LoadingView LoadingViewData;
+    private TextView TextViewTry;
 
+    private int FrameLayoutID = MiscHandler.GenerateViewID();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_fragment_profile_edit);
+
+        RelativeLayout Root = new RelativeLayout(App.GetContext());
+        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        Root.setFocusableInTouchMode(true);
+
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(App.GetContext());
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+        RelativeLayoutHeader.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White5));
+        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(RelativeLayoutHeader);
+
+        ImageView ImageViewBack = new ImageView(App.GetContext());
+        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBack.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
+        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { finish(); } });
+
+        RelativeLayoutHeader.addView(ImageViewBack);
+
+        RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
+
+        TextView TextViewHeader = new TextView(App.GetContext());
+        TextViewHeader.setLayoutParams(TextViewHeaderParam);
+        TextViewHeader.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextViewHeader.setText(getString(R.string.ActivityProfileEditTitle));
+        TextViewHeader.setTypeface(null, Typeface.BOLD);
+        TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+        RelativeLayoutHeader.addView(TextViewHeader);
+
+        RelativeLayout.LayoutParams TextViewSaveParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        TextViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        TextViewSaveParam.setMargins(0, 0, MiscHandler.DpToPx(15), 0);
+
+        TextView TextViewSave = new TextView(App.GetContext());
+        TextViewSave.setLayoutParams(TextViewSaveParam);
+        TextViewSave.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewSave.setText(getString(R.string.ActivityProfileEditSave));
+        TextViewSave.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+        RelativeLayoutHeader.addView(TextViewSave);
+
+        RelativeLayout.LayoutParams LoadingViewSaveParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        LoadingViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        LoadingViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        LoadingViewSaveParam.setMargins(0, 0, MiscHandler.DpToPx(15), 0);
+
+        LoadingView LoadingViewSave = new LoadingView(App.GetContext());
+        LoadingViewSave.setLayoutParams(LoadingViewSaveParam);
+        LoadingViewSave.SetColor(R.color.BlueLight);
+
+        RelativeLayoutHeader.addView(LoadingViewSave);
+
+        RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
+        ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+        View ViewBlankLine = new View(App.GetContext());
+        ViewBlankLine.setLayoutParams(ViewBlankLineParam);
+        ViewBlankLine.setBackgroundResource(R.color.Gray2);
+        ViewBlankLine.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(ViewBlankLine);
+
+        RelativeLayout.LayoutParams ScrollViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        ViewBlankLineParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
+
+        ScrollView ScrollViewMain = new ScrollView(App.GetContext());
+        ScrollViewMain.setLayoutParams(ScrollViewMainParam);
+        ScrollViewMain.setVerticalScrollBarEnabled(false);
+        ScrollViewMain.setHorizontalScrollBarEnabled(false);
+        ScrollViewMain.setFillViewport(true);
+
+        Root.addView(ScrollViewMain);
+
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(App.GetContext());
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+        ScrollViewMain.addView(RelativeLayoutMain);
+
+        FrameLayout FrameLayoutTab = new FrameLayout(App.GetContext());
+        FrameLayoutTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        FrameLayoutTab.setId(FrameLayoutID);
+
+        Root.addView(FrameLayoutTab);
+
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
+
+        RelativeLayoutLoading = new RelativeLayout(App.GetContext());
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+
+        Root.addView(RelativeLayoutLoading);
+
+        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        LoadingViewData = new LoadingView(App.GetContext());
+        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        LoadingViewData.SetColor(R.color.BlueGray2);
+
+        RelativeLayoutLoading.addView(LoadingViewData);
+
+        RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        TextViewTry = new TextView(App.GetContext());
+        TextViewTry.setLayoutParams(TextViewTryParam);
+        TextViewTry.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        TextViewTry.setText(getString(R.string.GeneralTryAgain));
+        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
+
+        RelativeLayoutLoading.addView(TextViewTry);
+
+        RetrieveDataFromServer();
+
+        setContentView(Root);
+    }
+
+    private void RetrieveDataFromServer()
+    {
+
     }
 }
         /*
