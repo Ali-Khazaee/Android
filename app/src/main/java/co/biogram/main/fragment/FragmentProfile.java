@@ -441,7 +441,7 @@ public class FragmentProfile extends Fragment
             break;
         }
 
-        getChildFragmentManager().beginTransaction().add(FrameLayoutID, fragment, fragment.getClass().getSimpleName()).addToBackStack(fragment.getClass().getSimpleName()).commit();
+        getChildFragmentManager().beginTransaction().replace(FrameLayoutID, fragment).commit();
     }
 
     private void RetrieveDataFromServer()
