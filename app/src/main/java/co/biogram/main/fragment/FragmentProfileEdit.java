@@ -103,12 +103,12 @@ public class FragmentProfileEdit extends AppCompatActivity
 
         RelativeLayout Root = new RelativeLayout(App.GetContext());
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        Root.setBackgroundResource(R.color.White);
         Root.setFocusableInTouchMode(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(App.GetContext());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
-        RelativeLayoutHeader.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White5));
+        RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         Root.addView(RelativeLayoutHeader);
@@ -256,7 +256,16 @@ public class FragmentProfileEdit extends AppCompatActivity
 
         RelativeLayoutProfile.addView(ImageViewProfileAdd);
 
+        RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewUsernameParam.addRule(RelativeLayout.BELOW, RelativeLayoutProfile.getId());
+        TextViewUsernameParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
 
+        TextView TextViewUsername = new TextView(App.GetContext());
+        TextViewUsername.setLayoutParams(TextViewUsernameParam);
+        TextViewUsername.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewUsername.setText(getString(R.string.ActivityProfileEditName));
+        TextViewUsername.setId(MiscHandler.GenerateViewID());
 
 
 
@@ -289,7 +298,7 @@ public class FragmentProfileEdit extends AppCompatActivity
 
         RelativeLayoutLoading = new RelativeLayout(App.GetContext());
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
-        RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
         RelativeLayoutLoading.setVisibility(View.GONE);
 
         Root.addView(RelativeLayoutLoading);
