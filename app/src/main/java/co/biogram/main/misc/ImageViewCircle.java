@@ -15,9 +15,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import co.biogram.main.App;
 import co.biogram.main.R;
 
 public class ImageViewCircle extends ImageView
@@ -78,7 +80,7 @@ public class ImageViewCircle extends ImageView
 
     public void SetBorderColor(int Color)
     {
-        BorderColor = Color;
+        BorderColor = ContextCompat.getColor(App.GetContext(), Color);
     }
 
     private void Initializing()

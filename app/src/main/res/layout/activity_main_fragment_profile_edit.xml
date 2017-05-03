@@ -6,74 +6,6 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:id="@+id/RelativeLayoutBackGround"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/GeneralProfileBackGroundHeight"
-                android:background="@color/BlueLight">
-
-                <ImageView
-                    android:id="@+id/ImageViewBackGround"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@null"
-                    android:scaleType="fitXY" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.25"
-                    android:background="@color/Black" />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/activity_profile_edit_add"
-                    android:alpha="0.5"
-                    android:contentDescription="@null"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/RelativeLayoutProfile"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="110dp">
-
-                <co.biogram.main.misc.ImageViewCircle
-                    android:id="@+id/ImageViewCircleProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@color/BlueLight"
-                    app:IVC_BorderColor="@color/White"
-                    app:IVC_BorderWidth="3dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.25"
-                    android:background="@drawable/activity_profile_edit_profile" />
-
-                <ImageView
-                    android:id="@+id/ImageViewProfileAdd"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:alpha="0.5"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/activity_profile_edit_add"
-                    android:contentDescription="@null"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true" />
-
-            </RelativeLayout>
 
             <TextView
                 android:id="@+id/TextViewUsername"
@@ -204,39 +136,5 @@
                 android:layout_marginEnd="10dp"
                 android:theme="@style/GeneralEditTextTheme" />
 
-        </RelativeLayout>
-
-    </ScrollView>
-
-    <RelativeLayout
-        android:id="@+id/RelativeLayoutLoading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/White">
-
-    <co.biogram.main.misc.LoadingView
-        android:id="@+id/LoadingBounceEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        app:LB_Color="@color/Black" />
-
-    <TextView
-        android:id="@+id/TextViewTryAgain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="19sp"
-        android:textColor="@color/Black"
-        android:text="@string/GeneralTryAgain" />
-
-    </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/FrameLayoutMap"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </RelativeLayout>

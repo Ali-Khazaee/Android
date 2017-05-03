@@ -13,9 +13,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -184,6 +186,98 @@ public class FragmentProfileEdit extends AppCompatActivity
 
         ScrollViewMain.addView(RelativeLayoutMain);
 
+        RelativeLayout RelativeLayoutCover = new RelativeLayout(App.GetContext());
+        RelativeLayoutCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(160)));
+        RelativeLayoutCover.setBackgroundResource(R.color.BlueLight);
+
+        RelativeLayoutMain.addView(RelativeLayoutCover);
+
+        ImageView ImageViewCover = new ImageView(App.GetContext());
+        ImageViewCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageViewCover.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        RelativeLayoutCover.addView(ImageViewCover);
+
+        View ViewBlackCover = new View(App.GetContext());
+        ViewBlackCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        ViewBlackCover.setBackgroundResource(R.color.Black);
+        ViewBlackCover.setAlpha(0.25f);
+
+        RelativeLayoutCover.addView(ViewBlackCover);
+
+        RelativeLayout.LayoutParams ImageViewCoverAddParam =  new RelativeLayout.LayoutParams(MiscHandler.DpToPx(50), MiscHandler.DpToPx(50));
+        ImageViewCoverAddParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        ImageView ImageViewCoverAdd = new ImageView(App.GetContext());
+        ImageViewCoverAdd.setLayoutParams(ImageViewCoverAddParam);
+        ImageViewCoverAdd.setAlpha(0.50f);
+        ImageViewCoverAdd.setImageResource(R.drawable.ic_camera_white);
+
+        RelativeLayoutCover.addView(ImageViewCoverAdd);
+
+        RelativeLayout.LayoutParams RelativeLayoutProfileParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(90), MiscHandler.DpToPx(90));
+        RelativeLayoutProfileParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(110), 0, 0);
+
+        RelativeLayout RelativeLayoutProfile = new RelativeLayout(App.GetContext());
+        RelativeLayoutProfile.setLayoutParams(RelativeLayoutProfileParam);
+        RelativeLayoutProfile.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutMain.addView(RelativeLayoutProfile);
+
+        ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(App.GetContext());
+        ImageViewCircleProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageViewCircleProfile.SetBorderColor(R.color.White);
+        ImageViewCircleProfile.SetBorderWidth(MiscHandler.DpToPx(3));
+        ImageViewCircleProfile.setImageResource(R.color.BlueLight);
+
+        RelativeLayoutProfile.addView(ImageViewCircleProfile);
+
+        GradientDrawable ShapeViewProfile = new GradientDrawable();
+        ShapeViewProfile.setShape(GradientDrawable.OVAL);
+        ShapeViewProfile.setCornerRadius(MiscHandler.DpToPx(15));
+        ShapeViewProfile.setColor(Color.BLACK);
+        ShapeViewProfile.setStroke(MiscHandler.DpToPx(3), Color.WHITE);
+
+        View ViewBlackProfile = new View(App.GetContext());
+        ViewBlackProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        ViewBlackProfile.setBackground(ShapeViewProfile);
+        ViewBlackProfile.setAlpha(0.25f);
+
+        RelativeLayoutProfile.addView(ViewBlackProfile);
+
+        RelativeLayout.LayoutParams ImageViewProfileAddParam =  new RelativeLayout.LayoutParams(MiscHandler.DpToPx(35), MiscHandler.DpToPx(35));
+        ImageViewProfileAddParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        ImageView ImageViewProfileAdd = new ImageView(App.GetContext());
+        ImageViewProfileAdd.setLayoutParams(ImageViewProfileAddParam);
+        ImageViewProfileAdd.setAlpha(0.50f);
+        ImageViewProfileAdd.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewProfileAdd.setImageResource(R.drawable.ic_camera_white);
+
+        RelativeLayoutProfile.addView(ImageViewProfileAdd);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         FrameLayout FrameLayoutTab = new FrameLayout(App.GetContext());
         FrameLayoutTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         FrameLayoutTab.setId(FrameLayoutID);
@@ -196,6 +290,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         RelativeLayoutLoading = new RelativeLayout(App.GetContext());
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        RelativeLayoutLoading.setVisibility(View.GONE);
 
         Root.addView(RelativeLayoutLoading);
 

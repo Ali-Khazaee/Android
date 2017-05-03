@@ -87,7 +87,7 @@ public class FragmentProfile extends Fragment
         ImageViewCircleProfileParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(120), MiscHandler.DpToPx(15), 0);
 
         ImageViewCircleProfile = new ImageViewCircle(App.GetContext());
-        ImageViewCircleProfile.SetBorderColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        ImageViewCircleProfile.SetBorderColor(R.color.White);
         ImageViewCircleProfile.SetBorderWidth(MiscHandler.DpToPx(3));
         ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
         ImageViewCircleProfile.setImageResource(R.color.BlueGray);
