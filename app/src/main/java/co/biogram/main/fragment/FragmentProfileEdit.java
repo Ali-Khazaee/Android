@@ -34,6 +34,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.ContextThemeWrapper;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
+import android.text.method.DigitsKeyListener;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -171,7 +176,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         Root.addView(ViewBlankLine);
 
         RelativeLayout.LayoutParams ScrollViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        ViewBlankLineParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
+        ScrollViewMainParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
 
         ScrollView ScrollViewMain = new ScrollView(App.GetContext());
         ScrollViewMain.setLayoutParams(ScrollViewMainParam);
@@ -267,10 +272,153 @@ public class FragmentProfileEdit extends AppCompatActivity
         TextViewUsername.setText(getString(R.string.ActivityProfileEditName));
         TextViewUsername.setId(MiscHandler.GenerateViewID());
 
+        RelativeLayoutMain.addView(TextViewUsername);
 
+        RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
+        EditTextUsernameParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
 
+        EditText EditTextUsername = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextUsername.setLayoutParams(EditTextUsernameParam);
+        EditTextUsername.setMaxLines(1);
+        EditTextUsername.setId(MiscHandler.GenerateViewID());
+        EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextUsername.setHint(R.string.ActivityProfileEditUsernameHint);
+        EditTextUsername.setFilters(new InputFilter[]
+        {
+            new InputFilter.LengthFilter(32), new InputFilter()
+            {
+                @Override
+                public CharSequence filter(CharSequence Source, int Start, int End, Spanned Dest, int DestStart, int DestEnd)
+                {
+                    if (End > Start)
+                    {
+                        char[] AcceptedChars = new char[] {'a', 'b', 'c', 'd', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
+                        for (int I = Start; I < End; I++)
+                        {
+                            if (!new String(AcceptedChars).contains(String.valueOf(Source.charAt(I))))
+                            {
+                                return "";
+                            }
+                        }
+                    }
 
+                    return null;
+                }
+            }
+        });
+        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(App.GetContext(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+
+        RelativeLayoutMain.addView(EditTextUsername);
+
+        RelativeLayout.LayoutParams TextViewDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewDescriptionParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
+        TextViewDescriptionParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
+
+        TextView TextViewDescription = new TextView(App.GetContext());
+        TextViewDescription.setLayoutParams(TextViewDescriptionParam);
+        TextViewDescription.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewDescription.setText(getString(R.string.ActivityProfileEditDescription));
+        TextViewDescription.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutMain.addView(TextViewDescription);
+
+        RelativeLayout.LayoutParams EditTextDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
+        EditTextDescriptionParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
+
+        EditText EditTextDescription = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextDescription.setLayoutParams(EditTextDescriptionParam);
+        EditTextDescription.setMaxLines(5);
+        EditTextDescription.setId(MiscHandler.GenerateViewID());
+        EditTextDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
+        EditTextDescription.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+
+        RelativeLayoutMain.addView(EditTextDescription);
+
+        RelativeLayout.LayoutParams TextViewLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewLinkParam.addRule(RelativeLayout.BELOW, EditTextDescription.getId());
+        TextViewLinkParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
+
+        TextView TextViewLink = new TextView(App.GetContext());
+        TextViewLink.setLayoutParams(TextViewLinkParam);
+        TextViewLink.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewLink.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewLink.setText(getString(R.string.ActivityProfileEditWebsite));
+        TextViewLink.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutMain.addView(TextViewLink);
+
+        RelativeLayout.LayoutParams EditTextLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextLinkParam.addRule(RelativeLayout.BELOW, TextViewLink.getId());
+        EditTextLinkParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
+
+        EditText EditTextLink = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextLink.setLayoutParams(EditTextLinkParam);
+        EditTextLink.setMaxLines(1);
+        EditTextLink.setId(MiscHandler.GenerateViewID());
+        EditTextLink.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextLink.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
+        EditTextLink.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
+
+        RelativeLayoutMain.addView(EditTextLink);
+
+        RelativeLayout.LayoutParams TextViewLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewLocationParam.addRule(RelativeLayout.BELOW, EditTextLink.getId());
+        TextViewLocationParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
+
+        TextView TextViewLocation = new TextView(App.GetContext());
+        TextViewLocation.setLayoutParams(TextViewLocationParam);
+        TextViewLocation.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewLocation.setText(getString(R.string.ActivityProfileEditLocation));
+        TextViewLocation.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutMain.addView(TextViewLocation);
+
+        RelativeLayout.LayoutParams EditTextLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextLocationParam.addRule(RelativeLayout.BELOW, TextViewLocation.getId());
+        EditTextLocationParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
+
+        EditText EditTextLocation = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextLocation.setLayoutParams(EditTextLocationParam);
+        EditTextLocation.setMaxLines(1);
+        EditTextLocation.setId(MiscHandler.GenerateViewID());
+        EditTextLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+        RelativeLayoutMain.addView(EditTextLocation);
+
+        RelativeLayout.LayoutParams TextViewEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewEmailParam.addRule(RelativeLayout.BELOW, EditTextLocation.getId());
+        TextViewEmailParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
+
+        TextView TextViewEmail = new TextView(App.GetContext());
+        TextViewEmail.setLayoutParams(TextViewEmailParam);
+        TextViewEmail.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewEmail.setText(getString(R.string.ActivityProfileEditEmail));
+        TextViewEmail.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutMain.addView(TextViewEmail);
+
+        RelativeLayout.LayoutParams EditTextEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
+        EditTextEmailParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
+
+        EditText EditTextEmail = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextEmail.setLayoutParams(EditTextEmailParam);
+        EditTextEmail.setMaxLines(1);
+        EditTextEmail.setHint(R.string.ActivityProfileEditEmailHint);
+        EditTextEmail.setId(MiscHandler.GenerateViewID());
+        EditTextEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextEmail.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
+        EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
+        RelativeLayoutMain.addView(EditTextEmail);
 
 
 

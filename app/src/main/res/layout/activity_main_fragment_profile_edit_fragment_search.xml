@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/RelativeLayoutHeader"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/GeneralToolBarHeight"
+        android:layout_height="@dimen/ActionBarHeight"
         android:background="@color/White5"
         android:layout_alignParentTop="true">
 

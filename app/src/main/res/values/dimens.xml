@@ -8,6 +8,5 @@
 
     <dimen name="ActionBarHeight">56dp</dimen>
 
-    <dimen name="GeneralToolBarHeight">56dp</dimen>
     <dimen name="GeneralProfileBackGroundHeight">160dp</dimen>
 </resources>
