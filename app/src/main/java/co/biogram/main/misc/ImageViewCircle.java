@@ -26,7 +26,6 @@ public class ImageViewCircle extends ImageView
 {
     private int BorderWidth = 0;
     private int BorderColor = Color.BLACK;
-    private int FillColor = Color.TRANSPARENT;
 
     private float DrawableRadius;
     private float BorderRadius;
@@ -124,7 +123,7 @@ public class ImageViewCircle extends ImageView
 
         FillPaint.setStyle(Paint.Style.FILL);
         FillPaint.setAntiAlias(true);
-        FillPaint.setColor(FillColor);
+        FillPaint.setColor(Color.TRANSPARENT);
 
         int BitmapHeight = BaseBitmap.getHeight();
         int BitmapWidth = BaseBitmap.getWidth();
@@ -224,9 +223,6 @@ public class ImageViewCircle extends ImageView
     {
         if (BaseBitmap == null)
             return;
-
-        if (FillColor != Color.TRANSPARENT)
-            canvas.drawCircle(DrawableRect.centerX(), DrawableRect.centerY(), DrawableRadius, FillPaint);
 
         canvas.drawCircle(DrawableRect.centerX(), DrawableRect.centerY(), DrawableRadius, BitmapPaint);
 

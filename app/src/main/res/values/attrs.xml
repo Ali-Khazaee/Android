@@ -5,17 +5,6 @@
         <attr name="IVC_BorderColor" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="RoundedImageView">
-        <attr name="RIV_CornerRadius" format="dimension" />
-        <attr name="RIV_CornerRadiusTopLeft" format="dimension" />
-        <attr name="RIV_CornerRadiusTopRight" format="dimension" />
-        <attr name="RIV_CornerRadiusBottomLeft" format="dimension" />
-        <attr name="RIV_CornerRadiusBottomRight" format="dimension" />
-        <attr name="RIV_BorderWidth" format="dimension" />
-        <attr name="RIV_BorderColor" format="color" />
-        <attr name="RIV_Mutate" format="boolean" />
-    </declare-styleable>
-
     <declare-styleable name="LoadingView">
         <attr name="LB_Radius" format="dimension" />
         <attr name="LB_Color" format="color" />

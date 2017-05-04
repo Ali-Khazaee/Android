@@ -85,9 +85,9 @@ import java.util.Map;
 
 import co.biogram.main.App;
 import co.biogram.main.R;
-import co.biogram.main.activity.ActivityMain;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
+import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
@@ -99,7 +99,30 @@ public class FragmentProfileEdit extends AppCompatActivity
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
 
+    private ImageView ImageViewCover;
+    private ImageViewCircle ImageViewCircleProfile;
+
+    private EditText EditTextUsername;
+    private EditText EditTextDescription;
+    private EditText EditTextLink;
+    private EditText EditTextLocation;
+    private EditText EditTextEmail;
+    private String Position = "";
+
     private int FrameLayoutID = MiscHandler.GenerateViewID();
+
+    private Uri CaptureUri;
+    private int FromFile = 1;
+    private int FromCamera = 2;
+
+    private boolean IsCover = false;
+
+    private AlertDialog DialogProfile, DialogCover;
+
+    private File FileCover;
+    private File FileProfile;
+
+    private PermissionHandler _PermissionHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -141,29 +164,105 @@ public class FragmentProfileEdit extends AppCompatActivity
 
         RelativeLayoutHeader.addView(TextViewHeader);
 
-        RelativeLayout.LayoutParams TextViewSaveParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        TextViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewSaveParam.setMargins(0, 0, MiscHandler.DpToPx(15), 0);
-
-        TextView TextViewSave = new TextView(App.GetContext());
-        TextViewSave.setLayoutParams(TextViewSaveParam);
-        TextViewSave.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
-        TextViewSave.setText(getString(R.string.ActivityProfileEditSave));
-        TextViewSave.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-
-        RelativeLayoutHeader.addView(TextViewSave);
-
         RelativeLayout.LayoutParams LoadingViewSaveParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         LoadingViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         LoadingViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
         LoadingViewSaveParam.setMargins(0, 0, MiscHandler.DpToPx(15), 0);
 
-        LoadingView LoadingViewSave = new LoadingView(App.GetContext());
+        final LoadingView LoadingViewSave = new LoadingView(App.GetContext());
         LoadingViewSave.setLayoutParams(LoadingViewSaveParam);
         LoadingViewSave.SetColor(R.color.BlueLight);
 
         RelativeLayoutHeader.addView(LoadingViewSave);
+
+        RelativeLayout.LayoutParams TextViewSaveParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        TextViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        TextViewSaveParam.setMargins(0, 0, MiscHandler.DpToPx(15), 0);
+
+        final TextView TextViewSave = new TextView(App.GetContext());
+        TextViewSave.setLayoutParams(TextViewSaveParam);
+        TextViewSave.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewSave.setText(getString(R.string.ActivityProfileEditSave));
+        TextViewSave.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewSave.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                TextViewSave.setVisibility(View.GONE);
+                LoadingViewSave.Start();
+
+                Map<String, File> UploadFile = new HashMap<>();
+
+                if (FileProfile != null || FileCover != null)
+                {
+                    if (FileProfile != null)
+                        UploadFile.put("ImageProfile", FileProfile);
+
+                    if (FileCover != null)
+                        UploadFile.put("ImageCover", FileCover);
+                }
+                else
+                    UploadFile = null;
+
+                final ProgressDialog Progress = new ProgressDialog(FragmentProfileEdit.this);
+                Progress.setMessage(getString(R.string.ActivityProfileEditUpload));
+                Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                Progress.setIndeterminate(false);
+                Progress.setMax(100);
+                Progress.setProgress(0);
+
+                if (UploadFile != null)
+                    Progress.show();
+
+                AndroidNetworking.upload(URLHandler.GetURL(URLHandler.URL.MISC_LAST_ONLINE))
+                        .addMultipartParameter("Username", EditTextUsername.getText().toString())
+                        .addMultipartParameter("Description", EditTextDescription.getText().toString())
+                        .addMultipartParameter("Link", EditTextLink.getText().toString())
+                        .addMultipartParameter("Position", Position)
+                        .addMultipartParameter("Location", EditTextLocation.getText().toString())
+                        .addMultipartParameter("Email", EditTextEmail.getText().toString())
+                        .addMultipartFile(UploadFile).addHeaders("TOKEN", SharedHandler.GetString("Token"))
+                        .setTag("FragmentProfileEdit").build().setUploadProgressListener(new UploadProgressListener()
+                {
+                    @Override
+                    public void onProgress(long Uploaded, long Total)
+                    {
+                        Progress.setProgress((int) (100 * Uploaded / Total));
+                    }
+                })
+                        .getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                TextViewSave.setVisibility(View.VISIBLE);
+                                LoadingBounceSave.Stop();
+
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 1000)
+                                    {
+                                        Intent i = new Intent(FragmentProfileEdit.this, ActivityMain.class);
+                                        i.putExtra("Tab", 5);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    // Leave Me Alone
+                                }
+                            }
+
+                        });
+            }
+        });
+
+        RelativeLayoutHeader.addView(TextViewSave);
 
         RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
         ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
@@ -194,10 +293,11 @@ public class FragmentProfileEdit extends AppCompatActivity
         RelativeLayout RelativeLayoutCover = new RelativeLayout(App.GetContext());
         RelativeLayoutCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(160)));
         RelativeLayoutCover.setBackgroundResource(R.color.BlueLight);
+        RelativeLayoutCover.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCover.show(); } });
 
         RelativeLayoutMain.addView(RelativeLayoutCover);
 
-        ImageView ImageViewCover = new ImageView(App.GetContext());
+        ImageViewCover = new ImageView(App.GetContext());
         ImageViewCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewCover.setScaleType(ImageView.ScaleType.FIT_XY);
 
@@ -226,10 +326,11 @@ public class FragmentProfileEdit extends AppCompatActivity
         RelativeLayout RelativeLayoutProfile = new RelativeLayout(App.GetContext());
         RelativeLayoutProfile.setLayoutParams(RelativeLayoutProfileParam);
         RelativeLayoutProfile.setId(MiscHandler.GenerateViewID());
+        RelativeLayoutProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogProfile.show(); } });
 
         RelativeLayoutMain.addView(RelativeLayoutProfile);
 
-        ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(App.GetContext());
+        ImageViewCircleProfile = new ImageViewCircle(App.GetContext());
         ImageViewCircleProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewCircleProfile.SetBorderColor(R.color.White);
         ImageViewCircleProfile.SetBorderWidth(MiscHandler.DpToPx(3));
@@ -278,7 +379,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
         EditTextUsernameParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
 
-        EditText EditTextUsername = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextUsername = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextUsername.setLayoutParams(EditTextUsernameParam);
         EditTextUsername.setMaxLines(1);
         EditTextUsername.setId(MiscHandler.GenerateViewID());
@@ -330,7 +431,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
         EditTextDescriptionParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
 
-        EditText EditTextDescription = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextDescription = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextDescription.setLayoutParams(EditTextDescriptionParam);
         EditTextDescription.setMaxLines(5);
         EditTextDescription.setId(MiscHandler.GenerateViewID());
@@ -357,7 +458,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         EditTextLinkParam.addRule(RelativeLayout.BELOW, TextViewLink.getId());
         EditTextLinkParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
 
-        EditText EditTextLink = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextLink = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextLink.setLayoutParams(EditTextLinkParam);
         EditTextLink.setMaxLines(1);
         EditTextLink.setId(MiscHandler.GenerateViewID());
@@ -384,7 +485,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         EditTextLocationParam.addRule(RelativeLayout.BELOW, TextViewLocation.getId());
         EditTextLocationParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
 
-        EditText EditTextLocation = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextLocation = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextLocation.setLayoutParams(EditTextLocationParam);
         EditTextLocation.setMaxLines(1);
         EditTextLocation.setId(MiscHandler.GenerateViewID());
@@ -409,7 +510,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
         EditTextEmailParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
 
-        EditText EditTextEmail = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextEmail = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextEmail.setLayoutParams(EditTextEmailParam);
         EditTextEmail.setMaxLines(1);
         EditTextEmail.setHint(R.string.ActivityProfileEditEmailHint);
@@ -419,21 +520,6 @@ public class FragmentProfileEdit extends AppCompatActivity
         EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
         RelativeLayoutMain.addView(EditTextEmail);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         FrameLayout FrameLayoutTab = new FrameLayout(App.GetContext());
         FrameLayoutTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
@@ -447,7 +533,6 @@ public class FragmentProfileEdit extends AppCompatActivity
         RelativeLayoutLoading = new RelativeLayout(App.GetContext());
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
-        RelativeLayoutLoading.setVisibility(View.GONE);
 
         Root.addView(RelativeLayoutLoading);
 
@@ -477,171 +562,77 @@ public class FragmentProfileEdit extends AppCompatActivity
         setContentView(Root);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int RequestCode, @NonNull String[] Permissions, @NonNull int[] GrantResults)
+    {
+        super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
+
+        if (_PermissionHandler != null)
+            _PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        RequestHandler.Cancel("FragmentProfileEdit");
+    }
+
     private void RetrieveDataFromServer()
     {
+        TextViewTry.setVisibility(View.GONE);
+        LoadingViewData.Start();
 
+        RequestHandler.Method("POST")
+        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
+        .Header("TOKEN", SharedHandler.GetString("TOKEN"))
+        .Tag("FragmentProfileEdit")
+        .Build(new RequestHandler.OnCompleteCallBack()
+        {
+            @Override
+            public void OnFinish(String Response, int Status)
+            {
+                if (Status < 0)
+                {
+                    TextViewTry.setVisibility(View.VISIBLE);
+                    LoadingViewData.Stop();
+                    return;
+                }
+
+                RelativeLayoutLoading.setVisibility(View.GONE);
+                TextViewTry.setVisibility(View.GONE);
+                LoadingViewData.Stop();
+
+                try
+                {
+                    JSONObject Result = new JSONObject(Response);
+
+                    if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                    {
+                        JSONObject Data = new JSONObject(Result.getString("Result"));
+
+                        EditTextUsername.setText(Data.getString("Username"));
+                        EditTextDescription.setText(Data.getString("Description"));
+                        EditTextLink.setText(Data.getString("Link"));
+                        EditTextLocation.setText(Data.getString("Location"));
+                        EditTextEmail.setText(Data.getString("Email"));
+                        Position = Data.getString("Position");
+
+                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfileEdit", false);
+                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), false);
+                    }
+                }
+                catch (Exception e)
+                {
+                    // Leave Me Alone
+                }
+            }
+        });
     }
 }
         /*
 
-            private TextView TextViewTryAgain;
-    private LoadingView LoadingBounceEdit;
-    private RelativeLayout RelativeLayoutLoading;
 
-    private Uri ImageCaptureUri;
-    private final int FROM_FILE = 1;
-    private final int FROM_CAMERA = 2;
-
-    private boolean IsBackGround = false;
-    private ImageView ImageViewBackGround;
-    private ImageViewCircle ImageViewCircleProfile;
-    private AlertDialog DialogProfile, DialogBackGround;
-
-    private String Position = "";
-    private EditText EditTextUsername;
-    private EditText EditTextDescription;
-    private EditText EditTextLink;
-    private EditText EditTextLocation;
-    private EditText EditTextEmail;
-
-    private File ImageProfile;
-    private File ImageBackGround;
-
-    private PermissionHandler PermissionObject;
-
-        findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                finish();
-            }
-        });
-
-        final LoadingView LoadingBounceSave = (LoadingView) findViewById(R.id.LoadingBounceSave);
-        final TextView TextViewSave = (TextView) findViewById(R.id.TextViewSave);
-
-        TextViewSave.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                TextViewSave.setVisibility(View.GONE);
-                LoadingBounceSave.Start();
-
-                Map<String, File> UploadFile = new HashMap<>();
-
-                if (ImageProfile != null || ImageBackGround != null)
-                {
-                    if (ImageProfile != null)
-                        UploadFile.put("ImageProfile", ImageProfile);
-
-                    if (ImageBackGround != null)
-                        UploadFile.put("ImageBackGround", ImageBackGround);
-                }
-                else
-                    UploadFile = null;
-
-                final ProgressDialog Progress = new ProgressDialog(FragmentProfileEdit.this);
-                Progress.setMessage(getString(R.string.ActivityProfileEditUpload));
-                Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                Progress.setIndeterminate(false);
-                Progress.setMax(100);
-                Progress.setProgress(0);
-
-                if (UploadFile != null)
-                    Progress.show();
-
-                AndroidNetworking.upload(URLHandler.GetURL(URLHandler.URL.MISC_LAST_ONLINE))
-                .addMultipartParameter("Username", EditTextUsername.getText().toString())
-                .addMultipartParameter("Description", EditTextDescription.getText().toString())
-                .addMultipartParameter("Link", EditTextLink.getText().toString())
-                .addMultipartParameter("Position", Position)
-                .addMultipartParameter("Location", EditTextLocation.getText().toString())
-                .addMultipartParameter("Email", EditTextEmail.getText().toString())
-                .addMultipartFile(UploadFile).addHeaders("TOKEN", SharedHandler.GetString("Token"))
-                .setTag("FragmentProfileEdit").build().setUploadProgressListener(new UploadProgressListener()
-                {
-                    @Override
-                    public void onProgress(long Uploaded, long Total)
-                    {
-                        Progress.setProgress((int) (100 * Uploaded / Total));
-                    }
-                })
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        TextViewSave.setVisibility(View.VISIBLE);
-                        LoadingBounceSave.Stop();
-
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            if (Result.getInt("Message") == 1000)
-                            {
-                                Intent i = new Intent(FragmentProfileEdit.this, ActivityMain.class);
-                                i.putExtra("Tab", 5);
-                                startActivity(i);
-                                finish();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            // Leave Me Alone
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError error)
-                    {
-                        TextViewSave.setVisibility(View.VISIBLE);
-                        LoadingBounceSave.Stop();
-
-                        Toast.makeText(App.GetContext(), getString(R.string.GeneralCheckInternet), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-        ImageViewBackGround = (ImageView) findViewById(R.id.ImageViewBackGround);
-        ImageViewCircleProfile = (ImageViewCircle) findViewById(R.id.ImageViewCircleProfile);
-        LoadingBounceEdit = (LoadingView) findViewById(R.id.LoadingBounceEdit);
-        RelativeLayoutLoading = (RelativeLayout) findViewById(R.id.RelativeLayoutLoading);
-        EditTextDescription = (EditText) findViewById(R.id.EditTextDescription);
-        EditTextLink = (EditText) findViewById(R.id.EditTextLink);
-        EditTextLocation = (EditText) findViewById(R.id.EditTextLocation);
-        EditTextEmail = (EditText) findViewById(R.id.EditTextEmail);
-
-        TextViewTryAgain = (TextView) findViewById(R.id.TextViewTryAgain);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                RetrieveDataFromServer();
-            }
-        });
-
-        findViewById(R.id.RelativeLayoutBackGround).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                DialogBackGround.show();
-            }
-        });
-
-        findViewById(R.id.RelativeLayoutProfile).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                DialogProfile.show();
-            }
-        });
 
         EditTextLocation.setFocusable(false);
         EditTextLocation.setOnClickListener(new View.OnClickListener()
@@ -1177,21 +1168,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int RequestCode, @NonNull String[] Permissions, @NonNull int[] GrantResults)
-    {
-        super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
-        if (PermissionObject != null)
-            PermissionObject.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
-    }
-
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
-        AndroidNetworking.cancel("FragmentProfileEdit");
-    }
 
     private void InitializationProfile()
     {
@@ -1414,65 +1391,5 @@ public class FragmentProfileEdit extends AppCompatActivity
             CropImage.activity(ImageCaptureUri).setAllowRotation(true).setActivityTitle(getString(R.string.ActivityProfileEditCrop)).setGuidelines(CropImageView.Guidelines.ON_TOUCH).setFixAspectRatio(true).start(this);
     }
 
-    private void RetrieveDataFromServer()
-    {
-        LoadingBounceEdit.Start();
-        TextViewTryAgain.setVisibility(View.GONE);
-        RelativeLayoutLoading.setVisibility(View.VISIBLE);
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.MISC_LAST_ONLINE))
-        .addHeaders("TOKEN", SharedHandler.GetString("Token"))
-        .setTag("FragmentProfileEdit").build().getAsString(new StringRequestListener()
-        {
-            @Override
-            public void onResponse(String Response)
-            {
-                try
-                {
-                    JSONObject Result = new JSONObject(Response);
-
-                    if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
-                    {
-                        JSONObject Data = new JSONObject(Result.getString("Result"));
-
-                        EditTextUsername.setText(Data.getString("Username"));
-                        EditTextDescription.setText(Data.getString("Description"));
-                        EditTextLink.setText(Data.getString("Link"));
-                        EditTextLocation.setText(Data.getString("Location"));
-                        EditTextEmail.setText(Data.getString("Email"));
-                        Position = Data.getString("Position");
-
-                        MiscHandler.LoadImage(ImageViewBackGround, "FragmentProfileEdit", Data.getString("BackGround"), 0, MiscHandler.DpToPx(150));
-                        MiscHandler.LoadImage(ImageViewCircleProfile, "FragmentProfileEdit", Data.getString("Profile"), MiscHandler.DpToPx(90), MiscHandler.DpToPx(90));
-
-                        LoadingBounceEdit.Stop();
-                        TextViewTryAgain.setVisibility(View.GONE);
-                        RelativeLayoutLoading.setVisibility(View.GONE);
-                    }
-                    else
-                    {
-                        LoadingBounceEdit.Stop();
-                        TextViewTryAgain.setVisibility(View.VISIBLE);
-                        RelativeLayoutLoading.setVisibility(View.VISIBLE);
-                    }
-                }
-                catch (Exception e)
-                {
-                    LoadingBounceEdit.Stop();
-                    TextViewTryAgain.setVisibility(View.VISIBLE);
-                    RelativeLayoutLoading.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onError(ANError error)
-            {
-                LoadingBounceEdit.Stop();
-                TextViewTryAgain.setVisibility(View.VISIBLE);
-                RelativeLayoutLoading.setVisibility(View.VISIBLE);
-
-                Toast.makeText(App.GetContext(), getString(R.string.GeneralCheckInternet), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }*/

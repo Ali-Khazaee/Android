@@ -10,6 +10,10 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -142,6 +146,7 @@ public class RequestHandler
         private OnProgressCallBack OnProgressListener;
         private OnCompleteCallBack OnCompleteListener;
 
+        private HashMap<String, File> FileMap = new HashMap<>();
         private HashMap<String, String> ParamMap = new HashMap<>();
         private HashMap<String, String> HeaderMap = new HashMap<>();
 
@@ -153,6 +158,21 @@ public class RequestHandler
         public Builder Address(String address)
         {
             Address = address;
+
+            return this;
+        }
+
+        @SuppressWarnings("unused")
+        public Builder File(String Key, File Value)
+        {
+            FileMap.put(Key, Value);
+
+            return this;
+        }
+
+        public Builder File(HashMap<String, File> fileMap)
+        {
+            FileMap.putAll(fileMap);
 
             return this;
         }
@@ -220,6 +240,7 @@ public class RequestHandler
                     switch (METHOD)
                     {
                         case "POST":     PerformPost(Builder.this);     break;
+                        case "Upload":   PerformUpload(Builder.this);   break;
                         case "DOWNLOAD": PerformDownload(Builder.this); break;
                     }
                 }
@@ -241,6 +262,9 @@ public class RequestHandler
 
     public static void GetImage(final ImageView view, final String Address, String Tag, final boolean NoCache)
     {
+        if (Address.equals(""))
+            return;
+
         final String Name = Address.split("/")[Address.split("/").length - 1];
 
         if (!NoCache && CacheHandler.ImageCache(Name))
@@ -293,6 +317,9 @@ public class RequestHandler
 
     public static void GetImage(final ImageView view, final String Address, String Tag, final int DesiredWidth, final int DesiredHeight, final boolean NoCache)
     {
+        if (Address.equals(""))
+            return;
+
         final String Name = Address.split("/")[Address.split("/").length - 1];
 
         if (!NoCache && CacheHandler.ImageCache(Name))
@@ -373,47 +400,48 @@ public class RequestHandler
         try
         {
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
-            Conn.setReadTimeout(builder.ReadTime);
             Conn.setConnectTimeout(builder.ConnectTime);
-            Conn.setRequestMethod("POST");
+            Conn.setReadTimeout(builder.ReadTime);
             Conn.setChunkedStreamingMode(4096);
-            Conn.setDoInput(true);
+            Conn.setRequestMethod("POST");
+            Conn.setUseCaches(false);
             Conn.setDoOutput(true);
+            Conn.setDoInput(true);
 
-            for (Map.Entry<String, String> entry : builder.HeaderMap.entrySet())
-                Conn.setRequestProperty(URLEncoder.encode(entry.getKey(), "UTF-8"), URLEncoder.encode(entry.getValue(), "UTF-8"));
+            for (Map.Entry<String, String> Entry : builder.HeaderMap.entrySet())
+                Conn.setRequestProperty(URLEncoder.encode(Entry.getKey(), "UTF-8"), URLEncoder.encode(Entry.getValue(), "UTF-8"));
 
-            boolean FirstParam = true;
-            StringBuilder Param = new StringBuilder();
+            boolean First = true;
+            OutputStream OS = Conn.getOutputStream();
 
-            for (Map.Entry<String, String> entry : builder.ParamMap.entrySet())
+            for (Map.Entry<String, String> Entry : builder.ParamMap.entrySet())
             {
-                if (FirstParam)
-                    FirstParam = false;
+                if (First)
+                    First = false;
                 else
-                    Param.append("&");
+                    OS.write("&".getBytes());
 
-                Param.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-                Param.append("=");
-                Param.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+                OS.write(URLEncoder.encode(Entry.getKey(), "UTF-8").getBytes());
+                OS.write("=".getBytes());
+                OS.write(URLEncoder.encode(Entry.getValue(), "UTF-8").getBytes());
             }
 
-            OutputStream OStream = new BufferedOutputStream(Conn.getOutputStream());
-            BufferedWriter Writer = new BufferedWriter(new OutputStreamWriter(OStream, "UTF-8"));
-            Writer.write(Param.toString());
-            Writer.flush();
-            Writer.close();
-            OStream.close();
+            OS.close();
 
-            String Line;
-            final int Status = Conn.getResponseCode();
-            final StringBuilder Response = new StringBuilder();
-            BufferedReader Reader = new BufferedReader(new InputStreamReader(Conn.getInputStream(), "UTF-8"));
+            ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+            InputStream IS = Conn.getInputStream();
+            byte[] Buffer = new byte[1024];
+            int Reader;
 
-            while ((Line = Reader.readLine()) != null)
+            while ((Reader = IS.read(Buffer)) != -1)
             {
-                Response.append(Line);
+                ByteArray.write(Buffer, 0, Reader);
             }
+
+            final String Response = new String(ByteArray.toByteArray());
+            final int Status = Conn.getResponseCode();
+            ByteArray.close();
+            IS.close();
 
             new Handler(Looper.getMainLooper()).post(new Runnable()
             {
@@ -421,7 +449,101 @@ public class RequestHandler
                 public void run()
                 {
                     if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(Response.toString(), Status);
+                        builder.OnCompleteListener.OnFinish(Response, Status);
+                }
+            });
+        }
+        catch (final Exception e)
+        {
+            new Handler(Looper.getMainLooper()).post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if (builder.OnCompleteListener != null)
+                        builder.OnCompleteListener.OnFinish(e.toString(), -1);
+                }
+            });
+        }
+
+        if (Conn != null)
+            Conn.disconnect();
+    }
+
+    private static void PerformUpload(final Builder builder)
+    {
+        HttpURLConnection Conn = null;
+
+        try
+        {
+            Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setConnectTimeout(builder.ConnectTime);
+            Conn.setReadTimeout(builder.ReadTime);
+            Conn.setRequestMethod("POST");
+            Conn.setUseCaches(false);
+            Conn.setDoOutput(true);
+            Conn.setDoInput(true);
+
+            for (Map.Entry<String, String> Entry : builder.HeaderMap.entrySet())
+                Conn.setRequestProperty(URLEncoder.encode(Entry.getKey(), "UTF-8"), URLEncoder.encode(Entry.getValue(), "UTF-8"));
+
+            Conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=Bio");
+
+            DataOutputStream DataOS = new DataOutputStream(Conn.getOutputStream());
+
+            for (Map.Entry<String, File> Entry : builder.FileMap.entrySet())
+            {
+                DataOS.writeBytes("--Bio\r\n");
+                DataOS.writeBytes("Content-Disposition: form-data; name=\"" + URLEncoder.encode(Entry.getKey(), "UTF-8") + "\"; filename=\"" + URLEncoder.encode(Entry.getValue().getName(), "UTF-8") + "\"" + "\r\n");
+                DataOS.writeBytes("Content-Type: BioGram/Upload\r\n");
+                DataOS.writeBytes("\r\n");
+
+                FileInputStream FIP = new FileInputStream(Entry.getValue());
+                byte[] Buffer = new byte[4096];
+                int BytesRead;
+
+                while ((BytesRead = FIP.read(Buffer)) != -1)
+                {
+                    DataOS.write(Buffer, 0, BytesRead);
+                }
+
+                FIP.close();
+
+                DataOS.writeBytes("\r\n");
+                DataOS.writeBytes("--Bio");
+                DataOS.flush();
+            }
+
+            DataOS.writeBytes("--");
+            DataOS.flush();
+            DataOS.close();
+
+            if (Conn.getResponseCode() != 200)
+                throw new Exception("Response Code: %d " + Conn.getResponseCode());
+
+            InputStream IS = Conn.getInputStream();
+            ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
+            byte[] Bytes = new byte[1024];
+            int BytesRead;
+
+            while((BytesRead = IS.read(Bytes)) != -1)
+            {
+                BAOS.write(Bytes, 0, BytesRead);
+            }
+
+            byte[] BytesReceived = BAOS.toByteArray();
+            BAOS.close();
+            IS.close();
+
+            final String Response = new String(BytesReceived);
+
+            new Handler(Looper.getMainLooper()).post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if (builder.OnCompleteListener != null)
+                        builder.OnCompleteListener.OnFinish(Response, 0);
                 }
             });
         }
@@ -448,30 +570,42 @@ public class RequestHandler
         {
             URL Address = new URL(builder.Address);
             URLConnection Conn = Address.openConnection();
-
             Conn.connect();
 
             int FileLength = Conn.getContentLength();
+            InputStream IS = new BufferedInputStream(Address.openStream(), 2048);
+            FileOutputStream FOS = new FileOutputStream(builder.OutPath);
 
-            InputStream input = new BufferedInputStream(Address.openStream(), 4096);
-            OutputStream output = new FileOutputStream(builder.OutPath);
-
+            byte[] Buffer = new byte[1024];
+            long Receive = 0;
             int Count;
-            long Received = 0;
-            byte Data[] = new byte[1024];
 
-            while ((Count = input.read(Data)) != -1)
+            while ((Count = IS.read(Buffer)) != -1)
             {
-                Received += Count;
-                output.write(Data, 0, Count);
+                Receive += Count;
+                FOS.write(Buffer, 0, Count);
 
                 if (builder.OnProgressListener != null)
-                    builder.OnProgressListener.OnProgress(Received, FileLength);
+                    builder.OnProgressListener.OnProgress(Receive, FileLength);
             }
 
-            output.flush();
-            output.close();
-            input.close();
+            FOS.flush();
+            FOS.close();
+            IS.close();
+
+            InputStream IS2 = Conn.getInputStream();
+            ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+            byte[] Bytes = new byte[1024];
+            int BytesRead;
+
+            while((BytesRead = IS2.read(Bytes)) != -1)
+            {
+                ByteArray.write(Bytes, 0, BytesRead);
+            }
+
+            final String Response = new String(ByteArray.toByteArray());
+            ByteArray.close();
+            IS2.close();
 
             new Handler(Looper.getMainLooper()).post(new Runnable()
             {
@@ -479,7 +613,7 @@ public class RequestHandler
                 public void run()
                 {
                     if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish("Finish", 0);
+                        builder.OnCompleteListener.OnFinish(Response, 200);
                 }
             });
         }

@@ -485,7 +485,7 @@ public class FragmentProfile extends Fragment
 
                         TextViewUsername.setText(Data.getString("Username"));
                         TextViewDescription.setText(Data.getString("Description"));
-                        TextViewUrl.setText(Data.getString("WebSite"));
+                        TextViewUrl.setText(Data.getString("Link"));
                         TextViewPostCount.setText(Data.getString("Post"));
                         TextViewFollowingCount.setText(Data.getString("Following"));
                         TextViewFollowerCount.setText(Data.getString("Follower"));

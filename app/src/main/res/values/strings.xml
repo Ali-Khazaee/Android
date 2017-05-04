@@ -94,6 +94,9 @@
     <string name="AdapterPostComment">Commenting is Disabled</string>
     <string name="AdapterPostChoice">Choice</string>
 
+    <string name="FragmentProfilePost">Post</string>
+    <string name="FragmentProfileFollowers">Followers</string>
+    <string name="FragmentProfileFollowing">Following</string>
 
 
 
@@ -107,9 +110,7 @@
 
     <string name="FragmentMomentTitle">Moment</string>
 
-    <string name="FragmentProfilePost">Post</string>
-    <string name="FragmentProfileFollowers">Followers</string>
-    <string name="FragmentProfileFollowing">Following</string>
+
 
     <string name="ActivityProfileEditTitle">Edit Profile</string>
     <string name="ActivityProfileEditSave">Save</string>
