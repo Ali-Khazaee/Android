@@ -115,7 +115,7 @@
     <string name="ActivityProfileEditTitle">Edit Profile</string>
     <string name="ActivityProfileEditSave">Save</string>
     <string name="ActivityProfileEditUsernameHint">Username cannot be blank</string>
-    <string name="ActivityProfileEditName">Name</string>
+    <string name="ActivityProfileEditUsername">Username</string>
     <string name="ActivityProfileEditDescription">Description</string>
     <string name="ActivityProfileEditWebsite">Website</string>
     <string name="ActivityProfileEditLocation">Location</string>

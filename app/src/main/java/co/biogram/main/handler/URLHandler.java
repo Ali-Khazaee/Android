@@ -66,7 +66,7 @@ public class URLHandler
             case PROFILE_GET_POST:           URL = "ProfileGetPost";      break;
             case PROFILE_GET_COMMENT:        URL = "ProfileGetComment";   break;
             case PROFILE_GET_LIKE:           URL = "ProfileGetLike";      break;
-            case PROFILE_EDIT_SET:           URL = "ProfileSet";          break;
+            case PROFILE_EDIT_SET:           URL = "ProfileSetEdit";      break;
             case PROFILE_EDIT_GET:           URL = "ProfileGetEdit";      break;
             case PROFILE_EDIT_COVER_DELETE:  URL = "ProfileCoverDelete";  break;
             case PROFILE_EDIT_AVATAR_DELETE: URL = "ProfileAvatarDelete"; break;

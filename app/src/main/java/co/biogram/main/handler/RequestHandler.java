@@ -7,18 +7,13 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -32,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 
 public class RequestHandler
 {
+    private final static String EndLine = "\r\n";
+
     private static ArrayList<Request> QueueRequestList = new ArrayList<>();
     private static ArrayList<Request> RunningRequestList = new ArrayList<>();
     private static ThreadPoolExecutor ThreadExecutor;
@@ -172,7 +169,8 @@ public class RequestHandler
 
         public Builder File(HashMap<String, File> fileMap)
         {
-            FileMap.putAll(fileMap);
+            if (fileMap != null)
+                FileMap.putAll(fileMap);
 
             return this;
         }
@@ -240,7 +238,7 @@ public class RequestHandler
                     switch (METHOD)
                     {
                         case "POST":     PerformPost(Builder.this);     break;
-                        case "Upload":   PerformUpload(Builder.this);   break;
+                        case "UPLOAD":   PerformUpload(Builder.this);   break;
                         case "DOWNLOAD": PerformDownload(Builder.this); break;
                     }
                 }
@@ -487,55 +485,73 @@ public class RequestHandler
             for (Map.Entry<String, String> Entry : builder.HeaderMap.entrySet())
                 Conn.setRequestProperty(URLEncoder.encode(Entry.getKey(), "UTF-8"), URLEncoder.encode(Entry.getValue(), "UTF-8"));
 
-            Conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=Bio");
+            Conn.setRequestProperty("Connection", "Keep-Alive");
+            Conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=***");
 
-            DataOutputStream DataOS = new DataOutputStream(Conn.getOutputStream());
+            DataOutputStream OS = new DataOutputStream(Conn.getOutputStream());
+
+            for (Map.Entry<String, String> Entry : builder.ParamMap.entrySet())
+            {
+                OS.writeBytes("--***" + EndLine);
+                OS.writeBytes("Content-Disposition: form-data; name=\"" + URLEncoder.encode(Entry.getKey(), "UTF-8") + "\"" + EndLine);
+                OS.writeBytes(EndLine);
+                OS.writeBytes(URLEncoder.encode(Entry.getValue(), "UTF-8"));
+                OS.writeBytes(EndLine);
+                OS.writeBytes("--***");
+            }
+
+            if (builder.FileMap.size() > 0)
+                OS.writeBytes(EndLine);
+
+            int FileLength = 0 ;
+
+            for (Map.Entry<String, File> Entry : builder.FileMap.entrySet())
+                FileLength += Entry.getValue().length();
 
             for (Map.Entry<String, File> Entry : builder.FileMap.entrySet())
             {
-                DataOS.writeBytes("--Bio\r\n");
-                DataOS.writeBytes("Content-Disposition: form-data; name=\"" + URLEncoder.encode(Entry.getKey(), "UTF-8") + "\"; filename=\"" + URLEncoder.encode(Entry.getValue().getName(), "UTF-8") + "\"" + "\r\n");
-                DataOS.writeBytes("Content-Type: BioGram/Upload\r\n");
-                DataOS.writeBytes("\r\n");
+                OS.writeBytes("--***" + EndLine);
+                OS.writeBytes("Content-Disposition: form-data; name=\"" + URLEncoder.encode(Entry.getKey(), "UTF-8") + "\";filename=\"" + URLEncoder.encode(Entry.getValue().getName(), "UTF-8") + "\"" + EndLine);
+                OS.writeBytes(EndLine);
 
                 FileInputStream FIP = new FileInputStream(Entry.getValue());
                 byte[] Buffer = new byte[4096];
-                int BytesRead;
+                int ByteRead;
+                int Sent = 0;
 
-                while ((BytesRead = FIP.read(Buffer)) != -1)
+                while ((ByteRead = FIP.read(Buffer)) != -1)
                 {
-                    DataOS.write(Buffer, 0, BytesRead);
+                    Sent += ByteRead;
+                    OS.write(Buffer, 0, ByteRead);
+
+                    if (builder.OnProgressListener != null)
+                        builder.OnProgressListener.OnProgress(Sent, FileLength);
                 }
 
                 FIP.close();
 
-                DataOS.writeBytes("\r\n");
-                DataOS.writeBytes("--Bio");
-                DataOS.flush();
+                OS.writeBytes(EndLine);
+                OS.writeBytes("--***");
             }
 
-            DataOS.writeBytes("--");
-            DataOS.flush();
-            DataOS.close();
-
-            if (Conn.getResponseCode() != 200)
-                throw new Exception("Response Code: %d " + Conn.getResponseCode());
+            OS.writeBytes("--" + EndLine);
+            OS.flush();
+            OS.close();
 
             InputStream IS = Conn.getInputStream();
-            ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-            byte[] Bytes = new byte[1024];
-            int BytesRead;
+            ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+            byte[] Buffer = new byte[4096];
+            int ByteRead;
 
-            while((BytesRead = IS.read(Bytes)) != -1)
+            while ((ByteRead = IS.read(Buffer)) != -1)
             {
-                BAOS.write(Bytes, 0, BytesRead);
+                ByteArray.write(Buffer, 0, ByteRead);
             }
 
-            byte[] BytesReceived = BAOS.toByteArray();
-            BAOS.close();
+            final String Response = new String(ByteArray.toByteArray());
+            final int Status = Conn.getResponseCode();
+            ByteArray.close();
             IS.close();
-
-            final String Response = new String(BytesReceived);
 
             new Handler(Looper.getMainLooper()).post(new Runnable()
             {
@@ -543,7 +559,7 @@ public class RequestHandler
                 public void run()
                 {
                     if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(Response, 0);
+                        builder.OnCompleteListener.OnFinish(Response, Status);
                 }
             });
         }
