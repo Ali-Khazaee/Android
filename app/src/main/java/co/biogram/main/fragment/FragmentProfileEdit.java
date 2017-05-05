@@ -403,7 +403,6 @@ public class FragmentProfileEdit extends AppCompatActivity
                 }
             }
         });
-        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(App.GetContext(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
         RelativeLayoutMain.addView(EditTextUsername);
@@ -484,6 +483,15 @@ public class FragmentProfileEdit extends AppCompatActivity
         EditTextLocation.setMaxLines(1);
         EditTextLocation.setId(MiscHandler.GenerateViewID());
         EditTextLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextLocation.setFocusable(false);
+        EditTextLocation.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getFragmentManager().beginTransaction().replace(FrameLayoutID, new FragmentMap()).commit();
+            }
+        });
 
         RelativeLayoutMain.addView(EditTextLocation);
 
@@ -680,6 +688,376 @@ public class FragmentProfileEdit extends AppCompatActivity
                     }
                 }
                 break;
+        }
+    }
+
+    public static class FragmentMap extends Fragment
+    {
+        private MapThreadClass MapThread;
+        private MapView _MapView;
+        private GoogleMap _GoogleMap;
+        private TextView TextViewName;
+        private TextView TextViewPosition;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
+        {
+            RelativeLayout Root = new RelativeLayout(App.GetContext());
+            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            Root.setBackgroundResource(R.color.White);
+            Root.setClickable(true);
+
+            RelativeLayout RelativeLayoutHeader = new RelativeLayout(App.GetContext());
+            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+            RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+            RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+            Root.addView(RelativeLayoutHeader);
+
+            ImageView ImageViewBack = new ImageView(App.GetContext());
+            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewBack.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
+            ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+            ImageViewBack.setId(MiscHandler.GenerateViewID());
+            ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().getFragmentManager().beginTransaction().remove(FragmentMap.this).commit(); } });
+
+            RelativeLayoutHeader.addView(ImageViewBack);
+
+            RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
+
+            TextView TextViewHeader = new TextView(App.GetContext());
+            TextViewHeader.setLayoutParams(TextViewHeaderParam);
+            TextViewHeader.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            TextViewHeader.setText("Location");
+            TextViewHeader.setTypeface(null, Typeface.BOLD);
+            TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+            RelativeLayoutHeader.addView(TextViewHeader);
+
+            RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT);
+            ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+            ImageView ImageViewSearch = new ImageView(App.GetContext());
+            ImageViewSearch.setLayoutParams(ImageViewSearchParam);
+            ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewSearch.setPadding(MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16));
+            ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+            ImageViewSearch.setId(MiscHandler.GenerateViewID());
+            ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
+
+            RelativeLayoutHeader.addView(ImageViewSearch);
+
+            RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
+            ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+            View ViewBlankLine = new View(App.GetContext());
+            ViewBlankLine.setLayoutParams(ViewBlankLineParam);
+            ViewBlankLine.setBackgroundResource(R.color.Gray2);
+
+            Root.addView(ViewBlankLine);
+
+            RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56));
+            RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+            RelativeLayout RelativeLayoutBottom = new RelativeLayout(App.GetContext());
+            RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
+            RelativeLayoutBottom.setBackgroundResource(R.color.White5);
+            RelativeLayoutBottom.setId(MiscHandler.GenerateViewID());
+
+            Root.addView(RelativeLayoutBottom);
+
+            ImageView ImageViewSend = new ImageView(App.GetContext());
+            ImageViewSend.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewSend.setPadding(MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13));
+            ImageViewSend.setImageResource(R.drawable.ic_location_blue);
+            ImageViewSend.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
+
+            RelativeLayoutBottom.addView(ImageViewSend);
+
+            RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewNameParam.setMargins(MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5));
+
+            TextView TextViewName = new TextView(App.GetContext());
+            TextViewName.setLayoutParams(TextViewNameParam);
+            TextViewName.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewName.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutBottom.addView(TextViewName);
+
+            RelativeLayout.LayoutParams TextViewPositionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewPositionParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewPositionParam.addRule(RelativeLayout.BELOW, TextViewName.getId());
+            TextViewPositionParam.setMargins(MiscHandler.DpToPx(5),0, 0, 0);
+
+            TextView TextViewPosition = new TextView(App.GetContext());
+            TextViewPosition.setLayoutParams(TextViewPositionParam);
+            TextViewPosition.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            TextViewPosition.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+
+            RelativeLayoutBottom.addView(TextViewPosition);
+
+            RelativeLayout.LayoutParams ViewBlankLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
+            ViewBlankLine2Param.addRule(RelativeLayout.ABOVE, RelativeLayoutBottom.getId());
+
+            View ViewBlankLine2 = new View(App.GetContext());
+            ViewBlankLine2.setLayoutParams(ViewBlankLine2Param);
+            ViewBlankLine2.setBackgroundResource(R.color.Gray2);
+
+            Root.addView(ViewBlankLine2);
+
+            RelativeLayout.LayoutParams ViewCenterParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
+            ViewCenterParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+            View ViewCenter = new View(App.GetContext());
+            ViewCenter.setLayoutParams(ViewCenterParam);
+            ViewCenter.setBackgroundResource(R.color.Gray2);
+            ViewCenter.setId(MiscHandler.GenerateViewID());
+
+            Root.addView(ViewCenter);
+
+            RelativeLayout.LayoutParams ImageViewPinParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(24), MiscHandler.DpToPx(42));
+            ImageViewPinParam.addRule(RelativeLayout.ABOVE, ViewCenter.getId());
+            ImageViewPinParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            ImageViewPinParam.setMargins(0, MiscHandler.DpToPx(21), 0, 0);
+
+            ImageView ImageViewPin = new ImageView(App.GetContext());
+            ImageViewPin.setLayoutParams(ImageViewPinParam);
+            ImageViewPin.setImageResource(R.drawable.ic_location_pin);
+
+            Root.addView(ImageViewPin);
+
+            return Root;
+
+
+
+
+
+
+
+
+
+
+
+            /*View RootView = inflater.inflate(R.layout.activity_main_fragment_profile_edit_fragment_map, Parent, false);
+
+            TextViewName = (TextView) RootView.findViewById(R.id.TextViewName);
+            TextViewPosition = (TextView) RootView.findViewById(R.id.TextViewPosition);
+
+            _MapView = new MapView(App.GetContext())
+            {
+                @Override
+                public boolean onInterceptTouchEvent(MotionEvent m)
+                {
+                    if (m.getAction() == MotionEvent.ACTION_MOVE)
+                    {
+                        if (_GoogleMap != null)
+                        {
+                            double Lat = _GoogleMap.getCameraPosition().target.latitude;
+                            double Lon = _GoogleMap.getCameraPosition().target.longitude;
+
+                            TextViewPosition.setText("(" + (float) Lat + " , " + (float) Lon + ")");
+                            SetLocationName(Lat, Lon);
+                        }
+                    }
+
+                    return super.onInterceptTouchEvent(m);
+                }
+            };
+
+            _MapView.onCreate(null);
+
+            _MapView.getMapAsync(new OnMapReadyCallback()
+            {
+                @Override
+                public void onMapReady(GoogleMap googleMap)
+                {
+                    _MapView.onResume();
+                    _GoogleMap = googleMap;
+                    _GoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                    _GoogleMap.getUiSettings().setZoomControlsEnabled(true);
+                    _GoogleMap.getUiSettings().setCompassEnabled(true);
+
+                    double Lat = 0;
+                    double Lon = 0;
+                    String[] Position = ((FragmentProfileEdit) getActivity()).Position.split(":");
+
+                    if (Position.length > 1 && !Position[0].equals("") && !Position[1].equals(""))
+                    {
+                        Lat = Double.parseDouble(Position[0]);
+                        Lon = Double.parseDouble(Position[1]);
+
+                        CameraUpdate MyPosition = CameraUpdateFactory.newLatLngZoom(new LatLng(Lat, Lon), _GoogleMap.getMaxZoomLevel() - 15);
+                        _GoogleMap.moveCamera(MyPosition);
+                        _GoogleMap.animateCamera(MyPosition);
+                    }
+                    else if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    {
+                        _GoogleMap.setMyLocationEnabled(true);
+
+                        LocationManager Manager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+                        Location MyLocation = Manager.getLastKnownLocation(Manager.getBestProvider(new Criteria(), true));
+
+                        if (MyLocation != null)
+                        {
+                            Lat = MyLocation.getLatitude();
+                            Lon = MyLocation.getLongitude();
+
+                            CameraUpdate MyPosition = CameraUpdateFactory.newLatLngZoom(new LatLng(Lat, Lon), _GoogleMap.getMaxZoomLevel() - 15);
+                            _GoogleMap.moveCamera(MyPosition);
+                            _GoogleMap.animateCamera(MyPosition);
+                        }
+                    }
+
+                    String Name = "Unknown Place";
+                    TextViewName.setText(Name);
+                    TextViewPosition.setText("(" + (float) Lat + " , " + (float) Lon + ")");
+                    SetLocationName(Lat, Lon);
+                }
+            });
+
+            RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    getActivity().onBackPressed();
+                }
+            });
+
+            RootView.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                }
+            });
+
+            RootView.findViewById(R.id.ImageViewSend).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (_GoogleMap != null)
+                    {
+                        double Lat = _GoogleMap.getCameraPosition().target.latitude;
+                        double Lon = _GoogleMap.getCameraPosition().target.longitude;
+
+                        ((FragmentProfileEdit) getActivity()).Position = (float) Lat + ":" + (float) Lon;
+                        ((FragmentProfileEdit) getActivity()).EditTextLocation.setText(TextViewName.getText().toString());
+                    }
+
+                    getActivity().onBackPressed();
+                }
+            });
+
+            RelativeLayout.LayoutParams MapParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            MapParams.addRule(RelativeLayout.BELOW, R.id.ViewBlankLine);
+            MapParams.addRule(RelativeLayout.ABOVE, R.id.ViewBlankLine2);
+            _MapView.setLayoutParams(MapParams);
+
+            ((RelativeLayout) RootView.findViewById(R.id.RelativeLayoutRoot)).addView(_MapView);
+
+            RootView.findViewById(R.id.ImageViewPin).bringToFront();*/
+
+
+        }
+
+        private void SetLocationName(double Lat, double Lon)
+        {
+            if (MapThread == null)
+            {
+                MapThread = new MapThreadClass();
+                MapThread.start();
+            }
+
+            MapThread.FindLocationName(Lat, Lon);
+        }
+
+        public class MapThreadClass extends Thread
+        {
+            private double Lat;
+            private double Lon;
+            private Handler MapHandler;
+            private Runnable MapRunnable = new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        String LocationName = "";
+                        Geocoder geocoder = new Geocoder(App.GetContext());
+                        List<Address> Address = geocoder.getFromLocation(Lat, Lon, 1);
+
+                        if (Address.size() > 0)
+                        {
+                            String AddressLine = Address.get(0).getAddressLine(0);
+                            String City = Address.get(0).getLocality();
+                            String KnownName = Address.get(0).getFeatureName();
+
+                            if (City != null && !City.equals(""))
+                                LocationName += City;
+                            else if (AddressLine != null && !AddressLine.equals(""))
+                                LocationName += AddressLine;
+
+                            if (KnownName != null && !KnownName.equals(""))
+                                LocationName += " - " + KnownName;
+
+                            if (LocationName.length() > 32)
+                                LocationName = LocationName.substring(0, 32) + " ...";
+                        }
+
+                        if (LocationName.equals(""))
+                            LocationName = "Unknown Place";
+
+                        final String LocationName2 = LocationName;
+
+                        getActivity().runOnUiThread(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                TextViewName.setText(LocationName2);
+                            }
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        // Leave Me Alone
+                    }
+                }
+            };
+
+            void FindLocationName(double _Lat, double _Lon)
+            {
+                Lat = _Lat;
+                Lon = _Lon;
+
+                if (MapHandler != null && MapRunnable != null)
+                {
+                    MapHandler.removeCallbacks(MapRunnable);
+                    MapHandler.post(MapRunnable);
+                }
+            }
+
+            @Override
+            public void run()
+            {
+                Looper.prepare();
+
+                if (MapHandler == null)
+                    MapHandler = new Handler();
+
+                MapHandler.post(MapRunnable);
+
+                Looper.loop();
+            }
         }
     }
 
@@ -930,13 +1308,13 @@ public class FragmentProfileEdit extends AppCompatActivity
                 String ResizeBitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), ResizeBitmap, "BioGram Crop Image", null);
 
                 CropImage.activity(Uri.parse(ResizeBitmapPath))
-                        .setAllowRotation(true)
-                        .setActivityTitle(getString(R.string.ActivityProfileEditCrop))
-                        .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                        .setAspectRatio(2, 1)
-                        .setFixAspectRatio(true)
-                        .setRequestedSize((int)(MiscHandler.DpToPx(160) * 2.45f), MiscHandler.DpToPx(160), CropImageView.RequestSizeOptions.RESIZE_INSIDE)
-                        .start(this);
+                .setAllowRotation(true)
+                .setActivityTitle(getString(R.string.ActivityProfileEditCrop))
+                .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                .setAspectRatio(2, 1)
+                .setFixAspectRatio(true)
+                .setRequestedSize((int)(MiscHandler.DpToPx(160) * 2.45f), MiscHandler.DpToPx(160), CropImageView.RequestSizeOptions.RESIZE_INSIDE)
+                .start(this);
             }
             catch (Exception e)
             {
@@ -980,259 +1358,6 @@ public class FragmentProfileEdit extends AppCompatActivity
 
 
 
-        EditTextLocation.setFocusable(false);
-        EditTextLocation.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Fragment _Map = new FragmentMap();
-                FragmentTransaction Trans = getFragmentManager().beginTransaction();
-                Trans.add(R.id.FrameLayoutMap, _Map);
-                Trans.addToBackStack("FragmentMap");
-                Trans.commit();
-            }
-        });
-
-        EditTextUsername = (EditText) findViewById(R.id.EditTextUsername);
-        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(App.GetContext(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-
-
-        RetrieveDataFromServer();
-    }
-
-    public static class FragmentMap extends Fragment
-    {
-        private MapThreadClass MapThread;
-        private MapView _MapView;
-        private GoogleMap _GoogleMap;
-        private TextView TextViewName;
-        private TextView TextViewPosition;
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, final ViewGroup Parent, Bundle savedInstanceState)
-        {
-            View RootView = inflater.inflate(R.layout.activity_main_fragment_profile_edit_fragment_map, Parent, false);
-
-            TextViewName = (TextView) RootView.findViewById(R.id.TextViewName);
-            TextViewPosition = (TextView) RootView.findViewById(R.id.TextViewPosition);
-
-            _MapView = new MapView(App.GetContext())
-            {
-                @Override
-                public boolean onInterceptTouchEvent(MotionEvent m)
-                {
-                    if (m.getAction() == MotionEvent.ACTION_MOVE)
-                    {
-                        if (_GoogleMap != null)
-                        {
-                            double Lat = _GoogleMap.getCameraPosition().target.latitude;
-                            double Lon = _GoogleMap.getCameraPosition().target.longitude;
-
-                            TextViewPosition.setText("(" + (float) Lat + " , " + (float) Lon + ")");
-                            SetLocationName(Lat, Lon);
-                        }
-                    }
-
-                    return super.onInterceptTouchEvent(m);
-                }
-            };
-
-            _MapView.onCreate(null);
-
-            _MapView.getMapAsync(new OnMapReadyCallback()
-            {
-                @Override
-                public void onMapReady(GoogleMap googleMap)
-                {
-                    _MapView.onResume();
-                    _GoogleMap = googleMap;
-                    _GoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-                    _GoogleMap.getUiSettings().setZoomControlsEnabled(true);
-                    _GoogleMap.getUiSettings().setCompassEnabled(true);
-
-                    double Lat = 0;
-                    double Lon = 0;
-                    String[] Position = ((FragmentProfileEdit) getActivity()).Position.split(":");
-
-                    if (Position.length > 1 && !Position[0].equals("") && !Position[1].equals(""))
-                    {
-                        Lat = Double.parseDouble(Position[0]);
-                        Lon = Double.parseDouble(Position[1]);
-
-                        CameraUpdate MyPosition = CameraUpdateFactory.newLatLngZoom(new LatLng(Lat, Lon), _GoogleMap.getMaxZoomLevel() - 15);
-                        _GoogleMap.moveCamera(MyPosition);
-                        _GoogleMap.animateCamera(MyPosition);
-                    }
-                    else if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                    {
-                        _GoogleMap.setMyLocationEnabled(true);
-
-                        LocationManager Manager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-                        Location MyLocation = Manager.getLastKnownLocation(Manager.getBestProvider(new Criteria(), true));
-
-                        if (MyLocation != null)
-                        {
-                            Lat = MyLocation.getLatitude();
-                            Lon = MyLocation.getLongitude();
-
-                            CameraUpdate MyPosition = CameraUpdateFactory.newLatLngZoom(new LatLng(Lat, Lon), _GoogleMap.getMaxZoomLevel() - 15);
-                            _GoogleMap.moveCamera(MyPosition);
-                            _GoogleMap.animateCamera(MyPosition);
-                        }
-                    }
-
-                    String Name = "Unknown Place";
-                    TextViewName.setText(Name);
-                    TextViewPosition.setText("(" + (float) Lat + " , " + (float) Lon + ")");
-                    SetLocationName(Lat, Lon);
-                }
-            });
-
-            RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    getActivity().onBackPressed();
-                }
-            });
-
-            RootView.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Fragment Search = new FragmentSearch();
-                    FragmentTransaction Trans = getFragmentManager().beginTransaction();
-                    Trans.add(R.id.FrameLayoutMap, Search);
-                    Trans.addToBackStack("FragmentSearch");
-                    Trans.commit();
-                }
-            });
-
-            RootView.findViewById(R.id.ImageViewSend).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (_GoogleMap != null)
-                    {
-                        double Lat = _GoogleMap.getCameraPosition().target.latitude;
-                        double Lon = _GoogleMap.getCameraPosition().target.longitude;
-
-                        ((FragmentProfileEdit) getActivity()).Position = (float) Lat + ":" + (float) Lon;
-                        ((FragmentProfileEdit) getActivity()).EditTextLocation.setText(TextViewName.getText().toString());
-                    }
-
-                    getActivity().onBackPressed();
-                }
-            });
-
-            RelativeLayout.LayoutParams MapParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            MapParams.addRule(RelativeLayout.BELOW, R.id.ViewBlankLine);
-            MapParams.addRule(RelativeLayout.ABOVE, R.id.ViewBlankLine2);
-            _MapView.setLayoutParams(MapParams);
-
-            ((RelativeLayout) RootView.findViewById(R.id.RelativeLayoutRoot)).addView(_MapView);
-
-            RootView.findViewById(R.id.ImageViewPin).bringToFront();
-
-            return RootView;
-        }
-
-        private void SetLocationName(double Lat, double Lon)
-        {
-            if (MapThread == null)
-            {
-                MapThread = new MapThreadClass();
-                MapThread.start();
-            }
-
-            MapThread.FindLocationName(Lat, Lon);
-        }
-
-        public class MapThreadClass extends Thread
-        {
-            private double Lat;
-            private double Lon;
-            private Handler MapHandler;
-            private Runnable MapRunnable = new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    try
-                    {
-                        String LocationName = "";
-                        Geocoder geocoder = new Geocoder(App.GetContext());
-                        List<Address> Address = geocoder.getFromLocation(Lat, Lon, 1);
-
-                        if (Address.size() > 0)
-                        {
-                            String AddressLine = Address.get(0).getAddressLine(0);
-                            String City = Address.get(0).getLocality();
-                            String KnownName = Address.get(0).getFeatureName();
-
-                            if (City != null && !City.equals(""))
-                                LocationName += City;
-                            else if (AddressLine != null && !AddressLine.equals(""))
-                                LocationName += AddressLine;
-
-                            if (KnownName != null && !KnownName.equals(""))
-                                LocationName += " - " + KnownName;
-
-                            if (LocationName.length() > 32)
-                                LocationName = LocationName.substring(0, 32) + " ...";
-                        }
-
-                        if (LocationName.equals(""))
-                            LocationName = "Unknown Place";
-
-                        final String LocationName2 = LocationName;
-
-                        getActivity().runOnUiThread(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                TextViewName.setText(LocationName2);
-                            }
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        // Leave Me Alone
-                    }
-                }
-            };
-
-            void FindLocationName(double _Lat, double _Lon)
-            {
-                Lat = _Lat;
-                Lon = _Lon;
-
-                if (MapHandler != null && MapRunnable != null)
-                {
-                    MapHandler.removeCallbacks(MapRunnable);
-                    MapHandler.post(MapRunnable);
-                }
-            }
-
-            @Override
-            public void run()
-            {
-                Looper.prepare();
-
-                if (MapHandler == null)
-                    MapHandler = new Handler();
-
-                MapHandler.post(MapRunnable);
-
-                Looper.loop();
-            }
-        }
-    }
 
     public static class FragmentSearch extends Fragment
     {

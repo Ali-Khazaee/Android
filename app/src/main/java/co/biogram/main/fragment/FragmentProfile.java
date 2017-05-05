@@ -62,6 +62,7 @@ public class FragmentProfile extends Fragment
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Root.setBackgroundResource(R.color.White);
         Root.setClickable(true);
+        Root.setFocusableInTouchMode(true);
 
         ScrollView ScrollLayout = new ScrollView(App.GetContext());
         ScrollLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
