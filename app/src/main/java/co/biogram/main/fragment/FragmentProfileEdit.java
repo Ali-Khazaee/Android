@@ -693,11 +693,12 @@ public class FragmentProfileEdit extends AppCompatActivity
 
     public static class FragmentMap extends Fragment
     {
-        private MapThreadClass MapThread;
-        private MapView _MapView;
-        private GoogleMap _GoogleMap;
         private TextView TextViewName;
         private TextView TextViewPosition;
+
+        private MapView _MapView;
+        private GoogleMap _GoogleMap;
+        private MapThreadClass MapThread;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
@@ -756,6 +757,7 @@ public class FragmentProfileEdit extends AppCompatActivity
             View ViewBlankLine = new View(App.GetContext());
             ViewBlankLine.setLayoutParams(ViewBlankLineParam);
             ViewBlankLine.setBackgroundResource(R.color.Gray2);
+            ViewBlankLine.setId(MiscHandler.GenerateViewID());
 
             Root.addView(ViewBlankLine);
 
@@ -774,14 +776,32 @@ public class FragmentProfileEdit extends AppCompatActivity
             ImageViewSend.setPadding(MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13));
             ImageViewSend.setImageResource(R.drawable.ic_location_blue);
             ImageViewSend.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
+            ImageViewSend.setId(MiscHandler.GenerateViewID());
+            ImageViewSend.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (_GoogleMap != null)
+                    {
+                        double Lat = _GoogleMap.getCameraPosition().target.latitude;
+                        double Lon = _GoogleMap.getCameraPosition().target.longitude;
+
+                        ((FragmentProfileEdit) getActivity()).Position = (float) Lat + ":" + (float) Lon;
+                        ((FragmentProfileEdit) getActivity()).EditTextLocation.setText(TextViewName.getText().toString());
+                    }
+
+                    getActivity().getFragmentManager().beginTransaction().remove(FragmentMap.this).commit();
+                }
+            });
 
             RelativeLayoutBottom.addView(ImageViewSend);
 
             RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewSend.getId());
             TextViewNameParam.setMargins(MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5));
 
-            TextView TextViewName = new TextView(App.GetContext());
+            TextViewName = new TextView(App.GetContext());
             TextViewName.setLayoutParams(TextViewNameParam);
             TextViewName.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
             TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -790,11 +810,11 @@ public class FragmentProfileEdit extends AppCompatActivity
             RelativeLayoutBottom.addView(TextViewName);
 
             RelativeLayout.LayoutParams TextViewPositionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewPositionParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewPositionParam.addRule(RelativeLayout.RIGHT_OF, ImageViewSend.getId());
             TextViewPositionParam.addRule(RelativeLayout.BELOW, TextViewName.getId());
             TextViewPositionParam.setMargins(MiscHandler.DpToPx(5),0, 0, 0);
 
-            TextView TextViewPosition = new TextView(App.GetContext());
+            TextViewPosition = new TextView(App.GetContext());
             TextViewPosition.setLayoutParams(TextViewPositionParam);
             TextViewPosition.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
             TextViewPosition.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -807,6 +827,7 @@ public class FragmentProfileEdit extends AppCompatActivity
             View ViewBlankLine2 = new View(App.GetContext());
             ViewBlankLine2.setLayoutParams(ViewBlankLine2Param);
             ViewBlankLine2.setBackgroundResource(R.color.Gray2);
+            ViewBlankLine2.setId(MiscHandler.GenerateViewID());
 
             Root.addView(ViewBlankLine2);
 
@@ -831,23 +852,6 @@ public class FragmentProfileEdit extends AppCompatActivity
 
             Root.addView(ImageViewPin);
 
-            return Root;
-
-
-
-
-
-
-
-
-
-
-
-            /*View RootView = inflater.inflate(R.layout.activity_main_fragment_profile_edit_fragment_map, Parent, false);
-
-            TextViewName = (TextView) RootView.findViewById(R.id.TextViewName);
-            TextViewPosition = (TextView) RootView.findViewById(R.id.TextViewPosition);
-
             _MapView = new MapView(App.GetContext())
             {
                 @Override
@@ -869,7 +873,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                 }
             };
 
-            _MapView.onCreate(null);
+            _MapView.onCreate(savedInstanceState);
 
             _MapView.getMapAsync(new OnMapReadyCallback()
             {
@@ -882,8 +886,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                     _GoogleMap.getUiSettings().setZoomControlsEnabled(true);
                     _GoogleMap.getUiSettings().setCompassEnabled(true);
 
-                    double Lat = 0;
-                    double Lon = 0;
+                    double Lat = 0, Lon = 0;
                     String[] Position = ((FragmentProfileEdit) getActivity()).Position.split(":");
 
                     if (Position.length > 1 && !Position[0].equals("") && !Position[1].equals(""))
@@ -920,52 +923,15 @@ public class FragmentProfileEdit extends AppCompatActivity
                 }
             });
 
-            RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    getActivity().onBackPressed();
-                }
-            });
-
-            RootView.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-
-                }
-            });
-
-            RootView.findViewById(R.id.ImageViewSend).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (_GoogleMap != null)
-                    {
-                        double Lat = _GoogleMap.getCameraPosition().target.latitude;
-                        double Lon = _GoogleMap.getCameraPosition().target.longitude;
-
-                        ((FragmentProfileEdit) getActivity()).Position = (float) Lat + ":" + (float) Lon;
-                        ((FragmentProfileEdit) getActivity()).EditTextLocation.setText(TextViewName.getText().toString());
-                    }
-
-                    getActivity().onBackPressed();
-                }
-            });
-
             RelativeLayout.LayoutParams MapParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            MapParams.addRule(RelativeLayout.BELOW, R.id.ViewBlankLine);
-            MapParams.addRule(RelativeLayout.ABOVE, R.id.ViewBlankLine2);
+            MapParams.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
+            MapParams.addRule(RelativeLayout.ABOVE, ViewBlankLine2.getId());
             _MapView.setLayoutParams(MapParams);
 
-            ((RelativeLayout) RootView.findViewById(R.id.RelativeLayoutRoot)).addView(_MapView);
+            Root.addView(_MapView);
+            ImageViewPin.bringToFront();
 
-            RootView.findViewById(R.id.ImageViewPin).bringToFront();*/
-
-
+            return Root;
         }
 
         private void SetLocationName(double Lat, double Lon)
@@ -981,8 +947,7 @@ public class FragmentProfileEdit extends AppCompatActivity
 
         public class MapThreadClass extends Thread
         {
-            private double Lat;
-            private double Lon;
+            private double Lat, Lon;
             private Handler MapHandler;
             private Runnable MapRunnable = new Runnable()
             {
