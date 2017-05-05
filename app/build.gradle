@@ -36,20 +36,13 @@ android
     {
         release
         {
-            debuggable true
-            minifyEnabled false
-            jniDebuggable true
-            zipAlignEnabled false
-            shrinkResources false
+            debuggable false
+            minifyEnabled true
+            jniDebuggable false
+            zipAlignEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
-            //debuggable false
-            //minifyEnabled true
-            //jniDebuggable false
-            //zipAlignEnabled true
-            //shrinkResources true
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
         }
     }
 }

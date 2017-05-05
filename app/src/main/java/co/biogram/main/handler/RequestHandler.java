@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -16,7 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -256,14 +254,14 @@ public class RequestHandler
         void OnProgress(long Received, long Total);
     }
 
-    public static void GetImage(final ImageView view, final String Address, String Tag, final boolean NoCache)
+    public static void GetImage(final ImageView view, final String Address, String Tag, final boolean Cache)
     {
         if (Address.equals(""))
             return;
 
         final String Name = Address.split("/")[Address.split("/").length - 1];
 
-        if (!NoCache && CacheHandler.ImageCache(Name))
+        if (Cache && CacheHandler.ImageCache(Name))
         {
             CacheHandler.ImageLoad(Name, view);
             return;
@@ -295,7 +293,7 @@ public class RequestHandler
                             }
                         });
 
-                        if (!NoCache)
+                        if (Cache)
                             CacheHandler.ImageSave(Name, bitmap);
 
                         input.close();
@@ -311,14 +309,14 @@ public class RequestHandler
         AddRequest(request);
     }
 
-    public static void GetImage(final ImageView view, final String Address, String Tag, final int DesiredWidth, final int DesiredHeight, final boolean NoCache)
+    public static void GetImage(final ImageView view, final String Address, String Tag, final int DesiredWidth, final int DesiredHeight, final boolean Cache)
     {
         if (Address.equals(""))
             return;
 
         final String Name = Address.split("/")[Address.split("/").length - 1];
 
-        if (!NoCache && CacheHandler.ImageCache(Name))
+        if (Cache && CacheHandler.ImageCache(Name))
         {
             CacheHandler.ImageLoad(Name, view);
             return;
@@ -329,60 +327,76 @@ public class RequestHandler
             @Override
             void Run()
             {
+                HttpURLConnection Conn = null;
+
                 try
                 {
-                    HttpURLConnection Conn = (HttpURLConnection) new URL(Address).openConnection();
+                    Conn = (HttpURLConnection) new URL(Address).openConnection();
+                    Conn.setConnectTimeout(20000);
+                    Conn.setReadTimeout(20000);
+                    Conn.setRequestMethod("GET");
                     Conn.setDoInput(true);
                     Conn.connect();
 
-                    if (Conn.getResponseCode() == 200)
+
+                    ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+                    InputStream IS = Conn.getInputStream();
+                    byte[] Buffer = new byte[1024];
+                    int Length;
+
+                    while ((Length = IS.read(Buffer)) != -1)
                     {
-                        InputStream input = Conn.getInputStream();
-
-                        BitmapFactory.Options o = new BitmapFactory.Options();
-                        o.inJustDecodeBounds = true;
-
-                        BitmapFactory.decodeStream(input, null, o);
-
-                        int Height = o.outHeight;
-                        int Width = o.outWidth;
-                        int inSampleSize = 1;
-
-                        if (Height > DesiredWidth || Width > DesiredHeight)
-                        {
-                            int HalfHeight = Height / 2;
-                            int HalfWidth = Width / 2;
-
-                            while ((HalfHeight / inSampleSize) >= DesiredHeight && (HalfWidth / inSampleSize) >= DesiredWidth)
-                            {
-                                inSampleSize *= 2;
-                            }
-                        }
-
-                        o.inSampleSize = inSampleSize;
-                        o.inJustDecodeBounds = false;
-
-                        final Bitmap bitmap = BitmapFactory.decodeStream(input, null, o);
-
-                        view.post(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                view.setImageBitmap(bitmap);
-                            }
-                        });
-
-                        if (!NoCache)
-                            CacheHandler.ImageSave(Name, bitmap);
-
-                        input.close();
+                        ByteArray.write(Buffer, 0, Length);
                     }
+
+                    byte[] BitmapResponse = ByteArray.toByteArray();
+                    ByteArray.close();
+                    IS.close();
+
+                    BitmapFactory.Options o = new BitmapFactory.Options();
+                    o.inJustDecodeBounds = true;
+
+                    BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
+
+                    int Height = o.outHeight;
+                    int Width = o.outWidth;
+                    int SampleSize = 1;
+
+                    if (Height > DesiredWidth || Width > DesiredHeight)
+                    {
+                        int HalfHeight = Height / 2;
+                        int HalfWidth = Width / 2;
+
+                        while ((HalfHeight / SampleSize) >= DesiredHeight && (HalfWidth / SampleSize) >= DesiredWidth)
+                        {
+                            SampleSize *= 2;
+                        }
+                    }
+
+                    o.inSampleSize = SampleSize;
+                    o.inJustDecodeBounds = false;
+
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
+
+                    view.post(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            view.setImageBitmap(bitmap);
+                        }
+                    });
+
+                    if (Cache)
+                        CacheHandler.ImageSave(Name, bitmap);
                 }
                 catch (Exception e)
                 {
                     // Leave Me Alone
                 }
+
+                if (Conn != null)
+                    Conn.disconnect();
             }
         };
 
@@ -427,11 +441,11 @@ public class RequestHandler
             ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
             InputStream IS = Conn.getInputStream();
             byte[] Buffer = new byte[1024];
-            int Reader;
+            int Length;
 
-            while ((Reader = IS.read(Buffer)) != -1)
+            while ((Length = IS.read(Buffer)) != -1)
             {
-                ByteArray.write(Buffer, 0, Reader);
+                ByteArray.write(Buffer, 0, Length);
             }
 
             final String Response = new String(ByteArray.toByteArray());
@@ -533,14 +547,14 @@ public class RequestHandler
             OS.flush();
             OS.close();
 
-            InputStream IS = Conn.getInputStream();
             ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+            InputStream IS = Conn.getInputStream();
             byte[] Buffer = new byte[4096];
-            int ByteRead;
+            int Length;
 
-            while ((ByteRead = IS.read(Buffer)) != -1)
+            while ((Length = IS.read(Buffer)) != -1)
             {
-                ByteArray.write(Buffer, 0, ByteRead);
+                ByteArray.write(Buffer, 0, Length);
             }
 
             final String Response = new String(ByteArray.toByteArray());
@@ -577,46 +591,36 @@ public class RequestHandler
 
     private static void PerformDownload(final Builder builder)
     {
+        HttpURLConnection Conn = null;
+
         try
         {
-            URL Address = new URL(builder.Address);
-            URLConnection Conn = Address.openConnection();
+            Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setConnectTimeout(builder.ConnectTime);
+            Conn.setReadTimeout(builder.ReadTime);
+            Conn.setRequestMethod("GET");
+            Conn.setDoInput(true);
             Conn.connect();
 
-            int FileLength = Conn.getContentLength();
-            InputStream IS = new BufferedInputStream(Address.openStream(), 2048);
             FileOutputStream FOS = new FileOutputStream(builder.OutPath);
+            InputStream IS = Conn.getInputStream();
 
-            byte[] Buffer = new byte[1024];
-            long Receive = 0;
-            int Count;
+            int FileLength = Conn.getContentLength();
+            byte[] Buffer = new byte[2048];
+            int Receive = 0;
+            int Length;
 
-            while ((Count = IS.read(Buffer)) != -1)
+            while ((Length = IS.read(Buffer)) > 0)
             {
-                Receive += Count;
-                FOS.write(Buffer, 0, Count);
+                Receive += Length;
+                FOS.write(Buffer, 0, Length);
 
                 if (builder.OnProgressListener != null)
                     builder.OnProgressListener.OnProgress(Receive, FileLength);
             }
 
-            FOS.flush();
             FOS.close();
             IS.close();
-
-            InputStream IS2 = Conn.getInputStream();
-            ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
-            byte[] Bytes = new byte[1024];
-            int BytesRead;
-
-            while((BytesRead = IS2.read(Bytes)) != -1)
-            {
-                ByteArray.write(Bytes, 0, BytesRead);
-            }
-
-            final String Response = new String(ByteArray.toByteArray());
-            ByteArray.close();
-            IS2.close();
 
             new Handler(Looper.getMainLooper()).post(new Runnable()
             {
@@ -624,7 +628,7 @@ public class RequestHandler
                 public void run()
                 {
                     if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(Response, 200);
+                        builder.OnCompleteListener.OnFinish("", 200);
                 }
             });
         }
@@ -640,5 +644,8 @@ public class RequestHandler
                 }
             });
         }
+
+        if (Conn != null)
+            Conn.disconnect();
     }
 }

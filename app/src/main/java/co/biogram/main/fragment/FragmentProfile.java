@@ -480,8 +480,8 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), false);
-                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", false);
+                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
+                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
 
                         TextViewUsername.setText(Data.getString("Username"));
                         TextViewDescription.setText(Data.getString("Description"));

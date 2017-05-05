@@ -868,7 +868,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                         Position = Data.getString("Position");
 
                         RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfileEdit", false);
-                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), false);
+                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
                     }
                 }
                 catch (Exception e)
