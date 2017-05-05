@@ -130,6 +130,7 @@ public class RequestHandler
         return new Builder(Method);
     }
 
+    @SuppressWarnings("all")
     public static class Builder
     {
         private int ReadTime = 30000;
@@ -159,7 +160,6 @@ public class RequestHandler
             return this;
         }
 
-        @SuppressWarnings("unused")
         public Builder File(String Key, File Value)
         {
             FileMap.put(Key, Value);
@@ -196,7 +196,6 @@ public class RequestHandler
             return this;
         }
 
-        @SuppressWarnings("unused")
         public Builder Read(int ReadTime)
         {
             this.ReadTime = ReadTime;
@@ -204,7 +203,6 @@ public class RequestHandler
             return this;
         }
 
-        @SuppressWarnings("unused")
         public Builder Connect(int ConnectTime)
         {
             this.ConnectTime = ConnectTime;
@@ -497,11 +495,8 @@ public class RequestHandler
                 OS.writeBytes(EndLine);
                 OS.writeBytes(URLEncoder.encode(Entry.getValue(), "UTF-8"));
                 OS.writeBytes(EndLine);
-                OS.writeBytes("--***");
+                OS.writeBytes("--***" + EndLine);
             }
-
-            if (builder.FileMap.size() > 0)
-                OS.writeBytes(EndLine);
 
             int FileLength = 0 ;
 
@@ -531,10 +526,10 @@ public class RequestHandler
                 FIP.close();
 
                 OS.writeBytes(EndLine);
-                OS.writeBytes("--***");
+                OS.writeBytes("--***" + EndLine);
             }
 
-            OS.writeBytes("--" + EndLine);
+            OS.writeBytes("--***--" + EndLine);
             OS.flush();
             OS.close();
 

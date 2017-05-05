@@ -193,10 +193,10 @@ public class FragmentProfileEdit extends AppCompatActivity
                 if (FileProfile != null || FileCover != null)
                 {
                     if (FileProfile != null)
-                        UploadFile.put("ImageProfile", FileProfile);
+                        UploadFile.put("Avatar", FileProfile);
 
                     if (FileCover != null)
-                        UploadFile.put("ImageCover", FileCover);
+                        UploadFile.put("Cover", FileCover);
                 }
                 else
                     UploadFile = null;
@@ -227,7 +227,6 @@ public class FragmentProfileEdit extends AppCompatActivity
                     @Override
                     public void OnProgress(long Sent, long Total)
                     {
-                        MiscHandler.Log(Sent + " - " + Total);
                         Progress.setProgress((int) (100 * Sent / Total));
                     }
                 })
@@ -238,8 +237,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                     {
                         TextViewSave.setVisibility(View.VISIBLE);
                         LoadingViewSave.Stop();
-
-                        MiscHandler.Log(Response);
+                        Progress.cancel();
 
                         try
                         {
@@ -835,50 +833,51 @@ public class FragmentProfileEdit extends AppCompatActivity
         LoadingViewData.Start();
 
         RequestHandler.Method("POST")
-                .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
-                .Header("TOKEN", SharedHandler.GetString("TOKEN"))
-                .Tag("FragmentProfileEdit")
-                .Build(new RequestHandler.OnCompleteCallBack()
+        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
+        .Header("TOKEN", SharedHandler.GetString("TOKEN"))
+        .Tag("FragmentProfileEdit")
+        .Build(new RequestHandler.OnCompleteCallBack()
+        {
+            @Override
+            public void OnFinish(String Response, int Status)
+            {
+                if (Status < 0)
                 {
-                    @Override
-                    public void OnFinish(String Response, int Status)
+                    TextViewTry.setVisibility(View.VISIBLE);
+                    LoadingViewData.Stop();
+                    return;
+                }
+
+                RelativeLayoutLoading.setVisibility(View.GONE);
+                TextViewTry.setVisibility(View.GONE);
+                LoadingViewData.Stop();
+
+                try
+                {
+                    JSONObject Result = new JSONObject(Response);
+
+                    if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
-                        if (Status < 0)
-                        {
-                            TextViewTry.setVisibility(View.VISIBLE);
-                            LoadingViewData.Stop();
-                            return;
-                        }
+                        JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        RelativeLayoutLoading.setVisibility(View.GONE);
-                        TextViewTry.setVisibility(View.GONE);
-                        LoadingViewData.Stop();
+                        EditTextUsername.setText(Data.getString("Username"));
+                        EditTextDescription.setText(Data.getString("Description"));
+                        EditTextLink.setText(Data.getString("Link"));
+                        EditTextLocation.setText(Data.getString("Location"));
+                        EditTextEmail.setText(Data.getString("Email"));
+                        Position = Data.getString("Position");
 
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
-                            {
-                                JSONObject Data = new JSONObject(Result.getString("Result"));
-
-                                EditTextUsername.setText(Data.getString("Username"));
-                                EditTextDescription.setText(Data.getString("Description"));
-                                EditTextLink.setText(Data.getString("Link"));
-                                EditTextLocation.setText(Data.getString("Location"));
-                                EditTextEmail.setText(Data.getString("Email"));
-                                Position = Data.getString("Position");
-
-                                RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfileEdit", false);
-                                RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), false);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            // Leave Me Alone
-                        }
+                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfileEdit", false);
+                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), false);
                     }
-                });
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Log(e.toString());
+                    // Leave Me Alone
+                }
+            }
+        });
     }
 
     private void DoCrop()
