@@ -171,14 +171,14 @@ public class FragmentProfile extends Fragment
         LinearLayoutMain2.addView(TextViewUrl);
 
         LinearLayout LinearLayoutDetails = new LinearLayout(App.GetContext());
-        LinearLayoutDetails.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayoutDetails.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayoutDetails.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutDetails.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(5));
 
         LinearLayoutMain2.addView(LinearLayoutDetails);
 
         RelativeLayout RelativeLayoutPost = new RelativeLayout(App.GetContext());
-        RelativeLayoutPost.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1.1f));
+        RelativeLayoutPost.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.1f));
 
         LinearLayoutDetails.addView(RelativeLayoutPost);
 
@@ -209,7 +209,7 @@ public class FragmentProfile extends Fragment
         RelativeLayoutPost.addView(TextViewPost);
 
         RelativeLayout RelativeLayoutFollower = new RelativeLayout(App.GetContext());
-        RelativeLayoutFollower.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        RelativeLayoutFollower.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
         LinearLayoutDetails.addView(RelativeLayoutFollower);
 
@@ -240,7 +240,7 @@ public class FragmentProfile extends Fragment
         RelativeLayoutFollower.addView(TextViewFollower);
 
         RelativeLayout RelativeLayoutFollowing = new RelativeLayout(App.GetContext());
-        RelativeLayoutFollowing.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        RelativeLayoutFollowing.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
         LinearLayoutDetails.addView(RelativeLayoutFollowing);
 
@@ -277,7 +277,7 @@ public class FragmentProfile extends Fragment
         LinearLayoutMain2.addView(ViewBlankLine2);
 
         LinearLayout LinearLayoutTab = new LinearLayout(App.GetContext());
-        LinearLayoutTab.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+        LinearLayoutTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
         LinearLayoutTab.setBackgroundResource(R.color.White);
 
         LinearLayoutMain2.addView(LinearLayoutTab);
