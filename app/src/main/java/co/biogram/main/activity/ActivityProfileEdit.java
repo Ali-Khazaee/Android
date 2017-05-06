@@ -1,8 +1,7 @@
-package co.biogram.main.fragment;
+package co.biogram.main.activity;
 
 import android.Manifest;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -38,7 +37,6 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
-import android.text.method.DigitsKeyListener;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -54,7 +52,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -76,7 +73,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import co.biogram.main.App;
 import co.biogram.main.R;
@@ -88,7 +84,7 @@ import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 
-public class FragmentProfileEdit extends AppCompatActivity
+public class ActivityProfileEdit extends AppCompatActivity
 {
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
@@ -104,7 +100,7 @@ public class FragmentProfileEdit extends AppCompatActivity
     private EditText EditTextEmail;
     private String Position = "";
 
-    private int FrameLayoutID = MiscHandler.GenerateViewID();
+    private static int FrameLayoutID = MiscHandler.GenerateViewID();
 
     private Uri CaptureUri;
     private final int FromFile = 1;
@@ -201,7 +197,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                 else
                     UploadFile = null;
 
-                final ProgressDialog Progress = new ProgressDialog(FragmentProfileEdit.this);
+                final ProgressDialog Progress = new ProgressDialog(ActivityProfileEdit.this);
                 Progress.setMessage(getString(R.string.ActivityProfileEditUpload));
                 Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 Progress.setIndeterminate(false);
@@ -221,7 +217,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                 .Param("Location", EditTextLocation.getText().toString())
                 .Param("Email", EditTextEmail.getText().toString())
                 .File(UploadFile)
-                .Tag("FragmentProfileEdit")
+                .Tag("ActivityProfileEdit")
                 .Listen(new RequestHandler.OnProgressCallBack()
                 {
                     @Override
@@ -489,7 +485,7 @@ public class FragmentProfileEdit extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                getFragmentManager().beginTransaction().replace(FrameLayoutID, new FragmentMap()).commit();
+                getFragmentManager().beginTransaction().replace(FrameLayoutID, new FragmentMap()).addToBackStack("FragmentMap").commit();
             }
         });
 
@@ -558,6 +554,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
 
         RelativeLayoutLoading.addView(TextViewTry);
+        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(App.GetContext(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
 
         InitializationCover();
         InitializationProfile();
@@ -579,7 +576,7 @@ public class FragmentProfileEdit extends AppCompatActivity
     protected void onStop()
     {
         super.onStop();
-        RequestHandler.Cancel("FragmentProfileEdit");
+        RequestHandler.Cancel("ActivityProfileEdit");
     }
 
     @Override
@@ -595,7 +592,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                 DoCrop();
                 break;
             case FromCamera:
-                _PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, FragmentProfileEdit.this, new PermissionHandler.PermissionEvent()
+                _PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, ActivityProfileEdit.this, new PermissionHandler.PermissionEvent()
                 {
                     @Override
                     public void OnGranted()
@@ -747,7 +744,7 @@ public class FragmentProfileEdit extends AppCompatActivity
             ImageViewSearch.setPadding(MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16));
             ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
             ImageViewSearch.setId(MiscHandler.GenerateViewID());
-            ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
+            ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getFragmentManager().beginTransaction().replace(FrameLayoutID, new FragmentSearch()).addToBackStack("FragmentSearch").commit(); } });
 
             RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -775,7 +772,6 @@ public class FragmentProfileEdit extends AppCompatActivity
             ImageViewSend.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
             ImageViewSend.setPadding(MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13));
             ImageViewSend.setImageResource(R.drawable.ic_location_blue);
-            ImageViewSend.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
             ImageViewSend.setId(MiscHandler.GenerateViewID());
             ImageViewSend.setOnClickListener(new View.OnClickListener()
             {
@@ -787,8 +783,8 @@ public class FragmentProfileEdit extends AppCompatActivity
                         double Lat = _GoogleMap.getCameraPosition().target.latitude;
                         double Lon = _GoogleMap.getCameraPosition().target.longitude;
 
-                        ((FragmentProfileEdit) getActivity()).Position = (float) Lat + ":" + (float) Lon;
-                        ((FragmentProfileEdit) getActivity()).EditTextLocation.setText(TextViewName.getText().toString());
+                        ((ActivityProfileEdit) getActivity()).Position = (float) Lat + ":" + (float) Lon;
+                        ((ActivityProfileEdit) getActivity()).EditTextLocation.setText(TextViewName.getText().toString());
                     }
 
                     getActivity().getFragmentManager().beginTransaction().remove(FragmentMap.this).commit();
@@ -887,7 +883,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                     _GoogleMap.getUiSettings().setCompassEnabled(true);
 
                     double Lat = 0, Lon = 0;
-                    String[] Position = ((FragmentProfileEdit) getActivity()).Position.split(":");
+                    String[] Position = ((ActivityProfileEdit) getActivity()).Position.split(":");
 
                     if (Position.length > 1 && !Position[0].equals("") && !Position[1].equals(""))
                     {
@@ -1026,6 +1022,223 @@ public class FragmentProfileEdit extends AppCompatActivity
         }
     }
 
+    public static class FragmentSearch extends Fragment
+    {
+        private EditText EditTextSearch;
+        private SearchAdapter _SearchAdapter;
+        private List<SearchStruct> SearchList = new ArrayList<>();
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
+        {
+            RelativeLayout Root = new RelativeLayout(App.GetContext());
+            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            Root.setBackgroundResource(R.color.White);
+            Root.setClickable(true);
+
+            RelativeLayout RelativeLayoutHeader = new RelativeLayout(App.GetContext());
+            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+            RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+            RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+            Root.addView(RelativeLayoutHeader);
+
+            ImageView ImageViewBack = new ImageView(App.GetContext());
+            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewBack.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
+            ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+            ImageViewBack.setId(MiscHandler.GenerateViewID());
+            ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { MiscHandler.HideKeyBoard(getActivity()); getActivity().onBackPressed(); } });
+
+            RelativeLayoutHeader.addView(ImageViewBack);
+
+            RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT);
+            ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+            ImageView ImageViewSearch = new ImageView(App.GetContext());
+            ImageViewSearch.setLayoutParams(ImageViewSearchParam);
+            ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewSearch.setPadding(MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16));
+            ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+            ImageViewSearch.setId(MiscHandler.GenerateViewID());
+            ImageViewSearch.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    String URL = "https://api.foursquare.com/v2/venues/search/?v=20170101&locale=en&limit=25&client_id=YXWKVYF1XFBW3XRC4I0EIVALENCVNVEX5ARMQA4TP5ZUAB41&client_secret=QX2MNDH4GGFYSQCLFE1NVXDFJBNTNWKT3IDX0OUJD54TNKJ2&near=" + EditTextSearch.getText().toString();
+
+                    RequestHandler.Method("GET").Address(URL).Tag("FragmentSearch").Build(new RequestHandler.OnCompleteCallBack()
+                    {
+                        @Override
+                        public void OnFinish(String Response, int Status)
+                        {
+                            try
+                            {
+                                SearchList.clear();
+
+                                JSONArray Result = new JSONObject(Response).getJSONObject("response").getJSONArray("venues");
+
+                                for (int A = 0; A < Result.length(); A++)
+                                {
+                                    try
+                                    {
+                                        JSONObject object = Result.getJSONObject(A);
+                                        JSONObject location = object.getJSONObject("location");
+
+                                        String Name;
+                                        double Lat = location.getDouble("lat");
+                                        double Lon = location.getDouble("lng");
+
+                                        if (object.has("name"))
+                                            Name = object.getString("name");
+                                        else if (location.has("address"))
+                                            Name = location.getString("address");
+                                        else if (location.has("city"))
+                                            Name = location.getString("city");
+                                        else if (location.has("state"))
+                                            Name = location.getString("state");
+                                        else if (location.has("country"))
+                                            Name = location.getString("country");
+                                        else
+                                            continue;
+
+                                        SearchList.add(new SearchStruct(Name, Lat, Lon));
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        // Leave Me Alone
+                                    }
+                                }
+
+                                _SearchAdapter.notifyDataSetChanged();
+                            }
+                            catch (Exception e)
+                            {
+                                // Leave Me Alone
+                            }
+                        }
+                    });
+                }
+            });
+
+            RelativeLayoutHeader.addView(ImageViewSearch);
+
+            RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewHeaderParam.addRule(RelativeLayout.LEFT_OF, ImageViewSearch.getId());
+            TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
+
+            EditTextSearch = new EditText(App.GetContext());
+            EditTextSearch.setLayoutParams(TextViewHeaderParam);
+            EditTextSearch.setBackgroundResource(R.color.White5);
+            EditTextSearch.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            EditTextSearch.setHint("Search");
+            EditTextSearch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+            RelativeLayoutHeader.addView(EditTextSearch);
+
+            RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
+            ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+            View ViewBlankLine = new View(App.GetContext());
+            ViewBlankLine.setLayoutParams(ViewBlankLineParam);
+            ViewBlankLine.setBackgroundResource(R.color.Gray2);
+            ViewBlankLine.setId(MiscHandler.GenerateViewID());
+
+            Root.addView(ViewBlankLine);
+
+            RelativeLayout.LayoutParams ListViewSearchParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            ListViewSearchParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
+
+            _SearchAdapter = new SearchAdapter(App.GetContext(), SearchList);
+
+            ListView ListViewSearch = new ListView(App.GetContext());
+            ListViewSearch.setLayoutParams(ListViewSearchParam);
+            ListViewSearch.setAdapter(_SearchAdapter);
+
+            Root.addView(ListViewSearch);
+
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+            InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            IMM.showSoftInput(EditTextSearch, 0);
+            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            EditTextSearch.requestFocus();
+
+            return Root;
+        }
+
+        public class SearchStruct
+        {
+            String Name;
+            double Latitude;
+            double Longitude;
+
+            SearchStruct(String name, double latitude, double longitude)
+            {
+                Name = name;
+                Latitude = latitude;
+                Longitude = longitude;
+            }
+        }
+
+        public class SearchAdapter extends ArrayAdapter<SearchStruct>
+        {
+            SearchAdapter(Context context, List<SearchStruct> SearchList)
+            {
+                super(context, -1, SearchList);
+            }
+
+            @Override
+            public @NonNull View getView(int position, View convertView, @NonNull ViewGroup parent)
+            {
+                SearchStruct Search = SearchList.get(position);
+
+                RelativeLayout MainView = new RelativeLayout(App.GetContext());
+                MainView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+
+                if (Search == null)
+                    return MainView;
+
+                ImageView ImageViewIcon = new ImageView(App.GetContext());
+                ImageViewIcon.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
+                ImageViewIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                ImageViewIcon.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+                ImageViewIcon.setImageResource(R.drawable.ic_location_blue);
+                ImageViewIcon.setId(MiscHandler.GenerateViewID());
+
+                MainView.addView(ImageViewIcon);
+
+                RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewIcon.getId());
+                TextViewNameParam.setMargins(0, MiscHandler.DpToPx(2), 0, 0);
+
+                TextView TextViewName = new TextView(App.GetContext());
+                TextViewName.setLayoutParams(TextViewNameParam);
+                TextViewName.setText(Search.Name);
+                TextViewName.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                TextViewName.setId(MiscHandler.GenerateViewID());
+
+                MainView.addView(TextViewName);
+
+                RelativeLayout.LayoutParams TextViewPositionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewPositionParam.addRule(RelativeLayout.RIGHT_OF, ImageViewIcon.getId());
+                TextViewPositionParam.addRule(RelativeLayout.BELOW, TextViewName.getId());
+                TextViewPositionParam.setMargins(0, MiscHandler.DpToPx(5), 0, 0);
+
+                TextView TextViewPosition = new TextView(App.GetContext());
+                TextViewPosition.setLayoutParams(TextViewPositionParam);
+                TextViewPosition.setText("(" + (float) Search.Latitude + " , " + (float) Search.Longitude + ")");
+
+                MainView.addView(TextViewPosition);
+
+                return MainView;
+            }
+        }
+    }
+
     private void InitializationProfile()
     {
         final String[] DialogItems = new String[] { getString(R.string.ActivityProfileEditDialogMessage1), getString(R.string.ActivityProfileEditDialogMessage2), getString(R.string.ActivityProfileEditDialogMessage3) };
@@ -1039,7 +1252,7 @@ public class FragmentProfileEdit extends AppCompatActivity
             {
                 if (Position == 0)
                 {
-                    _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, FragmentProfileEdit.this, new PermissionHandler.PermissionEvent()
+                    _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfileEdit.this, new PermissionHandler.PermissionEvent()
                     {
                         @Override
                         public void OnGranted()
@@ -1081,7 +1294,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                     RequestHandler.Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .Tag("FragmentProfileEdit")
+                    .Tag("ActivityProfileEdit")
                     .Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
@@ -1110,7 +1323,7 @@ public class FragmentProfileEdit extends AppCompatActivity
             {
                 if (Position == 0)
                 {
-                    _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, FragmentProfileEdit.this, new PermissionHandler.PermissionEvent()
+                    _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfileEdit.this, new PermissionHandler.PermissionEvent()
                     {
                         @Override
                         public void OnGranted()
@@ -1153,7 +1366,7 @@ public class FragmentProfileEdit extends AppCompatActivity
                     RequestHandler.Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .Tag("FragmentProfileEdit")
+                    .Tag("ActivityProfileEdit")
                     .Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
@@ -1178,7 +1391,7 @@ public class FragmentProfileEdit extends AppCompatActivity
         RequestHandler.Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
         .Header("TOKEN", SharedHandler.GetString("TOKEN"))
-        .Tag("FragmentProfileEdit")
+        .Tag("ActivityProfileEdit")
         .Build(new RequestHandler.OnCompleteCallBack()
         {
             @Override
@@ -1210,8 +1423,8 @@ public class FragmentProfileEdit extends AppCompatActivity
                         EditTextEmail.setText(Data.getString("Email"));
                         Position = Data.getString("Position");
 
-                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfileEdit", false);
-                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
+                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "ActivityProfileEdit", false);
+                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
                     }
                 }
                 catch (Exception e)
@@ -1290,212 +1503,3 @@ public class FragmentProfileEdit extends AppCompatActivity
             CropImage.activity(CaptureUri).setAllowRotation(true).setActivityTitle(getString(R.string.ActivityProfileEditCrop)).setGuidelines(CropImageView.Guidelines.ON_TOUCH).setFixAspectRatio(true).start(this);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-
-
-
-
-    public static class FragmentSearch extends Fragment
-    {
-        private SearchAdapter _SearchAdapter;
-        private List<SearchStruct> SearchList = new ArrayList<>();
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, final ViewGroup Parent, Bundle savedInstanceState)
-        {
-            View RootView = inflater.inflate(R.layout.activity_main_fragment_profile_edit_fragment_search, Parent, false);
-
-            final EditText EditTextHeader = (EditText) RootView.findViewById(R.id.EditTextHeader);
-
-            RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    getActivity().onBackPressed();
-                }
-            });
-
-            RootView.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    String URL = "https://api.foursquare.com/v2/venues/search/?v=20170101&locale=en&limit=25&client_id=YXWKVYF1XFBW3XRC4I0EIVALENCVNVEX5ARMQA4TP5ZUAB41&client_secret=QX2MNDH4GGFYSQCLFE1NVXDFJBNTNWKT3IDX0OUJD54TNKJ2&near=" + EditTextHeader.getText().toString();
-
-                    AndroidNetworking.get(URL).setTag("FragmentProfileEdit").build().getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            try
-                            {
-                                SearchList.clear();
-
-                                JSONArray Result = new JSONObject(Response).getJSONObject("response").getJSONArray("venues");
-
-                                for (int A = 0; A < Result.length(); A++)
-                                {
-                                    try
-                                    {
-                                        JSONObject object = Result.getJSONObject(A);
-                                        JSONObject location = object.getJSONObject("location");
-
-                                        String Name;
-                                        double Lat = location.getDouble("lat");
-                                        double Lon = location.getDouble("lng");
-
-                                        if (object.has("name"))
-                                            Name = object.getString("name");
-                                        else if (location.has("address"))
-                                            Name = location.getString("address");
-                                        else if (location.has("city"))
-                                            Name = location.getString("city");
-                                        else if (location.has("state"))
-                                            Name = location.getString("state");
-                                        else if (location.has("country"))
-                                            Name = location.getString("country");
-                                        else
-                                            continue;
-
-                                        SearchList.add(new SearchStruct(Name, Lat, Lon));
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        // Leave Me Alone
-                                    }
-                                }
-
-                                _SearchAdapter.notifyDataSetChanged();
-                            }
-                            catch (Exception e)
-                            {
-                                // Leave Me Alone
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError error)
-                        {
-                            Toast.makeText(App.GetContext(), getString(R.string.GeneralCheckInternet), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            });
-
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-            InputMethodManager IMG = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            IMG.showSoftInput(EditTextHeader, 0);
-            IMG.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            EditTextHeader.requestFocus();
-
-            _SearchAdapter = new SearchAdapter(getActivity().getApplicationContext(), SearchList);
-            ListView ListViewSearch = (ListView) RootView.findViewById(R.id.ListViewSearch);
-            ListViewSearch.setAdapter(_SearchAdapter);
-
-            return RootView;
-        }
-
-        public class SearchStruct
-        {
-            String Name;
-            double Lat;
-            double Lon;
-
-            SearchStruct(String Name, double Lat, double Lon)
-            {
-                this.Name = Name;
-                this.Lat = Lat;
-                this.Lon = Lon;
-            }
-        }
-
-        public class SearchAdapter extends ArrayAdapter<SearchStruct>
-        {
-            SearchAdapter(Context context, List<SearchStruct> SearchList)
-            {
-                super(context, -1, SearchList);
-            }
-
-            @Override
-            public @NonNull View getView(int position, View convertView, @NonNull ViewGroup parent)
-            {
-                SearchStruct Search = SearchList.get(position);
-
-                RelativeLayout MainView = new RelativeLayout(App.GetContext());
-                RelativeLayout.LayoutParams MainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56));
-                MainView.setLayoutParams(MainParam);
-
-                if (Search == null)
-                    return MainView;
-
-                ImageView Icon = new ImageView(App.GetContext());
-                RelativeLayout.LayoutParams IconParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT);
-                Icon.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
-                Icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                Icon.setLayoutParams(IconParam);
-                Icon.setImageResource(R.drawable.ic_location_blue);
-                Icon.setId(MiscHandler.GenerateViewID());
-
-                MainView.addView(Icon);
-
-                TextView Name = new TextView(App.GetContext());
-                RelativeLayout.LayoutParams NameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                NameParam.addRule(RelativeLayout.RIGHT_OF, Icon.getId());
-                NameParam.setMargins(0, MiscHandler.DpToPx(2), 0, 0);
-                Name.setLayoutParams(NameParam);
-                Name.setText(Search.Name);
-                Name.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
-                Name.setId(MiscHandler.GenerateViewID());
-
-                MainView.addView(Name);
-
-                TextView Position = new TextView(App.GetContext());
-                RelativeLayout.LayoutParams PositionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                PositionParam.addRule(RelativeLayout.RIGHT_OF, Icon.getId());
-                PositionParam.addRule(RelativeLayout.BELOW, Name.getId());
-                PositionParam.setMargins(0, MiscHandler.DpToPx(5), 0, 0);
-                Position.setLayoutParams(PositionParam);
-                Position.setText("(" + (float) Search.Lat + " , " + (float) Search.Lon + ")");
-
-                MainView.addView(Position);
-
-                return MainView;
-            }
-        }
-    }
-
-
-
-
-}*/

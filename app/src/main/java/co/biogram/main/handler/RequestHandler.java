@@ -6,12 +6,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,8 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 public class RequestHandler
 {
-    private final static String EndLine = "\r\n";
-
     private static ArrayList<Request> QueueRequestList = new ArrayList<>();
     private static ArrayList<Request> RunningRequestList = new ArrayList<>();
     private static ThreadPoolExecutor ThreadExecutor;
@@ -233,6 +233,7 @@ public class RequestHandler
                 {
                     switch (METHOD)
                     {
+                        case "GET":      PerformGet(Builder.this);      break;
                         case "POST":     PerformPost(Builder.this);     break;
                         case "UPLOAD":   PerformUpload(Builder.this);   break;
                         case "DOWNLOAD": PerformDownload(Builder.this); break;
@@ -403,6 +404,59 @@ public class RequestHandler
         AddRequest(request);
     }
 
+    private static void PerformGet(final Builder builder)
+    {
+        HttpURLConnection Conn = null;
+
+        try
+        {
+            Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setConnectTimeout(builder.ConnectTime);
+            Conn.setReadTimeout(builder.ReadTime);
+            Conn.setRequestMethod("GET");
+            Conn.setUseCaches(false);
+            Conn.setDoInput(true);
+            Conn.connect();
+
+            BufferedReader Reader = new BufferedReader(new InputStreamReader(Conn.getInputStream()));
+            final StringBuilder Result = new StringBuilder();
+            final int Status = Conn.getResponseCode();
+            String Line;
+
+            while ((Line = Reader.readLine()) != null)
+            {
+                Result.append(Line);
+            }
+
+            Reader.close();
+
+            new Handler(Looper.getMainLooper()).post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if (builder.OnCompleteListener != null)
+                        builder.OnCompleteListener.OnFinish(Result.toString(), Status);
+                }
+            });
+        }
+        catch (final Exception e)
+        {
+            new Handler(Looper.getMainLooper()).post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if (builder.OnCompleteListener != null)
+                        builder.OnCompleteListener.OnFinish(e.toString(), -1);
+                }
+            });
+        }
+
+        if (Conn != null)
+            Conn.disconnect();
+    }
+
     private static void PerformPost(final Builder builder)
     {
         HttpURLConnection Conn = null;
@@ -482,6 +536,7 @@ public class RequestHandler
 
     private static void PerformUpload(final Builder builder)
     {
+        String EndLine = "\r\n";
         HttpURLConnection Conn = null;
 
         try

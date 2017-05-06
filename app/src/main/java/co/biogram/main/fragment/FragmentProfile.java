@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import co.biogram.main.App;
 import co.biogram.main.R;
+import co.biogram.main.activity.ActivityProfileEdit;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
@@ -115,7 +116,7 @@ public class FragmentProfile extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().startActivity(new Intent(App.GetContext(), FragmentProfileEdit.class));
+                getActivity().startActivity(new Intent(App.GetContext(), ActivityProfileEdit.class));
             }
         });
 
