@@ -44,6 +44,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -485,6 +486,9 @@ public class ActivityProfileEdit extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                if (getCurrentFocus() != null)
+                    getCurrentFocus().clearFocus();
+
                 getFragmentManager().beginTransaction().replace(FrameLayoutID, new FragmentMap()).addToBackStack("FragmentMap").commit();
             }
         });
@@ -729,7 +733,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             TextView TextViewHeader = new TextView(App.GetContext());
             TextViewHeader.setLayoutParams(TextViewHeaderParam);
             TextViewHeader.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
-            TextViewHeader.setText("Location");
+            TextViewHeader.setText(getString(R.string.ActivityProfileEditLocation));
             TextViewHeader.setTypeface(null, Typeface.BOLD);
             TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -783,8 +787,13 @@ public class ActivityProfileEdit extends AppCompatActivity
                         double Lat = _GoogleMap.getCameraPosition().target.latitude;
                         double Lon = _GoogleMap.getCameraPosition().target.longitude;
 
+                        String Name = TextViewName.getText().toString();
+
+                        if (Name.length() > 25)
+                            Name = Name.substring(0, 25) + " ...";
+
                         ((ActivityProfileEdit) getActivity()).Position = (float) Lat + ":" + (float) Lon;
-                        ((ActivityProfileEdit) getActivity()).EditTextLocation.setText(TextViewName.getText().toString());
+                        ((ActivityProfileEdit) getActivity()).EditTextLocation.setText(Name);
                     }
 
                     getActivity().getFragmentManager().beginTransaction().remove(FragmentMap.this).commit();
@@ -943,7 +952,7 @@ public class ActivityProfileEdit extends AppCompatActivity
 
         public class MapThreadClass extends Thread
         {
-            private double Lat, Lon;
+            private double Latitude, Longitude;
             private Handler MapHandler;
             private Runnable MapRunnable = new Runnable()
             {
@@ -954,7 +963,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                     {
                         String LocationName = "";
                         Geocoder geocoder = new Geocoder(App.GetContext());
-                        List<Address> Address = geocoder.getFromLocation(Lat, Lon, 1);
+                        List<Address> Address = geocoder.getFromLocation(Latitude, Longitude, 1);
 
                         if (Address.size() > 0)
                         {
@@ -995,10 +1004,10 @@ public class ActivityProfileEdit extends AppCompatActivity
                 }
             };
 
-            void FindLocationName(double _Lat, double _Lon)
+            void FindLocationName(double latitude, double longitude)
             {
-                Lat = _Lat;
-                Lon = _Lon;
+                Latitude = latitude;
+                Longitude = longitude;
 
                 if (MapHandler != null && MapRunnable != null)
                 {
@@ -1113,6 +1122,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                                 }
 
                                 _SearchAdapter.notifyDataSetChanged();
+                                MiscHandler.HideKeyBoard(getActivity());
                             }
                             catch (Exception e)
                             {
@@ -1157,6 +1167,27 @@ public class ActivityProfileEdit extends AppCompatActivity
             ListView ListViewSearch = new ListView(App.GetContext());
             ListViewSearch.setLayoutParams(ListViewSearchParam);
             ListViewSearch.setAdapter(_SearchAdapter);
+            ListViewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
+                {
+                    SearchStruct Search = SearchList.get(position);
+
+                    if (Search == null)
+                        return;
+
+                    String Name = Search.Name;
+
+                    if (Name.length() > 25)
+                        Name = Name.substring(0, 25) + " ...";
+
+                    ((ActivityProfileEdit) getActivity()).Position = (float) Search.Latitude + ":" + (float) Search.Longitude;
+                    ((ActivityProfileEdit) getActivity()).EditTextLocation.setText(Name);
+
+                    getActivity().getFragmentManager().beginTransaction().remove(FragmentSearch.this).commit();
+                }
+            });
 
             Root.addView(ListViewSearch);
 
@@ -1213,7 +1244,7 @@ public class ActivityProfileEdit extends AppCompatActivity
 
                 RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewIcon.getId());
-                TextViewNameParam.setMargins(0, MiscHandler.DpToPx(2), 0, 0);
+                TextViewNameParam.setMargins(0, MiscHandler.DpToPx(5), 0, 0);
 
                 TextView TextViewName = new TextView(App.GetContext());
                 TextViewName.setLayoutParams(TextViewNameParam);
