@@ -43,7 +43,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -76,7 +75,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
@@ -122,19 +120,21 @@ public class ActivityProfileEdit extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        RelativeLayout Root = new RelativeLayout(App.GetContext());
+        Context context = this;
+
+        RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Root.setBackgroundResource(R.color.White);
         Root.setFocusableInTouchMode(true);
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         Root.addView(RelativeLayoutHeader);
 
-        ImageView ImageViewBack = new ImageView(App.GetContext());
+        ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
@@ -148,9 +148,9 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewHeader = new TextView(App.GetContext());
+        TextView TextViewHeader = new TextView(context);
         TextViewHeader.setLayoutParams(TextViewHeaderParam);
-        TextViewHeader.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextViewHeader.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewHeader.setText(getString(R.string.ActivityProfileEditTitle));
         TextViewHeader.setTypeface(null, Typeface.BOLD);
         TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -162,7 +162,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         LoadingViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
         LoadingViewSaveParam.setMargins(0, 0, MiscHandler.DpToPx(15), 0);
 
-        final LoadingView LoadingViewSave = new LoadingView(App.GetContext());
+        final LoadingView LoadingViewSave = new LoadingView(context);
         LoadingViewSave.setLayoutParams(LoadingViewSaveParam);
         LoadingViewSave.SetColor(R.color.BlueLight);
 
@@ -173,9 +173,9 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewSaveParam.setMargins(0, 0, MiscHandler.DpToPx(15), 0);
 
-        final TextView TextViewSave = new TextView(App.GetContext());
+        final TextView TextViewSave = new TextView(context);
         TextViewSave.setLayoutParams(TextViewSaveParam);
-        TextViewSave.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewSave.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewSave.setText(getString(R.string.ActivityProfileEditSave));
         TextViewSave.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewSave.setOnClickListener(new View.OnClickListener()
@@ -259,7 +259,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
         ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-        View ViewBlankLine = new View(App.GetContext());
+        View ViewBlankLine = new View(context);
         ViewBlankLine.setLayoutParams(ViewBlankLineParam);
         ViewBlankLine.setBackgroundResource(R.color.Gray2);
         ViewBlankLine.setId(MiscHandler.GenerateViewID());
@@ -269,7 +269,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams ScrollViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         ScrollViewMainParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
 
-        ScrollView ScrollViewMain = new ScrollView(App.GetContext());
+        ScrollView ScrollViewMain = new ScrollView(context);
         ScrollViewMain.setLayoutParams(ScrollViewMainParam);
         ScrollViewMain.setVerticalScrollBarEnabled(false);
         ScrollViewMain.setHorizontalScrollBarEnabled(false);
@@ -277,25 +277,25 @@ public class ActivityProfileEdit extends AppCompatActivity
 
         Root.addView(ScrollViewMain);
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ScrollViewMain.addView(RelativeLayoutMain);
 
-        RelativeLayout RelativeLayoutCover = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutCover = new RelativeLayout(context);
         RelativeLayoutCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(160)));
         RelativeLayoutCover.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutCover.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCover.show(); } });
 
         RelativeLayoutMain.addView(RelativeLayoutCover);
 
-        ImageViewCover = new ImageView(App.GetContext());
+        ImageViewCover = new ImageView(context);
         ImageViewCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewCover.setScaleType(ImageView.ScaleType.FIT_XY);
 
         RelativeLayoutCover.addView(ImageViewCover);
 
-        View ViewBlackCover = new View(App.GetContext());
+        View ViewBlackCover = new View(context);
         ViewBlackCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ViewBlackCover.setBackgroundResource(R.color.Black);
         ViewBlackCover.setAlpha(0.25f);
@@ -305,7 +305,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams ImageViewCoverAddParam =  new RelativeLayout.LayoutParams(MiscHandler.DpToPx(50), MiscHandler.DpToPx(50));
         ImageViewCoverAddParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        ImageView ImageViewCoverAdd = new ImageView(App.GetContext());
+        ImageView ImageViewCoverAdd = new ImageView(context);
         ImageViewCoverAdd.setLayoutParams(ImageViewCoverAddParam);
         ImageViewCoverAdd.setAlpha(0.50f);
         ImageViewCoverAdd.setImageResource(R.drawable.ic_camera_white);
@@ -315,14 +315,14 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams RelativeLayoutProfileParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(90), MiscHandler.DpToPx(90));
         RelativeLayoutProfileParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(110), 0, 0);
 
-        RelativeLayout RelativeLayoutProfile = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutProfile = new RelativeLayout(context);
         RelativeLayoutProfile.setLayoutParams(RelativeLayoutProfileParam);
         RelativeLayoutProfile.setId(MiscHandler.GenerateViewID());
         RelativeLayoutProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogProfile.show(); } });
 
         RelativeLayoutMain.addView(RelativeLayoutProfile);
 
-        ImageViewCircleProfile = new ImageViewCircle(App.GetContext());
+        ImageViewCircleProfile = new ImageViewCircle(context);
         ImageViewCircleProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewCircleProfile.SetBorderColor(R.color.White);
         ImageViewCircleProfile.SetBorderWidth(MiscHandler.DpToPx(3));
@@ -336,7 +336,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         ShapeViewProfile.setColor(Color.BLACK);
         ShapeViewProfile.setStroke(MiscHandler.DpToPx(3), Color.WHITE);
 
-        View ViewBlackProfile = new View(App.GetContext());
+        View ViewBlackProfile = new View(context);
         ViewBlackProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ViewBlackProfile.setBackground(ShapeViewProfile);
         ViewBlackProfile.setAlpha(0.25f);
@@ -346,7 +346,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams ImageViewProfileAddParam =  new RelativeLayout.LayoutParams(MiscHandler.DpToPx(35), MiscHandler.DpToPx(35));
         ImageViewProfileAddParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        ImageView ImageViewProfileAdd = new ImageView(App.GetContext());
+        ImageView ImageViewProfileAdd = new ImageView(context);
         ImageViewProfileAdd.setLayoutParams(ImageViewProfileAddParam);
         ImageViewProfileAdd.setAlpha(0.50f);
         ImageViewProfileAdd.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -358,9 +358,9 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewUsernameParam.addRule(RelativeLayout.BELOW, RelativeLayoutProfile.getId());
         TextViewUsernameParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
 
-        TextView TextViewUsername = new TextView(App.GetContext());
+        TextView TextViewUsername = new TextView(context);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
-        TextViewUsername.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewUsername.setText(getString(R.string.ActivityProfileEditUsername));
         TextViewUsername.setId(MiscHandler.GenerateViewID());
@@ -409,9 +409,9 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewDescriptionParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
         TextViewDescriptionParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
 
-        TextView TextViewDescription = new TextView(App.GetContext());
+        TextView TextViewDescription = new TextView(context);
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
-        TextViewDescription.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewDescription.setText(getString(R.string.ActivityProfileEditDescription));
         TextViewDescription.setId(MiscHandler.GenerateViewID());
@@ -436,9 +436,9 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewLinkParam.addRule(RelativeLayout.BELOW, EditTextDescription.getId());
         TextViewLinkParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
 
-        TextView TextViewLink = new TextView(App.GetContext());
+        TextView TextViewLink = new TextView(context);
         TextViewLink.setLayoutParams(TextViewLinkParam);
-        TextViewLink.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewLink.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewLink.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewLink.setText(getString(R.string.ActivityProfileEditWebsite));
         TextViewLink.setId(MiscHandler.GenerateViewID());
@@ -463,9 +463,9 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewLocationParam.addRule(RelativeLayout.BELOW, EditTextLink.getId());
         TextViewLocationParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
 
-        TextView TextViewLocation = new TextView(App.GetContext());
+        TextView TextViewLocation = new TextView(context);
         TextViewLocation.setLayoutParams(TextViewLocationParam);
-        TextViewLocation.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewLocation.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewLocation.setText(getString(R.string.ActivityProfileEditLocation));
         TextViewLocation.setId(MiscHandler.GenerateViewID());
@@ -500,9 +500,9 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewEmailParam.addRule(RelativeLayout.BELOW, EditTextLocation.getId());
         TextViewEmailParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), 0);
 
-        TextView TextViewEmail = new TextView(App.GetContext());
+        TextView TextViewEmail = new TextView(context);
         TextViewEmail.setLayoutParams(TextViewEmailParam);
-        TextViewEmail.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        TextViewEmail.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewEmail.setText(getString(R.string.ActivityProfileEditEmail));
         TextViewEmail.setId(MiscHandler.GenerateViewID());
@@ -524,7 +524,7 @@ public class ActivityProfileEdit extends AppCompatActivity
 
         RelativeLayoutMain.addView(EditTextEmail);
 
-        FrameLayout FrameLayoutTab = new FrameLayout(App.GetContext());
+        FrameLayout FrameLayoutTab = new FrameLayout(context);
         FrameLayoutTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         FrameLayoutTab.setId(FrameLayoutID);
 
@@ -533,7 +533,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
 
-        RelativeLayoutLoading = new RelativeLayout(App.GetContext());
+        RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
@@ -542,7 +542,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(App.GetContext());
+        LoadingViewData = new LoadingView(context);
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
         LoadingViewData.SetColor(R.color.BlueGray2);
 
@@ -551,15 +551,15 @@ public class ActivityProfileEdit extends AppCompatActivity
         RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(App.GetContext());
+        TextViewTry = new TextView(context);
         TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTry.setText(getString(R.string.GeneralTryAgain));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
 
         RelativeLayoutLoading.addView(TextViewTry);
-        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(App.GetContext(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
 
         InitializationCover();
         InitializationProfile();
@@ -705,19 +705,21 @@ public class ActivityProfileEdit extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
         {
-            RelativeLayout Root = new RelativeLayout(App.GetContext());
+            Context context = getActivity();
+
+            RelativeLayout Root = new RelativeLayout(context);
             Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             Root.setBackgroundResource(R.color.White);
             Root.setClickable(true);
 
-            RelativeLayout RelativeLayoutHeader = new RelativeLayout(App.GetContext());
+            RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
             RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
             RelativeLayoutHeader.setBackgroundResource(R.color.White5);
             RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
             Root.addView(RelativeLayoutHeader);
 
-            ImageView ImageViewBack = new ImageView(App.GetContext());
+            ImageView ImageViewBack = new ImageView(context);
             ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
             ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewBack.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
@@ -731,9 +733,9 @@ public class ActivityProfileEdit extends AppCompatActivity
             TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
             TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-            TextView TextViewHeader = new TextView(App.GetContext());
+            TextView TextViewHeader = new TextView(context);
             TextViewHeader.setLayoutParams(TextViewHeaderParam);
-            TextViewHeader.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            TextViewHeader.setTextColor(ContextCompat.getColor(context, R.color.Black));
             TextViewHeader.setText(getString(R.string.ActivityProfileEditLocation));
             TextViewHeader.setTypeface(null, Typeface.BOLD);
             TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -743,7 +745,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-            ImageView ImageViewSearch = new ImageView(App.GetContext());
+            ImageView ImageViewSearch = new ImageView(context);
             ImageViewSearch.setLayoutParams(ImageViewSearchParam);
             ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewSearch.setPadding(MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16));
@@ -756,7 +758,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
             ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-            View ViewBlankLine = new View(App.GetContext());
+            View ViewBlankLine = new View(context);
             ViewBlankLine.setLayoutParams(ViewBlankLineParam);
             ViewBlankLine.setBackgroundResource(R.color.Gray2);
             ViewBlankLine.setId(MiscHandler.GenerateViewID());
@@ -766,14 +768,14 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56));
             RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-            RelativeLayout RelativeLayoutBottom = new RelativeLayout(App.GetContext());
+            RelativeLayout RelativeLayoutBottom = new RelativeLayout(context);
             RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
             RelativeLayoutBottom.setBackgroundResource(R.color.White5);
             RelativeLayoutBottom.setId(MiscHandler.GenerateViewID());
 
             Root.addView(RelativeLayoutBottom);
 
-            ImageView ImageViewSend = new ImageView(App.GetContext());
+            ImageView ImageViewSend = new ImageView(context);
             ImageViewSend.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
             ImageViewSend.setPadding(MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13), MiscHandler.DpToPx(13));
             ImageViewSend.setImageResource(R.drawable.ic_location_blue);
@@ -807,9 +809,9 @@ public class ActivityProfileEdit extends AppCompatActivity
             TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewSend.getId());
             TextViewNameParam.setMargins(MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5));
 
-            TextViewName = new TextView(App.GetContext());
+            TextViewName = new TextView(context);
             TextViewName.setLayoutParams(TextViewNameParam);
-            TextViewName.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            TextViewName.setTextColor(ContextCompat.getColor(context, R.color.Black));
             TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             TextViewName.setId(MiscHandler.GenerateViewID());
 
@@ -820,9 +822,9 @@ public class ActivityProfileEdit extends AppCompatActivity
             TextViewPositionParam.addRule(RelativeLayout.BELOW, TextViewName.getId());
             TextViewPositionParam.setMargins(MiscHandler.DpToPx(5),0, 0, 0);
 
-            TextViewPosition = new TextView(App.GetContext());
+            TextViewPosition = new TextView(context);
             TextViewPosition.setLayoutParams(TextViewPositionParam);
-            TextViewPosition.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            TextViewPosition.setTextColor(ContextCompat.getColor(context, R.color.Black));
             TextViewPosition.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
             RelativeLayoutBottom.addView(TextViewPosition);
@@ -830,7 +832,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams ViewBlankLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
             ViewBlankLine2Param.addRule(RelativeLayout.ABOVE, RelativeLayoutBottom.getId());
 
-            View ViewBlankLine2 = new View(App.GetContext());
+            View ViewBlankLine2 = new View(context);
             ViewBlankLine2.setLayoutParams(ViewBlankLine2Param);
             ViewBlankLine2.setBackgroundResource(R.color.Gray2);
             ViewBlankLine2.setId(MiscHandler.GenerateViewID());
@@ -840,7 +842,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams ViewCenterParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
             ViewCenterParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-            View ViewCenter = new View(App.GetContext());
+            View ViewCenter = new View(context);
             ViewCenter.setLayoutParams(ViewCenterParam);
             ViewCenter.setBackgroundResource(R.color.Gray2);
             ViewCenter.setId(MiscHandler.GenerateViewID());
@@ -852,13 +854,13 @@ public class ActivityProfileEdit extends AppCompatActivity
             ImageViewPinParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
             ImageViewPinParam.setMargins(0, MiscHandler.DpToPx(21), 0, 0);
 
-            ImageView ImageViewPin = new ImageView(App.GetContext());
+            ImageView ImageViewPin = new ImageView(context);
             ImageViewPin.setLayoutParams(ImageViewPinParam);
             ImageViewPin.setImageResource(R.drawable.ic_location_pin);
 
             Root.addView(ImageViewPin);
 
-            _MapView = new MapView(App.GetContext())
+            _MapView = new MapView(context)
             {
                 @Override
                 public boolean onInterceptTouchEvent(MotionEvent m)
@@ -963,7 +965,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                     try
                     {
                         String LocationName = "";
-                        Geocoder geocoder = new Geocoder(App.GetContext());
+                        Geocoder geocoder = new Geocoder(getActivity());
                         List<Address> Address = geocoder.getFromLocation(Latitude, Longitude, 1);
 
                         if (Address.size() > 0)
@@ -1041,19 +1043,21 @@ public class ActivityProfileEdit extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
         {
-            RelativeLayout Root = new RelativeLayout(App.GetContext());
+            Context context = getActivity();
+
+            RelativeLayout Root = new RelativeLayout(context);
             Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             Root.setBackgroundResource(R.color.White);
             Root.setClickable(true);
 
-            RelativeLayout RelativeLayoutHeader = new RelativeLayout(App.GetContext());
+            RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
             RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
             RelativeLayoutHeader.setBackgroundResource(R.color.White5);
             RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
             Root.addView(RelativeLayoutHeader);
 
-            ImageView ImageViewBack = new ImageView(App.GetContext());
+            ImageView ImageViewBack = new ImageView(context);
             ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
             ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewBack.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
@@ -1066,7 +1070,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-            ImageView ImageViewSearch = new ImageView(App.GetContext());
+            ImageView ImageViewSearch = new ImageView(context);
             ImageViewSearch.setLayoutParams(ImageViewSearchParam);
             ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewSearch.setPadding(MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16));
@@ -1141,10 +1145,10 @@ public class ActivityProfileEdit extends AppCompatActivity
             TextViewHeaderParam.addRule(RelativeLayout.LEFT_OF, ImageViewSearch.getId());
             TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-            EditTextSearch = new EditText(App.GetContext());
+            EditTextSearch = new EditText(context);
             EditTextSearch.setLayoutParams(TextViewHeaderParam);
             EditTextSearch.setBackgroundResource(R.color.White5);
-            EditTextSearch.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            EditTextSearch.setTextColor(ContextCompat.getColor(context, R.color.Black));
             EditTextSearch.setHint("Search");
             EditTextSearch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -1153,7 +1157,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
             ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-            View ViewBlankLine = new View(App.GetContext());
+            View ViewBlankLine = new View(context);
             ViewBlankLine.setLayoutParams(ViewBlankLineParam);
             ViewBlankLine.setBackgroundResource(R.color.Gray2);
             ViewBlankLine.setId(MiscHandler.GenerateViewID());
@@ -1163,9 +1167,9 @@ public class ActivityProfileEdit extends AppCompatActivity
             RelativeLayout.LayoutParams ListViewSearchParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             ListViewSearchParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
 
-            _SearchAdapter = new SearchAdapter(App.GetContext(), SearchList);
+            _SearchAdapter = new SearchAdapter(context, SearchList);
 
-            ListView ListViewSearch = new ListView(App.GetContext());
+            ListView ListViewSearch = new ListView(context);
             ListViewSearch.setLayoutParams(ListViewSearchParam);
             ListViewSearch.setAdapter(_SearchAdapter);
             ListViewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -1218,9 +1222,12 @@ public class ActivityProfileEdit extends AppCompatActivity
 
         public class SearchAdapter extends ArrayAdapter<SearchStruct>
         {
-            SearchAdapter(Context context, List<SearchStruct> SearchList)
+            Context context;
+
+            SearchAdapter(Context c, List<SearchStruct> SearchList)
             {
-                super(context, -1, SearchList);
+                super(c, -1, SearchList);
+                context = c;
             }
 
             @Override
@@ -1228,13 +1235,13 @@ public class ActivityProfileEdit extends AppCompatActivity
             {
                 SearchStruct Search = SearchList.get(position);
 
-                RelativeLayout MainView = new RelativeLayout(App.GetContext());
+                RelativeLayout MainView = new RelativeLayout(context);
                 MainView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
 
                 if (Search == null)
                     return MainView;
 
-                ImageView ImageViewIcon = new ImageView(App.GetContext());
+                ImageView ImageViewIcon = new ImageView(context);
                 ImageViewIcon.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
                 ImageViewIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 ImageViewIcon.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -1247,10 +1254,10 @@ public class ActivityProfileEdit extends AppCompatActivity
                 TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewIcon.getId());
                 TextViewNameParam.setMargins(0, MiscHandler.DpToPx(5), 0, 0);
 
-                TextView TextViewName = new TextView(App.GetContext());
+                TextView TextViewName = new TextView(context);
                 TextViewName.setLayoutParams(TextViewNameParam);
                 TextViewName.setText(Search.Name);
-                TextViewName.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                TextViewName.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 TextViewName.setId(MiscHandler.GenerateViewID());
 
                 MainView.addView(TextViewName);
@@ -1260,7 +1267,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 TextViewPositionParam.addRule(RelativeLayout.BELOW, TextViewName.getId());
                 TextViewPositionParam.setMargins(0, MiscHandler.DpToPx(5), 0, 0);
 
-                TextView TextViewPosition = new TextView(App.GetContext());
+                TextView TextViewPosition = new TextView(context);
                 TextViewPosition.setLayoutParams(TextViewPositionParam);
                 TextViewPosition.setText("(" + (float) Search.Latitude + " , " + (float) Search.Longitude + ")");
 

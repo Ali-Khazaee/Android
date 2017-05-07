@@ -1,5 +1,6 @@
 package co.biogram.main.fragment;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,7 +22,6 @@ import com.androidnetworking.AndroidNetworking;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.RequestHandler;
@@ -48,22 +48,24 @@ public class FragmentImagePreview extends Fragment
                 ImageList.add(getArguments().getString("URL3"));
         }
 
-        RelativeLayout Main = new RelativeLayout(App.GetContext());
-        Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Main.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        Context context = getActivity();
 
-        ViewPager Pager = new ViewPager(App.GetContext());
+        RelativeLayout Main = new RelativeLayout(context);
+        Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        Main.setBackgroundColor(ContextCompat.getColor(context, R.color.Black));
+
+        ViewPager Pager = new ViewPager(context);
         Pager.setAdapter(new ViewPagerAdapter());
 
         Main.addView(Pager);
 
-        Header = new RelativeLayout(App.GetContext());
+        Header = new RelativeLayout(context);
         Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
         Header.setBackgroundColor(Color.parseColor("#3f000000"));
 
         Main.addView(Header);
 
-        ImageView Back = new ImageView(App.GetContext());
+        ImageView Back = new ImageView(context);
         Back.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
         Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
         Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56)));
@@ -84,9 +86,9 @@ public class FragmentImagePreview extends Fragment
         NameParam.addRule(RelativeLayout.RIGHT_OF, Back.getId());
         NameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        TextView Title = new TextView(App.GetContext());
+        TextView Title = new TextView(context);
         Title.setLayoutParams(NameParam);
-        Title.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        Title.setTextColor(ContextCompat.getColor(context, R.color.White));
         Title.setText(getString(R.string.FragmentMomentWriteImagePreview));
         Title.setTypeface(null, Typeface.BOLD);
         Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -113,7 +115,7 @@ public class FragmentImagePreview extends Fragment
         @Override
         public Object instantiateItem(ViewGroup Container, int Position)
         {
-            TouchImageView Image = new TouchImageView(App.GetContext());
+            TouchImageView Image = new TouchImageView(getActivity());
             Image.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
             if (ImageCache != null)

@@ -18,7 +18,6 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 
@@ -34,7 +33,7 @@ public class LoadingView extends View
     private float Spacing;
     private boolean ShouldAnimate;
     private boolean IsRunning = false;
-    private boolean IsBuilded = false;
+    private boolean IsBuilt = false;
     private int AnimationDuration;
     private final List<Animator> Animations = new ArrayList<>();
 
@@ -69,10 +68,10 @@ public class LoadingView extends View
 
     private void Build()
     {
-        if (IsBuilded)
+        if (IsBuilt)
             return;
 
-        IsBuilded = true;
+        IsBuilt = true;
         ShouldAnimate = false;
 
         CalculateMaxRadius();
@@ -117,7 +116,7 @@ public class LoadingView extends View
 
     public void SetColor(int color)
     {
-        Color = ContextCompat.getColor(App.GetContext(), color);
+        Color = ContextCompat.getColor(getContext(), color);
     }
 
     private void UpdateDots()

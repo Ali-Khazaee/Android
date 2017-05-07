@@ -79,7 +79,7 @@ public class ImageViewCircle extends ImageView
 
     public void SetBorderColor(int Color)
     {
-        BorderColor = ContextCompat.getColor(App.GetContext(), Color);
+        BorderColor = ContextCompat.getColor(getContext(), Color);
     }
 
     private void Initializing()

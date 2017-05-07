@@ -1,5 +1,6 @@
 package co.biogram.main.fragment;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -27,7 +28,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.RequestHandler;
@@ -47,18 +47,20 @@ public class FragmentLike extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        RelativeLayout Root = new RelativeLayout(App.GetContext());
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        Context context = getActivity();
 
-        RelativeLayout Header = new RelativeLayout(App.GetContext());
+        RelativeLayout Root = new RelativeLayout(context);
+        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
+
+        RelativeLayout Header = new RelativeLayout(context);
         Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
-        Header.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White5));
+        Header.setBackgroundColor(ContextCompat.getColor(context, R.color.White5));
         Header.setId(MiscHandler.GenerateViewID());
 
         Root.addView(Header);
 
-        ImageView Back = new ImageView(App.GetContext());
+        ImageView Back = new ImageView(context);
         Back.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
         Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
         Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56)));
@@ -79,9 +81,9 @@ public class FragmentLike extends Fragment
         NameParam.addRule(RelativeLayout.RIGHT_OF, Back.getId());
         NameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        TextView Title = new TextView(App.GetContext());
+        TextView Title = new TextView(context);
         Title.setLayoutParams(NameParam);
-        Title.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        Title.setTextColor(ContextCompat.getColor(context, R.color.Black));
         Title.setText(getString(R.string.FragmentLikeTextLike));
         Title.setTypeface(null, Typeface.BOLD);
         Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -91,9 +93,9 @@ public class FragmentLike extends Fragment
         RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
         LineParam.addRule(RelativeLayout.BELOW, Header.getId());
 
-        View Line = new View(App.GetContext());
+        View Line = new View(context);
         Line.setLayoutParams(LineParam);
-        Line.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray2));
+        Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
         Line.setId(MiscHandler.GenerateViewID());
 
         Root.addView(Line);
@@ -101,15 +103,15 @@ public class FragmentLike extends Fragment
         RelativeLayout.LayoutParams RVCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RVCategoryParam.addRule(RelativeLayout.BELOW, Line.getId());
 
-        RecyclerView RVCategory = new RecyclerView(App.GetContext());
+        RecyclerView RVCategory = new RecyclerView(context);
         RVCategory.setLayoutParams(RVCategoryParam);
 
         Root.addView(RVCategory);
 
-        getArguments().getString("PostID", "");
+        PostID = getArguments().getString("PostID", "");
         adapterLike = new AdapterLike();
 
-        RVCategory.setLayoutManager(new LinearLayoutManager(App.GetContext()));
+        RVCategory.setLayoutManager(new LinearLayoutManager(context));
         RVCategory.setAdapter(adapterLike);
         RVCategory.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
@@ -280,15 +282,17 @@ public class FragmentLike extends Fragment
         @Override
         public ViewHolderLike onCreateViewHolder(ViewGroup parent, int ViewType)
         {
+            Context context = getActivity();
+
             if (ViewType == 0)
             {
-                RelativeLayout Root = new RelativeLayout(App.GetContext());
+                RelativeLayout Root = new RelativeLayout(context);
                 Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
                 RelativeLayout.LayoutParams ProfileParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(55), MiscHandler.DpToPx(55));
                 ProfileParam.setMargins(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
 
-                ImageViewCircle Profile = new ImageViewCircle(App.GetContext());
+                ImageViewCircle Profile = new ImageViewCircle(context);
                 Profile.setLayoutParams(ProfileParam);
                 Profile.setImageResource(R.color.BlueGray);
                 Profile.setId(ID_ICON);
@@ -299,23 +303,23 @@ public class FragmentLike extends Fragment
                 LinearParam.addRule(RelativeLayout.RIGHT_OF, Profile.getId());
                 LinearParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
-                LinearLayout Linear = new LinearLayout(App.GetContext());
+                LinearLayout Linear = new LinearLayout(context);
                 Linear.setLayoutParams(LinearParam);
                 Linear.setOrientation(LinearLayout.VERTICAL);
 
                 Root.addView(Linear);
 
-                TextView Username = new TextView(App.GetContext());
+                TextView Username = new TextView(context);
                 Username.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Username.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Username.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Username.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 Username.setId(ID_NAME);
 
                 Linear.addView(Username);
 
-                TextView Time = new TextView(App.GetContext());
+                TextView Time = new TextView(context);
                 Time.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Time.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+                Time.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
                 Time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 Time.setId(ID_TIME);
 
@@ -324,9 +328,9 @@ public class FragmentLike extends Fragment
                 RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
                 LineParam.addRule(RelativeLayout.BELOW, Profile.getId());
 
-                View Line = new View(App.GetContext());
+                View Line = new View(context);
                 Line.setLayoutParams(LineParam);
-                Line.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray));
+                Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray));
                 Line.setId(ID_LINE);
 
                 Root.addView(Line);
@@ -334,11 +338,11 @@ public class FragmentLike extends Fragment
                 return new ViewHolderLike(Root, true);
             }
 
-            LinearLayout Root = new LinearLayout(App.GetContext());
+            LinearLayout Root = new LinearLayout(context);
             Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
             Root.setGravity(Gravity.CENTER);
 
-            LoadingView Loading = new LoadingView(App.GetContext());
+            LoadingView Loading = new LoadingView(context);
             Loading.SetColor(R.color.BlueGray2);
             Loading.Start();
 

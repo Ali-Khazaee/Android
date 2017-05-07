@@ -62,7 +62,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         Tag = tag;
 
         ShapeLink = new GradientDrawable();
-        ShapeLink.setStroke(MiscHandler.DpToPx(1), ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        ShapeLink.setStroke(MiscHandler.DpToPx(1), ContextCompat.getColor(AppActivity, R.color.BlueGray));
     }
 
     class ViewHolderPost extends RecyclerView.ViewHolder
@@ -147,11 +147,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             return new ViewHolderPost(ItemView, true);
         }
 
-        LinearLayout Root = new LinearLayout(App.GetContext());
+        LinearLayout Root = new LinearLayout(AppActivity);
         Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
         Root.setGravity(Gravity.CENTER);
 
-        LoadingView Loading = new LoadingView(App.GetContext());
+        LoadingView Loading = new LoadingView(AppActivity);
         Loading.SetColor(R.color.BlueGray2);
         Loading.Start();
 
@@ -208,14 +208,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
 
-                LinearLayout Root = new LinearLayout(App.GetContext());
+                LinearLayout Root = new LinearLayout(AppActivity);
                 Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+                Root.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.White));
                 Root.setOrientation(LinearLayout.VERTICAL);
 
-                TextView Follow = new TextView(App.GetContext());
+                TextView Follow = new TextView(AppActivity);
                 Follow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Follow.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Follow.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Follow.setText(AppActivity.getString(R.string.AdapterPostFollow));
                 Follow.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Follow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -231,15 +231,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
                 Root.addView(Follow);
 
-                View FollowLine = new View(App.GetContext());
+                View FollowLine = new View(AppActivity);
                 FollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                FollowLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                FollowLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(FollowLine);
 
-                final TextView Turn = new TextView(App.GetContext());
+                final TextView Turn = new TextView(AppActivity);
                 Turn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Turn.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Turn.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Turn.setVisibility(View.GONE);
                 Turn.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Turn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -291,16 +291,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
                 Root.addView(Turn);
 
-                View TurnLine = new View(App.GetContext());
+                View TurnLine = new View(AppActivity);
                 TurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                TurnLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                TurnLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
                 TurnLine.setVisibility(View.GONE);
 
                 Root.addView(TurnLine);
 
-                TextView Copy = new TextView(App.GetContext());
+                TextView Copy = new TextView(AppActivity);
                 Copy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Copy.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Copy.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Copy.setText(AppActivity.getString(R.string.AdapterPostCopy));
                 Copy.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Copy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -320,15 +320,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
                 Root.addView(Copy);
 
-                View CopyLine = new View(App.GetContext());
+                View CopyLine = new View(AppActivity);
                 CopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                CopyLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                CopyLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(CopyLine);
 
-                final TextView BookMark = new TextView(App.GetContext());
+                final TextView BookMark = new TextView(AppActivity);
                 BookMark.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                BookMark.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                BookMark.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 BookMark.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 BookMark.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 BookMark.setOnClickListener(new View.OnClickListener()
@@ -377,15 +377,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
                 Root.addView(BookMark);
 
-                View BookMarkLine = new View(App.GetContext());
+                View BookMarkLine = new View(AppActivity);
                 BookMarkLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                BookMarkLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                BookMarkLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(BookMarkLine);
 
-                TextView Block = new TextView(App.GetContext());
+                TextView Block = new TextView(AppActivity);
                 Block.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Block.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Block.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Block.setText(AppActivity.getString(R.string.AdapterPostBlock));
                 Block.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Block.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -401,15 +401,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
                 Root.addView(Block);
 
-                View BlockLine = new View(App.GetContext());
+                View BlockLine = new View(AppActivity);
                 BlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                BlockLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                BlockLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(BlockLine);
 
-                TextView Delete = new TextView(App.GetContext());
+                TextView Delete = new TextView(AppActivity);
                 Delete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Delete.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Delete.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Delete.setText(AppActivity.getString(R.string.AdapterPostDelete));
                 Delete.setVisibility(View.GONE);
                 Delete.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
@@ -451,16 +451,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
                 Root.addView(Delete);
 
-                View DeleteLine = new View(App.GetContext());
+                View DeleteLine = new View(AppActivity);
                 DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                DeleteLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                DeleteLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
                 DeleteLine.setVisibility(View.GONE);
 
                 Root.addView(DeleteLine);
 
-                TextView Report = new TextView(App.GetContext());
+                TextView Report = new TextView(AppActivity);
                 Report.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Report.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Report.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Report.setText(AppActivity.getString(R.string.AdapterPostReport));
                 Report.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Report.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -680,12 +680,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
         if (PostList.get(Position).Like)
         {
-            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.RedLike));
+            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.RedLike));
             Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
         }
         else
         {
-            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.BlueGray));
             Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
         }
 
@@ -696,7 +696,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             {
                 if (PostList.get(Position).Like)
                 {
-                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.BlueGray));
                     Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
 
                     ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
@@ -717,7 +717,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 }
                 else
                 {
-                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.RedLike));
+                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.RedLike));
                     Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
 
                     ObjectAnimator SizeX = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1.5f);

@@ -69,7 +69,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
@@ -149,6 +148,8 @@ public class FragmentMomentWrite extends Fragment
             }
         });
 
+        final Context context = getActivity();
+
         final TextView TextViewMessageCount = (TextView) RootView.findViewById(R.id.TextViewMessageCount);
         EditTextMessage = (EditText) RootView.findViewById(R.id.EditTextMessage);
         EditTextMessage.setCustomSelectionActionModeCallback(new android.view.ActionMode.Callback()
@@ -167,14 +168,14 @@ public class FragmentMomentWrite extends Fragment
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
 
-                LinearLayout Root = new LinearLayout(App.GetContext());
+                LinearLayout Root = new LinearLayout(context);
                 Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+                Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
                 Root.setOrientation(LinearLayout.VERTICAL);
 
-                TextView Paste = new TextView(App.GetContext());
+                TextView Paste = new TextView(context);
                 Paste.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Paste.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Paste.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Paste.setText(getActivity().getString(R.string.FragmentMomentWriteDialogPaste));
                 Paste.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Paste.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -198,15 +199,15 @@ public class FragmentMomentWrite extends Fragment
 
                 Root.addView(Paste);
 
-                View PasteLine = new View(App.GetContext());
+                View PasteLine = new View(context);
                 PasteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                PasteLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                PasteLine.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray1));
 
                 Root.addView(PasteLine);
 
-                TextView Copy = new TextView(App.GetContext());
+                TextView Copy = new TextView(context);
                 Copy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Copy.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Copy.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Copy.setText(getActivity().getString(R.string.FragmentMomentWriteDialogCopy));
                 Copy.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Copy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -335,50 +336,50 @@ public class FragmentMomentWrite extends Fragment
                 DialogLink.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogLink.setCancelable(false);
 
-                LinearLayout Main = new LinearLayout(App.GetContext());
-                Main.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+                LinearLayout Main = new LinearLayout(context);
+                Main.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
                 Main.setOrientation(LinearLayout.VERTICAL);
 
-                TextView Title = new TextView(App.GetContext());
+                TextView Title = new TextView(context);
                 Title.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Title.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Title.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Title.setText(getString(R.string.FragmentMomentWriteShareLink));
                 Title.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Title.setTypeface(null, Typeface.BOLD);
                 Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
-                View Line = new View(App.GetContext());
+                View Line = new View(context);
                 Line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                Line.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray2));
+                Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
 
                 LinearLayout.LayoutParams URLParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 URLParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
 
-                final EditText URL = new EditText(App.GetContext());
+                final EditText URL = new EditText(context);
                 URL.setLayoutParams(URLParam);
-                URL.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                URL.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 URL.setMaxLines(1);
                 URL.setBackgroundColor(Color.TRANSPARENT);
                 URL.setInputType(0x00000010);
 
-                LinearLayout ButtonLinear = new LinearLayout(App.GetContext());
+                LinearLayout ButtonLinear = new LinearLayout(context);
                 ButtonLinear.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                ButtonLinear.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+                ButtonLinear.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
                 ButtonLinear.setOrientation(LinearLayout.HORIZONTAL);
 
-                final TextView Submit = new TextView(App.GetContext());
+                final TextView Submit = new TextView(context);
                 Submit.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                 Submit.setText(getString(R.string.FragmentMomentWriteShareLinkSub));
-                Submit.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray4));
+                Submit.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
                 Submit.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Submit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 Submit.setEnabled(false);
                 Submit.setGravity(Gravity.CENTER);
 
-                TextView Cancel = new TextView(App.GetContext());
+                TextView Cancel = new TextView(context);
                 Cancel.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                 Cancel.setText(getString(R.string.FragmentMomentWriteShareLinkCan));
-                Cancel.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Cancel.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Cancel.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Cancel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 Cancel.setGravity(Gravity.CENTER);
@@ -400,7 +401,7 @@ public class FragmentMomentWrite extends Fragment
                 }
                 else
                 {
-                    Submit.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                    Submit.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                     Submit.setEnabled(true);
                     URL.setText(SelectLink);
                     URL.setSelection(URL.getText().length());
@@ -413,12 +414,12 @@ public class FragmentMomentWrite extends Fragment
                     {
                         if (s.length() > 5 && Patterns.WEB_URL.matcher(s.toString()).matches())
                         {
-                            Submit.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                            Submit.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                             Submit.setEnabled(true);
                         }
                         else
                         {
-                            Submit.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray4));
+                            Submit.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
                             Submit.setEnabled(false);
                         }
                     }
@@ -458,7 +459,7 @@ public class FragmentMomentWrite extends Fragment
                         DialogLink.dismiss();
 
                         GradientDrawable Shape = new GradientDrawable();
-                        Shape.setStroke(MiscHandler.DpToPx(1), ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+                        Shape.setStroke(MiscHandler.DpToPx(1), ContextCompat.getColor(context, R.color.BlueGray));
 
                         final RelativeLayout RelativeLayoutLink = (RelativeLayout) RootView.findViewById(R.id.RelativeLayoutLink);
                         RelativeLayoutLink.setBackground(Shape);
@@ -965,10 +966,12 @@ public class FragmentMomentWrite extends Fragment
         @Override
         public Object instantiateItem(ViewGroup Container, final int Position)
         {
-            RelativeLayout Main = new RelativeLayout(App.GetContext());
+            Context context = getActivity();
+
+            RelativeLayout Main = new RelativeLayout(context);
             Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
-            ImageView Image = new ImageView(App.GetContext());
+            ImageView Image = new ImageView(context);
             RelativeLayout.LayoutParams ImageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), 0);
             Image.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -993,7 +996,7 @@ public class FragmentMomentWrite extends Fragment
 
             Main.addView(Image);
 
-            ImageView Remove = new ImageView(App.GetContext());
+            ImageView Remove = new ImageView(context);
             RelativeLayout.LayoutParams RemoveParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(30), MiscHandler.DpToPx(30));
             RemoveParam.setMargins(0, MiscHandler.DpToPx(5), MiscHandler.DpToPx(20), 0);
             RemoveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
@@ -1057,15 +1060,17 @@ public class FragmentMomentWrite extends Fragment
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            RelativeLayout Main = new RelativeLayout(App.GetContext());
+            Context context = getActivity();
+
+            RelativeLayout Main = new RelativeLayout(context);
             Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            Main.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            Main.setBackgroundColor(ContextCompat.getColor(context, R.color.Black));
             Main.setClickable(true);
 
             RelativeLayout.LayoutParams VideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             VideoParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-            final VideoView Video = new VideoView(App.GetContext());
+            final VideoView Video = new VideoView(context);
             Video.setLayoutParams(VideoParam);
             Video.setVideoPath(getArguments().getString("Video"));
             Video.seekTo(100);
@@ -1101,13 +1106,13 @@ public class FragmentMomentWrite extends Fragment
 
             Main.addView(Video);
 
-            Header = new RelativeLayout(App.GetContext());
+            Header = new RelativeLayout(context);
             Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
             Header.setBackgroundColor(Color.parseColor("#3f000000"));
 
             Main.addView(Header);
 
-            ImageView Back = new ImageView(App.GetContext());
+            ImageView Back = new ImageView(context);
             Back.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
             Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56)));
@@ -1128,9 +1133,9 @@ public class FragmentMomentWrite extends Fragment
             NameParam.addRule(RelativeLayout.RIGHT_OF, Back.getId());
             NameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-            TextView Title = new TextView(App.GetContext());
+            TextView Title = new TextView(context);
             Title.setLayoutParams(NameParam);
-            Title.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+            Title.setTextColor(ContextCompat.getColor(context, R.color.White));
             Title.setText(getString(R.string.FragmentMomentWriteVideoPreview));
             Title.setTypeface(null, Typeface.BOLD);
             Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -1140,7 +1145,7 @@ public class FragmentMomentWrite extends Fragment
             RelativeLayout.LayoutParams PlayParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(65), MiscHandler.DpToPx(65));
             PlayParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-            Play = new ImageView(App.GetContext());
+            Play = new ImageView(context);
             Play.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Play.setLayoutParams(PlayParam);
             Play.setImageResource(R.drawable.ic_play);
@@ -1157,18 +1162,20 @@ public class FragmentMomentWrite extends Fragment
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            RelativeLayout Main = new RelativeLayout(App.GetContext());
+            Context context = getActivity();
+
+            RelativeLayout Main = new RelativeLayout(context);
             Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            Main.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+            Main.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
             Main.setClickable(true);
 
-            RelativeLayout Header = new RelativeLayout(App.GetContext());
+            RelativeLayout Header = new RelativeLayout(context);
             Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
             Header.setId(MiscHandler.GenerateViewID());
 
             Main.addView(Header);
 
-            ImageView Back = new ImageView(App.GetContext());
+            ImageView Back = new ImageView(context);
             Back.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
             Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56)));
@@ -1189,9 +1196,9 @@ public class FragmentMomentWrite extends Fragment
             NameParam.addRule(RelativeLayout.RIGHT_OF, Back.getId());
             NameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-            TextView Name = new TextView(App.GetContext());
+            TextView Name = new TextView(context);
             Name.setLayoutParams(NameParam);
-            Name.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+            Name.setTextColor(ContextCompat.getColor(context, R.color.Black));
             Name.setText(getString(R.string.FragmentMomentWriteCategory));
             Name.setTypeface(null, Typeface.BOLD);
             Name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -1201,9 +1208,9 @@ public class FragmentMomentWrite extends Fragment
             RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
             LineParam.addRule(RelativeLayout.BELOW, Header.getId());
 
-            View Line = new View(App.GetContext());
+            View Line = new View(context);
             Line.setLayoutParams(LineParam);
-            Line.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray2));
+            Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
             Line.setId(MiscHandler.GenerateViewID());
 
             Main.addView(Line);
@@ -1211,8 +1218,8 @@ public class FragmentMomentWrite extends Fragment
             RelativeLayout.LayoutParams RVCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             RVCategoryParam.addRule(RelativeLayout.BELOW, Line.getId());
 
-            RecyclerView RVCategory = new RecyclerView(App.GetContext());
-            RVCategory.setLayoutManager(new LinearLayoutManager(App.GetContext()));
+            RecyclerView RVCategory = new RecyclerView(context);
+            RVCategory.setLayoutManager(new LinearLayoutManager(context));
             RVCategory.setAdapter(new AdapterCategory());
             RVCategory.setLayoutParams(RVCategoryParam);
 
@@ -1310,12 +1317,14 @@ public class FragmentMomentWrite extends Fragment
             @Override
             public ViewHolderCategory onCreateViewHolder(ViewGroup parent, int ViewType)
             {
-                RelativeLayout Main = new RelativeLayout(App.GetContext());
+                Context context = getActivity();
+
+                RelativeLayout Main = new RelativeLayout(context);
                 Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                 Main.setId(ID_MAIN);
                 Main.setClickable(true);
 
-                ImageView Icon = new ImageView(App.GetContext());
+                ImageView Icon = new ImageView(context);
                 Icon.setPadding(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
                 Icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 Icon.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(45), MiscHandler.DpToPx(45)));
@@ -1328,9 +1337,9 @@ public class FragmentMomentWrite extends Fragment
                 NameParam.setMargins(MiscHandler.DpToPx(15), 0, 0, 0);
                 NameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-                TextView Name = new TextView(App.GetContext());
+                TextView Name = new TextView(context);
                 Name.setLayoutParams(NameParam);
-                Name.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Name.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Name.setId(ID_NAME);
                 Name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
@@ -1339,9 +1348,9 @@ public class FragmentMomentWrite extends Fragment
                 RelativeLayout.LayoutParams PositionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
                 PositionParam.addRule(RelativeLayout.BELOW, ID_ICON);
 
-                View Line = new View(App.GetContext());
+                View Line = new View(context);
                 Line.setLayoutParams(PositionParam);
-                Line.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray));
+                Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray));
                 Line.setId(ID_LINE);
 
                 Main.addView(Line);

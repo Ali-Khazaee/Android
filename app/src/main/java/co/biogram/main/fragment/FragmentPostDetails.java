@@ -33,7 +33,6 @@ import org.json.JSONObject;
 
 import java.text.Bidi;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.RequestHandler;
@@ -85,18 +84,20 @@ public class FragmentPostDetails extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        RelativeLayout Root = new RelativeLayout(App.GetContext());
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        final Context context = getActivity();
 
-        RelativeLayout Header = new RelativeLayout(App.GetContext());
+        RelativeLayout Root = new RelativeLayout(context);
+        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
+
+        RelativeLayout Header = new RelativeLayout(context);
         Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
-        Header.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White5));
+        Header.setBackgroundColor(ContextCompat.getColor(context, R.color.White5));
         Header.setId(MiscHandler.GenerateViewID());
 
         Root.addView(Header);
 
-        ImageView Back = new ImageView(App.GetContext());
+        ImageView Back = new ImageView(context);
         Back.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
         Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
         Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56)));
@@ -117,9 +118,9 @@ public class FragmentPostDetails extends Fragment
         TitleParam.addRule(RelativeLayout.RIGHT_OF, Back.getId());
         TitleParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        TextView Title = new TextView(App.GetContext());
+        TextView Title = new TextView(context);
         Title.setLayoutParams(TitleParam);
-        Title.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        Title.setTextColor(ContextCompat.getColor(context, R.color.Black));
         Title.setText(getString(R.string.PostDetailsTitle));
         Title.setTypeface(null, Typeface.BOLD);
         Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -129,7 +130,7 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams OptionParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56));
         OptionParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
 
-        Option = new ImageView(App.GetContext());
+        Option = new ImageView(context);
         Option.setPadding(MiscHandler.DpToPx(14), MiscHandler.DpToPx(14), MiscHandler.DpToPx(14), MiscHandler.DpToPx(14));
         Option.setScaleType(ImageView.ScaleType.FIT_CENTER);
         Option.setLayoutParams(OptionParam);
@@ -145,14 +146,14 @@ public class FragmentPostDetails extends Fragment
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
 
-                LinearLayout Root = new LinearLayout(App.GetContext());
+                LinearLayout Root = new LinearLayout(context);
                 Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+                Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
                 Root.setOrientation(LinearLayout.VERTICAL);
 
-                TextView Follow = new TextView(App.GetContext());
+                TextView Follow = new TextView(context);
                 Follow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Follow.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Follow.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Follow.setText(getString(R.string.AdapterPostFollow));
                 Follow.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Follow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -168,15 +169,15 @@ public class FragmentPostDetails extends Fragment
 
                 Root.addView(Follow);
 
-                View FollowLine = new View(App.GetContext());
+                View FollowLine = new View(context);
                 FollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                FollowLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                FollowLine.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray1));
 
                 Root.addView(FollowLine);
 
-                final TextView Turn = new TextView(App.GetContext());
+                final TextView Turn = new TextView(context);
                 Turn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Turn.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Turn.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Turn.setVisibility(View.GONE);
                 Turn.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Turn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -219,16 +220,16 @@ public class FragmentPostDetails extends Fragment
 
                 Root.addView(Turn);
 
-                View TurnLine = new View(App.GetContext());
+                View TurnLine = new View(context);
                 TurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                TurnLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                TurnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray1));
                 TurnLine.setVisibility(View.GONE);
 
                 Root.addView(TurnLine);
 
-                TextView Copy = new TextView(App.GetContext());
+                TextView Copy = new TextView(context);
                 Copy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Copy.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Copy.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Copy.setText(getString(R.string.AdapterPostCopy));
                 Copy.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Copy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -248,15 +249,15 @@ public class FragmentPostDetails extends Fragment
 
                 Root.addView(Copy);
 
-                View CopyLine = new View(App.GetContext());
+                View CopyLine = new View(context);
                 CopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                CopyLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                CopyLine.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray1));
 
                 Root.addView(CopyLine);
 
-                TextView Block = new TextView(App.GetContext());
+                TextView Block = new TextView(context);
                 Block.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Block.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Block.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Block.setText(getString(R.string.AdapterPostBlock));
                 Block.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Block.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -272,15 +273,15 @@ public class FragmentPostDetails extends Fragment
 
                 Root.addView(Block);
 
-                View BlockLine = new View(App.GetContext());
+                View BlockLine = new View(context);
                 BlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                BlockLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                BlockLine.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray1));
 
                 Root.addView(BlockLine);
 
-                TextView Delete = new TextView(App.GetContext());
+                TextView Delete = new TextView(context);
                 Delete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Delete.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Delete.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Delete.setText(getString(R.string.AdapterPostDelete));
                 Delete.setVisibility(View.GONE);
                 Delete.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
@@ -319,16 +320,16 @@ public class FragmentPostDetails extends Fragment
 
                 Root.addView(Delete);
 
-                View DeleteLine = new View(App.GetContext());
+                View DeleteLine = new View(context);
                 DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                DeleteLine.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray1));
+                DeleteLine.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray1));
                 DeleteLine.setVisibility(View.GONE);
 
                 Root.addView(DeleteLine);
 
-                TextView Report = new TextView(App.GetContext());
+                TextView Report = new TextView(context);
                 Report.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Report.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+                Report.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 Report.setText(getString(R.string.AdapterPostReport));
                 Report.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
                 Report.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -371,7 +372,7 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams BookMarkParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56));
         BookMarkParam.addRule(RelativeLayout.LEFT_OF, Option.getId());
 
-        BookMark = new ImageView(App.GetContext());
+        BookMark = new ImageView(context);
         BookMark.setPadding(MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16), MiscHandler.DpToPx(16));
         BookMark.setScaleType(ImageView.ScaleType.FIT_CENTER);
         BookMark.setLayoutParams(BookMarkParam);
@@ -419,9 +420,9 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
         LineParam.addRule(RelativeLayout.BELOW, Header.getId());
 
-        View Line = new View(App.GetContext());
+        View Line = new View(context);
         Line.setLayoutParams(LineParam);
-        Line.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray2));
+        Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
         Line.setId(MiscHandler.GenerateViewID());
 
         Root.addView(Line);
@@ -429,7 +430,7 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams ScrollParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         ScrollParam.addRule(RelativeLayout.BELOW, Line.getId());
 
-        ScrollView Scroll = new ScrollView(App.GetContext());
+        ScrollView Scroll = new ScrollView(context);
         Scroll.setLayoutParams(ScrollParam);
         Scroll.setFillViewport(true);
         Scroll.setVerticalScrollBarEnabled(false);
@@ -437,7 +438,7 @@ public class FragmentPostDetails extends Fragment
 
         Root.addView(Scroll);
 
-        RelativeLayout Main = new RelativeLayout(App.GetContext());
+        RelativeLayout Main = new RelativeLayout(context);
         Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         Scroll.addView(Main);
@@ -445,7 +446,7 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams ProfileParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(55), MiscHandler.DpToPx(55));
         ProfileParam.setMargins(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
 
-        Profile = new ImageViewCircle(App.GetContext());
+        Profile = new ImageViewCircle(context);
         Profile.setLayoutParams(ProfileParam);
         Profile.setImageResource(R.color.BlueGray);
         Profile.setId(MiscHandler.GenerateViewID());
@@ -456,9 +457,9 @@ public class FragmentPostDetails extends Fragment
         UsernameParam.addRule(RelativeLayout.RIGHT_OF, Profile.getId());
         UsernameParam.setMargins(0, MiscHandler.DpToPx(14), 0, 0);
 
-        Username = new TextView(App.GetContext());
+        Username = new TextView(context);
         Username.setLayoutParams(UsernameParam);
-        Username.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        Username.setTextColor(ContextCompat.getColor(context, R.color.Black));
         Username.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         Username.setId(MiscHandler.GenerateViewID());
         Username.setTypeface(null, Typeface.BOLD);
@@ -469,9 +470,9 @@ public class FragmentPostDetails extends Fragment
         TimeParam.addRule(RelativeLayout.BELOW, Username.getId());
         TimeParam.addRule(RelativeLayout.RIGHT_OF, Profile.getId());
 
-        Time = new TextView(App.GetContext());
+        Time = new TextView(context);
         Time.setLayoutParams(TimeParam);
-        Time.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray4));
+        Time.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
         Time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
         Main.addView(Time);
@@ -480,9 +481,9 @@ public class FragmentPostDetails extends Fragment
         MessageParam.addRule(RelativeLayout.BELOW, Profile.getId());
         MessageParam.setMargins(MiscHandler.DpToPx(10), MiscHandler.DpToPx(5), MiscHandler.DpToPx(10), MiscHandler.DpToPx(5));
 
-        Message = new TextView(App.GetContext());
+        Message = new TextView(context);
         Message.setLayoutParams(MessageParam);
-        Message.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        Message.setTextColor(ContextCompat.getColor(context, R.color.Black));
         Message.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         Message.setId(MiscHandler.GenerateViewID());
         Message.setLineSpacing(1f, 1.25f);
@@ -494,77 +495,77 @@ public class FragmentPostDetails extends Fragment
         ContentParam.setMargins(MiscHandler.DpToPx(10), MiscHandler.DpToPx(15), MiscHandler.DpToPx(10), 0);
         ContentParam.addRule(RelativeLayout.BELOW, Message.getId());
 
-        RelativeLayout Content = new RelativeLayout(App.GetContext());
+        RelativeLayout Content = new RelativeLayout(context);
         Content.setLayoutParams(ContentParam);
         Content.setId(MiscHandler.GenerateViewID());
 
         Main.addView(Content);
 
-        ContentSingle = new LinearLayout(App.GetContext());
+        ContentSingle = new LinearLayout(context);
         ContentSingle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ContentSingle.setVisibility(View.GONE);
 
         Content.addView(ContentSingle);
 
-        Single = new ImageView(App.GetContext());
+        Single = new ImageView(context);
         Single.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(200)));
         Single.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Single.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        Single.setBackgroundColor(ContextCompat.getColor(context, R.color.BlueGray));
 
         ContentSingle.addView(Single);
 
-        ContentDouble = new LinearLayout(App.GetContext());
+        ContentDouble = new LinearLayout(context);
         ContentDouble.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ContentDouble.setVisibility(View.GONE);
 
         Content.addView(ContentDouble);
 
-        Double1 = new ImageView(App.GetContext());
+        Double1 = new ImageView(context);
         Double1.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.DpToPx(200), 1f));
         Double1.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Double1.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        Double1.setBackgroundColor(ContextCompat.getColor(context, R.color.BlueGray));
 
         ContentDouble.addView(Double1);
 
-        View LineDouble = new View(App.GetContext());
+        View LineDouble = new View(context);
         LineDouble.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.MATCH_PARENT, 0.05f));
 
         ContentDouble.addView(LineDouble);
 
-        Double2 = new ImageView(App.GetContext());
+        Double2 = new ImageView(context);
         Double2.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.DpToPx(200), 1f));
         Double2.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Double2.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        Double2.setBackgroundColor(ContextCompat.getColor(context, R.color.BlueGray));
 
         ContentDouble.addView(Double2);
 
-        ContentTriple = new LinearLayout(App.GetContext());
+        ContentTriple = new LinearLayout(context);
         ContentTriple.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ContentTriple.setVisibility(View.GONE);
 
         Content.addView(ContentTriple);
 
-        Triple1 = new ImageView(App.GetContext());
+        Triple1 = new ImageView(context);
         Triple1.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.DpToPx(200), 1f));
         Triple1.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Triple1.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        Triple1.setBackgroundColor(ContextCompat.getColor(context, R.color.BlueGray));
 
         ContentTriple.addView(Triple1);
 
-        View LineTriple = new View(App.GetContext());
+        View LineTriple = new View(context);
         LineTriple.setLayoutParams(new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.MATCH_PARENT, 0.05f));
 
         ContentTriple.addView(LineTriple);
 
-        RelativeLayout TripleLayout = new RelativeLayout(App.GetContext());
+        RelativeLayout TripleLayout = new RelativeLayout(context);
         TripleLayout.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.DpToPx(200), 1f));
 
         ContentTriple.addView(TripleLayout);
 
-        Triple2 = new ImageView(App.GetContext());
+        Triple2 = new ImageView(context);
         Triple2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(97)));
         Triple2.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Triple2.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        Triple2.setBackgroundColor(ContextCompat.getColor(context, R.color.BlueGray));
         Triple2.setId(MiscHandler.GenerateViewID());
 
         TripleLayout.addView(Triple2);
@@ -572,7 +573,7 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams LineTriple2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(6));
         LineTriple2Param.addRule(RelativeLayout.BELOW, Triple2.getId());
 
-        View LineTriple2 = new View(App.GetContext());
+        View LineTriple2 = new View(context);
         LineTriple2.setLayoutParams(LineTriple2Param);
         LineTriple2.setId(MiscHandler.GenerateViewID());
 
@@ -581,17 +582,17 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams Triple3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(97));
         Triple3Param.addRule(RelativeLayout.BELOW, LineTriple2.getId());
 
-        Triple3 = new ImageView(App.GetContext());
+        Triple3 = new ImageView(context);
         Triple3.setLayoutParams(Triple3Param);
         Triple3.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Triple3.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        Triple3.setBackgroundColor(ContextCompat.getColor(context, R.color.BlueGray));
 
         TripleLayout.addView(Triple3);
 
         GradientDrawable ShapeLink = new GradientDrawable();
-        ShapeLink.setStroke(MiscHandler.DpToPx(1), ContextCompat.getColor(App.GetContext(), R.color.BlueGray));
+        ShapeLink.setStroke(MiscHandler.DpToPx(1), ContextCompat.getColor(context, R.color.BlueGray));
 
-        ContentLink = new RelativeLayout(App.GetContext());
+        ContentLink = new RelativeLayout(context);
         ContentLink.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         ContentLink.setPadding(MiscHandler.DpToPx(1), MiscHandler.DpToPx(1), MiscHandler.DpToPx(1), MiscHandler.DpToPx(1));
         ContentLink.setBackground(ShapeLink);
@@ -604,7 +605,7 @@ public class FragmentPostDetails extends Fragment
         LoadingParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         LoadingParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
-        Loading = new LoadingView(App.GetContext());
+        Loading = new LoadingView(context);
         Loading.setLayoutParams(LoadingParam);
         Loading.SetColor(R.color.BlueGray2);
 
@@ -614,9 +615,9 @@ public class FragmentPostDetails extends Fragment
         TryParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         TryParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
-        Try = new TextView(App.GetContext());
+        Try = new TextView(context);
         Try.setLayoutParams(TryParam);
-        Try.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        Try.setTextColor(ContextCompat.getColor(context, R.color.Black));
         Try.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         Try.setTypeface(null, Typeface.BOLD);
         Try.setText(getString(R.string.GeneralTryAgain));
@@ -627,9 +628,9 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams TitleParam2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TitleParam2.setMargins(MiscHandler.DpToPx(10), MiscHandler.DpToPx(5), MiscHandler.DpToPx(10), MiscHandler.DpToPx(5));
 
-        Website = new TextView(App.GetContext());
+        Website = new TextView(context);
         Website.setLayoutParams(TitleParam2);
-        Website.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        Website.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         Website.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         Website.setId(MiscHandler.GenerateViewID());
 
@@ -639,9 +640,9 @@ public class FragmentPostDetails extends Fragment
         DescriptionParam.setMargins(MiscHandler.DpToPx(10), 0, MiscHandler.DpToPx(10), MiscHandler.DpToPx(5));
         DescriptionParam.addRule(RelativeLayout.BELOW, Website.getId());
 
-        Description = new TextView(App.GetContext());
+        Description = new TextView(context);
         Description.setLayoutParams(DescriptionParam);
-        Description.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray3));
+        Description.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         Description.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         Description.setId(MiscHandler.GenerateViewID());
 
@@ -650,7 +651,7 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams FavParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         FavParam.addRule(RelativeLayout.BELOW, Description.getId());
 
-        Fav = new ImageView(App.GetContext());
+        Fav = new ImageView(context);
         Fav.setLayoutParams(FavParam);
         Fav.setScaleType(ImageView.ScaleType.FIT_XY);
         Fav.setMaxHeight(MiscHandler.DpToPx(300));
@@ -661,16 +662,16 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams InfoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         InfoParam.addRule(RelativeLayout.BELOW, Content.getId());
 
-        LinearLayout Info = new LinearLayout(App.GetContext());
+        LinearLayout Info = new LinearLayout(context);
         Info.setLayoutParams(InfoParam);
         Info.setId(MiscHandler.GenerateViewID());
         Info.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15));
 
         Main.addView(Info);
 
-        LikeCount = new TextView(App.GetContext());
+        LikeCount = new TextView(context);
         LikeCount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        LikeCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        LikeCount.setTextColor(ContextCompat.getColor(context, R.color.Black));
         LikeCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         LikeCount.setTypeface(null, Typeface.BOLD);
         LikeCount.setPadding(MiscHandler.DpToPx(15), 0, 0, 0);
@@ -691,9 +692,9 @@ public class FragmentPostDetails extends Fragment
 
         Info.addView(LikeCount);
 
-        TextView Like = new TextView(App.GetContext());
+        TextView Like = new TextView(context);
         Like.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        Like.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        Like.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         Like.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         Like.setTypeface(null, Typeface.BOLD);
         Like.setText(getString(R.string.PostDetailsLike));
@@ -715,9 +716,9 @@ public class FragmentPostDetails extends Fragment
 
         Info.addView(Like);
 
-        CommentCount = new TextView(App.GetContext());
+        CommentCount = new TextView(context);
         CommentCount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        CommentCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        CommentCount.setTextColor(ContextCompat.getColor(context, R.color.Black));
         CommentCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         CommentCount.setTypeface(null, Typeface.BOLD);
         CommentCount.setPadding(MiscHandler.DpToPx(15), 0, 0, 0);
@@ -745,9 +746,9 @@ public class FragmentPostDetails extends Fragment
 
         Info.addView(CommentCount);
 
-        TextView Comment = new TextView(App.GetContext());
+        TextView Comment = new TextView(context);
         Comment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        Comment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        Comment.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         Comment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         Comment.setTypeface(null, Typeface.BOLD);
         Comment.setText(getString(R.string.PostDetailsComment));
@@ -779,9 +780,9 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams Line2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
         Line2Param.addRule(RelativeLayout.BELOW, Info.getId());
 
-        View Line2 = new View(App.GetContext());
+        View Line2 = new View(context);
         Line2.setLayoutParams(Line2Param);
-        Line2.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray));
+        Line2.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray));
         Line2.setId(MiscHandler.GenerateViewID());
 
         Main.addView(Line2);
@@ -789,13 +790,13 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams ToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         ToolParam.addRule(RelativeLayout.BELOW, Line2.getId());
 
-        LinearLayout Tool = new LinearLayout(App.GetContext());
+        LinearLayout Tool = new LinearLayout(context);
         Tool.setLayoutParams(ToolParam);
         Tool.setId(MiscHandler.GenerateViewID());
 
         Main.addView(Tool);
 
-        IconLike = new ImageView(App.GetContext());
+        IconLike = new ImageView(context);
         IconLike.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
         IconLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
         IconLike.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56), 1f));
@@ -862,7 +863,7 @@ public class FragmentPostDetails extends Fragment
 
         Tool.addView(IconLike);
 
-        ImageView IconComment = new ImageView(App.GetContext());
+        ImageView IconComment = new ImageView(context);
         IconComment.setPadding(MiscHandler.DpToPx(14), MiscHandler.DpToPx(14), MiscHandler.DpToPx(14), MiscHandler.DpToPx(14));
         IconComment.setScaleType(ImageView.ScaleType.FIT_CENTER);
         IconComment.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56), 1f));
@@ -891,7 +892,7 @@ public class FragmentPostDetails extends Fragment
 
         Tool.addView(IconComment);
 
-        ImageView IconShare = new ImageView(App.GetContext());
+        ImageView IconShare = new ImageView(context);
         IconShare.setPadding(MiscHandler.DpToPx(14), MiscHandler.DpToPx(14), MiscHandler.DpToPx(14), MiscHandler.DpToPx(14));
         IconShare.setScaleType(ImageView.ScaleType.FIT_CENTER);
         IconShare.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56), 1f));
@@ -915,9 +916,9 @@ public class FragmentPostDetails extends Fragment
         Line3Param.addRule(RelativeLayout.BELOW, Tool.getId());
         Line3Param.setMargins(0, 0, 0, MiscHandler.DpToPx(25));
 
-        View Line3 = new View(App.GetContext());
+        View Line3 = new View(context);
         Line3.setLayoutParams(Line3Param);
-        Line3.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray));
+        Line3.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray));
         Line3.setId(MiscHandler.GenerateViewID());
 
         Main.addView(Line3);
@@ -925,9 +926,9 @@ public class FragmentPostDetails extends Fragment
         RelativeLayout.LayoutParams LoadParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         LoadParam.addRule(RelativeLayout.BELOW, Line.getId());
 
-        LoadPage = new RelativeLayout(App.GetContext());
+        LoadPage = new RelativeLayout(context);
         LoadPage.setLayoutParams(LoadParam);
-        LoadPage.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        LoadPage.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
         LoadPage.setVisibility(View.VISIBLE);
 
         Root.addView(LoadPage);
@@ -936,7 +937,7 @@ public class FragmentPostDetails extends Fragment
         LoadingPageParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         LoadingPageParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
-        LoadingPage = new LoadingView(App.GetContext());
+        LoadingPage = new LoadingView(context);
         LoadingPage.setLayoutParams(LoadingPageParam);
         LoadingPage.SetColor(R.color.BlueGray2);
 
@@ -946,9 +947,9 @@ public class FragmentPostDetails extends Fragment
         TryPageParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         TryPageParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
-        TryPage = new TextView(App.GetContext());
+        TryPage = new TextView(context);
         TryPage.setLayoutParams(TryPageParam);
-        TryPage.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TryPage.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TryPage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TryPage.setTypeface(null, Typeface.BOLD);
         TryPage.setText(getString(R.string.GeneralTryAgain));

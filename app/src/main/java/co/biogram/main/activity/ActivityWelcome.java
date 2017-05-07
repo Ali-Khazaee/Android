@@ -59,7 +59,7 @@ public class ActivityWelcome extends AppCompatActivity
         }
 
         if (Build.VERSION.SDK_INT > 20)
-            getWindow().setStatusBarColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.BlueLight));
 
         setContentView(R.layout.activity_welcome);
 

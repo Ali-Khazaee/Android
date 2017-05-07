@@ -3,6 +3,7 @@ package co.biogram.main.fragment;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -33,7 +34,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.RequestHandler;
@@ -85,7 +85,7 @@ public class FragmentComment extends Fragment
         });
 
         final RecyclerView RecyclerViewComment = (RecyclerView) Root.findViewById(R.id.RecyclerViewComment);
-        RecyclerViewCommentAdapter = new AdapterComment();
+        RecyclerViewCommentAdapter = new AdapterComment(getActivity());
 
         RecyclerViewComment.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewComment.setAdapter(RecyclerViewCommentAdapter);
@@ -365,6 +365,13 @@ public class FragmentComment extends Fragment
 
     private class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHolderComment>
     {
+        private Context context;
+
+        AdapterComment(Context c)
+        {
+            context = c;
+        }
+
         class ViewHolderComment extends RecyclerView.ViewHolder
         {
             ImageViewCircle ImageViewProfile;
@@ -512,34 +519,34 @@ public class FragmentComment extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-                        LinearLayout Root = new LinearLayout(App.GetContext());
+                        LinearLayout Root = new LinearLayout(context);
                         Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                         Root.setOrientation(LinearLayout.VERTICAL);
 
-                        TextView Title = new TextView(App.GetContext());
+                        TextView Title = new TextView(context);
                         Title.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                        Title.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black2));
+                        Title.setTextColor(ContextCompat.getColor(context, R.color.Black2));
                         Title.setText(getString(R.string.FragmentCommentAreYouSure));
                         Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         Title.setPadding(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
 
                         Root.addView(Title);
 
-                        View Line = new View(App.GetContext());
+                        View Line = new View(context);
                         Line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
-                        Line.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.Gray2));
+                        Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
 
                         Root.addView(Line);
 
-                        LinearLayout Linear = new LinearLayout(App.GetContext());
+                        LinearLayout Linear = new LinearLayout(context);
                         Linear.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         Linear.setOrientation(LinearLayout.HORIZONTAL);
 
                         Root.addView(Linear);
 
-                        TextView Yes = new TextView(App.GetContext());
+                        TextView Yes = new TextView(context);
                         Yes.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                        Yes.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black4));
+                        Yes.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                         Yes.setText(getString(R.string.FragmentCommentYes));
                         Yes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         Yes.setPadding(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
@@ -547,9 +554,9 @@ public class FragmentComment extends Fragment
 
                         Linear.addView(Yes);
 
-                        TextView No = new TextView(App.GetContext());
+                        TextView No = new TextView(context);
                         No.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                        No.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black4));
+                        No.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                         No.setText(getString(R.string.FragmentCommentNo));
                         No.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         No.setPadding(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
@@ -633,11 +640,11 @@ public class FragmentComment extends Fragment
                 return new ViewHolderComment(ItemView, true);
             }
 
-            LinearLayout Root = new LinearLayout(App.GetContext());
+            LinearLayout Root = new LinearLayout(context);
             Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
             Root.setGravity(Gravity.CENTER);
 
-            LoadingView Loading = new LoadingView(App.GetContext());
+            LoadingView Loading = new LoadingView(context);
             Loading.SetColor(R.color.BlueGray2);
             Loading.Start();
 
