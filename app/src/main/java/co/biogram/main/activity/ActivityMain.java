@@ -39,31 +39,24 @@ public class ActivityMain extends AppCompatActivity
         ImageViewNotification = (ImageView) findViewById(R.id.ImageViewNotification);
         ImageViewProfile = (ImageView) findViewById(R.id.ImageViewProfile);
 
-        ImageViewMoment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeFragment(1, false); } });
-        ImageViewHome.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeFragment(2, false); } });
-        ImageViewCategory.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeFragment(3, false); } });
-        ImageViewNotification.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeFragment(4, false); } });
-        ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeFragment(5, false); } });
+        ImageViewMoment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(1); } });
+        ImageViewHome.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(2); } });
+        ImageViewCategory.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(3); } });
+        ImageViewNotification.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(4); } });
+        ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(5); } });
 
         FragManager = getSupportFragmentManager();
 
-        ChangeFragment(getIntent().getIntExtra("Tab", 5), false);
+        ChangeTab(getIntent().getIntExtra("Tab", 5));
     }
 
     @Override
     public void onBackPressed()
     {
-        List<Fragment> FragList = FragManager.getFragments();
-
-        if (FragList != null)
+        if (FragManager.getBackStackEntryCount() == 1)
         {
-            for (Fragment Frag : FragList)
-            {
-                if (Frag != null)
-                {
-                    MiscHandler.Log("Size: " + FragList.size() + " - " + Frag.getClass().getSimpleName() + " - " + Frag.isVisible());
-                }
-            }
+            finish();
+            return;
         }
 
         if (FragManager.getBackStackEntryCount() > 1)
@@ -75,19 +68,18 @@ public class ActivityMain extends AppCompatActivity
             {
                 switch (fragment.getClass().getSimpleName())
                 {
-                    case "FragmentMoment":       ChangeFragment(1, true); break;
-                    case "FragmentHome":         ChangeFragment(2, true); break;
-                    case "FragmentCategory":     ChangeFragment(3, true); break;
-                    case "FragmentNotification": ChangeFragment(4, true); break;
-                    case "FragmentProfile":      ChangeFragment(5, true); break;
+                    case "FragmentMoment":       ChangeTab(1); break;
+                    case "FragmentHome":         ChangeTab(2); break;
+                    case "FragmentCategory":     ChangeTab(3); break;
+                    case "FragmentNotification": ChangeTab(4); break;
+                    case "FragmentProfile":      ChangeTab(5); break;
                 }
             }
         }
     }
 
-    private void ChangeFragment(int Tab, boolean Continue)
+    private void ChangeTab(int Tab)
     {
-        findViewById(R.id.LinearLayoutMenu).setVisibility(View.VISIBLE);
         ImageViewMoment.setImageResource(R.drawable.ic_moment_gray);
         ImageViewHome.setImageResource(R.drawable.ic_home_gray);
         ImageViewCategory.setImageResource(R.drawable.ic_category_gray);
@@ -103,19 +95,32 @@ public class ActivityMain extends AppCompatActivity
             case 5: ImageViewProfile.setImageResource(R.drawable.ic_profile_black);           break;
         }
 
-        if (Continue)
-            return;
-
-        Fragment fragment = new FragmentMoment();
+        Fragment SelectedFragment = new FragmentMoment();
 
         switch (Tab)
         {
-            case 2: fragment = new FragmentTabFriend();       break;
-            case 3: fragment = new FragmentTabCategory();     break;
-            case 4: fragment = new FragmentTabNotification(); break;
-            case 5: fragment = new FragmentProfile();         break;
+            case 2: SelectedFragment = new FragmentTabFriend();       break;
+            case 3: SelectedFragment = new FragmentTabCategory();     break;
+            case 4: SelectedFragment = new FragmentTabNotification(); break;
+            case 5: SelectedFragment = new FragmentProfile();         break;
         }
 
-        FragManager.beginTransaction().add(R.id.FrameLayoutContainer, fragment, fragment.getClass().getSimpleName()).addToBackStack(fragment.getClass().getSimpleName()).commit();
+        Fragment FoundFragment = FragManager.findFragmentByTag(SelectedFragment.getClass().getSimpleName());
+
+        if (FoundFragment != null)
+        {
+            for (Fragment Frag : FragManager.getFragments())
+            {
+                if (Frag != null && Frag != FoundFragment)
+                {
+                    FragManager.beginTransaction().hide(Frag).commit();
+                }
+            }
+
+            FragManager.beginTransaction().show(FoundFragment).commit();
+            return;
+        }
+
+        FragManager.beginTransaction().add(R.id.FrameLayoutContainer, SelectedFragment, SelectedFragment.getClass().getSimpleName()).addToBackStack(SelectedFragment.getClass().getSimpleName()).commit();
     }
 }

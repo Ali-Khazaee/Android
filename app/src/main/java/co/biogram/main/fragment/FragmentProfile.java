@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.util.Linkify;
 import android.util.TypedValue;
@@ -423,7 +424,7 @@ public class FragmentProfile extends Fragment
         TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray7));
         ViewTabLike.setBackgroundResource(R.color.White);
 
-        Fragment fragment = new FragmentProfilePost();
+        Fragment SelectedFragment = new FragmentProfilePost();
 
         switch (Tab)
         {
@@ -432,18 +433,35 @@ public class FragmentProfile extends Fragment
                 ViewTabPost.setBackgroundResource(R.color.BlueLight);
             break;
             case 2:
-                fragment = new FragmentProfileComment();
+                SelectedFragment = new FragmentProfileComment();
                 TextViewTabComment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
                 ViewTabComment.setBackgroundResource(R.color.BlueLight);
             break;
             case 3:
-                fragment = new FragmentProfileLike();
+                SelectedFragment = new FragmentProfileLike();
                 TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
                 ViewTabLike.setBackgroundResource(R.color.BlueLight);
             break;
         }
 
-        getChildFragmentManager().beginTransaction().replace(FrameLayoutID, fragment).commit();
+        FragmentManager FragManager = getChildFragmentManager();
+        Fragment FoundFragment = FragManager.findFragmentByTag(SelectedFragment.getClass().getSimpleName());
+
+        if (FoundFragment != null)
+        {
+            for (Fragment Frag : FragManager.getFragments())
+            {
+                if (Frag != null && Frag != FoundFragment)
+                {
+                    FragManager.beginTransaction().hide(Frag).commit();
+                }
+            }
+
+            FragManager.beginTransaction().show(FoundFragment).commit();
+            return;
+        }
+
+        FragManager.beginTransaction().add(FrameLayoutID, SelectedFragment, SelectedFragment.getClass().getSimpleName()).commit();
     }
 
     private void RetrieveDataFromServer()

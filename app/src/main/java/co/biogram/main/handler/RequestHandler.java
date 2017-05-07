@@ -51,6 +51,36 @@ public class RequestHandler
         QueueRequestList.add(request);
     }
 
+    private static synchronized void UpdateRequestList()
+    {
+        if (QueueRequestList.size() > 0)
+        {
+            Executor().execute(QueueRequestList.get(0));
+            QueueRequestList.remove(0);
+        }
+    }
+
+    public static synchronized void Cancel(String Tag)
+    {
+        for (int I = 0; I < QueueRequestList.size(); I++)
+        {
+            if (QueueRequestList.get(I).GetTag().equals(Tag))
+            {
+                QueueRequestList.get(I).Cancel();
+                QueueRequestList.remove(I);
+            }
+        }
+
+        for (int I = 0; I < RunningRequestList.size(); I++)
+        {
+            if (RunningRequestList.get(I).GetTag().equals(Tag))
+            {
+                RunningRequestList.get(I).Cancel();
+                RunningRequestList.remove(I);
+            }
+        }
+    }
+
     private static abstract class Request extends Thread
     {
         private String Tag;
@@ -91,36 +121,6 @@ public class RequestHandler
         }
 
         abstract void Run();
-    }
-
-    private static synchronized void UpdateRequestList()
-    {
-        if (QueueRequestList.size() > 0)
-        {
-            Executor().execute(QueueRequestList.get(0));
-            QueueRequestList.remove(0);
-        }
-    }
-
-    public static synchronized void Cancel(String Tag)
-    {
-        for (int I = 0; I < QueueRequestList.size(); I++)
-        {
-            if (QueueRequestList.get(I).GetTag().equals(Tag))
-            {
-                QueueRequestList.get(I).Cancel();
-                QueueRequestList.remove(I);
-            }
-        }
-
-        for (int I = 0; I < RunningRequestList.size(); I++)
-        {
-            if (RunningRequestList.get(I).GetTag().equals(Tag))
-            {
-                RunningRequestList.get(I).Cancel();
-                RunningRequestList.remove(I);
-            }
-        }
     }
 
     public static Builder Method(String Method)
