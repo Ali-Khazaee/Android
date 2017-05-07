@@ -71,7 +71,7 @@ public class TextCrawler
                     _URLContent.Description = MetaTags.get("description");
 
                     if (_URLContent.Description == null || _URLContent.Description.equals(""))
-                        _URLContent.Description = App.GetContext().getString(R.string.TextCrawlerNoDescription);
+                        _URLContent.Description = "No Description ...";
 
                     if (!MetaTags.get("image").startsWith("http://") && !MetaTags.get("image").startsWith("https://"))
                         _URLContent.Image = URL + MetaTags.get("image");

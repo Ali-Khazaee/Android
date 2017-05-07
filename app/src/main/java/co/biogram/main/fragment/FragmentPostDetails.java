@@ -163,7 +163,7 @@ public class FragmentPostDetails extends Fragment
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(getActivity(), getString(R.string.GeneralSoon));
                     }
                 });
 
@@ -242,7 +242,7 @@ public class FragmentPostDetails extends Fragment
                         ClipData clip = ClipData.newPlainText(PostID, Message.getText().toString());
                         clipboard.setPrimaryClip(clip);
 
-                        MiscHandler.Toast(getString(R.string.AdapterPostClipboard));
+                        MiscHandler.Toast(getActivity(), getString(R.string.AdapterPostClipboard));
                         DialogOption.dismiss();
                     }
                 });
@@ -267,7 +267,7 @@ public class FragmentPostDetails extends Fragment
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(getActivity(), getString(R.string.GeneralSoon));
                     }
                 });
 
@@ -339,7 +339,7 @@ public class FragmentPostDetails extends Fragment
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(getActivity(), getString(R.string.GeneralSoon));
                     }
                 });
 
@@ -740,7 +740,7 @@ public class FragmentPostDetails extends Fragment
                     return;
                 }
 
-                MiscHandler.Toast(getString(R.string.AdapterPostComment));
+                MiscHandler.Toast(getActivity(), getString(R.string.AdapterPostComment));
             }
         });
 
@@ -771,7 +771,7 @@ public class FragmentPostDetails extends Fragment
                     return;
                 }
 
-                MiscHandler.Toast(getString(R.string.AdapterPostComment));
+                MiscHandler.Toast(getActivity(), getString(R.string.AdapterPostComment));
             }
         });
 
@@ -886,7 +886,7 @@ public class FragmentPostDetails extends Fragment
                     return;
                 }
 
-                MiscHandler.Toast(getString(R.string.AdapterPostComment));
+                MiscHandler.Toast(getActivity(), getString(R.string.AdapterPostComment));
             }
         });
 
@@ -998,7 +998,7 @@ public class FragmentPostDetails extends Fragment
                         Result = new JSONObject(Result.getString("Result"));
 
                         if (!Result.getString("Avatar").equals(""))
-                            RequestHandler.GetImage(Profile, Result.getString("Avatar"), "FragmentPostDetails", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+                            RequestHandler.Instance().GetImage(Profile, Result.getString("Avatar"), "FragmentPostDetails", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
                         Username.setText(Result.getString("Username"));
                         Time.setText(MiscHandler.GetTime(Result.getLong("Time")));
@@ -1026,7 +1026,7 @@ public class FragmentPostDetails extends Fragment
                                 @Override
                                 public void OnTagClicked(String Tag, int Type)
                                 {
-                                    MiscHandler.Toast(Tag);
+                                    MiscHandler.Toast(getActivity(), Tag);
                                 }
                             });
                         }
@@ -1042,23 +1042,23 @@ public class FragmentPostDetails extends Fragment
                                     case 1:
                                         ContentSingle.setVisibility(View.VISIBLE);
                                         Single.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        RequestHandler.GetImage(Single, URL.get(0).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.Instance().GetImage(Single, URL.get(0).toString(), "FragmentPostDetails", true);
                                         break;
                                     case 2:
                                         ContentDouble.setVisibility(View.VISIBLE);
                                         Double1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         Double2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        RequestHandler.GetImage(Double1, URL.get(0).toString(), "FragmentPostDetails", true);
-                                        RequestHandler.GetImage(Double2, URL.get(1).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.Instance().GetImage(Double1, URL.get(0).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.Instance().GetImage(Double2, URL.get(1).toString(), "FragmentPostDetails", true);
                                         break;
                                     case 3:
                                         ContentTriple.setVisibility(View.VISIBLE);
                                         Triple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         Triple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         Triple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        RequestHandler.GetImage(Triple1, URL.get(0).toString(), "FragmentPostDetails", true);
-                                        RequestHandler.GetImage(Triple2, URL.get(1).toString(), "FragmentPostDetails", true);
-                                        RequestHandler.GetImage(Triple3, URL.get(2).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.Instance().GetImage(Triple1, URL.get(0).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.Instance().GetImage(Triple2, URL.get(1).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.Instance().GetImage(Triple3, URL.get(2).toString(), "FragmentPostDetails", true);
                                         break;
                                 }
                             }
@@ -1117,7 +1117,7 @@ public class FragmentPostDetails extends Fragment
                                         Loading.Stop();
                                         Fav.setVisibility(View.VISIBLE);
 
-                                        RequestHandler.GetImage(Fav, Content.Image, "FragmentPostDetails", true);
+                                        RequestHandler.Instance().GetImage(Fav, Content.Image, "FragmentPostDetails", true);
                                     }
 
                                     @Override

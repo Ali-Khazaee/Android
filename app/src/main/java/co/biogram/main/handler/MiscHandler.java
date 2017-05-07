@@ -45,29 +45,29 @@ public class MiscHandler
         }
     }
 
-    public static void Toast(String Message)
+    public static void Toast(Context context, String Message)
     {
         GradientDrawable Shape = new GradientDrawable();
         Shape.setCornerRadius(50.0f);
-        Shape.setColor(ContextCompat.getColor(App.GetContext(), R.color.Toast));
+        Shape.setColor(ContextCompat.getColor(context, R.color.Toast));
 
-        RelativeLayout Main = new RelativeLayout(App.GetContext());
+        RelativeLayout Main = new RelativeLayout(context);
         Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Main.setBackground(Shape);
 
         RelativeLayout.LayoutParams TextMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        TextView TextMessage = new TextView(App.GetContext());
+        TextView TextMessage = new TextView(context);
         TextMessage.setLayoutParams(TextMessageParam);
-        TextMessage.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextMessage.setText(Message);
         TextMessage.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(10), MiscHandler.DpToPx(15), MiscHandler.DpToPx(10));
         TextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
         Main.addView(TextMessage);
 
-        Toast toast = new Toast(App.GetContext());
+        Toast toast = new Toast(context);
         toast.setGravity(Gravity.BOTTOM, 0, MiscHandler.DpToPx(62));
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(Main);

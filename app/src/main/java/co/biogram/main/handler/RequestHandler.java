@@ -27,11 +27,23 @@ import java.util.concurrent.TimeUnit;
 
 public class RequestHandler
 {
-    private static ArrayList<Request> QueueRequestList = new ArrayList<>();
-    private static ArrayList<Request> RunningRequestList = new ArrayList<>();
-    private static ThreadPoolExecutor ThreadExecutor;
+    private static RequestHandler Instance = new RequestHandler();
 
-    private static synchronized ThreadPoolExecutor Executor()
+    private ArrayList<Request> QueueRequestList = new ArrayList<>();
+    private ArrayList<Request> RunningRequestList = new ArrayList<>();
+    private ThreadPoolExecutor ThreadExecutor;
+
+    private RequestHandler() { }
+
+    public static synchronized RequestHandler Instance()
+    {
+        if (Instance == null)
+            Instance = new RequestHandler();
+
+        return Instance;
+    }
+
+    private synchronized ThreadPoolExecutor Executor()
     {
         if (ThreadExecutor == null)
             ThreadExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
@@ -39,7 +51,7 @@ public class RequestHandler
         return ThreadExecutor;
     }
 
-    private static synchronized void AddRequest(Request request)
+    private synchronized void AddRequest(Request request)
     {
         if (RunningRequestList.size() < 32)
         {
@@ -51,7 +63,7 @@ public class RequestHandler
         QueueRequestList.add(request);
     }
 
-    private static synchronized void UpdateRequestList()
+    private synchronized void UpdateRequestList()
     {
         if (QueueRequestList.size() > 0)
         {
@@ -60,7 +72,7 @@ public class RequestHandler
         }
     }
 
-    public static synchronized void Cancel(String Tag)
+    public synchronized void Cancel(String Tag)
     {
         for (int I = 0; I < QueueRequestList.size(); I++)
         {
@@ -81,7 +93,7 @@ public class RequestHandler
         }
     }
 
-    private static abstract class Request extends Thread
+    private abstract class Request extends Thread
     {
         private String Tag;
 
@@ -123,13 +135,13 @@ public class RequestHandler
         abstract void Run();
     }
 
-    public static Builder Method(String Method)
+    public Builder Method(String Method)
     {
         return new Builder(Method);
     }
 
     @SuppressWarnings("all")
-    public static class Builder
+    public class Builder
     {
         private int ReadTime = 30000;
         private int ConnectTime = 30000;
@@ -255,7 +267,7 @@ public class RequestHandler
         void OnProgress(long Received, long Total);
     }
 
-    public static void GetImage(final ImageView view, final String Address, String Tag, final boolean Cache)
+    public void GetImage(final ImageView view, final String Address, String Tag, final boolean Cache)
     {
         if (Address.equals(""))
             return;
@@ -310,7 +322,7 @@ public class RequestHandler
         AddRequest(request);
     }
 
-    public static void GetImage(final ImageView view, final String Address, String Tag, final int DesiredWidth, final int DesiredHeight, final boolean Cache)
+    public void GetImage(final ImageView view, final String Address, String Tag, final int DesiredWidth, final int DesiredHeight, final boolean Cache)
     {
         if (Address.equals(""))
             return;

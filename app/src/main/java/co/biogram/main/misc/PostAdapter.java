@@ -195,7 +195,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             }
         });
 
-        RequestHandler.GetImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+        RequestHandler.Instance().GetImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
         Holder.TextViewUsername.setText(PostList.get(Position).Username);
         Holder.TextViewTime.setText(MiscHandler.GetTime(PostList.get(Position).Time));
@@ -225,7 +225,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(AppActivity.getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.GeneralSoon));
                     }
                 });
 
@@ -313,7 +313,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                         ClipData clip = ClipData.newPlainText(PostList.get(Position).PostID, PostList.get(Position).Message);
                         clipboard.setPrimaryClip(clip);
 
-                        MiscHandler.Toast(AppActivity.getString(R.string.AdapterPostClipboard));
+                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.AdapterPostClipboard));
                         DialogOption.dismiss();
                     }
                 });
@@ -395,7 +395,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(AppActivity.getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.GeneralSoon));
                     }
                 });
 
@@ -470,7 +470,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(AppActivity.getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.GeneralSoon));
                     }
                 });
 
@@ -510,7 +510,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 @Override
                 public void OnTagClicked(String Tag, int Type)
                 {
-                    MiscHandler.Toast(Tag);
+                    MiscHandler.Toast(AppActivity, Tag);
                 }
             });
 
@@ -548,7 +548,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                         Holder.ImageViewSingle.setImageResource(android.R.color.transparent);
                         Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
 
-                        RequestHandler.GetImage(Holder.ImageViewSingle, URL.get(0).toString(), Tag, true);
+                        RequestHandler.Instance().GetImage(Holder.ImageViewSingle, URL.get(0).toString(), Tag, true);
                         break;
                     case 2:
                         Holder.LinearLayoutImageContent2.setVisibility(View.VISIBLE);
@@ -558,8 +558,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                         Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
 
-                        RequestHandler.GetImage(Holder.ImageViewDouble1, URL.get(0).toString(), Tag, true);
-                        RequestHandler.GetImage(Holder.ImageViewDouble2, URL.get(1).toString(), Tag, true);
+                        RequestHandler.Instance().GetImage(Holder.ImageViewDouble1, URL.get(0).toString(), Tag, true);
+                        RequestHandler.Instance().GetImage(Holder.ImageViewDouble2, URL.get(1).toString(), Tag, true);
                         break;
                     case 3:
                         Holder.LinearLayoutImageContent3.setVisibility(View.VISIBLE);
@@ -571,9 +571,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                         Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
 
-                        RequestHandler.GetImage(Holder.ImageViewTriple1, URL.get(0).toString(), Tag, true);
-                        RequestHandler.GetImage(Holder.ImageViewTriple2, URL.get(1).toString(), Tag, true);
-                        RequestHandler.GetImage(Holder.ImageViewTriple3, URL.get(2).toString(), Tag, true);
+                        RequestHandler.Instance().GetImage(Holder.ImageViewTriple1, URL.get(0).toString(), Tag, true);
+                        RequestHandler.Instance().GetImage(Holder.ImageViewTriple2, URL.get(1).toString(), Tag, true);
+                        RequestHandler.Instance().GetImage(Holder.ImageViewTriple3, URL.get(2).toString(), Tag, true);
                         break;
                 }
             }
@@ -645,7 +645,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                         Holder.TextViewDescription.setText(Content.Description);
                         Holder.LoadingViewLink.Stop();
 
-                        RequestHandler.GetImage(Holder.ImageViewFav, Content.Image, Tag, true);
+                        RequestHandler.Instance().GetImage(Holder.ImageViewFav, Content.Image, Tag, true);
                     }
 
                     @Override
@@ -788,7 +788,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     return;
                 }
 
-                MiscHandler.Toast(AppActivity.getString(R.string.AdapterPostComment));
+                MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.AdapterPostComment));
             }
         });
 

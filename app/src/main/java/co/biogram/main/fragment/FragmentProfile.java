@@ -1,5 +1,6 @@
 package co.biogram.main.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,7 +24,6 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.activity.ActivityProfileEdit;
 import co.biogram.main.handler.MiscHandler;
@@ -60,25 +60,27 @@ public class FragmentProfile extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        RelativeLayout Root = new RelativeLayout(App.GetContext());
+        final Context context = getActivity();
+
+        RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Root.setBackgroundResource(R.color.White);
         Root.setClickable(true);
         Root.setFocusableInTouchMode(true);
 
-        ScrollView ScrollLayout = new ScrollView(App.GetContext());
+        ScrollView ScrollLayout = new ScrollView(context);
         ScrollLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ScrollLayout.setVerticalScrollBarEnabled(false);
         ScrollLayout.setHorizontalScrollBarEnabled(false);
 
         Root.addView(ScrollLayout);
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ScrollLayout.addView(RelativeLayoutMain);
 
-        ImageViewCover = new ImageView(App.GetContext());
+        ImageViewCover = new ImageView(context);
         ImageViewCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(160)));
         ImageViewCover.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewCover.setId(MiscHandler.GenerateViewID());
@@ -89,7 +91,7 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(90), MiscHandler.DpToPx(90));
         ImageViewCircleProfileParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(120), MiscHandler.DpToPx(15), 0);
 
-        ImageViewCircleProfile = new ImageViewCircle(App.GetContext());
+        ImageViewCircleProfile = new ImageViewCircle(context);
         ImageViewCircleProfile.SetBorderColor(R.color.White);
         ImageViewCircleProfile.SetBorderWidth(MiscHandler.DpToPx(3));
         ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
@@ -106,7 +108,7 @@ public class FragmentProfile extends Fragment
         ImageButtonEditParam.setMargins(MiscHandler.DpToPx(15), MiscHandler.DpToPx(135), MiscHandler.DpToPx(15), 0);
         ImageButtonEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-        ImageButton ImageButtonEdit = new ImageButton(App.GetContext());
+        ImageButton ImageButtonEdit = new ImageButton(context);
         ImageButtonEdit.setLayoutParams(ImageButtonEditParam);
         ImageButtonEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageButtonEdit.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
@@ -117,7 +119,8 @@ public class FragmentProfile extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().startActivity(new Intent(App.GetContext(), ActivityProfileEdit.class));
+                getActivity().startActivity(new Intent(context, ActivityProfileEdit.class));
+                getActivity().finish();
             }
         });
 
@@ -130,13 +133,13 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams LinearLayoutMain2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         LinearLayoutMain2Param.addRule(RelativeLayout.BELOW, ImageViewCover.getId());
 
-        LinearLayout LinearLayoutMain2 = new LinearLayout(App.GetContext());
+        LinearLayout LinearLayoutMain2 = new LinearLayout(context);
         LinearLayoutMain2.setLayoutParams(LinearLayoutMain2Param);
         LinearLayoutMain2.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayoutMain.addView(LinearLayoutMain2);
 
-        View ViewBlankLine = new View(App.GetContext());
+        View ViewBlankLine = new View(context);
         ViewBlankLine.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(5)));
         ViewBlankLine.setBackgroundResource(R.color.Gray);
 
@@ -144,18 +147,18 @@ public class FragmentProfile extends Fragment
         ImageViewCircleProfile.bringToFront();
         ImageButtonEdit.bringToFront();
 
-        TextViewUsername = new TextView(App.GetContext());
+        TextViewUsername = new TextView(context);
         TextViewUsername.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewUsername.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewUsername.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(45), MiscHandler.DpToPx(15), 0);
         TextViewUsername.setTypeface(null, Typeface.BOLD);
         TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         LinearLayoutMain2.addView(TextViewUsername);
 
-        TextViewDescription = new TextView(App.GetContext());
+        TextViewDescription = new TextView(context);
         TextViewDescription.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewDescription.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewDescription.setPadding(MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15), 0);
         TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
@@ -163,22 +166,22 @@ public class FragmentProfile extends Fragment
 
         TextViewUrl = new TextView(getActivity());
         TextViewUrl.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewUrl.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
-        TextViewUrl.setLinkTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewUrl.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+        TextViewUrl.setLinkTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewUrl.setPadding(MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15), 0);
         TextViewUrl.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         Linkify.addLinks(TextViewUrl, Linkify.ALL);
 
         LinearLayoutMain2.addView(TextViewUrl);
 
-        LinearLayout LinearLayoutDetails = new LinearLayout(App.GetContext());
+        LinearLayout LinearLayoutDetails = new LinearLayout(context);
         LinearLayoutDetails.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayoutDetails.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutDetails.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(5));
 
         LinearLayoutMain2.addView(LinearLayoutDetails);
 
-        RelativeLayout RelativeLayoutPost = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutPost = new RelativeLayout(context);
         RelativeLayoutPost.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.1f));
 
         LinearLayoutDetails.addView(RelativeLayoutPost);
@@ -187,9 +190,9 @@ public class FragmentProfile extends Fragment
         TextViewPostCountParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         TextViewPostCountParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextViewPostCount = new TextView(App.GetContext());
+        TextViewPostCount = new TextView(context);
         TextViewPostCount.setLayoutParams(TextViewPostCountParam);
-        TextViewPostCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextViewPostCount.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewPostCount.setTypeface(null, Typeface.BOLD);
         TextViewPostCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewPostCount.setId(MiscHandler.GenerateViewID());
@@ -200,16 +203,16 @@ public class FragmentProfile extends Fragment
         TextViewPostParam.addRule(RelativeLayout.BELOW, TextViewPostCount.getId());
         TextViewPostParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewPost = new TextView(App.GetContext());
+        TextView TextViewPost = new TextView(context);
         TextViewPost.setLayoutParams(TextViewPostParam);
-        TextViewPost.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray5));
+        TextViewPost.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
         TextViewPost.setText(getString(R.string.FragmentProfilePost));
         TextViewPost.setPadding(MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5));
         TextViewPost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
         RelativeLayoutPost.addView(TextViewPost);
 
-        RelativeLayout RelativeLayoutFollower = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutFollower = new RelativeLayout(context);
         RelativeLayoutFollower.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
         LinearLayoutDetails.addView(RelativeLayoutFollower);
@@ -218,9 +221,9 @@ public class FragmentProfile extends Fragment
         TextViewFollowerCountParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         TextViewFollowerCountParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextViewFollowerCount = new TextView(App.GetContext());
+        TextViewFollowerCount = new TextView(context);
         TextViewFollowerCount.setLayoutParams(TextViewFollowerCountParam);
-        TextViewFollowerCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextViewFollowerCount.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewFollowerCount.setTypeface(null, Typeface.BOLD);
         TextViewFollowerCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewFollowerCount.setId(MiscHandler.GenerateViewID());
@@ -231,16 +234,16 @@ public class FragmentProfile extends Fragment
         TextViewFollowerParam.addRule(RelativeLayout.BELOW, TextViewFollowerCount.getId());
         TextViewFollowerParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewFollower = new TextView(App.GetContext());
+        TextView TextViewFollower = new TextView(context);
         TextViewFollower.setLayoutParams(TextViewFollowerParam);
-        TextViewFollower.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray5));
+        TextViewFollower.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
         TextViewFollower.setText(getString(R.string.FragmentProfileFollowers));
         TextViewFollower.setPadding(MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5));
         TextViewFollower.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
         RelativeLayoutFollower.addView(TextViewFollower);
 
-        RelativeLayout RelativeLayoutFollowing = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutFollowing = new RelativeLayout(context);
         RelativeLayoutFollowing.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
         LinearLayoutDetails.addView(RelativeLayoutFollowing);
@@ -249,9 +252,9 @@ public class FragmentProfile extends Fragment
         TextViewFollowingCountParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         TextViewFollowingCountParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextViewFollowingCount = new TextView(App.GetContext());
+        TextViewFollowingCount = new TextView(context);
         TextViewFollowingCount.setLayoutParams(TextViewFollowingCountParam);
-        TextViewFollowingCount.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Black));
+        TextViewFollowingCount.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewFollowingCount.setTypeface(null, Typeface.BOLD);
         TextViewFollowingCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewFollowingCount.setId(MiscHandler.GenerateViewID());
@@ -262,28 +265,28 @@ public class FragmentProfile extends Fragment
         TextViewFollowingParam.addRule(RelativeLayout.BELOW, TextViewFollowingCount.getId());
         TextViewFollowingParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewFollowing = new TextView(App.GetContext());
+        TextView TextViewFollowing = new TextView(context);
         TextViewFollowing.setLayoutParams(TextViewFollowingParam);
-        TextViewFollowing.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray5));
+        TextViewFollowing.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
         TextViewFollowing.setText(getString(R.string.FragmentProfileFollowing));
         TextViewFollowing.setPadding(MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5), MiscHandler.DpToPx(5));
         TextViewFollowing.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
         RelativeLayoutFollowing.addView(TextViewFollowing);
 
-        View ViewBlankLine2 = new View(App.GetContext());
+        View ViewBlankLine2 = new View(context);
         ViewBlankLine2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(5)));
         ViewBlankLine2.setBackgroundResource(R.color.Gray);
 
         LinearLayoutMain2.addView(ViewBlankLine2);
 
-        LinearLayout LinearLayoutTab = new LinearLayout(App.GetContext());
+        LinearLayout LinearLayoutTab = new LinearLayout(context);
         LinearLayoutTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
         LinearLayoutTab.setBackgroundResource(R.color.White);
 
         LinearLayoutMain2.addView(LinearLayoutTab);
 
-        RelativeLayout RelativeLayoutTabPost = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutTabPost = new RelativeLayout(context);
         RelativeLayoutTabPost.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         RelativeLayoutTabPost.setBackgroundResource(R.color.White);
         RelativeLayoutTabPost.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(1); } });
@@ -293,9 +296,9 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams TextViewTabPostParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTabPostParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextViewTabPost = new TextView(App.GetContext());
+        TextViewTabPost = new TextView(context);
         TextViewTabPost.setLayoutParams(TextViewTabPostParam);
-        TextViewTabPost.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewTabPost.setText("POST");
         TextViewTabPost.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15));
         TextViewTabPost.setId(MiscHandler.GenerateViewID());
@@ -306,13 +309,13 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams ViewTabPostParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.DpToPx(2));
         ViewTabPostParam.addRule(RelativeLayout.BELOW, TextViewTabPost.getId());
 
-        ViewTabPost = new View(App.GetContext());
+        ViewTabPost = new View(context);
         ViewTabPost.setLayoutParams(ViewTabPostParam);
         ViewTabPost.setBackgroundResource(R.color.BlueLight);
 
         RelativeLayoutTabPost.addView(ViewTabPost);
 
-        RelativeLayout RelativeLayoutTabComment = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutTabComment = new RelativeLayout(context);
         RelativeLayoutTabComment.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         RelativeLayoutTabComment.setBackgroundResource(R.color.White);
         RelativeLayoutTabComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(2); } });
@@ -322,9 +325,9 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams TextViewTabCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTabCommentParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextViewTabComment = new TextView(App.GetContext());
+        TextViewTabComment = new TextView(context);
         TextViewTabComment.setLayoutParams(TextViewTabCommentParam);
-        TextViewTabComment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewTabComment.setText("COMMENT");
         TextViewTabComment.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15));
         TextViewTabComment.setId(MiscHandler.GenerateViewID());
@@ -335,13 +338,13 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams ViewTabCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.DpToPx(2));
         ViewTabCommentParam.addRule(RelativeLayout.BELOW, TextViewTabComment.getId());
 
-        ViewTabComment = new View(App.GetContext());
+        ViewTabComment = new View(context);
         ViewTabComment.setLayoutParams(ViewTabCommentParam);
         ViewTabComment.setBackgroundResource(R.color.BlueLight);
 
         RelativeLayoutTabComment.addView(ViewTabComment);
 
-        RelativeLayout RelativeLayoutTabLike = new RelativeLayout(App.GetContext());
+        RelativeLayout RelativeLayoutTabLike = new RelativeLayout(context);
         RelativeLayoutTabLike.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         RelativeLayoutTabLike.setBackgroundResource(R.color.White);
         RelativeLayoutTabLike.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(3); } });
@@ -351,9 +354,9 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams TextViewTabLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTabLikeParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextViewTabLike = new TextView(App.GetContext());
+        TextViewTabLike = new TextView(context);
         TextViewTabLike.setLayoutParams(TextViewTabLikeParam);
-        TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+        TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewTabLike.setText("LIKE");
         TextViewTabLike.setPadding(0, MiscHandler.DpToPx(15), 0, MiscHandler.DpToPx(15));
         TextViewTabLike.setId(MiscHandler.GenerateViewID());
@@ -364,19 +367,19 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams ViewTabLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.DpToPx(2));
         ViewTabLikeParam.addRule(RelativeLayout.BELOW, TextViewTabLike.getId());
 
-        ViewTabLike = new View(App.GetContext());
+        ViewTabLike = new View(context);
         ViewTabLike.setLayoutParams(ViewTabLikeParam);
         ViewTabLike.setBackgroundResource(R.color.BlueLight);
 
         RelativeLayoutTabLike.addView(ViewTabLike);
 
-        FrameLayout FrameLayoutTab = new FrameLayout(App.GetContext());
+        FrameLayout FrameLayoutTab = new FrameLayout(context);
         FrameLayoutTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         FrameLayoutTab.setId(FrameLayoutID);
 
         LinearLayoutMain2.addView(FrameLayoutTab);
 
-        RelativeLayoutLoading = new RelativeLayout(App.GetContext());
+        RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
@@ -385,7 +388,7 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(App.GetContext());
+        LoadingViewData = new LoadingView(context);
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
         LoadingViewData.SetColor(R.color.BlueGray2);
 
@@ -394,9 +397,9 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(App.GetContext());
+        TextViewTry = new TextView(context);
         TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTry.setText(getString(R.string.GeneralTryAgain));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
@@ -412,16 +415,18 @@ public class FragmentProfile extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Cancel("FragmentProfile");
+        RequestHandler.Instance().Cancel("FragmentProfile");
     }
 
     private void ChangeTab(int Tab)
     {
-        TextViewTabPost.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray7));
+        Context context = getActivity();
+
+        TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabPost.setBackgroundResource(R.color.White);
-        TextViewTabComment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray7));
+        TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabComment.setBackgroundResource(R.color.White);
-        TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.Gray7));
+        TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabLike.setBackgroundResource(R.color.White);
 
         Fragment SelectedFragment = new FragmentProfilePost();
@@ -429,17 +434,17 @@ public class FragmentProfile extends Fragment
         switch (Tab)
         {
             case 1:
-                TextViewTabPost.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabPost.setBackgroundResource(R.color.BlueLight);
             break;
             case 2:
                 SelectedFragment = new FragmentProfileComment();
-                TextViewTabComment.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabComment.setBackgroundResource(R.color.BlueLight);
             break;
             case 3:
                 SelectedFragment = new FragmentProfileLike();
-                TextViewTabLike.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueLight));
+                TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabLike.setBackgroundResource(R.color.BlueLight);
             break;
         }
@@ -474,7 +479,7 @@ public class FragmentProfile extends Fragment
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
-        RequestHandler.Method("POST")
+        RequestHandler.Instance().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
         .Header("TOKEN",SharedHandler.GetString("TOKEN"))
         .Param("ID", ID)
@@ -486,7 +491,7 @@ public class FragmentProfile extends Fragment
             {
                 if (Status < 0)
                 {
-                    MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                    MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
                     TextViewTry.setVisibility(View.VISIBLE);
                     LoadingViewData.Stop();
                     return;
@@ -500,8 +505,8 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
-                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
+                        RequestHandler.Instance().GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
+                        RequestHandler.Instance().GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
 
                         TextViewUsername.setText(Data.getString("Username"));
                         TextViewDescription.setText(Data.getString("Description"));

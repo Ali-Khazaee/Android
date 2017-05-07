@@ -268,7 +268,7 @@ public class FragmentLike extends Fragment
             if (LikeList.get(Position) == null)
                 return;
 
-            RequestHandler.GetImage(Holder.Profile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+            RequestHandler.Instance().GetImage(Holder.Profile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
             Holder.Username.setText(LikeList.get(Position).Username);
             Holder.Time.setText(MiscHandler.GetTime(LikeList.get(Position).Time));

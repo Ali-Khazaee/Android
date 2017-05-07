@@ -1,5 +1,6 @@
 package co.biogram.main.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -41,14 +42,16 @@ public class FragmentProfilePost extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        RelativeLayout Root = new RelativeLayout(App.GetContext());
+        Context context = getActivity();
+
+        RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
         Root.setClickable(true);
 
         postAdapter = new PostAdapter((AppCompatActivity) getActivity(), PostList, "FragmentProfilePost");
 
-        RecyclerViewPost = new RecyclerView(App.GetContext());
+        RecyclerViewPost = new RecyclerView(context);
         RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewPost.setAdapter(postAdapter);
         RecyclerViewPost.setNestedScrollingEnabled(false);
@@ -68,7 +71,7 @@ public class FragmentProfilePost extends Fragment
                     if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
                         ID = getArguments().getString("ID");
 
-                    RequestHandler.Method("POST")
+                    RequestHandler.Instance().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                     .Param("Skip", String.valueOf(PostList.size()))
@@ -85,7 +88,7 @@ public class FragmentProfilePost extends Fragment
 
                             if (Status < 0)
                             {
-                                MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                                MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
                                 return;
                             }
 
@@ -118,16 +121,16 @@ public class FragmentProfilePost extends Fragment
 
         Root.addView(RecyclerViewPost);
 
-        RelativeLayoutLoading = new RelativeLayout(App.GetContext());
+        RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(App.GetContext(), R.color.White));
+        RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
 
         Root.addView(RelativeLayoutLoading);
 
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(App.GetContext());
+        LoadingViewData = new LoadingView(context);
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
         LoadingViewData.SetColor(R.color.BlueGray2);
 
@@ -136,9 +139,9 @@ public class FragmentProfilePost extends Fragment
         RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(App.GetContext());
+        TextViewTry = new TextView(context);
         TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setTextColor(ContextCompat.getColor(App.GetContext(), R.color.BlueGray2));
+        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTry.setText(getString(R.string.GeneralTryAgain));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
@@ -154,7 +157,7 @@ public class FragmentProfilePost extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Cancel("FragmentProfilePost");
+        RequestHandler.Instance().Cancel("FragmentProfilePost");
     }
 
     private void RetrieveDataFromServer()
@@ -167,7 +170,7 @@ public class FragmentProfilePost extends Fragment
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
-        RequestHandler.Method("POST")
+        RequestHandler.Instance().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
         .Header("TOKEN", SharedHandler.GetString("TOKEN"))
         .Param("ID", ID)
@@ -179,7 +182,7 @@ public class FragmentProfilePost extends Fragment
             {
                 if (Status < 0)
                 {
-                    MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                    MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
                     TextViewTry.setVisibility(View.VISIBLE);
                     LoadingViewData.Stop();
                     return;

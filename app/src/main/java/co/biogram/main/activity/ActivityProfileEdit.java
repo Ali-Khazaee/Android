@@ -140,7 +140,15 @@ public class ActivityProfileEdit extends AppCompatActivity
         ImageViewBack.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
         ImageViewBack.setImageResource(R.drawable.ic_back_blue);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { finish(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(ActivityProfileEdit.this, ActivityMain.class));
+                finish();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -209,7 +217,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 if (UploadFile != null)
                     Progress.show();
 
-                RequestHandler.Method("UPLOAD")
+                RequestHandler.Instance().Method("UPLOAD")
                 .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_SET))
                 .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                 .Param("Username", EditTextUsername.getText().toString())
@@ -581,7 +589,7 @@ public class ActivityProfileEdit extends AppCompatActivity
     protected void onStop()
     {
         super.onStop();
-        RequestHandler.Cancel("ActivityProfileEdit");
+        RequestHandler.Instance().Cancel("ActivityProfileEdit");
     }
 
     @Override
@@ -626,7 +634,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                     @Override
                     public void OnFailed()
                     {
-                        MiscHandler.Toast(getString(R.string.GeneralPermissionStorage));
+                        MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.GeneralPermissionStorage));
                     }
                 });
                 break;
@@ -1083,7 +1091,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 {
                     String URL = "https://api.foursquare.com/v2/venues/search/?v=20170101&locale=en&limit=25&client_id=YXWKVYF1XFBW3XRC4I0EIVALENCVNVEX5ARMQA4TP5ZUAB41&client_secret=QX2MNDH4GGFYSQCLFE1NVXDFJBNTNWKT3IDX0OUJD54TNKJ2&near=" + EditTextSearch.getText().toString();
 
-                    RequestHandler.Method("GET").Address(URL).Tag("FragmentSearch").Build(new RequestHandler.OnCompleteCallBack()
+                    RequestHandler.Instance().Method("GET").Address(URL).Tag("FragmentSearch").Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
                         public void OnFinish(String Response, int Status)
@@ -1316,7 +1324,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                         @Override
                         public void OnFailed()
                         {
-                            MiscHandler.Toast(getString(R.string.GeneralPermissionCamera));
+                            MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.GeneralPermissionCamera));
                         }
                     });
                 }
@@ -1330,7 +1338,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 }
                 else if (Position == 2)
                 {
-                    RequestHandler.Method("POST")
+                    RequestHandler.Instance().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                     .Tag("ActivityProfileEdit")
@@ -1340,7 +1348,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                         public void OnFinish(String Response, int Status)
                         {
                             ImageViewCircleProfile.setImageResource(R.color.BlueLight);
-                            MiscHandler.Toast(getString(R.string.ActivityProfileEditImageBackGroundRemoved));
+                            MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.ActivityProfileEditImageBackGroundRemoved));
                         }
                     });
                 }
@@ -1387,7 +1395,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                         @Override
                         public void OnFailed()
                         {
-                            MiscHandler.Toast(getString(R.string.GeneralPermissionCamera));
+                            MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.GeneralPermissionCamera));
                         }
                     });
 
@@ -1402,7 +1410,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 }
                 else if (Position == 2)
                 {
-                    RequestHandler.Method("POST")
+                    RequestHandler.Instance().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                     .Tag("ActivityProfileEdit")
@@ -1412,7 +1420,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                         public void OnFinish(String Response, int Status)
                         {
                             ImageViewCover.setImageResource(R.color.BlueLight);
-                            MiscHandler.Toast(getString(R.string.ActivityProfileEditImageBackGroundRemoved));
+                            MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.ActivityProfileEditImageBackGroundRemoved));
                         }
                     });
                 }
@@ -1427,7 +1435,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        RequestHandler.Method("POST")
+        RequestHandler.Instance().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
         .Header("TOKEN", SharedHandler.GetString("TOKEN"))
         .Tag("ActivityProfileEdit")
@@ -1462,13 +1470,12 @@ public class ActivityProfileEdit extends AppCompatActivity
                         EditTextEmail.setText(Data.getString("Email"));
                         Position = Data.getString("Position");
 
-                        RequestHandler.GetImage(ImageViewCover, Data.getString("Cover"), "ActivityProfileEdit", false);
-                        RequestHandler.GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
+                        RequestHandler.Instance().GetImage(ImageViewCover, Data.getString("Cover"), "ActivityProfileEdit", false);
+                        RequestHandler.Instance().GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
                     }
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Log(e.toString());
                     // Leave Me Alone
                 }
             }

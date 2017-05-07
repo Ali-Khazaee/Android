@@ -141,7 +141,7 @@ public class ActivityWelcome extends AppCompatActivity
                                     return;
                                 }
 
-                                MiscHandler.Toast(getString(R.string.ActivityWelcomeGoogleError));
+                                MiscHandler.Toast(ActivityWelcome.this, getString(R.string.ActivityWelcomeGoogleError));
                             }
                             catch (Exception e)
                             {
@@ -152,7 +152,7 @@ public class ActivityWelcome extends AppCompatActivity
                         @Override
                         public void onError(ANError error)
                         {
-                            MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                            MiscHandler.Toast(ActivityWelcome.this, getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }
@@ -182,6 +182,7 @@ public class ActivityWelcome extends AppCompatActivity
         {
             View RootView = inflater.inflate(R.layout.activity_welcome_fragment_username, Parent, false);
 
+            final Context context = getActivity();
             RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -216,7 +217,7 @@ public class ActivityWelcome extends AppCompatActivity
                                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FrameLayoutContainer, new SignUpPasswordFragment()).addToBackStack("SignUpUsernameFragment").commit();
                                 }
                                 else
-                                    MiscHandler.Toast(getString(R.string.ActivityWelcomeFragmentUsernameError));
+                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentUsernameError));
                             }
                             catch (Exception e)
                             {
@@ -232,7 +233,7 @@ public class ActivityWelcome extends AppCompatActivity
                         {
                             LoadingViewUsername.Stop();
                             ButtonNext.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }
@@ -386,6 +387,8 @@ public class ActivityWelcome extends AppCompatActivity
         {
             View RootView = inflater.inflate(R.layout.activity_welcome_fragment_email, Parent, false);
 
+            final Context context = getActivity();
+
             RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -433,7 +436,7 @@ public class ActivityWelcome extends AppCompatActivity
                                     getActivity().finish();
                                 }
                                 else
-                                    MiscHandler.Toast(getString(R.string.ActivityWelcomeFragmentEmailError));
+                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentEmailError));
                             }
                             catch (Exception e)
                             {
@@ -449,7 +452,7 @@ public class ActivityWelcome extends AppCompatActivity
                         {
                             LoadingViewEmail.Stop();
                             ButtonFinish.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }
@@ -523,6 +526,8 @@ public class ActivityWelcome extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
         {
             View RootView = inflater.inflate(R.layout.activity_welcome_fragment_signin, Parent, false);
+
+            final Context context = getActivity();
 
             RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
             {
@@ -613,7 +618,7 @@ public class ActivityWelcome extends AppCompatActivity
                                     getActivity().finish();
                                 }
                                 else
-                                    MiscHandler.Toast(getString(R.string.ActivityWelcomeFragmentSignInError));
+                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentSignInError));
                             }
                             catch (Exception e)
                             {
@@ -629,7 +634,7 @@ public class ActivityWelcome extends AppCompatActivity
                         {
                             LoadingViewSignIn.Stop();
                             ButtonSignIn.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }
@@ -713,6 +718,8 @@ public class ActivityWelcome extends AppCompatActivity
                 }
             });
 
+            final Context context = getActivity();
+
             ButtonSubmit.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -732,9 +739,9 @@ public class ActivityWelcome extends AppCompatActivity
                             try
                             {
                                 if (new JSONObject(Response).getInt("Message") == 1000)
-                                    MiscHandler.Toast(getString(R.string.ActivityWelcomeFragmentResetSuccess));
+                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentResetSuccess));
                                 else
-                                    MiscHandler.Toast(getString(R.string.ActivityWelcomeFragmentResetError));
+                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentResetError));
                             }
                             catch (Exception e)
                             {
@@ -752,7 +759,7 @@ public class ActivityWelcome extends AppCompatActivity
                             LoadingViewReset.Stop();
                             LinearLayoutLoading.setVisibility(View.INVISIBLE);
                             ButtonSubmit.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }

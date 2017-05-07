@@ -358,7 +358,7 @@ public class FragmentComment extends Fragment
                 RelativeLayoutLoading.setVisibility(View.VISIBLE);
                 LoadingViewRoot.Stop();
 
-                MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
             }
         });
     }
@@ -411,7 +411,7 @@ public class FragmentComment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            RequestHandler.GetImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+            RequestHandler.Instance().GetImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
             String Username = CommentList.get(Position).Username;
 
@@ -427,7 +427,7 @@ public class FragmentComment extends Fragment
                 @Override
                 public void OnTagClicked(String Tag, int Type)
                 {
-                    MiscHandler.Toast(Tag);
+                    MiscHandler.Toast(getActivity(), Tag);
                 }
             });
 

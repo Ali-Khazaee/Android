@@ -12,7 +12,6 @@ import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 
 public class TagHandler
@@ -52,7 +51,7 @@ public class TagHandler
                 CharacterStyle TagChar;
                 Spannable Span = (Spannable) textView.getText();
 
-                TagChar = new ClickableForegroundColorSpan(TagType, ContextCompat.getColor(App.GetContext(), R.color.BlueLight), Listener);
+                TagChar = new ClickableForegroundColorSpan(TagType, ContextCompat.getColor(textView.getContext(), R.color.BlueLight), Listener);
 
                 Span.setSpan(TagChar, StartIndexOfNextTagSign, NextNotLetterDigitCharIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }

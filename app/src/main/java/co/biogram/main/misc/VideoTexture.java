@@ -267,7 +267,7 @@ public class VideoTexture extends TextureView implements MediaPlayerControl
         {
             Release(false);
 
-            AudioManager audioManager = (AudioManager) App.GetContext().getSystemService(Context.AUDIO_SERVICE);
+            AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
             audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
             mediaPlayer = new MediaPlayer();
@@ -383,7 +383,7 @@ public class VideoTexture extends TextureView implements MediaPlayerControl
         if (ClearTargetState)
             TargetState  = STATE_IDLE;
 
-        AudioManager audioManager = (AudioManager) App.GetContext().getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
         audioManager.abandonAudioFocus(null);
     }
 
@@ -403,7 +403,7 @@ public class VideoTexture extends TextureView implements MediaPlayerControl
             CurrentState = STATE_IDLE;
             TargetState  = STATE_IDLE;
 
-            AudioManager audioManager = (AudioManager) App.GetContext().getSystemService(Context.AUDIO_SERVICE);
+            AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
             audioManager.abandonAudioFocus(null);
         }
 

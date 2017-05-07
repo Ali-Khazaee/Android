@@ -220,7 +220,7 @@ public class FragmentMomentWrite extends Fragment
                         ClipData clip = ClipData.newPlainText("WriteMessage", EditTextMessage.getText().toString());
                         clipboard.setPrimaryClip(clip);
 
-                        MiscHandler.Toast(getActivity().getString(R.string.FragmentMomentWriteDialogClipboard));
+                        MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteDialogClipboard));
                         DialogOption.dismiss();
                     }
                 });
@@ -267,7 +267,7 @@ public class FragmentMomentWrite extends Fragment
             {
                 if (SelectImage.size() >= 3)
                 {
-                    MiscHandler.Toast(getString(R.string.FragmentMomentWriteMaxImage));
+                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteMaxImage));
                     return;
                 }
 
@@ -528,7 +528,7 @@ public class FragmentMomentWrite extends Fragment
                                 TextViewTitle.setText(Content.Title);
                                 TextViewDescription.setText(Content.Description);
 
-                                RequestHandler.GetImage(ImageViewFav, Content.Image, "FragmentMomentWrite", true);
+                                RequestHandler.Instance().GetImage(ImageViewFav, Content.Image, "FragmentMomentWrite", true);
                             }
 
                             @Override
@@ -566,13 +566,13 @@ public class FragmentMomentWrite extends Fragment
             {
                 if (SelectCategory == 0)
                 {
-                    MiscHandler.Toast("Please Choice a Category"); // TODO String Kon
+                    MiscHandler.Toast(context, "Please Choice a Category"); // TODO String Kon
                     return;
                 }
 
                 if (EditTextMessage.getText().length() <= 19 && SelectType == 0)
                 {
-                    MiscHandler.Toast("Please, Add More Content"); // TODO String Kon
+                    MiscHandler.Toast(context, "Please, Add More Content"); // TODO String Kon
                     return;
                 }
 
@@ -590,7 +590,7 @@ public class FragmentMomentWrite extends Fragment
 
                         if (!IsCreated)
                         {
-                            MiscHandler.Toast(getString(R.string.FragmentMomentWriteCantCreateFolder));
+                            MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteCantCreateFolder));
                             return;
                         }
 
@@ -657,7 +657,7 @@ public class FragmentMomentWrite extends Fragment
                     public void onError(ANError error)
                     {
                         Progress.cancel();
-                        MiscHandler.Toast(getString(R.string.GeneralCheckInternet));
+                        MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
                     }
                 });
             }
@@ -703,7 +703,7 @@ public class FragmentMomentWrite extends Fragment
 
             if (URL == null)
             {
-                MiscHandler.Toast(getString(R.string.GeneralFileNotFound));
+                MiscHandler.Toast(getActivity(), getString(R.string.GeneralFileNotFound));
                 return;
             }
 
@@ -724,7 +724,7 @@ public class FragmentMomentWrite extends Fragment
 
             if (!IsPermissionStorageAllowed)
             {
-                MiscHandler.Toast(getString(R.string.GeneralPermissionStorage));
+                MiscHandler.Toast(getActivity(), getString(R.string.GeneralPermissionStorage));
                 return;
             }
 
@@ -782,7 +782,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (Time > 180)
                 {
-                    MiscHandler.Toast(getString(R.string.FragmentMomentWriteVideoLength));
+                    MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteVideoLength));
                     return;
                 }
 
@@ -790,7 +790,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (SelectVideo.length() > 31452800)
                 {
-                    MiscHandler.Toast(getString(R.string.FragmentMomentWriteVideoSize));
+                    MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteVideoSize));
                     return;
                 }
 
@@ -798,7 +798,7 @@ public class FragmentMomentWrite extends Fragment
                 {
                     if (SelectVideo.length() > 15728640)
                     {
-                        MiscHandler.Toast(getString(R.string.FragmentMomentWriteVideoSupport));
+                        MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteVideoSupport));
                         return;
                     }
 
@@ -824,7 +824,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (!IsCreated)
                 {
-                    MiscHandler.Toast(getString(R.string.FragmentMomentWriteCantCreateFolder));
+                    MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteCantCreateFolder));
                     return;
                 }
 
