@@ -24,6 +24,7 @@ import java.util.List;
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.misc.TouchImageView;
 
 public class FragmentImagePreview extends Fragment
@@ -118,7 +119,7 @@ public class FragmentImagePreview extends Fragment
             if (ImageCache != null)
                 Image.setImageBitmap(ImageCache);
             else
-                MiscHandler.LoadImage(Image, "FragmentImagePreview", ImageList.get(Position));
+                RequestHandler.GetImage(Image, ImageList.get(Position), "FragmentImagePreview", true);
 
             Container.addView(Image);
 

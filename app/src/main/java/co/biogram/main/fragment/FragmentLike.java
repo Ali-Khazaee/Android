@@ -30,6 +30,7 @@ import java.util.List;
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
@@ -265,7 +266,7 @@ public class FragmentLike extends Fragment
             if (LikeList.get(Position) == null)
                 return;
 
-            MiscHandler.LoadImage(Holder.Profile, "FragmentLike", LikeList.get(Position).Avatar, MiscHandler.DpToPx(55), MiscHandler.DpToPx(55));
+            RequestHandler.GetImage(Holder.Profile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
             Holder.Username.setText(LikeList.get(Position).Username);
             Holder.Time.setText(MiscHandler.GetTime(LikeList.get(Position).Time));

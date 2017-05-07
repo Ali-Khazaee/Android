@@ -36,6 +36,7 @@ import java.util.List;
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.handler.URLHandler;
@@ -403,7 +404,7 @@ public class FragmentComment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            MiscHandler.LoadImage(Holder.ImageViewProfile, "FragmentComment", CommentList.get(Position).Avatar, MiscHandler.DpToPx(55), MiscHandler.DpToPx(55));
+            RequestHandler.GetImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
             String Username = CommentList.get(Position).Username;
 

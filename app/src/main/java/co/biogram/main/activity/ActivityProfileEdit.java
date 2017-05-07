@@ -43,6 +43,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -427,7 +428,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         EditTextDescription.setId(MiscHandler.GenerateViewID());
         EditTextDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
-        EditTextDescription.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+        EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
         RelativeLayoutMain.addView(EditTextDescription);
 

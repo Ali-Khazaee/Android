@@ -36,6 +36,7 @@ import java.text.Bidi;
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.handler.URLHandler;
@@ -996,7 +997,7 @@ public class FragmentPostDetails extends Fragment
                         Result = new JSONObject(Result.getString("Result"));
 
                         if (!Result.getString("Avatar").equals(""))
-                            MiscHandler.LoadImage(Profile, "FragmentPostDetails", Result.getString("Avatar"), MiscHandler.DpToPx(55), MiscHandler.DpToPx(55));
+                            RequestHandler.GetImage(Profile, Result.getString("Avatar"), "FragmentPostDetails", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
                         Username.setText(Result.getString("Username"));
                         Time.setText(MiscHandler.GetTime(Result.getLong("Time")));
@@ -1040,23 +1041,23 @@ public class FragmentPostDetails extends Fragment
                                     case 1:
                                         ContentSingle.setVisibility(View.VISIBLE);
                                         Single.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        MiscHandler.LoadImage(Single, "FragmentPostDetails", URL.get(0).toString());
+                                        RequestHandler.GetImage(Single, URL.get(0).toString(), "FragmentPostDetails", true);
                                         break;
                                     case 2:
                                         ContentDouble.setVisibility(View.VISIBLE);
                                         Double1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         Double2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        MiscHandler.LoadImage(Double1, "FragmentPostDetails", URL.get(0).toString());
-                                        MiscHandler.LoadImage(Double2, "FragmentPostDetails", URL.get(1).toString());
+                                        RequestHandler.GetImage(Double1, URL.get(0).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.GetImage(Double2, URL.get(1).toString(), "FragmentPostDetails", true);
                                         break;
                                     case 3:
                                         ContentTriple.setVisibility(View.VISIBLE);
                                         Triple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         Triple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         Triple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        MiscHandler.LoadImage(Triple1, "FragmentPostDetails", URL.get(0).toString());
-                                        MiscHandler.LoadImage(Triple2, "FragmentPostDetails", URL.get(1).toString());
-                                        MiscHandler.LoadImage(Triple3, "FragmentPostDetails", URL.get(2).toString());
+                                        RequestHandler.GetImage(Triple1, URL.get(0).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.GetImage(Triple2, URL.get(1).toString(), "FragmentPostDetails", true);
+                                        RequestHandler.GetImage(Triple3, URL.get(2).toString(), "FragmentPostDetails", true);
                                         break;
                                 }
                             }
@@ -1115,7 +1116,7 @@ public class FragmentPostDetails extends Fragment
                                         Loading.Stop();
                                         Fav.setVisibility(View.VISIBLE);
 
-                                        MiscHandler.LoadImage(Fav, "FragmentPostDetails", Content.Image);
+                                        RequestHandler.GetImage(Fav, Content.Image, "FragmentPostDetails", true);
                                     }
 
                                     @Override

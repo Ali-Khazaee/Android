@@ -74,45 +74,6 @@ public class MiscHandler
         toast.show();
     }
 
-    public static void LoadImage(final ImageView view, String Tag, String URL, int Width, int Height)
-    {
-        AndroidNetworking.get(URL).setBitmapMaxHeight(Height).setBitmapMaxWidth(Width).setBitmapConfig(Bitmap.Config.ARGB_8888).setTag(Tag).build().getAsBitmap(new BitmapRequestListener()
-        {
-            @Override
-            public void onResponse(Bitmap bitmap)
-            {
-                view.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onError(ANError error) { }
-        });
-    }
-
-    public static void LoadImage(final ImageView view, String Tag, String URL)
-    {
-        final String Name = URL.split("/")[URL.split("/").length -1];
-
-        if (CacheHandler.ImageCache(Name))
-        {
-            CacheHandler.ImageLoad(Name, view);
-            return;
-        }
-
-        AndroidNetworking.get(URL).setBitmapConfig(Bitmap.Config.ARGB_8888).setTag(Tag).build().getAsBitmap(new BitmapRequestListener()
-        {
-            @Override
-            public void onResponse(Bitmap bitmap)
-            {
-                view.setImageBitmap(bitmap);
-                CacheHandler.ImageSave(Name, bitmap);
-            }
-
-            @Override
-            public void onError(ANError error) { }
-        });
-    }
-
     public static int DpToPx(float DpValue)
     {
         DisplayMetrics Metrics = App.GetContext().getResources().getDisplayMetrics();

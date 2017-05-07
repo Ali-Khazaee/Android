@@ -73,6 +73,7 @@ import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
+import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
@@ -187,7 +188,8 @@ public class FragmentMomentWrite extends Fragment
                         if (clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription().hasMimeType("text/plain"))
                         {
                             ClipData.Item ClipItem = clipboard.getPrimaryClip().getItemAt(0);
-                            EditTextMessage.setText(ClipItem.getText().toString());
+                            String Message = EditTextMessage.getText().toString() + ClipItem.getText().toString();
+                            EditTextMessage.setText(Message);
                         }
 
                         DialogOption.dismiss();
@@ -525,7 +527,7 @@ public class FragmentMomentWrite extends Fragment
                                 TextViewTitle.setText(Content.Title);
                                 TextViewDescription.setText(Content.Description);
 
-                                MiscHandler.LoadImage(ImageViewFav, "FragmentMomentWrite", Content.Image);
+                                RequestHandler.GetImage(ImageViewFav, Content.Image, "FragmentMomentWrite", true);
                             }
 
                             @Override
