@@ -82,7 +82,6 @@ import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
-import co.biogram.main.misc.LoadingView;
 
 public class ActivityProfileEdit extends AppCompatActivity
 {
@@ -217,7 +216,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 if (UploadFile != null)
                     Progress.show();
 
-                RequestHandler.Instance().Method("UPLOAD")
+                RequestHandler.Core().Method("UPLOAD")
                 .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_SET))
                 .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                 .Param("Username", EditTextUsername.getText().toString())
@@ -589,7 +588,7 @@ public class ActivityProfileEdit extends AppCompatActivity
     protected void onStop()
     {
         super.onStop();
-        RequestHandler.Instance().Cancel("ActivityProfileEdit");
+        RequestHandler.Core().Cancel("ActivityProfileEdit");
     }
 
     @Override
@@ -950,6 +949,13 @@ public class ActivityProfileEdit extends AppCompatActivity
             return Root;
         }
 
+        @Override
+        public void onStop()
+        {
+            super.onStop();
+            MapThread = null;
+        }
+
         private void SetLocationName(double Lat, double Lon)
         {
             if (MapThread == null)
@@ -1091,7 +1097,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 {
                     String URL = "https://api.foursquare.com/v2/venues/search/?v=20170101&locale=en&limit=25&client_id=YXWKVYF1XFBW3XRC4I0EIVALENCVNVEX5ARMQA4TP5ZUAB41&client_secret=QX2MNDH4GGFYSQCLFE1NVXDFJBNTNWKT3IDX0OUJD54TNKJ2&near=" + EditTextSearch.getText().toString();
 
-                    RequestHandler.Instance().Method("GET").Address(URL).Tag("FragmentSearch").Build(new RequestHandler.OnCompleteCallBack()
+                    RequestHandler.Core().Method("GET").Address(URL).Tag("FragmentSearch").Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
                         public void OnFinish(String Response, int Status)
@@ -1338,7 +1344,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 }
                 else if (Position == 2)
                 {
-                    RequestHandler.Instance().Method("POST")
+                    RequestHandler.Core().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                     .Tag("ActivityProfileEdit")
@@ -1410,7 +1416,7 @@ public class ActivityProfileEdit extends AppCompatActivity
                 }
                 else if (Position == 2)
                 {
-                    RequestHandler.Instance().Method("POST")
+                    RequestHandler.Core().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                     .Tag("ActivityProfileEdit")
@@ -1435,7 +1441,7 @@ public class ActivityProfileEdit extends AppCompatActivity
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        RequestHandler.Instance().Method("POST")
+        RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
         .Header("TOKEN", SharedHandler.GetString("TOKEN"))
         .Tag("ActivityProfileEdit")
@@ -1470,8 +1476,8 @@ public class ActivityProfileEdit extends AppCompatActivity
                         EditTextEmail.setText(Data.getString("Email"));
                         Position = Data.getString("Position");
 
-                        RequestHandler.Instance().GetImage(ImageViewCover, Data.getString("Cover"), "ActivityProfileEdit", false);
-                        RequestHandler.Instance().GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
+                        RequestHandler.Core().LoadImage(ImageViewCover, Data.getString("Cover"), "ActivityProfileEdit", false);
+                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfileEdit", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
                     }
                 }
                 catch (Exception e)

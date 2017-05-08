@@ -121,7 +121,7 @@ public class FragmentImagePreview extends Fragment
             if (ImageCache != null)
                 Image.setImageBitmap(ImageCache);
             else
-                RequestHandler.Instance().GetImage(Image, ImageList.get(Position), "FragmentImagePreview", true);
+                RequestHandler.Core().LoadImage(Image, ImageList.get(Position), "FragmentImagePreview", true);
 
             Container.addView(Image);
 

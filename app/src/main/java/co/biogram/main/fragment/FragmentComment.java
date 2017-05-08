@@ -411,7 +411,7 @@ public class FragmentComment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            RequestHandler.Instance().GetImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+            RequestHandler.Core().LoadImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
 
             String Username = CommentList.get(Position).Username;
 

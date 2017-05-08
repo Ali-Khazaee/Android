@@ -4,12 +4,4 @@
         <attr name="IVC_BorderWidth" format="dimension" />
         <attr name="IVC_BorderColor" format="color" />
     </declare-styleable>
-
-    <declare-styleable name="LoadingView">
-        <attr name="LB_Radius" format="dimension" />
-        <attr name="LB_Color" format="color" />
-        <attr name="LB_Scale" format="float" />
-        <attr name="LB_Duration" format="integer" />
-        <attr name="LB_Spacing" format="dimension" />
-    </declare-styleable>
 </resources>

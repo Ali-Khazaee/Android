@@ -70,7 +70,7 @@ public class FragmentProfileLike extends Fragment
                     if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
                         ID = getArguments().getString("ID");
 
-                    RequestHandler.Instance().Method("POST")
+                    RequestHandler.Core().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_LIKE))
                     .Header("TOKEN", SharedHandler.GetString("TOKEN"))
                     .Param("Skip", String.valueOf(PostList.size()))
@@ -156,7 +156,7 @@ public class FragmentProfileLike extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Instance().Cancel("FragmentProfileLike");
+        RequestHandler.Core().Cancel("FragmentProfileLike");
     }
 
     private void RetrieveDataFromServer()
@@ -169,7 +169,7 @@ public class FragmentProfileLike extends Fragment
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
-        RequestHandler.Instance().Method("POST")
+        RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_LIKE))
         .Header("TOKEN", SharedHandler.GetString("TOKEN"))
         .Param("ID", ID)
