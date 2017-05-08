@@ -528,7 +528,7 @@ public class FragmentMomentWrite extends Fragment
                                 TextViewTitle.setText(Content.Title);
                                 TextViewDescription.setText(Content.Description);
 
-                                RequestHandler.Instance().GetImage(ImageViewFav, Content.Image, "FragmentMomentWrite", true);
+                                RequestHandler.Core().LoadImage(ImageViewFav, Content.Image, "FragmentMomentWrite", true);
                             }
 
                             @Override

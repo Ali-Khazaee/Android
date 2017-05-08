@@ -63,7 +63,7 @@ public class CacheHandler
         if (!IsCreated)
             return;
 
-        RequestHandler.Instance().Method("DOWNLOAD").Address(Address).Tag(Tag).OutPath(Root.getAbsolutePath() + "/" + Name).Build(null);
+        RequestHandler.Core().Method("DOWNLOAD").Address(Address).Tag(Tag).OutPath(Root.getAbsolutePath() + "/" + Name).Build(null);
 
         SaveMetaData(":::3:::" + Name);
     }

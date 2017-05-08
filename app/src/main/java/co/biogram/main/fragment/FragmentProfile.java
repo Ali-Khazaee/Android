@@ -415,7 +415,7 @@ public class FragmentProfile extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Instance().Cancel("FragmentProfile");
+        RequestHandler.Core().Cancel("FragmentProfile");
     }
 
     private void ChangeTab(int Tab)
@@ -479,7 +479,7 @@ public class FragmentProfile extends Fragment
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
-        RequestHandler.Instance().Method("POST")
+        RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
         .Header("TOKEN",SharedHandler.GetString("TOKEN"))
         .Param("ID", ID)
@@ -505,8 +505,8 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        RequestHandler.Instance().GetImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
-                        RequestHandler.Instance().GetImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
+                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.DpToPx(90), MiscHandler.DpToPx(90), true);
+                        RequestHandler.Core().LoadImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
 
                         TextViewUsername.setText(Data.getString("Username"));
                         TextViewDescription.setText(Data.getString("Description"));

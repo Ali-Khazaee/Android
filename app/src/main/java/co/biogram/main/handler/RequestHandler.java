@@ -20,119 +20,143 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class RequestHandler
 {
-    private static RequestHandler Instance = new RequestHandler();
-
-    private ArrayList<Request> QueueRequestList = new ArrayList<>();
-    private ArrayList<Request> RunningRequestList = new ArrayList<>();
     private ThreadPoolExecutor ThreadExecutor;
+    private final Map<String, List<Runnable>> QueueTaskList = new HashMap<>();
+    private final Map<String, List<Future>> RunningTaskList = new HashMap<>();
+    private static RequestHandler MainRequestHandler = new RequestHandler();
 
-    private RequestHandler() { }
-
-    public static synchronized RequestHandler Instance()
+    public static RequestHandler Core()
     {
-        if (Instance == null)
-            Instance = new RequestHandler();
+        if (MainRequestHandler == null)
+            MainRequestHandler = new RequestHandler();
 
-        return Instance;
+        return MainRequestHandler;
     }
 
-    private synchronized ThreadPoolExecutor Executor()
+    private ThreadPoolExecutor Executor()
     {
         if (ThreadExecutor == null)
             ThreadExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
+        MiscHandler.Log("ThreadExecutor - " + Integer.toHexString(ThreadExecutor.hashCode()));
+        MiscHandler.Log("MainRequestHandler - " + Integer.toHexString(MainRequestHandler.hashCode()));
+        MiscHandler.Log("QueueTaskList - " + Integer.toHexString(QueueTaskList.hashCode()) + " Size: " + QueueTaskList.size());
+        MiscHandler.Log("RunningTaskList - " + Integer.toHexString(RunningTaskList.hashCode()) + " Size: " + RunningTaskList.size());
+
         return ThreadExecutor;
     }
 
-    private synchronized void AddRequest(Request request)
+    private void AddTask(final Builder builder)
     {
-        if (RunningRequestList.size() < 32)
+        Runnable Task = new Runnable()
         {
-            Executor().execute(request);
-            RunningRequestList.add(request);
+            @Override
+            public void run()
+            {
+                switch (builder.Method)
+                {
+                    case "GET":           PerformGet(builder);          break;
+                    case "POST":          PerformPost(builder);         break;
+                    case "BITMAP":        PerformBitmap(builder);       break;
+                    case "UPLOAD":        PerformUpload(builder);       break;
+                    case "DOWNLOAD":      PerformDownload(builder);     break;
+                    case "BITMAP_OPTION": PerformBitmapOption(builder); break;
+                }
+
+                UpdateTaskList();
+            }
+        };
+
+        if (RunningTaskList.size() < 32)
+        {
+            Future future = Executor().submit(Task);
+            ADD(builder.Tag, future);
             return;
         }
 
-        QueueRequestList.add(request);
+        ADD(builder.Tag, Task);
     }
 
-    private synchronized void UpdateRequestList()
+    private void ADD(String Key, Runnable Value)
     {
-        if (QueueRequestList.size() > 0)
+        List<Runnable> TempList;
+
+        if (QueueTaskList.containsKey(Key))
         {
-            Executor().execute(QueueRequestList.get(0));
-            QueueRequestList.remove(0);
+            TempList = QueueTaskList.get(Key);
+
+            if (TempList == null)
+                TempList = new ArrayList<>();
+
+            TempList.add(Value);
+        }
+        else
+        {
+            TempList = new ArrayList<>();
+            TempList.add(Value);
+        }
+
+        QueueTaskList.put(Key, TempList);
+    }
+
+    private void ADD(String Key, Future Value)
+    {
+        List<Future> TempList;
+
+        if (RunningTaskList.containsKey(Key))
+        {
+            TempList = RunningTaskList.get(Key);
+
+            if (TempList == null)
+                TempList = new ArrayList<>();
+
+            TempList.add(Value);
+        }
+        else
+        {
+            TempList = new ArrayList<>();
+            TempList.add(Value);
+        }
+
+        RunningTaskList.put(Key, TempList);
+    }
+
+    private void UpdateTaskList()
+    {
+        if (QueueTaskList.size() > 0)
+        {
+            Map.Entry<String, List<Runnable>> Entry = QueueTaskList.entrySet().iterator().next();
+            String Key = Entry.getKey();
+            List<Runnable> Value = Entry.getValue();
+
+            if (Value.size() > 0)
+            {
+                Future future = Executor().submit(Value.get(0));
+                ADD(Key, future);
+
+                Value.remove(0);
+                QueueTaskList.remove(Key);
+                QueueTaskList.put(Key, Value);
+                return;
+            }
+
+            QueueTaskList.remove(Key);
         }
     }
 
-    public synchronized void Cancel(String Tag)
+    public void Cancel(String Tag)
     {
-        for (int I = 0; I < QueueRequestList.size(); I++)
-        {
-            if (QueueRequestList.get(I).GetTag().equals(Tag))
-            {
-                QueueRequestList.get(I).Cancel();
-                QueueRequestList.remove(I);
-            }
-        }
-
-        for (int I = 0; I < RunningRequestList.size(); I++)
-        {
-            if (RunningRequestList.get(I).GetTag().equals(Tag))
-            {
-                RunningRequestList.get(I).Cancel();
-                RunningRequestList.remove(I);
-            }
-        }
-    }
-
-    private abstract class Request extends Thread
-    {
-        private String Tag;
-
-        Request(String Tag)
-        {
-            this.Tag = Tag;
-        }
-
-        @Override
-        public void run()
-        {
-            if (Looper.myLooper() == null)
-                Looper.prepare();
-
-            String OldName = getName();
-            setName(Tag);
-
-            try
-            {
-                Run();
-            }
-            finally
-            {
-                setName(OldName);
-                UpdateRequestList();
-            }
-        }
-
-        String GetTag()
-        {
-            return Tag;
-        }
-
-        void Cancel()
-        {
-            interrupt();
-        }
-
-        abstract void Run();
+        QueueTaskList.remove(Tag);
+        RunningTaskList.remove(Tag);
     }
 
     public Builder Method(String Method)
@@ -146,10 +170,16 @@ public class RequestHandler
         private int ReadTime = 30000;
         private int ConnectTime = 30000;
 
-        private String METHOD = "";
+        private String Method = "";
         private String Address = "";
         private String OutPath = "";
         private String Tag = "BioGram";
+
+        private ImageView BitmapView;
+        private int DesiredWidth = 0;
+        private int DesiredHeight = 0;
+        private String BitmapName = "";
+        private boolean BitmapCache = true;
 
         private OnProgressCallBack OnProgressListener;
         private OnCompleteCallBack OnCompleteListener;
@@ -160,12 +190,47 @@ public class RequestHandler
 
         Builder(String Method)
         {
-            METHOD = Method;
+            this.Method = Method;
         }
 
         public Builder Address(String address)
         {
             Address = address;
+
+            return this;
+        }
+
+        Builder DesiredWidth(int Width)
+        {
+            DesiredWidth = Width;
+
+            return this;
+        }
+
+        Builder BitmapName(String Name)
+        {
+            BitmapName = Name;
+
+            return this;
+        }
+
+        Builder BitmapView(ImageView view)
+        {
+            BitmapView = view;
+
+            return this;
+        }
+
+        Builder BitmapCache(boolean Cache)
+        {
+            BitmapCache = Cache;
+
+            return this;
+        }
+
+        Builder DesiredHeight(int Height)
+        {
+            DesiredHeight = Height;
 
             return this;
         }
@@ -238,22 +303,7 @@ public class RequestHandler
         {
             OnCompleteListener = CallBack;
 
-            Request request = new Request(Tag)
-            {
-                @Override
-                void Run()
-                {
-                    switch (METHOD)
-                    {
-                        case "GET":      PerformGet(Builder.this);      break;
-                        case "POST":     PerformPost(Builder.this);     break;
-                        case "UPLOAD":   PerformUpload(Builder.this);   break;
-                        case "DOWNLOAD": PerformDownload(Builder.this); break;
-                    }
-                }
-            };
-
-            AddRequest(request);
+            AddTask(this);
         }
     }
 
@@ -267,12 +317,12 @@ public class RequestHandler
         void OnProgress(long Received, long Total);
     }
 
-    public void GetImage(final ImageView view, final String Address, String Tag, final boolean Cache)
+    public void LoadImage(ImageView view, String Address, String Tag, boolean Cache)
     {
         if (Address.equals(""))
             return;
 
-        final String Name = Address.split("/")[Address.split("/").length - 1];
+        String Name = Address.split("/")[Address.split("/").length - 1];
 
         if (Cache && CacheHandler.ImageCache(Name))
         {
@@ -280,54 +330,15 @@ public class RequestHandler
             return;
         }
 
-        Request request = new Request(Tag)
-        {
-            @Override
-            void Run()
-            {
-                try
-                {
-                    HttpURLConnection Conn = (HttpURLConnection) new URL(Address).openConnection();
-                    Conn.setDoInput(true);
-                    Conn.connect();
-
-                    if (Conn.getResponseCode() == 200)
-                    {
-                        InputStream input = Conn.getInputStream();
-
-                        final Bitmap bitmap = BitmapFactory.decodeStream(input);
-
-                        view.post(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                view.setImageBitmap(bitmap);
-                            }
-                        });
-
-                        if (Cache)
-                            CacheHandler.ImageSave(Name, bitmap);
-
-                        input.close();
-                    }
-                }
-                catch (Exception e)
-                {
-                    // Leave Me Alone
-                }
-            }
-        };
-
-        AddRequest(request);
+        new Builder("BITMAP").Address(Address).Tag(Tag).BitmapName(Name).BitmapCache(Cache).BitmapView(view).Build(null);
     }
 
-    public void GetImage(final ImageView view, final String Address, String Tag, final int DesiredWidth, final int DesiredHeight, final boolean Cache)
+    public void LoadImage(ImageView view, String Address, String Tag, int DesiredWidth, int DesiredHeight, boolean Cache)
     {
         if (Address.equals(""))
             return;
 
-        final String Name = Address.split("/")[Address.split("/").length - 1];
+        String Name = Address.split("/")[Address.split("/").length - 1];
 
         if (Cache && CacheHandler.ImageCache(Name))
         {
@@ -335,88 +346,135 @@ public class RequestHandler
             return;
         }
 
-        Request request = new Request(Tag)
-        {
-            @Override
-            void Run()
-            {
-                HttpURLConnection Conn = null;
-
-                try
-                {
-                    Conn = (HttpURLConnection) new URL(Address).openConnection();
-                    Conn.setConnectTimeout(20000);
-                    Conn.setReadTimeout(20000);
-                    Conn.setRequestMethod("GET");
-                    Conn.setDoInput(true);
-                    Conn.connect();
-
-
-                    ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
-                    InputStream IS = Conn.getInputStream();
-                    byte[] Buffer = new byte[1024];
-                    int Length;
-
-                    while ((Length = IS.read(Buffer)) != -1)
-                    {
-                        ByteArray.write(Buffer, 0, Length);
-                    }
-
-                    byte[] BitmapResponse = ByteArray.toByteArray();
-                    ByteArray.close();
-                    IS.close();
-
-                    BitmapFactory.Options o = new BitmapFactory.Options();
-                    o.inJustDecodeBounds = true;
-
-                    BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
-
-                    int Height = o.outHeight;
-                    int Width = o.outWidth;
-                    int SampleSize = 1;
-
-                    if (Height > DesiredWidth || Width > DesiredHeight)
-                    {
-                        int HalfHeight = Height / 2;
-                        int HalfWidth = Width / 2;
-
-                        while ((HalfHeight / SampleSize) >= DesiredHeight && (HalfWidth / SampleSize) >= DesiredWidth)
-                        {
-                            SampleSize *= 2;
-                        }
-                    }
-
-                    o.inSampleSize = SampleSize;
-                    o.inJustDecodeBounds = false;
-
-                    final Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
-
-                    view.post(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            view.setImageBitmap(bitmap);
-                        }
-                    });
-
-                    if (Cache)
-                        CacheHandler.ImageSave(Name, bitmap);
-                }
-                catch (Exception e)
-                {
-                    // Leave Me Alone
-                }
-
-                if (Conn != null)
-                    Conn.disconnect();
-            }
-        };
-
-        AddRequest(request);
+        new Builder("BITMAP_OPTION").Address(Address).Tag(Tag).BitmapName(Name).DesiredWidth(DesiredWidth).DesiredHeight(DesiredHeight).BitmapCache(Cache).BitmapView(view).Build(null);
     }
 
-    private static void PerformGet(final Builder builder)
+    private void PerformBitmap(final Builder builder)
+    {
+        HttpURLConnection Conn = null;
+
+        try
+        {
+            Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setConnectTimeout(20000);
+            Conn.setReadTimeout(20000);
+            Conn.setRequestMethod("GET");
+            Conn.setDoInput(true);
+            Conn.connect();
+
+            ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+            InputStream IS = Conn.getInputStream();
+            byte[] Buffer = new byte[1024];
+            int Length;
+
+            while ((Length = IS.read(Buffer)) != -1)
+            {
+                ByteArray.write(Buffer, 0, Length);
+            }
+
+            byte[] BitmapResponse = ByteArray.toByteArray();
+            ByteArray.close();
+            IS.close();
+
+            final Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length);
+
+            builder.BitmapView.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    builder.BitmapView.setImageBitmap(bitmap);
+                    builder.BitmapView = null;
+                }
+            });
+
+            if (builder.BitmapCache)
+                CacheHandler.ImageSave(builder.BitmapName, bitmap);
+        }
+        catch (Exception e)
+        {
+            // Leave Me Alone
+        }
+
+        if (Conn != null)
+            Conn.disconnect();
+    }
+
+    private void PerformBitmapOption(final Builder builder)
+    {
+        HttpURLConnection Conn = null;
+
+        try
+        {
+            Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setConnectTimeout(20000);
+            Conn.setReadTimeout(20000);
+            Conn.setRequestMethod("GET");
+            Conn.setDoInput(true);
+            Conn.connect();
+
+            ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+            InputStream IS = Conn.getInputStream();
+            byte[] Buffer = new byte[1024];
+            int Length;
+
+            while ((Length = IS.read(Buffer)) != -1)
+            {
+                ByteArray.write(Buffer, 0, Length);
+            }
+
+            byte[] BitmapResponse = ByteArray.toByteArray();
+            ByteArray.close();
+            IS.close();
+
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+
+            BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
+
+            int Height = o.outHeight;
+            int Width = o.outWidth;
+            int SampleSize = 1;
+
+            if (Height > builder.DesiredWidth || Width > builder.DesiredHeight)
+            {
+                int HalfHeight = Height / 2;
+                int HalfWidth = Width / 2;
+
+                while ((HalfHeight / SampleSize) >= builder.DesiredHeight && (HalfWidth / SampleSize) >= builder.DesiredWidth)
+                {
+                    SampleSize *= 2;
+                }
+            }
+
+            o.inSampleSize = SampleSize;
+            o.inJustDecodeBounds = false;
+
+            final Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
+
+            builder.BitmapView.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    builder.BitmapView.setImageBitmap(bitmap);
+                    builder.BitmapView = null;
+                }
+            });
+
+            if (builder.BitmapCache)
+                CacheHandler.ImageSave(builder.BitmapName, bitmap);
+        }
+        catch (Exception e)
+        {
+            // Leave Me Alone
+        }
+
+        if (Conn != null)
+            Conn.disconnect();
+    }
+
+    private void PerformGet(final Builder builder)
     {
         HttpURLConnection Conn = null;
 
@@ -469,7 +527,7 @@ public class RequestHandler
             Conn.disconnect();
     }
 
-    private static void PerformPost(final Builder builder)
+    private void PerformPost(final Builder builder)
     {
         HttpURLConnection Conn = null;
 
@@ -546,7 +604,7 @@ public class RequestHandler
             Conn.disconnect();
     }
 
-    private static void PerformUpload(final Builder builder)
+    private void PerformUpload(final Builder builder)
     {
         String EndLine = "\r\n";
         HttpURLConnection Conn = null;
@@ -656,7 +714,7 @@ public class RequestHandler
             Conn.disconnect();
     }
 
-    private static void PerformDownload(final Builder builder)
+    private void PerformDownload(final Builder builder)
     {
         HttpURLConnection Conn = null;
 
