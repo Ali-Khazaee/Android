@@ -47,7 +47,7 @@ public class ActivityMain extends AppCompatActivity
 
         FragManager = getSupportFragmentManager();
 
-        ChangeTab(getIntent().getIntExtra("Tab", 5));
+        ChangeTab(getIntent().getIntExtra("Tab", 3));
     }
 
     @Override

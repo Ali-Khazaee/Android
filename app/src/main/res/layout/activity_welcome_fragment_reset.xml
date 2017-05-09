@@ -102,8 +102,7 @@
             <co.biogram.main.misc.LoadingView
                 android:id="@+id/LoadingViewReset"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:LB_Color="@color/White" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

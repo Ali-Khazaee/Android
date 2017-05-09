@@ -160,9 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
-                        app:LB_Color="@color/White"
-                        app:LB_Radius="3dp"
-                        app:LB_Spacing="8dp" />
+                        />
 
                 </RelativeLayout>
 

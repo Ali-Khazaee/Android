@@ -82,6 +82,7 @@ import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
+import co.biogram.main.misc.LoadingView;
 
 public class ActivityProfileEdit extends AppCompatActivity
 {
@@ -967,7 +968,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             MapThread.FindLocationName(Lat, Lon);
         }
 
-        public class MapThreadClass extends Thread
+        private class MapThreadClass extends Thread
         {
             private double Latitude, Longitude;
             private Handler MapHandler;
@@ -1220,7 +1221,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             return Root;
         }
 
-        public class SearchStruct
+        private class SearchStruct
         {
             String Name;
             double Latitude;
@@ -1234,7 +1235,7 @@ public class ActivityProfileEdit extends AppCompatActivity
             }
         }
 
-        public class SearchAdapter extends ArrayAdapter<SearchStruct>
+        private class SearchAdapter extends ArrayAdapter<SearchStruct>
         {
             Context context;
 

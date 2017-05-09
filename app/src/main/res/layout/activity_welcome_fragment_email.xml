@@ -127,15 +127,13 @@
                         android:textSize="@dimen/FontSmall"
                         style="@style/Widget.AppCompat.Button.Borderless" />
 
-                    <co.biogram.main.misc.LoadingView
+                    <com.github.ybq.android.spinkit.SpinKitView
                         android:id="@+id/LoadingViewEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
-                        app:LB_Color="@color/White"
-                        app:LB_Radius="3dp"
-                        app:LB_Spacing="8dp" />
+                        />
 
                 </RelativeLayout>
 
