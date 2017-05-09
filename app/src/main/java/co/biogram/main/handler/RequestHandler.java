@@ -47,11 +47,6 @@ public class RequestHandler
         if (ThreadExecutor == null)
             ThreadExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
-        MiscHandler.Log("ThreadExecutor - " + Integer.toHexString(ThreadExecutor.hashCode()));
-        MiscHandler.Log("MainRequestHandler - " + Integer.toHexString(MainRequestHandler.hashCode()));
-        MiscHandler.Log("QueueTaskList - " + Integer.toHexString(QueueTaskList.hashCode()) + " Size: " + QueueTaskList.size());
-        MiscHandler.Log("RunningTaskList - " + Integer.toHexString(RunningTaskList.hashCode()) + " Size: " + RunningTaskList.size());
-
         return ThreadExecutor;
     }
 
@@ -175,12 +170,12 @@ public class RequestHandler
         private String OutPath = "";
         private String Tag = "BioGram";
 
-        private ImageView BitmapView;
-        private int DesiredWidth = 0;
-        private int DesiredHeight = 0;
+        private int BitmapWidth = 0;
+        private int BitmapHeight = 0;
         private String BitmapName = "";
         private boolean BitmapCache = true;
 
+        private OnBitmapCallBack OnBitmapListener;
         private OnProgressCallBack OnProgressListener;
         private OnCompleteCallBack OnCompleteListener;
 
@@ -200,9 +195,9 @@ public class RequestHandler
             return this;
         }
 
-        Builder DesiredWidth(int Width)
+        Builder BitmapWidth(int Width)
         {
-            DesiredWidth = Width;
+            BitmapWidth = Width;
 
             return this;
         }
@@ -214,13 +209,6 @@ public class RequestHandler
             return this;
         }
 
-        Builder BitmapView(ImageView view)
-        {
-            BitmapView = view;
-
-            return this;
-        }
-
         Builder BitmapCache(boolean Cache)
         {
             BitmapCache = Cache;
@@ -228,9 +216,9 @@ public class RequestHandler
             return this;
         }
 
-        Builder DesiredHeight(int Height)
+        Builder BitmapHeight(int Height)
         {
-            DesiredHeight = Height;
+            BitmapHeight = Height;
 
             return this;
         }
@@ -305,6 +293,23 @@ public class RequestHandler
 
             AddTask(this);
         }
+
+        public void Build(OnBitmapCallBack CallBack)
+        {
+            OnBitmapListener = CallBack;
+
+            AddTask(this);
+        }
+
+        public void Build()
+        {
+            AddTask(this);
+        }
+    }
+
+    private interface OnBitmapCallBack
+    {
+        void OnFinish(Bitmap Response);
     }
 
     public interface OnCompleteCallBack
@@ -317,7 +322,7 @@ public class RequestHandler
         void OnProgress(long Received, long Total);
     }
 
-    public void LoadImage(ImageView view, String Address, String Tag, boolean Cache)
+    public void LoadImage(final ImageView view, String Address, String Tag, boolean Cache)
     {
         if (Address.equals(""))
             return;
@@ -330,10 +335,17 @@ public class RequestHandler
             return;
         }
 
-        new Builder("BITMAP").Address(Address).Tag(Tag).BitmapName(Name).BitmapCache(Cache).BitmapView(view).Build(null);
+        new Builder("BITMAP").Address(Address).Tag(Tag).BitmapName(Name).BitmapCache(Cache).Build(new OnBitmapCallBack()
+        {
+            @Override
+            public void OnFinish(Bitmap Response)
+            {
+                view.setImageBitmap(Response);
+            }
+        });
     }
 
-    public void LoadImage(ImageView view, String Address, String Tag, int DesiredWidth, int DesiredHeight, boolean Cache)
+    public void LoadImage(final ImageView view, String Address, String Tag, int DesiredWidth, int DesiredHeight, boolean Cache)
     {
         if (Address.equals(""))
             return;
@@ -346,7 +358,14 @@ public class RequestHandler
             return;
         }
 
-        new Builder("BITMAP_OPTION").Address(Address).Tag(Tag).BitmapName(Name).DesiredWidth(DesiredWidth).DesiredHeight(DesiredHeight).BitmapCache(Cache).BitmapView(view).Build(null);
+        new Builder("BITMAP_OPTION").Address(Address).Tag(Tag).BitmapName(Name).BitmapWidth(DesiredWidth).BitmapHeight(DesiredHeight).BitmapCache(Cache).Build(new OnBitmapCallBack()
+        {
+            @Override
+            public void OnFinish(Bitmap Response)
+            {
+                view.setImageBitmap(Response);
+            }
+        });
     }
 
     private void PerformBitmap(final Builder builder)
@@ -376,17 +395,10 @@ public class RequestHandler
             ByteArray.close();
             IS.close();
 
-            final Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length);
 
-            builder.BitmapView.post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    builder.BitmapView.setImageBitmap(bitmap);
-                    builder.BitmapView = null;
-                }
-            });
+            if (builder.OnBitmapListener != null)
+                builder.OnBitmapListener.OnFinish(bitmap);
 
             if (builder.BitmapCache)
                 CacheHandler.ImageSave(builder.BitmapName, bitmap);
@@ -436,12 +448,12 @@ public class RequestHandler
             int Width = o.outWidth;
             int SampleSize = 1;
 
-            if (Height > builder.DesiredWidth || Width > builder.DesiredHeight)
+            if (Height > builder.BitmapWidth || Width > builder.BitmapHeight)
             {
                 int HalfHeight = Height / 2;
                 int HalfWidth = Width / 2;
 
-                while ((HalfHeight / SampleSize) >= builder.DesiredHeight && (HalfWidth / SampleSize) >= builder.DesiredWidth)
+                while ((HalfHeight / SampleSize) >= builder.BitmapHeight && (HalfWidth / SampleSize) >= builder.BitmapWidth)
                 {
                     SampleSize *= 2;
                 }
@@ -450,17 +462,10 @@ public class RequestHandler
             o.inSampleSize = SampleSize;
             o.inJustDecodeBounds = false;
 
-            final Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
 
-            builder.BitmapView.post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    builder.BitmapView.setImageBitmap(bitmap);
-                    builder.BitmapView = null;
-                }
-            });
+            if (builder.OnBitmapListener != null)
+                builder.OnBitmapListener.OnFinish(bitmap);
 
             if (builder.BitmapCache)
                 CacheHandler.ImageSave(builder.BitmapName, bitmap);
