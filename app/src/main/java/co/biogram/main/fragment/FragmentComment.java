@@ -79,7 +79,7 @@ public class FragmentComment extends Fragment
             @Override
             public void onClick(View view)
             {
-                MiscHandler.HideKeyBoard(getActivity());
+                MiscHandler.HideSoftKey(getActivity());
                 getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentComment.this).commit();
             }
         });
@@ -411,7 +411,7 @@ public class FragmentComment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            RequestHandler.Core().LoadImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+            RequestHandler.Core().LoadImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.ToDimension(55), MiscHandler.ToDimension(55), true);
 
             String Username = CommentList.get(Position).Username;
 
@@ -419,7 +419,7 @@ public class FragmentComment extends Fragment
                 Username = Username.substring(0, 20) + " ...";
 
             Holder.TextViewUsername.setText(Username);
-            Holder.TextViewTime.setText(MiscHandler.GetTime(CommentList.get(Position).Time));
+            Holder.TextViewTime.setText(MiscHandler.GetTimeName(CommentList.get(Position).Time));
             Holder.TextViewMessage.setText(CommentList.get(Position).Message);
 
             new TagHandler(Holder.TextViewMessage, new TagHandler.OnTagClickListener()
@@ -528,12 +528,12 @@ public class FragmentComment extends Fragment
                         Title.setTextColor(ContextCompat.getColor(context, R.color.Black2));
                         Title.setText(getString(R.string.FragmentCommentAreYouSure));
                         Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                        Title.setPadding(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
+                        Title.setPadding(MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10));
 
                         Root.addView(Title);
 
                         View Line = new View(context);
-                        Line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
+                        Line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
                         Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
 
                         Root.addView(Line);
@@ -549,7 +549,7 @@ public class FragmentComment extends Fragment
                         Yes.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                         Yes.setText(getString(R.string.FragmentCommentYes));
                         Yes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                        Yes.setPadding(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
+                        Yes.setPadding(MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10));
                         Yes.setGravity(Gravity.CENTER);
 
                         Linear.addView(Yes);
@@ -559,7 +559,7 @@ public class FragmentComment extends Fragment
                         No.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                         No.setText(getString(R.string.FragmentCommentNo));
                         No.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                        No.setPadding(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
+                        No.setPadding(MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10));
                         No.setGravity(Gravity.CENTER);
 
                         Linear.addView(No);
@@ -641,7 +641,7 @@ public class FragmentComment extends Fragment
             }
 
             LinearLayout Root = new LinearLayout(context);
-            Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+            Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
             Root.setGravity(Gravity.CENTER);
 
             LoadingView Loading = new LoadingView(context);

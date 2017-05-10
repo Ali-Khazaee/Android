@@ -19,10 +19,11 @@ import java.util.List;
 
 import co.biogram.main.handler.MiscHandler;
 
+//@SuppressWarnings("unused")
 public class LoadingView extends LinearLayout
 {
     private int BounceColor = Color.GRAY;
-    private int BounceSize = MiscHandler.DpToPx(6);
+    private int BounceSize = MiscHandler.ToDimension(6);
     private List<Bounce> BounceList = new ArrayList<>();
     private List<Animator> AnimatorList = new ArrayList<>();
 
@@ -71,7 +72,7 @@ public class LoadingView extends LinearLayout
 
         Context context = getContext();
         LayoutParams BounceParam = new LayoutParams(BounceSize, BounceSize);
-        LayoutParams SpaceParam = new LayoutParams(MiscHandler.DpToPx(5), BounceSize*3);
+        LayoutParams SpaceParam = new LayoutParams(MiscHandler.ToDimension(5), BounceSize*3);
 
         GradientDrawable Shape = new GradientDrawable();
         Shape.setShape(GradientDrawable.OVAL);
@@ -117,10 +118,9 @@ public class LoadingView extends LinearLayout
         }
     }
 
-    @SuppressWarnings("unused")
     public void SetSize(int Size)
     {
-        BounceSize = MiscHandler.DpToPx(Size);
+        BounceSize = MiscHandler.ToDimension(Size);
     }
 
     public void SetColor(int Color)
@@ -136,7 +136,6 @@ public class LoadingView extends LinearLayout
         }
 
         @Keep
-        @SuppressWarnings("unused")
         void setScale(float Scale)
         {
             setScaleX(Scale);

@@ -23,7 +23,7 @@ public class FragmentTabCategory extends Fragment
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Root.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
 
-        RelativeLayout.LayoutParams LoadingParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(100), MiscHandler.DpToPx(100));
+        RelativeLayout.LayoutParams LoadingParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(100), MiscHandler.ToDimension(100));
         LoadingParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingView Loading = new LoadingView(getContext());

@@ -27,7 +27,7 @@ android
         {
             keyAlias BioAlias
             keyPassword BioPassword
-            storeFile file('C:/Users/pc/Desktop/Ali/Android/app/SignKey.jks')
+            storeFile file('E:/Biogram/Android/app/SignKey.jks')
             storePassword BioPassword
         }
     }

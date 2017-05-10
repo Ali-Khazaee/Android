@@ -60,15 +60,15 @@ public class FragmentImagePreview extends Fragment
         Main.addView(Pager);
 
         Header = new RelativeLayout(context);
-        Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+        Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
         Header.setBackgroundColor(Color.parseColor("#3f000000"));
 
         Main.addView(Header);
 
         ImageView Back = new ImageView(context);
-        Back.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
+        Back.setPadding(MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12));
         Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56)));
+        Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), MiscHandler.ToDimension(56)));
         Back.setImageResource(R.drawable.ic_back_white);
         Back.setId(MiscHandler.GenerateViewID());
         Back.setOnClickListener(new View.OnClickListener()

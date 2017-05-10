@@ -54,16 +54,16 @@ public class FragmentLike extends Fragment
         Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
 
         RelativeLayout Header = new RelativeLayout(context);
-        Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+        Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
         Header.setBackgroundColor(ContextCompat.getColor(context, R.color.White5));
         Header.setId(MiscHandler.GenerateViewID());
 
         Root.addView(Header);
 
         ImageView Back = new ImageView(context);
-        Back.setPadding(MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12), MiscHandler.DpToPx(12));
+        Back.setPadding(MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12));
         Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.DpToPx(56), MiscHandler.DpToPx(56)));
+        Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), MiscHandler.ToDimension(56)));
         Back.setImageResource(R.drawable.ic_back_blue);
         Back.setId(MiscHandler.GenerateViewID());
         Back.setOnClickListener(new View.OnClickListener()
@@ -90,7 +90,7 @@ public class FragmentLike extends Fragment
 
         Header.addView(Title);
 
-        RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
+        RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
         LineParam.addRule(RelativeLayout.BELOW, Header.getId());
 
         View Line = new View(context);
@@ -268,10 +268,10 @@ public class FragmentLike extends Fragment
             if (LikeList.get(Position) == null)
                 return;
 
-            RequestHandler.Core().LoadImage(Holder.Profile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+            RequestHandler.Core().LoadImage(Holder.Profile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.ToDimension(55), MiscHandler.ToDimension(55), true);
 
             Holder.Username.setText(LikeList.get(Position).Username);
-            Holder.Time.setText(MiscHandler.GetTime(LikeList.get(Position).Time));
+            Holder.Time.setText(MiscHandler.GetTimeName(LikeList.get(Position).Time));
 
             if (Position == LikeList.size() - 1)
                 Holder.Line.setVisibility(View.GONE);
@@ -289,8 +289,8 @@ public class FragmentLike extends Fragment
                 RelativeLayout Root = new RelativeLayout(context);
                 Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-                RelativeLayout.LayoutParams ProfileParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(55), MiscHandler.DpToPx(55));
-                ProfileParam.setMargins(MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10), MiscHandler.DpToPx(10));
+                RelativeLayout.LayoutParams ProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(55), MiscHandler.ToDimension(55));
+                ProfileParam.setMargins(MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10));
 
                 ImageViewCircle Profile = new ImageViewCircle(context);
                 Profile.setLayoutParams(ProfileParam);
@@ -325,7 +325,7 @@ public class FragmentLike extends Fragment
 
                 Linear.addView(Time);
 
-                RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1));
+                RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
                 LineParam.addRule(RelativeLayout.BELOW, Profile.getId());
 
                 View Line = new View(context);
@@ -339,7 +339,7 @@ public class FragmentLike extends Fragment
             }
 
             LinearLayout Root = new LinearLayout(context);
-            Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+            Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
             Root.setGravity(Gravity.CENTER);
 
             LoadingView Loading = new LoadingView(context);

@@ -36,7 +36,6 @@ import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentComment;
 import co.biogram.main.fragment.FragmentImagePreview;
@@ -62,7 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         Tag = tag;
 
         ShapeLink = new GradientDrawable();
-        ShapeLink.setStroke(MiscHandler.DpToPx(1), ContextCompat.getColor(AppActivity, R.color.BlueGray));
+        ShapeLink.setStroke(MiscHandler.ToDimension(1), ContextCompat.getColor(AppActivity, R.color.BlueGray));
     }
 
     class ViewHolderPost extends RecyclerView.ViewHolder
@@ -148,7 +147,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         }
 
         LinearLayout Root = new LinearLayout(AppActivity);
-        Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(56)));
+        Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
         Root.setGravity(Gravity.CENTER);
 
         LoadingView Loading = new LoadingView(AppActivity);
@@ -195,10 +194,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             }
         });
 
-        RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.DpToPx(55), MiscHandler.DpToPx(55), true);
+        RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.ToDimension(55), MiscHandler.ToDimension(55), true);
 
         Holder.TextViewUsername.setText(PostList.get(Position).Username);
-        Holder.TextViewTime.setText(MiscHandler.GetTime(PostList.get(Position).Time));
+        Holder.TextViewTime.setText(MiscHandler.GetTimeName(PostList.get(Position).Time));
         Holder.ImageViewOption.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -217,7 +216,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Follow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 Follow.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Follow.setText(AppActivity.getString(R.string.AdapterPostFollow));
-                Follow.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
+                Follow.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
                 Follow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Follow.setOnClickListener(new View.OnClickListener()
                 {
@@ -232,7 +231,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Root.addView(Follow);
 
                 View FollowLine = new View(AppActivity);
-                FollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
+                FollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
                 FollowLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(FollowLine);
@@ -241,7 +240,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Turn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 Turn.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Turn.setVisibility(View.GONE);
-                Turn.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
+                Turn.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
                 Turn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Turn.setOnClickListener(new View.OnClickListener()
                 {
@@ -292,7 +291,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Root.addView(Turn);
 
                 View TurnLine = new View(AppActivity);
-                TurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
+                TurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
                 TurnLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
                 TurnLine.setVisibility(View.GONE);
 
@@ -302,7 +301,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Copy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 Copy.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Copy.setText(AppActivity.getString(R.string.AdapterPostCopy));
-                Copy.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
+                Copy.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
                 Copy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Copy.setOnClickListener(new View.OnClickListener()
                 {
@@ -321,7 +320,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Root.addView(Copy);
 
                 View CopyLine = new View(AppActivity);
-                CopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
+                CopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
                 CopyLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(CopyLine);
@@ -329,7 +328,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 final TextView BookMark = new TextView(AppActivity);
                 BookMark.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 BookMark.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
-                BookMark.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
+                BookMark.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
                 BookMark.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 BookMark.setOnClickListener(new View.OnClickListener()
                 {
@@ -378,7 +377,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Root.addView(BookMark);
 
                 View BookMarkLine = new View(AppActivity);
-                BookMarkLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
+                BookMarkLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
                 BookMarkLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(BookMarkLine);
@@ -387,7 +386,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Block.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 Block.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Block.setText(AppActivity.getString(R.string.AdapterPostBlock));
-                Block.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
+                Block.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
                 Block.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Block.setOnClickListener(new View.OnClickListener()
                 {
@@ -402,7 +401,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Root.addView(Block);
 
                 View BlockLine = new View(AppActivity);
-                BlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
+                BlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
                 BlockLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
 
                 Root.addView(BlockLine);
@@ -412,7 +411,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Delete.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Delete.setText(AppActivity.getString(R.string.AdapterPostDelete));
                 Delete.setVisibility(View.GONE);
-                Delete.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
+                Delete.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
                 Delete.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Delete.setOnClickListener(new View.OnClickListener()
                 {
@@ -452,7 +451,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Root.addView(Delete);
 
                 View DeleteLine = new View(AppActivity);
-                DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.DpToPx(1)));
+                DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
                 DeleteLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
                 DeleteLine.setVisibility(View.GONE);
 
@@ -462,7 +461,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Report.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 Report.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
                 Report.setText(AppActivity.getString(R.string.AdapterPostReport));
-                Report.setPadding(MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15), MiscHandler.DpToPx(15));
+                Report.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
                 Report.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Report.setOnClickListener(new View.OnClickListener()
                 {

@@ -32,7 +32,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONObject;
 
-import co.biogram.main.App;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
@@ -168,7 +167,7 @@ public class ActivityWelcome extends AppCompatActivity
     {
         super.onPause();
         GoogleClient.disconnect();
-        MiscHandler.HideKeyBoard(this);
+        MiscHandler.HideSoftKey(this);
         AndroidNetworking.cancel("ActivityWelcome");
     }
 
@@ -188,7 +187,7 @@ public class ActivityWelcome extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    MiscHandler.HideKeyBoard(getActivity());
+                    MiscHandler.HideSoftKey(getActivity());
                     getActivity().onBackPressed();
                 }
             });
@@ -311,7 +310,7 @@ public class ActivityWelcome extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    MiscHandler.HideKeyBoard(getActivity());
+                    MiscHandler.HideSoftKey(getActivity());
                     getActivity().onBackPressed();
                 }
             });
@@ -394,7 +393,7 @@ public class ActivityWelcome extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    MiscHandler.HideKeyBoard(getActivity());
+                    MiscHandler.HideSoftKey(getActivity());
                     getActivity().onBackPressed();
                 }
             });
@@ -534,7 +533,7 @@ public class ActivityWelcome extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    MiscHandler.HideKeyBoard(getActivity());
+                    MiscHandler.HideSoftKey(getActivity());
                     getActivity().onBackPressed();
                 }
             });
@@ -692,7 +691,7 @@ public class ActivityWelcome extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    MiscHandler.HideKeyBoard(getActivity());
+                    MiscHandler.HideSoftKey(getActivity());
                     getActivity().onBackPressed();
                 }
             });
