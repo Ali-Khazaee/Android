@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import co.biogram.main.R;
+import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.misc.LoadingView;
 
 public class FragmentTabCategory extends Fragment
@@ -22,11 +23,12 @@ public class FragmentTabCategory extends Fragment
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Root.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.White));
 
-        RelativeLayout.LayoutParams LoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams LoadingParam = new RelativeLayout.LayoutParams(MiscHandler.DpToPx(100), MiscHandler.DpToPx(100));
         LoadingParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingView Loading = new LoadingView(getContext());
         Loading.setLayoutParams(LoadingParam);
+        Loading.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.Black));
         Loading.SetColor(R.color.BlueLight);
         //Loading.SetSize(5);
         Loading.Start();

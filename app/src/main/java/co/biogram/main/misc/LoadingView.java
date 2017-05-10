@@ -1,13 +1,17 @@
 package co.biogram.main.misc;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.Keep;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -18,10 +22,9 @@ import co.biogram.main.handler.MiscHandler;
 public class LoadingView extends LinearLayout
 {
     private int BounceColor = Color.GRAY;
-    private int BounceSize;
-
-    private List<View> BounceList;
-    private ValueAnimator BounceAnimation;
+    private int BounceSize = MiscHandler.DpToPx(6);
+    private List<Bounce> BounceList = new ArrayList<>();
+    private List<Animator> AnimatorList = new ArrayList<>();
 
     public LoadingView(Context context)
     {
@@ -36,24 +39,8 @@ public class LoadingView extends LinearLayout
     public LoadingView(Context context, AttributeSet attrs, int style)
     {
         super(context, attrs, style);
-
-        BounceSize = MiscHandler.DpToPx(6);
-
-
-        mLoopDuration = 600;
-        mLoopStartDelay = 100;
-        mJumpDuration =  400;
-        mJumpHeight = MiscHandler.DpToPx(12);
-
         setOrientation(HORIZONTAL);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        setMeasuredDimension(getMeasuredWidth(), getMeasuredHeight());
+        setGravity(Gravity.CENTER);
     }
 
     @Override
@@ -61,110 +48,76 @@ public class LoadingView extends LinearLayout
     {
         super.onDetachedFromWindow();
 
-        if (BounceAnimation != null)
-        {
-            BounceAnimation.end();
-            BounceAnimation.removeAllUpdateListeners();
-        }
+        Stop();
     }
 
     public void Stop()
     {
-        if (BounceAnimation != null)
+        for (Animator animator : AnimatorList)
         {
-            BounceAnimation.end();
-            BounceAnimation.removeAllUpdateListeners();
+            animator.removeAllListeners();
+            animator.end();
         }
+
+        AnimatorList.clear();
+        BounceList.clear();
+
+        removeAllViews();
     }
 
     public void Start()
     {
-        if (BounceAnimation != null)
-            return;
+        Stop();
 
-        int startOffset = (mLoopDuration - (mJumpDuration + mLoopStartDelay)) / (3 - 1);
-
-        mJumpHalfTime = mJumpDuration / 2;
-        mDotsStartTime = new int[3];
-        mDotsJumpUpEndTime = new int[3];
-        mDotsJumpDownEndTime = new int[3];
-
-        for (int i = 0; i < 3; i++)
-        {
-            int startTime = mLoopStartDelay + startOffset * i;
-            mDotsStartTime[i] = startTime;
-            mDotsJumpUpEndTime[i] = startTime + mJumpHalfTime;
-            mDotsJumpDownEndTime[i] = startTime + mJumpDuration;
-        }
-
-        removeAllViews();
         Context context = getContext();
-        BounceList = new ArrayList<>(3);
         LayoutParams BounceParam = new LayoutParams(BounceSize, BounceSize);
-        LayoutParams SpaceParam = new LayoutParams(MiscHandler.DpToPx(5), BounceSize);
+        LayoutParams SpaceParam = new LayoutParams(MiscHandler.DpToPx(5), BounceSize*3);
+
+        GradientDrawable Shape = new GradientDrawable();
+        Shape.setShape(GradientDrawable.OVAL);
+        Shape.setColor(BounceColor);
 
         for (int I = 0; I < 3; I++)
         {
-            GradientDrawable Shape = new GradientDrawable();
-            Shape.setShape(GradientDrawable.OVAL);
-            Shape.setColor(BounceColor);
+            Bounce bounce = new Bounce(context);
+            bounce.setBackground(Shape);
 
-            ImageView Bounce = new ImageView(context);
-            Bounce.setBackground(Shape);
-
-            addView(Bounce, BounceParam);
-            BounceList.add(Bounce);
+            addView(bounce, BounceParam);
+            BounceList.add(bounce);
+            bounce.bringToFront();
 
             if (I < 3 - 1)
                 addView(new View(context), SpaceParam);
         }
 
-        BounceAnimation = ValueAnimator.ofInt(0, mLoopDuration);
-        BounceAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+        for (int I = 0; I < 3; I++)
         {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator)
+            View Bounce = BounceList.get(I);
+            long StartDelay = I * (int) (0.35 * 300);
+
+            ValueAnimator GrowAnimator = ObjectAnimator.ofFloat(Bounce, "scale", 1.0f, 1.5f, 1.0f);
+            GrowAnimator.setDuration(300);
+
+            if (I == 2)
             {
-                int dotsCount = BounceList.size();
-                int from = 0;
-
-                int animationValue = (Integer) valueAnimator.getAnimatedValue();
-
-                if (animationValue < mLoopStartDelay) {
-                    // Do nothing
-                    return;
-                }
-
-                for (int i = 0; i < dotsCount; i++) {
-                    View dot = BounceList.get(i);
-
-                    int dotStartTime = mDotsStartTime[i];
-
-                    float animationFactor;
-                    if (animationValue < dotStartTime) {
-                        // No animation is needed for this dot yet
-                        animationFactor = 0f;
-                    } else if (animationValue < mDotsJumpUpEndTime[i]) {
-                        // Animate jump up
-                        animationFactor = (float) (animationValue - dotStartTime) / mJumpHalfTime;
-                    } else if (animationValue < mDotsJumpDownEndTime[i]) {
-                        // Animate jump down
-                        animationFactor = 1 - ((float) (animationValue - dotStartTime - mJumpHalfTime) / (mJumpHalfTime));
-                    } else {
-                        // Dot finished animation for this loop
-                        animationFactor = 0f;
+                GrowAnimator.addListener(new AnimatorListenerAdapter()
+                {
+                    @Override
+                    public void onAnimationEnd(Animator animation)
+                    {
+                        for (Animator animator : AnimatorList)
+                            animator.start();
                     }
-
-                    float translationY = (-mJumpHeight - from) * animationFactor;
-                    dot.setTranslationY(translationY);
-                }
+                });
             }
-        });
-        BounceAnimation.setDuration(mLoopDuration);
-        BounceAnimation.setRepeatCount(Animation.INFINITE);
-        BounceAnimation.start();
+
+            GrowAnimator.setStartDelay(StartDelay);
+            GrowAnimator.start();
+            AnimatorList.add(GrowAnimator);
+        }
     }
 
+    @SuppressWarnings("unused")
     public void SetSize(int Size)
     {
         BounceSize = MiscHandler.DpToPx(Size);
@@ -172,25 +125,22 @@ public class LoadingView extends LinearLayout
 
     public void SetColor(int Color)
     {
-        BounceColor = Color;
+        BounceColor = ContextCompat.getColor(getContext(), Color);
     }
 
+    private class Bounce extends View
+    {
+        Bounce(Context context)
+        {
+            super(context);
+        }
 
-
-
-
-
-    // Animation time attributes
-    private int mLoopDuration;
-    private int mLoopStartDelay;
-
-    // Animation behavior attributes
-    private int mJumpDuration;
-    private int mJumpHeight;
-
-    // Cached Calculations
-    private int mJumpHalfTime;
-    private int[] mDotsStartTime;
-    private int[] mDotsJumpUpEndTime;
-    private int[] mDotsJumpDownEndTime;
+        @Keep
+        @SuppressWarnings("unused")
+        void setScale(float Scale)
+        {
+            setScaleX(Scale);
+            setScaleY(Scale);
+        }
+    }
 }
