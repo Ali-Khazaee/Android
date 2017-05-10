@@ -21,10 +21,10 @@ import co.biogram.main.R;
 
 public class MiscHandler
 {
+    private static final AtomicInteger NextGeneratedID = new AtomicInteger(1);
+
     public static int GenerateViewID()
     {
-        AtomicInteger NextGeneratedID = new AtomicInteger(1);
-
         for (;;)
         {
             int Result = NextGeneratedID.get();
@@ -66,6 +66,12 @@ public class MiscHandler
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(Root);
         toast.show();
+    }
+
+    public static int ToDimension(Context context, float Value)
+    {
+        DisplayMetrics Metrics = context.getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, Metrics);
     }
 
     public static int ToDimension(float Value)

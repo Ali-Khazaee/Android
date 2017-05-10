@@ -310,7 +310,7 @@ public class FragmentMomentWrite extends Fragment
                 Fragment fragment = new FragmentPreviewVideo();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, fragment).addToBackStack("FragmentPreviewVideo").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.FullScreenContainer, fragment).addToBackStack("FragmentPreviewVideo").commit();
             }
         });
 
@@ -353,7 +353,7 @@ public class FragmentMomentWrite extends Fragment
                 Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
 
                 LinearLayout.LayoutParams URLParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                URLParam.setMargins(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                URLParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
                 final EditText URL = new EditText(context);
                 URL.setLayoutParams(URLParam);
@@ -371,7 +371,7 @@ public class FragmentMomentWrite extends Fragment
                 Submit.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                 Submit.setText(getString(R.string.FragmentMomentWriteShareLinkSub));
                 Submit.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
-                Submit.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Submit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 Submit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 Submit.setEnabled(false);
                 Submit.setGravity(Gravity.CENTER);
@@ -380,7 +380,7 @@ public class FragmentMomentWrite extends Fragment
                 Cancel.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                 Cancel.setText(getString(R.string.FragmentMomentWriteShareLinkCan));
                 Cancel.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                Cancel.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Cancel.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 Cancel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 Cancel.setGravity(Gravity.CENTER);
 

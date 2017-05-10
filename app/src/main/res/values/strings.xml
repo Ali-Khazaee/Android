@@ -2,6 +2,40 @@
 <resources>
     <string name="ApplicationName">BioGram</string>
 
+    <string name="NoInternet">Check Your Network</string>
+
+    <string name="ActivityWelcomeHeader">Sign Up to share events and</string>
+    <string name="ActivityWelcomeHeader2">See the recently moments</string>
+    <string name="ActivityWelcomeSignUp">Sign Up</string>
+    <string name="ActivityWelcomeOR">OR</string>
+    <string name="ActivityWelcomeSignInGoogle">Sign in with google</string>
+    <string name="ActivityWelcomeTerm">By Signing Up you agree to our</string>
+    <string name="ActivityWelcomeTerm2">Terms &amp; Privacy and Policy</string>
+    <string name="ActivityWelcomeSignIn">Already have an account ?</string>
+    <string name="ActivityWelcomeSignIn2">Sign In</string>
+    <string name="ActivityWelcomeGoogleError">Something went wrong, Please Try Again</string>
+
+    <string name="FragmentSignUpUsername">Username</string>
+    <string name="FragmentSignUpUsernameTitle">Username</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="PostDetailsTitle">Post Details</string>
     <string name="PostDetailsLike">LIKES</string>
     <string name="PostDetailsComment">COMMENTS</string>
@@ -15,16 +49,7 @@
 
     <string name="TextCrawlerNoDescription">No Description &#8230;</string>
 
-    <string name="ActivityWelcomeHeader1">Sign Up to share events and</string>
-    <string name="ActivityWelcomeHeader2">See the recently moments</string>
-    <string name="ActivityWelcomeSignUp">Sign Up</string>
-    <string name="ActivityWelcomeOR">OR</string>
-    <string name="ActivityWelcomeSignInGoogle">Sign in with google</string>
-    <string name="ActivityWelcomeTerm1">By Signing Up you agree to our</string>
-    <string name="ActivityWelcomeTerm2">Terms &amp; Privacy and Policy</string>
-    <string name="ActivityWelcomeFooter1">Already have an account ?</string>
-    <string name="ActivityWelcomeFooter2">Sign In</string>
-    <string name="ActivityWelcomeGoogleError">Something went wrong, Please Try Again</string>
+
 
     <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>
     <string name="ActivityWelcomeGeneralNext">Next</string>
