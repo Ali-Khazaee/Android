@@ -19,11 +19,14 @@ import java.util.List;
 
 import co.biogram.main.handler.MiscHandler;
 
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class LoadingView extends LinearLayout
 {
-    private int BounceColor = Color.GRAY;
+    private float BounceScale = 2.0f;
+    private int BounceSpeed = 300;
+    private int BounceColor = Color.parseColor("#a9bac4");
     private int BounceSize = MiscHandler.ToDimension(6);
+
     private List<Bounce> BounceList = new ArrayList<>();
     private List<Animator> AnimatorList = new ArrayList<>();
 
@@ -94,10 +97,10 @@ public class LoadingView extends LinearLayout
         for (int I = 0; I < 3; I++)
         {
             View Bounce = BounceList.get(I);
-            long StartDelay = I * (int) (0.35 * 300);
+            long StartDelay = I * (int) (0.4 * BounceSpeed);
 
-            ValueAnimator GrowAnimator = ObjectAnimator.ofFloat(Bounce, "scale", 1.0f, 1.5f, 1.0f);
-            GrowAnimator.setDuration(300);
+            ValueAnimator GrowAnimator = ObjectAnimator.ofFloat(Bounce, "scale", 1.0f, BounceScale, 1.0f);
+            GrowAnimator.setDuration(BounceSpeed);
 
             if (I == 2)
             {
@@ -118,9 +121,19 @@ public class LoadingView extends LinearLayout
         }
     }
 
+    public void SetSpeed(int Speed)
+    {
+        BounceSpeed = Speed;
+    }
+
     public void SetSize(int Size)
     {
         BounceSize = MiscHandler.ToDimension(Size);
+    }
+
+    public void SetScale(float Scale)
+    {
+        BounceScale = Scale;
     }
 
     public void SetColor(int Color)

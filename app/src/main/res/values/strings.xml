@@ -4,6 +4,9 @@
 
     <string name="NoInternet">Check Your Network</string>
 
+    <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>
+    <string name="ActivityWelcomeGeneralNext">Next</string>
+
     <string name="ActivityWelcomeHeader">Sign Up to share events and</string>
     <string name="ActivityWelcomeHeader2">See the recently moments</string>
     <string name="ActivityWelcomeSignUp">Sign Up</string>
@@ -17,7 +20,11 @@
 
     <string name="FragmentSignUpUsername">Username</string>
     <string name="FragmentSignUpUsernameTitle">Username</string>
+    <string name="FragmentSignUpUsernameMessage">Your Username is unique and used to personalize your phone and BioGram account. You can always change it later.</string>
+    <string name="FragmentSignUpUsernameError">Username is unavailable</string>
 
+    <string name="FragmentSignUpPassword">Password</string>
+    <string name="FragmentSignUpPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
 
 
 
@@ -49,17 +56,6 @@
 
     <string name="TextCrawlerNoDescription">No Description &#8230;</string>
 
-
-
-    <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>
-    <string name="ActivityWelcomeGeneralNext">Next</string>
-
-    <string name="ActivityWelcomeFragmentUsernameTitle">Username</string>
-    <string name="ActivityWelcomeFragmentUsernameMessage">Your Username is unique and used to personalize your phone and BioGram account. You can always change it later.</string>
-    <string name="ActivityWelcomeFragmentUsernameError">Username is unavailable</string>
-
-    <string name="ActivityWelcomeFragmentPasswordTitle">Password</string>
-    <string name="ActivityWelcomeFragmentPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
 
     <string name="ActivityWelcomeFragmentEmailTitle">Email</string>
     <string name="ActivityWelcomeFragmentEmailEdit">Email Address</string>
@@ -148,7 +144,6 @@
     <string name="ActivityProfileEditEmailHint">Email cannot be blank</string>
     <string name="ActivityProfileEditUpload">Please Wait, Uploading Data &#8230;</string>
     <string name="ActivityProfileEditCrop">Image Crop</string>
-    <string name="ActivityProfileEditImageProfileRemoved">Profile Image Was Removed</string>
     <string name="ActivityProfileEditImageBackGroundRemoved">BackGround Image Was Removed</string>
     <string name="ActivityProfileEditDialogMessage1">Take From Camera</string>
     <string name="ActivityProfileEditDialogMessage2">Select From Gallery</string>
