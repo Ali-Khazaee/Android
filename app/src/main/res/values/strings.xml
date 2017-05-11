@@ -38,21 +38,12 @@
     <string name="FragmentSignInForgot">Forgot Password ?</string>
     <string name="FragmentSignInError">Your username password doesn\'t matches</string>
 
-    <string name="ActivityWelcomeFragmentResetTitle">Reset Password</string>
-    <string name="ActivityWelcomeFragmentResetEmailOrUsername">Email or Username</string>
-    <string name="ActivityWelcomeFragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
-    <string name="ActivityWelcomeFragmentResetSubmit">Submit</string>
-    <string name="ActivityWelcomeFragmentResetSuccess">Please, Check your email</string>
-    <string name="ActivityWelcomeFragmentResetError">Your submitted email or username doesn\'t exist</string>
-
-
-
-
-
-
-
-
-
+    <string name="FragmentResetTitle">Reset Password</string>
+    <string name="FragmentResetEmailOrUsername">Email or Username</string>
+    <string name="FragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
+    <string name="FragmentResetSubmit">Submit</string>
+    <string name="FragmentResetSuccess">Please, Check your email</string>
+    <string name="FragmentResetError">Your submitted email or username doesn\'t exist</string>
 
 
 
