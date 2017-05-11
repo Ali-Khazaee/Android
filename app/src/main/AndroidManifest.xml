@@ -22,7 +22,7 @@
         android:supportsRtl="false"
         android:allowBackup="false">
 
-        <activity android:name=".activity.ActivityWelcome" android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize">
+        <activity android:name=".activity.ActivityWelcome" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -19,17 +19,31 @@
     <string name="ActivityWelcomeGoogleError">Something went wrong, Please Try Again</string>
 
     <string name="FragmentSignUpUsername">Username</string>
-    <string name="FragmentSignUpUsernameTitle">Username</string>
     <string name="FragmentSignUpUsernameMessage">Your Username is unique and used to personalize your phone and BioGram account. You can always change it later.</string>
     <string name="FragmentSignUpUsernameError">Username is unavailable</string>
 
     <string name="FragmentSignUpPassword">Password</string>
     <string name="FragmentSignUpPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
 
+    <string name="FragmentSignUpEmailTitle">Email</string>
+    <string name="FragmentSignUpEmail">Email Address</string>
+    <string name="FragmentSignUpEmailMessage">Lotfan Az Email e Motabari Estefade Konid, Ta Ba\'dan be Moshkel Bar nakhorid</string>
+    <string name="FragmentSignUpEmailFinish">Finish</string>
+    <string name="FragmentSignUpEmailError">Your email address is already used</string>
 
+    <string name="FragmentSignInTitle">Sign In</string>
+    <string name="FragmentSignInEmailOrUsername">Email or Username</string>
+    <string name="FragmentSignInPassword">Password</string>
+    <string name="FragmentSignInMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
+    <string name="FragmentSignInForgot">Forgot Password ?</string>
+    <string name="FragmentSignInError">Your username password doesn\'t matches</string>
 
-
-
+    <string name="ActivityWelcomeFragmentResetTitle">Reset Password</string>
+    <string name="ActivityWelcomeFragmentResetEmailOrUsername">Email or Username</string>
+    <string name="ActivityWelcomeFragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
+    <string name="ActivityWelcomeFragmentResetSubmit">Submit</string>
+    <string name="ActivityWelcomeFragmentResetSuccess">Please, Check your email</string>
+    <string name="ActivityWelcomeFragmentResetError">Your submitted email or username doesn\'t exist</string>
 
 
 
@@ -57,25 +71,7 @@
     <string name="TextCrawlerNoDescription">No Description &#8230;</string>
 
 
-    <string name="ActivityWelcomeFragmentEmailTitle">Email</string>
-    <string name="ActivityWelcomeFragmentEmailEdit">Email Address</string>
-    <string name="ActivityWelcomeFragmentEmailMessage">Lotfan Az Email e Motabari Estefade Konid, Ta Ba\'dan be Moshkel Bar nakhorid</string>
-    <string name="ActivityWelcomeFragmentEmailFinish">Finish</string>
-    <string name="ActivityWelcomeFragmentEmailError">Your email address is already used</string>
 
-    <string name="ActivityWelcomeFragmentSignInTitle">Sign In</string>
-    <string name="ActivityWelcomeFragmentSignInUsername">Email or Username</string>
-    <string name="ActivityWelcomeFragmentSignInPassword">Password</string>
-    <string name="ActivityWelcomeFragmentSignInMessage">Salam Ehem Ohom, Yallll\'Laahh Kasi Hast ? Mehmon Omade Ehemm - Salam Ehem Ohom, Yallll\'Laahh Kasi Hast ? Mehmon Omade Ehemm</string>
-    <string name="ActivityWelcomeFragmentSignInForgot">Forgot Password ?</string>
-    <string name="ActivityWelcomeFragmentSignInError">Your username password doesn\'t matches</string>
-
-    <string name="ActivityWelcomeFragmentResetTitle">Reset Password</string>
-    <string name="ActivityWelcomeFragmentResetEmailOrUsername">Email or Username</string>
-    <string name="ActivityWelcomeFragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
-    <string name="ActivityWelcomeFragmentResetSubmit">Submit</string>
-    <string name="ActivityWelcomeFragmentResetSuccess">Please, Check your email</string>
-    <string name="ActivityWelcomeFragmentResetError">Your submitted email or username doesn\'t exist</string>
 
     <string name="FragmentMomentWriteMaxImage">Maximum Picture Is Three</string>
     <string name="FragmentMomentWriteSelectImage">Select Image From</string>

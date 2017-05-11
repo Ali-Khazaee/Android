@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Build;
 
@@ -16,10 +17,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Selection;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.util.TypedValue;
@@ -65,7 +63,7 @@ public class ActivityWelcome extends FragmentActivity
     private String Password;
 
     private GoogleApiClient GoogleClient;
-    private int FrameLayoutContainerID = MiscHandler.GenerateViewID();
+    private final int FrameLayoutContainerID = MiscHandler.GenerateViewID();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -260,7 +258,7 @@ public class ActivityWelcome extends FragmentActivity
             @Override
             public void onClick(View v)
             {
-                getSupportFragmentManager().beginTransaction().replace(FrameLayoutContainerID, new SignInFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(FrameLayoutContainerID, new FragmentSignIn()).addToBackStack("FragmentSignIn").commit();
             }
         });
 
@@ -419,8 +417,11 @@ public class ActivityWelcome extends FragmentActivity
 
     public static class FragmentSignUpUsername extends Fragment
     {
-        private InputMethodManager IMM;
-        private EditText EditTextUsername;
+        private ScrollView Root;
+        private ViewTreeObserver.OnGlobalLayoutListener RootListener;
+
+        private Button ButtonUsername;
+        private LoadingView LoadingViewUsername;
 
         private int LastDifferenceHeight = 0;
 
@@ -429,14 +430,15 @@ public class ActivityWelcome extends FragmentActivity
         {
             final Context context = getActivity();
 
-            final ScrollView Root = new ScrollView(context);
+            Root = new ScrollView(context);
             Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             Root.setBackgroundResource(R.color.White);
             Root.setHorizontalScrollBarEnabled(false);
             Root.setVerticalScrollBarEnabled(false);
             Root.setFillViewport(true);
             Root.setClickable(true);
-            Root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+
+            RootListener = new ViewTreeObserver.OnGlobalLayoutListener()
             {
                 @Override
                 public void onGlobalLayout()
@@ -457,8 +459,13 @@ public class ActivityWelcome extends FragmentActivity
                         Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                         LastDifferenceHeight = DifferenceHeight;
                     }
+                    else if (LastDifferenceHeight != 0)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(LastDifferenceHeight)));
+                        LastDifferenceHeight = 0;
+                    }
                 }
-            });
+            };
 
             RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -484,7 +491,7 @@ public class ActivityWelcome extends FragmentActivity
                 public void onClick(View v)
                 {
                     MiscHandler.HideSoftKey(getActivity());
-                    getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentSignUpUsername.this).commit();
+                    getActivity().onBackPressed();
                 }
             });
 
@@ -497,7 +504,7 @@ public class ActivityWelcome extends FragmentActivity
             TextView TextViewHeader = new TextView(context);
             TextViewHeader.setLayoutParams(TextViewHeaderParam);
             TextViewHeader.setTextColor(ContextCompat.getColor(context, R.color.White));
-            TextViewHeader.setText(getString(R.string.FragmentSignUpUsernameTitle));
+            TextViewHeader.setText(getString(R.string.FragmentSignUpUsername));
             TextViewHeader.setTypeface(null, Typeface.BOLD);
             TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -531,10 +538,9 @@ public class ActivityWelcome extends FragmentActivity
             EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
             EditTextUsernameParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-            EditTextUsername = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+            final EditText EditTextUsername = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
             EditTextUsername.setLayoutParams(EditTextUsernameParam);
             EditTextUsername.setMaxLines(1);
-            EditTextUsername.setText("@A");
             EditTextUsername.setId(MiscHandler.GenerateViewID());
             EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             EditTextUsername.setFilters(new InputFilter[]
@@ -559,33 +565,6 @@ public class ActivityWelcome extends FragmentActivity
 
                         return null;
                     }
-                },
-                new InputFilter()
-                {
-                    @Override
-                    public CharSequence filter(final CharSequence source, final int start, final int end, final Spanned dest, final int dstart, final int dend)
-                    {
-                        final int newStart = Math.max(2, dstart);
-                        final int newEnd = Math.max(2, dend);
-
-                        if (newStart != dstart || newEnd != dend)
-                        {
-                            final SpannableStringBuilder builder = new SpannableStringBuilder(dest);
-                            builder.replace(newStart, newEnd, source);
-
-                            if (source instanceof Spanned)
-                            {
-                                TextUtils.copySpansFrom((Spanned) source, 0, source.length(), null, builder, newStart);
-                            }
-
-                            Selection.setSelection(builder, newStart + source.length());
-                            return builder;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
                 }
             });
             EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
@@ -602,92 +581,53 @@ public class ActivityWelcome extends FragmentActivity
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count)
                 {
-                    //if (s.length() > 2)
-                        //ButtonNext.setEnabled(true);
-                    //else
-                        //ButtonNext.setEnabled(false);
+                    if (s.length() > 2)
+                        ButtonUsername.setEnabled(true);
+                    else
+                        ButtonUsername.setEnabled(false);
                 }
             });
-
-            IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            IMM.showSoftInput(EditTextUsername, 0);
-            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
             RelativeLayoutMain.addView(EditTextUsername);
 
+            RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContentParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
+            RelativeLayoutContentParam.setMargins(0, 0, 0, MiscHandler.ToDimension(context, 5));
 
+            RelativeLayout RelativeLayoutContent = new RelativeLayout(context);
+            RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
 
+            RelativeLayoutMain.addView(RelativeLayoutContent);
 
+            TextView TextViewMessage = new TextView(context);
+            TextViewMessage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
+            TextViewMessage.setText(getString(R.string.FragmentSignUpUsernameMessage));
+            TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewMessage.setId(MiscHandler.GenerateViewID());
+            TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
+            RelativeLayoutContent.addView(TextViewMessage);
 
+            RelativeLayout.LayoutParams RelativeLayoutContent2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContent2Param.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
 
+            RelativeLayout RelativeLayoutContent2 = new RelativeLayout(context);
+            RelativeLayoutContent2.setLayoutParams(RelativeLayoutContent2Param);
 
+            RelativeLayoutContent.addView(RelativeLayoutContent2);
 
+            RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
+            TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            return Root;
-/*
-
-            final LoadingView LoadingViewUsername = (LoadingView) RootView.findViewById(R.id.LoadingViewUsername);
-            final Button ButtonNext = (Button) RootView.findViewById(R.id.ButtonNext);
-
-            ButtonNext.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(final View v)
-                {
-                    LoadingViewUsername.Start();
-                    ButtonNext.setVisibility(View.INVISIBLE);
-
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.USERNAME_IS_AVAILABLE)).addBodyParameter("Username", EditTextUsername.getText().toString()).setTag("SignUpUsernameFragment").build().getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            try
-                            {
-                                if (new JSONObject(Response).getInt("Message") == 1000)
-                                {
-                                    //Username = EditTextUsername.getText().toString();
-                                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FrameLayoutContainer, new SignUpPasswordFragment()).addToBackStack("SignUpUsernameFragment").commit();
-                                }
-                                else
-                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentUsernameError));
-                            }
-                            catch (Exception e)
-                            {
-                                // Leave Me Alone
-                            }
-
-                            LoadingViewUsername.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onError(ANError error)
-                        {
-                            LoadingViewUsername.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
-                        }
-                    });
-                }
-            });
-
-            RootView.findViewById(R.id.TextViewPrivacy).setOnClickListener(new View.OnClickListener()
+            TextView TextViewPrivacy = new TextView(context);
+            TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
+            TextViewPrivacy.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+            TextViewPrivacy.setText(getString(R.string.ActivityWelcomeGeneralTerm));
+            TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewPrivacy.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+            TextViewPrivacy.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -696,7 +636,98 @@ public class ActivityWelcome extends FragmentActivity
                 }
             });
 
-            */
+            RelativeLayoutContent2.addView(TextViewPrivacy);
+
+            RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+            RelativeLayoutNextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            GradientDrawable ShapeEnable = new GradientDrawable();
+            ShapeEnable.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+            ShapeEnable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+
+            RelativeLayout RelativeLayoutNext = new RelativeLayout(context);
+            RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
+            RelativeLayoutNext.setBackground(ShapeEnable);
+
+            RelativeLayoutContent2.addView(RelativeLayoutNext);
+
+            GradientDrawable ShapeDisable = new GradientDrawable();
+            ShapeDisable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+            ShapeDisable.setColor(ContextCompat.getColor(context, R.color.Gray2));
+
+            StateListDrawable StateUsername = new StateListDrawable();
+            StateUsername.addState(new int[] {android.R.attr.state_enabled}, ShapeEnable);
+            StateUsername.addState(new int[] {-android.R.attr.state_enabled}, ShapeDisable);
+
+            ButtonUsername = new Button(context, null, android.R.attr.borderlessButtonStyle);
+            ButtonUsername.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35)));
+            ButtonUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            ButtonUsername.setTextColor(ContextCompat.getColor(context, R.color.White));
+            ButtonUsername.setText(getString(R.string.ActivityWelcomeGeneralNext));
+            ButtonUsername.setBackground(StateUsername);
+            ButtonUsername.setPadding(0, 0, 0, 0);
+            ButtonUsername.setEnabled(false);
+            ButtonUsername.setAllCaps(false);
+            ButtonUsername.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    ButtonUsername.setVisibility(View.INVISIBLE);
+                    LoadingViewUsername.Start();
+
+                    RequestHandler.Core().Method("POST")
+                    .Address(URLHandler.GetURL(URLHandler.URL.USERNAME_IS_AVAILABLE))
+                    .Param("Username", EditTextUsername.getText().toString())
+                    .Tag("FragmentSignUpUsername")
+                    .Build(new RequestHandler.OnCompleteCallBack()
+                    {
+                        @Override
+                        public void OnFinish(String Response, int Status)
+                        {
+                            ButtonUsername.setVisibility(View.VISIBLE);
+                            LoadingViewUsername.Stop();
+
+                            if (Status != 200)
+                            {
+                                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                                return;
+                            }
+
+                            try
+                            {
+                                if (new JSONObject(Response).getInt("Message") == 1000)
+                                {
+                                    ActivityWelcome Parent = (ActivityWelcome) getActivity();
+                                    Parent.Username = EditTextUsername.getText().toString();
+                                    Parent.getSupportFragmentManager().beginTransaction().replace(Parent.FrameLayoutContainerID, new FragmentSignUpPassword()).addToBackStack("FragmentSignUpPassword").commit();
+                                    return;
+                                }
+
+                                MiscHandler.Toast(context, getString(R.string.FragmentSignUpUsernameError));
+                            }
+                            catch (Exception e)
+                            {
+                                // Leave Me Alone
+                            }
+                        }
+                    });
+                }
+            });
+
+            RelativeLayoutNext.addView(ButtonUsername);
+
+            RelativeLayout.LayoutParams LoadingViewUsernameParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+            LoadingViewUsernameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+            LoadingViewUsername = new LoadingView(context);
+            LoadingViewUsername.setLayoutParams(LoadingViewUsernameParam);
+            LoadingViewUsername.SetColor(R.color.White);
+
+            RelativeLayoutNext.addView(LoadingViewUsername);
+
+            return Root;
         }
 
         @Override
@@ -704,12 +735,10 @@ public class ActivityWelcome extends FragmentActivity
         {
             super.onResume();
 
-            if (IMM != null && EditTextUsername != null)
-            {
-                EditTextUsername.requestFocus();
-                IMM.showSoftInput(EditTextUsername, 0);
-                IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
+            Root.getViewTreeObserver().addOnGlobalLayoutListener(RootListener);
+
+            InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
 
         @Override
@@ -717,20 +746,79 @@ public class ActivityWelcome extends FragmentActivity
         {
             super.onPause();
             RequestHandler.Core().Cancel("FragmentSignUpUsername");
+            Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }
 
-    public static class SignUpPasswordFragment extends Fragment
+    public static class FragmentSignUpPassword extends Fragment
     {
-        private InputMethodManager IMM;
-        private EditText EditTextPassword;
+        private ScrollView Root;
+        private ViewTreeObserver.OnGlobalLayoutListener RootListener;
+
+        private Button ButtonPassword;
+        private int LastDifferenceHeight = 0;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
         {
-            View RootView = inflater.inflate(R.layout.activity_welcome_fragment_password, Parent, false);
+            final Context context = getActivity();
 
-            RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
+            Root = new ScrollView(context);
+            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            Root.setBackgroundResource(R.color.White);
+            Root.setHorizontalScrollBarEnabled(false);
+            Root.setVerticalScrollBarEnabled(false);
+            Root.setFillViewport(true);
+            Root.setClickable(true);
+
+            RootListener = new ViewTreeObserver.OnGlobalLayoutListener()
+            {
+                @Override
+                public void onGlobalLayout()
+                {
+                    Rect rect = new Rect();
+                    Root.getWindowVisibleDisplayFrame(rect);
+
+                    int ScreenHeight = Root.getHeight();
+                    int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
+
+                    if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != LastDifferenceHeight)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        LastDifferenceHeight = DifferenceHeight;
+                    }
+                    else if (DifferenceHeight != LastDifferenceHeight)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        LastDifferenceHeight = DifferenceHeight;
+                    }
+                    else if (LastDifferenceHeight != 0)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(LastDifferenceHeight)));
+                        LastDifferenceHeight = 0;
+                    }
+                }
+            };
+
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+            Root.addView(RelativeLayoutMain);
+
+            RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+            RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(RelativeLayoutHeader);
+
+            ImageView ImageViewBack = new ImageView(context);
+            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
+            ImageViewBack.setId(MiscHandler.GenerateViewID());
+            ImageViewBack.setImageResource(R.drawable.ic_back_white);
+            ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+            ImageViewBack.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
@@ -740,27 +828,57 @@ public class ActivityWelcome extends FragmentActivity
                 }
             });
 
-            final Button ButtonNext = (Button) RootView.findViewById(R.id.ButtonNext);
-            ButtonNext.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    //Password = EditTextPassword.getText().toString();
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FrameLayoutContainer, new SignUpEmailFragment()).addToBackStack("SignUpPasswordFragment").commit();
-                }
-            });
+            RelativeLayoutHeader.addView(ImageViewBack);
 
-            RootView.findViewById(R.id.TextViewPrivacy).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")));
-                }
-            });
+            RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-            EditTextPassword = (EditText) RootView.findViewById(R.id.EditTextPassword);
+            TextView TextViewHeader = new TextView(context);
+            TextViewHeader.setLayoutParams(TextViewHeaderParam);
+            TextViewHeader.setTextColor(ContextCompat.getColor(context, R.color.White));
+            TextViewHeader.setText(getString(R.string.FragmentSignUpPassword));
+            TextViewHeader.setTypeface(null, Typeface.BOLD);
+            TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+            RelativeLayoutHeader.addView(TextViewHeader);
+
+            RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+            ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+            View ViewLine = new View(context);
+            ViewLine.setLayoutParams(ViewLineParam);
+            ViewLine.setBackgroundResource(R.color.Gray2);
+            ViewLine.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(ViewLine);
+
+            RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewUsernameParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+            TextViewUsernameParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            TextView TextViewPassword = new TextView(context);
+            TextViewPassword.setLayoutParams(TextViewUsernameParam);
+            TextViewPassword.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+            TextViewPassword.setText(getString(R.string.FragmentSignUpPassword));
+            TextViewPassword.setTypeface(null, Typeface.BOLD);
+            TextViewPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            TextViewPassword.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(TextViewPassword);
+
+            RelativeLayout.LayoutParams EditTextPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            EditTextPasswordParam.addRule(RelativeLayout.BELOW, TextViewPassword.getId());
+            EditTextPasswordParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
+
+            final EditText EditTextPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+            EditTextPassword.setLayoutParams(EditTextPasswordParam);
+            EditTextPassword.setMaxLines(1);
+            EditTextPassword.setId(MiscHandler.GenerateViewID());
+            EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
+            EditTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
             EditTextPassword.requestFocus();
             EditTextPassword.addTextChangedListener(new TextWatcher()
             {
@@ -774,17 +892,107 @@ public class ActivityWelcome extends FragmentActivity
                 public void onTextChanged(CharSequence s, int start, int before, int count)
                 {
                     if (s.length() > 5)
-                        ButtonNext.setEnabled(true);
+                        ButtonPassword.setEnabled(true);
                     else
-                        ButtonNext.setEnabled(false);
+                        ButtonPassword.setEnabled(false);
                 }
             });
 
-            IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            IMM.showSoftInput(EditTextPassword, 0);
-            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            RelativeLayoutMain.addView(EditTextPassword);
 
-            return RootView;
+            RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContentParam.addRule(RelativeLayout.BELOW, EditTextPassword.getId());
+            RelativeLayoutContentParam.setMargins(0, 0, 0, MiscHandler.ToDimension(context, 5));
+
+            RelativeLayout RelativeLayoutContent = new RelativeLayout(context);
+            RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
+
+            RelativeLayoutMain.addView(RelativeLayoutContent);
+
+            TextView TextViewMessage = new TextView(context);
+            TextViewMessage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
+            TextViewMessage.setText(getString(R.string.FragmentSignUpPasswordMessage));
+            TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewMessage.setId(MiscHandler.GenerateViewID());
+            TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            RelativeLayoutContent.addView(TextViewMessage);
+
+            RelativeLayout.LayoutParams RelativeLayoutContent2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContent2Param.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
+
+            RelativeLayout RelativeLayoutContent2 = new RelativeLayout(context);
+            RelativeLayoutContent2.setLayoutParams(RelativeLayoutContent2Param);
+
+            RelativeLayoutContent.addView(RelativeLayoutContent2);
+
+            RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
+            TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+            TextView TextViewPrivacy = new TextView(context);
+            TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
+            TextViewPrivacy.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+            TextViewPrivacy.setText(getString(R.string.ActivityWelcomeGeneralTerm));
+            TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewPrivacy.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+            TextViewPrivacy.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")));
+                }
+            });
+
+            RelativeLayoutContent2.addView(TextViewPrivacy);
+
+            RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+            RelativeLayoutNextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            GradientDrawable ShapeEnable = new GradientDrawable();
+            ShapeEnable.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+            ShapeEnable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+
+            RelativeLayout RelativeLayoutNext = new RelativeLayout(context);
+            RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
+            RelativeLayoutNext.setBackground(ShapeEnable);
+
+            RelativeLayoutContent2.addView(RelativeLayoutNext);
+
+            GradientDrawable ShapeDisable = new GradientDrawable();
+            ShapeDisable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+            ShapeDisable.setColor(ContextCompat.getColor(context, R.color.Gray2));
+
+            StateListDrawable StatePassword = new StateListDrawable();
+            StatePassword.addState(new int[] {android.R.attr.state_enabled}, ShapeEnable);
+            StatePassword.addState(new int[] {-android.R.attr.state_enabled}, ShapeDisable);
+
+            ButtonPassword = new Button(context, null, android.R.attr.borderlessButtonStyle);
+            ButtonPassword.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35)));
+            ButtonPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            ButtonPassword.setTextColor(ContextCompat.getColor(context, R.color.White));
+            ButtonPassword.setText(getString(R.string.ActivityWelcomeGeneralNext));
+            ButtonPassword.setBackground(StatePassword);
+            ButtonPassword.setPadding(0, 0, 0, 0);
+            ButtonPassword.setEnabled(false);
+            ButtonPassword.setAllCaps(false);
+            ButtonPassword.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    ActivityWelcome Parent = (ActivityWelcome) getActivity();
+                    Parent.Password = EditTextPassword.getText().toString();
+                    Parent.getSupportFragmentManager().beginTransaction().replace(Parent.FrameLayoutContainerID, new FragmentSignUpEmail()).addToBackStack("FragmentSignUpEmail").commit();
+                }
+            });
+
+            RelativeLayoutNext.addView(ButtonPassword);
+
+            return Root;
         }
 
         @Override
@@ -792,28 +1000,91 @@ public class ActivityWelcome extends FragmentActivity
         {
             super.onResume();
 
-            if (IMM != null && EditTextPassword != null)
-            {
-                EditTextPassword.requestFocus();
-                IMM.showSoftInput(EditTextPassword, 0);
-                IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
+            Root.getViewTreeObserver().addOnGlobalLayoutListener(RootListener);
+
+            InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+
+        @Override
+        public void onPause()
+        {
+            super.onPause();
+            Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }
 
-    public static class SignUpEmailFragment extends Fragment
+    public static class FragmentSignUpEmail extends Fragment
     {
-        private InputMethodManager IMM;
-        private EditText EditTextEmail;
+        private ScrollView Root;
+        private ViewTreeObserver.OnGlobalLayoutListener RootListener;
+
+        private Button ButtonEmail;
+        private LoadingView LoadingViewEmail;
+
+        private int LastDifferenceHeight = 0;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
         {
-            View RootView = inflater.inflate(R.layout.activity_welcome_fragment_email, Parent, false);
-
             final Context context = getActivity();
 
-            RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
+            Root = new ScrollView(context);
+            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            Root.setBackgroundResource(R.color.White);
+            Root.setHorizontalScrollBarEnabled(false);
+            Root.setVerticalScrollBarEnabled(false);
+            Root.setFillViewport(true);
+            Root.setClickable(true);
+
+            RootListener = new ViewTreeObserver.OnGlobalLayoutListener()
+            {
+                @Override
+                public void onGlobalLayout()
+                {
+                    Rect rect = new Rect();
+                    Root.getWindowVisibleDisplayFrame(rect);
+
+                    int ScreenHeight = Root.getHeight();
+                    int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
+
+                    if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != LastDifferenceHeight)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        LastDifferenceHeight = DifferenceHeight;
+                    }
+                    else if (DifferenceHeight != LastDifferenceHeight)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        LastDifferenceHeight = DifferenceHeight;
+                    }
+                    else if (LastDifferenceHeight != 0)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(LastDifferenceHeight)));
+                        LastDifferenceHeight = 0;
+                    }
+                }
+            };
+
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+            Root.addView(RelativeLayoutMain);
+
+            RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+            RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(RelativeLayoutHeader);
+
+            ImageView ImageViewBack = new ImageView(context);
+            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
+            ImageViewBack.setId(MiscHandler.GenerateViewID());
+            ImageViewBack.setImageResource(R.drawable.ic_back_white);
+            ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+            ImageViewBack.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
@@ -823,75 +1094,57 @@ public class ActivityWelcome extends FragmentActivity
                 }
             });
 
-            final LoadingView LoadingViewEmail = (LoadingView) RootView.findViewById(R.id.LoadingViewEmail);
-            final Button ButtonFinish = (Button) RootView.findViewById(R.id.ButtonFinish);
+            RelativeLayoutHeader.addView(ImageViewBack);
 
-            ButtonFinish.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    ButtonFinish.setVisibility(View.INVISIBLE);
-                    LoadingViewEmail.Start();
+            RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_UP))
-                    //.addBodyParameter("Username", Username)
-                    //.addBodyParameter("Password", Password)
-                    .addBodyParameter("Email", EditTextEmail.getText().toString())
-                    .addBodyParameter("Session", GenerateSession())
-                    .setTag("SignUpEmailFragment").build().getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
+            TextView TextViewHeader = new TextView(context);
+            TextViewHeader.setLayoutParams(TextViewHeaderParam);
+            TextViewHeader.setTextColor(ContextCompat.getColor(context, R.color.White));
+            TextViewHeader.setText(getString(R.string.FragmentSignUpEmailTitle));
+            TextViewHeader.setTypeface(null, Typeface.BOLD);
+            TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
-                                if (Result.getInt("Message") == 1000)
-                                {
-                                    SharedHandler.SetBoolean("IsLogin", true);
-                                    SharedHandler.SetString("TOKEN", Result.getString("TOKEN"));
-                                    SharedHandler.SetString("ID", Result.getString("ID"));
-                                    SharedHandler.SetString("Username", Result.getString("Username"));
-                                    SharedHandler.SetString("Avatar", Result.getString("Avatar"));
+            RelativeLayoutHeader.addView(TextViewHeader);
 
-                                    getActivity().startActivity(new Intent(getActivity(), ActivityMain.class));
-                                    getActivity().finish();
-                                }
-                                else
-                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentEmailError));
-                            }
-                            catch (Exception e)
-                            {
-                                // Leave Me Alone
-                            }
+            RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+            ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-                            LoadingViewEmail.Stop();
-                            ButtonFinish.setVisibility(View.VISIBLE);
-                        }
+            View ViewLine = new View(context);
+            ViewLine.setLayoutParams(ViewLineParam);
+            ViewLine.setBackgroundResource(R.color.Gray2);
+            ViewLine.setId(MiscHandler.GenerateViewID());
 
-                        @Override
-                        public void onError(ANError error)
-                        {
-                            LoadingViewEmail.Stop();
-                            ButtonFinish.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
-                        }
-                    });
-                }
-            });
+            RelativeLayoutMain.addView(ViewLine);
 
-            RootView.findViewById(R.id.TextViewPrivacy).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")));
-                }
-            });
+            RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewUsernameParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+            TextViewUsernameParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
-            EditTextEmail = (EditText) RootView.findViewById(R.id.EditTextEmail);
+            TextView TextViewEmail = new TextView(context);
+            TextViewEmail.setLayoutParams(TextViewUsernameParam);
+            TextViewEmail.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+            TextViewEmail.setText(getString(R.string.FragmentSignUpEmail));
+            TextViewEmail.setTypeface(null, Typeface.BOLD);
+            TextViewEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            TextViewEmail.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(TextViewEmail);
+
+            RelativeLayout.LayoutParams EditTextEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
+            EditTextEmailParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
+
+            final EditText EditTextEmail = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+            EditTextEmail.setLayoutParams(EditTextEmailParam);
+            EditTextEmail.setMaxLines(1);
+            EditTextEmail.setId(MiscHandler.GenerateViewID());
+            EditTextEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            EditTextEmail.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
+            EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+            EditTextEmail.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
             EditTextEmail.requestFocus();
             EditTextEmail.addTextChangedListener(new TextWatcher()
             {
@@ -905,17 +1158,163 @@ public class ActivityWelcome extends FragmentActivity
                 public void onTextChanged(CharSequence s, int start, int before, int count)
                 {
                     if (s.length() > 6 && Patterns.EMAIL_ADDRESS.matcher(s).matches())
-                        ButtonFinish.setEnabled(true);
+                        ButtonEmail.setEnabled(true);
                     else
-                        ButtonFinish.setEnabled(false);
+                        ButtonEmail.setEnabled(false);
                 }
             });
 
-            IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            IMM.showSoftInput(EditTextEmail, 0);
-            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            RelativeLayoutMain.addView(EditTextEmail);
 
-            return RootView;
+            RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContentParam.addRule(RelativeLayout.BELOW, EditTextEmail.getId());
+            RelativeLayoutContentParam.setMargins(0, 0, 0, MiscHandler.ToDimension(context, 5));
+
+            RelativeLayout RelativeLayoutContent = new RelativeLayout(context);
+            RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
+
+            RelativeLayoutMain.addView(RelativeLayoutContent);
+
+            TextView TextViewMessage = new TextView(context);
+            TextViewMessage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
+            TextViewMessage.setText(getString(R.string.FragmentSignUpEmailMessage));
+            TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewMessage.setId(MiscHandler.GenerateViewID());
+            TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            RelativeLayoutContent.addView(TextViewMessage);
+
+            RelativeLayout.LayoutParams RelativeLayoutContent2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContent2Param.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
+
+            RelativeLayout RelativeLayoutContent2 = new RelativeLayout(context);
+            RelativeLayoutContent2.setLayoutParams(RelativeLayoutContent2Param);
+
+            RelativeLayoutContent.addView(RelativeLayoutContent2);
+
+            RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
+            TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+            TextView TextViewPrivacy = new TextView(context);
+            TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
+            TextViewPrivacy.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+            TextViewPrivacy.setText(getString(R.string.ActivityWelcomeGeneralTerm));
+            TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewPrivacy.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+            TextViewPrivacy.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")));
+                }
+            });
+
+            RelativeLayoutContent2.addView(TextViewPrivacy);
+
+            RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+            RelativeLayoutNextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            GradientDrawable ShapeEnable = new GradientDrawable();
+            ShapeEnable.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+            ShapeEnable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+
+            RelativeLayout RelativeLayoutNext = new RelativeLayout(context);
+            RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
+            RelativeLayoutNext.setBackground(ShapeEnable);
+
+            RelativeLayoutContent2.addView(RelativeLayoutNext);
+
+            GradientDrawable ShapeDisable = new GradientDrawable();
+            ShapeDisable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+            ShapeDisable.setColor(ContextCompat.getColor(context, R.color.Gray2));
+
+            StateListDrawable StateEmail = new StateListDrawable();
+            StateEmail.addState(new int[] {android.R.attr.state_enabled}, ShapeEnable);
+            StateEmail.addState(new int[] {-android.R.attr.state_enabled}, ShapeDisable);
+
+            ButtonEmail = new Button(context, null, android.R.attr.borderlessButtonStyle);
+            ButtonEmail.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35)));
+            ButtonEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            ButtonEmail.setTextColor(ContextCompat.getColor(context, R.color.White));
+            ButtonEmail.setText(getString(R.string.FragmentSignUpEmailFinish));
+            ButtonEmail.setBackground(StateEmail);
+            ButtonEmail.setPadding(0, 0, 0, 0);
+            ButtonEmail.setEnabled(false);
+            ButtonEmail.setAllCaps(false);
+            ButtonEmail.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    final ActivityWelcome Parent = (ActivityWelcome) getActivity();
+                    ButtonEmail.setVisibility(View.INVISIBLE);
+                    LoadingViewEmail.Start();
+
+                    RequestHandler.Core().Method("POST")
+                    .Address(URLHandler.GetURL(URLHandler.URL.SIGN_UP))
+                    .Param("Username", Parent.Username)
+                    .Param("Password", Parent.Password)
+                    .Param("Email", EditTextEmail.getText().toString())
+                    .Param("Session", GenerateSession())
+                    .Tag("FragmentSignUpEmail")
+                    .Build(new RequestHandler.OnCompleteCallBack()
+                    {
+                        @Override
+                        public void OnFinish(String Response, int Status)
+                        {
+                            ButtonEmail.setVisibility(View.VISIBLE);
+                            LoadingViewEmail.Stop();
+
+                            if (Status != 200)
+                            {
+                                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                                return;
+                            }
+
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                if (Result.getInt("Message") == 1000)
+                                {
+                                    SharedHandler.SetBoolean(context, "IsLogin", true);
+                                    SharedHandler.SetString(context, "TOKEN", Result.getString("TOKEN"));
+                                    SharedHandler.SetString(context, "ID", Result.getString("ID"));
+                                    SharedHandler.SetString(context, "Username", Result.getString("Username"));
+                                    SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
+
+                                    Parent.startActivity(new Intent(context, ActivityMain.class));
+                                    Parent.finish();
+                                    return;
+                                }
+
+                                MiscHandler.Toast(context, getString(R.string.FragmentSignUpEmailError));
+                            }
+                            catch (Exception e)
+                            {
+                                // Leave Me Alone
+                            }
+                        }
+                    });
+                }
+            });
+
+            RelativeLayoutNext.addView(ButtonEmail);
+
+            RelativeLayout.LayoutParams LoadingViewEmailParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+            LoadingViewEmailParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+            LoadingViewEmail = new LoadingView(context);
+            LoadingViewEmail.setLayoutParams(LoadingViewEmailParam);
+            LoadingViewEmail.SetColor(R.color.White);
+
+            RelativeLayoutNext.addView(LoadingViewEmail);
+
+            return Root;
         }
 
         @Override
@@ -923,37 +1322,95 @@ public class ActivityWelcome extends FragmentActivity
         {
             super.onResume();
 
-            if (IMM != null && EditTextEmail != null)
-            {
-                EditTextEmail.requestFocus();
-                IMM.showSoftInput(EditTextEmail, 0);
-                IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
+            Root.getViewTreeObserver().addOnGlobalLayoutListener(RootListener);
+
+            InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
 
         @Override
         public void onPause()
         {
             super.onPause();
-            AndroidNetworking.cancel("SignUpEmailFragment");
+            RequestHandler.Core().Cancel("FragmentSignUpEmail");
+            Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }
 
-    public static class SignInFragment extends Fragment
+    public static class FragmentSignIn extends Fragment
     {
-        private InputMethodManager IMM;
-        private EditText EmailOrUsername;
+        private ScrollView Root;
+        private ViewTreeObserver.OnGlobalLayoutListener RootListener;
+
+        private Button ButtonSignIn;
+        private LoadingView LoadingViewSignIn;
+
+        private int LastDifferenceHeight = 0;
+
         private boolean RequestUsername = false;
         private boolean RequestPassword = false;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
         {
-            View RootView = inflater.inflate(R.layout.activity_welcome_fragment_signin, Parent, false);
-
             final Context context = getActivity();
 
-            RootView.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
+            Root = new ScrollView(context);
+            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            Root.setBackgroundResource(R.color.White);
+            Root.setHorizontalScrollBarEnabled(false);
+            Root.setVerticalScrollBarEnabled(false);
+            Root.setFillViewport(true);
+            Root.setClickable(true);
+
+            RootListener = new ViewTreeObserver.OnGlobalLayoutListener()
+            {
+                @Override
+                public void onGlobalLayout()
+                {
+                    Rect rect = new Rect();
+                    Root.getWindowVisibleDisplayFrame(rect);
+
+                    int ScreenHeight = Root.getHeight();
+                    int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
+
+                    if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != LastDifferenceHeight)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        LastDifferenceHeight = DifferenceHeight;
+                    }
+                    else if (DifferenceHeight != LastDifferenceHeight)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        LastDifferenceHeight = DifferenceHeight;
+                    }
+                    else if (LastDifferenceHeight != 0)
+                    {
+                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(LastDifferenceHeight)));
+                        LastDifferenceHeight = 0;
+                    }
+                }
+            };
+
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+            Root.addView(RelativeLayoutMain);
+
+            RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+            RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(RelativeLayoutHeader);
+
+            ImageView ImageViewBack = new ImageView(context);
+            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
+            ImageViewBack.setId(MiscHandler.GenerateViewID());
+            ImageViewBack.setImageResource(R.drawable.ic_back_white);
+            ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+            ImageViewBack.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
@@ -963,12 +1420,59 @@ public class ActivityWelcome extends FragmentActivity
                 }
             });
 
-            final LoadingView LoadingViewSignIn = (LoadingView) RootView.findViewById(R.id.LoadingViewSignIn);
-            final Button ButtonSignIn = (Button) RootView.findViewById(R.id.ButtonSignIn);
+            RelativeLayoutHeader.addView(ImageViewBack);
 
-            EmailOrUsername = (EditText) RootView.findViewById(R.id.EmailOrUsername);
-            EmailOrUsername.requestFocus();
-            EmailOrUsername.addTextChangedListener(new TextWatcher()
+            RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+            TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
+
+            TextView TextViewHeader = new TextView(context);
+            TextViewHeader.setLayoutParams(TextViewHeaderParam);
+            TextViewHeader.setTextColor(ContextCompat.getColor(context, R.color.White));
+            TextViewHeader.setText(getString(R.string.FragmentSignInTitle));
+            TextViewHeader.setTypeface(null, Typeface.BOLD);
+            TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+            RelativeLayoutHeader.addView(TextViewHeader);
+
+            RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+            ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+            View ViewLine = new View(context);
+            ViewLine.setLayoutParams(ViewLineParam);
+            ViewLine.setBackgroundResource(R.color.Gray2);
+            ViewLine.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(ViewLine);
+
+            RelativeLayout.LayoutParams TextViewEmailOrUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewEmailOrUsernameParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+            TextViewEmailOrUsernameParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            TextView TextViewEmailOrUsername = new TextView(context);
+            TextViewEmailOrUsername.setLayoutParams(TextViewEmailOrUsernameParam);
+            TextViewEmailOrUsername.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+            TextViewEmailOrUsername.setText(getString(R.string.FragmentSignInEmailOrUsername));
+            TextViewEmailOrUsername.setTypeface(null, Typeface.BOLD);
+            TextViewEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            TextViewEmailOrUsername.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(TextViewEmailOrUsername);
+
+            RelativeLayout.LayoutParams EditTextEmailOrUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            EditTextEmailOrUsernameParam.addRule(RelativeLayout.BELOW, TextViewEmailOrUsername.getId());
+            EditTextEmailOrUsernameParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
+
+            final EditText EditTextEmailOrUsername = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+            EditTextEmailOrUsername.setLayoutParams(EditTextEmailOrUsernameParam);
+            EditTextEmailOrUsername.setMaxLines(1);
+            EditTextEmailOrUsername.setId(MiscHandler.GenerateViewID());
+            EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
+            EditTextEmailOrUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+            EditTextEmailOrUsername.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+            EditTextEmailOrUsername.requestFocus();
+            EditTextEmailOrUsername.addTextChangedListener(new TextWatcher()
             {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -988,7 +1492,34 @@ public class ActivityWelcome extends FragmentActivity
                 }
             });
 
-            final EditText EditTextPassword = (EditText) RootView.findViewById(R.id.EditTextPassword);
+            RelativeLayoutMain.addView(EditTextEmailOrUsername);
+
+            RelativeLayout.LayoutParams TextViewPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewPasswordParam.addRule(RelativeLayout.BELOW, EditTextEmailOrUsername.getId());
+            TextViewPasswordParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            TextView TextViewPassword = new TextView(context);
+            TextViewPassword.setLayoutParams(TextViewPasswordParam);
+            TextViewPassword.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+            TextViewPassword.setText(getString(R.string.FragmentSignInPassword));
+            TextViewPassword.setTypeface(null, Typeface.BOLD);
+            TextViewPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            TextViewPassword.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(TextViewPassword);
+
+            RelativeLayout.LayoutParams EditTextPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            EditTextPasswordParam.addRule(RelativeLayout.BELOW, TextViewPassword.getId());
+            EditTextPasswordParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
+
+            final EditText EditTextPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+            EditTextPassword.setLayoutParams(EditTextPasswordParam);
+            EditTextPassword.setMaxLines(1);
+            EditTextPassword.setId(MiscHandler.GenerateViewID());
+            EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
+            EditTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
             EditTextPassword.addTextChangedListener(new TextWatcher()
             {
                 @Override
@@ -1009,6 +1540,88 @@ public class ActivityWelcome extends FragmentActivity
                 }
             });
 
+            RelativeLayoutMain.addView(EditTextPassword);
+
+            RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContentParam.addRule(RelativeLayout.BELOW, EditTextPassword.getId());
+            RelativeLayoutContentParam.setMargins(0, 0, 0, MiscHandler.ToDimension(context, 5));
+
+            RelativeLayout RelativeLayoutContent = new RelativeLayout(context);
+            RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
+
+            RelativeLayoutMain.addView(RelativeLayoutContent);
+
+            TextView TextViewMessage = new TextView(context);
+            TextViewMessage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
+            TextViewMessage.setText(getString(R.string.FragmentSignInMessage));
+            TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewMessage.setId(MiscHandler.GenerateViewID());
+            TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            RelativeLayoutContent.addView(TextViewMessage);
+
+            RelativeLayout.LayoutParams RelativeLayoutContent2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContent2Param.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
+
+            RelativeLayout RelativeLayoutContent2 = new RelativeLayout(context);
+            RelativeLayoutContent2.setLayoutParams(RelativeLayoutContent2Param);
+
+            RelativeLayoutContent.addView(RelativeLayoutContent2);
+
+            RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
+            TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+            TextView TextViewReset = new TextView(context);
+            TextViewReset.setLayoutParams(TextViewPrivacyParam);
+            TextViewReset.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+            TextViewReset.setText(getString(R.string.FragmentSignInForgot));
+            TextViewReset.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewReset.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+            TextViewReset.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    ActivityWelcome Parent = (ActivityWelcome) getActivity();
+                    Parent.getSupportFragmentManager().beginTransaction().replace(Parent.FrameLayoutContainerID, new FragmentReset()).addToBackStack("FragmentReset").commit();
+                }
+            });
+
+            RelativeLayoutContent2.addView(TextViewReset);
+
+            RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+            RelativeLayoutNextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+            GradientDrawable ShapeEnable = new GradientDrawable();
+            ShapeEnable.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+            ShapeEnable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+
+            RelativeLayout RelativeLayoutNext = new RelativeLayout(context);
+            RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
+            RelativeLayoutNext.setBackground(ShapeEnable);
+
+            RelativeLayoutContent2.addView(RelativeLayoutNext);
+
+            GradientDrawable ShapeDisable = new GradientDrawable();
+            ShapeDisable.setCornerRadius(MiscHandler.ToDimension(context, 7));
+            ShapeDisable.setColor(ContextCompat.getColor(context, R.color.Gray2));
+
+            StateListDrawable StateEmail = new StateListDrawable();
+            StateEmail.addState(new int[] {android.R.attr.state_enabled}, ShapeEnable);
+            StateEmail.addState(new int[] {-android.R.attr.state_enabled}, ShapeDisable);
+
+            ButtonSignIn = new Button(context, null, android.R.attr.borderlessButtonStyle);
+            ButtonSignIn.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35)));
+            ButtonSignIn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            ButtonSignIn.setTextColor(ContextCompat.getColor(context, R.color.White));
+            ButtonSignIn.setText(getString(R.string.FragmentSignInTitle));
+            ButtonSignIn.setBackground(StateEmail);
+            ButtonSignIn.setPadding(0, 0, 0, 0);
+            ButtonSignIn.setEnabled(false);
+            ButtonSignIn.setAllCaps(false);
             ButtonSignIn.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -1017,67 +1630,67 @@ public class ActivityWelcome extends FragmentActivity
                     ButtonSignIn.setVisibility(View.INVISIBLE);
                     LoadingViewSignIn.Start();
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_IN))
-                    .addBodyParameter("EmailOrUsername", EmailOrUsername.getText().toString())
-                    .addBodyParameter("Password", EditTextPassword.getText().toString())
-                    .addBodyParameter("Session", GenerateSession())
-                    .setTag("SignInFragment").build().getAsString(new StringRequestListener()
+                    RequestHandler.Core().Method("POST")
+                    .Address(URLHandler.GetURL(URLHandler.URL.SIGN_IN))
+                    .Param("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
+                    .Param("Password", EditTextPassword.getText().toString())
+                    .Param("Session", GenerateSession())
+                    .Tag("FragmentSignUpEmail")
+                    .Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
-                        public void onResponse(String Response)
+                        public void OnFinish(String Response, int Status)
                         {
+                            ButtonSignIn.setVisibility(View.VISIBLE);
+                            LoadingViewSignIn.Stop();
+
+                            if (Status != 200)
+                            {
+                                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                                return;
+                            }
+
                             try
                             {
                                 JSONObject Result = new JSONObject(Response);
 
                                 if (Result.getInt("Message") == 1000)
                                 {
-                                    SharedHandler.SetBoolean("IsLogin", true);
-                                    SharedHandler.SetString("TOKEN", Result.getString("TOKEN"));
-                                    SharedHandler.SetString("ID", Result.getString("ID"));
-                                    SharedHandler.SetString("Username", Result.getString("Username"));
-                                    SharedHandler.SetString("Avatar", Result.getString("Avatar"));
+                                    SharedHandler.SetBoolean(context, "IsLogin", true);
+                                    SharedHandler.SetString(context, "TOKEN", Result.getString("TOKEN"));
+                                    SharedHandler.SetString(context, "ID", Result.getString("ID"));
+                                    SharedHandler.SetString(context, "Username", Result.getString("Username"));
+                                    SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
 
-                                    getActivity().startActivity(new Intent(getActivity(), ActivityMain.class));
-                                    getActivity().finish();
+                                    ActivityWelcome Parent = (ActivityWelcome) getActivity();
+                                    Parent.startActivity(new Intent(context, ActivityMain.class));
+                                    Parent.finish();
+                                    return;
                                 }
-                                else
-                                    MiscHandler.Toast(context, getString(R.string.ActivityWelcomeFragmentSignInError));
+
+                                MiscHandler.Toast(context, getString(R.string.FragmentSignInError));
                             }
                             catch (Exception e)
                             {
                                 // Leave Me Alone
                             }
-
-                            LoadingViewSignIn.Stop();
-                            ButtonSignIn.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onError(ANError error)
-                        {
-                            LoadingViewSignIn.Stop();
-                            ButtonSignIn.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }
             });
 
-            RootView.findViewById(R.id.TextViewForgot).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FrameLayoutContainer, new ResetFragment()).addToBackStack("ResetFragment").commit();
-                }
-            });
+            RelativeLayoutNext.addView(ButtonSignIn);
 
-            IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            IMM.showSoftInput(EmailOrUsername, 0);
-            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            RelativeLayout.LayoutParams LoadingViewEmailParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+            LoadingViewEmailParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-            return RootView;
+            LoadingViewSignIn = new LoadingView(context);
+            LoadingViewSignIn.setLayoutParams(LoadingViewEmailParam);
+            LoadingViewSignIn.SetColor(R.color.White);
+
+            RelativeLayoutNext.addView(LoadingViewSignIn);
+
+            return Root;
         }
 
         @Override
@@ -1085,23 +1698,22 @@ public class ActivityWelcome extends FragmentActivity
         {
             super.onResume();
 
-            if (IMM != null && EmailOrUsername != null)
-            {
-                EmailOrUsername.requestFocus();
-                IMM.showSoftInput(EmailOrUsername, 0);
-                IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
+            Root.getViewTreeObserver().addOnGlobalLayoutListener(RootListener);
+
+            InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
 
         @Override
         public void onPause()
         {
             super.onPause();
-            AndroidNetworking.cancel("SignInFragment");
+            RequestHandler.Core().Cancel("FragmentSignIn");
+            Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }
 
-    public static class ResetFragment extends Fragment
+    public static class FragmentReset extends Fragment
     {
         private InputMethodManager IMM;
         private EditText EditTextEmailOrUsername;
