@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,12 +63,12 @@ public class FragmentMoment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, new FragmentMomentWrite(), "FragmentMomentWrite").addToBackStack("FragmentMomentWrite").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentMomentWrite(), "FragmentMomentWrite").addToBackStack("FragmentMomentWrite").commit();
             }
         });
 
         RecyclerView RecyclerViewMoment = (RecyclerView) RootView.findViewById(R.id.RecyclerViewMoment);
-        MomentAdapter = new PostAdapter((AppCompatActivity) getActivity(), MomentList, "FragmentMoment");
+        MomentAdapter = new PostAdapter((FragmentActivity) getActivity(), MomentList, "FragmentMoment");
 
         RecyclerViewMoment.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewMoment.setAdapter(MomentAdapter);

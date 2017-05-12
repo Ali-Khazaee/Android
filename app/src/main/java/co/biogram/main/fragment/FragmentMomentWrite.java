@@ -255,7 +255,7 @@ public class FragmentMomentWrite extends Fragment
             {
                 EditTextMessage.clearFocus();
                 MiscHandler.HideSoftKey(getActivity());
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, new FragmentCategory()).addToBackStack("FragmentCategory").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentCategory()).addToBackStack("FragmentCategory").commit();
             }
         });
 
@@ -310,7 +310,7 @@ public class FragmentMomentWrite extends Fragment
                 Fragment fragment = new FragmentPreviewVideo();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.FullScreenContainer, fragment).addToBackStack("FragmentPreviewVideo").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPreviewVideo").commit();
             }
         });
 
@@ -989,7 +989,7 @@ public class FragmentMomentWrite extends Fragment
                         FragmentImagePreview fragment = new FragmentImagePreview();
                         fragment.SetBitmap(SelectImage.get(Position));
 
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
                     }
                 }
             });

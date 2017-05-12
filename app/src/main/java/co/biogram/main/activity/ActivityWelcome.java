@@ -698,6 +698,7 @@ public class ActivityWelcome extends FragmentActivity
                                 {
                                     ActivityWelcome Parent = (ActivityWelcome) getActivity();
                                     Parent.Username = EditTextUsername.getText().toString();
+                                    MiscHandler.HideSoftKey(Parent);
                                     Parent.getSupportFragmentManager().beginTransaction().replace(Parent.FrameLayoutContainerID, new FragmentSignUpPassword()).addToBackStack("FragmentSignUpPassword").commit();
                                     return;
                                 }
@@ -874,7 +875,7 @@ public class ActivityWelcome extends FragmentActivity
             EditTextPassword.setId(MiscHandler.GenerateViewID());
             EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
-            EditTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            EditTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
             EditTextPassword.requestFocus();
             EditTextPassword.addTextChangedListener(new TextWatcher()
@@ -983,6 +984,7 @@ public class ActivityWelcome extends FragmentActivity
                 {
                     ActivityWelcome Parent = (ActivityWelcome) getActivity();
                     Parent.Password = EditTextPassword.getText().toString();
+                    MiscHandler.HideSoftKey(Parent);
                     Parent.getSupportFragmentManager().beginTransaction().replace(Parent.FrameLayoutContainerID, new FragmentSignUpEmail()).addToBackStack("FragmentSignUpEmail").commit();
                 }
             });
@@ -1515,7 +1517,7 @@ public class ActivityWelcome extends FragmentActivity
             EditTextPassword.setId(MiscHandler.GenerateViewID());
             EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
-            EditTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            EditTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
             EditTextPassword.addTextChangedListener(new TextWatcher()
             {

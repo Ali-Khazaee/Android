@@ -3,6 +3,7 @@ package co.biogram.main.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,7 +50,7 @@ public class FragmentProfilePost extends Fragment
         Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
         Root.setClickable(true);
 
-        postAdapter = new PostAdapter((AppCompatActivity) getActivity(), PostList, "FragmentProfilePost");
+        postAdapter = new PostAdapter(getActivity(), PostList, "FragmentProfilePost");
 
         RecyclerViewPost = new RecyclerView(context);
         RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));

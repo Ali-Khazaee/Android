@@ -13,7 +13,7 @@ public class ActivityProfileFragmentLike extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View RootView = inflater.inflate(R.layout.activity_profile_fragment_like, container, false);
+        View RootView = inflater.inflate(R.layout.fragment_comment, container, false);
 
         return RootView;
     }

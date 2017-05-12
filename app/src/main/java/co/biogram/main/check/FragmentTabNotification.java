@@ -15,7 +15,7 @@ public class FragmentTabNotification extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View RootView = inflater.inflate(R.layout.fragment_tab_notification, container, false);
+        View RootView = inflater.inflate(R.layout.fragment_comment, container, false);
 
 
 

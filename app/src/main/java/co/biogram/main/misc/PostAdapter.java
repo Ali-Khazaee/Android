@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -51,10 +52,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 {
     private String Tag;
     private GradientDrawable ShapeLink;
-    private AppCompatActivity AppActivity;
+    private FragmentActivity AppActivity;
     private List<Struct> PostList = new ArrayList<>();
 
-    public PostAdapter(AppCompatActivity activity, List<Struct> list, String tag)
+    public PostAdapter(FragmentActivity activity, List<Struct> list, String tag)
     {
         AppActivity = activity;
         PostList = list;
@@ -190,7 +191,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Fragment fragment = new FragmentPostDetails();
                 fragment.setArguments(bundle);
 
-                AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, fragment).addToBackStack("FragmentPostDetails").commit();
+                AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
             }
         });
 
@@ -764,7 +765,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Fragment fragment = new FragmentLike();
                 fragment.setArguments(bundle);
 
-                AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, fragment).addToBackStack("FragmentLike").commit();
+                AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentLike").commit();
             }
         });
 
@@ -783,7 +784,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     Fragment fragment = new FragmentComment();
                     fragment.setArguments(bundle);
 
-                    AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, fragment).addToBackStack("FragmentComment").commit();
+                    AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentComment").commit();
                     return;
                 }
 
@@ -868,6 +869,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         Fragment fragment = new FragmentImagePreview();
         fragment.setArguments(bundle);
 
-        AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.FullScreenContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+        AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
     }
 }
