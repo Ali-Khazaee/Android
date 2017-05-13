@@ -19,32 +19,26 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 
 public class ImageViewCircle extends ImageView
 {
     private int BorderWidth = 0;
-    private int BorderColor = Color.BLACK;
-
-    private float DrawableRadius;
+    private int BorderColor = Color.WHITE;
     private float BorderRadius;
-
+    private float DrawableRadius;
     private boolean Ready;
     private boolean SetupPending;
 
-    private final Matrix ShaderMatrix = new Matrix();
-
-    private final RectF DrawableRect = new RectF();
+    private final Paint FillPaint = new Paint();
     private final RectF BorderRect = new RectF();
-
     private final Paint BitmapPaint = new Paint();
     private final Paint BorderPaint = new Paint();
-    private final Paint FillPaint = new Paint();
-
-    private ColorFilter ColorFilter;
+    private final RectF DrawableRect = new RectF();
+    private final Matrix ShaderMatrix = new Matrix();
 
     private Bitmap BaseBitmap;
+    private ColorFilter ColorFilter;
 
     public ImageViewCircle(Context context)
     {

@@ -28,9 +28,6 @@ public class FragmentTabCategory extends Fragment
 
         LoadingView Loading = new LoadingView(getContext());
         Loading.setLayoutParams(LoadingParam);
-        Loading.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.Black));
-        Loading.SetColor(R.color.BlueLight);
-        //Loading.SetSize(5);
         Loading.Start();
 
         Root.addView(Loading);

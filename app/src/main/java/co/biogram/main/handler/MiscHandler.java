@@ -74,6 +74,7 @@ public class MiscHandler
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, Metrics);
     }
 
+    @Deprecated
     public static int ToDimension(float Value)
     {
         DisplayMetrics Metrics = App.GetContext().getResources().getDisplayMetrics();

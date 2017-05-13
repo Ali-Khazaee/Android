@@ -106,7 +106,9 @@
     <string name="FragmentProfileFollowers">Followers</string>
     <string name="FragmentProfileFollowing">Following</string>
 
-
+    <string name="FragmentProfilePost2">POST</string>
+    <string name="FragmentProfileLike">LIKE</string>
+    <string name="FragmentProfileComment">COMMENT</string>
 
 
 

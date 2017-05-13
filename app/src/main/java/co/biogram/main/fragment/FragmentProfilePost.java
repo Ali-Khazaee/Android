@@ -133,7 +133,6 @@ public class FragmentProfilePost extends Fragment
 
         LoadingViewData = new LoadingView(context);
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
-        LoadingViewData.SetColor(R.color.BlueGray2);
 
         RelativeLayoutLoading.addView(LoadingViewData);
 

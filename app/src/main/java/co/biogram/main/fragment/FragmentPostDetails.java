@@ -606,7 +606,6 @@ public class FragmentPostDetails extends Fragment
 
         Loading = new LoadingView(context);
         Loading.setLayoutParams(LoadingParam);
-        Loading.SetColor(R.color.BlueGray2);
 
         ContentLink.addView(Loading);
 
@@ -938,7 +937,6 @@ public class FragmentPostDetails extends Fragment
 
         LoadingPage = new LoadingView(context);
         LoadingPage.setLayoutParams(LoadingPageParam);
-        LoadingPage.SetColor(R.color.BlueGray2);
 
         Root.addView(LoadingPage);
 

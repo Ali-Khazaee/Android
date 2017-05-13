@@ -23,9 +23,10 @@ import co.biogram.main.handler.MiscHandler;
 public class LoadingView extends LinearLayout
 {
     private float BounceScale = 2.0f;
+
+    private int BounceSize;
     private int BounceSpeed = 300;
     private int BounceColor = Color.parseColor("#a9bac4");
-    private int BounceSize = MiscHandler.ToDimension(6);
 
     private List<Bounce> BounceList = new ArrayList<>();
     private List<Animator> AnimatorList = new ArrayList<>();
@@ -43,6 +44,9 @@ public class LoadingView extends LinearLayout
     public LoadingView(Context context, AttributeSet attrs, int style)
     {
         super(context, attrs, style);
+
+        BounceSize = MiscHandler.ToDimension(context, 6);
+
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
     }
@@ -75,7 +79,7 @@ public class LoadingView extends LinearLayout
 
         Context context = getContext();
         LayoutParams BounceParam = new LayoutParams(BounceSize, BounceSize);
-        LayoutParams SpaceParam = new LayoutParams(MiscHandler.ToDimension(5), BounceSize*3);
+        LayoutParams SpaceParam = new LayoutParams(MiscHandler.ToDimension(context, 5), BounceSize * 3);
 
         GradientDrawable Shape = new GradientDrawable();
         Shape.setShape(GradientDrawable.OVAL);
@@ -128,7 +132,7 @@ public class LoadingView extends LinearLayout
 
     public void SetSize(int Size)
     {
-        BounceSize = MiscHandler.ToDimension(Size);
+        BounceSize = Size;
     }
 
     public void SetScale(float Scale)

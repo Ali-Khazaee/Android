@@ -254,7 +254,6 @@ public class ActivityProfileEdit extends AppCompatActivity
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Log(e.toString());
                             // Leave Me Alone
                         }
                     }
@@ -552,7 +551,6 @@ public class ActivityProfileEdit extends AppCompatActivity
 
         LoadingViewData = new LoadingView(context);
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
-        LoadingViewData.SetColor(R.color.BlueGray2);
 
         RelativeLayoutLoading.addView(LoadingViewData);
 

@@ -129,7 +129,7 @@ public class ActivityMain extends FragmentActivity
 
         FragManager = getSupportFragmentManager();
 
-        ChangeTab(getIntent().getIntExtra("Tab", 3));
+        ChangeTab(getIntent().getIntExtra("Tab", 5));
     }
 
     @Override
@@ -142,19 +142,21 @@ public class ActivityMain extends FragmentActivity
         }
 
         if (FragManager.getBackStackEntryCount() > 1)
+        {
             super.onBackPressed();
 
-        for (Fragment fragment : FragManager.getFragments())
-        {
-            if (fragment != null && fragment.isVisible())
+            for (Fragment fragment : FragManager.getFragments())
             {
-                switch (fragment.getClass().getSimpleName())
+                if (fragment != null)
                 {
-                    case "FragmentMoment":       ChangeTab(1); break;
-                    case "FragmentHome":         ChangeTab(2); break;
-                    case "FragmentCategory":     ChangeTab(3); break;
-                    case "FragmentNotification": ChangeTab(4); break;
-                    case "FragmentProfile":      ChangeTab(5); break;
+                    switch (fragment.getClass().getSimpleName())
+                    {
+                        case "FragmentMoment":       ChangeTab(1); break;
+                        case "FragmentHome":         ChangeTab(2); break;
+                        case "FragmentCategory":     ChangeTab(3); break;
+                        case "FragmentNotification": ChangeTab(4); break;
+                        case "FragmentProfile":      ChangeTab(5); break;
+                    }
                 }
             }
         }

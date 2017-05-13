@@ -152,7 +152,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         Root.setGravity(Gravity.CENTER);
 
         LoadingView Loading = new LoadingView(AppActivity);
-        Loading.SetColor(R.color.BlueGray2);
         Loading.Start();
 
         Root.addView(Loading);

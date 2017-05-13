@@ -343,7 +343,7 @@ public class FragmentLike extends Fragment
             Root.setGravity(Gravity.CENTER);
 
             LoadingView Loading = new LoadingView(context);
-            Loading.SetColor(R.color.BlueGray2);
+
             Loading.Start();
 
             Root.addView(Loading);

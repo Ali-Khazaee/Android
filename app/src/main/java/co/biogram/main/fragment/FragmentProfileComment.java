@@ -48,7 +48,7 @@ public class FragmentProfileComment extends Fragment
         Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
         Root.setClickable(true);
 
-        postAdapter = new PostAdapter((AppCompatActivity) getActivity(), PostList, "FragmentProfileComment");
+        postAdapter = new PostAdapter(getActivity(), PostList, "FragmentProfileComment");
 
         RecyclerView RecyclerViewPost = new RecyclerView(context);
         RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -131,7 +131,6 @@ public class FragmentProfileComment extends Fragment
 
         LoadingViewData = new LoadingView(context);
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
-        LoadingViewData.SetColor(R.color.BlueGray2);
 
         RelativeLayoutLoading.addView(LoadingViewData);
 
