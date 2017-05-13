@@ -125,7 +125,7 @@ public class FragmentProfile extends Fragment
         });
 
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
-            if (!getArguments().getString("ID", "").equals(SharedHandler.GetString("ID")))
+            if (!getArguments().getString("ID", "").equals(SharedHandler.GetString(context, "ID")))
                 ImageButtonEdit.setVisibility(View.GONE);
 
         RelativeLayoutMain.addView(ImageButtonEdit);
@@ -153,7 +153,6 @@ public class FragmentProfile extends Fragment
         TextViewUsername.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 45), MiscHandler.ToDimension(context, 15), 0);
         TextViewUsername.setTypeface(null, Typeface.BOLD);
         TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewUsername.setVisibility(View.GONE);
 
         LinearLayoutMain2.addView(TextViewUsername);
 
@@ -162,6 +161,7 @@ public class FragmentProfile extends Fragment
         TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewDescription.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
         TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewDescription.setVisibility(View.GONE);
 
         LinearLayoutMain2.addView(TextViewDescription);
 
@@ -473,17 +473,19 @@ public class FragmentProfile extends Fragment
 
     private void RetrieveDataFromServer()
     {
+        final Context context = getActivity();
+
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        String ID = SharedHandler.GetString("ID");
+        String ID = SharedHandler.GetString(context, "ID");
 
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
         RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
-        .Header("TOKEN",SharedHandler.GetString("TOKEN"))
+        .Header("TOKEN",SharedHandler.GetString(context, "TOKEN"))
         .Param("ID", ID)
         .Tag("FragmentProfile")
         .Build(new RequestHandler.OnCompleteCallBack()
@@ -491,9 +493,9 @@ public class FragmentProfile extends Fragment
             @Override
             public void OnFinish(String Response, int Status)
             {
-                if (Status < 0)
+                if (Status != 200)
                 {
-                    MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
+                    MiscHandler.Toast(context, getString(R.string.NoInternet));
                     TextViewTry.setVisibility(View.VISIBLE);
                     LoadingViewData.Stop();
                     return;
@@ -507,12 +509,23 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.ToDimension(90), MiscHandler.ToDimension(90), true);
+                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90), true);
                         RequestHandler.Core().LoadImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
 
                         TextViewUsername.setText(Data.getString("Username"));
-                        TextViewDescription.setText(Data.getString("Description"));
-                        TextViewUrl.setText(Data.getString("Link"));
+
+                        if (!Data.getString("Description").equals(""))
+                        {
+                            TextViewDescription.setText(Data.getString("Description"));
+                            TextViewDescription.setVisibility(View.VISIBLE);
+                        }
+
+                        if (!Data.getString("Link").equals(""))
+                        {
+                            TextViewUrl.setText(Data.getString("Link"));
+                            TextViewUrl.setVisibility(View.VISIBLE);
+                        }
+
                         TextViewPostCount.setText(Data.getString("Post"));
                         TextViewFollowingCount.setText(Data.getString("Following"));
                         TextViewFollowerCount.setText(Data.getString("Follower"));

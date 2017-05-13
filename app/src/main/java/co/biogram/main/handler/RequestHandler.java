@@ -30,8 +30,9 @@ import java.util.concurrent.TimeUnit;
 public class RequestHandler
 {
     private ThreadPoolExecutor ThreadExecutor;
+    private final List<FutureTask> RunningTaskList = new ArrayList<>();
     private final Map<String, List<Runnable>> QueueTaskList = new HashMap<>();
-    private final Map<String, List<Future>> RunningTaskList = new HashMap<>();
+
     private static RequestHandler MainRequestHandler = new RequestHandler();
 
     public static RequestHandler Core()
@@ -47,7 +48,46 @@ public class RequestHandler
         if (ThreadExecutor == null)
             ThreadExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
+        MiscHandler.Log(QueueTaskList.size() + " - " + QueueTaskList);
+        MiscHandler.Log(RunningTaskList.size() + " - " + RunningTaskList);
+        MiscHandler.Log("----------------------------------------------");
+
         return ThreadExecutor;
+    }
+
+    private class FutureTask implements Future
+    {
+        @Override
+        public boolean isDone()
+        {
+            return true;
+        }
+
+        @Override
+        public boolean isCancelled()
+        {
+            return true;
+        }
+
+        public boolean cancel(boolean mayInterruptIfRunning)
+        {
+            return true;
+        }
+
+
+
+
+        private String Tag;
+
+        void SetTag(String tag)
+        {
+            Tag = tag;
+        }
+
+        String GetTag()
+        {
+            return Tag;
+        }
     }
 
     private void AddTask(final Builder builder)
@@ -73,85 +113,87 @@ public class RequestHandler
 
         if (RunningTaskList.size() < 32)
         {
-            Future future = Executor().submit(Task);
-            ADD(builder.Tag, future);
+            FutureTask future = (FutureTask) Executor().submit(Task);
+            future.SetTag(builder.Tag);
+            RunningTaskList.add(future);
             return;
         }
 
-        ADD(builder.Tag, Task);
-    }
-
-    private void ADD(String Key, Runnable Value)
-    {
         List<Runnable> TempList;
 
-        if (QueueTaskList.containsKey(Key))
+        if (QueueTaskList.containsKey(builder.Tag))
         {
-            TempList = QueueTaskList.get(Key);
+            TempList = QueueTaskList.get(builder.Tag);
 
             if (TempList == null)
                 TempList = new ArrayList<>();
 
-            TempList.add(Value);
+            TempList.add(Task);
         }
         else
         {
             TempList = new ArrayList<>();
-            TempList.add(Value);
+            TempList.add(Task);
         }
 
-        QueueTaskList.put(Key, TempList);
-    }
-
-    private void ADD(String Key, Future Value)
-    {
-        List<Future> TempList;
-
-        if (RunningTaskList.containsKey(Key))
-        {
-            TempList = RunningTaskList.get(Key);
-
-            if (TempList == null)
-                TempList = new ArrayList<>();
-
-            TempList.add(Value);
-        }
-        else
-        {
-            TempList = new ArrayList<>();
-            TempList.add(Value);
-        }
-
-        RunningTaskList.put(Key, TempList);
+        QueueTaskList.put(builder.Tag, TempList);
     }
 
     private void UpdateTaskList()
     {
         if (QueueTaskList.size() > 0)
         {
-            Map.Entry<String, List<Runnable>> Entry = QueueTaskList.entrySet().iterator().next();
-            String Key = Entry.getKey();
-            List<Runnable> Value = Entry.getValue();
-
-            if (Value.size() > 0)
+            for (int I = 0; I < QueueTaskList.size(); I++)
             {
-                Future future = Executor().submit(Value.get(0));
-                ADD(Key, future);
+                Map.Entry<String, List<Runnable>> Entry = QueueTaskList.entrySet().iterator().next();
+                String Key = Entry.getKey();
+                List<Runnable> Value = Entry.getValue();
 
-                Value.remove(0);
+                if (Value.size() > 0)
+                {
+                    FutureTask future = (FutureTask) Executor().submit(Value.get(0));
+                    future.SetTag(Key);
+                    RunningTaskList.add(future);
+
+                    Value.remove(0);
+
+                    QueueTaskList.remove(Key);
+                    QueueTaskList.put(Key, Value);
+                    break;
+                }
+
                 QueueTaskList.remove(Key);
-                QueueTaskList.put(Key, Value);
-                return;
             }
-
-            QueueTaskList.remove(Key);
         }
     }
 
     public void Cancel(String Tag)
     {
-        QueueTaskList.remove(Tag);
-        RunningTaskList.remove(Tag);
+        if (QueueTaskList.containsKey(Tag))
+        {
+            List<Runnable> TaskList = QueueTaskList.get(Tag);
+
+            if (TaskList != null)
+                TaskList.clear();
+
+            QueueTaskList.remove(Tag);
+        }
+
+        if (RunningTaskList.size() > 0)
+        {
+            for (int I = 0; I < RunningTaskList.size(); I++)
+            {
+                FutureTask futureTask = RunningTaskList.get(I);
+
+                if (futureTask.GetTag().equals(Tag))
+                {
+                    futureTask.cancel(true);
+                    RunningTaskList.remove(I);
+                }
+            }
+        }
+
+        UpdateTaskList();
     }
 
     public Builder Method(String Method)
@@ -193,6 +235,13 @@ public class RequestHandler
             Address = address;
 
             return this;
+        }
+
+        void Free()
+        {
+            OnBitmapListener = null;
+            OnProgressListener = null;
+            OnCompleteListener = null;
         }
 
         Builder BitmapWidth(int Width)
