@@ -48,40 +48,30 @@ public class RequestHandler
         if (ThreadExecutor == null)
             ThreadExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
-        MiscHandler.Log(QueueTaskList.size() + " - " + QueueTaskList);
-        MiscHandler.Log(RunningTaskList.size() + " - " + RunningTaskList);
-        MiscHandler.Log("----------------------------------------------");
-
         return ThreadExecutor;
     }
 
-    private class FutureTask implements Future
+    private class FutureTask
     {
-        @Override
-        public boolean isDone()
+        private final int ID;
+        private final String Tag;
+        private final Future Task;
+
+        FutureTask(String tag, Future future, int id)
         {
-            return true;
-        }
-
-        @Override
-        public boolean isCancelled()
-        {
-            return true;
-        }
-
-        public boolean cancel(boolean mayInterruptIfRunning)
-        {
-            return true;
-        }
-
-
-
-
-        private String Tag;
-
-        void SetTag(String tag)
-        {
+            ID = id;
             Tag = tag;
+            Task = future;
+        }
+
+        void Cancel()
+        {
+            Task.cancel(true);
+        }
+
+        int GetID()
+        {
+            return ID;
         }
 
         String GetTag()
@@ -107,15 +97,47 @@ public class RequestHandler
                     case "BITMAP_OPTION": PerformBitmapOption(builder); break;
                 }
 
-                UpdateTaskList();
+                if (QueueTaskList.size() > 0)
+                {
+                    for (int I = 0; I < QueueTaskList.size(); I++)
+                    {
+                        Map.Entry<String, List<Runnable>> Entry = QueueTaskList.entrySet().iterator().next();
+                        String Key = Entry.getKey();
+                        List<Runnable> Value = Entry.getValue();
+
+                        if (Value.size() > 0)
+                        {
+                            Future future = Executor().submit(Value.get(0));
+                            RunningTaskList.add(new FutureTask(Key, future, builder.ID));
+
+                            Value.remove(0);
+
+                            QueueTaskList.remove(Key);
+                            QueueTaskList.put(Key, Value);
+                            break;
+                        }
+
+                        QueueTaskList.remove(Key);
+                    }
+                }
+
+                if (RunningTaskList.size() > 0)
+                {
+                    for (int I = 0; I < RunningTaskList.size(); I++)
+                    {
+                        FutureTask futureTask = RunningTaskList.get(I);
+
+                        if (futureTask.GetID() == builder.ID)
+                            RunningTaskList.remove(I);
+                    }
+                }
             }
         };
 
         if (RunningTaskList.size() < 32)
         {
-            FutureTask future = (FutureTask) Executor().submit(Task);
-            future.SetTag(builder.Tag);
-            RunningTaskList.add(future);
+            Future future = Executor().submit(Task);
+            RunningTaskList.add(new FutureTask(builder.Tag, future, builder.ID));
             return;
         }
 
@@ -139,34 +161,6 @@ public class RequestHandler
         QueueTaskList.put(builder.Tag, TempList);
     }
 
-    private void UpdateTaskList()
-    {
-        if (QueueTaskList.size() > 0)
-        {
-            for (int I = 0; I < QueueTaskList.size(); I++)
-            {
-                Map.Entry<String, List<Runnable>> Entry = QueueTaskList.entrySet().iterator().next();
-                String Key = Entry.getKey();
-                List<Runnable> Value = Entry.getValue();
-
-                if (Value.size() > 0)
-                {
-                    FutureTask future = (FutureTask) Executor().submit(Value.get(0));
-                    future.SetTag(Key);
-                    RunningTaskList.add(future);
-
-                    Value.remove(0);
-
-                    QueueTaskList.remove(Key);
-                    QueueTaskList.put(Key, Value);
-                    break;
-                }
-
-                QueueTaskList.remove(Key);
-            }
-        }
-    }
-
     public void Cancel(String Tag)
     {
         if (QueueTaskList.containsKey(Tag))
@@ -187,13 +181,11 @@ public class RequestHandler
 
                 if (futureTask.GetTag().equals(Tag))
                 {
-                    futureTask.cancel(true);
+                    futureTask.Cancel();
                     RunningTaskList.remove(I);
                 }
             }
         }
-
-        UpdateTaskList();
     }
 
     public Builder Method(String Method)
@@ -204,6 +196,8 @@ public class RequestHandler
     @SuppressWarnings("all")
     public class Builder
     {
+        private int ID = MiscHandler.GenerateViewID();
+
         private int ReadTime = 30000;
         private int ConnectTime = 30000;
 
@@ -235,13 +229,6 @@ public class RequestHandler
             Address = address;
 
             return this;
-        }
-
-        void Free()
-        {
-            OnBitmapListener = null;
-            OnProgressListener = null;
-            OnCompleteListener = null;
         }
 
         Builder BitmapWidth(int Width)
@@ -301,23 +288,23 @@ public class RequestHandler
             return this;
         }
 
-        public Builder Tag(String Tag)
+        public Builder Tag(String tag)
         {
-            this.Tag = Tag;
+            Tag = tag;
 
             return this;
         }
 
-        public Builder Read(int ReadTime)
+        public Builder Read(int readTime)
         {
-            this.ReadTime = ReadTime;
+            ReadTime = readTime;
 
             return this;
         }
 
-        public Builder Connect(int ConnectTime)
+        public Builder Connect(int connectTime)
         {
-            this.ConnectTime = ConnectTime;
+            ConnectTime = connectTime;
 
             return this;
         }
