@@ -58,9 +58,17 @@
     <string name="FragmentPostDetailsReport">Report</string>
     <string name="FragmentPostDetailsBlock">Block</string>
     <string name="FragmentPostDetailsClipboard">Text Copied To Clipboard</string>
-    <string name="FragmentPostDetailsBookMark">Bookmark</string>
-    <string name="FragmentPostDetailsUnBookMark">UnBookmark</string>
     <string name="FragmentPostDetailsCommentDisable">Commenting is Disabled</string>
+    <string name="FragmentPostDetailsChoice">Choice</string>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -79,10 +87,6 @@
     <string name="GeneralCheckInternet">Check Your Internet</string>
     <string name="GeneralPermissionCamera">You Should Allow Access To Your Camera</string>
     <string name="GeneralPermissionStorage">You Should Allow Access To Your Storage</string>
-
-    <string name="TextCrawlerNoDescription">No Description &#8230;</string>
-
-
 
 
     <string name="FragmentMomentWriteMaxImage">Maximum Picture Is Three</string>

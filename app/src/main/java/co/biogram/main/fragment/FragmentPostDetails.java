@@ -68,7 +68,7 @@ public class FragmentPostDetails extends Fragment
 
     private ImageView ImageViewOption;
     private ImageView ImageViewBookMark;
-    private ImageView ImageViewIconLike;
+    private ImageView ImageViewLike;
 
     private String PostID = "";
     private String OwnerID = "";
@@ -383,6 +383,49 @@ public class FragmentPostDetails extends Fragment
             @Override
             public void onClick(View v)
             {
+                if (IsBookMark)
+                {
+                    ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black2);
+
+                    ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewBookMark, "alpha",  0.1f, 1f);
+                    Fade.setDuration(400);
+
+                    AnimatorSet AnimationSet = new AnimatorSet();
+                    AnimationSet.play(Fade);
+                    AnimationSet.start();
+
+                    IsLike = false;
+                    TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) - 1));
+                }
+                else
+                {
+                    ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black);
+
+                    ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewBookMark, "scaleX", 1.5f);
+                    SizeX.setDuration(200);
+
+                    ObjectAnimator SizeY = ObjectAnimator.ofFloat(ImageViewBookMark, "scaleY", 1.5f);
+                    SizeY.setDuration(200);
+
+                    ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewBookMark, "alpha",  0.1f, 1f);
+                    Fade.setDuration(400);
+
+                    ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(ImageViewBookMark, "scaleX", 1f);
+                    SizeX2.setDuration(200);
+                    SizeX2.setStartDelay(200);
+
+                    ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(ImageViewBookMark, "scaleY", 1f);
+                    SizeY2.setDuration(200);
+                    SizeY2.setStartDelay(200);
+
+                    AnimatorSet AnimationSet = new AnimatorSet();
+                    AnimationSet.playTogether(SizeX, SizeY, Fade, SizeX2, SizeY2);
+                    AnimationSet.start();
+
+                    IsLike = true;
+                    TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) + 1));
+                }
+
                 RequestHandler.Core().Method("POST")
                 .Address(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
                 .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -603,7 +646,7 @@ public class FragmentPostDetails extends Fragment
 
         RelativeLayoutContent.addView(RelativeLayoutContentLink);
 
-        RelativeLayout.LayoutParams LoadingViewLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams LoadingViewLinkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewLinkParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
         LoadingViewLinkParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
@@ -797,21 +840,21 @@ public class FragmentPostDetails extends Fragment
 
         RelativeLayoutMain.addView(LinearLayoutTool);
 
-        ImageViewIconLike = new ImageView(context);
-        ImageViewIconLike.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageViewIconLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewIconLike.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56), 1f));
-        ImageViewIconLike.setImageResource(R.drawable.ic_like);
-        ImageViewIconLike.setOnClickListener(new View.OnClickListener()
+        ImageViewLike = new ImageView(context);
+        ImageViewLike.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        ImageViewLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewLike.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56), 1f));
+        ImageViewLike.setImageResource(R.drawable.ic_like);
+        ImageViewLike.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 if (IsLike)
                 {
-                    ImageViewIconLike.setImageResource(R.drawable.ic_like);
+                    ImageViewLike.setImageResource(R.drawable.ic_like);
 
-                    ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewIconLike, "alpha",  0.1f, 1f);
+                    ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewLike, "alpha",  0.1f, 1f);
                     Fade.setDuration(400);
 
                     AnimatorSet AnimationSet = new AnimatorSet();
@@ -820,30 +863,25 @@ public class FragmentPostDetails extends Fragment
 
                     IsLike = false;
                     TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) - 1));
-
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
-                    .addBodyParameter("PostID", PostID)
-                    .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .setTag("FragmentPostDetails").build().getAsString(null);
                 }
                 else
                 {
-                    ImageViewIconLike.setImageResource(R.drawable.ic_like_red);
+                    ImageViewLike.setImageResource(R.drawable.ic_like_red);
 
-                    ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewIconLike, "scaleX", 1.5f);
+                    ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewLike, "scaleX", 1.5f);
                     SizeX.setDuration(200);
 
-                    ObjectAnimator SizeY = ObjectAnimator.ofFloat(ImageViewIconLike, "scaleY", 1.5f);
+                    ObjectAnimator SizeY = ObjectAnimator.ofFloat(ImageViewLike, "scaleY", 1.5f);
                     SizeY.setDuration(200);
 
-                    ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewIconLike, "alpha",  0.1f, 1f);
+                    ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewLike, "alpha",  0.1f, 1f);
                     Fade.setDuration(400);
 
-                    ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(ImageViewIconLike, "scaleX", 1f);
+                    ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(ImageViewLike, "scaleX", 1f);
                     SizeX2.setDuration(200);
                     SizeX2.setStartDelay(200);
 
-                    ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(ImageViewIconLike, "scaleY", 1f);
+                    ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(ImageViewLike, "scaleY", 1f);
                     SizeY2.setDuration(200);
                     SizeY2.setStartDelay(200);
 
@@ -853,23 +891,24 @@ public class FragmentPostDetails extends Fragment
 
                     IsLike = true;
                     TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) + 1));
-
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
-                    .addBodyParameter("PostID", PostID)
-                    .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .setTag("FragmentPostDetails").build().getAsString(null);
                 }
+
+                RequestHandler.Core().Method("POST")
+                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
+                .Param("PostID", PostID)
+                .Tag("FragmentPostDetails").Build();
             }
         });
 
-        LinearLayoutTool.addView(IconLike);
+        LinearLayoutTool.addView(ImageViewLike);
 
-        ImageView IconComment = new ImageView(context);
-        IconComment.setPadding(MiscHandler.ToDimension(14), MiscHandler.ToDimension(14), MiscHandler.ToDimension(14), MiscHandler.ToDimension(14));
-        IconComment.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        IconComment.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(56), MiscHandler.ToDimension(56), 1f));
-        IconComment.setImageResource(R.drawable.ic_comment);
-        IconComment.setOnClickListener(new View.OnClickListener()
+        ImageView ImageViewComment = new ImageView(context);
+        ImageViewComment.setPadding(MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14));
+        ImageViewComment.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewComment.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56), 1f));
+        ImageViewComment.setImageResource(R.drawable.ic_comment);
+        ImageViewComment.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -887,73 +926,72 @@ public class FragmentPostDetails extends Fragment
                     return;
                 }
 
-                MiscHandler.Toast(getActivity(), getString(R.string.AdapterPostComment));
+                MiscHandler.Toast(context, getString(R.string.FragmentPostDetailsCommentDisable));
             }
         });
 
-        LinearLayoutTool.addView(IconComment);
+        LinearLayoutTool.addView(ImageViewComment);
 
-        ImageView IconShare = new ImageView(context);
-        IconShare.setPadding(MiscHandler.ToDimension(14), MiscHandler.ToDimension(14), MiscHandler.ToDimension(14), MiscHandler.ToDimension(14));
-        IconShare.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        IconShare.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(56), MiscHandler.ToDimension(56), 1f));
-        IconShare.setImageResource(R.drawable.ic_share);
-        IconShare.setOnClickListener(new View.OnClickListener()
+        ImageView ImageViewShare = new ImageView(context);
+        ImageViewShare.setPadding(MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14));
+        ImageViewShare.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewShare.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56), 1f));
+        ImageViewShare.setImageResource(R.drawable.ic_share);
+        ImageViewShare.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 Intent SendIntent = new Intent();
                 SendIntent.setAction(Intent.ACTION_SEND);
-                SendIntent.putExtra(Intent.EXTRA_TEXT, TextViewMessage + "\n http://BioGram.Co/");
+                SendIntent.putExtra(Intent.EXTRA_TEXT, TextViewMessage.getText().toString() + "\n http://BioGram.Co/");
                 SendIntent.setType("text/plain");
-                getActivity().startActivity(Intent.createChooser(SendIntent, getString(R.string.AdapterPostChoice)));
+                getActivity().startActivity(Intent.createChooser(SendIntent, getString(R.string.FragmentPostDetailsChoice)));
             }
         });
 
-        LinearLayoutTool.addView(IconShare);
+        LinearLayoutTool.addView(ImageViewShare);
 
-        RelativeLayout.LayoutParams Line3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
-        Line3Param.addRule(RelativeLayout.BELOW, LinearLayoutTool.getId());
-        Line3Param.setMargins(0, 0, 0, MiscHandler.ToDimension(25));
+        RelativeLayout.LayoutParams ViewLine3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        ViewLine3Param.addRule(RelativeLayout.BELOW, LinearLayoutTool.getId());
+        ViewLine3Param.setMargins(0, 0, 0, MiscHandler.ToDimension(context, 25));
 
-        View Line3 = new View(context);
-        Line3.setLayoutParams(Line3Param);
-        Line3.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray));
-        Line3.setId(MiscHandler.GenerateViewID());
+        View ViewLine3 = new View(context);
+        ViewLine3.setLayoutParams(ViewLine3Param);
+        ViewLine3.setBackgroundResource(R.color.Gray);
+        ViewLine3.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(Line3);
+        RelativeLayoutMain.addView(ViewLine3);
 
-        RelativeLayout.LayoutParams LoadParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        LoadParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
         RelativeLayoutLoading = new RelativeLayout(context);
-        RelativeLayoutLoading.setLayoutParams(LoadParam);
-        RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
         RelativeLayoutLoading.setVisibility(View.VISIBLE);
 
         Root.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingPageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        LoadingPageParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        LoadingPageParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewDataParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        LoadingViewDataParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingPageParam);
-
+        LoadingViewData.setLayoutParams(LoadingViewDataParam);
 
         Root.addView(LoadingViewData);
 
-        RelativeLayout.LayoutParams TryPageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TryPageParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        TryPageParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        TextViewTryParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         TextViewTry = new TextView(context);
-        TextViewTry.setLayoutParams(TryPageParam);
+        TextViewTry.setLayoutParams(TextViewTryParam);
         TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewTry.setTypeface(null, Typeface.BOLD);
-        TextViewTry.setText(getString(R.string.GeneralTryAgain));
+        TextViewTry.setText(getString(R.string.TryAgain));
         TextViewTry.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -979,17 +1017,26 @@ public class FragmentPostDetails extends Fragment
 
     private void RetrieveDataFromServer()
     {
-        LoadingViewData.Start();
+        final Context context = getActivity();
         TextViewTry.setVisibility(View.GONE);
+        LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DETAILS))
-        .addBodyParameter("PostID", ((getArguments() == null) ? "" : getArguments().getString("PostID", "")))
-        .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-        .setTag("FragmentPostDetails").build().getAsString(new StringRequestListener()
+        RequestHandler.Core().Method("POST")
+        .Address(URLHandler.GetURL(URLHandler.URL.POST_DETAILS))
+        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .Param("PostID", ((getArguments() == null) ? "" : getArguments().getString("PostID", "")))
+        .Tag("FragmentPostDetails")
+        .Build(new RequestHandler.OnCompleteCallBack()
         {
             @Override
-            public void onResponse(String Response)
+            public void OnFinish(String Response, int Status)
             {
+                if (Status != 200)
+                {
+                    MiscHandler.Toast(context, getString(R.string.NoInternet));
+                    return;
+                }
+
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -999,7 +1046,7 @@ public class FragmentPostDetails extends Fragment
                         Result = new JSONObject(Result.getString("Result"));
 
                         if (!Result.getString("Avatar").equals(""))
-                            RequestHandler.Core().LoadImage(ImageViewCircleProfile, Result.getString("Avatar"), "FragmentPostDetails", MiscHandler.ToDimension(55), MiscHandler.ToDimension(55), true);
+                            RequestHandler.Core().LoadImage(ImageViewCircleProfile, Result.getString("Avatar"), "FragmentPostDetails", MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55), true);
 
                         TextViewUsername.setText(Result.getString("Username"));
                         TextViewTime.setText(MiscHandler.GetTimeName(Result.getLong("Time")));
@@ -1027,7 +1074,7 @@ public class FragmentPostDetails extends Fragment
                                 @Override
                                 public void OnTagClicked(String Tag, int Type)
                                 {
-                                    MiscHandler.Toast(getActivity(), Tag);
+                                    MiscHandler.Toast(context, Tag);
                                 }
                             });
                         }
@@ -1076,7 +1123,7 @@ public class FragmentPostDetails extends Fragment
                         else if (Result.getInt("Type") == 3)
                         {
                             RelativeLayoutContentLink.setVisibility(View.VISIBLE);
-                            Loading.Start();
+                            LoadingViewLink.Start();
 
                             try
                             {
@@ -1089,53 +1136,53 @@ public class FragmentPostDetails extends Fragment
                                     {
                                         if (new Bidi(Content.Title, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
                                         {
-                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) Website.getLayoutParams();
+                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewWebsiteLink.getLayoutParams();
                                             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                                            Website.setLayoutParams(params);
+                                            TextViewWebsiteLink.setLayoutParams(params);
                                         }
                                         else
                                         {
-                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) Website.getLayoutParams();
+                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewWebsiteLink.getLayoutParams();
                                             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                                            Website.setLayoutParams(params);
+                                            TextViewWebsiteLink.setLayoutParams(params);
                                         }
 
                                         if (new Bidi(Content.Title, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
                                         {
-                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) Description.getLayoutParams();
+                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewDescriptionLink.getLayoutParams();
                                             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                                            Description.setLayoutParams(params);
+                                            TextViewDescriptionLink.setLayoutParams(params);
                                         }
                                         else
                                         {
-                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) Description.getLayoutParams();
+                                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewDescriptionLink.getLayoutParams();
                                             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                                            Description.setLayoutParams(params);
+                                            TextViewDescriptionLink.setLayoutParams(params);
                                         }
 
-                                        Website.setText(Content.Title);
-                                        Description.setText(Content.Description);
-                                        Loading.Stop();
-                                        Fav.setVisibility(View.VISIBLE);
+                                        TextViewWebsiteLink.setText(Content.Title);
+                                        TextViewDescriptionLink.setText(Content.Description);
+                                        LoadingViewLink.Stop();
+                                        ImageViewFavLink.setVisibility(View.VISIBLE);
 
-                                        RequestHandler.Core().LoadImage(Fav, Content.Image, "FragmentPostDetails", true);
+                                        RequestHandler.Core().LoadImage(ImageViewFavLink, Content.Image, "FragmentPostDetails", true);
                                     }
 
                                     @Override
                                     public void OnFailed()
                                     {
-                                        Loading.Stop();
-                                        Try.setVisibility(View.VISIBLE);
+                                        LoadingViewLink.Stop();
+                                        TextViewTryLink.setVisibility(View.VISIBLE);
                                     }
                                 });
 
-                                Try.setOnClickListener(new View.OnClickListener()
+                                TextViewTryLink.setOnClickListener(new View.OnClickListener()
                                 {
                                     @Override
                                     public void onClick(View v)
                                     {
                                         Request.Start();
-                                        Loading.Start();
+                                        LoadingViewLink.Start();
                                     }
                                 });
 
@@ -1147,8 +1194,8 @@ public class FragmentPostDetails extends Fragment
                             }
                         }
 
-                        LikeCount.setText(String.valueOf(Result.getInt("LikeCount")));
-                        CommentCount.setText(String.valueOf(Result.getInt("CommentCount")));
+                        TextViewLikeCount.setText(String.valueOf(Result.getInt("LikeCount")));
+                        TextViewCommentCount.setText(String.valueOf(Result.getInt("CommentCount")));
 
                         PostID = Result.getString("PostID");
                         OwnerID = Result.getString("OwnerID");
@@ -1157,13 +1204,13 @@ public class FragmentPostDetails extends Fragment
                         IsBookMark = Result.getBoolean("BookMark");
 
                         if (IsLike)
-                            IconLike.setImageResource(R.drawable.ic_like_red);
+                            ImageViewLike.setImageResource(R.drawable.ic_like_red);
 
                         if (IsBookMark)
-                            BookMark.setImageResource(R.drawable.ic_bookmark_black2);
+                            ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black2);
 
                         ImageViewOption.setVisibility(View.VISIBLE);
-                        BookMark.setVisibility(View.VISIBLE);
+                        ImageViewBookMark.setVisibility(View.VISIBLE);
                     }
                 }
                 catch (Exception e)
