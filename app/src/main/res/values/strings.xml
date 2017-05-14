@@ -61,6 +61,27 @@
     <string name="FragmentPostDetailsCommentDisable">Commenting is Disabled</string>
     <string name="FragmentPostDetailsChoice">Choice</string>
 
+    <string name="FragmentImagePreview">Image Preview</string>
+
+    <string name="FragmentLike">Likes</string>
+
+    <string name="ActivityProfileTitle">Edit Profile</string>
+    <string name="ActivityProfileSave">Save</string>
+    <string name="ActivityProfileUsernameHint">Username cannot be blank</string>
+    <string name="ActivityProfileUsername">Username</string>
+    <string name="ActivityProfileDescription">Description</string>
+    <string name="ActivityProfileWebsite">Website</string>
+    <string name="ActivityProfileLocation">Location</string>
+    <string name="ActivityProfileEmail">Email Address</string>
+    <string name="ActivityProfileEmailHint">Email cannot be blank</string>
+    <string name="ActivityProfileUpload">Please Wait, Uploading Data &#8230;</string>
+    <string name="ActivityProfileCrop">Image Crop</string>
+    <string name="ActivityProfileImageCover">Cover Image Was Removed</string>
+    <string name="ActivityProfileDialogMessage1">Take From Camera</string>
+    <string name="ActivityProfileDialogMessage2">Select From Gallery</string>
+    <string name="ActivityProfileDialogMessage3">Remove Current Profile</string>
+    <string name="ActivityProfileDialogMessage4">Your Choices</string>
+    <string name="ActivityProfileCompleteAction">Complete Action Using</string>
 
 
 
@@ -76,12 +97,6 @@
 
 
 
-
-
-
-
-
-    <string name="GeneralSoon">Coming Soon</string>
     <string name="GeneralTryAgain">Try Again &#8230;</string>
     <string name="GeneralFileNotFound">File Not Found"</string>
     <string name="GeneralCheckInternet">Check Your Internet</string>
@@ -102,13 +117,13 @@
     <string name="FragmentMomentWriteVideoSupport">Your Device Doesn\'t Support Compression, Max Video Size Is 2MB</string>
     <string name="FragmentMomentWriteVideoCompress">Compressing Video, Please Wait</string>
     <string name="FragmentMomentWriteVideoPreview">Video Preview</string>
-    <string name="FragmentMomentWriteImagePreview">Image Preview</string>
+
     <string name="FragmentMomentWriteCategory">Category</string>
     <string name="FragmentMomentWriteDialogPaste">Paste</string>
     <string name="FragmentMomentWriteDialogCopy">Copy</string>
     <string name="FragmentMomentWriteDialogClipboard">Text Copied To Clipboard</string>
 
-    <string name="FragmentLikeTextLike">Likes</string>
+
 
     <string name="FragmentCommentAreYouSure">Are You Sure</string>
     <string name="FragmentCommentYes">Yes</string>
@@ -147,22 +162,6 @@
 
 
 
-    <string name="ActivityProfileEditTitle">Edit Profile</string>
-    <string name="ActivityProfileEditSave">Save</string>
-    <string name="ActivityProfileEditUsernameHint">Username cannot be blank</string>
-    <string name="ActivityProfileEditUsername">Username</string>
-    <string name="ActivityProfileEditDescription">Description</string>
-    <string name="ActivityProfileEditWebsite">Website</string>
-    <string name="ActivityProfileEditLocation">Location</string>
-    <string name="ActivityProfileEditEmail">Email Address</string>
-    <string name="ActivityProfileEditEmailHint">Email cannot be blank</string>
-    <string name="ActivityProfileEditUpload">Please Wait, Uploading Data &#8230;</string>
-    <string name="ActivityProfileEditCrop">Image Crop</string>
-    <string name="ActivityProfileEditImageBackGroundRemoved">BackGround Image Was Removed</string>
-    <string name="ActivityProfileEditDialogMessage1">Take From Camera</string>
-    <string name="ActivityProfileEditDialogMessage2">Select From Gallery</string>
-    <string name="ActivityProfileEditDialogMessage3">Remove Current Profile</string>
-    <string name="ActivityProfileEditDialogMessage4">Your Choices</string>
-    <string name="ActivityProfileEditCompleteAction">Complete Action Using</string>
+
 
 </resources>

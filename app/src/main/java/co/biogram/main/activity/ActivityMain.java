@@ -22,7 +22,7 @@ import co.biogram.main.handler.MiscHandler;
 public class ActivityMain extends FragmentActivity
 {
     private ImageView ImageViewMoment;
-    private ImageView ImageViewHome;
+    private ImageView ImageViewInbox;
     private ImageView ImageViewCategory;
     private ImageView ImageViewNotification;
     private ImageView ImageViewProfile;
@@ -74,14 +74,14 @@ public class ActivityMain extends FragmentActivity
 
         LinearLayoutTab.addView(ImageViewMoment);
 
-        ImageViewHome = new ImageView(context);
-        ImageViewHome.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-        ImageViewHome.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewHome.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageViewHome.setImageResource(R.drawable.ic_home_gray);
-        ImageViewHome.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(2); } });
+        ImageViewInbox = new ImageView(context);
+        ImageViewInbox.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        ImageViewInbox.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewInbox.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        ImageViewInbox.setImageResource(R.drawable.ic_home_gray);
+        ImageViewInbox.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(2); } });
 
-        LinearLayoutTab.addView(ImageViewHome);
+        LinearLayoutTab.addView(ImageViewInbox);
 
         ImageViewCategory = new ImageView(context);
         ImageViewCategory.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
@@ -129,7 +129,7 @@ public class ActivityMain extends FragmentActivity
 
         FragManager = getSupportFragmentManager();
 
-        ChangeTab(getIntent().getIntExtra("Tab", 5));
+        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
     }
 
     @Override
@@ -165,7 +165,7 @@ public class ActivityMain extends FragmentActivity
     private void ChangeTab(int Tab)
     {
         ImageViewMoment.setImageResource(R.drawable.ic_moment_gray);
-        ImageViewHome.setImageResource(R.drawable.ic_home_gray);
+        ImageViewInbox.setImageResource(R.drawable.ic_inbox_gray);
         ImageViewCategory.setImageResource(R.drawable.ic_category_gray);
         ImageViewNotification.setImageResource(R.drawable.ic_notification_gray);
         ImageViewProfile.setImageResource(R.drawable.ic_profile_gray);
@@ -173,7 +173,7 @@ public class ActivityMain extends FragmentActivity
         switch (Tab)
         {
             case 1: ImageViewMoment.setImageResource(R.drawable.ic_moment_black);             break;
-            case 2: ImageViewHome.setImageResource(R.drawable.ic_home_black);                 break;
+            case 2: ImageViewInbox.setImageResource(R.drawable.ic_inbox_black);                 break;
             case 3: ImageViewCategory.setImageResource(R.drawable.ic_category_black);         break;
             case 4: ImageViewNotification.setImageResource(R.drawable.ic_notification_black); break;
             case 5: ImageViewProfile.setImageResource(R.drawable.ic_profile_black);           break;
@@ -205,6 +205,6 @@ public class ActivityMain extends FragmentActivity
             return;
         }
 
-        FragManager.beginTransaction().add(R.id.ActivityMainContentContainer, SelectedFragment, SelectedFragment.getClass().getSimpleName()).addToBackStack(SelectedFragment.getClass().getSimpleName()).commit();
+        FragManager.beginTransaction().replace(R.id.ActivityMainContentContainer, SelectedFragment, SelectedFragment.getClass().getSimpleName()).addToBackStack(SelectedFragment.getClass().getSimpleName()).commit();
     }
 }

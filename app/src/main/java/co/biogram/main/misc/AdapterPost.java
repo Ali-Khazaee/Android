@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -25,10 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,21 +43,21 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.handler.URLHandler;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost>
+public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost>
 {
-    private String Tag;
-    private GradientDrawable ShapeLink;
-    private FragmentActivity AppActivity;
-    private List<Struct> PostList = new ArrayList<>();
+    private final String Tag;
+    private final GradientDrawable ShapeLink;
+    private final FragmentActivity Activity;
+    private List<PostStruct> PostList = new ArrayList<>();
 
-    public PostAdapter(FragmentActivity activity, List<Struct> list, String tag)
+    public AdapterPost(FragmentActivity activity, List<PostStruct> list, String tag)
     {
-        AppActivity = activity;
+        Activity = activity;
         PostList = list;
         Tag = tag;
 
         ShapeLink = new GradientDrawable();
-        ShapeLink.setStroke(MiscHandler.ToDimension(1), ContextCompat.getColor(AppActivity, R.color.BlueGray));
+        ShapeLink.setStroke(MiscHandler.ToDimension(activity, 1), ContextCompat.getColor(Activity, R.color.BlueGray));
     }
 
     class ViewHolderPost extends RecyclerView.ViewHolder
@@ -95,7 +90,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         ImageView ImageViewComment;
         TextView TextViewCommentCount;
         ImageView ImageViewShare;
-        View ViewBlankLine;
+        View ViewLine;
 
         ViewHolderPost(View view, boolean Content)
         {
@@ -131,7 +126,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 ImageViewComment = (ImageView) view.findViewById(R.id.ImageViewComment);
                 TextViewCommentCount = (TextView) view.findViewById(R.id.TextViewCommentCount);
                 ImageViewShare = (ImageView) view.findViewById(R.id.ImageViewShare);
-                ViewBlankLine = view.findViewById(R.id.ViewBlankLine);
+                ViewLine = view.findViewById(R.id.ViewBlankLine);
             }
         }
     }
@@ -147,14 +142,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             return new ViewHolderPost(ItemView, true);
         }
 
-        LinearLayout Root = new LinearLayout(AppActivity);
-        Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
+        LinearLayout Root = new LinearLayout(Activity);
+        Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 56)));
         Root.setGravity(Gravity.CENTER);
 
-        LoadingView Loading = new LoadingView(AppActivity);
-        Loading.Start();
+        LoadingView LoadingViewData = new LoadingView(Activity);
+        LoadingViewData.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(Activity, 56), MiscHandler.ToDimension(Activity, 56)));
+        LoadingViewData.Start();
 
-        Root.addView(Loading);
+        Root.addView(LoadingViewData);
 
         return new ViewHolderPost(Root, false);
     }
@@ -190,11 +186,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Fragment fragment = new FragmentPostDetails();
                 fragment.setArguments(bundle);
 
-                AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
+                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
             }
         });
 
-        RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.ToDimension(55), MiscHandler.ToDimension(55), true);
+        RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.ToDimension(Activity, 55), MiscHandler.ToDimension(Activity, 55), true);
 
         Holder.TextViewUsername.setText(PostList.get(Position).Username);
         Holder.TextViewTime.setText(MiscHandler.GetTimeName(PostList.get(Position).Time));
@@ -203,20 +199,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             @Override
             public void onClick(View view)
             {
-                final Dialog DialogOption = new Dialog(AppActivity);
+                final Dialog DialogOption = new Dialog(Activity);
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
 
-                LinearLayout Root = new LinearLayout(AppActivity);
+                LinearLayout Root = new LinearLayout(Activity);
                 Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                Root.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.White));
+                Root.setBackgroundResource(R.color.White);
                 Root.setOrientation(LinearLayout.VERTICAL);
 
-                TextView Follow = new TextView(AppActivity);
+                TextView Follow = new TextView(Activity);
                 Follow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Follow.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
-                Follow.setText(AppActivity.getString(R.string.AdapterPostFollow));
-                Follow.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Follow.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                Follow.setText(Activity.getString(R.string.AdapterPostFollow));
+                Follow.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 Follow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Follow.setOnClickListener(new View.OnClickListener()
                 {
@@ -224,37 +220,41 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(Activity, Activity.getString(R.string.Soon));
                     }
                 });
 
                 Root.addView(Follow);
 
-                View FollowLine = new View(AppActivity);
-                FollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
-                FollowLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
+                View FollowLine = new View(Activity);
+                FollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 1)));
+                FollowLine.setBackgroundResource(R.color.Gray1);
 
                 Root.addView(FollowLine);
 
-                final TextView Turn = new TextView(AppActivity);
+                final TextView Turn = new TextView(Activity);
                 Turn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Turn.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
+                Turn.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
                 Turn.setVisibility(View.GONE);
-                Turn.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Turn.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 Turn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Turn.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
-                        .addBodyParameter("PostID", PostList.get(Position).PostID)
-                        .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                        .setTag(Tag).build().getAsString(new StringRequestListener()
+                        RequestHandler.Core().Method("POST")
+                        .Address(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
+                        .Param("PostID", PostList.get(Position).PostID)
+                        .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .Tag(Tag).Build(new RequestHandler.OnCompleteCallBack()
                         {
                             @Override
-                            public void onResponse(String Response)
+                            public void OnFinish(String Response, int Status)
                             {
+                                if (Status != 200)
+                                    return;
+
                                 try
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
@@ -262,9 +262,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                                         PostList.get(Position).SetComment();
 
                                         if (PostList.get(Position).Comment)
-                                            Turn.setText(AppActivity.getString(R.string.AdapterPostTurnOff));
+                                            Turn.setText(Activity.getString(R.string.AdapterPostTurnOff));
                                         else
-                                            Turn.setText(AppActivity.getString(R.string.AdapterPostTurnOn));
+                                            Turn.setText(Activity.getString(R.string.AdapterPostTurnOn));
 
                                         notifyDataSetChanged();
                                     }
@@ -274,9 +274,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                                     // Leave Me Alone
                                 }
                             }
-
-                            @Override
-                            public void onError(ANError e) { }
                         });
 
                         DialogOption.dismiss();
@@ -284,65 +281,70 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 });
 
                 if (PostList.get(Position).Comment)
-                    Turn.setText(AppActivity.getString(R.string.AdapterPostTurnOff));
+                    Turn.setText(Activity.getString(R.string.AdapterPostTurnOff));
                 else
-                    Turn.setText(AppActivity.getString(R.string.AdapterPostTurnOn));
+                    Turn.setText(Activity.getString(R.string.AdapterPostTurnOn));
 
                 Root.addView(Turn);
 
-                View TurnLine = new View(AppActivity);
-                TurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
-                TurnLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
+                View TurnLine = new View(Activity);
+                TurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 1)));
+                TurnLine.setBackgroundResource(R.color.Gray1);
                 TurnLine.setVisibility(View.GONE);
 
                 Root.addView(TurnLine);
 
-                TextView Copy = new TextView(AppActivity);
+                TextView Copy = new TextView(Activity);
                 Copy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Copy.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
-                Copy.setText(AppActivity.getString(R.string.AdapterPostCopy));
-                Copy.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Copy.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                Copy.setText(Activity.getString(R.string.AdapterPostCopy));
+                Copy.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 Copy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Copy.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View view)
                     {
-                        ClipboardManager clipboard = (ClipboardManager) AppActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText(PostList.get(Position).PostID, PostList.get(Position).Message);
-                        clipboard.setPrimaryClip(clip);
+                        ClipboardManager ClipBoard = (ClipboardManager) Activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData Clip = ClipData.newPlainText(PostList.get(Position).PostID, PostList.get(Position).Message);
+                        ClipBoard.setPrimaryClip(Clip);
 
-                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.AdapterPostClipboard));
+                        MiscHandler.Toast(Activity, Activity.getString(R.string.AdapterPostClipboard));
                         DialogOption.dismiss();
                     }
                 });
 
                 Root.addView(Copy);
 
-                View CopyLine = new View(AppActivity);
-                CopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
-                CopyLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
+                View CopyLine = new View(Activity);
+                CopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 1)));
+                CopyLine.setBackgroundResource(R.color.Gray1);
 
                 Root.addView(CopyLine);
 
-                final TextView BookMark = new TextView(AppActivity);
+                final TextView BookMark = new TextView(Activity);
                 BookMark.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                BookMark.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
-                BookMark.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                BookMark.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                BookMark.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 BookMark.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 BookMark.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
-                        .addBodyParameter("PostID", PostList.get(Position).PostID)
-                        .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                        .setTag(Tag).build().getAsString(new StringRequestListener()
+                        RequestHandler.Core().Method("POST")
+                        .Address(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
+                        .Param("PostID", PostList.get(Position).PostID)
+                        .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .Tag(Tag)
+                        .Build(new RequestHandler.OnCompleteCallBack()
                         {
                             @Override
-                            public void onResponse(String Response)
+                            public void OnFinish(String Response, int Status)
                             {
+                                if (Status != 200)
+                                    return;
+
                                 try
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
@@ -350,9 +352,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                                         PostList.get(Position).SetBookMark();
 
                                         if (PostList.get(Position).BookMark)
-                                            BookMark.setText(AppActivity.getString(R.string.AdapterPostUnBookMark));
+                                            BookMark.setText(Activity.getString(R.string.AdapterPostUnBookMark));
                                         else
-                                            BookMark.setText(AppActivity.getString(R.string.AdapterPostBookMark));
+                                            BookMark.setText(Activity.getString(R.string.AdapterPostBookMark));
                                     }
                                 }
                                 catch (Exception e)
@@ -360,9 +362,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                                     // Leave Me Alone
                                 }
                             }
-
-                            @Override
-                            public void onError(ANError e) { }
                         });
 
                         DialogOption.dismiss();
@@ -370,23 +369,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 });
 
                 if (PostList.get(Position).BookMark)
-                    BookMark.setText(AppActivity.getString(R.string.AdapterPostUnBookMark));
+                    BookMark.setText(Activity.getString(R.string.AdapterPostUnBookMark));
                 else
-                    BookMark.setText(AppActivity.getString(R.string.AdapterPostBookMark));
+                    BookMark.setText(Activity.getString(R.string.AdapterPostBookMark));
 
                 Root.addView(BookMark);
 
-                View BookMarkLine = new View(AppActivity);
-                BookMarkLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
-                BookMarkLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
+                View BookMarkLine = new View(Activity);
+                BookMarkLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 1)));
+                BookMarkLine.setBackgroundResource(R.color.Gray1);
 
                 Root.addView(BookMarkLine);
 
-                TextView Block = new TextView(AppActivity);
+                TextView Block = new TextView(Activity);
                 Block.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Block.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
-                Block.setText(AppActivity.getString(R.string.AdapterPostBlock));
-                Block.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Block.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                Block.setText(Activity.getString(R.string.AdapterPostBlock));
+                Block.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 Block.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Block.setOnClickListener(new View.OnClickListener()
                 {
@@ -394,55 +393,57 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(Activity, Activity.getString(R.string.Soon));
                     }
                 });
 
                 Root.addView(Block);
 
-                View BlockLine = new View(AppActivity);
-                BlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
-                BlockLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
+                View BlockLine = new View(Activity);
+                BlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 1)));
+                BlockLine.setBackgroundResource(R.color.Gray1);
 
                 Root.addView(BlockLine);
 
-                TextView Delete = new TextView(AppActivity);
+                TextView Delete = new TextView(Activity);
                 Delete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Delete.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
-                Delete.setText(AppActivity.getString(R.string.AdapterPostDelete));
+                Delete.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                Delete.setText(Activity.getString(R.string.AdapterPostDelete));
                 Delete.setVisibility(View.GONE);
-                Delete.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Delete.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 Delete.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Delete.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
-                                .addBodyParameter("PostID", PostList.get(Position).PostID)
-                                .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                                .setTag(Tag).build().getAsString(new StringRequestListener()
-                                {
-                                    @Override
-                                    public void onResponse(String Response)
-                                    {
-                                        try
-                                        {
-                                            if (new JSONObject(Response).getInt("Message") == 1000)
-                                            {
-                                                PostList.remove(Position);
-                                                notifyDataSetChanged();
-                                            }
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            // Leave Me Alone
-                                        }
-                                    }
+                        RequestHandler.Core().Method("POST")
+                        .Address(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
+                        .Param("PostID", PostList.get(Position).PostID)
+                        .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .Tag(Tag)
+                        .Build(new RequestHandler.OnCompleteCallBack()
+                        {
+                            @Override
+                            public void OnFinish(String Response, int Status)
+                            {
+                                if (Status != 200)
+                                    return;
 
-                                    @Override
-                                    public void onError(ANError e) { }
-                                });
+                                try
+                                {
+                                    if (new JSONObject(Response).getInt("Message") == 1000)
+                                    {
+                                        PostList.remove(Position);
+                                        notifyDataSetChanged();
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    // Leave Me Alone
+                                }
+                            }
+                        });
 
                         DialogOption.dismiss();
                     }
@@ -450,18 +451,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
                 Root.addView(Delete);
 
-                View DeleteLine = new View(AppActivity);
-                DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1)));
-                DeleteLine.setBackgroundColor(ContextCompat.getColor(AppActivity, R.color.Gray1));
+                View DeleteLine = new View(Activity);
+                DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 1)));
+                DeleteLine.setBackgroundResource(R.color.Gray1);
                 DeleteLine.setVisibility(View.GONE);
 
                 Root.addView(DeleteLine);
 
-                TextView Report = new TextView(AppActivity);
+                TextView Report = new TextView(Activity);
                 Report.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Report.setTextColor(ContextCompat.getColor(AppActivity, R.color.Black));
-                Report.setText(AppActivity.getString(R.string.AdapterPostReport));
-                Report.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15));
+                Report.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                Report.setText(Activity.getString(R.string.AdapterPostReport));
+                Report.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 Report.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Report.setOnClickListener(new View.OnClickListener()
                 {
@@ -469,13 +470,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     public void onClick(View view)
                     {
                         DialogOption.dismiss();
-                        MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.GeneralSoon));
+                        MiscHandler.Toast(Activity, Activity.getString(R.string.Soon));
                     }
                 });
 
                 Root.addView(Report);
 
-                if (PostList.get(Position).OwnerID.equals(SharedHandler.GetString("ID")))
+                if (PostList.get(Position).OwnerID.equals(SharedHandler.GetString(Activity, "ID")))
                 {
                     Follow.setVisibility(View.GONE);
                     FollowLine.setVisibility(View.GONE);
@@ -509,7 +510,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 @Override
                 public void OnTagClicked(String Tag, int Type)
                 {
-                    MiscHandler.Toast(AppActivity, Tag);
+                    MiscHandler.Toast(Activity, Tag);
                 }
             });
 
@@ -543,33 +544,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 {
                     case 1:
                         Holder.LinearLayoutImageContent1.setVisibility(View.VISIBLE);
-
                         Holder.ImageViewSingle.setImageResource(android.R.color.transparent);
                         Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-
                         RequestHandler.Core().LoadImage(Holder.ImageViewSingle, URL.get(0).toString(), Tag, true);
                         break;
                     case 2:
                         Holder.LinearLayoutImageContent2.setVisibility(View.VISIBLE);
-
                         Holder.ImageViewDouble1.setImageResource(android.R.color.transparent);
                         Holder.ImageViewDouble2.setImageResource(android.R.color.transparent);
                         Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-
                         RequestHandler.Core().LoadImage(Holder.ImageViewDouble1, URL.get(0).toString(), Tag, true);
                         RequestHandler.Core().LoadImage(Holder.ImageViewDouble2, URL.get(1).toString(), Tag, true);
                         break;
                     case 3:
                         Holder.LinearLayoutImageContent3.setVisibility(View.VISIBLE);
-
                         Holder.ImageViewTriple1.setImageResource(android.R.color.transparent);
                         Holder.ImageViewTriple2.setImageResource(android.R.color.transparent);
                         Holder.ImageViewTriple3.setImageResource(android.R.color.transparent);
                         Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-
                         RequestHandler.Core().LoadImage(Holder.ImageViewTriple1, URL.get(0).toString(), Tag, true);
                         RequestHandler.Core().LoadImage(Holder.ImageViewTriple2, URL.get(1).toString(), Tag, true);
                         RequestHandler.Core().LoadImage(Holder.ImageViewTriple3, URL.get(2).toString(), Tag, true);
@@ -585,7 +580,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         {
             try
             {
-                JSONArray URL = new JSONArray(PostList.get(Position).Data);
+                //JSONArray URL = new JSONArray(PostList.get(Position).Data);
 
                 Holder.FrameLayoutVideo.setVisibility(View.VISIBLE);
 
@@ -609,7 +604,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             {
                 JSONArray URL = new JSONArray(PostList.get(Position).Data);
 
-                final TextCrawler Request = new TextCrawler(URL.get(0).toString(), "FragmentMoment", new TextCrawler.TextCrawlerCallBack()
+                final TextCrawler Request = new TextCrawler(URL.get(0).toString(), Tag, new TextCrawler.TextCrawlerCallBack()
                 {
                     @Override
                     public void OnCompleted(TextCrawler.URLContent Content)
@@ -679,12 +674,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
         if (PostList.get(Position).Like)
         {
-            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.RedLike));
+            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.RedLike));
             Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
         }
         else
         {
-            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.BlueGray));
+            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray));
             Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
         }
 
@@ -695,7 +690,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             {
                 if (PostList.get(Position).Like)
                 {
-                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.BlueGray));
+                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray));
                     Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
 
                     ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
@@ -708,15 +703,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     Holder.TextViewLikeCount.setText(String.valueOf(Integer.parseInt(Holder.TextViewLikeCount.getText().toString()) - 1));
                     PostList.get(Position).DecreaseLike();
                     PostList.get(Position).SetLike();
-
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
-                    .addBodyParameter("PostID", PostList.get(Position).PostID)
-                    .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .setTag(Tag).build().getAsString(null);
                 }
                 else
                 {
-                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(AppActivity, R.color.RedLike));
+                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.RedLike));
                     Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
 
                     ObjectAnimator SizeX = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1.5f);
@@ -743,12 +733,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     Holder.TextViewLikeCount.setText(String.valueOf(Integer.parseInt(Holder.TextViewLikeCount.getText().toString()) + 1));
                     PostList.get(Position).IncreaseLike();
                     PostList.get(Position).SetLike();
-
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
-                    .addBodyParameter("PostID", PostList.get(Position).PostID)
-                    .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .setTag(Tag).build().getAsString(null);
                 }
+
+                RequestHandler.Core().Method("POST")
+                .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
+                .Param("PostID", PostList.get(Position).PostID)
+                .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                .Tag(Tag)
+                .Build();
             }
         });
 
@@ -764,7 +756,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 Fragment fragment = new FragmentLike();
                 fragment.setArguments(bundle);
 
-                AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentLike").commit();
+                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentLike").commit();
             }
         });
 
@@ -783,11 +775,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     Fragment fragment = new FragmentComment();
                     fragment.setArguments(bundle);
 
-                    AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentComment").commit();
+                    Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentComment").commit();
                     return;
                 }
 
-                MiscHandler.Toast(AppActivity, AppActivity.getString(R.string.AdapterPostComment));
+                MiscHandler.Toast(Activity, Activity.getString(R.string.AdapterPostComment));
             }
         });
 
@@ -800,17 +792,49 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                 SendIntent.setAction(Intent.ACTION_SEND);
                 SendIntent.putExtra(Intent.EXTRA_TEXT, PostList.get(Position).Message + "\n http://BioGram.Co/");
                 SendIntent.setType("text/plain");
-                AppActivity.startActivity(Intent.createChooser(SendIntent, AppActivity.getString(R.string.AdapterPostChoice)));
+                Activity.startActivity(Intent.createChooser(SendIntent, Activity.getString(R.string.AdapterPostChoice)));
             }
         });
 
         if (Position == PostList.size() - 1)
-            Holder.ViewBlankLine.setVisibility(View.GONE);
+            Holder.ViewLine.setVisibility(View.GONE);
         else
-            Holder.ViewBlankLine.setVisibility(View.VISIBLE);
+            Holder.ViewLine.setVisibility(View.VISIBLE);
     }
 
-    public static class Struct
+    public void UpdatePostLike(String PostID, boolean Increase)
+    {
+        for (int I = 0; I < PostList.size(); I++)
+        {
+            PostStruct Post = PostList.get(I);
+
+            if (Post.PostID.equals(PostID))
+            {
+                if (Increase)
+                    Post.LikeCount += 1;
+                else
+                    Post.LikeCount -= 1;
+            }
+        }
+    }
+
+    public void UpdatePostComment(String PostID, boolean Increase)
+    {
+        for (int I = 0; I < PostList.size(); I++)
+        {
+            PostStruct Post = PostList.get(I);
+
+            if (Post.PostID.equals(PostID))
+            {
+                if (Increase)
+                    Post.CommentCount += 1;
+                else
+                    Post.CommentCount -= 1;
+            }
+        }
+    }
+
+    public static class PostStruct
     {
         public String PostID;
         public String OwnerID;
@@ -827,9 +851,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         public int CommentCount;
         public boolean BookMark;
 
-        public Struct() { }
+        public PostStruct() { }
 
-        public Struct(String postID, String ownerID, int type, int category, long time, boolean comment, String message, String data, String username, String avatar, boolean like, int likeCount, int commentCount, boolean bookmark)
+        public PostStruct(String postID, String ownerID, int type, int category, long time, boolean comment, String message, String data, String username, String avatar, boolean like, int likeCount, int commentCount, boolean bookmark)
         {
             PostID = postID;
             OwnerID = ownerID;
@@ -868,6 +892,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         Fragment fragment = new FragmentImagePreview();
         fragment.setArguments(bundle);
 
-        AppActivity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+        Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
     }
 }

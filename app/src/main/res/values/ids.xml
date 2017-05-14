@@ -2,4 +2,6 @@
 <resources>
     <item name="ActivityMainFullContainer" type="id" />
     <item name="ActivityMainContentContainer" type="id" />
+
+    <item name="ActivityProfileContainer" type="id" />
 </resources>

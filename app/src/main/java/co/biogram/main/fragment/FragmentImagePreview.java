@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.androidnetworking.AndroidNetworking;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ import co.biogram.main.misc.TouchImageView;
 public class FragmentImagePreview extends Fragment
 {
     private Bitmap ImageCache = null;
-    private RelativeLayout Header;
+    private RelativeLayout RelativeLayoutHeader;
     private List<String> ImageList = new ArrayList<>();
 
     @Override
@@ -50,52 +48,59 @@ public class FragmentImagePreview extends Fragment
 
         Context context = getActivity();
 
-        RelativeLayout Main = new RelativeLayout(context);
-        Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Main.setBackgroundColor(ContextCompat.getColor(context, R.color.Black));
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.Black);
 
-        ViewPager Pager = new ViewPager(context);
-        Pager.setAdapter(new ViewPagerAdapter());
+        ViewPager ViewPagerPreview = new ViewPager(context);
+        ViewPagerPreview.setAdapter(new ViewPagerAdapter());
 
-        Main.addView(Pager);
+        RelativeLayoutMain.addView(ViewPagerPreview);
 
-        Header = new RelativeLayout(context);
-        Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
-        Header.setBackgroundColor(Color.parseColor("#3f000000"));
+        RelativeLayoutHeader = new RelativeLayout(context);
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#3f000000"));
 
-        Main.addView(Header);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        ImageView Back = new ImageView(context);
-        Back.setPadding(MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12));
-        Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), MiscHandler.ToDimension(56)));
-        Back.setImageResource(R.drawable.ic_back_white);
-        Back.setId(MiscHandler.GenerateViewID());
-        Back.setOnClickListener(new View.OnClickListener()
+        ImageView ImageViewBack = new ImageView(context);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+        ImageViewBack.setImageResource(R.drawable.ic_back_white);
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentImagePreview.this).commit();
+                getActivity().onBackPressed();
             }
         });
 
-        Header.addView(Back);
+        RelativeLayoutHeader.addView(ImageViewBack);
 
-        RelativeLayout.LayoutParams NameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        NameParam.addRule(RelativeLayout.RIGHT_OF, Back.getId());
-        NameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextView Title = new TextView(context);
-        Title.setLayoutParams(NameParam);
-        Title.setTextColor(ContextCompat.getColor(context, R.color.White));
-        Title.setText(getString(R.string.FragmentMomentWriteImagePreview));
-        Title.setTypeface(null, Typeface.BOLD);
-        Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextView TextViewTitle = new TextView(context);
+        TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.White));
+        TextViewTitle.setText(getString(R.string.FragmentImagePreview));
+        TextViewTitle.setTypeface(null, Typeface.BOLD);
+        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
-        Header.addView(Title);
+        RelativeLayoutHeader.addView(TextViewTitle);
 
-        return Main;
+        return RelativeLayoutMain;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        RequestHandler.Core().Cancel("FragmentImagePreview");
     }
 
     public void SetBitmap(Bitmap bitmap)
@@ -103,41 +108,34 @@ public class FragmentImagePreview extends Fragment
         ImageCache = bitmap;
     }
 
-    @Override
-    public void onDestroyView()
-    {
-        super.onDestroyView();
-        AndroidNetworking.cancel("FragmentImagePreview");
-    }
-
     private class ViewPagerAdapter extends PagerAdapter
     {
         @Override
         public Object instantiateItem(ViewGroup Container, int Position)
         {
-            TouchImageView Image = new TouchImageView(getActivity());
-            Image.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            TouchImageView ImagePreview = new TouchImageView(getActivity());
+            ImagePreview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
             if (ImageCache != null)
-                Image.setImageBitmap(ImageCache);
+                ImagePreview.setImageBitmap(ImageCache);
             else
-                RequestHandler.Core().LoadImage(Image, ImageList.get(Position), "FragmentImagePreview", true);
+                RequestHandler.Core().LoadImage(ImagePreview, ImageList.get(Position), "FragmentImagePreview", true);
 
-            Container.addView(Image);
+            Container.addView(ImagePreview);
 
-            Image.setOnClickListener(new View.OnClickListener()
+            ImagePreview.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    if (Header.getVisibility() == View.GONE)
-                        Header.setVisibility(View.VISIBLE);
+                    if (RelativeLayoutHeader.getVisibility() == View.GONE)
+                        RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     else
-                        Header.setVisibility(View.GONE);
+                        RelativeLayoutHeader.setVisibility(View.GONE);
                 }
             });
 
-            return Image;
+            return ImagePreview;
         }
 
         @Override

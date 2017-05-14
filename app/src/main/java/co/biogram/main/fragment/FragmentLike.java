@@ -3,13 +3,11 @@ package co.biogram.main.fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,78 +36,78 @@ public class FragmentLike extends Fragment
     private AdapterLike adapterLike;
 
     private boolean LoadingBottom = false;
-    private List<Struct> LikeList = new ArrayList<>();
+    private final List<LikeStruct> LikeList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Context context = getActivity();
+        final Context context = getActivity();
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
+        Root.setBackgroundResource(R.color.White);
 
-        RelativeLayout Header = new RelativeLayout(context);
-        Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
-        Header.setBackgroundColor(ContextCompat.getColor(context, R.color.White5));
-        Header.setId(MiscHandler.GenerateViewID());
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(Header);
+        Root.addView(RelativeLayoutHeader);
 
-        ImageView Back = new ImageView(context);
-        Back.setPadding(MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12));
-        Back.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        Back.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), MiscHandler.ToDimension(56)));
-        Back.setImageResource(R.drawable.ic_back_blue);
-        Back.setId(MiscHandler.GenerateViewID());
-        Back.setOnClickListener(new View.OnClickListener()
+        ImageView ImageViewBack = new ImageView(context);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentLike.this).commit();
+                getActivity().onBackPressed();
             }
         });
 
-        Header.addView(Back);
+        RelativeLayoutHeader.addView(ImageViewBack);
 
-        RelativeLayout.LayoutParams NameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        NameParam.addRule(RelativeLayout.RIGHT_OF, Back.getId());
-        NameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextView Title = new TextView(context);
-        Title.setLayoutParams(NameParam);
-        Title.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        Title.setText(getString(R.string.FragmentLikeTextLike));
-        Title.setTypeface(null, Typeface.BOLD);
-        Title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextView TextViewTitle = new TextView(context);
+        TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewTitle.setText(getString(R.string.FragmentLike));
+        TextViewTitle.setTypeface(null, Typeface.BOLD);
+        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
-        Header.addView(Title);
+        RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
-        LineParam.addRule(RelativeLayout.BELOW, Header.getId());
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-        View Line = new View(context);
-        Line.setLayoutParams(LineParam);
-        Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray2));
-        Line.setId(MiscHandler.GenerateViewID());
+        View ViewLine = new View(context);
+        ViewLine.setLayoutParams(ViewLineParam);
+        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(Line);
+        Root.addView(ViewLine);
 
-        RelativeLayout.LayoutParams RVCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        RVCategoryParam.addRule(RelativeLayout.BELOW, Line.getId());
+        RelativeLayout.LayoutParams RVLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RVLikeParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RecyclerView RVCategory = new RecyclerView(context);
-        RVCategory.setLayoutParams(RVCategoryParam);
+        RecyclerView RVLike = new RecyclerView(context);
+        RVLike.setLayoutParams(RVLikeParam);
 
-        Root.addView(RVCategory);
+        Root.addView(RVLike);
 
         PostID = getArguments().getString("PostID", "");
         adapterLike = new AdapterLike();
 
-        RVCategory.setLayoutManager(new LinearLayoutManager(context));
-        RVCategory.setAdapter(adapterLike);
-        RVCategory.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RVLike.setLayoutManager(new LinearLayoutManager(context));
+        RVLike.setAdapter(adapterLike);
+        RVLike.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView View, int dx, int DY)
@@ -127,14 +121,16 @@ public class FragmentLike extends Fragment
                     LoadingBottom = true;
                     adapterLike.notifyItemInserted(LikeList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
-                    .addBodyParameter("PostID", PostID)
-                    .addBodyParameter("Skip", String.valueOf(LikeList.size()))
-                    .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .setTag("FragmentLike").build().getAsString(new StringRequestListener()
+                    RequestHandler.Core().Method("POST")
+                    .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
+                    .Param("PostID", PostID)
+                    .Param("Skip", String.valueOf(LikeList.size()))
+                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .Tag("FragmentLike")
+                    .Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
-                        public void onResponse(String Response)
+                        public void OnFinish(String Response, int Status)
                         {
                             LikeList.remove(LikeList.size() - 1);
                             adapterLike.notifyItemRemoved(LikeList.size());
@@ -151,7 +147,7 @@ public class FragmentLike extends Fragment
                                     for (int K = 0; K < Likes.length(); K++)
                                     {
                                         JSONObject Like = Likes.getJSONObject(K);
-                                        LikeList.add(new Struct(Like.getString("Username"), Like.getString("OwnerID"), Like.getLong("Time"), Like.getString("Avatar")));
+                                        LikeList.add(new LikeStruct(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
                                     }
 
                                     adapterLike.notifyDataSetChanged();
@@ -161,14 +157,6 @@ public class FragmentLike extends Fragment
                             {
                                 // Leave Me Alone
                             }
-                        }
-
-                        @Override
-                        public void onError(ANError error)
-                        {
-                            LikeList.remove(LikeList.size() - 1);
-                            adapterLike.notifyItemRemoved(LikeList.size());
-                            LoadingBottom = false;
                         }
                     });
                 }
@@ -181,22 +169,24 @@ public class FragmentLike extends Fragment
     }
 
     @Override
-    public void onDestroyView()
+    public void onPause()
     {
-        super.onDestroyView();
-        AndroidNetworking.cancel("FragmentLike");
+        super.onPause();
+        RequestHandler.Core().Cancel("FragmentLike");
     }
 
     private void RetrieveDataFromServer()
     {
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
-        .addBodyParameter("PostID", PostID)
-        .addBodyParameter("Skip", String.valueOf(LikeList.size()))
-        .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-        .setTag("FragmentLike").build().getAsString(new StringRequestListener()
+        RequestHandler.Core().Method("POST")
+        .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
+        .Param("PostID", PostID)
+        .Param("Skip", String.valueOf(LikeList.size()))
+        .Header("TOKEN", SharedHandler.GetString(getActivity(), "TOKEN"))
+        .Tag("FragmentLike")
+        .Build(new RequestHandler.OnCompleteCallBack()
         {
             @Override
-            public void onResponse(String Response)
+            public void OnFinish(String Response, int Status)
             {
                 try
                 {
@@ -209,7 +199,7 @@ public class FragmentLike extends Fragment
                         for (int K = 0; K < Likes.length(); K++)
                         {
                             JSONObject Like = Likes.getJSONObject(K);
-                            LikeList.add(new Struct(Like.getString("Username"), Like.getString("OwnerID"), Like.getLong("Time"), Like.getString("Avatar")));
+                            LikeList.add(new LikeStruct(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
                         }
 
                         adapterLike.notifyDataSetChanged();
@@ -220,33 +210,22 @@ public class FragmentLike extends Fragment
                     // Leave Me Alone
                 }
             }
-
-            @Override
-            public void onError(ANError error) { }
         });
     }
 
     class AdapterLike extends RecyclerView.Adapter<AdapterLike.ViewHolderLike>
     {
-        private @IdRes int ID_ICON;
-        private @IdRes int ID_NAME;
-        private @IdRes int ID_TIME;
-        private @IdRes int ID_LINE;
-
-        AdapterLike()
-        {
-            ID_ICON = MiscHandler.GenerateViewID();
-            ID_NAME = MiscHandler.GenerateViewID();
-            ID_TIME = MiscHandler.GenerateViewID();
-            ID_LINE = MiscHandler.GenerateViewID();
-        }
+        private final int ID_ICON = MiscHandler.GenerateViewID();
+        private final int ID_NAME = MiscHandler.GenerateViewID();
+        private final int ID_TIME = MiscHandler.GenerateViewID();
+        private final int ID_LINE = MiscHandler.GenerateViewID();
 
         class ViewHolderLike extends RecyclerView.ViewHolder
         {
-            ImageViewCircle Profile;
-            TextView Username;
-            TextView Time;
-            View Line;
+            ImageViewCircle ImageViewCircleProfile;
+            TextView TextViewUsername;
+            TextView TextViewTime;
+            View ViewLine;
 
             ViewHolderLike(View view, boolean Content)
             {
@@ -254,10 +233,10 @@ public class FragmentLike extends Fragment
 
                 if (Content)
                 {
-                    Profile = (ImageViewCircle) view.findViewById(ID_ICON);
-                    Username = (TextView) view.findViewById(ID_NAME);
-                    Time = (TextView) view.findViewById(ID_TIME);
-                    Line = view.findViewById(ID_LINE);
+                    ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_ICON);
+                    TextViewUsername = (TextView) view.findViewById(ID_NAME);
+                    TextViewTime = (TextView) view.findViewById(ID_TIME);
+                    ViewLine = view.findViewById(ID_LINE);
                 }
             }
         }
@@ -268,15 +247,15 @@ public class FragmentLike extends Fragment
             if (LikeList.get(Position) == null)
                 return;
 
-            RequestHandler.Core().LoadImage(Holder.Profile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.ToDimension(55), MiscHandler.ToDimension(55), true);
+            RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.ToDimension(getActivity(), 55), MiscHandler.ToDimension(getActivity(), 55), true);
 
-            Holder.Username.setText(LikeList.get(Position).Username);
-            Holder.Time.setText(MiscHandler.GetTimeName(LikeList.get(Position).Time));
+            Holder.TextViewUsername.setText(LikeList.get(Position).Username);
+            Holder.TextViewTime.setText(MiscHandler.GetTimeName(LikeList.get(Position).Time));
 
             if (Position == LikeList.size() - 1)
-                Holder.Line.setVisibility(View.GONE);
+                Holder.ViewLine.setVisibility(View.GONE);
             else
-                Holder.Line.setVisibility(View.VISIBLE);
+                Holder.ViewLine.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -289,66 +268,60 @@ public class FragmentLike extends Fragment
                 RelativeLayout Root = new RelativeLayout(context);
                 Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-                RelativeLayout.LayoutParams ProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(55), MiscHandler.ToDimension(55));
-                ProfileParam.setMargins(MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10), MiscHandler.ToDimension(10));
+                RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55));
+                ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
 
-                ImageViewCircle Profile = new ImageViewCircle(context);
-                Profile.setLayoutParams(ProfileParam);
-                Profile.setImageResource(R.color.BlueGray);
-                Profile.setId(ID_ICON);
+                ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(context);
+                ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
+                ImageViewCircleProfile.setImageResource(R.color.BlueGray);
+                ImageViewCircleProfile.setId(ID_ICON);
 
-                Root.addView(Profile);
+                Root.addView(ImageViewCircleProfile);
 
-                RelativeLayout.LayoutParams LinearParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                LinearParam.addRule(RelativeLayout.RIGHT_OF, Profile.getId());
-                LinearParam.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                RelativeLayout.LayoutParams LinearLayoutRowParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayoutRowParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCircleProfile.getId());
+                LinearLayoutRowParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-                LinearLayout Linear = new LinearLayout(context);
-                Linear.setLayoutParams(LinearParam);
-                Linear.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout LinearLayoutRow = new LinearLayout(context);
+                LinearLayoutRow.setLayoutParams(LinearLayoutRowParam);
+                LinearLayoutRow.setOrientation(LinearLayout.VERTICAL);
 
-                Root.addView(Linear);
+                Root.addView(LinearLayoutRow);
 
-                TextView Username = new TextView(context);
-                Username.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Username.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                Username.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                Username.setId(ID_NAME);
+                TextView TextViewUsername = new TextView(context);
+                TextViewUsername.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewUsername.setId(ID_NAME);
 
-                Linear.addView(Username);
+                LinearLayoutRow.addView(TextViewUsername);
 
-                TextView Time = new TextView(context);
-                Time.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Time.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-                Time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                Time.setId(ID_TIME);
+                TextView TextViewTime = new TextView(context);
+                TextViewTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewTime.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+                TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                TextViewTime.setId(ID_TIME);
 
-                Linear.addView(Time);
+                LinearLayoutRow.addView(TextViewTime);
 
-                RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
-                LineParam.addRule(RelativeLayout.BELOW, Profile.getId());
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, ImageViewCircleProfile.getId());
 
-                View Line = new View(context);
-                Line.setLayoutParams(LineParam);
-                Line.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray));
-                Line.setId(ID_LINE);
+                View ViewLine = new View(context);
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray);
+                ViewLine.setId(ID_LINE);
 
-                Root.addView(Line);
+                Root.addView(ViewLine);
 
                 return new ViewHolderLike(Root, true);
             }
 
-            LinearLayout Root = new LinearLayout(context);
-            Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
-            Root.setGravity(Gravity.CENTER);
+            LoadingView LoadingViewBottom = new LoadingView(context);
+            LoadingViewBottom.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+            LoadingViewBottom.Start();
 
-            LoadingView Loading = new LoadingView(context);
-
-            Loading.Start();
-
-            Root.addView(Loading);
-
-            return new ViewHolderLike(Root, false);
+            return new ViewHolderLike(LoadingViewBottom, false);
         }
 
         @Override
@@ -364,17 +337,15 @@ public class FragmentLike extends Fragment
         }
     }
 
-    class Struct
+    private class LikeStruct
     {
-        String Username;
-        String OwnerID;
-        long Time;
-        String Avatar;
+        final String Username;
+        final long Time;
+        final String Avatar;
 
-        Struct(String username, String owner, long time, String avatar)
+        LikeStruct(String username, long time, String avatar)
         {
             Username = username;
-            OwnerID = owner;
             Time = time;
             Avatar = avatar;
         }

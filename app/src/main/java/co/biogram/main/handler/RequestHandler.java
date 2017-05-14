@@ -374,9 +374,16 @@ public class RequestHandler
         new Builder("BITMAP").Address(Address).Tag(Tag).BitmapName(Name).BitmapCache(Cache).Build(new OnBitmapCallBack()
         {
             @Override
-            public void OnFinish(Bitmap Response)
+            public void OnFinish(final Bitmap Response)
             {
-                view.setImageBitmap(Response);
+                new Handler(Looper.getMainLooper()).post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        view.setImageBitmap(Response);
+                    }
+                });
             }
         });
     }
@@ -397,9 +404,16 @@ public class RequestHandler
         new Builder("BITMAP_OPTION").Address(Address).Tag(Tag).BitmapName(Name).BitmapWidth(DesiredWidth).BitmapHeight(DesiredHeight).BitmapCache(Cache).Build(new OnBitmapCallBack()
         {
             @Override
-            public void OnFinish(Bitmap Response)
+            public void OnFinish(final Bitmap Response)
             {
-                view.setImageBitmap(Response);
+                new Handler(Looper.getMainLooper()).post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        view.setImageBitmap(Response);
+                    }
+                });
             }
         });
     }

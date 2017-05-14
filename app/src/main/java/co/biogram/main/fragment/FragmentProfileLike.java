@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -25,7 +24,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
-import co.biogram.main.misc.PostAdapter;
+import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LoadingView;
 
 public class FragmentProfileLike extends Fragment
@@ -35,8 +34,8 @@ public class FragmentProfileLike extends Fragment
     private TextView TextViewTry;
 
     private boolean IsBottom = false;
-    private PostAdapter postAdapter;
-    private List<PostAdapter.Struct> PostList = new ArrayList<>();
+    private AdapterPost postAdapter;
+    private List<AdapterPost.PostStruct> PostList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -48,7 +47,7 @@ public class FragmentProfileLike extends Fragment
         Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
         Root.setClickable(true);
 
-        postAdapter = new PostAdapter(getActivity(), PostList, "FragmentProfileLike");
+        postAdapter = new AdapterPost(getActivity(), PostList, "FragmentProfileLike");
 
         RecyclerView RecyclerViewPost = new RecyclerView(context);
         RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -102,7 +101,7 @@ public class FragmentProfileLike extends Fragment
                                     for (int K = 0; K < PostListArray.length(); K++)
                                     {
                                         JSONObject Post = PostListArray.getJSONObject(K);
-                                        PostList.add(new PostAdapter.Struct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                                        PostList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
                                     }
 
                                     postAdapter.notifyDataSetChanged();
@@ -197,7 +196,7 @@ public class FragmentProfileLike extends Fragment
                         for (int K = 0; K < PostListArray.length(); K++)
                         {
                             JSONObject Post = PostListArray.getJSONObject(K);
-                            PostList.add(new PostAdapter.Struct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                            PostList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
                         }
 
                         postAdapter.notifyDataSetChanged();

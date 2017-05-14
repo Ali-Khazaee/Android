@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +31,7 @@ import co.biogram.main.R;
 import co.biogram.main.handler.DataBaseHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
-import co.biogram.main.misc.PostAdapter;
+import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LoadingView;
 
 public class FragmentMoment extends Fragment
@@ -44,8 +43,8 @@ public class FragmentMoment extends Fragment
     private boolean IsTop = false;
     private boolean IsBottom = false;
     private boolean IsRunning = false;
-    private PostAdapter MomentAdapter;
-    private List<PostAdapter.Struct> MomentList = new ArrayList<>();
+    private AdapterPost MomentAdapter;
+    private List<AdapterPost.PostStruct> MomentList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -63,12 +62,12 @@ public class FragmentMoment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentMomentWrite(), "FragmentMomentWrite").addToBackStack("FragmentMomentWrite").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new FragmentMomentWrite(), "FragmentMomentWrite").addToBackStack("FragmentMomentWrite").commit();
             }
         });
 
         RecyclerView RecyclerViewMoment = (RecyclerView) RootView.findViewById(R.id.RecyclerViewMoment);
-        MomentAdapter = new PostAdapter((FragmentActivity) getActivity(), MomentList, "FragmentMoment");
+        MomentAdapter = new AdapterPost((FragmentActivity) getActivity(), MomentList, "FragmentMoment");
 
         RecyclerViewMoment.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewMoment.setAdapter(MomentAdapter);
@@ -119,7 +118,7 @@ public class FragmentMoment extends Fragment
                                     for (int K = 0; K < PostList.length(); K++)
                                     {
                                         JSONObject Post = PostList.getJSONObject(K);
-                                        MomentList.add(new PostAdapter.Struct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                                        MomentList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
 
                                         ContentValues Value = new ContentValues();
                                         Value.put("PostID", Post.getString("PostID"));
@@ -198,7 +197,7 @@ public class FragmentMoment extends Fragment
                                 for (int K = 0; K < PostList.length(); K++)
                                 {
                                     JSONObject Post = PostList.getJSONObject(K);
-                                    MomentList.add(0, new PostAdapter.Struct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                                    MomentList.add(0, new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
 
                                     DataBaseHandler.Remove("POST", null, null);
 
@@ -279,7 +278,7 @@ public class FragmentMoment extends Fragment
                         for (int K = 0; K < PostList.length(); K++)
                         {
                             JSONObject Post = PostList.getJSONObject(K);
-                            MomentList.add(new PostAdapter.Struct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                            MomentList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
 
                             ContentValues Value = new ContentValues();
                             Value.put("PostID", Post.getString("PostID"));
@@ -322,7 +321,7 @@ public class FragmentMoment extends Fragment
                 {
                     do
                     {
-                        PostAdapter.Struct Post = new PostAdapter.Struct();
+                        AdapterPost.PostStruct Post = new AdapterPost.PostStruct();
                         Post.PostID = cursor.getString(cursor.getColumnIndex("PostID"));
                         Post.OwnerID = cursor.getString(cursor.getColumnIndex("OwnerID"));
                         Post.Type = cursor.getInt(cursor.getColumnIndex("Type"));

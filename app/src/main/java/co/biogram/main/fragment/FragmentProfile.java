@@ -25,7 +25,7 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import co.biogram.main.R;
-import co.biogram.main.activity.ActivityProfileEdit;
+import co.biogram.main.activity.ActivityProfile;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
@@ -119,7 +119,7 @@ public class FragmentProfile extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().startActivity(new Intent(context, ActivityProfileEdit.class));
+                getActivity().startActivity(new Intent(context, ActivityProfile.class));
                 getActivity().finish();
             }
         });
@@ -468,7 +468,7 @@ public class FragmentProfile extends Fragment
             return;
         }
 
-        FragManager.beginTransaction().add(FrameLayoutID, SelectedFragment, SelectedFragment.getClass().getSimpleName()).commit();
+        FragManager.beginTransaction().replace(FrameLayoutID, SelectedFragment, SelectedFragment.getClass().getSimpleName()).commit();
     }
 
     private void RetrieveDataFromServer()
@@ -535,6 +535,7 @@ public class FragmentProfile extends Fragment
                 }
                 catch (Exception e)
                 {
+                    MiscHandler.Log(e.toString());
                     // Leave Me Alone
                 }
 
