@@ -2,6 +2,8 @@
 <resources>
     <string name="ApplicationName">BioGram</string>
 
+    <string name="Soon">Coming Soon</string>
+    <string name="TryAgain">Try Again &#8230;</string>
     <string name="NoInternet">Check Your Network</string>
 
     <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>
@@ -45,12 +47,31 @@
     <string name="FragmentResetSuccess">Please, Check your email</string>
     <string name="FragmentResetError">Your submitted email or username doesn\'t exist</string>
 
+    <string name="FragmentPostDetailsTitle">Post Details</string>
+    <string name="FragmentPostDetailsLike">LIKES</string>
+    <string name="FragmentPostDetailsComment">COMMENTS</string>
+    <string name="FragmentPostDetailsFollow">Follow</string>
+    <string name="FragmentPostDetailsTurnOn">Turn On Commenting</string>
+    <string name="FragmentPostDetailsTurnOff">Turn Off Commenting</string>
+    <string name="FragmentPostDetailsCopy">Copy</string>
+    <string name="FragmentPostDetailsDelete">Delete</string>
+    <string name="FragmentPostDetailsReport">Report</string>
+    <string name="FragmentPostDetailsBlock">Block</string>
+    <string name="FragmentPostDetailsClipboard">Text Copied To Clipboard</string>
+    <string name="FragmentPostDetailsBookMark">Bookmark</string>
+    <string name="FragmentPostDetailsUnBookMark">UnBookmark</string>
+    <string name="FragmentPostDetailsCommentDisable">Commenting is Disabled</string>
 
 
 
-    <string name="PostDetailsTitle">Post Details</string>
-    <string name="PostDetailsLike">LIKES</string>
-    <string name="PostDetailsComment">COMMENTS</string>
+
+
+
+
+
+
+
+
 
     <string name="GeneralSoon">Coming Soon</string>
     <string name="GeneralTryAgain">Try Again &#8230;</string>
