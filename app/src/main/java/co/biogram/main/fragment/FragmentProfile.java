@@ -509,10 +509,16 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90), true);
+                        if (!Data.getString("Avatar").equals(""))
+                        {
+                            SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
+                            RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90), true);
+                        }
+
                         RequestHandler.Core().LoadImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
 
                         TextViewUsername.setText(Data.getString("Username"));
+                        SharedHandler.SetString(context, "Username", Data.getString("Username"));
 
                         if (!Data.getString("Description").equals(""))
                         {

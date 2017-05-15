@@ -393,9 +393,6 @@ public class FragmentPostDetails extends Fragment
                     AnimatorSet AnimationSet = new AnimatorSet();
                     AnimationSet.play(Fade);
                     AnimationSet.start();
-
-                    IsLike = false;
-                    TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) - 1));
                 }
                 else
                 {
@@ -421,9 +418,6 @@ public class FragmentPostDetails extends Fragment
                     AnimatorSet AnimationSet = new AnimatorSet();
                     AnimationSet.playTogether(SizeX, SizeY, Fade, SizeX2, SizeY2);
                     AnimationSet.start();
-
-                    IsLike = true;
-                    TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) + 1));
                 }
 
                 RequestHandler.Core().Method("POST")

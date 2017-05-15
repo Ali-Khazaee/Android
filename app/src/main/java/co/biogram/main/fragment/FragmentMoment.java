@@ -138,7 +138,8 @@ public class FragmentMoment extends Fragment
                 .Address(URLHandler.GetURL(URLHandler.URL.POST_LIST))
                 .Param("Time", String.valueOf(PostList.get(0).Time))
                 .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .Tag("FragmentMoment").Build(new RequestHandler.OnCompleteCallBack()
+                .Tag("FragmentMoment")
+                .Build(new RequestHandler.OnCompleteCallBack()
                 {
                     @Override
                     public void OnFinish(String Response, int Status)
@@ -343,6 +344,7 @@ public class FragmentMoment extends Fragment
                     MiscHandler.Toast(context, getString(R.string.NoInternet));
                     TextViewTry.setVisibility(View.VISIBLE);
                     LoadingViewData.Stop();
+                    return;
                 }
 
                 try

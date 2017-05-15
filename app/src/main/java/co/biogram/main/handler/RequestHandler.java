@@ -376,14 +376,17 @@ public class RequestHandler
             @Override
             public void OnFinish(final Bitmap Response)
             {
-                new Handler(Looper.getMainLooper()).post(new Runnable()
+                if (!Thread.interrupted())
                 {
-                    @Override
-                    public void run()
+                    new Handler(Looper.getMainLooper()).post(new Runnable()
                     {
-                        view.setImageBitmap(Response);
-                    }
-                });
+                        @Override
+                        public void run()
+                        {
+                            view.setImageBitmap(Response);
+                        }
+                    });
+                }
             }
         });
     }
@@ -406,14 +409,17 @@ public class RequestHandler
             @Override
             public void OnFinish(final Bitmap Response)
             {
-                new Handler(Looper.getMainLooper()).post(new Runnable()
+                if (!Thread.interrupted())
                 {
-                    @Override
-                    public void run()
+                    new Handler(Looper.getMainLooper()).post(new Runnable()
                     {
-                        view.setImageBitmap(Response);
-                    }
-                });
+                        @Override
+                        public void run()
+                        {
+                            view.setImageBitmap(Response);
+                        }
+                    });
+                }
             }
         });
     }
@@ -438,6 +444,9 @@ public class RequestHandler
 
             while ((Length = IS.read(Buffer)) != -1)
             {
+                if (Thread.interrupted())
+                    break;
+
                 ByteArray.write(Buffer, 0, Length);
             }
 
@@ -447,8 +456,11 @@ public class RequestHandler
 
             Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length);
 
-            if (builder.OnBitmapListener != null)
-                builder.OnBitmapListener.OnFinish(bitmap);
+            if (!Thread.interrupted())
+            {
+                if (builder.OnBitmapListener != null)
+                    builder.OnBitmapListener.OnFinish(bitmap);
+            }
 
             if (builder.BitmapCache)
                 CacheHandler.ImageSave(builder.BitmapName, bitmap);
@@ -482,6 +494,9 @@ public class RequestHandler
 
             while ((Length = IS.read(Buffer)) != -1)
             {
+                if (Thread.interrupted())
+                    break;
+
                 ByteArray.write(Buffer, 0, Length);
             }
 
@@ -514,8 +529,11 @@ public class RequestHandler
 
             Bitmap bitmap = BitmapFactory.decodeByteArray(BitmapResponse, 0, BitmapResponse.length, o);
 
-            if (builder.OnBitmapListener != null)
-                builder.OnBitmapListener.OnFinish(bitmap);
+            if (!Thread.interrupted())
+            {
+                if (builder.OnBitmapListener != null)
+                    builder.OnBitmapListener.OnFinish(bitmap);
+            }
 
             if (builder.BitmapCache)
                 CacheHandler.ImageSave(builder.BitmapName, bitmap);
@@ -550,32 +568,41 @@ public class RequestHandler
 
             while ((Line = Reader.readLine()) != null)
             {
+                if (Thread.interrupted())
+                    break;
+
                 Result.append(Line);
             }
 
             Reader.close();
 
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(Result.toString(), Status);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish(Result.toString(), Status);
+                    }
+                });
+            }
         }
         catch (final Exception e)
         {
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(e.toString(), -1);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish(e.toString(), -1);
+                    }
+                });
+            }
         }
 
         if (Conn != null)
@@ -624,6 +651,9 @@ public class RequestHandler
 
             while ((Length = IS.read(Buffer)) != -1)
             {
+                if (Thread.interrupted())
+                    break;
+
                 ByteArray.write(Buffer, 0, Length);
             }
 
@@ -632,27 +662,33 @@ public class RequestHandler
             ByteArray.close();
             IS.close();
 
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(Response, Status);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish(Response, Status);
+                    }
+                });
+            }
         }
         catch (final Exception e)
         {
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(e.toString(), -1);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish(e.toString(), -1);
+                    }
+                });
+            }
         }
 
         if (Conn != null)
@@ -710,11 +746,17 @@ public class RequestHandler
 
                 while ((ByteRead = FIP.read(Buffer)) != -1)
                 {
+                    if (Thread.interrupted())
+                        break;
+
                     Sent += ByteRead;
                     OS.write(Buffer, 0, ByteRead);
 
-                    if (builder.OnProgressListener != null)
-                        builder.OnProgressListener.OnProgress(Sent, FileLength);
+                    if (!Thread.interrupted())
+                    {
+                        if (builder.OnProgressListener != null)
+                            builder.OnProgressListener.OnProgress(Sent, FileLength);
+                    }
                 }
 
                 FIP.close();
@@ -734,6 +776,9 @@ public class RequestHandler
 
             while ((Length = IS.read(Buffer)) != -1)
             {
+                if (Thread.interrupted())
+                    break;
+
                 ByteArray.write(Buffer, 0, Length);
             }
 
@@ -742,27 +787,33 @@ public class RequestHandler
             ByteArray.close();
             IS.close();
 
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(Response, Status);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish(Response, Status);
+                    }
+                });
+            }
         }
         catch (final Exception e)
         {
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(e.toString(), -1);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish(e.toString(), -1);
+                    }
+                });
+            }
         }
 
         if (Conn != null)
@@ -792,37 +843,49 @@ public class RequestHandler
 
             while ((Length = IS.read(Buffer)) > 0)
             {
+                if (Thread.interrupted())
+                    break;
+
                 Receive += Length;
                 FOS.write(Buffer, 0, Length);
 
-                if (builder.OnProgressListener != null)
-                    builder.OnProgressListener.OnProgress(Receive, FileLength);
+                if (!Thread.interrupted())
+                {
+                    if (builder.OnProgressListener != null)
+                        builder.OnProgressListener.OnProgress(Receive, FileLength);
+                }
             }
 
             FOS.close();
             IS.close();
 
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish("", 200);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish("", 200);
+                    }
+                });
+            }
         }
         catch (final Exception e)
         {
-            new Handler(Looper.getMainLooper()).post(new Runnable()
+            if (!Thread.interrupted())
             {
-                @Override
-                public void run()
+                new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
-                    if (builder.OnCompleteListener != null)
-                        builder.OnCompleteListener.OnFinish(e.toString(), -1);
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        if (builder.OnCompleteListener != null)
+                            builder.OnCompleteListener.OnFinish(e.toString(), -1);
+                    }
+                });
+            }
         }
 
         if (Conn != null)
