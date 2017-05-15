@@ -1,13 +1,18 @@
 package co.biogram.main.fragment;
 
-import android.content.ContentValues;
-import android.database.Cursor;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +22,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
-import co.biogram.main.handler.DataBaseHandler;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.AdapterPost;
@@ -37,41 +38,155 @@ import co.biogram.main.misc.LoadingView;
 
 public class FragmentMoment extends Fragment
 {
-    private TextView TextViewTryAgain;
-    private LoadingView LoadingViewMoment;
     private RelativeLayout RelativeLayoutLoading;
+    private LoadingView LoadingViewData;
+    private TextView TextViewTry;
 
-    private boolean IsTop = false;
-    private boolean IsBottom = false;
+    private AdapterPost PostAdapter;
     private boolean IsRunning = false;
-    private AdapterPost MomentAdapter;
-    private List<AdapterPost.PostStruct> MomentList = new ArrayList<>();
+    private boolean LoadingTop = false;
+    private boolean LoadingBottom = false;
+    private List<AdapterPost.PostStruct> PostList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View RootView = inflater.inflate(R.layout.fragment_moment, container, false);
+        final Context context = getActivity();
 
-        TextViewTryAgain = (TextView) RootView.findViewById(R.id.TextViewTryAgain);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RequestDataFromServer(); } });
-        LoadingViewMoment = (LoadingView) RootView.findViewById(R.id.AnimationLoadingMoment);
-        RelativeLayoutLoading = (RelativeLayout) RootView.findViewById(R.id.RelativeLayoutLoading);
+        RelativeLayout Root = new RelativeLayout(context);
+        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        Root.setBackgroundResource(R.color.White);
 
-        final ImageView ImageViewWrite = (ImageView) RootView.findViewById(R.id.ImageViewWrite);
-        ImageViewWrite.setOnClickListener(new View.OnClickListener()
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(RelativeLayoutHeader);
+
+        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        TextViewTitleParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+        TextView TextViewTitle = new TextView(context);
+        TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setText(getString(R.string.FragmentMoment));
+        TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTitle.setTypeface(null, Typeface.BOLD);
+
+        RelativeLayoutHeader.addView(TextViewTitle);
+
+        RelativeLayout.LayoutParams ImageViewBookMarkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewBookMarkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageView ImageViewBookMark = new ImageView(context);
+        ImageViewBookMark.setLayoutParams(ImageViewBookMarkParam);
+        ImageViewBookMark.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
+        ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
+        ImageViewBookMark.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutHeader.addView(ImageViewBookMark);
+
+        RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewSearchParam.addRule(RelativeLayout.LEFT_OF, ImageViewBookMark.getId());
+
+        ImageView ImageViewSearch = new ImageView(context);
+        ImageViewSearch.setLayoutParams(ImageViewSearchParam);
+        ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
+        ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+
+        RelativeLayoutHeader.addView(ImageViewSearch);
+
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+        View ViewLine = new View(context);
+        ViewLine.setLayoutParams(ViewLineParam);
+        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(ViewLine);
+
+        RelativeLayout.LayoutParams SwipeRefreshLayoutMomentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        SwipeRefreshLayoutMomentParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        final SwipeRefreshLayout SwipeRefreshLayoutMoment = new SwipeRefreshLayout(context);
+        SwipeRefreshLayoutMoment.setLayoutParams(SwipeRefreshLayoutMomentParam);
+        SwipeRefreshLayoutMoment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             @Override
-            public void onClick(View v)
+            public void onRefresh()
             {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new FragmentMomentWrite(), "FragmentMomentWrite").addToBackStack("FragmentMomentWrite").commit();
+                if (LoadingTop)
+                    return;
+
+                LoadingTop = true;
+                SwipeRefreshLayoutMoment.setEnabled(false);
+                SwipeRefreshLayoutMoment.setRefreshing(false);
+
+                if (PostList.size() == 0)
+                {
+                    SwipeRefreshLayoutMoment.setEnabled(true);
+                    return;
+                }
+
+                RequestHandler.Core().Method("POST")
+                .Address(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+                .Param("Time", String.valueOf(PostList.get(0).Time))
+                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .Tag("FragmentMoment").Build(new RequestHandler.OnCompleteCallBack()
+                {
+                    @Override
+                    public void OnFinish(String Response, int Status)
+                    {
+                        LoadingTop = false;
+                        SwipeRefreshLayoutMoment.setEnabled(true);
+
+                        if (Status != 200)
+                        {
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
+                            return;
+                        }
+
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray postList = new JSONArray(Result.getString("Result"));
+
+                                for (int K = 0; K < postList.length(); K++)
+                                {
+                                    JSONObject Post = postList.getJSONObject(K);
+                                    PostList.add(0, new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                                }
+
+                                PostAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // Leave Me Alone
+                        }
+                    }
+                });
             }
         });
 
-        RecyclerView RecyclerViewMoment = (RecyclerView) RootView.findViewById(R.id.RecyclerViewMoment);
-        MomentAdapter = new AdapterPost(getActivity(), MomentList, "FragmentMoment");
+        Root.addView(SwipeRefreshLayoutMoment);
 
-        RecyclerViewMoment.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RecyclerViewMoment.setAdapter(MomentAdapter);
+        final ImageView ImageViewWrite = new ImageView(context);
+        PostAdapter = new AdapterPost(getActivity(), PostList, "FragmentMoment");
+
+        RecyclerView RecyclerViewMoment = new RecyclerView(context);
+        RecyclerViewMoment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RecyclerViewMoment.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerViewMoment.setAdapter(PostAdapter);
         RecyclerViewMoment.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
@@ -90,23 +205,25 @@ public class FragmentMoment extends Fragment
                 if (DY <= 0)
                     return;
 
-                if ((((LinearLayoutManager) View.getLayoutManager()).findLastVisibleItemPosition() + 2) > View.getAdapter().getItemCount() && !IsBottom)
+                if ((((LinearLayoutManager) View.getLayoutManager()).findLastVisibleItemPosition() + 2) > View.getAdapter().getItemCount() && !LoadingBottom)
                 {
-                    IsBottom = true;
-                    MomentList.add(null);
-                    MomentAdapter.notifyItemInserted(MomentList.size());
+                    LoadingBottom = true;
+                    PostList.add(null);
+                    PostAdapter.notifyItemInserted(PostList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
-                    .addBodyParameter("Skip", String.valueOf(MomentList.size()))
-                    .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .setTag("FragmentMoment").build().getAsString(new StringRequestListener()
+                    RequestHandler.Core().Method("POST")
+                    .Address(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+                    .Param("Skip", String.valueOf(PostList.size()))
+                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .Tag("FragmentMoment")
+                    .Build(new RequestHandler.OnCompleteCallBack()
                     {
                         @Override
-                        public void onResponse(String Response)
+                        public void OnFinish(String Response, int Status)
                         {
-                            MomentList.remove(MomentList.size() - 1);
-                            MomentAdapter.notifyItemRemoved(MomentList.size());
-                            IsBottom = false;
+                            LoadingBottom = false;
+                            PostList.remove(PostList.size() - 1);
+                            PostAdapter.notifyItemRemoved(PostList.size());
 
                             try
                             {
@@ -114,33 +231,15 @@ public class FragmentMoment extends Fragment
 
                                 if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                                 {
-                                    JSONArray PostList = new JSONArray(Result.getString("Result"));
+                                    JSONArray postList = new JSONArray(Result.getString("Result"));
 
-                                    for (int K = 0; K < PostList.length(); K++)
+                                    for (int K = 0; K < postList.length(); K++)
                                     {
-                                        JSONObject Post = PostList.getJSONObject(K);
-                                        MomentList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
-
-                                        ContentValues Value = new ContentValues();
-                                        Value.put("PostID", Post.getString("PostID"));
-                                        Value.put("OwnerID", Post.getString("OwnerID"));
-                                        Value.put("Type", Post.getInt("Type"));
-                                        Value.put("Category", Post.getInt("Category"));
-                                        Value.put("Time", Post.getLong("Time"));
-                                        Value.put("Comment", Post.getBoolean("Comment"));
-                                        Value.put("Message", Post.getString("Message"));
-                                        Value.put("Data", Post.getString("Data"));
-                                        Value.put("Username", Post.getString("Username"));
-                                        Value.put("Avatar", Post.getString("Avatar"));
-                                        Value.put("Like", Post.getBoolean("Like"));
-                                        Value.put("LikeCount", Post.getInt("LikeCount"));
-                                        Value.put("CommentCount", Post.getInt("CommentCount"));
-                                        Value.put("BookMark", Post.getBoolean("BookMark"));
-
-                                        DataBaseHandler.AddOrUpdate("POST", new String[] { "PostID" }, "PostID = ?", new String[] { Post.getString("PostID") }, Value);
+                                        JSONObject Post = postList.getJSONObject(K);
+                                        PostList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
                                     }
 
-                                    MomentAdapter.notifyDataSetChanged();
+                                    PostAdapter.notifyDataSetChanged();
                                 }
                             }
                             catch (Exception e)
@@ -148,159 +247,119 @@ public class FragmentMoment extends Fragment
                                 // Leave Me Alone
                             }
                         }
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            MomentList.remove(MomentList.size() - 1);
-                            MomentAdapter.notifyItemRemoved(MomentList.size());
-                            IsBottom = false;
-                        }
                     });
                 }
             }
         });
 
-        final SwipeRefreshLayout SwipeRefreshLayoutMoment = (SwipeRefreshLayout) RootView.findViewById(R.id.SwipeRefreshLayoutMoment);
-        SwipeRefreshLayoutMoment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        SwipeRefreshLayoutMoment.addView(RecyclerViewMoment);
+
+        RelativeLayout.LayoutParams ImageViewWriteParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 60), MiscHandler.ToDimension(context, 60));
+        ImageViewWriteParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        ImageViewWriteParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        ImageViewWriteParam.setMargins(MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20));
+
+        GradientDrawable Shape = new GradientDrawable();
+        Shape.setShape(GradientDrawable.OVAL);
+        Shape.setColor(Color.parseColor("#1f000000"));
+
+        GradientDrawable Shape2 = new GradientDrawable();
+        Shape2.setShape(GradientDrawable.OVAL);
+        Shape2.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+        Shape2.setStroke(MiscHandler.ToDimension(context, 4), Color.TRANSPARENT);
+
+        ImageViewWrite.setLayoutParams(ImageViewWriteParam);
+        ImageViewWrite.setScaleType(ImageView.ScaleType.FIT_XY);
+        ImageViewWrite.setPadding(MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18));
+        ImageViewWrite.setBackground(new LayerDrawable(new Drawable[] { Shape, Shape2 }));
+        ImageViewWrite.setImageResource(R.drawable.ic_write);
+        ImageViewWrite.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onRefresh()
+            public void onClick(View v)
             {
-                if (IsTop)
-                    return;
-
-                IsTop = true;
-                SwipeRefreshLayoutMoment.setEnabled(false);
-                SwipeRefreshLayoutMoment.setRefreshing(false);
-
-                if (MomentList.size() <= 0)
-                {
-                    SwipeRefreshLayoutMoment.setEnabled(true);
-                    return;
-                }
-
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
-                .addBodyParameter("Time", String.valueOf(MomentList.get(0).Time))
-                .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                .setTag("FragmentMoment").build().getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
-                            {
-                                JSONArray PostList = new JSONArray(Result.getString("Result"));
-
-                                for (int K = 0; K < PostList.length(); K++)
-                                {
-                                    JSONObject Post = PostList.getJSONObject(K);
-                                    MomentList.add(0, new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
-
-                                    DataBaseHandler.Remove("POST", null, null);
-
-                                    ContentValues Value = new ContentValues();
-                                    Value.put("PostID", Post.getString("PostID"));
-                                    Value.put("OwnerID", Post.getString("OwnerID"));
-                                    Value.put("Type", Post.getInt("Type"));
-                                    Value.put("Category", Post.getInt("Category"));
-                                    Value.put("Time", Post.getLong("Time"));
-                                    Value.put("Comment", Post.getBoolean("Comment"));
-                                    Value.put("Message", Post.getString("Message"));
-                                    Value.put("Data", Post.getString("Data"));
-                                    Value.put("Username", Post.getString("Username"));
-                                    Value.put("Avatar", Post.getString("Avatar"));
-                                    Value.put("Like", Post.getBoolean("Like"));
-                                    Value.put("LikeCount", Post.getInt("LikeCount"));
-                                    Value.put("CommentCount", Post.getInt("CommentCount"));
-                                    Value.put("BookMark", Post.getBoolean("BookMark"));
-
-                                    DataBaseHandler.AddOrUpdate("POST", new String[] { "PostID" }, "PostID = ?", new String[] { Post.getString("PostID") }, Value);
-                                }
-
-                                MomentAdapter.notifyDataSetChanged();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            // Leave Me Alone
-                        }
-
-                        IsTop = false;
-                        SwipeRefreshLayoutMoment.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onError(ANError error)
-                    {
-                        IsTop = false;
-                        SwipeRefreshLayoutMoment.setEnabled(true);
-                    }
-                });
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentMomentWrite()).addToBackStack("FragmentMomentWrite").commit();
             }
         });
 
-        RequestDataFromServer();
+        Root.addView(ImageViewWrite);
 
-        return RootView;
+        RelativeLayoutLoading = new RelativeLayout(context);
+        RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
+
+        Root.addView(RelativeLayoutLoading);
+
+        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        LoadingViewData = new LoadingView(context);
+        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+
+        RelativeLayoutLoading.addView(LoadingViewData);
+
+        RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        TextViewTry = new TextView(context);
+        TextViewTry.setLayoutParams(TextViewTryParam);
+        TextViewTry.setText(getString(R.string.TryAgain));
+        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
+
+        RelativeLayoutLoading.addView(TextViewTry);
+
+        RetrieveDataFromServer();
+
+        return Root;
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentMoment");
+        RequestHandler.Core().Cancel("FragmentMoment");
     }
 
-    private void RequestDataFromServer()
+    private void RetrieveDataFromServer()
     {
-        TextViewTryAgain.setVisibility(View.GONE);
-        LoadingViewMoment.Start();
-        RelativeLayoutLoading.setVisibility(View.VISIBLE);
+        final Context context = getActivity();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
-        .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-        .setTag("FragmentMoment").build().getAsString(new StringRequestListener()
+        TextViewTry.setVisibility(View.GONE);
+        LoadingViewData.Start();
+
+        RequestHandler.Core().Method("POST")
+        .Address(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .Tag("FragmentMoment")
+        .Build(new RequestHandler.OnCompleteCallBack()
         {
             @Override
-            public void onResponse(String Response)
+            public void OnFinish(String Response, int Status)
             {
+                if (Status != 200)
+                {
+                    MiscHandler.Toast(context, getString(R.string.NoInternet));
+                    TextViewTry.setVisibility(View.VISIBLE);
+                    LoadingViewData.Stop();
+                }
+
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
 
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
-                        JSONArray PostList = new JSONArray(Result.getString("Result"));
+                        JSONArray postList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < PostList.length(); K++)
+                        for (int K = 0; K < postList.length(); K++)
                         {
-                            JSONObject Post = PostList.getJSONObject(K);
-                            MomentList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
-
-                            ContentValues Value = new ContentValues();
-                            Value.put("PostID", Post.getString("PostID"));
-                            Value.put("OwnerID", Post.getString("OwnerID"));
-                            Value.put("Type", Post.getInt("Type"));
-                            Value.put("Category", Post.getInt("Category"));
-                            Value.put("Time", Post.getLong("Time"));
-                            Value.put("Comment", Post.getBoolean("Comment"));
-                            Value.put("Message", Post.getString("Message"));
-                            Value.put("Data", Post.getString("Data"));
-                            Value.put("Username", Post.getString("Username"));
-                            Value.put("Avatar", Post.getString("Avatar"));
-                            Value.put("Like", Post.getBoolean("Like"));
-                            Value.put("LikeCount", Post.getInt("LikeCount"));
-                            Value.put("CommentCount", Post.getInt("CommentCount"));
-                            Value.put("BookMark", Post.getBoolean("BookMark"));
-
-                            DataBaseHandler.AddOrUpdate("POST", new String[] { "PostID" }, "PostID = ?", new String[] { Post.getString("PostID") }, Value);
+                            JSONObject Post = postList.getJSONObject(K);
+                            PostList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
                         }
 
-                        MomentAdapter.notifyDataSetChanged();
+                        PostAdapter.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e)
@@ -308,46 +367,8 @@ public class FragmentMoment extends Fragment
                     // Leave Me Alone
                 }
 
-                TextViewTryAgain.setVisibility(View.GONE);
-                LoadingViewMoment.Stop();
-                RelativeLayoutLoading.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(ANError e)
-            {
-                Cursor cursor = DataBaseHandler.Find("POST", null, null, null, "`Time` DESC", null);
-
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
-                        AdapterPost.PostStruct Post = new AdapterPost.PostStruct();
-                        Post.PostID = cursor.getString(cursor.getColumnIndex("PostID"));
-                        Post.OwnerID = cursor.getString(cursor.getColumnIndex("OwnerID"));
-                        Post.Type = cursor.getInt(cursor.getColumnIndex("Type"));
-                        Post.Category = cursor.getInt(cursor.getColumnIndex("Category"));
-                        Post.Time = cursor.getLong(cursor.getColumnIndex("Time"));
-                        Post.Comment = cursor.getInt(cursor.getColumnIndex("Comment")) > 0;
-                        Post.Message = cursor.getString(cursor.getColumnIndex("Message"));
-                        Post.Data = cursor.getString(cursor.getColumnIndex("Data"));
-                        Post.Username = cursor.getString(cursor.getColumnIndex("Username"));
-                        Post.Avatar = cursor.getString(cursor.getColumnIndex("Avatar"));
-                        Post.Like = cursor.getInt(cursor.getColumnIndex("Like")) > 0;
-                        Post.LikeCount = cursor.getInt(cursor.getColumnIndex("LikeCount"));
-                        Post.CommentCount = cursor.getInt(cursor.getColumnIndex("CommentCount"));
-                        Post.BookMark = cursor.getInt(cursor.getColumnIndex("BookMark")) > 0;
-
-                        MomentList.add(Post);
-                    }
-                    while (cursor.moveToNext());
-                }
-
-                cursor.close();
-
-                MomentAdapter.notifyDataSetChanged();
-                TextViewTryAgain.setVisibility(View.GONE);
-                LoadingViewMoment.Stop();
+                LoadingViewData.Stop();
+                TextViewTry.setVisibility(View.GONE);
                 RelativeLayoutLoading.setVisibility(View.GONE);
             }
         });

@@ -45,7 +45,6 @@ public class App extends Application
     {
         super.onLowMemory();
         MiscHandler.Log("onLowMemory Called");
-        notify("onLowMemory");
     }
 
     @Override
@@ -53,21 +52,6 @@ public class App extends Application
     {
         super.onTrimMemory(level);
         MiscHandler.Log("onTrimMemory Called - " + level);
-        notify("onTrimMemory");
-    }
-
-    private void notify(String methodName)
-    {
-        String name = this.getClass().getName();
-        String[] strings = name.split("\\.");
-
-        Notification not = new Notification.Builder(this)
-        .setContentTitle(methodName + " " + strings[strings.length - 1]).setAutoCancel(true)
-        .setSmallIcon(R.drawable.ic_location_blue)
-        .setContentText(name).build();
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify((int) System.currentTimeMillis(), not);
     }
 
     @Deprecated

@@ -29,8 +29,6 @@ public class ActivityMain extends FragmentActivity
     private ImageView ImageViewNotification;
     private ImageView ImageViewProfile;
 
-    private FragmentManager FragManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -80,7 +78,7 @@ public class ActivityMain extends FragmentActivity
         ImageViewInbox.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewInbox.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewInbox.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageViewInbox.setImageResource(R.drawable.ic_home_gray);
+        ImageViewInbox.setImageResource(R.drawable.ic_inbox_gray);
         ImageViewInbox.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(2); } });
 
         LinearLayoutTab.addView(ImageViewInbox);
@@ -129,22 +127,8 @@ public class ActivityMain extends FragmentActivity
 
         setContentView(Root);
 
-        FragManager = getSupportFragmentManager();
-
-        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
+        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 1)));
     }
-
-    /*@Override
-    public void onBackPressed()
-    {
-        if (FragManager.getBackStackEntryCount() == 1)
-        {
-            finish();
-            return;
-        }
-
-        super.onBackPressed();
-    }*/
 
     private void ChangeTab(int Tab)
     {
@@ -173,11 +157,12 @@ public class ActivityMain extends FragmentActivity
             case 5: SelectedFragment = new FragmentProfile();         break;
         }
 
-        List<Fragment> FragmentList = FragManager.getFragments();
+        FragmentManager FragManager = getSupportFragmentManager();
+        List<Fragment> FragList = FragManager.getFragments();
 
-        if (FragmentList != null)
+        if (FragList != null)
         {
-            for (Fragment fragment : FragmentList)
+            for (Fragment fragment : FragList)
             {
                 if (fragment != null)
                 {

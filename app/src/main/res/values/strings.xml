@@ -83,7 +83,7 @@
     <string name="ActivityProfileDialogMessage4">Your Choices</string>
     <string name="ActivityProfileCompleteAction">Complete Action Using</string>
 
-
+    <string name="FragmentMoment">Moment</string>
 
 
 
@@ -158,7 +158,7 @@
 
 
 
-    <string name="FragmentMomentTitle">Moment</string>
+
 
 
 
