@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import java.util.List;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentProfile;
 import co.biogram.main.fragment.FragmentMoment;
@@ -132,7 +134,7 @@ public class ActivityMain extends FragmentActivity
         ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
     }
 
-    @Override
+    /*@Override
     public void onBackPressed()
     {
         if (FragManager.getBackStackEntryCount() == 1)
@@ -141,26 +143,8 @@ public class ActivityMain extends FragmentActivity
             return;
         }
 
-        if (FragManager.getBackStackEntryCount() > 1)
-        {
-            super.onBackPressed();
-
-            for (Fragment fragment : FragManager.getFragments())
-            {
-                if (fragment != null)
-                {
-                    switch (fragment.getClass().getSimpleName())
-                    {
-                        case "FragmentMoment":       ChangeTab(1); break;
-                        case "FragmentHome":         ChangeTab(2); break;
-                        case "FragmentCategory":     ChangeTab(3); break;
-                        case "FragmentNotification": ChangeTab(4); break;
-                        case "FragmentProfile":      ChangeTab(5); break;
-                    }
-                }
-            }
-        }
-    }
+        super.onBackPressed();
+    }*/
 
     private void ChangeTab(int Tab)
     {
@@ -173,7 +157,7 @@ public class ActivityMain extends FragmentActivity
         switch (Tab)
         {
             case 1: ImageViewMoment.setImageResource(R.drawable.ic_moment_black);             break;
-            case 2: ImageViewInbox.setImageResource(R.drawable.ic_inbox_black);                 break;
+            case 2: ImageViewInbox.setImageResource(R.drawable.ic_inbox_black);               break;
             case 3: ImageViewCategory.setImageResource(R.drawable.ic_category_black);         break;
             case 4: ImageViewNotification.setImageResource(R.drawable.ic_notification_black); break;
             case 5: ImageViewProfile.setImageResource(R.drawable.ic_profile_black);           break;
@@ -189,22 +173,19 @@ public class ActivityMain extends FragmentActivity
             case 5: SelectedFragment = new FragmentProfile();         break;
         }
 
-        Fragment FoundFragment = FragManager.findFragmentByTag(SelectedFragment.getClass().getSimpleName());
+        List<Fragment> FragmentList = FragManager.getFragments();
 
-        if (FoundFragment != null)
+        if (FragmentList != null)
         {
-            for (Fragment Frag : FragManager.getFragments())
+            for (Fragment fragment : FragmentList)
             {
-                if (Frag != null && Frag != FoundFragment)
+                if (fragment != null)
                 {
-                    FragManager.beginTransaction().hide(Frag).commit();
+                    FragManager.beginTransaction().remove(fragment).commit();
                 }
             }
-
-            FragManager.beginTransaction().show(FoundFragment).commit();
-            return;
         }
 
-        FragManager.beginTransaction().replace(R.id.ActivityMainContentContainer, SelectedFragment, SelectedFragment.getClass().getSimpleName()).addToBackStack(SelectedFragment.getClass().getSimpleName()).commit();
+        FragManager.beginTransaction().add(R.id.ActivityMainContentContainer, SelectedFragment).commit();
     }
 }

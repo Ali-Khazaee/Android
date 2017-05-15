@@ -1,6 +1,8 @@
 package co.biogram.main;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 
 import com.androidnetworking.AndroidNetworking;
@@ -12,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.DataBaseHandler;
 
+import co.biogram.main.handler.MiscHandler;
 import okhttp3.OkHttpClient;
 
 public class App extends Application
@@ -35,6 +38,36 @@ public class App extends Application
 
         DataBaseHandler.SetUp();
         CacheHandler.ClearExpired();
+    }
+
+    @Override
+    public void onLowMemory()
+    {
+        super.onLowMemory();
+        MiscHandler.Log("onLowMemory Called");
+        notify("onLowMemory");
+    }
+
+    @Override
+    public void onTrimMemory(int level)
+    {
+        super.onTrimMemory(level);
+        MiscHandler.Log("onTrimMemory Called - " + level);
+        notify("onTrimMemory");
+    }
+
+    private void notify(String methodName)
+    {
+        String name = this.getClass().getName();
+        String[] strings = name.split("\\.");
+
+        Notification not = new Notification.Builder(this)
+        .setContentTitle(methodName + " " + strings[strings.length - 1]).setAutoCancel(true)
+        .setSmallIcon(R.drawable.ic_location_blue)
+        .setContentText(name).build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify((int) System.currentTimeMillis(), not);
     }
 
     @Deprecated

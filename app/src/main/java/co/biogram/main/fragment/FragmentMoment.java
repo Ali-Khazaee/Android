@@ -29,6 +29,7 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.DataBaseHandler;
+import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.AdapterPost;
@@ -67,7 +68,7 @@ public class FragmentMoment extends Fragment
         });
 
         RecyclerView RecyclerViewMoment = (RecyclerView) RootView.findViewById(R.id.RecyclerViewMoment);
-        MomentAdapter = new AdapterPost((FragmentActivity) getActivity(), MomentList, "FragmentMoment");
+        MomentAdapter = new AdapterPost(getActivity(), MomentList, "FragmentMoment");
 
         RecyclerViewMoment.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerViewMoment.setAdapter(MomentAdapter);
