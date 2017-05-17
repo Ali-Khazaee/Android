@@ -85,7 +85,12 @@
 
     <string name="FragmentMoment">Moment</string>
 
+    <string name="FragmentComment">Comment</string>
+    <string name="FragmentCommentHint">Write Your Comment</string>
 
+    <string name="FragmentCommentAreYouSure">Are You Sure</string>
+    <string name="FragmentCommentYes">Yes</string>
+    <string name="FragmentCommentNo">No</string>
 
 
 
@@ -125,9 +130,7 @@
 
 
 
-    <string name="FragmentCommentAreYouSure">Are You Sure</string>
-    <string name="FragmentCommentYes">Yes</string>
-    <string name="FragmentCommentNo">No</string>
+
 
     <string name="AdapterPostFollow">Follow</string>
     <string name="AdapterPostTurnOn">Turn On Commenting</string>

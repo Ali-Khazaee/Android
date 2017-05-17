@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +12,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -61,29 +64,202 @@ public class FragmentComment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View Root = inflater.inflate(R.layout.fragment_comment, container, false);
+        final Context context = getActivity();
 
         if (getArguments() != null)
         {
             PostID = getArguments().getString("PostID", "");
 
-            if (getArguments().getString("OwnerID", "").equals(SharedHandler.GetString("ID")))
+            if (getArguments().getString("OwnerID", "").equals(SharedHandler.GetString(context, "ID")))
                 IsOwner = true;
         }
 
-        LoadingViewRoot = (LoadingView) Root.findViewById(R.id.LoadingViewCommentRoot);
-        RelativeLayoutLoading = (RelativeLayout) Root.findViewById(R.id.RelativeLayoutLoading);
+        RelativeLayout Root = new RelativeLayout(context);
+        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        Root.setBackgroundResource(R.color.White);
+        Root.setClickable(true);
 
-        Root.findViewById(R.id.ImageViewBack).setOnClickListener(new View.OnClickListener()
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(RelativeLayoutHeader);
+
+        ImageView ImageViewBack = new ImageView(context);
+        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { MiscHandler.HideSoftKey(getActivity()); getActivity().onBackPressed(); } });
+
+        RelativeLayoutHeader.addView(ImageViewBack);
+
+        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+
+        TextView TextViewTitle = new TextView(context);
+        TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setText(getString(R.string.FragmentComment));
+        TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTitle.setTypeface(null, Typeface.BOLD);
+
+        RelativeLayoutHeader.addView(TextViewTitle);
+
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+        View ViewLine = new View(context);
+        ViewLine.setLayoutParams(ViewLineParam);
+        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(ViewLine);
+
+        RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        RelativeLayout RelativeLayoutBottom = new RelativeLayout(context);
+        RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
+        RelativeLayoutBottom.setBackgroundResource(R.color.White5);
+        RelativeLayoutBottom.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(RelativeLayoutBottom);
+
+        RelativeLayout.LayoutParams RelativeLayoutSendParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        RelativeLayoutSendParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        RelativeLayoutSendParam.addRule(RelativeLayout.CENTER_VERTICAL);
+
+        RelativeLayout RelativeLayoutSend = new RelativeLayout(context);
+        RelativeLayoutSend.setLayoutParams(RelativeLayoutSendParam);
+        RelativeLayoutSend.setBackgroundResource(R.color.White5);
+        RelativeLayoutSend.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutBottom.addView(RelativeLayoutSend);
+
+        final ImageView ImageViewSend = new ImageView(context);
+        ImageViewSend.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+        ImageViewSend.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewSend.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        ImageViewSend.setImageResource(R.drawable.ic_send_gray);
+
+        RelativeLayoutSend.addView(ImageViewSend);
+
+        RelativeLayout.LayoutParams LoadingViewSendParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        LoadingViewSendParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        LoadingView LoadingViewSend = new LoadingView(context);
+        LoadingViewSend.setLayoutParams(LoadingViewSendParam);
+        LoadingViewSend.SetColor(R.color.BlueLight);
+
+        RelativeLayoutSend.addView(LoadingViewSend);
+
+        RelativeLayout.LayoutParams EditTextCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        EditTextCommentParam.addRule(RelativeLayout.LEFT_OF, RelativeLayoutSend.getId());
+
+        EditText EditTextComment = new EditText(context);
+        EditTextComment.setLayoutParams(EditTextCommentParam);
+        EditTextComment.setHint(R.string.FragmentCommentHint);
+        EditTextComment.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
+        EditTextComment.setId(MiscHandler.GenerateViewID());
+        EditTextComment.setBackground(null);
+        EditTextComment.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        EditTextComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        EditTextComment.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
+        EditTextComment.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        EditTextComment.addTextChangedListener(new TextWatcher()
         {
             @Override
-            public void onClick(View view)
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2)
             {
-                MiscHandler.HideSoftKey(getActivity());
-                getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentComment.this).commit();
+                if (s.length() == 0)
+                    ImageViewSend.setImageResource(R.drawable.ic_send_gray);
+                else if (!IsSending)
+                    ImageViewSend.setImageResource(R.drawable.ic_send_blue);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) { }
+        });
+
+        RelativeLayoutBottom.addView(EditTextComment);
+
+        RelativeLayout.LayoutParams ViewLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        ViewLineParam.addRule(RelativeLayout.ABOVE, RelativeLayoutBottom.getId());
+
+        View ViewLine2 = new View(context);
+        ViewLine2.setLayoutParams(ViewLine2Param);
+        ViewLine2.setBackgroundResource(R.color.Gray2);
+        ViewLine2.setId(MiscHandler.GenerateViewID());
+
+        Root.addView(ViewLine2);
+
+        RelativeLayout.LayoutParams SwipeRefreshLayoutCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        SwipeRefreshLayoutCommentParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        SwipeRefreshLayoutCommentParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
+
+        final SwipeRefreshLayout SwipeRefreshLayoutComment = new SwipeRefreshLayout(context);
+        SwipeRefreshLayoutComment.setLayoutParams(SwipeRefreshLayoutCommentParam);
+        SwipeRefreshLayoutComment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            @Override
+            public void onRefresh()
+            {
+
             }
         });
 
+        Root.addView(SwipeRefreshLayoutComment);
+
+        RecyclerView RecyclerViewComment = new RecyclerView(context);
+        RecyclerViewComment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RecyclerViewComment.setLayoutManager(new LinearLayoutManager(context));
+        //RecyclerViewMoment.setAdapter(PostAdapter);
+        RecyclerViewComment.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView View, int DX, int DY)
+            {
+
+            }
+        });
+
+        SwipeRefreshLayoutComment.addView(RecyclerViewComment);
+
+        return Root;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
         final RecyclerView RecyclerViewComment = (RecyclerView) Root.findViewById(R.id.RecyclerViewComment);
         RecyclerViewCommentAdapter = new AdapterComment(getActivity());
 
@@ -270,44 +446,14 @@ public class FragmentComment extends Fragment
             }
         });
 
-        EditTextComment.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2)
-            {
-                if (s.length() == 0)
-                    ImageViewSend.setImageResource(R.drawable.ic_send_gray);
-                else if (!IsSending)
-                    ImageViewSend.setImageResource(R.drawable.ic_send_blue);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) { }
-        });
-
-        TextViewTryAgain = (TextView) Root.findViewById(R.id.TextViewTryAgain);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                RetrieveDataFromServer();
-            }
-        });
-
-        RetrieveDataFromServer();
-
-        return Root;
+       */
     }
 
     @Override
-    public void onDestroyView()
+    public void onPause()
     {
-        super.onDestroyView();
-        AndroidNetworking.cancel("FragmentComment");
+        super.onPause();
+        RequestHandler.Core().Cancel("FragmentComment");
     }
 
     private void RetrieveDataFromServer()
