@@ -134,25 +134,19 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     @Override
     public ViewHolderPost onCreateViewHolder(ViewGroup Parent, int ViewType)
     {
-        View ItemView;
-
         if (ViewType == 0)
         {
-            ItemView = LayoutInflater.from(Parent.getContext()).inflate(R.layout.general_adapter_post_row, Parent, false);
+            View ItemView = LayoutInflater.from(Parent.getContext()).inflate(R.layout.general_adapter_post_row, Parent, false);
             return new ViewHolderPost(ItemView, true);
         }
 
-        LinearLayout Root = new LinearLayout(Activity);
-        Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 56)));
-        Root.setGravity(Gravity.CENTER);
+        LoadingView Loading = new LoadingView(Activity);
+        Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 56)));
+        Loading.setGravity(Gravity.CENTER);
+        Loading.SetShow(true);
+        Loading.Start();
 
-        LoadingView LoadingViewData = new LoadingView(Activity);
-        LoadingViewData.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(Activity, 56), MiscHandler.ToDimension(Activity, 56)));
-        LoadingViewData.Start();
-
-        Root.addView(LoadingViewData);
-
-        return new ViewHolderPost(Root, false);
+        return new ViewHolderPost(Loading, false);
     }
 
     @Override
@@ -802,56 +796,22 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             Holder.ViewLine.setVisibility(View.VISIBLE);
     }
 
-    public void UpdatePostLike(String PostID, boolean Increase)
-    {
-        for (int I = 0; I < PostList.size(); I++)
-        {
-            PostStruct Post = PostList.get(I);
-
-            if (Post.PostID.equals(PostID))
-            {
-                if (Increase)
-                    Post.LikeCount += 1;
-                else
-                    Post.LikeCount -= 1;
-            }
-        }
-    }
-
-    public void UpdatePostComment(String PostID, boolean Increase)
-    {
-        for (int I = 0; I < PostList.size(); I++)
-        {
-            PostStruct Post = PostList.get(I);
-
-            if (Post.PostID.equals(PostID))
-            {
-                if (Increase)
-                    Post.CommentCount += 1;
-                else
-                    Post.CommentCount -= 1;
-            }
-        }
-    }
-
     public static class PostStruct
     {
-        public String PostID;
-        public String OwnerID;
+        String PostID;
+        String OwnerID;
         public int Type;
-        public int Category;
+        int Category;
         public long Time;
-        public boolean Comment;
+        boolean Comment;
         public String Message;
         public String Data;
         public String Username;
         public String Avatar;
-        public boolean Like;
-        public int LikeCount;
-        public int CommentCount;
-        public boolean BookMark;
-
-        public PostStruct() { }
+        boolean Like;
+        int LikeCount;
+        int CommentCount;
+        boolean BookMark;
 
         public PostStruct(String postID, String ownerID, int type, int category, long time, boolean comment, String message, String data, String username, String avatar, boolean like, int likeCount, int commentCount, boolean bookmark)
         {

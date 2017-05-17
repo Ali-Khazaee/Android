@@ -86,8 +86,8 @@
     <string name="FragmentMoment">Moment</string>
 
     <string name="FragmentComment">Comment</string>
+    <string name="FragmentCommentLike">LIKES</string>
     <string name="FragmentCommentHint">Write Your Comment</string>
-
     <string name="FragmentCommentAreYouSure">Are You Sure</string>
     <string name="FragmentCommentYes">Yes</string>
     <string name="FragmentCommentNo">No</string>
@@ -101,13 +101,11 @@
 
 
 
-
-    <string name="GeneralTryAgain">Try Again &#8230;</string>
-    <string name="GeneralFileNotFound">File Not Found"</string>
-    <string name="GeneralCheckInternet">Check Your Internet</string>
-    <string name="GeneralPermissionCamera">You Should Allow Access To Your Camera</string>
-    <string name="GeneralPermissionStorage">You Should Allow Access To Your Storage</string>
-
+    <string name="FragmentMomentWrite">Write</string>
+    <string name="FragmentMomentWriteMessage">Your Message</string>
+    <string name="FragmentMomentWriteMessageCount">150</string>
+    <string name="FragmentMomentWriteCategory">Category:</string>
+    <string name="FragmentMomentWriteCategorySelect">None</string>
 
     <string name="FragmentMomentWriteMaxImage">Maximum Picture Is Three</string>
     <string name="FragmentMomentWriteSelectImage">Select Image From</string>
@@ -123,7 +121,6 @@
     <string name="FragmentMomentWriteVideoCompress">Compressing Video, Please Wait</string>
     <string name="FragmentMomentWriteVideoPreview">Video Preview</string>
 
-    <string name="FragmentMomentWriteCategory">Category</string>
     <string name="FragmentMomentWriteDialogPaste">Paste</string>
     <string name="FragmentMomentWriteDialogCopy">Copy</string>
     <string name="FragmentMomentWriteDialogClipboard">Text Copied To Clipboard</string>
@@ -158,6 +155,14 @@
 
 
 
+
+
+
+    <string name="GeneralTryAgain">Try Again &#8230;</string>
+    <string name="GeneralFileNotFound">File Not Found"</string>
+    <string name="GeneralCheckInternet">Check Your Internet</string>
+    <string name="GeneralPermissionCamera">You Should Allow Access To Your Camera</string>
+    <string name="GeneralPermissionStorage">You Should Allow Access To Your Storage</string>
 
 
 

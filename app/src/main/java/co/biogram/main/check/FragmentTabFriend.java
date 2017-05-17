@@ -15,6 +15,9 @@ public class FragmentTabFriend extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_comment, container, false);
+        View RootView = new View(getActivity());
+        RootView.setBackgroundResource(R.color.BlueLight);
+
+        return RootView;
     }
 }

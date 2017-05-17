@@ -271,9 +271,9 @@ public class FragmentMoment extends Fragment
 
         ImageViewWrite.setLayoutParams(ImageViewWriteParam);
         ImageViewWrite.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewWrite.setPadding(MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18));
         ImageViewWrite.setBackground(new LayerDrawable(new Drawable[] { Shape, Shape2 }));
         ImageViewWrite.setImageResource(R.drawable.ic_write);
+        ImageViewWrite.setPadding(MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18));
         ImageViewWrite.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -7,56 +7,6 @@
     android:background="@color/White"
     android:clickable="true">
 
-    <RelativeLayout
-        android:id="@+id/RelativeLayoutHeader"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/ActionBarHeight">
-
-        <ImageView
-            android:id="@+id/ImageViewBack"
-            android:layout_width="56dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:padding="12dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_back_blue" />
-
-        <TextView
-            android:id="@+id/TextViewHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Write"
-            android:textColor="@color/Black"
-            android:layout_toRightOf="@+id/ImageViewBack"
-            android:layout_toEndOf="@+id/ImageViewBack"
-            android:layout_toLeftOf="@+id/TextViewMessageCount"
-            android:layout_toStartOf="@+id/TextViewMessageCount"
-            android:textSize="@dimen/FontLarge"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/TextViewMessageCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="150"
-            android:textColor="@color/Gray4"
-            android:layout_marginEnd="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:textSize="@dimen/FontSmall" />
-
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/ViewBlankLine"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/RelativeLayoutHeader"
-        android:background="@color/Gray2" />
-
     <EditText
         android:id="@+id/EditTextMessage"
         android:layout_width="match_parent"
@@ -239,67 +189,6 @@
             android:layout_height="match_parent"
             android:contentDescription="@null"
             android:src="@drawable/ic_arrow_down_blue" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/ViewBlankLine2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@+id/LinearLayoutBottom"
-        android:background="@color/Gray2" />
-
-    <LinearLayout
-        android:id="@+id/LinearLayoutBottom"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/ActionBarHeight"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:background="@color/White5">
-
-        <ImageView
-            android:id="@+id/ImageViewImage"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:scaleType="fitCenter"
-            android:padding="15dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_camera" />
-
-        <ImageView
-            android:id="@+id/ImageViewVideo"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:scaleType="fitCenter"
-            android:padding="15dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_video" />
-
-        <ImageView
-            android:id="@+id/ImageViewLink"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:scaleType="fitCenter"
-            android:padding="12dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_link" />
-
-        <Button
-            android:id="@+id/ButtonSend"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="Send"
-            android:textAllCaps="false"
-            android:textColor="@color/White"
-            android:background="@drawable/bg_button"
-            style="@style/Base.Widget.AppCompat.Button.Borderless" />
 
     </LinearLayout>
 
