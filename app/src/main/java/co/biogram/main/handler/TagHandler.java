@@ -84,9 +84,9 @@ public class TagHandler
 
     private class ClickableForegroundColorSpan extends ClickableSpan
     {
-        private int TagType;
-        private int TagColor;
-        private OnTagClickListener _OnTagClickListener;
+        private final int TagType;
+        private final int TagColor;
+        private final OnTagClickListener _OnTagClickListener;
 
         ClickableForegroundColorSpan(int Type, int Color, OnTagClickListener Listener)
         {

@@ -9,10 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 public class PermissionHandler
 {
     private AppCompatActivity _AppCompatActivity;
-    private PermissionEvent _PermissionEvent;
+    private final PermissionEvent _PermissionEvent;
     private Fragment _Fragment;
-    private String _Permission;
-    private int _RequestCode;
+    private final String _Permission;
+    private final int _RequestCode;
 
     public PermissionHandler(String P, int RC, AppCompatActivity A, PermissionEvent PE)
     {

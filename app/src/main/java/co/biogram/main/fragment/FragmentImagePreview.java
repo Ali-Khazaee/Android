@@ -29,7 +29,7 @@ public class FragmentImagePreview extends Fragment
 {
     private Bitmap ImageCache = null;
     private RelativeLayout RelativeLayoutHeader;
-    private List<String> ImageList = new ArrayList<>();
+    private final List<String> ImageList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

@@ -1,15 +1,10 @@
 package co.biogram.media;
 
 import android.media.MediaFormat;
-import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
-import android.os.StrictMode;
 
 import java.io.FileInputStream;
-
-import co.biogram.main.App;
-import co.biogram.main.handler.MiscHandler;
 
 public class MediaTransCoder
 {

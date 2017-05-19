@@ -7,7 +7,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.BoolRes;
 import android.support.annotation.Keep;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -30,8 +29,8 @@ public class LoadingView extends LinearLayout
     private int BounceSpeed = 300;
     private int BounceColor = Color.parseColor("#a9bac4");
 
-    private List<Bounce> BounceList = new ArrayList<>();
-    private List<Animator> AnimatorList = new ArrayList<>();
+    private final List<Bounce> BounceList = new ArrayList<>();
+    private final List<Animator> AnimatorList = new ArrayList<>();
 
     public LoadingView(Context context)
     {

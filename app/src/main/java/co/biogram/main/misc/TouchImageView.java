@@ -21,8 +21,8 @@ public class TouchImageView extends ImageView
     private int ViewWidth, ViewHeight;
     private float OrigWidth, OrigHeight;
 
-    private PointF End = new PointF();
-    private PointF Start = new PointF();
+    private final PointF End = new PointF();
+    private final PointF Start = new PointF();
 
     private int OldMeasuredHeight;
 
@@ -139,7 +139,7 @@ public class TouchImageView extends ImageView
         });
     }
 
-    public class GestureListener extends GestureDetector.SimpleOnGestureListener
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener
     {
         @Override
         public boolean onDown(MotionEvent e)

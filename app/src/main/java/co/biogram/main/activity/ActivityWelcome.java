@@ -224,7 +224,7 @@ public class ActivityWelcome extends FragmentActivity
         RelativeLayoutMain.addView(LinearLayoutGoogle);
 
         LinearLayout.LayoutParams ImageViewGoogleParam = new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 30), MiscHandler.ToDimension(context, 30));
-        ImageViewGoogleParam.setMargins(MiscHandler.ToDimension(5), 0, MiscHandler.ToDimension(5), 0);
+        ImageViewGoogleParam.setMargins(MiscHandler.ToDimension(context, 5), 0, MiscHandler.ToDimension(context, 5), 0);
 
         ImageView ImageViewGoogle = new ImageView(context);
         ImageViewGoogle.setLayoutParams(ImageViewGoogleParam);

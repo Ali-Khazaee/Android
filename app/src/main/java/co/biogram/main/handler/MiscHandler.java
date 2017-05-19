@@ -56,13 +56,13 @@ public class MiscHandler
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewMessage.setText(Message);
-        TextViewMessage.setPadding(MiscHandler.ToDimension(15), MiscHandler.ToDimension(10), MiscHandler.ToDimension(15), MiscHandler.ToDimension(10));
+        TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
         Root.addView(TextViewMessage);
 
         Toast toast = new Toast(context);
-        toast.setGravity(Gravity.BOTTOM, 0, MiscHandler.ToDimension(65));
+        toast.setGravity(Gravity.BOTTOM, 0, MiscHandler.ToDimension(context, 65));
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(Root);
         toast.show();

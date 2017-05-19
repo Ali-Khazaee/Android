@@ -1,8 +1,6 @@
 package co.biogram.main;
 
 import android.app.Application;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 
 import com.androidnetworking.AndroidNetworking;

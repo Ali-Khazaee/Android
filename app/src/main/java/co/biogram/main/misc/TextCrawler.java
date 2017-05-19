@@ -12,16 +12,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import co.biogram.main.App;
-import co.biogram.main.R;
 import co.biogram.main.handler.CacheHandler;
 
 public class TextCrawler
 {
-    private String URL;
-    private String Tag;
+    private final String URL;
+    private final String Tag;
     private URLContent _URLContent;
-    private TextCrawlerCallBack CallBackListener;
+    private final TextCrawlerCallBack CallBackListener;
 
     public TextCrawler(String url, String tag, TextCrawlerCallBack CallBack)
     {

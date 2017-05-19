@@ -46,7 +46,7 @@ public class FragmentMoment extends Fragment
     private boolean IsRunning = false;
     private boolean LoadingTop = false;
     private boolean LoadingBottom = false;
-    private List<AdapterPost.PostStruct> PostList = new ArrayList<>();
+    private final List<AdapterPost.PostStruct> PostList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -279,7 +279,7 @@ public class FragmentMoment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentMomentWrite()).addToBackStack("FragmentMomentWrite").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentMomentWrite(), "FragmentMomentWrite").addToBackStack("FragmentMomentWrite").commit();
             }
         });
 

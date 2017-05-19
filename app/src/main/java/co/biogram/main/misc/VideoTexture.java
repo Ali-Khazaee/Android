@@ -20,7 +20,6 @@ import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 
-import co.biogram.main.App;
 import co.biogram.main.handler.CacheHandler;
 
 public class VideoTexture extends TextureView implements MediaPlayerControl

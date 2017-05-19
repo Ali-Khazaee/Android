@@ -56,7 +56,7 @@ public class FragmentComment extends Fragment
 
     private EditText EditTextComment;
     private AdapterComment RecyclerViewCommentAdapter;
-    private List<Struct> CommentList = new ArrayList<>();
+    private final List<Struct> CommentList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -471,7 +471,7 @@ public class FragmentComment extends Fragment
         private final int ID_LIKE_COUNT = MiscHandler.GenerateViewID();
         private final int ID_VIEW_LINE = MiscHandler.GenerateViewID();
 
-        private Context context;
+        private final Context context;
 
         AdapterComment(Context c)
         {
@@ -891,14 +891,14 @@ public class FragmentComment extends Fragment
 
     private class Struct
     {
-        String CommentID;
-        String OwnerID;
-        String Username;
-        long Time;
-        String Message;
+        final String CommentID;
+        final String OwnerID;
+        final String Username;
+        final long Time;
+        final String Message;
         int LikeCount;
         boolean Like;
-        String Avatar;
+        final String Avatar;
 
         Struct(String id, String owner, String username, long time, String message, int likeCount, boolean like, String avatar)
         {
