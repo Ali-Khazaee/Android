@@ -35,7 +35,7 @@ public class FragmentProfileLike extends Fragment
 
     private boolean IsBottom = false;
     private AdapterPost postAdapter;
-    private List<AdapterPost.PostStruct> PostList = new ArrayList<>();
+    private final List<AdapterPost.PostStruct> PostList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

@@ -100,7 +100,7 @@ public class FragmentMomentWrite extends Fragment
 
     private ViewPager ViewPagerImage;
     private ViewPagerAdapter ViewPagerAdapterImage;
-    private List<Bitmap> SelectImage = new ArrayList<>();
+    private final List<Bitmap> SelectImage = new ArrayList<>();
 
     private File SelectVideo;
     private RelativeLayout RelativeLayoutVideo;
@@ -183,7 +183,7 @@ public class FragmentMomentWrite extends Fragment
 
         ImageView ImageViewSend = new ImageView(context);
         ImageViewSend.setLayoutParams(ButtonSendParam);
-        ImageViewSend.setImageResource(R.drawable.ic_send_gray2);
+        ImageViewSend.setImageResource(R.drawable.ic_send_blue2);
         ImageViewSend.setId(MiscHandler.GenerateViewID());
         ImageViewSend.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
         ImageViewSend.setOnClickListener(new View.OnClickListener()
@@ -1404,7 +1404,7 @@ public class FragmentMomentWrite extends Fragment
 
         private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderCategory>
         {
-            private List<Struct> CategoryList = new ArrayList<>();
+            private final List<Struct> CategoryList = new ArrayList<>();
 
             private final int ID_ROOT = MiscHandler.GenerateViewID();
             private final int ID_ICON = MiscHandler.GenerateViewID();
@@ -1435,10 +1435,10 @@ public class FragmentMomentWrite extends Fragment
 
             class ViewHolderCategory extends RecyclerView.ViewHolder
             {
-                RelativeLayout RelativeLayoutRoot;
-                ImageView ImageViewIcon;
-                TextView TextViewName;
-                View ViewLine;
+                final RelativeLayout RelativeLayoutRoot;
+                final ImageView ImageViewIcon;
+                final TextView TextViewName;
+                final View ViewLine;
 
                 ViewHolderCategory(View view)
                 {
@@ -1529,9 +1529,9 @@ public class FragmentMomentWrite extends Fragment
 
             class Struct
             {
-                int ID;
-                String Name;
-                int Image;
+                final int ID;
+                final String Name;
+                final int Image;
 
                 Struct(int id, String name, int image)
                 {

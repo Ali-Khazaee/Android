@@ -134,12 +134,8 @@ class AudioChannel
 
         final long presentationTimeUs = remixAndMaybeFillOverflow(inBuffer, outBuffer);
         mEncoder.queueInputBuffer(encoderInBuffIndex, 0, outBuffer.position() * BYTES_PER_SHORT, presentationTimeUs, 0);
-
-        if (inBuffer != null)
-        {
-            mDecoder.releaseOutputBuffer(inBuffer.bufferIndex, false);
-            mEmptyBuffers.add(inBuffer);
-        }
+        mDecoder.releaseOutputBuffer(inBuffer.bufferIndex, false);
+        mEmptyBuffers.add(inBuffer);
 
         return true;
     }

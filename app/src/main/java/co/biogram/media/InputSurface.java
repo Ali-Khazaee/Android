@@ -101,9 +101,9 @@ class InputSurface
             throw new RuntimeException("eglMakeCurrent failed");
     }
 
-    boolean swapBuffers()
+    void swapBuffers()
     {
-        return EGL14.eglSwapBuffers(mEGLDisplay, mEGLSurface);
+        EGL14.eglSwapBuffers(mEGLDisplay, mEGLSurface);
     }
 
     void setPresentationTime(long nsecs)

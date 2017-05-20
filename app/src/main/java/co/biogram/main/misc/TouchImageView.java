@@ -147,13 +147,13 @@ public class TouchImageView extends ImageView
             return true;
         }
 
-        @Override
+        /*@Override
         public boolean onDoubleTap(MotionEvent e)
         {
             // TODO Zoom In Zoom Out
 
             return super.onDoubleTap(e);
-        }
+        }*/
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener

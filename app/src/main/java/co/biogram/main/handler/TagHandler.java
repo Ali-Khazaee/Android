@@ -111,7 +111,7 @@ public class TagHandler
 
             if (_OnTagClickListener == null)
             {
-                if (TagType == 1)
+                /*if (TagType == 1)
                 {
 
                 }
@@ -119,7 +119,7 @@ public class TagHandler
                 if (TagType == 2)
                 {
 
-                }
+                }*/
 
                 return;
             }

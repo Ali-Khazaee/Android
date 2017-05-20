@@ -32,7 +32,7 @@ public class FragmentProfilePost extends Fragment
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
-    RecyclerView RecyclerViewPost;
+    private RecyclerView RecyclerViewPost;
     private boolean IsBottom = false;
     private AdapterPost postAdapter;
     private List<AdapterPost.PostStruct> PostList = new ArrayList<>();
