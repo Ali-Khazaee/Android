@@ -6,14 +6,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -26,6 +24,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import co.biogram.main.BuildConfig;
 
 public class RequestHandler
 {
@@ -198,8 +198,8 @@ public class RequestHandler
     {
         private int ID = MiscHandler.GenerateViewID();
 
-        private int ReadTime = 30000;
-        private int ConnectTime = 30000;
+        private int ReadTime = 20000;
+        private int ConnectTime = 20000;
 
         private String Method = "";
         private String Address = "";
@@ -215,9 +215,9 @@ public class RequestHandler
         private OnProgressCallBack OnProgressListener;
         private OnCompleteCallBack OnCompleteListener;
 
-        private HashMap<String, File> FileMap = new HashMap<>();
-        private HashMap<String, String> ParamMap = new HashMap<>();
-        private HashMap<String, String> HeaderMap = new HashMap<>();
+        private Map<String, File> FileMap = new HashMap<>();
+        private Map<String, String> ParamMap = new HashMap<>();
+        private Map<String, String> HeaderMap = new HashMap<>();
 
         Builder(String Method)
         {
@@ -266,7 +266,7 @@ public class RequestHandler
             return this;
         }
 
-        public Builder File(HashMap<String, File> fileMap)
+        public Builder File(Map<String, File> fileMap)
         {
             if (fileMap != null)
                 FileMap.putAll(fileMap);
@@ -431,11 +431,11 @@ public class RequestHandler
         try
         {
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
-            Conn.setConnectTimeout(20000);
-            Conn.setReadTimeout(20000);
+            Conn.setRequestProperty("User-Agent", "BioGram-" + BuildConfig.VERSION_NAME);
+            Conn.setConnectTimeout(builder.ConnectTime);
+            Conn.setReadTimeout(builder.ReadTime);
             Conn.setRequestMethod("GET");
             Conn.setDoInput(true);
-            Conn.connect();
 
             ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
             InputStream IS = Conn.getInputStream();
@@ -481,11 +481,11 @@ public class RequestHandler
         try
         {
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
-            Conn.setConnectTimeout(20000);
-            Conn.setReadTimeout(20000);
+            Conn.setRequestProperty("User-Agent", "BioGram-" + BuildConfig.VERSION_NAME);
+            Conn.setConnectTimeout(builder.ConnectTime);
+            Conn.setReadTimeout(builder.ReadTime);
             Conn.setRequestMethod("GET");
             Conn.setDoInput(true);
-            Conn.connect();
 
             ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
             InputStream IS = Conn.getInputStream();
@@ -554,27 +554,30 @@ public class RequestHandler
         try
         {
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setRequestProperty("User-Agent", "BioGram-" + BuildConfig.VERSION_NAME);
             Conn.setConnectTimeout(builder.ConnectTime);
             Conn.setReadTimeout(builder.ReadTime);
             Conn.setRequestMethod("GET");
             Conn.setUseCaches(false);
             Conn.setDoInput(true);
-            Conn.connect();
 
-            BufferedReader Reader = new BufferedReader(new InputStreamReader(Conn.getInputStream()));
-            final StringBuilder Result = new StringBuilder();
-            final int Status = Conn.getResponseCode();
-            String Line;
+            ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
+            InputStream IS = Conn.getInputStream();
+            byte[] Buffer = new byte[1024];
+            int ByteRead;
 
-            while ((Line = Reader.readLine()) != null)
+            while ((ByteRead = IS.read(Buffer)) != -1)
             {
                 if (Thread.interrupted())
                     break;
 
-                Result.append(Line);
+                ByteArray.write(Buffer, 0, ByteRead);
             }
 
-            Reader.close();
+            final String Response = new String(ByteArray.toByteArray());
+            final int Status = Conn.getResponseCode();
+            ByteArray.close();
+            IS.close();
 
             if (!Thread.interrupted())
             {
@@ -584,7 +587,7 @@ public class RequestHandler
                     public void run()
                     {
                         if (builder.OnCompleteListener != null)
-                            builder.OnCompleteListener.OnFinish(Result.toString(), Status);
+                            builder.OnCompleteListener.OnFinish(Response, Status);
                     }
                 });
             }
@@ -616,9 +619,9 @@ public class RequestHandler
         try
         {
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setRequestProperty("User-Agent", "BioGram-" + BuildConfig.VERSION_NAME);
             Conn.setConnectTimeout(builder.ConnectTime);
             Conn.setReadTimeout(builder.ReadTime);
-            Conn.setChunkedStreamingMode(4096);
             Conn.setRequestMethod("POST");
             Conn.setUseCaches(false);
             Conn.setDoOutput(true);
@@ -627,13 +630,13 @@ public class RequestHandler
             for (Map.Entry<String, String> Entry : builder.HeaderMap.entrySet())
                 Conn.setRequestProperty(URLEncoder.encode(Entry.getKey(), "UTF-8"), URLEncoder.encode(Entry.getValue(), "UTF-8"));
 
-            boolean First = true;
+            boolean FirstParam = true;
             OutputStream OS = Conn.getOutputStream();
 
             for (Map.Entry<String, String> Entry : builder.ParamMap.entrySet())
             {
-                if (First)
-                    First = false;
+                if (FirstParam)
+                    FirstParam = false;
                 else
                     OS.write("&".getBytes());
 
@@ -647,14 +650,14 @@ public class RequestHandler
             ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
             InputStream IS = Conn.getInputStream();
             byte[] Buffer = new byte[1024];
-            int Length;
+            int ByteRead;
 
-            while ((Length = IS.read(Buffer)) != -1)
+            while ((ByteRead = IS.read(Buffer)) != -1)
             {
                 if (Thread.interrupted())
                     break;
 
-                ByteArray.write(Buffer, 0, Length);
+                ByteArray.write(Buffer, 0, ByteRead);
             }
 
             final String Response = new String(ByteArray.toByteArray());
@@ -697,7 +700,9 @@ public class RequestHandler
 
     private void PerformUpload(final Builder builder)
     {
+        String Hyphen = "--";
         String EndLine = "\r\n";
+        String Boundary = "***";
         HttpURLConnection Conn = null;
 
         try
@@ -714,72 +719,84 @@ public class RequestHandler
                 Conn.setRequestProperty(URLEncoder.encode(Entry.getKey(), "UTF-8"), URLEncoder.encode(Entry.getValue(), "UTF-8"));
 
             Conn.setRequestProperty("Connection", "Keep-Alive");
-            Conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=***");
+            Conn.setRequestProperty("User-Agent", "BioGram-" + BuildConfig.VERSION_NAME);
+            Conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + Boundary);
 
             DataOutputStream OS = new DataOutputStream(Conn.getOutputStream());
 
             for (Map.Entry<String, String> Entry : builder.ParamMap.entrySet())
             {
-                OS.writeBytes("--***" + EndLine);
+                OS.writeBytes(Hyphen + Boundary + EndLine);
                 OS.writeBytes("Content-Disposition: form-data; name=\"" + URLEncoder.encode(Entry.getKey(), "UTF-8") + "\"" + EndLine);
                 OS.writeBytes(EndLine);
                 OS.writeBytes(URLEncoder.encode(Entry.getValue(), "UTF-8"));
                 OS.writeBytes(EndLine);
-                OS.writeBytes("--***" + EndLine);
+                OS.flush();
             }
 
-            int FileLength = 0 ;
+            int FileLengthTemp = 0;
 
             for (Map.Entry<String, File> Entry : builder.FileMap.entrySet())
-                FileLength += Entry.getValue().length();
+                FileLengthTemp += Entry.getValue().length();
 
             for (Map.Entry<String, File> Entry : builder.FileMap.entrySet())
             {
-                OS.writeBytes("--***" + EndLine);
-                OS.writeBytes("Content-Disposition: form-data; name=\"" + URLEncoder.encode(Entry.getKey(), "UTF-8") + "\";filename=\"" + URLEncoder.encode(Entry.getValue().getName(), "UTF-8") + "\"" + EndLine);
+                OS.writeBytes(Hyphen + Boundary + EndLine);
+                OS.writeBytes("Content-Disposition: form-data; name=\"" + URLEncoder.encode(Entry.getKey(), "UTF-8") + "\"; filename=\"" + URLEncoder.encode(Entry.getValue().getName(), "UTF-8") + "\"" + EndLine);
                 OS.writeBytes(EndLine);
+                OS.flush();
 
                 FileInputStream FIP = new FileInputStream(Entry.getValue());
-                byte[] Buffer = new byte[4096];
+                final int FileLength = FileLengthTemp;
+                byte[] Buffer = new byte[1024];
+                int SentTemp = 0;
                 int ByteRead;
-                int Sent = 0;
 
                 while ((ByteRead = FIP.read(Buffer)) != -1)
                 {
                     if (Thread.interrupted())
                         break;
 
-                    Sent += ByteRead;
+                    SentTemp += ByteRead;
                     OS.write(Buffer, 0, ByteRead);
 
                     if (!Thread.interrupted())
                     {
-                        if (builder.OnProgressListener != null)
-                            builder.OnProgressListener.OnProgress(Sent, FileLength);
+                        final int Sent = SentTemp;
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                if (builder.OnProgressListener != null)
+                                    builder.OnProgressListener.OnProgress(Sent, FileLength);
+                            }
+                        });
                     }
                 }
 
                 FIP.close();
 
                 OS.writeBytes(EndLine);
-                OS.writeBytes("--***" + EndLine);
+                OS.flush();
             }
 
-            OS.writeBytes("--***--" + EndLine);
+            OS.writeBytes(Hyphen + Boundary + Hyphen + EndLine);
             OS.flush();
             OS.close();
 
             ByteArrayOutputStream ByteArray = new ByteArrayOutputStream();
             InputStream IS = Conn.getInputStream();
-            byte[] Buffer = new byte[4096];
-            int Length;
+            byte[] Buffer = new byte[1024];
+            int ByteRead;
 
-            while ((Length = IS.read(Buffer)) != -1)
+            while ((ByteRead = IS.read(Buffer)) != -1)
             {
                 if (Thread.interrupted())
                     break;
 
-                ByteArray.write(Buffer, 0, Length);
+                ByteArray.write(Buffer, 0, ByteRead);
             }
 
             final String Response = new String(ByteArray.toByteArray());
@@ -827,32 +844,32 @@ public class RequestHandler
         try
         {
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
+            Conn.setRequestProperty("User-Agent", "BioGram-" + BuildConfig.VERSION_NAME);
             Conn.setConnectTimeout(builder.ConnectTime);
             Conn.setReadTimeout(builder.ReadTime);
             Conn.setRequestMethod("GET");
             Conn.setDoInput(true);
-            Conn.connect();
 
             FileOutputStream FOS = new FileOutputStream(builder.OutPath);
-            InputStream IS = Conn.getInputStream();
-
+            final int ResponseCode = Conn.getResponseCode();
             int FileLength = Conn.getContentLength();
-            byte[] Buffer = new byte[2048];
-            int Receive = 0;
-            int Length;
+            InputStream IS = Conn.getInputStream();
+            byte[] Buffer = new byte[1024];
+            int ReceiveSize = 0;
+            int ByteRead;
 
-            while ((Length = IS.read(Buffer)) > 0)
+            while ((ByteRead = IS.read(Buffer)) > 0)
             {
                 if (Thread.interrupted())
                     break;
 
-                Receive += Length;
-                FOS.write(Buffer, 0, Length);
+                ReceiveSize += ByteRead;
+                FOS.write(Buffer, 0, ByteRead);
 
                 if (!Thread.interrupted())
                 {
                     if (builder.OnProgressListener != null)
-                        builder.OnProgressListener.OnProgress(Receive, FileLength);
+                        builder.OnProgressListener.OnProgress(ReceiveSize, FileLength);
                 }
             }
 
@@ -867,7 +884,7 @@ public class RequestHandler
                     public void run()
                     {
                         if (builder.OnCompleteListener != null)
-                            builder.OnCompleteListener.OnFinish("", 200);
+                            builder.OnCompleteListener.OnFinish("", ResponseCode);
                     }
                 });
             }

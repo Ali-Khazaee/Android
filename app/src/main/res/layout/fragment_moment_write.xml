@@ -7,23 +7,10 @@
     android:background="@color/White"
     android:clickable="true">
 
-    <EditText
-        android:id="@+id/EditTextMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ViewBlankLine"
-        android:padding="10dp"
-        android:maxLength="150"
-        android:background="@android:color/transparent"
-        android:inputType="text|textMultiLine"
-        android:hint="Your Message"
-        android:maxLines="5" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/EditTextMessage"
-        android:layout_above="@+id/LinearLayoutCategory">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/RelativeLayoutLink"
@@ -154,42 +141,5 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/LinearLayoutCategory"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_above="@+id/ViewBlankLine2"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:background="@color/White"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/BlueLight"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:textSize="@dimen/FontLarge"
-            android:text="Category :" />
-
-        <TextView
-            android:id="@+id/TextViewCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/BlueLight"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:textSize="@dimen/FontLarge"
-            android:text="None" />
-
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_arrow_down_blue" />
-
-    </LinearLayout>
 
 </RelativeLayout>

@@ -55,16 +55,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.text.Bidi;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.RequestHandler;
+import co.biogram.main.handler.SharedHandler;
+import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.TextCrawler;
 import co.biogram.media.MediaTransCoder;
@@ -77,6 +83,13 @@ public class FragmentMomentWrite extends Fragment
     private ImageView ImageViewVideo;
     private ImageView ImageViewLink;
 
+    private int SelectType = 0;
+    private EditText EditTextMessage;
+
+    private TextView TextViewCategorySelect;
+    private String SelectLink = "";
+    private int SelectCategory = 0;
+
     private RelativeLayout RelativeLayoutLink;
     private LoadingView LoadingViewLink;
     private TextView TextViewTryLink;
@@ -87,30 +100,14 @@ public class FragmentMomentWrite extends Fragment
 
     private ViewPager ViewPagerImage;
     private ViewPagerAdapter ViewPagerAdapterImage;
-
-
-
-    private EditText EditTextMessage;
-
-    private TextView TextViewCategorySelect;
-    private int SelectCategory = 0;
-
-    private int SelectType = 0;
-
-
-
-
+    private List<Bitmap> SelectImage = new ArrayList<>();
 
     private File SelectVideo;
     private RelativeLayout RelativeLayoutVideo;
-    private ImageView ImageViewThumb;
-
-    private String SelectLink = "";
+    private ImageView ImageViewThumbVideo;
 
     private boolean IsPermissionStorageAllowed = false;
     private PermissionHandler _PermissionHandler;
-
-    private List<Bitmap> SelectImage = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -151,7 +148,7 @@ public class FragmentMomentWrite extends Fragment
             }
         });
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+        final RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
@@ -189,6 +186,111 @@ public class FragmentMomentWrite extends Fragment
         ImageViewSend.setImageResource(R.drawable.ic_send_gray2);
         ImageViewSend.setId(MiscHandler.GenerateViewID());
         ImageViewSend.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
+        ImageViewSend.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (SelectCategory == 0)
+                {
+                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteChoiceCategory));
+                    return;
+                }
+
+                if (EditTextMessage.getText().length() <= 19 && SelectType == 0)
+                {
+                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteMoreContent));
+                    return;
+                }
+
+                Map<String, File> UploadFile = new HashMap<>();
+
+                if (SelectType == 1)
+                {
+                    try
+                    {
+                        boolean IsCreated = true;
+                        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram");
+
+                        if (!Root.exists())
+                            IsCreated = Root.mkdirs();
+
+                        if (!IsCreated)
+                        {
+                            MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteCantCreateFolder));
+                            return;
+                        }
+
+                        for (int A = 0; A < SelectImage.size(); A++)
+                        {
+                            File IMG = new File(Root, "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
+
+                            ByteArrayOutputStream BOS = new ByteArrayOutputStream();
+                            SelectImage.get(A).compress(Bitmap.CompressFormat.JPEG, 90, BOS);
+
+                            FileOutputStream FOS = new FileOutputStream(IMG);
+                            FOS.write(BOS.toByteArray());
+                            FOS.flush();
+                            FOS.close();
+
+                            UploadFile.put(("Image" + A), IMG);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Leave Me Alone
+                    }
+                }
+                else if (SelectType == 2)
+                    UploadFile.put("Video", SelectVideo);
+                else
+                    UploadFile = null;
+
+                final ProgressDialog Progress = new ProgressDialog(getActivity());
+                Progress.setMessage(getString(R.string.FragmentMomentWriteUpload));
+                Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                Progress.setIndeterminate(false);
+                Progress.setCancelable(true);
+                Progress.setMax(100);
+                Progress.setProgress(0);
+                Progress.show();
+
+                RequestHandler.Core().Method("UPLOAD")
+                .Address(URLHandler.GetURL(URLHandler.URL.POST_WRITE))
+                .Param("Message", EditTextMessage.getText().toString())
+                .Param("Category", String.valueOf(SelectCategory))
+                .Param("Type", String.valueOf(SelectType))
+                .Param("Link", SelectLink)
+                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .File(UploadFile)
+                .Tag("FragmentMomentWrite")
+                .Listen(new RequestHandler.OnProgressCallBack()
+                {
+                    @Override
+                    public void OnProgress(long Received, long Total)
+                    {
+                        Progress.setProgress((int) (100 * Received / Total));
+                    }
+                })
+                .Build(new RequestHandler.OnCompleteCallBack()
+                {
+                    @Override
+                    public void OnFinish(String Response, int Status)
+                    {MiscHandler.Log(Status + " - " + Response);
+                        Progress.cancel();
+
+                        if (Status != 200)
+                        {
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
+                            return;
+                        }
+
+                        MiscHandler.HideSoftKey(getActivity());
+                        getActivity().onBackPressed();
+                    }
+                });
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSend);
 
@@ -218,7 +320,7 @@ public class FragmentMomentWrite extends Fragment
         RelativeLayout.LayoutParams EditTextMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextMessageParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        final EditText EditTextMessage = new EditText(context);
+        EditTextMessage = new EditText(context);
         EditTextMessage.setLayoutParams(EditTextMessageParam);
         EditTextMessage.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
         EditTextMessage.setId(MiscHandler.GenerateViewID());
@@ -772,7 +874,7 @@ public class FragmentMomentWrite extends Fragment
 
         RelativeLayout.LayoutParams RelativeLayoutVideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutVideoParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        RelativeLayoutVideoParam.setMargins(MiscHandler.ToDimension(context, 10), 0, 0, 0);
+        RelativeLayoutVideoParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
         RelativeLayoutVideo = new RelativeLayout(context);
         RelativeLayoutVideo.setLayoutParams(RelativeLayoutVideoParam);
@@ -781,7 +883,7 @@ public class FragmentMomentWrite extends Fragment
 
         RelativeLayoutContent.addView(RelativeLayoutVideo);
 
-        ImageView ImageViewThumbVideo = new ImageView(context);
+        ImageViewThumbVideo = new ImageView(context);
         ImageViewThumbVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         ImageViewThumbVideo.setScaleType(ImageView.ScaleType.CENTER_CROP);
         ImageViewThumbVideo.setOnClickListener(new View.OnClickListener()
@@ -809,7 +911,6 @@ public class FragmentMomentWrite extends Fragment
 
         ImageView ImageViewRemoveVideo = new ImageView(context);
         ImageViewRemoveVideo.setLayoutParams(ImageViewRemoveVideoParam);
-        ImageViewRemoveVideo.setVisibility(View.GONE);
         ImageViewRemoveVideo.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewRemoveVideo.setImageResource(R.drawable.ic_remove);
         ImageViewRemoveVideo.setAlpha(0.75f);
@@ -820,7 +921,7 @@ public class FragmentMomentWrite extends Fragment
             {
                 ChangeType(0);
                 SelectVideo = null;
-                ImageViewThumb.setImageResource(android.R.color.transparent);
+                ImageViewThumbVideo.setImageResource(android.R.color.transparent);
                 RelativeLayoutVideo.setVisibility(View.GONE);
             }
         });
@@ -837,114 +938,6 @@ public class FragmentMomentWrite extends Fragment
         RelativeLayoutVideo.addView(ImageViewPlayVideo);
 
         return Root;
-
-        /*
-
-        RootView.findViewById(R.id.ButtonSend).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (SelectCategory == 0)
-                {
-                    MiscHandler.Toast(context, "Please Choice a Category");
-                    return;
-                }
-
-                if (EditTextMessage.getText().length() <= 19 && SelectType == 0)
-                {
-                    MiscHandler.Toast(context, "Please, Add More Content");
-                    return;
-                }
-
-                Map<String, File> UploadFile = new HashMap<>();
-
-                if (SelectType == 1)
-                {
-                    try
-                    {
-                        boolean IsCreated = true;
-                        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram");
-
-                        if (!Root.exists())
-                            IsCreated = Root.mkdirs();
-
-                        if (!IsCreated)
-                        {
-                            MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteCantCreateFolder));
-                            return;
-                        }
-
-                        for (int A = 0; A < SelectImage.size(); A++)
-                        {
-                            File IMG = new File(Root, "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-                            ByteArrayOutputStream BOS = new ByteArrayOutputStream();
-                            SelectImage.get(A).compress(Bitmap.CompressFormat.JPEG, 90, BOS);
-
-                            FileOutputStream FOS = new FileOutputStream(IMG);
-                            FOS.write(BOS.toByteArray());
-                            FOS.flush();
-                            FOS.close();
-
-                            UploadFile.put(("Image" + A), IMG);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        // Leave Me Alone
-                    }
-                }
-                else if (SelectType == 2)
-                    UploadFile.put("Video", SelectVideo);
-                else
-                    UploadFile = null;
-
-                final ProgressDialog Progress = new ProgressDialog(getActivity());
-                Progress.setMessage(getString(R.string.FragmentMomentWriteUpload));
-                Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                Progress.setIndeterminate(false);
-                Progress.setCancelable(true);
-                Progress.setMax(100);
-                Progress.setProgress(0);
-                Progress.show();
-
-                AndroidNetworking.upload(URLHandler.GetURL(URLHandler.URL.POST_WRITE))
-                .addMultipartParameter("Message", EditTextMessage.getText().toString())
-                .addMultipartParameter("Category", String.valueOf(SelectCategory))
-                .addMultipartParameter("Type", String.valueOf(SelectType))
-                .addMultipartParameter("Link", SelectLink)
-                .addHeaders("TOKEN", SharedHandler.GetString("TOKEN"))
-                .addMultipartFile(UploadFile)
-                .setTag("FragmentMomentWrite")
-                .build().setUploadProgressListener(new UploadProgressListener()
-                {
-                    @Override
-                    public void onProgress(long Uploaded, long Total)
-                    {
-                        Progress.setProgress((int) (100 * Uploaded / Total));
-                    }
-                })
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        Progress.cancel();
-                        MiscHandler.HideSoftKey(getActivity());
-                        getActivity().getSupportFragmentManager().beginTransaction().remove(FragmentMomentWrite.this).commit();
-                    }
-                    @Override
-                    public void onError(ANError error)
-                    {
-                        Progress.cancel();
-                        MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
-                    }
-                });
-            }
-        });
-
-        return RootView;*/
     }
 
     @Override
@@ -969,12 +962,14 @@ public class FragmentMomentWrite extends Fragment
         if (ResultCode != -1)
             return;
 
+        Context context = getActivity();
+
         try
         {
             Uri ResultUri = Data.getData();
 
             String URL = null;
-            Cursor _Cursor = getActivity().getContentResolver().query(ResultUri, new String[] { MediaStore.Images.Media.DATA }, null, null, null);
+            Cursor _Cursor = context.getContentResolver().query(ResultUri, new String[] { MediaStore.Images.Media.DATA }, null, null, null);
 
             if (_Cursor != null && _Cursor.moveToFirst())
             {
@@ -984,7 +979,7 @@ public class FragmentMomentWrite extends Fragment
 
             if (URL == null)
             {
-                MiscHandler.Toast(getActivity(), getString(R.string.GeneralFileNotFound));
+                MiscHandler.Toast(context, getString(R.string.GeneralFileNotFound));
                 return;
             }
 
@@ -1005,7 +1000,7 @@ public class FragmentMomentWrite extends Fragment
 
             if (!IsPermissionStorageAllowed)
             {
-                MiscHandler.Toast(getActivity(), getString(R.string.GeneralPermissionStorage));
+                MiscHandler.Toast(context, getString(R.string.GeneralPermissionStorage));
                 return;
             }
 
@@ -1063,7 +1058,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (Time > 180)
                 {
-                    MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteVideoLength));
+                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteVideoLength));
                     return;
                 }
 
@@ -1071,7 +1066,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (SelectVideo.length() > 31452800)
                 {
-                    MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteVideoSize));
+                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteVideoSize));
                     return;
                 }
 
@@ -1079,12 +1074,12 @@ public class FragmentMomentWrite extends Fragment
                 {
                     if (SelectVideo.length() > 15728640)
                     {
-                        MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteVideoSupport));
+                        MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteVideoSupport));
                         return;
                     }
 
                     ChangeType(2);
-                    ImageViewThumb.setImageBitmap(Retriever.getFrameAtTime(100));
+                    ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
                     RelativeLayoutVideo.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -1092,7 +1087,7 @@ public class FragmentMomentWrite extends Fragment
                 if (SelectVideo.length() < 3145728)
                 {
                     ChangeType(2);
-                    ImageViewThumb.setImageBitmap(Retriever.getFrameAtTime(100));
+                    ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
                     RelativeLayoutVideo.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -1105,7 +1100,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (!IsCreated)
                 {
-                    MiscHandler.Toast(getActivity(), getString(R.string.FragmentMomentWriteCantCreateFolder));
+                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteCantCreateFolder));
                     return;
                 }
 
@@ -1181,7 +1176,7 @@ public class FragmentMomentWrite extends Fragment
                             {
                                 Progress.cancel();
                                 ChangeType(2);
-                                ImageViewThumb.setImageBitmap(Retriever.getFrameAtTime(100));
+                                ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
                                 RelativeLayoutVideo.setVisibility(View.VISIBLE);
                             }
                         });

@@ -92,21 +92,13 @@
     <string name="FragmentCommentYes">Yes</string>
     <string name="FragmentCommentNo">No</string>
 
-
-
-
-
-
-
-
-
-
     <string name="FragmentMomentWrite">Write</string>
+    <string name="FragmentMomentWriteChoiceCategory">Please Choice a Category</string>
+    <string name="FragmentMomentWriteMoreContent">Please, Add More Content</string>
     <string name="FragmentMomentWriteMessage">Your Message</string>
     <string name="FragmentMomentWriteMessageCount">150</string>
     <string name="FragmentMomentWriteCategory">Category:</string>
     <string name="FragmentMomentWriteCategorySelect">None</string>
-
     <string name="FragmentMomentWriteMaxImage">Maximum Picture Is Three</string>
     <string name="FragmentMomentWriteSelectImage">Select Image From</string>
     <string name="FragmentMomentWriteSelectVideo">Select Video From</string>
@@ -124,10 +116,6 @@
     <string name="FragmentMomentWriteDialogPaste">Paste</string>
     <string name="FragmentMomentWriteDialogCopy">Copy</string>
     <string name="FragmentMomentWriteDialogClipboard">Text Copied To Clipboard</string>
-
-
-
-
 
     <string name="AdapterPostFollow">Follow</string>
     <string name="AdapterPostTurnOn">Turn On Commenting</string>
@@ -150,26 +138,9 @@
     <string name="FragmentProfileLike">LIKE</string>
     <string name="FragmentProfileComment">COMMENT</string>
 
-
-
-
-
-
-
-
-
     <string name="GeneralTryAgain">Try Again &#8230;</string>
     <string name="GeneralFileNotFound">File Not Found"</string>
     <string name="GeneralCheckInternet">Check Your Internet</string>
     <string name="GeneralPermissionCamera">You Should Allow Access To Your Camera</string>
     <string name="GeneralPermissionStorage">You Should Allow Access To Your Storage</string>
-
-
-
-
-
-
-
-
-
 </resources>

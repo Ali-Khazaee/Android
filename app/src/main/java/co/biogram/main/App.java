@@ -45,13 +45,6 @@ public class App extends Application
         MiscHandler.Log("onLowMemory Called");
     }
 
-    @Override
-    public void onTrimMemory(int level)
-    {
-        super.onTrimMemory(level);
-        MiscHandler.Log("onTrimMemory Called - " + level);
-    }
-
     @Deprecated
     public static Context GetContext()
     {
