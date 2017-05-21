@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Process;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -87,6 +88,12 @@ public class RequestHandler
             @Override
             public void run()
             {
+                Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+                Process.setThreadPriority(-20);
+
+                long T = System.currentTimeMillis();
+
+                MiscHandler.Log("Request Start: " + T);
                 switch (builder.Method)
                 {
                     case "GET":           PerformGet(builder);          break;
@@ -96,6 +103,12 @@ public class RequestHandler
                     case "DOWNLOAD":      PerformDownload(builder);     break;
                     case "BITMAP_OPTION": PerformBitmapOption(builder); break;
                 }
+
+                MiscHandler.Log("Request End: " + (System.currentTimeMillis() - T));
+
+                T = System.currentTimeMillis();
+
+                MiscHandler.Log("Request Clear Start: " + T);
 
                 if (QueueTaskList.size() > 0)
                 {
@@ -131,6 +144,8 @@ public class RequestHandler
                             RunningTaskList.remove(I);
                     }
                 }
+
+                MiscHandler.Log("Request Clear End: " + (System.currentTimeMillis() - T));
             }
         };
 

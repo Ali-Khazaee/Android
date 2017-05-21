@@ -1,5 +1,6 @@
 package co.biogram.main.handler;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
@@ -195,11 +196,11 @@ public class CacheHandler
         }
     }
 
-    public static void ClearExpired()
+    public static void ClearExpired(Context context)
     {
         try
         {
-            File CacheList = new File(App.GetContext().getCacheDir(), "Cache.List");
+            File CacheList = new File(context.getCacheDir(), "Cache.List");
             File TempFile = new File(CacheList.getAbsolutePath() + ".tmp");
 
             if (!CacheList.exists())
