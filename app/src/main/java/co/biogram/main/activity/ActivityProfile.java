@@ -1,12 +1,12 @@
 package co.biogram.main.activity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -29,9 +29,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
 import android.text.InputFilter;
@@ -42,13 +41,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -74,6 +74,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
@@ -84,7 +85,7 @@ import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 
-public class ActivityProfile extends AppCompatActivity
+public class ActivityProfile extends FragmentActivity
 {
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
@@ -105,8 +106,6 @@ public class ActivityProfile extends AppCompatActivity
     private final int FromCamera = 2;
 
     private boolean IsCover = false;
-
-    private AlertDialog DialogProfile, DialogCover;
 
     private File FileCover;
     private File FileProfile;
@@ -192,7 +191,7 @@ public class ActivityProfile extends AppCompatActivity
                 TextViewSave.setVisibility(View.GONE);
                 LoadingViewSave.Start();
 
-                HashMap<String, File> UploadFile = new HashMap<>();
+                Map<String, File> UploadFile = new HashMap<>();
 
                 if (FileProfile != null || FileCover != null)
                 {
@@ -265,7 +264,6 @@ public class ActivityProfile extends AppCompatActivity
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Log(e.toString());
                             // Leave Me Alone
                         }
                     }
@@ -275,7 +273,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayoutHeader.addView(TextViewSave);
 
-        RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
+        RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
         ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewBlankLine = new View(context);
@@ -302,9 +300,154 @@ public class ActivityProfile extends AppCompatActivity
         ScrollViewMain.addView(RelativeLayoutMain);
 
         RelativeLayout RelativeLayoutCover = new RelativeLayout(context);
-        RelativeLayoutCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(160)));
+        RelativeLayoutCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
         RelativeLayoutCover.setBackgroundResource(R.color.BlueLight);
-        RelativeLayoutCover.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCover.show(); } });
+        RelativeLayoutCover.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final Dialog DialogCover = new Dialog(ActivityProfile.this);
+                DialogCover.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogCover.setCancelable(true);
+
+                LinearLayout Root = new LinearLayout(context);
+                Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                Root.setBackgroundResource(R.color.White);
+                Root.setOrientation(LinearLayout.VERTICAL);
+
+                TextView TextViewTitle = new TextView(context);
+                TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewTitle.setText(getString(R.string.ActivityProfileDialogTitle));
+                TextViewTitle.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                TextViewTitle.setTypeface(null, Typeface.BOLD);
+
+                Root.addView(TextViewTitle);
+
+                View ViewLine = new View(context);
+                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
+                ViewLine.setBackgroundResource(R.color.Gray);
+
+                Root.addView(ViewLine);
+
+                TextView TextViewCamera = new TextView(context);
+                TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewCamera.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewCamera.setText(getString(R.string.ActivityProfileDialogCamera));
+                TextViewCamera.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewCamera.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewCamera.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfile.this, new PermissionHandler.PermissionEvent()
+                        {
+                            @Override
+                            public void OnGranted()
+                            {
+                                boolean IsCreated = true;
+                                File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Temp/Picture");
+
+                                if (!Root.exists())
+                                    IsCreated = Root.mkdirs();
+
+                                if (IsCreated)
+                                {
+                                    IsCover = true;
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    CaptureUri = Uri.fromFile(new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg")));
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, CaptureUri);
+                                    intent.putExtra("return-data", true);
+                                    startActivityForResult(intent, FromCamera);
+                                }
+                            }
+
+                            @Override
+                            public void OnFailed()
+                            {
+                                MiscHandler.Toast(context, getString(R.string.GeneralPermissionCamera));
+                            }
+                        });
+
+                        DialogCover.dismiss();
+                    }
+                });
+
+                Root.addView(TextViewCamera);
+
+                View ViewLine2 = new View(context);
+                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
+                ViewLine2.setBackgroundResource(R.color.Gray);
+
+                Root.addView(ViewLine2);
+
+                TextView TextViewGallery = new TextView(context);
+                TextViewGallery.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewGallery.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewGallery.setText(getString(R.string.ActivityProfileDialogGallery));
+                TextViewGallery.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewGallery.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewGallery.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        IsCover = true;
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, getString(R.string.ActivityProfileCompleteAction)), FromFile);
+
+                        DialogCover.dismiss();
+                    }
+                });
+
+                Root.addView(TextViewGallery);
+
+                View ViewLine3 = new View(context);
+                ViewLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
+                ViewLine3.setBackgroundResource(R.color.Gray);
+
+                Root.addView(ViewLine3);
+
+                TextView TextViewRemove = new TextView(context);
+                TextViewRemove.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewRemove.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewRemove.setText(getString(R.string.ActivityProfileDialogRemove));
+                TextViewRemove.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewRemove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewRemove.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        RequestHandler.Core().Method("POST")
+                        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
+                        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .Tag("ActivityProfile")
+                        .Build(new RequestHandler.OnCompleteCallBack()
+                        {
+                            @Override
+                            public void OnFinish(String Response, int Status)
+                            {
+                                ImageViewCover.setImageResource(R.color.BlueLight);
+                                MiscHandler.Toast(context, getString(R.string.ActivityProfileImageCover));
+                            }
+                        });
+
+                        DialogCover.dismiss();
+                    }
+                });
+
+                Root.addView(TextViewRemove);
+
+                DialogCover.setContentView(Root);
+                DialogCover.show();
+            }
+        });
 
         RelativeLayoutMain.addView(RelativeLayoutCover);
 
@@ -321,7 +464,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayoutCover.addView(ViewBlackCover);
 
-        RelativeLayout.LayoutParams ImageViewCoverAddParam =  new RelativeLayout.LayoutParams(MiscHandler.ToDimension(50), MiscHandler.ToDimension(50));
+        RelativeLayout.LayoutParams ImageViewCoverAddParam =  new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
         ImageViewCoverAddParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         ImageView ImageViewCoverAdd = new ImageView(context);
@@ -331,29 +474,174 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayoutCover.addView(ImageViewCoverAdd);
 
-        RelativeLayout.LayoutParams RelativeLayoutProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(90), MiscHandler.ToDimension(90));
-        RelativeLayoutProfileParam.setMargins(MiscHandler.ToDimension(15), MiscHandler.ToDimension(110), 0, 0);
+        RelativeLayout.LayoutParams RelativeLayoutProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90));
+        RelativeLayoutProfileParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 110), 0, 0);
 
         RelativeLayout RelativeLayoutProfile = new RelativeLayout(context);
         RelativeLayoutProfile.setLayoutParams(RelativeLayoutProfileParam);
         RelativeLayoutProfile.setId(MiscHandler.GenerateViewID());
-        RelativeLayoutProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogProfile.show(); } });
+        RelativeLayoutProfile.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final Dialog DialogProfile = new Dialog(ActivityProfile.this);
+                DialogProfile.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogProfile.setCancelable(true);
+
+                LinearLayout Root = new LinearLayout(context);
+                Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                Root.setBackgroundResource(R.color.White);
+                Root.setOrientation(LinearLayout.VERTICAL);
+
+                TextView TextViewTitle = new TextView(context);
+                TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewTitle.setText(getString(R.string.ActivityProfileDialogTitle));
+                TextViewTitle.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                TextViewTitle.setTypeface(null, Typeface.BOLD);
+
+                Root.addView(TextViewTitle);
+
+                View ViewLine = new View(context);
+                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
+                ViewLine.setBackgroundResource(R.color.Gray);
+
+                Root.addView(ViewLine);
+
+                TextView TextViewCamera = new TextView(context);
+                TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewCamera.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewCamera.setText(getString(R.string.ActivityProfileDialogCamera));
+                TextViewCamera.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewCamera.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewCamera.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfile.this, new PermissionHandler.PermissionEvent()
+                        {
+                            @Override
+                            public void OnGranted()
+                            {
+                                boolean IsCreated = true;
+                                File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Temp/Picture");
+
+                                if (!Root.exists())
+                                    IsCreated = Root.mkdirs();
+
+                                if (IsCreated)
+                                {
+                                    IsCover = false;
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    CaptureUri = Uri.fromFile(new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg")));
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, CaptureUri);
+                                    intent.putExtra("return-data", true);
+                                    startActivityForResult(intent, FromCamera);
+                                }
+                            }
+
+                            @Override
+                            public void OnFailed()
+                            {
+                                MiscHandler.Toast(context, getString(R.string.GeneralPermissionCamera));
+                            }
+                        });
+
+                        DialogProfile.dismiss();
+                    }
+                });
+
+                Root.addView(TextViewCamera);
+
+                View ViewLine2 = new View(context);
+                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
+                ViewLine2.setBackgroundResource(R.color.Gray);
+
+                Root.addView(ViewLine2);
+
+                TextView TextViewGallery = new TextView(context);
+                TextViewGallery.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewGallery.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewGallery.setText(getString(R.string.ActivityProfileDialogGallery));
+                TextViewGallery.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewGallery.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewGallery.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        IsCover = false;
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, getString(R.string.ActivityProfileCompleteAction)), FromFile);
+
+                        DialogProfile.dismiss();
+                    }
+                });
+
+                Root.addView(TextViewGallery);
+
+                View ViewLine3 = new View(context);
+                ViewLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
+                ViewLine3.setBackgroundResource(R.color.Gray);
+
+                Root.addView(ViewLine3);
+
+                TextView TextViewRemove = new TextView(context);
+                TextViewRemove.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextViewRemove.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewRemove.setText(getString(R.string.ActivityProfileDialogRemove));
+                TextViewRemove.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                TextViewRemove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewRemove.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        RequestHandler.Core().Method("POST")
+                        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
+                        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .Tag("ActivityProfile")
+                        .Build(new RequestHandler.OnCompleteCallBack()
+                        {
+                            @Override
+                            public void OnFinish(String Response, int Status)
+                            {
+                                ImageViewCircleProfile.setImageResource(R.color.BlueLight);
+                                MiscHandler.Toast(context, getString(R.string.ActivityProfileImageCover));
+                            }
+                        });
+
+                        DialogProfile.dismiss();
+                    }
+                });
+
+                Root.addView(TextViewRemove);
+
+                DialogProfile.setContentView(Root);
+                DialogProfile.show();
+            }
+        });
 
         RelativeLayoutMain.addView(RelativeLayoutProfile);
 
         ImageViewCircleProfile = new ImageViewCircle(context);
         ImageViewCircleProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewCircleProfile.SetBorderColor(R.color.White);
-        ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(3));
+        ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
         ImageViewCircleProfile.setImageResource(R.color.BlueLight);
 
         RelativeLayoutProfile.addView(ImageViewCircleProfile);
 
         GradientDrawable ShapeViewProfile = new GradientDrawable();
         ShapeViewProfile.setShape(GradientDrawable.OVAL);
-        ShapeViewProfile.setCornerRadius(MiscHandler.ToDimension(15));
+        ShapeViewProfile.setCornerRadius(MiscHandler.ToDimension(context, 15));
         ShapeViewProfile.setColor(Color.BLACK);
-        ShapeViewProfile.setStroke(MiscHandler.ToDimension(3), Color.WHITE);
+        ShapeViewProfile.setStroke(MiscHandler.ToDimension(context, 3), Color.WHITE);
 
         View ViewBlackProfile = new View(context);
         ViewBlackProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -362,7 +650,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayoutProfile.addView(ViewBlackProfile);
 
-        RelativeLayout.LayoutParams ImageViewProfileAddParam =  new RelativeLayout.LayoutParams(MiscHandler.ToDimension(35), MiscHandler.ToDimension(35));
+        RelativeLayout.LayoutParams ImageViewProfileAddParam =  new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 35), MiscHandler.ToDimension(context, 35));
         ImageViewProfileAddParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         ImageView ImageViewProfileAdd = new ImageView(context);
@@ -375,7 +663,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewUsernameParam.addRule(RelativeLayout.BELOW, RelativeLayoutProfile.getId());
-        TextViewUsernameParam.setMargins(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), 0);
+        TextViewUsernameParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), 0);
 
         TextView TextViewUsername = new TextView(context);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
@@ -388,7 +676,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
-        EditTextUsernameParam.setMargins(MiscHandler.ToDimension(10), 0, MiscHandler.ToDimension(10), 0);
+        EditTextUsernameParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
         EditTextUsername = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextUsername.setLayoutParams(EditTextUsernameParam);
@@ -426,7 +714,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams TextViewDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewDescriptionParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
-        TextViewDescriptionParam.setMargins(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), 0);
+        TextViewDescriptionParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), 0);
 
         TextView TextViewDescription = new TextView(context);
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
@@ -439,7 +727,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams EditTextDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
-        EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(10), 0, MiscHandler.ToDimension(10), 0);
+        EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
         EditTextDescription = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextDescription.setLayoutParams(EditTextDescriptionParam);
@@ -453,7 +741,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams TextViewLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewLinkParam.addRule(RelativeLayout.BELOW, EditTextDescription.getId());
-        TextViewLinkParam.setMargins(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), 0);
+        TextViewLinkParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), 0);
 
         TextView TextViewLink = new TextView(context);
         TextViewLink.setLayoutParams(TextViewLinkParam);
@@ -466,7 +754,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams EditTextLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextLinkParam.addRule(RelativeLayout.BELOW, TextViewLink.getId());
-        EditTextLinkParam.setMargins(MiscHandler.ToDimension(10), 0, MiscHandler.ToDimension(10), 0);
+        EditTextLinkParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
         EditTextLink = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextLink.setLayoutParams(EditTextLinkParam);
@@ -480,7 +768,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams TextViewLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewLocationParam.addRule(RelativeLayout.BELOW, EditTextLink.getId());
-        TextViewLocationParam.setMargins(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), 0);
+        TextViewLocationParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), 0);
 
         TextView TextViewLocation = new TextView(context);
         TextViewLocation.setLayoutParams(TextViewLocationParam);
@@ -493,7 +781,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams EditTextLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextLocationParam.addRule(RelativeLayout.BELOW, TextViewLocation.getId());
-        EditTextLocationParam.setMargins(MiscHandler.ToDimension(10), 0, MiscHandler.ToDimension(10), 0);
+        EditTextLocationParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
         EditTextLocation = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextLocation.setLayoutParams(EditTextLocationParam);
@@ -509,7 +797,7 @@ public class ActivityProfile extends AppCompatActivity
                 if (getCurrentFocus() != null)
                     getCurrentFocus().clearFocus();
 
-                getFragmentManager().beginTransaction().replace(R.id.ActivityProfileContainer, new FragmentMap()).addToBackStack("FragmentMap").commit();
+                getFragmentManager().beginTransaction().add(R.id.ActivityProfileContainer, new FragmentMap()).addToBackStack("FragmentMap").commit();
             }
         });
 
@@ -517,7 +805,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams TextViewEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewEmailParam.addRule(RelativeLayout.BELOW, EditTextLocation.getId());
-        TextViewEmailParam.setMargins(MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), MiscHandler.ToDimension(15), 0);
+        TextViewEmailParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), 0);
 
         TextView TextViewEmail = new TextView(context);
         TextViewEmail.setLayoutParams(TextViewEmailParam);
@@ -530,7 +818,7 @@ public class ActivityProfile extends AppCompatActivity
 
         RelativeLayout.LayoutParams EditTextEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
-        EditTextEmailParam.setMargins(MiscHandler.ToDimension(10), 0, MiscHandler.ToDimension(10), 0);
+        EditTextEmailParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
         EditTextEmail = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
         EditTextEmail.setLayoutParams(EditTextEmailParam);
@@ -579,8 +867,6 @@ public class ActivityProfile extends AppCompatActivity
         RelativeLayoutLoading.addView(TextViewTry);
         EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
 
-        InitializationCover();
-        InitializationProfile();
         RetrieveDataFromServer();
 
         setContentView(Root);
@@ -666,7 +952,6 @@ public class ActivityProfile extends AppCompatActivity
                             FileCover = new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
                             FileOutputStream FileStream = new FileOutputStream(FileCover);
                             ByteArrayOutputStream ImageByteArray = new ByteArrayOutputStream();
-
                             MediaStore.Images.Media.getBitmap(getContentResolver(), ResultURI).compress(Bitmap.CompressFormat.JPEG, 70, ImageByteArray);
                             ImageByteArray.writeTo(FileStream);
                             FileStream.close();
@@ -694,7 +979,6 @@ public class ActivityProfile extends AppCompatActivity
                             FileProfile = new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
                             FileOutputStream FileStream = new FileOutputStream(FileProfile);
                             ByteArrayOutputStream ImageByteArray = new ByteArrayOutputStream();
-
                             MediaStore.Images.Media.getBitmap(getContentResolver(), ResultURI).compress(Bitmap.CompressFormat.JPEG, 70, ImageByteArray);
                             ImageByteArray.writeTo(FileStream);
                             FileStream.close();
@@ -731,19 +1015,19 @@ public class ActivityProfile extends AppCompatActivity
             Root.setClickable(true);
 
             RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
-            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
+            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
             RelativeLayoutHeader.setBackgroundResource(R.color.White5);
             RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
             Root.addView(RelativeLayoutHeader);
 
             ImageView ImageViewBack = new ImageView(context);
-            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
             ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewBack.setPadding(MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12));
+            ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
             ImageViewBack.setImageResource(R.drawable.ic_back_blue);
             ImageViewBack.setId(MiscHandler.GenerateViewID());
-            ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().getFragmentManager().beginTransaction().remove(FragmentMap.this).commit(); } });
+            ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().onBackPressed(); } });
 
             RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -760,20 +1044,20 @@ public class ActivityProfile extends AppCompatActivity
 
             RelativeLayoutHeader.addView(TextViewHeader);
 
-            RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), RelativeLayout.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
             ImageView ImageViewSearch = new ImageView(context);
             ImageViewSearch.setLayoutParams(ImageViewSearchParam);
             ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewSearch.setPadding(MiscHandler.ToDimension(16), MiscHandler.ToDimension(16), MiscHandler.ToDimension(16), MiscHandler.ToDimension(16));
+            ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
             ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
             ImageViewSearch.setId(MiscHandler.GenerateViewID());
-            ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getFragmentManager().beginTransaction().replace(R.id.ActivityProfileContainer, new FragmentSearch()).addToBackStack("FragmentSearch").commit(); } });
+            ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getFragmentManager().beginTransaction().add(R.id.ActivityProfileContainer, new FragmentSearch()).addToBackStack("FragmentSearch").commit(); } });
 
             RelativeLayoutHeader.addView(ImageViewSearch);
 
-            RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
+            RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
             ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
             View ViewBlankLine = new View(context);
@@ -783,7 +1067,7 @@ public class ActivityProfile extends AppCompatActivity
 
             Root.addView(ViewBlankLine);
 
-            RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56));
+            RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
             RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
             RelativeLayout RelativeLayoutBottom = new RelativeLayout(context);
@@ -794,8 +1078,8 @@ public class ActivityProfile extends AppCompatActivity
             Root.addView(RelativeLayoutBottom);
 
             ImageView ImageViewSend = new ImageView(context);
-            ImageViewSend.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), RelativeLayout.LayoutParams.MATCH_PARENT));
-            ImageViewSend.setPadding(MiscHandler.ToDimension(13), MiscHandler.ToDimension(13), MiscHandler.ToDimension(13), MiscHandler.ToDimension(13));
+            ImageViewSend.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewSend.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
             ImageViewSend.setImageResource(R.drawable.ic_location_blue);
             ImageViewSend.setId(MiscHandler.GenerateViewID());
             ImageViewSend.setOnClickListener(new View.OnClickListener()
@@ -803,6 +1087,8 @@ public class ActivityProfile extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
+                    ActivityProfile Parent = (ActivityProfile) getActivity();
+
                     if (_GoogleMap != null)
                     {
                         double Lat = _GoogleMap.getCameraPosition().target.latitude;
@@ -813,11 +1099,11 @@ public class ActivityProfile extends AppCompatActivity
                         if (Name.length() > 25)
                             Name = Name.substring(0, 25) + " ...";
 
-                        ((ActivityProfile) getActivity()).Position = (float) Lat + ":" + (float) Lon;
-                        ((ActivityProfile) getActivity()).EditTextLocation.setText(Name);
+                        Parent.Position = (float) Lat + ":" + (float) Lon;
+                        Parent.EditTextLocation.setText(Name);
                     }
 
-                    getActivity().getFragmentManager().beginTransaction().remove(FragmentMap.this).commit();
+                    Parent.onBackPressed();
                 }
             });
 
@@ -825,7 +1111,7 @@ public class ActivityProfile extends AppCompatActivity
 
             RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewSend.getId());
-            TextViewNameParam.setMargins(MiscHandler.ToDimension(5), MiscHandler.ToDimension(5), MiscHandler.ToDimension(5), MiscHandler.ToDimension(5));
+            TextViewNameParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 5));
 
             TextViewName = new TextView(context);
             TextViewName.setLayoutParams(TextViewNameParam);
@@ -838,7 +1124,7 @@ public class ActivityProfile extends AppCompatActivity
             RelativeLayout.LayoutParams TextViewPositionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewPositionParam.addRule(RelativeLayout.RIGHT_OF, ImageViewSend.getId());
             TextViewPositionParam.addRule(RelativeLayout.BELOW, TextViewName.getId());
-            TextViewPositionParam.setMargins(MiscHandler.ToDimension(5),0, 0, 0);
+            TextViewPositionParam.setMargins(MiscHandler.ToDimension(context, 5),0, 0, 0);
 
             TextViewPosition = new TextView(context);
             TextViewPosition.setLayoutParams(TextViewPositionParam);
@@ -847,7 +1133,7 @@ public class ActivityProfile extends AppCompatActivity
 
             RelativeLayoutBottom.addView(TextViewPosition);
 
-            RelativeLayout.LayoutParams ViewBlankLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
+            RelativeLayout.LayoutParams ViewBlankLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
             ViewBlankLine2Param.addRule(RelativeLayout.ABOVE, RelativeLayoutBottom.getId());
 
             View ViewBlankLine2 = new View(context);
@@ -867,10 +1153,10 @@ public class ActivityProfile extends AppCompatActivity
 
             Root.addView(ViewCenter);
 
-            RelativeLayout.LayoutParams ImageViewPinParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(24), MiscHandler.ToDimension(42));
+            RelativeLayout.LayoutParams ImageViewPinParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 24), MiscHandler.ToDimension(context, 42));
             ImageViewPinParam.addRule(RelativeLayout.ABOVE, ViewCenter.getId());
             ImageViewPinParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            ImageViewPinParam.setMargins(0, MiscHandler.ToDimension(21), 0, 0);
+            ImageViewPinParam.setMargins(0, MiscHandler.ToDimension(context, 21), 0, 0);
 
             ImageView ImageViewPin = new ImageView(context);
             ImageViewPin.setLayoutParams(ImageViewPinParam);
@@ -898,9 +1184,7 @@ public class ActivityProfile extends AppCompatActivity
                     return super.onInterceptTouchEvent(m);
                 }
             };
-
             _MapView.onCreate(savedInstanceState);
-
             _MapView.getMapAsync(new OnMapReadyCallback()
             {
                 @Override
@@ -982,7 +1266,7 @@ public class ActivityProfile extends AppCompatActivity
         {
             private double Latitude, Longitude;
             private Handler MapHandler;
-            private Runnable MapRunnable = new Runnable()
+            private final Runnable MapRunnable = new Runnable()
             {
                 @Override
                 public void run()
@@ -1037,7 +1321,7 @@ public class ActivityProfile extends AppCompatActivity
                 Latitude = latitude;
                 Longitude = longitude;
 
-                if (MapHandler != null && MapRunnable != null)
+                if (MapHandler != null)
                 {
                     MapHandler.removeCallbacks(MapRunnable);
                     MapHandler.post(MapRunnable);
@@ -1063,7 +1347,7 @@ public class ActivityProfile extends AppCompatActivity
     {
         private EditText EditTextSearch;
         private SearchAdapter _SearchAdapter;
-        private List<SearchStruct> SearchList = new ArrayList<>();
+        private final List<SearchStruct> SearchList = new ArrayList<>();
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
@@ -1076,29 +1360,29 @@ public class ActivityProfile extends AppCompatActivity
             Root.setClickable(true);
 
             RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
-            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
+            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
             RelativeLayoutHeader.setBackgroundResource(R.color.White5);
             RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
             Root.addView(RelativeLayoutHeader);
 
             ImageView ImageViewBack = new ImageView(context);
-            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
             ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewBack.setPadding(MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12));
+            ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
             ImageViewBack.setImageResource(R.drawable.ic_back_blue);
             ImageViewBack.setId(MiscHandler.GenerateViewID());
             ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { MiscHandler.HideSoftKey(getActivity()); getActivity().onBackPressed(); } });
 
             RelativeLayoutHeader.addView(ImageViewBack);
 
-            RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), RelativeLayout.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
             ImageView ImageViewSearch = new ImageView(context);
             ImageViewSearch.setLayoutParams(ImageViewSearchParam);
             ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewSearch.setPadding(MiscHandler.ToDimension(16), MiscHandler.ToDimension(16), MiscHandler.ToDimension(16), MiscHandler.ToDimension(16));
+            ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
             ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
             ImageViewSearch.setId(MiscHandler.GenerateViewID());
             ImageViewSearch.setOnClickListener(new View.OnClickListener()
@@ -1176,10 +1460,11 @@ public class ActivityProfile extends AppCompatActivity
             EditTextSearch.setTextColor(ContextCompat.getColor(context, R.color.Black));
             EditTextSearch.setHint("Search");
             EditTextSearch.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            EditTextSearch.requestFocus();
 
             RelativeLayoutHeader.addView(EditTextSearch);
 
-            RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(1));
+            RelativeLayout.LayoutParams ViewBlankLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
             ViewBlankLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
             View ViewBlankLine = new View(context);
@@ -1212,30 +1497,26 @@ public class ActivityProfile extends AppCompatActivity
                     if (Name.length() > 25)
                         Name = Name.substring(0, 25) + " ...";
 
-                    ((ActivityProfile) getActivity()).Position = (float) Search.Latitude + ":" + (float) Search.Longitude;
-                    ((ActivityProfile) getActivity()).EditTextLocation.setText(Name);
-
-                    getActivity().getFragmentManager().beginTransaction().remove(FragmentSearch.this).commit();
+                    ActivityProfile Parent = (ActivityProfile) getActivity();
+                    Parent.Position = (float) Search.Latitude + ":" + (float) Search.Longitude;
+                    Parent.EditTextLocation.setText(Name);
+                    Parent.onBackPressed();
                 }
             });
 
             Root.addView(ListViewSearch);
 
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
             InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            IMM.showSoftInput(EditTextSearch, 0);
             IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            EditTextSearch.requestFocus();
 
             return Root;
         }
 
         private class SearchStruct
         {
-            String Name;
-            double Latitude;
-            double Longitude;
+            final String Name;
+            final double Latitude;
+            final double Longitude;
 
             SearchStruct(String name, double latitude, double longitude)
             {
@@ -1247,7 +1528,7 @@ public class ActivityProfile extends AppCompatActivity
 
         private class SearchAdapter extends ArrayAdapter<SearchStruct>
         {
-            Context context;
+            final Context context;
 
             SearchAdapter(Context c, List<SearchStruct> SearchList)
             {
@@ -1261,15 +1542,15 @@ public class ActivityProfile extends AppCompatActivity
                 SearchStruct Search = SearchList.get(position);
 
                 RelativeLayout MainView = new RelativeLayout(context);
-                MainView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(56)));
+                MainView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
 
                 if (Search == null)
                     return MainView;
 
                 ImageView ImageViewIcon = new ImageView(context);
-                ImageViewIcon.setPadding(MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12), MiscHandler.ToDimension(12));
+                ImageViewIcon.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
                 ImageViewIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                ImageViewIcon.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(56), RelativeLayout.LayoutParams.MATCH_PARENT));
+                ImageViewIcon.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
                 ImageViewIcon.setImageResource(R.drawable.ic_location_blue);
                 ImageViewIcon.setId(MiscHandler.GenerateViewID());
 
@@ -1277,7 +1558,7 @@ public class ActivityProfile extends AppCompatActivity
 
                 RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewIcon.getId());
-                TextViewNameParam.setMargins(0, MiscHandler.ToDimension(5), 0, 0);
+                TextViewNameParam.setMargins(0, MiscHandler.ToDimension(context, 5), 0, 0);
 
                 TextView TextViewName = new TextView(context);
                 TextViewName.setLayoutParams(TextViewNameParam);
@@ -1290,7 +1571,7 @@ public class ActivityProfile extends AppCompatActivity
                 RelativeLayout.LayoutParams TextViewPositionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewPositionParam.addRule(RelativeLayout.RIGHT_OF, ImageViewIcon.getId());
                 TextViewPositionParam.addRule(RelativeLayout.BELOW, TextViewName.getId());
-                TextViewPositionParam.setMargins(0, MiscHandler.ToDimension(5), 0, 0);
+                TextViewPositionParam.setMargins(0, MiscHandler.ToDimension(context, 5), 0, 0);
 
                 TextView TextViewPosition = new TextView(context);
                 TextViewPosition.setLayoutParams(TextViewPositionParam);
@@ -1303,158 +1584,15 @@ public class ActivityProfile extends AppCompatActivity
         }
     }
 
-    private void InitializationProfile()
-    {
-        final String[] DialogItems = new String[] { getString(R.string.ActivityProfileDialogMessage1), getString(R.string.ActivityProfileDialogMessage2), getString(R.string.ActivityProfileDialogMessage3) };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, DialogItems);
-        AlertDialog.Builder ProfileBuilder = new AlertDialog.Builder(this);
-        ProfileBuilder.setTitle(getString(R.string.ActivityProfileDialogMessage4));
-        ProfileBuilder.setAdapter(adapter, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int Position)
-            {
-                if (Position == 0)
-                {
-                    _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfile.this, new PermissionHandler.PermissionEvent()
-                    {
-                        @Override
-                        public void OnGranted()
-                        {
-                            boolean IsCreated = true;
-                            File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Temp/Picture");
-
-                            if (!Root.exists())
-                                IsCreated = Root.mkdirs();
-
-                            if (IsCreated)
-                            {
-                                IsCover = false;
-                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                CaptureUri = Uri.fromFile(new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg")));
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, CaptureUri);
-                                intent.putExtra("return-data", true);
-                                startActivityForResult(intent, FromCamera);
-                            }
-                        }
-
-                        @Override
-                        public void OnFailed()
-                        {
-                            MiscHandler.Toast(ActivityProfile.this, getString(R.string.GeneralPermissionCamera));
-                        }
-                    });
-                }
-                else if (Position == 1)
-                {
-                    IsCover = false;
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, getString(R.string.ActivityProfileCompleteAction)), FromFile);
-                }
-                else if (Position == 2)
-                {
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
-                    .Header("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .Tag("ActivityProfile")
-                    .Build(new RequestHandler.OnCompleteCallBack()
-                    {
-                        @Override
-                        public void OnFinish(String Response, int Status)
-                        {
-                            ImageViewCircleProfile.setImageResource(R.color.BlueLight);
-                            MiscHandler.Toast(ActivityProfile.this, getString(R.string.ActivityProfileImageCover));
-                        }
-                    });
-                }
-            }
-        });
-
-        DialogProfile = ProfileBuilder.create();
-    }
-
-    private void InitializationCover()
-    {
-        String[] DialogItem = new String[] { getString(R.string.ActivityProfileDialogMessage1), getString(R.string.ActivityProfileDialogMessage2), getString(R.string.ActivityProfileDialogMessage3) };
-
-        AlertDialog.Builder BackGroundBuilder = new AlertDialog.Builder(this);
-        BackGroundBuilder.setTitle(getString(R.string.ActivityProfileDialogMessage4));
-        BackGroundBuilder.setAdapter(new ArrayAdapter<>(this, android.R.layout.select_dialog_item, DialogItem), new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface d, int Position)
-            {
-                if (Position == 0)
-                {
-                    _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfile.this, new PermissionHandler.PermissionEvent()
-                    {
-                        @Override
-                        public void OnGranted()
-                        {
-                            boolean IsCreated = true;
-                            File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Temp/Picture");
-
-                            if (!Root.exists())
-                                IsCreated = Root.mkdirs();
-
-                            if (IsCreated)
-                            {
-                                IsCover = true;
-                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                CaptureUri = Uri.fromFile(new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg")));
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, CaptureUri);
-                                intent.putExtra("return-data", true);
-                                startActivityForResult(intent, FromCamera);
-                            }
-                        }
-
-                        @Override
-                        public void OnFailed()
-                        {
-                            MiscHandler.Toast(ActivityProfile.this, getString(R.string.GeneralPermissionCamera));
-                        }
-                    });
-
-                }
-                else if (Position == 1)
-                {
-                    IsCover = true;
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, getString(R.string.ActivityProfileCompleteAction)), FromFile);
-                }
-                else if (Position == 2)
-                {
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
-                    .Header("TOKEN", SharedHandler.GetString("TOKEN"))
-                    .Tag("ActivityProfile")
-                    .Build(new RequestHandler.OnCompleteCallBack()
-                    {
-                        @Override
-                        public void OnFinish(String Response, int Status)
-                        {
-                            ImageViewCover.setImageResource(R.color.BlueLight);
-                            MiscHandler.Toast(ActivityProfile.this, getString(R.string.ActivityProfileImageCover));
-                        }
-                    });
-                }
-            }
-        });
-
-        DialogCover = BackGroundBuilder.create();
-    }
-
     private void RetrieveDataFromServer()
     {
+        final Context context = this;
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
         RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
-        .Header("TOKEN", SharedHandler.GetString("TOKEN"))
+        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .Tag("ActivityProfile")
         .Build(new RequestHandler.OnCompleteCallBack()
         {
@@ -1488,7 +1626,7 @@ public class ActivityProfile extends AppCompatActivity
                         Position = Data.getString("Position");
 
                         RequestHandler.Core().LoadImage(ImageViewCover, Data.getString("Cover"), "ActivityProfile", false);
-                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfile", MiscHandler.ToDimension(90), MiscHandler.ToDimension(90), true);
+                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfile", MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90), true);
                     }
                 }
                 catch (Exception e)
@@ -1501,6 +1639,8 @@ public class ActivityProfile extends AppCompatActivity
 
     private void DoCrop()
     {
+        Context context = this;
+
         if (IsCover)
         {
             try
@@ -1526,7 +1666,7 @@ public class ActivityProfile extends AppCompatActivity
 
                 int Scale = 1;
 
-                while ((o.outWidth / Scale / 2) >= (int)(MiscHandler.ToDimension(160) * 2.45f) && (o.outHeight / Scale / 2) >= MiscHandler.ToDimension(160))
+                while ((o.outWidth / Scale / 2) >= (int) (MiscHandler.ToDimension(context, 160) * 2.45f) && (o.outHeight / Scale / 2) >= MiscHandler.ToDimension(context, 160))
                 {
                     Scale *= 2;
                 }
@@ -1554,15 +1694,17 @@ public class ActivityProfile extends AppCompatActivity
                 .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
                 .setAspectRatio(2, 1)
                 .setFixAspectRatio(true)
-                .setRequestedSize((int)(MiscHandler.ToDimension(160) * 2.45f), MiscHandler.ToDimension(160), CropImageView.RequestSizeOptions.RESIZE_INSIDE)
+                .setRequestedSize((int)(MiscHandler.ToDimension(context, 160) * 2.45f), MiscHandler.ToDimension(context, 160), CropImageView.RequestSizeOptions.RESIZE_INSIDE)
                 .start(this);
             }
             catch (Exception e)
             {
                 // Leave Me Alone
             }
+
+            return;
         }
-        else
-            CropImage.activity(CaptureUri).setAllowRotation(true).setActivityTitle(getString(R.string.ActivityProfileCrop)).setGuidelines(CropImageView.Guidelines.ON_TOUCH).setFixAspectRatio(true).start(this);
+
+        CropImage.activity(CaptureUri).setAllowRotation(true).setActivityTitle(getString(R.string.ActivityProfileCrop)).setGuidelines(CropImageView.Guidelines.ON_TOUCH).setFixAspectRatio(true).start(this);
     }
 }

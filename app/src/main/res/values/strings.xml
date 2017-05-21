@@ -77,10 +77,10 @@
     <string name="ActivityProfileUpload">Please Wait, Uploading Data &#8230;</string>
     <string name="ActivityProfileCrop">Image Crop</string>
     <string name="ActivityProfileImageCover">Cover Image Was Removed</string>
-    <string name="ActivityProfileDialogMessage1">Take From Camera</string>
-    <string name="ActivityProfileDialogMessage2">Select From Gallery</string>
-    <string name="ActivityProfileDialogMessage3">Remove Current Profile</string>
-    <string name="ActivityProfileDialogMessage4">Your Choices</string>
+    <string name="ActivityProfileDialogCamera">Take From Camera</string>
+    <string name="ActivityProfileDialogGallery">Select From Gallery</string>
+    <string name="ActivityProfileDialogRemove">Remove Current Profile</string>
+    <string name="ActivityProfileDialogTitle">Your Choices</string>
     <string name="ActivityProfileCompleteAction">Complete Action Using</string>
 
     <string name="FragmentMoment">Moment</string>

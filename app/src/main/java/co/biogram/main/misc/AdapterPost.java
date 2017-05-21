@@ -798,19 +798,19 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
     public static class PostStruct
     {
-        String PostID;
-        String OwnerID;
-        public int Type;
-        int Category;
-        public long Time;
+        final String PostID;
+        final String OwnerID;
+        public final int Type;
+        final int Category;
+        public final long Time;
         boolean Comment;
-        public String Message;
-        public String Data;
-        public String Username;
-        public String Avatar;
+        public final String Message;
+        public final String Data;
+        public final String Username;
+        public final String Avatar;
         boolean Like;
         int LikeCount;
-        int CommentCount;
+        final int CommentCount;
         boolean BookMark;
 
         public PostStruct(String postID, String ownerID, int type, int category, long time, boolean comment, String message, String data, String username, String avatar, boolean like, int likeCount, int commentCount, boolean bookmark)

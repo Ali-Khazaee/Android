@@ -83,12 +83,12 @@ public class FragmentPostDetails extends Fragment
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
+        Root.setBackgroundResource(R.color.White);
         Root.setClickable(true);
 
         RelativeLayout Header = new RelativeLayout(context);
         Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-        Header.setBackgroundColor(ContextCompat.getColor(context, R.color.White5));
+        Header.setBackgroundResource(R.color.White5);
         Header.setId(MiscHandler.GenerateViewID());
 
         Root.addView(Header);
@@ -142,10 +142,10 @@ public class FragmentPostDetails extends Fragment
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
 
-                LinearLayout DialogOptionRoot = new LinearLayout(context);
-                DialogOptionRoot.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                DialogOptionRoot.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
-                DialogOptionRoot.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout Root = new LinearLayout(context);
+                Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                Root.setBackgroundResource(R.color.White);
+                Root.setOrientation(LinearLayout.VERTICAL);
 
                 TextView TextViewFollow = new TextView(context);
                 TextViewFollow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -163,13 +163,13 @@ public class FragmentPostDetails extends Fragment
                     }
                 });
 
-                DialogOptionRoot.addView(TextViewFollow);
+                Root.addView(TextViewFollow);
 
                 View ViewFollowLine = new View(context);
                 ViewFollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewFollowLine.setBackgroundResource(R.color.Gray1);
 
-                DialogOptionRoot.addView(ViewFollowLine);
+                Root.addView(ViewFollowLine);
 
                 final TextView TextViewTurn = new TextView(context);
                 TextViewTurn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -216,14 +216,14 @@ public class FragmentPostDetails extends Fragment
                 else
                     TextViewTurn.setText(getString(R.string.FragmentPostDetailsTurnOff));
 
-                DialogOptionRoot.addView(TextViewTurn);
+                Root.addView(TextViewTurn);
 
                 View ViewTurnLine = new View(context);
                 ViewTurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewTurnLine.setBackgroundResource(R.color.Gray1);
                 ViewTurnLine.setVisibility(View.GONE);
 
-                DialogOptionRoot.addView(ViewTurnLine);
+                Root.addView(ViewTurnLine);
 
                 TextView TextViewCopy = new TextView(context);
                 TextViewCopy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -245,13 +245,13 @@ public class FragmentPostDetails extends Fragment
                     }
                 });
 
-                DialogOptionRoot.addView(TextViewCopy);
+                Root.addView(TextViewCopy);
 
                 View ViewCopyLine = new View(context);
                 ViewCopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewCopyLine.setBackgroundResource(R.color.Gray1);
 
-                DialogOptionRoot.addView(ViewCopyLine);
+                Root.addView(ViewCopyLine);
 
                 TextView TextViewBlock = new TextView(context);
                 TextViewBlock.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -269,13 +269,13 @@ public class FragmentPostDetails extends Fragment
                     }
                 });
 
-                DialogOptionRoot.addView(TextViewBlock);
+                Root.addView(TextViewBlock);
 
                 View ViewBlockLine = new View(context);
                 ViewBlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewBlockLine.setBackgroundResource(R.color.Gray1);
 
-                DialogOptionRoot.addView(ViewBlockLine);
+                Root.addView(ViewBlockLine);
 
                 TextView TextViewDelete = new TextView(context);
                 TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -318,14 +318,14 @@ public class FragmentPostDetails extends Fragment
                     }
                 });
 
-                DialogOptionRoot.addView(TextViewDelete);
+                Root.addView(TextViewDelete);
 
                 View ViewDeleteLine = new View(context);
                 ViewDeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewDeleteLine.setBackgroundResource(R.color.Gray1);
                 ViewDeleteLine.setVisibility(View.GONE);
 
-                DialogOptionRoot.addView(ViewDeleteLine);
+                Root.addView(ViewDeleteLine);
 
                 TextView TextViewReport = new TextView(context);
                 TextViewReport.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -343,7 +343,7 @@ public class FragmentPostDetails extends Fragment
                     }
                 });
 
-                DialogOptionRoot.addView(TextViewReport);
+                Root.addView(TextViewReport);
 
                 if (OwnerID.equals(SharedHandler.GetString(context, "ID")))
                 {
@@ -362,7 +362,7 @@ public class FragmentPostDetails extends Fragment
                     TextViewReport.setVisibility(View.GONE);
                 }
 
-                DialogOption.setContentView(DialogOptionRoot);
+                DialogOption.setContentView(Root);
                 DialogOption.show();
             }
         });

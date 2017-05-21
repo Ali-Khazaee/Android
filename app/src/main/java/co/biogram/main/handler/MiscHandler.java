@@ -74,13 +74,6 @@ public class MiscHandler
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, Metrics);
     }
 
-    @Deprecated
-    public static int ToDimension(float Value)
-    {
-        DisplayMetrics Metrics = App.GetContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, Metrics);
-    }
-
     public static String GetTimeName(long T)
     {
         long Time = ((System.currentTimeMillis() - (T * 1000)) / 1000);

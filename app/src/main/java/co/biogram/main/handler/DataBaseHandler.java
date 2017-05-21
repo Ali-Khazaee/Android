@@ -1,11 +1,10 @@
 package co.biogram.main.handler;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import co.biogram.main.App;
 
 public class DataBaseHandler
 {
@@ -15,7 +14,7 @@ public class DataBaseHandler
     private static synchronized void Prepare()
     {
         if (Helper == null)
-            Helper = new DataBaseHelper();
+            Helper = new DataBaseHelper(null);
     }
 
     public synchronized static void AddOrUpdate(String Table, String[] Columns, String Where, String[] Args, ContentValues Content)
@@ -99,9 +98,9 @@ public class DataBaseHandler
 
     private static class DataBaseHelper extends SQLiteOpenHelper
     {
-        DataBaseHelper()
+        DataBaseHelper(Context context)
         {
-            super(App.GetContext(), "BioGram.db", null, 1);
+            super(context, "BioGram.db", null, 1);
         }
 
         public void onCreate(SQLiteDatabase db)

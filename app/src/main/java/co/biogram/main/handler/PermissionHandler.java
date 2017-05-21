@@ -3,20 +3,20 @@ package co.biogram.main.handler;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 
 public class PermissionHandler
 {
-    private AppCompatActivity _AppCompatActivity;
+    private FragmentActivity _Activity;
     private final PermissionEvent _PermissionEvent;
     private Fragment _Fragment;
     private final String _Permission;
     private final int _RequestCode;
 
-    public PermissionHandler(String P, int RC, AppCompatActivity A, PermissionEvent PE)
+    public PermissionHandler(String P, int RC, FragmentActivity A, PermissionEvent PE)
     {
-        _AppCompatActivity = A;
+        _Activity = A;
         _PermissionEvent = PE;
         _RequestCode = RC;
         _Permission = P;
@@ -38,8 +38,8 @@ public class PermissionHandler
     {
         int PermissionCheck;
 
-        if (_AppCompatActivity != null)
-            PermissionCheck = ContextCompat.checkSelfPermission(_AppCompatActivity, _Permission);
+        if (_Activity != null)
+            PermissionCheck = ContextCompat.checkSelfPermission(_Activity, _Permission);
         else
             PermissionCheck = ContextCompat.checkSelfPermission(_Fragment.getContext(), _Permission);
 
@@ -49,8 +49,8 @@ public class PermissionHandler
             return;
         }
 
-        if (_AppCompatActivity != null)
-            ActivityCompat.requestPermissions(_AppCompatActivity, new String[] { _Permission }, _RequestCode);
+        if (_Activity != null)
+            ActivityCompat.requestPermissions(_Activity, new String[] { _Permission }, _RequestCode);
         else
             _Fragment.requestPermissions(new String[] { _Permission }, _RequestCode);
     }

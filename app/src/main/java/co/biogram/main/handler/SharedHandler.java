@@ -62,18 +62,4 @@ public class SharedHandler
         SharedPreferences Shared = context.getSharedPreferences(File, Context.MODE_PRIVATE);
         return Shared.getBoolean(Key, false);
     }
-
-
-
-
-
-
-
-
-    @Deprecated
-    public static String GetString(String Key)
-    {
-        SharedPreferences Shared = App.GetContext().getSharedPreferences("BioGram", Context.MODE_PRIVATE);
-        return Shared.getString(Key, "");
-    }
 }

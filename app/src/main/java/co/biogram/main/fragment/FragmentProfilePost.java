@@ -32,15 +32,14 @@ public class FragmentProfilePost extends Fragment
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
-    private RecyclerView RecyclerViewPost;
     private boolean IsBottom = false;
     private AdapterPost postAdapter;
-    private List<AdapterPost.PostStruct> PostList = new ArrayList<>();
+    private final List<AdapterPost.PostStruct> PostList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Context context = getActivity();
+        final Context context = getActivity();
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -49,11 +48,11 @@ public class FragmentProfilePost extends Fragment
 
         postAdapter = new AdapterPost(getActivity(), PostList, "FragmentProfilePost");
 
-        RecyclerViewPost = new RecyclerView(context);
-        RecyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RecyclerViewPost.setAdapter(postAdapter);
-        RecyclerViewPost.setNestedScrollingEnabled(false);
-        RecyclerViewPost.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RecyclerView recyclerViewPost = new RecyclerView(context);
+        recyclerViewPost.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewPost.setAdapter(postAdapter);
+        recyclerViewPost.setNestedScrollingEnabled(false);
+        recyclerViewPost.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView recyclerView, int DX, int DY)
@@ -64,14 +63,14 @@ public class FragmentProfilePost extends Fragment
                     PostList.add(null);
                     postAdapter.notifyItemInserted(PostList.size());
 
-                    String ID = SharedHandler.GetString("ID");
+                    String ID = SharedHandler.GetString(context, "ID");
 
                     if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
                         ID = getArguments().getString("ID");
 
                     RequestHandler.Core().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
-                    .Header("TOKEN", SharedHandler.GetString("TOKEN"))
+                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .Param("Skip", String.valueOf(PostList.size()))
                     .Param("ID", ID)
                     .Tag("FragmentProfilePost")
@@ -117,7 +116,7 @@ public class FragmentProfilePost extends Fragment
             }
         });
 
-        Root.addView(RecyclerViewPost);
+        Root.addView(recyclerViewPost);
 
         RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -159,17 +158,18 @@ public class FragmentProfilePost extends Fragment
 
     private void RetrieveDataFromServer()
     {
+        Context context = getActivity();
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        String ID = SharedHandler.GetString("ID");
+        String ID = SharedHandler.GetString(context, "ID");
 
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
         RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
-        .Header("TOKEN", SharedHandler.GetString("TOKEN"))
+        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .Param("ID", ID)
         .Tag("FragmentProfilePost")
         .Build(new RequestHandler.OnCompleteCallBack()

@@ -196,11 +196,40 @@ public class CacheHandler
         }
     }
 
-    public static void ClearExpired(Context context)
+    public static void ClearExpired()
     {
         try
         {
-            File CacheList = new File(context.getCacheDir(), "Cache.List");
+            File FolderDocument = new File(Environment.getExternalStorageDirectory(), "BioGram/Document");
+            File FolderPicture = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
+            File FolderVideo = new File(Environment.getExternalStorageDirectory(), "BioGram/Video");
+            File FolderLink = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
+
+            // noinspection all
+            FolderDocument.mkdir();
+
+            // noinspection all
+            FolderVideo.mkdir();
+
+            // noinspection all
+            FolderPicture.mkdir();
+
+            // noinspection all
+            FolderLink.mkdir();
+
+            new File(FolderDocument, ".nomedia");
+            new File(FolderPicture, ".nomedia");
+            new File(FolderVideo, ".nomedia");
+            new File(FolderLink, ".nomedia");
+        }
+        catch (Exception e)
+        {
+            MiscHandler.Log(e.toString());
+        }
+
+        try
+        {
+            File CacheList = new File(Environment.getExternalStorageDirectory(), "Cache.List");
             File TempFile = new File(CacheList.getAbsolutePath() + ".tmp");
 
             if (!CacheList.exists())
@@ -256,7 +285,7 @@ public class CacheHandler
         try
         {
             boolean IsCreated = true;
-            File CacheDir = new File(App.GetContext().getCacheDir(), "Cache.List");
+            File CacheDir = new File(Environment.getExternalStorageDirectory(), "Cache.List");
 
             if (!CacheDir.exists())
                 IsCreated = CacheDir.createNewFile();

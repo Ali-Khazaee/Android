@@ -15,8 +15,8 @@ class PassThroughTrackTranscoder implements TrackTranscoder
     private final QueuedMuxer mMuxer;
     private final QueuedMuxer.SampleType mSampleType;
     private final MediaCodec.BufferInfo mBufferInfo = new MediaCodec.BufferInfo();
-    private int mBufferSize;
-    private ByteBuffer mBuffer;
+    private final int mBufferSize;
+    private final ByteBuffer mBuffer;
     private boolean mIsEOS;
     private long mWrittenPresentationTimeUs;
 

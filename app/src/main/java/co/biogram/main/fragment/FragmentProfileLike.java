@@ -40,7 +40,7 @@ public class FragmentProfileLike extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Context context = getActivity();
+        final Context context = getActivity();
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -64,14 +64,14 @@ public class FragmentProfileLike extends Fragment
                     PostList.add(null);
                     postAdapter.notifyItemInserted(PostList.size());
 
-                    String ID = SharedHandler.GetString("ID");
+                    String ID = SharedHandler.GetString(context, "ID");
 
                     if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
                         ID = getArguments().getString("ID");
 
                     RequestHandler.Core().Method("POST")
                     .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_LIKE))
-                    .Header("TOKEN", SharedHandler.GetString("TOKEN"))
+                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .Param("Skip", String.valueOf(PostList.size()))
                     .Param("ID", ID)
                     .Tag("FragmentProfileLike")
@@ -159,17 +159,18 @@ public class FragmentProfileLike extends Fragment
 
     private void RetrieveDataFromServer()
     {
+        Context context = getActivity();
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        String ID = SharedHandler.GetString("ID");
+        String ID = SharedHandler.GetString(context, "ID");
 
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
         RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_LIKE))
-        .Header("TOKEN", SharedHandler.GetString("TOKEN"))
+        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .Param("ID", ID)
         .Tag("FragmentProfileLike")
         .Build(new RequestHandler.OnCompleteCallBack()
