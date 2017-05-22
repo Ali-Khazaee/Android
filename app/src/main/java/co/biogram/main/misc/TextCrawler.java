@@ -29,9 +29,9 @@ public class TextCrawler
     {
         _URLContent = new URLContent();
 
-        if (CacheHandler.LinkCache(URL))
+        if (CacheHandler.HasLink(URL))
         {
-            String[] Data = CacheHandler.LinkLoad(URL);
+            String[] Data = CacheHandler.GetLink(URL);
 
             if (Data != null && Data.length > 1)
             {
@@ -84,7 +84,7 @@ public class TextCrawler
 
                     CallBackListener.OnCompleted(_URLContent);
 
-                    CacheHandler.LinkSave(URL, _URLContent.Title, _URLContent.Description, _URLContent.Image);
+                    CacheHandler.StoreLink(URL, _URLContent.Title, _URLContent.Description, _URLContent.Image);
                 }
                 catch (Exception e)
                 {

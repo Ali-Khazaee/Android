@@ -1,13 +1,10 @@
 package co.biogram.main.handler;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.widget.ImageView;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -15,107 +12,43 @@ import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import co.biogram.main.App;
-
 public class CacheHandler
 {
-    public static boolean VideoCache(String Name)
+    static boolean HasPicture(String Name)
     {
-        if (Name.equals(""))
-            return false;
-
+        File PictureFile = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
         boolean IsCreated = true;
-        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Video");
 
-        if (!Root.exists())
-            IsCreated = Root.mkdirs();
+        if (!PictureFile.exists())
+            IsCreated = PictureFile.mkdirs();
 
-        return IsCreated && new File(Root, Name).exists();
+        return IsCreated && new File(PictureFile, Name).exists();
     }
 
-    public static String VideoLoad(String Name)
+    static void GetPicture(String Name, ImageView Image)
     {
-        if (Name.equals(""))
-            return "";
-
-        boolean IsCreated = true;
-        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Video");
-
-        if (!Root.exists())
-            IsCreated = Root.mkdirs();
-
-        if (!IsCreated)
-            return "";
-
-        return Root.getAbsolutePath() + "/" + Name;
-    }
-
-    public static void VideoSave(String Name, String Address, String Tag)
-    {
-        if (Name.equals(""))
-            return;
-
-        boolean IsCreated = true;
-        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Video");
-
-        if (!Root.exists())
-            IsCreated = Root.mkdirs();
-
-        if (!IsCreated)
-            return;
-
-        RequestHandler.Core().Method("DOWNLOAD").Address(Address).Tag(Tag).OutPath(Root.getAbsolutePath() + "/" + Name).Build();
-
-        SaveMetaData(":::3:::" + Name);
-    }
-
-    public static boolean ImageCache(String Name)
-    {
-        if (Name.equals(""))
-            return false;
-
-        boolean IsCreated = true;
-        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
-
-        if (!Root.exists())
-            IsCreated = Root.mkdirs();
-
-        return IsCreated && new File(Root, Name).exists();
-    }
-
-    public static void ImageLoad(String Name, ImageView Image)
-    {
-        if (Name.equals(""))
-            return;
-
         Image.setImageURI(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/BioGram/Picture/" + Name)));
     }
 
-    public static void ImageSave(String Name, Bitmap bitmap)
+    static void StorePicture(String Name, byte[] Data)
     {
-        if (Name.equals(""))
-            return;
-
-        boolean IsCreated = true;
-        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
-
-        if (!Root.exists())
-            IsCreated = Root.mkdirs();
-
-        if (!IsCreated)
-            return;
-
-        ByteArrayOutputStream BOS = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, BOS);
-
         try
         {
-            FileOutputStream FOS = new FileOutputStream(new File(Root, Name));
-            FOS.write(BOS.toByteArray());
+            File PictureFile = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
+            boolean IsCreated = true;
+
+            if (!PictureFile.exists())
+                IsCreated = PictureFile.mkdirs();
+
+            if (!IsCreated)
+                return;
+
+            FileOutputStream FOS = new FileOutputStream(new File(PictureFile, Name));
+            FOS.write(Data);
             FOS.flush();
             FOS.close();
 
-            SaveMetaData(":::1:::" + Name);
+            StoreCacheData(":::2:::" + Name);
         }
         catch (Exception e)
         {
@@ -123,31 +56,28 @@ public class CacheHandler
         }
     }
 
-    public static boolean LinkCache(String Name)
+    public static boolean HasLink(String Name)
     {
-        if (Name.equals(""))
-            return false;
-
+        File LinkFile = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
         boolean IsCreated = true;
-        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
 
-        if (!Root.exists())
-            IsCreated = Root.mkdirs();
+        if (!LinkFile.exists())
+            IsCreated = LinkFile.mkdirs();
 
-        return IsCreated && new File(Root, Name.replaceAll("[^a-zA-Z0-9.-]", "_")).exists();
+        return IsCreated && new File(LinkFile, Name.replaceAll("[^a-zA-Z0-9.-]", "_")).exists();
     }
 
-    public static String[] LinkLoad(String Name)
+    public static String[] GetLink(String Name)
     {
-        if (Name.equals(""))
-            return null;
-
         try
         {
-            File Link = new File(Environment.getExternalStorageDirectory(), "/BioGram/Link/" + Name.replaceAll("[^a-zA-Z0-9.-]", "_"));
-            BufferedReader Reader = new BufferedReader(new FileReader(Link));
+            File LinkFile = new File(Environment.getExternalStorageDirectory(), "/BioGram/Link/" + Name.replaceAll("[^a-zA-Z0-9.-]", "_"));
 
-            return Reader.readLine().split(":::");
+            BufferedReader Reader = new BufferedReader(new FileReader(LinkFile));
+            String[] Result = Reader.readLine().split(":::");
+            Reader.close();
+
+            return Result;
         }
         catch (Exception e)
         {
@@ -157,29 +87,23 @@ public class CacheHandler
         return null;
     }
 
-    public static void LinkSave(String Name, String Title, String Description, String Image)
+    public static void StoreLink(String Name, String Title, String Description, String Image)
     {
-        if (Name.equals(""))
-            return;
-
         try
         {
+            File FolderLink = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
             boolean IsCreated = true;
-            File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
 
-            if (!Root.exists())
-                IsCreated = Root.mkdirs();
+            if (!FolderLink.exists())
+                IsCreated = FolderLink.mkdirs();
 
             if (!IsCreated)
                 return;
 
             Name = Name.replaceAll("[^a-zA-Z0-9.-]", "_");
+            File LinkFile = new File(FolderLink, Name);
 
-            File LinkFile = new File(Root, Name);
-
-            IsCreated = LinkFile.createNewFile();
-
-            if (!IsCreated)
+            if (!LinkFile.createNewFile())
                 return;
 
             PrintWriter Writer = new PrintWriter(new FileWriter(LinkFile));
@@ -187,7 +111,7 @@ public class CacheHandler
             Writer.flush();
             Writer.close();
 
-            SaveMetaData(":::2:::" + Name);
+            StoreCacheData(":::4:::" + Name);
         }
         catch (Exception e)
         {
@@ -196,49 +120,45 @@ public class CacheHandler
         }
     }
 
-    public static void ClearExpired()
+    public static void SetUp()
     {
         try
         {
             File FolderDocument = new File(Environment.getExternalStorageDirectory(), "BioGram/Document");
+            FolderDocument.mkdirs();
+
+            new File(FolderDocument, ".nomedia").createNewFile();
+
             File FolderPicture = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
+            FolderPicture.mkdirs();
+
+            new File(FolderPicture, ".nomedia").createNewFile();
+
             File FolderVideo = new File(Environment.getExternalStorageDirectory(), "BioGram/Video");
+            FolderVideo.mkdirs();
+
+            new File(FolderVideo, ".nomedia").createNewFile();
+
             File FolderLink = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
+            FolderLink.mkdirs();
 
-            // noinspection all
-            FolderDocument.mkdir();
+            new File(FolderLink, ".nomedia").createNewFile();
 
-            // noinspection all
-            FolderVideo.mkdir();
+            File CacheFile = new File(FolderDocument, "Cache.List");
 
-            // noinspection all
-            FolderPicture.mkdir();
-
-            // noinspection all
-            FolderLink.mkdir();
-
-            new File(FolderDocument, ".nomedia");
-            new File(FolderPicture, ".nomedia");
-            new File(FolderVideo, ".nomedia");
-            new File(FolderLink, ".nomedia");
-        }
-        catch (Exception e)
-        {
-            MiscHandler.Log(e.toString());
-        }
-
-        try
-        {
-            File CacheList = new File(Environment.getExternalStorageDirectory(), "Cache.List");
-            File TempFile = new File(CacheList.getAbsolutePath() + ".tmp");
-
-            if (!CacheList.exists())
+            if (!CacheFile.exists())
                 return;
 
-            BufferedReader Reader = new BufferedReader(new FileReader(CacheList));
-            PrintWriter Writer = new PrintWriter(new FileWriter(TempFile));
+            File CacheTemp = new File(CacheFile.getAbsolutePath() + ".tmp");
 
-            for (String Row; (Row = Reader.readLine()) != null;)
+            if (!CacheTemp.exists())
+                return;
+
+            BufferedReader Reader = new BufferedReader(new FileReader(CacheFile));
+            PrintWriter Writer = new PrintWriter(new FileWriter(CacheTemp));
+            String Row;
+
+            while ((Row = Reader.readLine()) != null)
             {
                 String[] Data = Row.split(":::");
 
@@ -248,15 +168,13 @@ public class CacheHandler
 
                     switch (Data[1])
                     {
-                        case "1": Type = "/BioGram/Picture/"; break;
-                        case "2": Type = "/BioGram/Link/";    break;
+                        case "1": Type = "/BioGram/Document/"; break;
+                        case "2": Type = "/BioGram/Picture/";  break;
+                        case "3": Type = "/BioGram/Video/";    break;
+                        case "4": Type = "/BioGram/Link/";     break;
                     }
 
-                    File CacheFile = new File(Environment.getExternalStorageDirectory() + Type + Data[2]);
-
-                    if (CacheFile.exists())
-                        // noinspection all
-                        CacheFile.delete();
+                    new File(Environment.getExternalStorageDirectory() + Type + Data[2]).delete();
                 }
                 else
                 {
@@ -268,35 +186,30 @@ public class CacheHandler
             Writer.close();
             Reader.close();
 
-            // noinspection all
-            CacheList.delete();
-
-            // noinspection all
-            TempFile.renameTo(CacheList);
+            if (CacheFile.delete())
+                CacheTemp.renameTo(CacheFile);
         }
         catch (Exception e)
         {
-            // Leave Me Alone
+            MiscHandler.Log(e.toString());
         }
     }
 
-    private static void SaveMetaData(String Data)
+    private static void StoreCacheData(String Data)
     {
         try
         {
+            File CacheList = new File(new File(Environment.getExternalStorageDirectory(), "BioGram/Document"), "Cache.List");
             boolean IsCreated = true;
-            File CacheDir = new File(Environment.getExternalStorageDirectory(), "Cache.List");
 
-            if (!CacheDir.exists())
-                IsCreated = CacheDir.createNewFile();
+            if (!CacheList.exists())
+                IsCreated = CacheList.createNewFile();
 
             if (!IsCreated)
                 return;
 
-            String ExpiredTime = String.valueOf((System.currentTimeMillis() / 1000) + 604800);
-
-            OutputStreamWriter Stream = new OutputStreamWriter(new FileOutputStream(CacheDir, true));
-            Stream.append(ExpiredTime);
+            OutputStreamWriter Stream = new OutputStreamWriter(new FileOutputStream(CacheList, true));
+            Stream.append(String.valueOf((System.currentTimeMillis() / 1000) + 604800));
             Stream.append(Data);
             Stream.append("\n");
             Stream.flush();

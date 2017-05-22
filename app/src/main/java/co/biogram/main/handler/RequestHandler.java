@@ -380,9 +380,9 @@ public class RequestHandler
 
         String Name = Address.split("/")[Address.split("/").length - 1];
 
-        if (Cache && CacheHandler.ImageCache(Name))
+        if (Cache && CacheHandler.HasPicture(Name))
         {
-            CacheHandler.ImageLoad(Name, view);
+            CacheHandler.GetPicture(Name, view);
             return;
         }
 
@@ -413,9 +413,9 @@ public class RequestHandler
 
         String Name = Address.split("/")[Address.split("/").length - 1];
 
-        if (Cache && CacheHandler.ImageCache(Name))
+        if (Cache && CacheHandler.HasPicture(Name))
         {
-            CacheHandler.ImageLoad(Name, view);
+            CacheHandler.GetPicture(Name, view);
             return;
         }
 
@@ -478,7 +478,7 @@ public class RequestHandler
             }
 
             if (builder.BitmapCache)
-                CacheHandler.ImageSave(builder.BitmapName, bitmap);
+                CacheHandler.StorePicture(builder.BitmapName, BitmapResponse);
         }
         catch (Exception e)
         {
@@ -551,7 +551,7 @@ public class RequestHandler
             }
 
             if (builder.BitmapCache)
-                CacheHandler.ImageSave(builder.BitmapName, bitmap);
+                CacheHandler.StorePicture(builder.BitmapName, BitmapResponse);
         }
         catch (Exception e)
         {
@@ -635,6 +635,7 @@ public class RequestHandler
         {
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
             Conn.setRequestProperty("User-Agent", "BioGram-" + BuildConfig.VERSION_NAME);
+            Conn.setChunkedStreamingMode(4096);
             Conn.setConnectTimeout(builder.ConnectTime);
             Conn.setReadTimeout(builder.ReadTime);
             Conn.setRequestMethod("POST");
@@ -725,6 +726,7 @@ public class RequestHandler
             Conn = (HttpURLConnection) new URL(builder.Address).openConnection();
             Conn.setConnectTimeout(builder.ConnectTime);
             Conn.setReadTimeout(builder.ReadTime);
+            Conn.setChunkedStreamingMode(4096);
             Conn.setRequestMethod("POST");
             Conn.setUseCaches(false);
             Conn.setDoOutput(true);

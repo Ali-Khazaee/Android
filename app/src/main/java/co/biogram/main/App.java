@@ -18,6 +18,6 @@ public class App extends Application
 
         LeakCanary.install(this);
 
-        CacheHandler.ClearExpired();
+        CacheHandler.SetUp();
     }
 }
