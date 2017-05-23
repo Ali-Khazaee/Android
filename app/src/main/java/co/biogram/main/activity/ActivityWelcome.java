@@ -1284,7 +1284,7 @@ public class ActivityWelcome extends FragmentActivity
                                     SharedHandler.SetString(context, "TOKEN", Result.getString("TOKEN"));
                                     SharedHandler.SetString(context, "ID", Result.getString("ID"));
                                     SharedHandler.SetString(context, "Username", Result.getString("Username"));
-                                    SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
+                                    SharedHandler.SetString(context, "Avatar", "");
 
                                     Parent.startActivity(new Intent(context, ActivityMain.class));
                                     Parent.finish();

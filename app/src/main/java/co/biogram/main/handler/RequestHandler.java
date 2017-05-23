@@ -93,7 +93,6 @@ public class RequestHandler
 
                 long T = System.currentTimeMillis();
 
-                MiscHandler.Log("Request Start: " + T);
                 switch (builder.Method)
                 {
                     case "GET":           PerformGet(builder);          break;
@@ -107,8 +106,6 @@ public class RequestHandler
                 MiscHandler.Log("Request End: " + (System.currentTimeMillis() - T));
 
                 T = System.currentTimeMillis();
-
-                MiscHandler.Log("Request Clear Start: " + T);
 
                 if (QueueTaskList.size() > 0)
                 {
