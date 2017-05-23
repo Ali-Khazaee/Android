@@ -31,6 +31,7 @@ import co.biogram.main.BuildConfig;
 public class RequestHandler
 {
     private ThreadPoolExecutor ThreadExecutor;
+    private final List<String> RequestTaskList = new ArrayList<>();
     private final List<FutureTask> RunningTaskList = new ArrayList<>();
     private final Map<String, List<Runnable>> QueueTaskList = new HashMap<>();
 
@@ -383,6 +384,11 @@ public class RequestHandler
             return;
         }
 
+        if (RequestTaskList.contains(Address))
+            return;
+
+        RequestTaskList.add(Address);
+
         new Builder("BITMAP").Address(Address).Tag(Tag).BitmapName(Name).BitmapCache(Cache).Build(new OnBitmapCallBack()
         {
             @Override
@@ -415,6 +421,11 @@ public class RequestHandler
             CacheHandler.GetPicture(Name, view);
             return;
         }
+
+        if (RequestTaskList.contains(Address))
+            return;
+
+        RequestTaskList.add(Address);
 
         new Builder("BITMAP_OPTION").Address(Address).Tag(Tag).BitmapName(Name).BitmapWidth(DesiredWidth).BitmapHeight(DesiredHeight).BitmapCache(Cache).Build(new OnBitmapCallBack()
         {
