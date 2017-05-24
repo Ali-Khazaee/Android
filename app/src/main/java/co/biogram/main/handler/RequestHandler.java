@@ -373,7 +373,7 @@ public class RequestHandler
 
     public void LoadImage(final ImageView view, String Address, String Tag, boolean Cache)
     {
-        if (Address.equals(""))
+        if (Address.equals("") || !Address.endsWith(".jpg"))
             return;
 
         String Name = Address.split("/")[Address.split("/").length - 1];
@@ -411,7 +411,7 @@ public class RequestHandler
 
     public void LoadImage(final ImageView view, String Address, String Tag, int DesiredWidth, int DesiredHeight, boolean Cache)
     {
-        if (Address.equals(""))
+        if (Address.equals("") || !Address.endsWith(".jpg"))
             return;
 
         String Name = Address.split("/")[Address.split("/").length - 1];

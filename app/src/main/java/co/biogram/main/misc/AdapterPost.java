@@ -184,6 +184,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             }
         });
 
+        MiscHandler.Log(PostList.get(Position).Avatar);
+
         RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.ToDimension(Activity, 55), MiscHandler.ToDimension(Activity, 55), true);
 
         Holder.TextViewUsername.setText(PostList.get(Position).Username);
