@@ -69,12 +69,6 @@ public class LoadingView extends LinearLayout
             Start();
     }
 
-    @Override
-    protected void onDestory()
-    {
-        super.onR
-    }
-
     public void Stop()
     {
         for (Animator animator : AnimatorList)

@@ -1,6 +1,9 @@
 package co.biogram.main.handler;
 
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
@@ -13,10 +16,11 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 
 import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentProfile;
 
 public class TagHandler
 {
-    public TagHandler(TextView textView, OnTagClickListener Listener)
+    public TagHandler(TextView textView, FragmentActivity activity)
     {
         if (textView.getText().length() <= 2)
             return;
@@ -37,10 +41,7 @@ public class TagHandler
 
             if ((Sign == '#' || Sign == '@') && (NextSign != '#' && NextSign != '@'))
             {
-                int TagType = 0;
-
-                if (Sign == '#')
-                    TagType = 1;
+                int TagType = 1;
 
                 if (Sign == '@')
                     TagType = 2;
@@ -48,10 +49,8 @@ public class TagHandler
                 StartIndexOfNextTagSign = Index;
                 NextNotLetterDigitCharIndex = FindNextValidTagChar(Text, StartIndexOfNextTagSign);
 
-                CharacterStyle TagChar;
                 Spannable Span = (Spannable) textView.getText();
-
-                TagChar = new ClickableForegroundColorSpan(TagType, ContextCompat.getColor(textView.getContext(), R.color.BlueLight), Listener);
+                CharacterStyle TagChar = new ClickableForegroundColorSpan(TagType, ContextCompat.getColor(textView.getContext(), R.color.BlueLight), activity);
 
                 Span.setSpan(TagChar, StartIndexOfNextTagSign, NextNotLetterDigitCharIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
@@ -67,7 +66,7 @@ public class TagHandler
         for (int Index = Start + 1; Index < Text.length(); Index++)
         {
             char Sign = Text.charAt(Index);
-            boolean IsValidSign = Character.isLetterOrDigit(Sign) || Sign == '_';
+            boolean IsValidSign = Character.isLetterOrDigit(Sign) || Sign == '_' || Sign == '.';
 
             if (!IsValidSign)
             {
@@ -86,13 +85,13 @@ public class TagHandler
     {
         private final int TagType;
         private final int TagColor;
-        private final OnTagClickListener _OnTagClickListener;
+        private final FragmentActivity Activity;
 
-        ClickableForegroundColorSpan(int Type, int Color, OnTagClickListener Listener)
+        ClickableForegroundColorSpan(int Type, int Color, FragmentActivity activity)
         {
             TagType = Type;
             TagColor = Color;
-            _OnTagClickListener = Listener;
+            Activity = activity;
         }
 
         @Override
@@ -108,28 +107,20 @@ public class TagHandler
             Spanned Span = (Spanned) Text;
             int Start = Span.getSpanStart(this);
             int End = Span.getSpanEnd(this);
+            String Message = Text.subSequence(Start + 1, End).toString();
 
-            if (_OnTagClickListener == null)
+            if (TagType == 2)
             {
-                /*if (TagType == 1)
-                {
+                MiscHandler.HideSoftKey(Activity);
 
-                }
+                Bundle bundle = new Bundle();
+                bundle.putString("ID", Message);
 
-                if (TagType == 2)
-                {
+                Fragment fragment = new FragmentProfile();
+                fragment.setArguments(bundle);
 
-                }*/
-
-                return;
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
             }
-
-           _OnTagClickListener.OnTagClicked(Text.subSequence(Start + 1, End).toString(), TagType);
         }
-    }
-
-    public interface OnTagClickListener
-    {
-        void OnTagClicked(String Tag, int Type);
     }
 }

@@ -486,7 +486,7 @@ public class FragmentProfile extends Fragment
         RequestHandler.Core().Method("POST")
         .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
         .Header("TOKEN",SharedHandler.GetString(context, "TOKEN"))
-        .Param("ID", ID)
+        .Param("Username", ID)
         .Tag("FragmentProfile")
         .Build(new RequestHandler.OnCompleteCallBack()
         {

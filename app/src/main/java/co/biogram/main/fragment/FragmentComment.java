@@ -310,6 +310,9 @@ public class FragmentComment extends Fragment
         RecyclerViewComment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewComment.setLayoutManager(new LinearLayoutManager(context));
         RecyclerViewComment.setAdapter(RecyclerViewCommentAdapter = new AdapterComment(context));
+        RecyclerViewComment.setItemViewCacheSize(6);
+        RecyclerViewComment.setDrawingCacheEnabled(false);
+        RecyclerViewComment.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         RecyclerViewComment.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
@@ -510,6 +513,17 @@ public class FragmentComment extends Fragment
         }
 
         @Override
+        public void onViewRecycled(ViewHolderComment Holder)
+        {
+            super.onViewRecycled(Holder);
+
+            if (Holder.ImageViewProfile != null)
+            {
+                Holder.ImageViewProfile.setImageResource(R.color.BlueGray2);
+            }
+        }
+
+        @Override
         public void onBindViewHolder(final ViewHolderComment Holder, int position)
         {
             if (CommentList.get(position) == null)
@@ -528,14 +542,7 @@ public class FragmentComment extends Fragment
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(CommentList.get(Position).Time));
             Holder.TextViewMessage.setText(CommentList.get(Position).Message);
 
-            new TagHandler(Holder.TextViewMessage, new TagHandler.OnTagClickListener()
-            {
-                @Override
-                public void OnTagClicked(String Tag, int Type)
-                {
-                    MiscHandler.Toast(getActivity(), Tag);
-                }
-            });
+            new TagHandler(Holder.TextViewMessage, getActivity());
 
             if (CommentList.get(Position).Like)
                 Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
@@ -600,17 +607,6 @@ public class FragmentComment extends Fragment
                     .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .Tag("FragmentComment")
                     .Build();
-                }
-            });
-
-            Holder.ImageViewShortcut.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    String Message = EditTextComment.getText().toString();
-                    Message += "@" + CommentList.get(Position).Username;
-                    EditTextComment.setText(Message);
                 }
             });
 
@@ -729,11 +725,15 @@ public class FragmentComment extends Fragment
                 Holder.ViewBlankLine.setVisibility(View.VISIBLE);
         }
 
+        int CPosition;
+
         @Override
         public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
         {
             if (ViewType == 0)
             {
+
+
                 RelativeLayout Root = new RelativeLayout(context);
                 Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
@@ -813,6 +813,16 @@ public class FragmentComment extends Fragment
                 ImageViewShortcut.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 ImageViewShortcut.setImageResource(R.drawable.ic_share);
                 ImageViewShortcut.setId(ID_SHORTCUT);
+                ImageViewShortcut.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        String Message = EditTextComment.getText().toString();
+                        Message += "@" + CommentList.get(CPosition).Username;
+                        EditTextComment.setText(Message);
+                    }
+                });
 
                 RelativeLayoutTool.addView(ImageViewShortcut);
 
@@ -865,12 +875,16 @@ public class FragmentComment extends Fragment
 
                 Root.addView(ViewLine);
 
-                return new ViewHolderComment(Root, true);
+                ViewHolderComment view =  new ViewHolderComment(Root, true);
+
+                CPosition = view.getAdapterPosition();
+
+                return view;
             }
 
             LoadingView Loading = new LoadingView(context);
             Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            LoadingViewData.SetShow(true);
+            Loading.SetShow(true);
             Loading.Start();
 
             return new ViewHolderComment(Loading, false);

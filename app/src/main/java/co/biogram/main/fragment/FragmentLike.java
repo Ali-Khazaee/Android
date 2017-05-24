@@ -97,17 +97,17 @@ public class FragmentLike extends Fragment
         RelativeLayout.LayoutParams RVLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RVLikeParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RecyclerView RVLike = new RecyclerView(context);
-        RVLike.setLayoutParams(RVLikeParam);
+        RecyclerView RecyclerViewLike = new RecyclerView(context);
+        RecyclerViewLike.setLayoutParams(RVLikeParam);
 
-        Root.addView(RVLike);
+        Root.addView(RecyclerViewLike);
 
         PostID = getArguments().getString("PostID", "");
         adapterLike = new AdapterLike();
 
-        RVLike.setLayoutManager(new LinearLayoutManager(context));
-        RVLike.setAdapter(adapterLike);
-        RVLike.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RecyclerViewLike.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerViewLike.setAdapter(adapterLike);
+        RecyclerViewLike.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView View, int dx, int DY)
@@ -317,11 +317,12 @@ public class FragmentLike extends Fragment
                 return new ViewHolderLike(Root, true);
             }
 
-            LoadingView LoadingViewBottom = new LoadingView(context);
-            LoadingViewBottom.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-            LoadingViewBottom.Start();
+            LoadingView Loading = new LoadingView(context);
+            Loading.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+            Loading.SetShow(true);
+            Loading.Start();
 
-            return new ViewHolderLike(LoadingViewBottom, false);
+            return new ViewHolderLike(Loading, false);
         }
 
         @Override

@@ -150,6 +150,25 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     }
 
     @Override
+    public void onViewRecycled(ViewHolderPost Holder)
+    {
+        super.onViewRecycled(Holder);
+
+        if (Holder.ImageViewCircleProfile != null)
+        {
+            Holder.ImageViewCircleProfile.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewSingle.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewDouble1.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewDouble2.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewTriple1.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewTriple2.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewTriple3.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewFav.setImageResource(R.color.BlueGray2);
+            Holder.ImageViewLike.setImageResource(R.color.BlueGray2);
+        }
+    }
+
+    @Override
     public int getItemViewType(int position)
     {
         return PostList.get(position)!= null ? 0 : 1;
@@ -183,8 +202,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
             }
         });
-
-        MiscHandler.Log(PostList.get(Position).Avatar);
 
         RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.ToDimension(Activity, 55), MiscHandler.ToDimension(Activity, 55), true);
 
@@ -501,14 +518,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             Holder.RelativeLayoutMessage.setVisibility(View.VISIBLE);
             Holder.TextViewMessage.setText(PostList.get(Position).Message);
 
-            new TagHandler(Holder.TextViewMessage, new TagHandler.OnTagClickListener()
-            {
-                @Override
-                public void OnTagClicked(String Tag, int Type)
-                {
-                    MiscHandler.Toast(Activity, Tag);
-                }
-            });
+            new TagHandler(Holder.TextViewMessage, Activity);
 
             if (new Bidi(PostList.get(Position).Message, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
             {
@@ -592,7 +602,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             Holder.RelativeLayoutLink.setVisibility(View.VISIBLE);
             Holder.TextViewTitle.setText("");
             Holder.TextViewDescription.setText("");
-            Holder.ImageViewFav.setImageURI(null);
+            Holder.ImageViewFav.setImageDrawable(null);
             Holder.TextViewTry.setVisibility(View.GONE);
             Holder.LoadingViewLink.Start();
 

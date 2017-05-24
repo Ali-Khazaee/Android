@@ -1063,14 +1063,7 @@ public class FragmentPostDetails extends Fragment
                             TextViewMessage.setVisibility(View.VISIBLE);
                             TextViewMessage.setText(Result.getString("Message"));
 
-                            new TagHandler(TextViewMessage, new TagHandler.OnTagClickListener()
-                            {
-                                @Override
-                                public void OnTagClicked(String Tag, int Type)
-                                {
-                                    MiscHandler.Toast(context, Tag);
-                                }
-                            });
+                            new TagHandler(TextViewMessage, getActivity());
                         }
 
                         if (Result.getInt("Type") == 1)
