@@ -102,10 +102,12 @@ public class LoadingView extends LinearLayout
 
             addView(bounce, BounceParam);
             BounceList.add(bounce);
-            bounce.bringToFront();
 
-            if (I < 3 - 1)
-                addView(new View(context), SpaceParam);
+            if (I < 2)
+            {
+                View view = new View(context);
+                addView(view, SpaceParam);
+            }
         }
 
         for (int I = 0; I < 3; I++)

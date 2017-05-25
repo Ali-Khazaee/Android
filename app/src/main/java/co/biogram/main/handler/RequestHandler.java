@@ -480,9 +480,11 @@ public class RequestHandler
         {
             // Leave Me Alone
         }
-
-        if (Conn != null)
-            Conn.disconnect();
+        finally
+        {
+            if (Conn != null)
+                Conn.disconnect();
+        }
     }
 
     private void PerformBitmapOption(final Builder builder)
@@ -551,9 +553,11 @@ public class RequestHandler
         {
             // Leave Me Alone
         }
-
-        if (Conn != null)
-            Conn.disconnect();
+        finally
+        {
+            if (Conn != null)
+                Conn.disconnect();
+        }
     }
 
     private void PerformGet(final Builder builder)
@@ -607,9 +611,11 @@ public class RequestHandler
                 }
             });
         }
-
-        if (Conn != null)
-            Conn.disconnect();
+        finally
+        {
+            if (Conn != null)
+                Conn.disconnect();
+        }
     }
 
     private void PerformPost(final Builder builder)
@@ -685,9 +691,11 @@ public class RequestHandler
                 }
             });
         }
-
-        if (Conn != null)
-            Conn.disconnect();
+        finally
+        {
+            if (Conn != null)
+                Conn.disconnect();
+        }
     }
 
     private void PerformUpload(final Builder builder)
@@ -810,9 +818,11 @@ public class RequestHandler
                 }
             });
         }
-
-        if (Conn != null)
-            Conn.disconnect();
+        finally
+        {
+            if (Conn != null)
+                Conn.disconnect();
+        }
     }
 
     private void PerformDownload(final Builder builder)
@@ -870,8 +880,91 @@ public class RequestHandler
                 }
             });
         }
-
-        if (Conn != null)
-            Conn.disconnect();
+        finally
+        {
+            if (Conn != null)
+                Conn.disconnect();
+        }
     }
 }
+/*
+class Task implements Runnable
+{
+    public final String Tag;
+
+    public Task(String tag)
+    {
+        Tag = tag;
+    }
+
+    @Override
+    public void run()
+    {
+        android.os.Process.setThreadPriority(mThreadPriority);
+
+    }
+}
+
+class TaskManager
+{
+    private final List<Task> QueueList = new ArrayList<>();
+    private final List<Task> RunningList = new ArrayList<>();
+
+    private static TaskManager ConnectionManagerInstance;
+
+    private static TaskManager Core()
+    {
+        if (ConnectionManagerInstance == null)
+            ConnectionManagerInstance = new TaskManager();
+
+        return ConnectionManagerInstance;
+    }
+
+    private void Push(Task task)
+    {
+        QueueList.add(task);
+
+        if (RunningList.size() < 5)
+            StartNextTask();
+    }
+
+    private void StartNextTask()
+    {
+        if (!QueueList.isEmpty())
+        {
+            Task NextTask = QueueList.get(0);
+            QueueList.remove(0);
+            RunningList.add(NextTask);
+
+            Thread ThreadTask = new Thread(NextTask);
+            ThreadTask.start();
+        }
+    }
+
+    private void Cancel(String Tag)
+    {
+        if (!QueueList.isEmpty())
+        {
+            for (Task task : QueueList)
+            {
+                if (task != null && task.Tag.equals(Tag))
+                    QueueList.remove(task);
+            }
+        }
+
+        if (!RunningList.isEmpty())
+        {
+            for (Task task : RunningList)
+            {
+                if (task != null && task.Tag.equals(Tag))
+                    RunningList.remove(task);
+            }
+        }
+    }
+
+    private void Complete(Task task)
+    {
+        RunningList.remove(task);
+        StartNextTask();
+    }
+}*/
