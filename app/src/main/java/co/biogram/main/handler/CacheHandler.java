@@ -1,7 +1,9 @@
 package co.biogram.main.handler;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 import java.io.BufferedReader;
@@ -14,6 +16,26 @@ import java.io.PrintWriter;
 
 public class CacheHandler
 {
+    private static final LruCache<String, Bitmap> MemoryCache = new LruCache<String, Bitmap>(((int) (Runtime.getRuntime().maxMemory() / 1024)) / 8)
+    {
+        @Override
+        protected int sizeOf(String key, Bitmap bitmap)
+        {
+            return bitmap.getByteCount() / 1024;
+        }
+    };
+
+    private static void AddBitmapToMemoryCache(String Key, Bitmap bitmap)
+    {
+        if (MemoryCache.get(Key) == null)
+            MemoryCache.put(Key, bitmap);
+    }
+
+    private static Bitmap GetBitmapFromMemCache(String Key)
+    {
+        return MemoryCache.get(Key);
+    }
+
     static boolean HasPicture(String Name)
     {
         File PictureFile = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
@@ -27,7 +49,21 @@ public class CacheHandler
 
     static void GetPicture(String Name, ImageView Image)
     {
-        Image.setImageURI(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/BioGram/Picture/" + Name)));
+        Bitmap CacheBitmap = GetBitmapFromMemCache(Name);
+
+        if (CacheBitmap != null)
+        {
+            Image.setImageBitmap(CacheBitmap);
+            return;
+        }
+
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        Bitmap DecodeBitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/BioGram/Picture/" + Name, o);
+        Image.setImageBitmap(DecodeBitmap);
+
+        AddBitmapToMemoryCache(Name, DecodeBitmap);
     }
 
     static void StorePicture(String Name, byte[] Data)

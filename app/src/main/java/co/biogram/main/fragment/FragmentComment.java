@@ -310,9 +310,7 @@ public class FragmentComment extends Fragment
         RecyclerViewComment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewComment.setLayoutManager(new LinearLayoutManager(context));
         RecyclerViewComment.setAdapter(RecyclerViewCommentAdapter = new AdapterComment(context));
-        RecyclerViewComment.setItemViewCacheSize(6);
-        RecyclerViewComment.setDrawingCacheEnabled(false);
-        RecyclerViewComment.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        RecyclerViewComment.setOverScrollMode(View.OVER_SCROLL_NEVER);
         RecyclerViewComment.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
@@ -717,6 +715,17 @@ public class FragmentComment extends Fragment
             else
                 Holder.ImageViewRemove.setVisibility(View.GONE);
 
+            Holder.ImageViewShortcut.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    String Message = EditTextComment.getText().toString();
+                    Message += "@" + CommentList.get(Position).Username;
+                    EditTextComment.setText(Message);
+                }
+            });
+
             Holder.TextViewLikeCount.setText(String.valueOf(CommentList.get(Position).LikeCount));
 
             if (Position == CommentList.size() - 1)
@@ -725,15 +734,11 @@ public class FragmentComment extends Fragment
                 Holder.ViewBlankLine.setVisibility(View.VISIBLE);
         }
 
-        int CPosition;
-
         @Override
         public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
         {
             if (ViewType == 0)
             {
-
-
                 RelativeLayout Root = new RelativeLayout(context);
                 Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
@@ -813,16 +818,6 @@ public class FragmentComment extends Fragment
                 ImageViewShortcut.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 ImageViewShortcut.setImageResource(R.drawable.ic_share);
                 ImageViewShortcut.setId(ID_SHORTCUT);
-                ImageViewShortcut.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view)
-                    {
-                        String Message = EditTextComment.getText().toString();
-                        Message += "@" + CommentList.get(CPosition).Username;
-                        EditTextComment.setText(Message);
-                    }
-                });
 
                 RelativeLayoutTool.addView(ImageViewShortcut);
 
@@ -875,11 +870,7 @@ public class FragmentComment extends Fragment
 
                 Root.addView(ViewLine);
 
-                ViewHolderComment view =  new ViewHolderComment(Root, true);
-
-                CPosition = view.getAdapterPosition();
-
-                return view;
+                return new ViewHolderComment(Root, true);
             }
 
             LoadingView Loading = new LoadingView(context);
