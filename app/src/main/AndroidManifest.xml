@@ -34,6 +34,7 @@
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" android:screenOrientation="portrait" android:theme="@style/Base.Theme.AppCompat" />
 
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB-e78nDHYGAetSf7w2XKuaODt8-D-wuHE" />
+        <meta-data android:name="co.biogram.main.misc.GlideConfig" android:value="GlideModule" />
     </application>
 
 </manifest>

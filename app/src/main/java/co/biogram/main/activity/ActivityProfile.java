@@ -54,6 +54,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -79,7 +84,6 @@ import java.util.Map;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
@@ -214,36 +218,28 @@ public class ActivityProfile extends FragmentActivity
                 if (UploadFile != null)
                     Progress.show();
 
-                RequestHandler.Core().Method("UPLOAD")
-                .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_SET))
-                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .Param("Username", EditTextUsername.getText().toString())
-                .Param("Description", EditTextDescription.getText().toString())
-                .Param("Link", EditTextLink.getText().toString())
-                .Param("Position", Position)
-                .Param("Location", EditTextLocation.getText().toString())
-                .Param("Email", EditTextEmail.getText().toString())
-                .File(UploadFile)
-                .Tag("ActivityProfile")
-                .Listen(new RequestHandler.OnProgressCallBack()
+                AndroidNetworking.upload(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_SET))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addMultipartParameter("Username", EditTextUsername.getText().toString())
+                .addMultipartParameter("Description", EditTextDescription.getText().toString())
+                .addMultipartParameter("Link", EditTextLink.getText().toString())
+                .addMultipartParameter("Position", Position)
+                .addMultipartParameter("Location", EditTextLocation.getText().toString())
+                .addMultipartParameter("Email", EditTextEmail.getText().toString())
+                .addMultipartFile(UploadFile)
+                .setTag("ActivityProfile")
+                .build().setUploadProgressListener(new UploadProgressListener()
                 {
                     @Override
-                    public void OnProgress(long Sent, long Total)
+                    public void onProgress(long bytesUploaded, long totalBytes)
                     {
-                        Progress.setProgress((int) (100 * Sent / Total));
+                        Progress.setProgress((int) (100 * bytesUploaded / totalBytes));
                     }
-                })
-                .Build(new RequestHandler.OnCompleteCallBack()
+                }).getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void OnFinish(String Response, int Status)
+                    public void onResponse(String Response)
                     {
-                        if (Status != 200)
-                        {
-                            MiscHandler.Toast(context, getString(R.string.NoInternet));
-                            return;
-                        }
-
                         TextViewSave.setVisibility(View.VISIBLE);
                         LoadingViewSave.Stop();
                         Progress.cancel();
@@ -266,6 +262,12 @@ public class ActivityProfile extends FragmentActivity
                         {
                             // Leave Me Alone
                         }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
                     }
                 });
             }
@@ -424,18 +426,20 @@ public class ActivityProfile extends FragmentActivity
                     @Override
                     public void onClick(View v)
                     {
-                        RequestHandler.Core().Method("POST")
-                        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
-                        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .Tag("ActivityProfile")
-                        .Build(new RequestHandler.OnCompleteCallBack()
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
+                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .setTag("ActivityProfile")
+                        .build().getAsString(new StringRequestListener()
                         {
                             @Override
-                            public void OnFinish(String Response, int Status)
+                            public void onResponse(String Response)
                             {
                                 ImageViewCover.setImageResource(R.color.BlueLight);
                                 MiscHandler.Toast(context, getString(R.string.ActivityProfileImageCover));
                             }
+
+                            @Override
+                            public void onError(ANError anError) { }
                         });
 
                         DialogCover.dismiss();
@@ -602,18 +606,20 @@ public class ActivityProfile extends FragmentActivity
                     @Override
                     public void onClick(View v)
                     {
-                        RequestHandler.Core().Method("POST")
-                        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
-                        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .Tag("ActivityProfile")
-                        .Build(new RequestHandler.OnCompleteCallBack()
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
+                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .setTag("ActivityProfile")
+                        .build().getAsString(new StringRequestListener()
                         {
                             @Override
-                            public void OnFinish(String Response, int Status)
+                            public void onResponse(String response)
                             {
                                 ImageViewCircleProfile.setImageResource(R.color.BlueLight);
                                 MiscHandler.Toast(context, getString(R.string.ActivityProfileImageCover));
                             }
+
+                            @Override
+                            public void onError(ANError anError) { }
                         });
 
                         DialogProfile.dismiss();
@@ -885,7 +891,7 @@ public class ActivityProfile extends FragmentActivity
     protected void onStop()
     {
         super.onStop();
-        RequestHandler.Core().Cancel("ActivityProfile");
+        AndroidNetworking.cancel("ActivityProfile");
     }
 
     @Override
@@ -1392,10 +1398,10 @@ public class ActivityProfile extends FragmentActivity
                 {
                     String URL = "https://api.foursquare.com/v2/venues/search/?v=20170101&locale=en&limit=25&client_id=YXWKVYF1XFBW3XRC4I0EIVALENCVNVEX5ARMQA4TP5ZUAB41&client_secret=QX2MNDH4GGFYSQCLFE1NVXDFJBNTNWKT3IDX0OUJD54TNKJ2&near=" + EditTextSearch.getText().toString();
 
-                    RequestHandler.Core().Method("GET").Address(URL).Tag("FragmentSearch").Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.get(URL).setTag("FragmentSearch").build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             try
                             {
@@ -1443,6 +1449,9 @@ public class ActivityProfile extends FragmentActivity
                                 // Leave Me Alone
                             }
                         }
+
+                        @Override
+                        public void onError(ANError anError) { }
                     });
                 }
             });
@@ -1590,22 +1599,14 @@ public class ActivityProfile extends FragmentActivity
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        RequestHandler.Core().Method("POST")
-        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
-        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .Tag("ActivityProfile")
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .setTag("ActivityProfile")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
-                if (Status < 0)
-                {
-                    TextViewTry.setVisibility(View.VISIBLE);
-                    LoadingViewData.Stop();
-                    return;
-                }
-
                 RelativeLayoutLoading.setVisibility(View.GONE);
                 TextViewTry.setVisibility(View.GONE);
                 LoadingViewData.Stop();
@@ -1625,14 +1626,21 @@ public class ActivityProfile extends FragmentActivity
                         EditTextEmail.setText(Data.getString("Email"));
                         Position = Data.getString("Position");
 
-                        RequestHandler.Core().LoadImage(ImageViewCover, Data.getString("Cover"), "ActivityProfile", false);
-                        RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "ActivityProfile", MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90), true);
+                        Glide.with(context).load(Data.getString("Cover")).into(ImageViewCover);
+                        Glide.with(context).load(Data.getString("Avatar")).override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)).into(ImageViewCircleProfile);
                     }
                 }
                 catch (Exception e)
                 {
                     // Leave Me Alone
                 }
+            }
+
+            @Override
+            public void onError(ANError anError)
+            {
+                TextViewTry.setVisibility(View.VISIBLE);
+                LoadingViewData.Stop();
             }
         });
     }

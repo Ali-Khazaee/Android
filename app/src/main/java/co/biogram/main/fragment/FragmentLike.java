@@ -16,6 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,7 +29,6 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
@@ -121,16 +125,15 @@ public class FragmentLike extends Fragment
                     LoadingBottom = true;
                     adapterLike.notifyItemInserted(LikeList.size());
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
-                    .Param("PostID", PostID)
-                    .Param("Skip", String.valueOf(LikeList.size()))
-                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .Tag("FragmentLike")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
+                    .addBodyParameter("PostID", PostID)
+                    .addBodyParameter("Skip", String.valueOf(LikeList.size()))
+                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .setTag("FragmentLike")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             LikeList.remove(LikeList.size() - 1);
                             adapterLike.notifyItemRemoved(LikeList.size());
@@ -158,6 +161,14 @@ public class FragmentLike extends Fragment
                                 // Leave Me Alone
                             }
                         }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            LikeList.remove(LikeList.size() - 1);
+                            adapterLike.notifyItemRemoved(LikeList.size());
+                            LoadingBottom = false;
+                        }
                     });
                 }
             }
@@ -172,21 +183,20 @@ public class FragmentLike extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentLike");
+        AndroidNetworking.cancel("FragmentLike");
     }
 
     private void RetrieveDataFromServer()
     {
-        RequestHandler.Core().Method("POST")
-        .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
-        .Param("PostID", PostID)
-        .Param("Skip", String.valueOf(LikeList.size()))
-        .Header("TOKEN", SharedHandler.GetString(getActivity(), "TOKEN"))
-        .Tag("FragmentLike")
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
+        .addBodyParameter("PostID", PostID)
+        .addBodyParameter("Skip", String.valueOf(LikeList.size()))
+        .addHeaders("TOKEN", SharedHandler.GetString(getActivity(), "TOKEN"))
+        .setTag("FragmentLike")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
                 try
                 {
@@ -210,6 +220,9 @@ public class FragmentLike extends Fragment
                     // Leave Me Alone
                 }
             }
+
+            @Override
+            public void onError(ANError anError) { }
         });
     }
 
@@ -247,7 +260,12 @@ public class FragmentLike extends Fragment
             if (LikeList.get(Position) == null)
                 return;
 
-            RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, LikeList.get(Position).Avatar, "FragmentLike", MiscHandler.ToDimension(getActivity(), 55), MiscHandler.ToDimension(getActivity(), 55), true);
+            Context context = getActivity();
+
+            Glide.with(context)
+            .load(LikeList.get(Position).Avatar)
+            .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
+            .into(Holder.ImageViewCircleProfile);
 
             Holder.TextViewUsername.setText(LikeList.get(Position).Username);
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(LikeList.get(Position).Time));

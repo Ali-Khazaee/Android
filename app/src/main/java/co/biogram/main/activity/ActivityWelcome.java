@@ -37,6 +37,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -48,7 +51,6 @@ import org.json.JSONObject;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
@@ -352,24 +354,17 @@ public class ActivityWelcome extends FragmentActivity
 
                 if (Acc != null)
                 {
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.SIGN_IN_GOOGLE))
-                    .Param("Token", Acc.getIdToken())
-                    .Param("Session", GenerateSession())
-                    .Tag("ActivityWelcome")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    final Context context = ActivityWelcome.this;
+
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_IN_GOOGLE))
+                    .addBodyParameter("Token", Acc.getIdToken())
+                    .addBodyParameter("Session", GenerateSession())
+                    .setTag("ActivityWelcome")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
-                            Context context = ActivityWelcome.this;
-
-                            if (Status != 200)
-                            {
-                                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                                return;
-                            }
-
                             try
                             {
                                 JSONObject Result = new JSONObject(Response);
@@ -394,6 +389,12 @@ public class ActivityWelcome extends FragmentActivity
                                 // Leave Me Alone
                             }
                         }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
+                        }
                     });
                 }
 
@@ -409,7 +410,7 @@ public class ActivityWelcome extends FragmentActivity
         super.onPause();
         GoogleClient.disconnect();
         MiscHandler.HideSoftKey(this);
-        RequestHandler.Core().Cancel("ActivityWelcome");
+        AndroidNetworking.cancel("ActivityWelcome");
     }
 
     public static class FragmentSignUpUsername extends Fragment
@@ -674,23 +675,16 @@ public class ActivityWelcome extends FragmentActivity
                     ButtonUsername.setVisibility(View.INVISIBLE);
                     LoadingViewUsername.Start();
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.USERNAME_IS_AVAILABLE))
-                    .Param("Username", EditTextUsername.getText().toString())
-                    .Tag("FragmentSignUpUsername")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.USERNAME_IS_AVAILABLE))
+                    .addBodyParameter("Username", EditTextUsername.getText().toString())
+                    .setTag("FragmentSignUpUsername")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             ButtonUsername.setVisibility(View.VISIBLE);
                             LoadingViewUsername.Stop();
-
-                            if (Status != 200)
-                            {
-                                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                                return;
-                            }
 
                             try
                             {
@@ -709,6 +703,15 @@ public class ActivityWelcome extends FragmentActivity
                             {
                                 // Leave Me Alone
                             }
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            ButtonUsername.setVisibility(View.VISIBLE);
+                            LoadingViewUsername.Stop();
+
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
                         }
                     });
                 }
@@ -743,7 +746,7 @@ public class ActivityWelcome extends FragmentActivity
         public void onPause()
         {
             super.onPause();
-            RequestHandler.Core().Cancel("FragmentSignUpUsername");
+            AndroidNetworking.cancel("FragmentSignUpUsername");
             Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }
@@ -1253,26 +1256,19 @@ public class ActivityWelcome extends FragmentActivity
                     ButtonEmail.setVisibility(View.INVISIBLE);
                     LoadingViewEmail.Start();
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.SIGN_UP))
-                    .Param("Username", Parent.Username)
-                    .Param("Password", Parent.Password)
-                    .Param("Email", EditTextEmail.getText().toString())
-                    .Param("Session", GenerateSession())
-                    .Tag("FragmentSignUpEmail")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_UP))
+                    .addBodyParameter("Username", Parent.Username)
+                    .addBodyParameter("Password", Parent.Password)
+                    .addBodyParameter("Email", EditTextEmail.getText().toString())
+                    .addBodyParameter("Session", GenerateSession())
+                    .setTag("FragmentSignUpEmail")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             ButtonEmail.setVisibility(View.VISIBLE);
                             LoadingViewEmail.Stop();
-
-                            if (Status != 200)
-                            {
-                                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                                return;
-                            }
 
                             try
                             {
@@ -1297,6 +1293,15 @@ public class ActivityWelcome extends FragmentActivity
                             {
                                 // Leave Me Alone
                             }
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            ButtonEmail.setVisibility(View.VISIBLE);
+                            LoadingViewEmail.Stop();
+
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
                         }
                     });
                 }
@@ -1331,7 +1336,7 @@ public class ActivityWelcome extends FragmentActivity
         public void onPause()
         {
             super.onPause();
-            RequestHandler.Core().Cancel("FragmentSignUpEmail");
+            AndroidNetworking.cancel("FragmentSignUpEmail");
             Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }
@@ -1629,25 +1634,18 @@ public class ActivityWelcome extends FragmentActivity
                     ButtonSignIn.setVisibility(View.INVISIBLE);
                     LoadingViewSignIn.Start();
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.SIGN_IN))
-                    .Param("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
-                    .Param("Password", EditTextPassword.getText().toString())
-                    .Param("Session", GenerateSession())
-                    .Tag("FragmentSignUpEmail")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_IN))
+                    .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
+                    .addBodyParameter("Password", EditTextPassword.getText().toString())
+                    .addBodyParameter("Session", GenerateSession())
+                    .setTag("FragmentSignUpEmail")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             ButtonSignIn.setVisibility(View.VISIBLE);
                             LoadingViewSignIn.Stop();
-
-                            if (Status != 200)
-                            {
-                                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                                return;
-                            }
 
                             try
                             {
@@ -1673,6 +1671,15 @@ public class ActivityWelcome extends FragmentActivity
                             {
                                 // Leave Me Alone
                             }
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            ButtonSignIn.setVisibility(View.VISIBLE);
+                            LoadingViewSignIn.Stop();
+
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
                         }
                     });
                 }
@@ -1707,7 +1714,7 @@ public class ActivityWelcome extends FragmentActivity
         public void onPause()
         {
             super.onPause();
-            RequestHandler.Core().Cancel("FragmentSignIn");
+            AndroidNetworking.cancel("FragmentSignIn");
             Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }
@@ -1901,24 +1908,17 @@ public class ActivityWelcome extends FragmentActivity
                     LinearLayoutLoading.setVisibility(View.VISIBLE);
                     LoadingViewReset.Start();
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.RESET_PASSWORD))
-                    .Param("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
-                    .Tag("FragmentReset")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.RESET_PASSWORD))
+                    .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
+                    .setTag("FragmentReset")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             ButtonReset.setVisibility(View.VISIBLE);
                             LinearLayoutLoading.setVisibility(View.GONE);
                             LoadingViewReset.Stop();
-
-                            if (Status != 200)
-                            {
-                                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                                return;
-                            }
 
                             try
                             {
@@ -1931,6 +1931,16 @@ public class ActivityWelcome extends FragmentActivity
                             {
                                 // Leave Me Alone
                             }
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            ButtonReset.setVisibility(View.VISIBLE);
+                            LinearLayoutLoading.setVisibility(View.GONE);
+                            LoadingViewReset.Stop();
+
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
                         }
                     });
                 }
@@ -1977,7 +1987,7 @@ public class ActivityWelcome extends FragmentActivity
         public void onPause()
         {
             super.onPause();
-            RequestHandler.Core().Cancel("FragmentReset");
+            AndroidNetworking.cancel("FragmentReset");
             Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
         }
     }

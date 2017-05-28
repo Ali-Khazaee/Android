@@ -42,8 +42,8 @@ public class MiscHandler
     public static void Toast(Context context, String Message)
     {
         GradientDrawable Shape = new GradientDrawable();
-        Shape.setCornerRadius(50.0f);
         Shape.setColor(ContextCompat.getColor(context, R.color.Toast));
+        Shape.setCornerRadius(50.0f);
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));

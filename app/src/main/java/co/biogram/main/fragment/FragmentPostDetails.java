@@ -23,6 +23,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,7 +35,6 @@ import java.text.Bidi;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.handler.URLHandler;
@@ -182,19 +186,15 @@ public class FragmentPostDetails extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-                        RequestHandler.Core().Method("POST")
-                        .Address(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
-                        .Param("PostID", PostID)
-                        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .Tag("FragmentPostDetails")
-                        .Build(new RequestHandler.OnCompleteCallBack()
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
+                        .addBodyParameter("PostID", PostID)
+                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .setTag("FragmentPostDetails")
+                        .build().getAsString(new StringRequestListener()
                         {
                             @Override
-                            public void OnFinish(String Response, int Status)
+                            public void onResponse(String Response)
                             {
-                                if (Status != 200)
-                                    return;
-
                                 try
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
@@ -205,6 +205,9 @@ public class FragmentPostDetails extends Fragment
                                     // Leave Me Alone
                                 }
                             }
+
+                            @Override
+                            public void onError(ANError anError) { }
                         });
 
                         DialogOption.dismiss();
@@ -289,19 +292,15 @@ public class FragmentPostDetails extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-                        RequestHandler.Core().Method("POST")
-                        .Address(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
-                        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .Param("PostID", PostID)
-                        .Tag("FragmentPostDetails")
-                        .Build(new RequestHandler.OnCompleteCallBack()
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
+                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .addBodyParameter("PostID", PostID)
+                        .setTag("FragmentPostDetails")
+                        .build().getAsString(new StringRequestListener()
                         {
                             @Override
-                            public void OnFinish(String Response, int Status)
+                            public void onResponse(String Response)
                             {
-                                if (Status != 200)
-                                    return;
-
                                 try
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
@@ -312,6 +311,9 @@ public class FragmentPostDetails extends Fragment
                                     // Leave Me Alone
                                 }
                             }
+
+                            @Override
+                            public void onError(ANError anError) { }
                         });
 
                         DialogOption.dismiss();
@@ -420,26 +422,22 @@ public class FragmentPostDetails extends Fragment
                     AnimationSet.start();
                 }
 
-                RequestHandler.Core().Method("POST")
-                .Address(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
-                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .Param("PostID", PostID)
-                .Tag("FragmentPostDetails")
-                .Build(new RequestHandler.OnCompleteCallBack()
+                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("PostID", PostID)
+                .setTag("FragmentPostDetails")
+                .build().getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void OnFinish(String Response, int Status)
+                    public void onResponse(String Response)
                     {
-                        if (Status != 200)
-                            return;
-
                         try
                         {
-                            if (new JSONObject(Response).getInt("Message") == 1000)
-                            {
-                                IsBookMark = !IsBookMark;
+                            JSONObject Result = new JSONObject(Response);
 
-                                if (IsBookMark)
+                            if (Result.getInt("Message") == 1000)
+                            {
+                                if (Result.getBoolean("BookMark"))
                                     ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black2);
                                 else
                                     ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black);
@@ -450,6 +448,9 @@ public class FragmentPostDetails extends Fragment
                             // Leave Me Alone
                         }
                     }
+
+                    @Override
+                    public void onError(ANError anError) { }
                 });
             }
         });
@@ -887,11 +888,36 @@ public class FragmentPostDetails extends Fragment
                     TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) + 1));
                 }
 
-                RequestHandler.Core().Method("POST")
-                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
-                .Param("PostID", PostID)
-                .Tag("FragmentPostDetails").Build();
+                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("PostID", PostID)
+                .setTag("FragmentPostDetails")
+                .build().getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000)
+                            {
+                                if (Result.getBoolean("Like"))
+                                    ImageViewLike.setImageResource(R.drawable.ic_like_red);
+                                else
+                                    ImageViewLike.setImageResource(R.drawable.ic_like);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // Leave Me Alone
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) { }
+                });
             }
         });
 
@@ -991,13 +1017,13 @@ public class FragmentPostDetails extends Fragment
             @Override
             public void onClick(View v)
             {
-                RetrieveDataFromServer();
+                RetrieveDataFromServer(context);
             }
         });
 
         Root.addView(TextViewTry);
 
-        RetrieveDataFromServer();
+        RetrieveDataFromServer(context);
 
         return Root;
     }
@@ -1006,31 +1032,23 @@ public class FragmentPostDetails extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentPostDetails");
+        AndroidNetworking.cancel("FragmentPostDetails");
     }
 
-    private void RetrieveDataFromServer()
+    private void RetrieveDataFromServer(final Context context)
     {
-        final Context context = getActivity();
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        RequestHandler.Core().Method("POST")
-        .Address(URLHandler.GetURL(URLHandler.URL.POST_DETAILS))
-        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .Param("PostID", ((getArguments() == null) ? "" : getArguments().getString("PostID", "")))
-        .Tag("FragmentPostDetails")
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DETAILS))
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .addBodyParameter("PostID", ((getArguments() == null) ? "" : getArguments().getString("PostID", "")))
+        .setTag("FragmentPostDetails")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
-                if (Status != 200)
-                {
-                    MiscHandler.Toast(context, getString(R.string.NoInternet));
-                    return;
-                }
-
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -1040,7 +1058,7 @@ public class FragmentPostDetails extends Fragment
                         Result = new JSONObject(Result.getString("Result"));
 
                         if (!Result.getString("Avatar").equals(""))
-                            RequestHandler.Core().LoadImage(ImageViewCircleProfile, Result.getString("Avatar"), "FragmentPostDetails", MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55), true);
+                            Glide.with(context).load(Result.getString("Avatar")).override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55)).into(ImageViewCircleProfile);
 
                         TextViewUsername.setText(Result.getString("Username"));
                         TextViewTime.setText(MiscHandler.GetTimeName(Result.getLong("Time")));
@@ -1077,23 +1095,23 @@ public class FragmentPostDetails extends Fragment
                                     case 1:
                                         LinearLayoutContentSingle.setVisibility(View.VISIBLE);
                                         ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        RequestHandler.Core().LoadImage(ImageViewSingle, URL.get(0).toString(), "FragmentPostDetails", true);
+                                        Glide.with(context).load(URL.get(0).toString()).into(ImageViewSingle);
                                         break;
                                     case 2:
                                         LinearLayoutContentDouble.setVisibility(View.VISIBLE);
                                         ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        RequestHandler.Core().LoadImage(ImageViewDouble1, URL.get(0).toString(), "FragmentPostDetails", true);
-                                        RequestHandler.Core().LoadImage(ImageViewDouble2, URL.get(1).toString(), "FragmentPostDetails", true);
+                                        Glide.with(context).load(URL.get(0).toString()).into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(1).toString()).into(ImageViewSingle);
                                         break;
                                     case 3:
                                         LinearLayoutContentTriple.setVisibility(View.VISIBLE);
                                         ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        RequestHandler.Core().LoadImage(ImageViewTriple1, URL.get(0).toString(), "FragmentPostDetails", true);
-                                        RequestHandler.Core().LoadImage(ImageViewTriple2, URL.get(1).toString(), "FragmentPostDetails", true);
-                                        RequestHandler.Core().LoadImage(ImageViewTriple3, URL.get(2).toString(), "FragmentPostDetails", true);
+                                        Glide.with(context).load(URL.get(0).toString()).into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(1).toString()).into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(2).toString()).into(ImageViewSingle);
                                         break;
                                 }
                             }
@@ -1152,7 +1170,7 @@ public class FragmentPostDetails extends Fragment
                                         LoadingViewLink.Stop();
                                         ImageViewFavLink.setVisibility(View.VISIBLE);
 
-                                        RequestHandler.Core().LoadImage(ImageViewFavLink, Content.Image, "FragmentPostDetails", true);
+                                        Glide.with(context).load(Content.Image).into(ImageViewFavLink);
                                     }
 
                                     @Override
@@ -1208,6 +1226,12 @@ public class FragmentPostDetails extends Fragment
                 LoadingViewData.Stop();
                 TextViewTry.setVisibility(View.GONE);
                 RelativeLayoutLoading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(ANError anError)
+            {
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
             }
         });
     }

@@ -27,6 +27,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,7 +40,6 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.handler.URLHandler;
@@ -156,31 +160,31 @@ public class FragmentComment extends Fragment
                 LoadingViewSend.Start();
                 ImageViewSend.setVisibility(View.GONE);
 
-                RequestHandler.Core().Method("POST")
-                .Address(URLHandler.GetURL(URLHandler.URL.POST_COMMENT))
-                .Param("PostID", PostID)
-                .Param("Message", EditTextComment.getText().toString())
-                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .Tag("FragmentComment")
-                .Build(new RequestHandler.OnCompleteCallBack()
+                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT))
+                .addBodyParameter("Message", EditTextComment.getText().toString())
+                .addBodyParameter("PostID", PostID)
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .setTag("FragmentComment")
+                .build().getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void OnFinish(String Response, int Status)
+                    public void onResponse(String Response)
                     {
                         IsSending = false;
                         LoadingViewSend.Stop();
 
+                        ImageViewSend.setVisibility(View.VISIBLE);
+                        ImageViewSend.setImageResource(R.drawable.ic_send_blue);
+
                         try
                         {
-                            ImageViewSend.setVisibility(View.VISIBLE);
-                            ImageViewSend.setImageResource(R.drawable.ic_send_blue);
                             JSONObject Result = new JSONObject(Response);
 
                             if (Result.getInt("Message") == 1000)
                             {
                                 RecyclerViewComment.scrollToPosition(0);
                                 CommentList.add(0, new Struct(Result.getString("CommentID"), SharedHandler.GetString(context, "ID"), SharedHandler.GetString(context, "Username"), (System.currentTimeMillis() + 50000) , EditTextComment.getText().toString(), 0, false, SharedHandler.GetString(context, "Avatar")));
-                                RecyclerViewCommentAdapter.notifyDataSetChanged();
+                                RecyclerViewCommentAdapter.notifyItemInserted(0);
                                 ImageViewSend.setImageResource(R.drawable.ic_send_gray);
                                 EditTextComment.setText("");
                             }
@@ -189,6 +193,18 @@ public class FragmentComment extends Fragment
                         {
                             // Leave Me Alone
                         }
+                    }
+
+                    @Override
+                    public void onError(ANError error)
+                    {
+                        IsSending = false;
+                        LoadingViewSend.Stop();
+
+                        ImageViewSend.setVisibility(View.VISIBLE);
+                        ImageViewSend.setImageResource(R.drawable.ic_send_blue);
+
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
                     }
                 });
             }
@@ -265,16 +281,15 @@ public class FragmentComment extends Fragment
                 SwipeRefreshLayoutComment.setEnabled(false);
                 SwipeRefreshLayoutComment.setRefreshing(false);
 
-                RequestHandler.Core().Method("POST")
-                .Address(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
-                .Param("PostID", PostID)
-                .Param("CommentTime", String.valueOf(CommentList.get(0).Time))
-                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .Tag("FragmentComment")
-                .Build(new RequestHandler.OnCompleteCallBack()
+                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
+                .addBodyParameter("CommentTime", String.valueOf(CommentList.get(0).Time))
+                .addBodyParameter("PostID", PostID)
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .setTag("FragmentComment")
+                .build().getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void OnFinish(String Response, int Status)
+                    public void onResponse(String Response)
                     {
                         LoadingTop = false;
                         SwipeRefreshLayoutComment.setEnabled(true);
@@ -301,6 +316,15 @@ public class FragmentComment extends Fragment
                             // Leave Me Alone
                         }
                     }
+
+                    @Override
+                    public void onError(ANError error)
+                    {
+                        LoadingTop = false;
+                        SwipeRefreshLayoutComment.setEnabled(true);
+
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
+                    }
                 });
             }
         });
@@ -325,16 +349,15 @@ public class FragmentComment extends Fragment
                     CommentList.add(null);
                     RecyclerViewCommentAdapter.notifyItemInserted(CommentList.size());
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
-                    .Param("PostID", PostID)
-                    .Param("Skip", String.valueOf(CommentList.size()))
-                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .Tag("FragmentComment")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
+                    .addBodyParameter("Skip", String.valueOf(CommentList.size()))
+                    .addBodyParameter("PostID", PostID)
+                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .setTag("FragmentComment")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             LoadingBottom = false;
                             CommentList.remove(CommentList.size() - 1);
@@ -361,6 +384,16 @@ public class FragmentComment extends Fragment
                             {
                                 // Leave Me Alone
                             }
+                        }
+
+                        @Override
+                        public void onError(ANError error)
+                        {
+                            LoadingBottom = false;
+                            CommentList.remove(CommentList.size() - 1);
+                            RecyclerViewCommentAdapter.notifyItemRemoved(CommentList.size());
+
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
                         }
                     });
                 }
@@ -394,11 +427,11 @@ public class FragmentComment extends Fragment
         TextViewTry.setText(getString(R.string.TryAgain));
         TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
+        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
 
         RelativeLayoutLoading.addView(TextViewTry);
 
-        RetrieveDataFromServer();
+        RetrieveDataFromServer(context);
 
         return Root;
     }
@@ -407,32 +440,23 @@ public class FragmentComment extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentComment");
+        AndroidNetworking.cancel("FragmentComment");
     }
 
-    private void RetrieveDataFromServer()
+    private void RetrieveDataFromServer(Context context)
     {
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        RequestHandler.Core().Method("POST")
-        .Address(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
-        .Param("PostID", PostID)
-        .Header("TOKEN", SharedHandler.GetString(getActivity(), "TOKEN"))
-        .Tag("FragmentComment")
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
+        .addBodyParameter("PostID", PostID)
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .setTag("FragmentComment")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
-                if (Status != 200)
-                {
-                    MiscHandler.Toast(getActivity(), getString(R.string.NoInternet));
-                    TextViewTry.setVisibility(View.GONE);
-                    LoadingViewData.Stop();
-                    return;
-                }
-
                 RelativeLayoutLoading.setVisibility(View.GONE);
 
                 try
@@ -456,6 +480,14 @@ public class FragmentComment extends Fragment
                 {
                     // Leave Me Alone
                 }
+            }
+
+            @Override
+            public void onError(ANError error)
+            {
+                MiscHandler.Toast(getActivity(), getString(R.string.NoInternet));
+                TextViewTry.setVisibility(View.GONE);
+                LoadingViewData.Stop();
             }
         });
     }
@@ -516,9 +548,7 @@ public class FragmentComment extends Fragment
             super.onViewRecycled(Holder);
 
             if (Holder.ImageViewProfile != null)
-            {
-                Holder.ImageViewProfile.setImageResource(R.color.BlueGray2);
-            }
+                Glide.clear(Holder.ImageViewProfile);
         }
 
         @Override
@@ -529,7 +559,11 @@ public class FragmentComment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            RequestHandler.Core().LoadImage(Holder.ImageViewProfile, CommentList.get(Position).Avatar, "FragmentComment", MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55), true);
+            Glide.with(FragmentComment.this)
+            .load(CommentList.get(Position).Avatar)
+            .placeholder(R.color.BlueGray)
+            .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
+            .into(Holder.ImageViewProfile);
 
             String Username = CommentList.get(Position).Username;
 
@@ -599,12 +633,36 @@ public class FragmentComment extends Fragment
                         CommentList.get(Position).SetLike();
                     }
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIKE))
-                    .Param("CommentID", CommentList.get(Position).CommentID)
-                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .Tag("FragmentComment")
-                    .Build();
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIKE))
+                    .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
+                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .setTag("FragmentComment")
+                    .build().getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                if (Result.getInt("Message") == 1000)
+                                {
+                                    if (Result.getBoolean("Like"))
+                                        Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
+                                    else
+                                        Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                // Leave Me Alone
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) { }
+                    });
                 }
             });
 
@@ -671,23 +729,22 @@ public class FragmentComment extends Fragment
                             @Override
                             public void onClick(View view)
                             {
-                                RequestHandler.Core().Method("POST")
-                                .Address(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_DELETE))
-                                .Param("PostID", PostID)
-                                .Param("CommentID", CommentList.get(Position).CommentID)
-                                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                                .Tag("FragmentComment")
-                                .Build(new RequestHandler.OnCompleteCallBack()
+                                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_DELETE))
+                                .addBodyParameter("PostID", PostID)
+                                .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
+                                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                                .setTag("FragmentComment")
+                                .build().getAsString(new StringRequestListener()
                                 {
                                     @Override
-                                    public void OnFinish(String Response, int Status)
+                                    public void onResponse(String Response)
                                     {
                                         try
                                         {
                                             if (new JSONObject(Response).getInt("Message") == 1000)
                                             {
                                                 CommentList.remove(Position);
-                                                RecyclerViewCommentAdapter.notifyDataSetChanged();
+                                                RecyclerViewCommentAdapter.notifyItemRemoved(Position);
                                             }
                                         }
                                         catch (Exception e)
@@ -695,6 +752,9 @@ public class FragmentComment extends Fragment
                                             // Leave Me Alone
                                         }
                                     }
+
+                                    @Override
+                                    public void onError(ANError anError) { }
                                 });
 
                                 DialogDelete.dismiss();

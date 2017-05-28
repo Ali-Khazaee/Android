@@ -22,12 +22,16 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.bumptech.glide.Glide;
+
 import org.json.JSONObject;
 
 import co.biogram.main.R;
 import co.biogram.main.activity.ActivityProfile;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
@@ -404,11 +408,11 @@ public class FragmentProfile extends Fragment
         TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTry.setText(getString(R.string.GeneralTryAgain));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
+        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
 
         RelativeLayoutLoading.addView(TextViewTry);
 
-        RetrieveDataFromServer();
+        RetrieveDataFromServer(context);
 
         return Root;
     }
@@ -417,7 +421,7 @@ public class FragmentProfile extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentProfile");
+        AndroidNetworking.cancel("FragmentProfile");
     }
 
     private void ChangeTab(int Tab)
@@ -471,10 +475,8 @@ public class FragmentProfile extends Fragment
         FragManager.beginTransaction().replace(FrameLayoutID, SelectedFragment, SelectedFragment.getClass().getSimpleName()).commit();
     }
 
-    private void RetrieveDataFromServer()
+    private void RetrieveDataFromServer(final Context context)
     {
-        final Context context = getActivity();
-
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
@@ -483,24 +485,15 @@ public class FragmentProfile extends Fragment
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
-        RequestHandler.Core().Method("POST")
-        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
-        .Header("TOKEN",SharedHandler.GetString(context, "TOKEN"))
-        .Param("Username", ID)
-        .Tag("FragmentProfile")
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .addBodyParameter("Username", ID)
+        .setTag("FragmentProfile")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
-                if (Status != 200)
-                {
-                    MiscHandler.Toast(context, getString(R.string.NoInternet));
-                    TextViewTry.setVisibility(View.VISIBLE);
-                    LoadingViewData.Stop();
-                    return;
-                }
-
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -512,10 +505,18 @@ public class FragmentProfile extends Fragment
                         if (!Data.getString("Avatar").equals(""))
                         {
                             SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
-                            RequestHandler.Core().LoadImage(ImageViewCircleProfile, Data.getString("Avatar"), "FragmentProfile", MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90), true);
+
+                            Glide.with(context)
+                            .load(Data.getString("Avatar"))
+                            .override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90))
+                            .into(ImageViewCircleProfile);
                         }
 
-                        RequestHandler.Core().LoadImage(ImageViewCover, Data.getString("Cover"), "FragmentProfile", true);
+                        if (!Data.getString("Cover").equals(""))
+                        {
+                            SharedHandler.SetString(context, "Cover", Data.getString("Avatar"));
+                            Glide.with(context).load(Data.getString("Cover")).into(ImageViewCover);
+                        }
 
                         TextViewUsername.setText(Data.getString("Username"));
                         SharedHandler.SetString(context, "Username", Data.getString("Username"));
@@ -541,12 +542,19 @@ public class FragmentProfile extends Fragment
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Log(e.toString());
                     // Leave Me Alone
                 }
 
                 RelativeLayoutLoading.setVisibility(View.GONE);
                 TextViewTry.setVisibility(View.GONE);
+                LoadingViewData.Stop();
+            }
+
+            @Override
+            public void onError(ANError anError)
+            {
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                TextViewTry.setVisibility(View.VISIBLE);
                 LoadingViewData.Stop();
             }
         });

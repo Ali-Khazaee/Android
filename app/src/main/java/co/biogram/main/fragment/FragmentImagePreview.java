@@ -17,12 +17,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.misc.TouchImageView;
 
 public class FragmentImagePreview extends Fragment
@@ -100,7 +102,7 @@ public class FragmentImagePreview extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentImagePreview");
+        AndroidNetworking.cancel("FragmentImagePreview");
     }
 
     public void SetBitmap(Bitmap bitmap)
@@ -113,13 +115,15 @@ public class FragmentImagePreview extends Fragment
         @Override
         public Object instantiateItem(ViewGroup Container, int Position)
         {
-            TouchImageView ImagePreview = new TouchImageView(getActivity());
+            Context context = getActivity();
+
+            TouchImageView ImagePreview = new TouchImageView(context);
             ImagePreview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
             if (ImageCache != null)
                 ImagePreview.setImageBitmap(ImageCache);
             else
-                RequestHandler.Core().LoadImage(ImagePreview, ImageList.get(Position), "FragmentImagePreview", true);
+                Glide.with(context).load(ImageList.get(Position)).into(ImagePreview);
 
             Container.addView(ImagePreview);
 

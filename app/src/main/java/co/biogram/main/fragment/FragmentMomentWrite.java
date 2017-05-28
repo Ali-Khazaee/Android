@@ -55,6 +55,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
+import com.bumptech.glide.Glide;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,7 +74,6 @@ import java.util.Map;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
@@ -255,38 +260,36 @@ public class FragmentMomentWrite extends Fragment
                 Progress.setProgress(0);
                 Progress.show();
 
-                RequestHandler.Core().Method("UPLOAD")
-                .Address(URLHandler.GetURL(URLHandler.URL.POST_WRITE))
-                .Param("Message", EditTextMessage.getText().toString())
-                .Param("Category", String.valueOf(SelectCategory))
-                .Param("Type", String.valueOf(SelectType))
-                .Param("Link", SelectLink)
-                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .File(UploadFile)
-                .Tag("FragmentMomentWrite")
-                .Listen(new RequestHandler.OnProgressCallBack()
+                AndroidNetworking.upload(URLHandler.GetURL(URLHandler.URL.POST_WRITE))
+                .addMultipartParameter("Message", EditTextMessage.getText().toString())
+                .addMultipartParameter("Category", String.valueOf(SelectCategory))
+                .addMultipartParameter("Type", String.valueOf(SelectType))
+                .addMultipartParameter("Link", SelectLink)
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addMultipartFile(UploadFile)
+                .setTag("FragmentMomentWrite")
+                .build().setUploadProgressListener(new UploadProgressListener()
                 {
                     @Override
-                    public void OnProgress(long Received, long Total)
+                    public void onProgress(long bytesUploaded, long totalBytes)
                     {
-                        Progress.setProgress((int) (100 * Received / Total));
+                        Progress.setProgress((int) (100 * bytesUploaded / totalBytes));
                     }
                 })
-                .Build(new RequestHandler.OnCompleteCallBack()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void OnFinish(String Response, int Status)
-                    {MiscHandler.Log(Status + " - " + Response);
+                    public void onResponse(String response)
+                    {
                         Progress.cancel();
-
-                        if (Status != 200)
-                        {
-                            MiscHandler.Toast(context, getString(R.string.NoInternet));
-                            return;
-                        }
-
                         MiscHandler.HideSoftKey(getActivity());
                         getActivity().onBackPressed();
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
                     }
                 });
             }
@@ -681,7 +684,7 @@ public class FragmentMomentWrite extends Fragment
                                 TextViewTitleLink.setText(Content.Title);
                                 TextViewDescriptionLink.setText(Content.Description);
 
-                                RequestHandler.Core().LoadImage(ImageViewFavLink, Content.Image, "FragmentMomentWrite", true);
+                                Glide.with(context).load(Content.Image).into(ImageViewFavLink);
                             }
 
                             @Override
@@ -944,7 +947,7 @@ public class FragmentMomentWrite extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentMomentWrite");
+        AndroidNetworking.cancel("FragmentMomentWrite");
     }
 
     @Override
@@ -1242,7 +1245,7 @@ public class FragmentMomentWrite extends Fragment
         @Override
         public Object instantiateItem(ViewGroup Container, final int Position)
         {
-            Context context = getActivity();
+            final Context context = getActivity();
 
             RelativeLayout Root = new RelativeLayout(context);
             Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));

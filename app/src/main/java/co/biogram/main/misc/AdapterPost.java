@@ -25,6 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,7 +43,6 @@ import co.biogram.main.fragment.FragmentImagePreview;
 import co.biogram.main.fragment.FragmentLike;
 import co.biogram.main.fragment.FragmentPostDetails;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.handler.URLHandler;
@@ -156,15 +160,15 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
         if (Holder.ImageViewCircleProfile != null)
         {
-            Holder.ImageViewCircleProfile.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewSingle.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewDouble1.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewDouble2.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewTriple1.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewTriple2.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewTriple3.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewFav.setImageResource(R.color.BlueGray2);
-            Holder.ImageViewLike.setImageResource(R.color.BlueGray2);
+            Glide.clear(Holder.ImageViewCircleProfile);
+            Glide.clear(Holder.ImageViewSingle);
+            Glide.clear(Holder.ImageViewDouble1);
+            Glide.clear(Holder.ImageViewDouble2);
+            Glide.clear(Holder.ImageViewTriple1);
+            Glide.clear(Holder.ImageViewTriple2);
+            Glide.clear(Holder.ImageViewTriple3);
+            Glide.clear(Holder.ImageViewFav);
+            Glide.clear(Holder.ImageViewLike);
         }
     }
 
@@ -203,7 +207,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             }
         });
 
-        RequestHandler.Core().LoadImage(Holder.ImageViewCircleProfile, PostList.get(Position).Avatar, Tag, MiscHandler.ToDimension(Activity, 55), MiscHandler.ToDimension(Activity, 55), true);
+        Glide.with(Activity)
+        .load(PostList.get(Position).Avatar)
+        .override(MiscHandler.ToDimension(Activity, 55), MiscHandler.ToDimension(Activity, 55))
+        .into(Holder.ImageViewCircleProfile);
 
         Holder.TextViewUsername.setText(PostList.get(Position).Username);
         Holder.TextViewTime.setText(MiscHandler.GetTimeName(PostList.get(Position).Time));
@@ -256,18 +263,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        RequestHandler.Core().Method("POST")
-                        .Address(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
-                        .Param("PostID", PostList.get(Position).PostID)
-                        .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
-                        .Tag(Tag).Build(new RequestHandler.OnCompleteCallBack()
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
+                        .addBodyParameter("PostID", PostList.get(Position).PostID)
+                        .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .setTag(Tag).build().getAsString(new StringRequestListener()
                         {
                             @Override
-                            public void OnFinish(String Response, int Status)
+                            public void onResponse(String Response)
                             {
-                                if (Status != 200)
-                                    return;
-
                                 try
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
@@ -287,6 +290,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                                     // Leave Me Alone
                                 }
                             }
+
+                            @Override
+                            public void onError(ANError anError) { }
                         });
 
                         DialogOption.dismiss();
@@ -345,19 +351,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        RequestHandler.Core().Method("POST")
-                        .Address(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
-                        .Param("PostID", PostList.get(Position).PostID)
-                        .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
-                        .Tag(Tag)
-                        .Build(new RequestHandler.OnCompleteCallBack()
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
+                        .addBodyParameter("PostID", PostList.get(Position).PostID)
+                        .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .setTag(Tag).build().getAsString(new StringRequestListener()
                         {
                             @Override
-                            public void OnFinish(String Response, int Status)
+                            public void onResponse(String Response)
                             {
-                                if (Status != 200)
-                                    return;
-
                                 try
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
@@ -375,6 +376,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                                     // Leave Me Alone
                                 }
                             }
+
+                            @Override
+                            public void onError(ANError anError) { }
                         });
 
                         DialogOption.dismiss();
@@ -430,19 +434,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        RequestHandler.Core().Method("POST")
-                        .Address(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
-                        .Param("PostID", PostList.get(Position).PostID)
-                        .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
-                        .Tag(Tag)
-                        .Build(new RequestHandler.OnCompleteCallBack()
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
+                        .addBodyParameter("PostID", PostList.get(Position).PostID)
+                        .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .setTag(Tag).build().getAsString(new StringRequestListener()
                         {
                             @Override
-                            public void OnFinish(String Response, int Status)
+                            public void onResponse(String Response)
                             {
-                                if (Status != 200)
-                                    return;
-
                                 try
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
@@ -456,6 +455,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                                     // Leave Me Alone
                                 }
                             }
+
+                            @Override
+                            public void onError(ANError anError) { }
                         });
 
                         DialogOption.dismiss();
@@ -552,7 +554,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.LinearLayoutImageContent1.setVisibility(View.VISIBLE);
                         Holder.ImageViewSingle.setImageResource(android.R.color.transparent);
                         Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        RequestHandler.Core().LoadImage(Holder.ImageViewSingle, URL.get(0).toString(), Tag, true);
+                        Glide.with(Activity).load(URL.get(0).toString()).into(Holder.ImageViewSingle);
                         break;
                     case 2:
                         Holder.LinearLayoutImageContent2.setVisibility(View.VISIBLE);
@@ -560,8 +562,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.ImageViewDouble2.setImageResource(android.R.color.transparent);
                         Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        RequestHandler.Core().LoadImage(Holder.ImageViewDouble1, URL.get(0).toString(), Tag, true);
-                        RequestHandler.Core().LoadImage(Holder.ImageViewDouble2, URL.get(1).toString(), Tag, true);
+                        Glide.with(Activity).load(URL.get(0).toString()).into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(1).toString()).into(Holder.ImageViewSingle);
                         break;
                     case 3:
                         Holder.LinearLayoutImageContent3.setVisibility(View.VISIBLE);
@@ -571,9 +573,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        RequestHandler.Core().LoadImage(Holder.ImageViewTriple1, URL.get(0).toString(), Tag, true);
-                        RequestHandler.Core().LoadImage(Holder.ImageViewTriple2, URL.get(1).toString(), Tag, true);
-                        RequestHandler.Core().LoadImage(Holder.ImageViewTriple3, URL.get(2).toString(), Tag, true);
+                        Glide.with(Activity).load(URL.get(0).toString()).into(Holder.ImageViewTriple1);
+                        Glide.with(Activity).load(URL.get(1).toString()).into(Holder.ImageViewTriple2);
+                        Glide.with(Activity).load(URL.get(2).toString()).into(Holder.ImageViewTriple3);
                         break;
                 }
             }
@@ -645,7 +647,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.TextViewDescription.setText(Content.Description);
                         Holder.LoadingViewLink.Stop();
 
-                        RequestHandler.Core().LoadImage(Holder.ImageViewFav, Content.Image, Tag, true);
+                        Glide.with(Activity).load(Content.Image).into(Holder.ImageViewFav);
                     }
 
                     @Override
@@ -741,12 +743,35 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     PostList.get(Position).SetLike();
                 }
 
-                RequestHandler.Core().Method("POST")
-                .Address(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
-                .Param("PostID", PostList.get(Position).PostID)
-                .Header("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
-                .Tag(Tag)
-                .Build();
+                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
+                .addBodyParameter("PostID", PostList.get(Position).PostID)
+                .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                .setTag(Tag).build().getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000)
+                            {
+                                if (Result.getBoolean("Like"))
+                                    Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
+                                else
+                                    Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // Leave Me Alone
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) { }
+                });
             }
         });
 

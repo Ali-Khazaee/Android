@@ -22,6 +22,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,7 +34,6 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.AdapterPost;
@@ -49,7 +52,7 @@ public class FragmentMoment extends Fragment
     private final List<AdapterPost.PostStruct> PostList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
@@ -134,24 +137,17 @@ public class FragmentMoment extends Fragment
                     return;
                 }
 
-                RequestHandler.Core().Method("POST")
-                .Address(URLHandler.GetURL(URLHandler.URL.POST_LIST))
-                .Param("Time", String.valueOf(PostList.get(0).Time))
-                .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .Tag("FragmentMoment")
-                .Build(new RequestHandler.OnCompleteCallBack()
+                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+                .addBodyParameter("Time", String.valueOf(PostList.get(0).Time))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .setTag("FragmentMoment")
+                .build().getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void OnFinish(String Response, int Status)
+                    public void onResponse(String Response)
                     {
                         LoadingTop = false;
                         SwipeRefreshLayoutMoment.setEnabled(true);
-
-                        if (Status != 200)
-                        {
-                            MiscHandler.Toast(context, getString(R.string.NoInternet));
-                            return;
-                        }
 
                         try
                         {
@@ -174,6 +170,15 @@ public class FragmentMoment extends Fragment
                         {
                             // Leave Me Alone
                         }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        LoadingTop = false;
+                        SwipeRefreshLayoutMoment.setEnabled(true);
+
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
                     }
                 });
             }
@@ -212,15 +217,14 @@ public class FragmentMoment extends Fragment
                     PostList.add(null);
                     PostAdapter.notifyItemInserted(PostList.size());
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.POST_LIST))
-                    .Param("Skip", String.valueOf(PostList.size()))
-                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .Tag("FragmentMoment")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+                    .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .setTag("FragmentMoment")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             LoadingBottom = false;
                             PostList.remove(PostList.size() - 1);
@@ -247,6 +251,14 @@ public class FragmentMoment extends Fragment
                             {
                                 // Leave Me Alone
                             }
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            LoadingBottom = false;
+                            PostList.remove(PostList.size() - 1);
+                            PostAdapter.notifyItemRemoved(PostList.size());
                         }
                     });
                 }
@@ -285,8 +297,11 @@ public class FragmentMoment extends Fragment
 
         Root.addView(ImageViewWrite);
 
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
         RelativeLayoutLoading = new RelativeLayout(context);
-        RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
         Root.addView(RelativeLayoutLoading);
@@ -307,11 +322,11 @@ public class FragmentMoment extends Fragment
         TextViewTry.setText(getString(R.string.TryAgain));
         TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
+        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
 
         RelativeLayoutLoading.addView(TextViewTry);
 
-        RetrieveDataFromServer();
+        RetrieveDataFromServer(context);
 
         return Root;
     }
@@ -320,33 +335,22 @@ public class FragmentMoment extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentMoment");
+        AndroidNetworking.cancel("FragmentMoment");
     }
 
-    private void RetrieveDataFromServer()
+    private void RetrieveDataFromServer(final Context context)
     {
-        final Context context = getActivity();
-
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        RequestHandler.Core().Method("POST")
-        .Address(URLHandler.GetURL(URLHandler.URL.POST_LIST))
-        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .Tag("FragmentMoment")
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .setTag("FragmentMoment")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
-                if (Status != 200)
-                {
-                    MiscHandler.Toast(context, getString(R.string.NoInternet));
-                    TextViewTry.setVisibility(View.VISIBLE);
-                    LoadingViewData.Stop();
-                    return;
-                }
-
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -372,6 +376,14 @@ public class FragmentMoment extends Fragment
                 LoadingViewData.Stop();
                 TextViewTry.setVisibility(View.GONE);
                 RelativeLayoutLoading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(ANError anError)
+            {
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                TextViewTry.setVisibility(View.VISIBLE);
+                LoadingViewData.Stop();
             }
         });
     }

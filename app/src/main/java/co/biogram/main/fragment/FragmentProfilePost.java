@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,7 +25,6 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.RequestHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.AdapterPost;
@@ -68,26 +71,19 @@ public class FragmentProfilePost extends Fragment
                     if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
                         ID = getArguments().getString("ID");
 
-                    RequestHandler.Core().Method("POST")
-                    .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
-                    .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .Param("Skip", String.valueOf(PostList.size()))
-                    .Param("ID", ID)
-                    .Tag("FragmentProfilePost")
-                    .Build(new RequestHandler.OnCompleteCallBack()
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
+                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                    .addBodyParameter("ID", ID)
+                    .setTag("FragmentProfilePost")
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnFinish(String Response, int Status)
+                        public void onResponse(String Response)
                         {
                             IsBottom = false;
                             PostList.remove(PostList.size() - 1);
                             postAdapter.notifyItemRemoved(PostList.size());
-
-                            if (Status < 0)
-                            {
-                                MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
-                                return;
-                            }
 
                             try
                             {
@@ -110,6 +106,16 @@ public class FragmentProfilePost extends Fragment
                             {
                                 // Leave Me Alone
                             }
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            IsBottom = false;
+                            PostList.remove(PostList.size() - 1);
+                            postAdapter.notifyItemRemoved(PostList.size());
+
+                            MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }
@@ -140,11 +146,11 @@ public class FragmentProfilePost extends Fragment
         TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTry.setText(getString(R.string.GeneralTryAgain));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
+        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
 
         RelativeLayoutLoading.addView(TextViewTry);
 
-        RetrieveDataFromServer();
+        RetrieveDataFromServer(context);
 
         return Root;
     }
@@ -153,12 +159,11 @@ public class FragmentProfilePost extends Fragment
     public void onPause()
     {
         super.onPause();
-        RequestHandler.Core().Cancel("FragmentProfilePost");
+        AndroidNetworking.cancel("FragmentProfilePost");
     }
 
-    private void RetrieveDataFromServer()
+    private void RetrieveDataFromServer(Context context)
     {
-        Context context = getActivity();
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
@@ -167,24 +172,15 @@ public class FragmentProfilePost extends Fragment
         if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
             ID = getArguments().getString("ID");
 
-        RequestHandler.Core().Method("POST")
-        .Address(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
-        .Header("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .Param("ID", ID)
-        .Tag("FragmentProfilePost")
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_GET_POST))
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .addBodyParameter("ID", ID)
+        .setTag("FragmentProfilePost")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
-                if (Status < 0)
-                {
-                    MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
-                    TextViewTry.setVisibility(View.VISIBLE);
-                    LoadingViewData.Stop();
-                    return;
-                }
-
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -209,6 +205,14 @@ public class FragmentProfilePost extends Fragment
 
                 RelativeLayoutLoading.setVisibility(View.GONE);
                 TextViewTry.setVisibility(View.GONE);
+                LoadingViewData.Stop();
+            }
+
+            @Override
+            public void onError(ANError anError)
+            {
+                MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
+                TextViewTry.setVisibility(View.VISIBLE);
                 LoadingViewData.Stop();
             }
         });

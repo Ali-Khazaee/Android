@@ -1,5 +1,9 @@
 package co.biogram.main.misc;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import co.biogram.main.handler.CacheHandler;
-import co.biogram.main.handler.RequestHandler;
 
 public class TextCrawler
 {
@@ -44,20 +47,11 @@ public class TextCrawler
             }
         }
 
-        RequestHandler.Core().Method("GET")
-        .Address(URL)
-        .Tag(Tag)
-        .Build(new RequestHandler.OnCompleteCallBack()
+        AndroidNetworking.get(URL).setTag(Tag).build().getAsString(new StringRequestListener()
         {
             @Override
-            public void OnFinish(String Response, int Status)
+            public void onResponse(String Response)
             {
-                if (Status != 200)
-                {
-                    CallBackListener.OnFailed();
-                    return;
-                }
-
                 try
                 {
                     String Title = new URI(URL).getHost();
@@ -90,6 +84,12 @@ public class TextCrawler
                 {
                     CallBackListener.OnFailed();
                 }
+            }
+
+            @Override
+            public void onError(ANError anError)
+            {
+                CallBackListener.OnFailed();
             }
         });
     }
