@@ -47,7 +47,7 @@ public class FragmentProfileComment extends Fragment
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
+        Root.setBackgroundResource(R.color.White);
         Root.setClickable(true);
 
         postAdapter = new AdapterPost(getActivity(), PostList, "FragmentProfileComment");
@@ -126,7 +126,7 @@ public class FragmentProfileComment extends Fragment
 
         RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutLoading.setBackgroundColor(ContextCompat.getColor(context, R.color.White));
+        RelativeLayoutLoading.setBackgroundResource(ContextCompat.getColor(context, R.color.White));
 
         Root.addView(RelativeLayoutLoading);
 

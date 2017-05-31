@@ -1522,7 +1522,7 @@ public class FragmentMomentWrite extends Fragment
 
                 View ViewLine = new View(context);
                 ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundColor(ContextCompat.getColor(context, R.color.Gray));
+                ViewLine.setBackgroundResource(R.color.Gray);
                 ViewLine.setId(ID_LINE);
 
                 root.addView(ViewLine);

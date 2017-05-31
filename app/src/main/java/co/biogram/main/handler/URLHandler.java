@@ -34,6 +34,10 @@ public class URLHandler
         PROFILE_EDIT_COVER_DELETE,
         PROFILE_EDIT_AVATAR_DELETE,
 
+        FOLLOW,
+        FOLLOWING_GET,
+        FOLLOWERS_GET,
+
         MISC_LAST_ONLINE
     }
 
@@ -70,6 +74,10 @@ public class URLHandler
             case PROFILE_EDIT_GET:           URL = "ProfileGetEdit";      break;
             case PROFILE_EDIT_COVER_DELETE:  URL = "ProfileCoverDelete";  break;
             case PROFILE_EDIT_AVATAR_DELETE: URL = "ProfileAvatarDelete"; break;
+
+            case FOLLOW:        URL = "Follow";       break;
+            case FOLLOWING_GET: URL = "FollowingGet"; break;
+            case FOLLOWERS_GET: URL = "FollowersGet"; break;
 
             case MISC_LAST_ONLINE: URL = "LastOnline"; break;
         }

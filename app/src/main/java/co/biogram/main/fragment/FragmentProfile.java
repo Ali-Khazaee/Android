@@ -43,6 +43,8 @@ public class FragmentProfile extends Fragment
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
 
+    private String ID;
+
     private ImageView ImageViewCover;
     private ImageViewCircle ImageViewCircleProfile;
 
@@ -66,6 +68,11 @@ public class FragmentProfile extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+
+        ID = SharedHandler.GetString(context, "ID");
+
+        if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
+            ID = getArguments().getString("ID");
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -251,6 +258,20 @@ public class FragmentProfile extends Fragment
 
         RelativeLayout RelativeLayoutFollowing = new RelativeLayout(context);
         RelativeLayoutFollowing.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        RelativeLayoutFollowing.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bundle bundle = new Bundle();
+                bundle.putString("ID", ID);
+
+                Fragment fragment = new FragmentFollowing();
+                fragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentFollowing").commit();
+            }
+        });
 
         LinearLayoutDetails.addView(RelativeLayoutFollowing);
 
