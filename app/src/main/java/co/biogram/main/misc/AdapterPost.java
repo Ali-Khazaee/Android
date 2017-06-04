@@ -554,7 +554,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.LinearLayoutImageContent1.setVisibility(View.VISIBLE);
                         Holder.ImageViewSingle.setImageResource(android.R.color.transparent);
                         Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(0).toString()).dontAnimate().into(Holder.ImageViewSingle);
                         break;
                     case 2:
                         Holder.LinearLayoutImageContent2.setVisibility(View.VISIBLE);
@@ -562,8 +562,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.ImageViewDouble2.setImageResource(android.R.color.transparent);
                         Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).into(Holder.ImageViewSingle);
-                        Glide.with(Activity).load(URL.get(1).toString()).into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(0).toString()).dontAnimate().into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(1).toString()).dontAnimate().into(Holder.ImageViewSingle);
                         break;
                     case 3:
                         Holder.LinearLayoutImageContent3.setVisibility(View.VISIBLE);
@@ -573,9 +573,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).into(Holder.ImageViewTriple1);
-                        Glide.with(Activity).load(URL.get(1).toString()).into(Holder.ImageViewTriple2);
-                        Glide.with(Activity).load(URL.get(2).toString()).into(Holder.ImageViewTriple3);
+                        Glide.with(Activity).load(URL.get(0).toString()).dontAnimate().into(Holder.ImageViewTriple1);
+                        Glide.with(Activity).load(URL.get(1).toString()).dontAnimate().into(Holder.ImageViewTriple2);
+                        Glide.with(Activity).load(URL.get(2).toString()).dontAnimate().into(Holder.ImageViewTriple3);
                         break;
                 }
             }
@@ -647,7 +647,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.TextViewDescription.setText(Content.Description);
                         Holder.LoadingViewLink.Stop();
 
-                        Glide.with(Activity).load(Content.Image).into(Holder.ImageViewFav);
+                        Glide.with(Activity).load(Content.Image).dontAnimate().into(Holder.ImageViewFav);
                     }
 
                     @Override

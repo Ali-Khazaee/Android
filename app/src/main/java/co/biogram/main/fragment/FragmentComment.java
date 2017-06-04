@@ -559,10 +559,11 @@ public class FragmentComment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            Glide.with(FragmentComment.this)
+            Glide.with(context)
             .load(CommentList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
             .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
+            .dontAnimate()
             .into(Holder.ImageViewProfile);
 
             String Username = CommentList.get(Position).Username;

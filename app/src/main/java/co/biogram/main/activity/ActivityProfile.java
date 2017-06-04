@@ -1626,8 +1626,8 @@ public class ActivityProfile extends FragmentActivity
                         EditTextEmail.setText(Data.getString("Email"));
                         Position = Data.getString("Position");
 
-                        Glide.with(context).load(Data.getString("Cover")).into(ImageViewCover);
-                        Glide.with(context).load(Data.getString("Avatar")).override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)).into(ImageViewCircleProfile);
+                        Glide.with(context).load(Data.getString("Cover")).dontAnimate().into(ImageViewCover);
+                        Glide.with(context).load(Data.getString("Avatar")).override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)).dontAnimate().into(ImageViewCircleProfile);
                     }
                 }
                 catch (Exception e)

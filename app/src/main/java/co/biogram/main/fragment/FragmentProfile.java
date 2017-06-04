@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,10 +42,13 @@ public class FragmentProfile extends Fragment
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
 
-    private String ID;
+    private String Username;
 
     private ImageView ImageViewCover;
     private ImageViewCircle ImageViewCircleProfile;
+
+    private ImageView ImageViewEdit;
+    private ImageView ImageViewFollow;
 
     private TextView TextViewUsername;
     private TextView TextViewDescription;
@@ -69,10 +71,12 @@ public class FragmentProfile extends Fragment
     {
         final Context context = getActivity();
 
-        ID = SharedHandler.GetString(context, "ID");
+        Username = SharedHandler.GetString(context, "Username");
 
-        if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
-            ID = getArguments().getString("ID");
+        if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
+            Username = getArguments().getString("Username");
+
+        MiscHandler.Log(Username);
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -110,22 +114,22 @@ public class FragmentProfile extends Fragment
 
         RelativeLayoutMain.addView(ImageViewCircleProfile);
 
+        RelativeLayout.LayoutParams ImageViewEditParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+        ImageViewEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
+        ImageViewEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
         GradientDrawable ShapeEdit = new GradientDrawable();
         ShapeEdit.setShape(GradientDrawable.OVAL);
         ShapeEdit.setColor(Color.WHITE);
         ShapeEdit.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#1f000000"));
 
-        RelativeLayout.LayoutParams ImageButtonEditParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
-        ImageButtonEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
-        ImageButtonEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-        ImageButton ImageButtonEdit = new ImageButton(context);
-        ImageButtonEdit.setLayoutParams(ImageButtonEditParam);
-        ImageButtonEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageButtonEdit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageButtonEdit.setBackground(ShapeEdit);
-        ImageButtonEdit.setImageResource(R.drawable.ic_setting_black);
-        ImageButtonEdit.setOnClickListener(new View.OnClickListener()
+        ImageViewEdit = new ImageView(context);
+        ImageViewEdit.setLayoutParams(ImageViewEditParam);
+        ImageViewEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewEdit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        ImageViewEdit.setBackground(ShapeEdit);
+        ImageViewEdit.setImageResource(R.drawable.ic_setting_black);
+        ImageViewEdit.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -135,11 +139,65 @@ public class FragmentProfile extends Fragment
             }
         });
 
-        if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
-            if (!getArguments().getString("ID", "").equals(SharedHandler.GetString(context, "ID")))
-                ImageButtonEdit.setVisibility(View.GONE);
+        RelativeLayoutMain.addView(ImageViewEdit);
 
-        RelativeLayoutMain.addView(ImageButtonEdit);
+        RelativeLayout.LayoutParams ImageButtonEditParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+        ImageButtonEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
+        ImageButtonEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        GradientDrawable ShapeFollow = new GradientDrawable();
+        ShapeFollow.setShape(GradientDrawable.OVAL);
+        ShapeFollow.setColor(Color.BLUE);
+        ShapeFollow.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#1f000000"));
+
+        ImageViewFollow = new ImageView(context);
+        ImageViewFollow.setLayoutParams(ImageButtonEditParam);
+        ImageViewFollow.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewFollow.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        ImageViewFollow.setBackground(ShapeFollow);
+        ImageViewFollow.setImageResource(R.drawable.ic_setting_black);
+        ImageViewFollow.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("Username", Username)
+                .setTag("FragmentProfile")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {MiscHandler.Log(Response);
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000)
+                            {
+
+
+
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // Leave Me Alone
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
+                    }
+                });
+            }
+        });
+
+        RelativeLayoutMain.addView(ImageViewFollow);
 
         RelativeLayout.LayoutParams LinearLayoutMain2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         LinearLayoutMain2Param.addRule(RelativeLayout.BELOW, ImageViewCover.getId());
@@ -156,7 +214,8 @@ public class FragmentProfile extends Fragment
 
         LinearLayoutMain2.addView(ViewBlankLine);
         ImageViewCircleProfile.bringToFront();
-        ImageButtonEdit.bringToFront();
+        ImageViewFollow.bringToFront();
+        ImageViewEdit.bringToFront();
 
         TextViewUsername = new TextView(context);
         TextViewUsername.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -264,7 +323,7 @@ public class FragmentProfile extends Fragment
             public void onClick(View v)
             {
                 Bundle bundle = new Bundle();
-                bundle.putString("ID", ID);
+                bundle.putString("Username", Username);
 
                 Fragment fragment = new FragmentFollowing();
                 fragment.setArguments(bundle);
@@ -501,16 +560,12 @@ public class FragmentProfile extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        String ID = SharedHandler.GetString(context, "ID");
-
-        if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
-            ID = getArguments().getString("ID");
-
         AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("Username", ID)
+        .addBodyParameter("Username", Username)
         .setTag("FragmentProfile")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -523,24 +578,27 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        if (!Data.getString("Avatar").equals(""))
-                        {
-                            SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
+                        MiscHandler.Log(Data.getString("Username"));
 
-                            Glide.with(context)
-                            .load(Data.getString("Avatar"))
-                            .override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90))
-                            .into(ImageViewCircleProfile);
+                        if (Result.getBoolean("Self"))
+                        {
+                            MiscHandler.Log("TRue");
+                            SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
+                            SharedHandler.SetString(context, "Username", Data.getString("Username"));
                         }
+                        else
+                        {MiscHandler.Log("False");
+                            ImageViewEdit.setVisibility(View.GONE);
+                            ImageViewFollow.setVisibility(View.VISIBLE);
+                        }
+
+                        if (!Data.getString("Avatar").equals(""))
+                            Glide.with(context).load(Data.getString("Avatar")).override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)).dontAnimate().into(ImageViewCircleProfile);
 
                         if (!Data.getString("Cover").equals(""))
-                        {
-                            SharedHandler.SetString(context, "Cover", Data.getString("Avatar"));
-                            Glide.with(context).load(Data.getString("Cover")).into(ImageViewCover);
-                        }
+                            Glide.with(context).load(Data.getString("Cover")).dontAnimate().into(ImageViewCover);
 
                         TextViewUsername.setText(Data.getString("Username"));
-                        SharedHandler.SetString(context, "Username", Data.getString("Username"));
 
                         if (!Data.getString("Description").equals(""))
                         {

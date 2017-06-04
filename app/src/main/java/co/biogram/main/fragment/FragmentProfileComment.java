@@ -126,7 +126,7 @@ public class FragmentProfileComment extends Fragment
 
         RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutLoading.setBackgroundResource(ContextCompat.getColor(context, R.color.White));
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
         Root.addView(RelativeLayoutLoading);
 

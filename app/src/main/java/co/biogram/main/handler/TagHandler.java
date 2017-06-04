@@ -114,7 +114,7 @@ public class TagHandler
                 MiscHandler.HideSoftKey(Activity);
 
                 Bundle bundle = new Bundle();
-                bundle.putString("ID", Message);
+                bundle.putString("Username", Message);
 
                 Fragment fragment = new FragmentProfile();
                 fragment.setArguments(bundle);

@@ -12,7 +12,6 @@ import com.bumptech.glide.module.GlideModule;
 import java.io.InputStream;
 
 import co.biogram.main.App;
-import co.biogram.main.handler.MiscHandler;
 import okhttp3.OkHttpClient;
 
 public class GlideConfig implements GlideModule

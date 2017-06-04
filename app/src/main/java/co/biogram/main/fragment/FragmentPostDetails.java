@@ -1058,7 +1058,7 @@ public class FragmentPostDetails extends Fragment
                         Result = new JSONObject(Result.getString("Result"));
 
                         if (!Result.getString("Avatar").equals(""))
-                            Glide.with(context).load(Result.getString("Avatar")).override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55)).into(ImageViewCircleProfile);
+                            Glide.with(context).load(Result.getString("Avatar")).override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55)).dontAnimate().into(ImageViewCircleProfile);
 
                         TextViewUsername.setText(Result.getString("Username"));
                         TextViewTime.setText(MiscHandler.GetTimeName(Result.getLong("Time")));
@@ -1095,23 +1095,23 @@ public class FragmentPostDetails extends Fragment
                                     case 1:
                                         LinearLayoutContentSingle.setVisibility(View.VISIBLE);
                                         ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        Glide.with(context).load(URL.get(0).toString()).into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewSingle);
                                         break;
                                     case 2:
                                         LinearLayoutContentDouble.setVisibility(View.VISIBLE);
                                         ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        Glide.with(context).load(URL.get(0).toString()).into(ImageViewSingle);
-                                        Glide.with(context).load(URL.get(1).toString()).into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(1).toString()).dontAnimate().into(ImageViewSingle);
                                         break;
                                     case 3:
                                         LinearLayoutContentTriple.setVisibility(View.VISIBLE);
                                         ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        Glide.with(context).load(URL.get(0).toString()).into(ImageViewSingle);
-                                        Glide.with(context).load(URL.get(1).toString()).into(ImageViewSingle);
-                                        Glide.with(context).load(URL.get(2).toString()).into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(1).toString()).dontAnimate().into(ImageViewSingle);
+                                        Glide.with(context).load(URL.get(2).toString()).dontAnimate().into(ImageViewSingle);
                                         break;
                                 }
                             }
@@ -1170,7 +1170,7 @@ public class FragmentPostDetails extends Fragment
                                         LoadingViewLink.Stop();
                                         ImageViewFavLink.setVisibility(View.VISIBLE);
 
-                                        Glide.with(context).load(Content.Image).into(ImageViewFavLink);
+                                        Glide.with(context).load(Content.Image).dontAnimate().into(ImageViewFavLink);
                                     }
 
                                     @Override

@@ -66,6 +66,7 @@
     <string name="FragmentLike">Likes</string>
 
     <string name="FragmentFollowing">Following</string>
+    <string name="FragmentFollowingFollow">Follow</string>
     <string name="FragmentFollowingSince">Following Since: </string>
 
     <string name="ActivityProfileTitle">Edit Profile</string>

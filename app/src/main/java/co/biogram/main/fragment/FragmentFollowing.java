@@ -2,6 +2,7 @@ package co.biogram.main.fragment;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -40,7 +41,7 @@ public class FragmentFollowing extends Fragment
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
 
-    private String ID;
+    private String Username;
     private AdapterFollowing Adapter;
     private boolean LoadingBottom = false;
     private final List<Struct> FollowingList = new ArrayList<>();
@@ -50,8 +51,8 @@ public class FragmentFollowing extends Fragment
     {
         final Context context = getActivity();
 
-        if (getArguments() != null && !getArguments().getString("ID", "").equals(""))
-            ID = getArguments().getString("ID");
+        if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
+            Username = getArguments().getString("Username");
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -108,16 +109,18 @@ public class FragmentFollowing extends Fragment
         RelativeLayout.LayoutParams RecyclerViewFollowingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewFollowingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
+        final LinearLayoutManager LinearLayoutManagerFollowing;
+
         RecyclerView RecyclerViewFollowing = new RecyclerView(context);
         RecyclerViewFollowing.setLayoutParams(RecyclerViewFollowingParam);
-        RecyclerViewFollowing.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerViewFollowing.setLayoutManager(LinearLayoutManagerFollowing = new LinearLayoutManager(context));
         RecyclerViewFollowing.setAdapter(Adapter = new AdapterFollowing(context));
         RecyclerViewFollowing.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView recyclerView, int DX, int DY)
             {
-                if (!LoadingBottom && (((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition() + 2) > recyclerView.getAdapter().getItemCount())
+                if (!LoadingBottom && (LinearLayoutManagerFollowing.findLastVisibleItemPosition() + 5) > LinearLayoutManagerFollowing.getItemCount())
                 {
                     LoadingBottom = true;
                     FollowingList.add(null);
@@ -126,7 +129,7 @@ public class FragmentFollowing extends Fragment
                     AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWING_GET))
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .addBodyParameter("Skip", String.valueOf(FollowingList.size()))
-                    .addBodyParameter("ID", ID)
+                    .addBodyParameter("Username", Username)
                     .setTag("FragmentFollowing")
                     .build().getAsString(new StringRequestListener()
                     {
@@ -152,14 +155,16 @@ public class FragmentFollowing extends Fragment
 
                                         FollowingList.add(StructFollow);
                                     }
-
-                                    Adapter.notifyDataSetChanged();
                                 }
                             }
                             catch (Exception e)
                             {
                                 // Leave Me Alone
                             }
+
+                            LoadingBottom = false;
+                            FollowingList.remove(FollowingList.size() - 1);
+                            Adapter.notifyDataSetChanged();
                         }
 
                         @Override
@@ -226,7 +231,7 @@ public class FragmentFollowing extends Fragment
 
         AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWING_GET))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("ID", ID)
+        .addBodyParameter("Username", Username)
         .setTag("FragmentFollowing")
         .build()
         .getAsString(new StringRequestListener()
@@ -249,7 +254,7 @@ public class FragmentFollowing extends Fragment
                             Struct StructFollow = new Struct();
                             StructFollow.Username = Following.getString("Username");
                             StructFollow.Avatar = Following.getString("Avatar");
-                            StructFollow.Since = Following.getInt("Since");
+                            StructFollow.Since = Following.getInt("Time");
 
                             FollowingList.add(StructFollow);
                         }
@@ -284,6 +289,9 @@ public class FragmentFollowing extends Fragment
         private final int ID_ICON = MiscHandler.GenerateViewID();
         private final int ID_NAME = MiscHandler.GenerateViewID();
         private final int ID_TIME = MiscHandler.GenerateViewID();
+        private final int ID_BUTTON = MiscHandler.GenerateViewID();
+        private final int ID_FOLLOW = MiscHandler.GenerateViewID();
+        private final int ID_LOADING = MiscHandler.GenerateViewID();
         private final int ID_LINE = MiscHandler.GenerateViewID();
 
         AdapterFollowing(Context c)
@@ -296,6 +304,9 @@ public class FragmentFollowing extends Fragment
             ImageViewCircle ImageViewCircleProfile;
             TextView TextViewUsername;
             TextView TextViewTime;
+            RelativeLayout RelativeLayoutFollow;
+            TextView TextViewFollow;
+            LoadingView LoadingViewFollow;
             View ViewLine;
 
             ViewHolderFollowing(View view, boolean Content)
@@ -307,16 +318,21 @@ public class FragmentFollowing extends Fragment
                     ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_ICON);
                     TextViewUsername = (TextView) view.findViewById(ID_NAME);
                     TextViewTime = (TextView) view.findViewById(ID_TIME);
+                    RelativeLayoutFollow = (RelativeLayout) view.findViewById(ID_BUTTON);
+                    TextViewFollow = (TextView) view.findViewById(ID_FOLLOW);
+                    LoadingViewFollow = (LoadingView) view.findViewById(ID_LOADING);
                     ViewLine = view.findViewById(ID_LINE);
                 }
             }
         }
 
         @Override
-        public void onBindViewHolder(ViewHolderFollowing Holder, int Position)
+        public void onBindViewHolder(final ViewHolderFollowing Holder, int position)
         {
-            if (FollowingList.get(Position) == null)
+            if (FollowingList.get(position) == null)
                 return;
+
+            final int Position = Holder.getAdapterPosition();
 
             Glide.with(context)
             .load(FollowingList.get(Position).Avatar)
@@ -331,7 +347,69 @@ public class FragmentFollowing extends Fragment
 
             Holder.TextViewTime.setText(Since);
 
-            // TODO Button Following
+            if (FollowingList.get(Position).IsFollowing)
+            {
+                Holder.TextViewTime.setVisibility(View.VISIBLE);
+                Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
+            }
+            else
+            {
+                Holder.TextViewTime.setVisibility(View.INVISIBLE);
+                Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
+            }
+
+            Holder.RelativeLayoutFollow.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Holder.TextViewFollow.setVisibility(View.GONE);
+                    Holder.LoadingViewFollow.Start();
+
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
+                    .addBodyParameter("Username", FollowingList.get(Position).Username)
+                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .setTag("FragmentFollowing")
+                    .build()
+                    .getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {MiscHandler.Log(Response);
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                if (Result.getInt("Message") == 1000)
+                                {
+                                    if (Result.getBoolean("Follow"))
+                                        Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
+                                    else
+                                        Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
+
+                                    Adapter.notifyDataSetChanged();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                // Leave Me Alone
+                            }
+
+                            Holder.TextViewFollow.setVisibility(View.VISIBLE);
+                            Holder.LoadingViewFollow.Stop();
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            Holder.TextViewFollow.setVisibility(View.VISIBLE);
+                            Holder.LoadingViewFollow.Stop();
+
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
+                        }
+                    });
+                }
+            });
 
             if (Position == FollowingList.size() - 1)
                 Holder.ViewLine.setVisibility(View.GONE);
@@ -357,17 +435,50 @@ public class FragmentFollowing extends Fragment
 
                 Root.addView(ImageViewCircleProfile);
 
-                RelativeLayout.LayoutParams RelativeLayoutButtonParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 60), MiscHandler.ToDimension(context, 35));
-                RelativeLayoutButtonParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                RelativeLayoutButtonParam.addRule(RelativeLayout.CENTER_VERTICAL);
+                RelativeLayout.LayoutParams RelativeLayoutFollowParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+                RelativeLayoutFollowParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                RelativeLayoutFollowParam.addRule(RelativeLayout.CENTER_VERTICAL);
+                RelativeLayoutFollowParam.setMargins(0, 0, MiscHandler.ToDimension(context, 10), 0);
 
-                RelativeLayout RelativeLayoutButton = new RelativeLayout(context);
-                RelativeLayoutButton.setLayoutParams(RelativeLayoutButtonParam);
+                GradientDrawable ShapeButton = new GradientDrawable();
+                ShapeButton.setShape(GradientDrawable.RECTANGLE);
+                ShapeButton.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
+                ShapeButton.setStroke(3, ContextCompat.getColor(context, R.color.BlueLight));
 
-                Root.addView(RelativeLayoutButton);
+                RelativeLayout RelativeLayoutFollow = new RelativeLayout(context);
+                RelativeLayoutFollow.setLayoutParams(RelativeLayoutFollowParam);
+                RelativeLayoutFollow.setBackground(ShapeButton);
+                RelativeLayoutFollow.setId(MiscHandler.GenerateViewID());
+                RelativeLayoutFollow.setId(ID_BUTTON);
+
+                Root.addView(RelativeLayoutFollow);
+
+                RelativeLayout.LayoutParams TextViewFollowParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewFollowParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+                TextView TextViewFollow = new TextView(context);
+                TextViewFollow.setLayoutParams(TextViewFollowParam);
+                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                TextViewFollow.setId(ID_FOLLOW);
+
+                RelativeLayoutFollow.addView(TextViewFollow);
+
+                RelativeLayout.LayoutParams LoadingViewFollowParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 60), RelativeLayout.LayoutParams.WRAP_CONTENT);
+                LoadingViewFollowParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+                LoadingView LoadingViewFollow = new LoadingView(context);
+                LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
+                LoadingViewFollow.SetShow(true);
+                LoadingViewFollow.SetScale(1.7f);
+                LoadingViewFollow.SetColor(R.color.BlueLight);
+                LoadingViewFollow.setId(ID_LOADING);
+
+                RelativeLayoutFollow.addView(LoadingViewFollow);
 
                 RelativeLayout.LayoutParams LinearLayoutRowParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 LinearLayoutRowParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCircleProfile.getId());
+                LinearLayoutRowParam.addRule(RelativeLayout.LEFT_OF, RelativeLayoutFollow.getId());
                 LinearLayoutRowParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
                 LinearLayout LinearLayoutRow = new LinearLayout(context);
