@@ -76,8 +76,6 @@ public class FragmentProfile extends Fragment
         if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
             Username = getArguments().getString("Username");
 
-        MiscHandler.Log(Username);
-
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Root.setBackgroundResource(R.color.White);
@@ -170,7 +168,7 @@ public class FragmentProfile extends Fragment
                 {
                     @Override
                     public void onResponse(String Response)
-                    {MiscHandler.Log(Response);
+                    {
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
@@ -578,16 +576,13 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
-                        MiscHandler.Log(Data.getString("Username"));
-
                         if (Result.getBoolean("Self"))
                         {
-                            MiscHandler.Log("TRue");
                             SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
                             SharedHandler.SetString(context, "Username", Data.getString("Username"));
                         }
                         else
-                        {MiscHandler.Log("False");
+                        {
                             ImageViewEdit.setVisibility(View.GONE);
                             ImageViewFollow.setVisibility(View.VISIBLE);
                         }

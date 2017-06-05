@@ -192,7 +192,7 @@ public class FragmentFollowing extends Fragment
 
         Root.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewData = new LoadingView(context);
@@ -337,8 +337,8 @@ public class FragmentFollowing extends Fragment
             Glide.with(context)
             .load(FollowingList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
-            .error(R.color.BlueGray)
             .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
+            .dontAnimate()
             .into(Holder.ImageViewCircleProfile);
 
             Holder.TextViewUsername.setText(FollowingList.get(Position).Username);
@@ -346,17 +346,6 @@ public class FragmentFollowing extends Fragment
             String Since = getString(R.string.FragmentFollowingSince) + MiscHandler.GetTimeName(FollowingList.get(Position).Since);
 
             Holder.TextViewTime.setText(Since);
-
-            if (FollowingList.get(Position).IsFollowing)
-            {
-                Holder.TextViewTime.setVisibility(View.VISIBLE);
-                Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
-            }
-            else
-            {
-                Holder.TextViewTime.setVisibility(View.INVISIBLE);
-                Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
-            }
 
             Holder.RelativeLayoutFollow.setOnClickListener(new View.OnClickListener()
             {
@@ -375,7 +364,7 @@ public class FragmentFollowing extends Fragment
                     {
                         @Override
                         public void onResponse(String Response)
-                        {MiscHandler.Log(Response);
+                        {
                             try
                             {
                                 JSONObject Result = new JSONObject(Response);
@@ -383,9 +372,15 @@ public class FragmentFollowing extends Fragment
                                 if (Result.getInt("Message") == 1000)
                                 {
                                     if (Result.getBoolean("Follow"))
+                                    {
+                                        Holder.TextViewTime.setVisibility(View.VISIBLE);
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
+                                    }
                                     else
+                                    {
+                                        Holder.TextViewTime.setVisibility(View.INVISIBLE);
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
+                                    }
 
                                     Adapter.notifyDataSetChanged();
                                 }
@@ -461,6 +456,7 @@ public class FragmentFollowing extends Fragment
                 TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 TextViewFollow.setId(ID_FOLLOW);
+                TextViewFollow.setText(getString(R.string.FragmentFollowing));
 
                 RelativeLayoutFollow.addView(TextViewFollow);
 
@@ -542,7 +538,6 @@ public class FragmentFollowing extends Fragment
         String Username;
         String Avatar;
         int Since;
-        boolean IsFollowing;
 
         Struct()
         {

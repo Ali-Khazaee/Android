@@ -227,7 +227,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Log(e.toString());
+            // Leave Me ALone
         }
     }
 
