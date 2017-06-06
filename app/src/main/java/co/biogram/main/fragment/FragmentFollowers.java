@@ -338,6 +338,21 @@ public class FragmentFollowers extends Fragment
             .dontAnimate()
             .into(Holder.ImageViewCircleProfile);
 
+            Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", FollowersList.get(Position).Username);
+
+                    Fragment fragment = new FragmentProfile();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                }
+            });
+
             Holder.TextViewUsername.setText(FollowersList.get(Position).Username);
 
             String Since = getString(R.string.FragmentFollowersSince) + MiscHandler.GetTimeName(FollowersList.get(Position).Since);

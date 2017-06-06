@@ -255,10 +255,12 @@ public class FragmentLike extends Fragment
         }
 
         @Override
-        public void onBindViewHolder(ViewHolderLike Holder, int Position)
+        public void onBindViewHolder(ViewHolderLike Holder, int position)
         {
-            if (LikeList.get(Position) == null)
+            if (LikeList.get(position) == null)
                 return;
+
+            final int Position = Holder.getAdapterPosition();
 
             Context context = getActivity();
 
@@ -266,6 +268,21 @@ public class FragmentLike extends Fragment
             .load(LikeList.get(Position).Avatar)
             .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
             .into(Holder.ImageViewCircleProfile);
+
+            Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", LikeList.get(Position).Username);
+
+                    Fragment fragment = new FragmentProfile();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                }
+            });
 
             Holder.TextViewUsername.setText(LikeList.get(Position).Username);
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(LikeList.get(Position).Time));

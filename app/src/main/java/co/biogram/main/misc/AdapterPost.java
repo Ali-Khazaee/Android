@@ -210,7 +210,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
         Glide.with(Activity)
         .load(PostList.get(Position).Avatar)
+        .placeholder(R.color.BlueGray)
         .override(MiscHandler.ToDimension(Activity, 55), MiscHandler.ToDimension(Activity, 55))
+        .dontAnimate()
         .into(Holder.ImageViewCircleProfile);
 
         Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()

@@ -5,6 +5,7 @@ import android.app.Application;
 import com.androidnetworking.AndroidNetworking;
 
 import com.bumptech.glide.Glide;
+
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.concurrent.TimeUnit;

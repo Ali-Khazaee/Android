@@ -1058,9 +1058,31 @@ public class FragmentPostDetails extends Fragment
                         Result = new JSONObject(Result.getString("Result"));
 
                         if (!Result.getString("Avatar").equals(""))
-                            Glide.with(context).load(Result.getString("Avatar")).override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55)).dontAnimate().into(ImageViewCircleProfile);
+                            Glide.with(context)
+                            .load(Result.getString("Avatar"))
+                            .placeholder(R.color.BlueGray)
+                            .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
+                            .dontAnimate()
+                            .into(ImageViewCircleProfile);
 
-                        TextViewUsername.setText(Result.getString("Username"));
+                        final String Username = Result.getString("Username");
+
+                        ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("Username", Username);
+
+                                Fragment fragment = new FragmentProfile();
+                                fragment.setArguments(bundle);
+
+                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                            }
+                        });
+
+                        TextViewUsername.setText(Username);
                         TextViewTime.setText(MiscHandler.GetTimeName(Result.getLong("Time")));
 
                         if (!Result.getString("Message").equals(""))
