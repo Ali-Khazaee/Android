@@ -42,6 +42,7 @@ import co.biogram.main.fragment.FragmentComment;
 import co.biogram.main.fragment.FragmentImagePreview;
 import co.biogram.main.fragment.FragmentLike;
 import co.biogram.main.fragment.FragmentPostDetails;
+import co.biogram.main.fragment.FragmentProfile;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
@@ -211,6 +212,21 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         .load(PostList.get(Position).Avatar)
         .override(MiscHandler.ToDimension(Activity, 55), MiscHandler.ToDimension(Activity, 55))
         .into(Holder.ImageViewCircleProfile);
+
+        Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bundle bundle = new Bundle();
+                bundle.putString("Username", PostList.get(Position).Username);
+
+                Fragment fragment = new FragmentProfile();
+                fragment.setArguments(bundle);
+
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+            }
+        });
 
         Holder.TextViewUsername.setText(PostList.get(Position).Username);
         Holder.TextViewTime.setText(MiscHandler.GetTimeName(PostList.get(Position).Time));

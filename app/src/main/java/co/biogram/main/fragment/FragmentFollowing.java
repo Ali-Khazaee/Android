@@ -359,8 +359,7 @@ public class FragmentFollowing extends Fragment
                     .addBodyParameter("Username", FollowingList.get(Position).Username)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .setTag("FragmentFollowing")
-                    .build()
-                    .getAsString(new StringRequestListener()
+                    .build().getAsString(new StringRequestListener()
                     {
                         @Override
                         public void onResponse(String Response)
@@ -373,9 +372,9 @@ public class FragmentFollowing extends Fragment
                                 {
                                     if (Result.getBoolean("Follow"))
                                     {
-                                        String Since = getString(R.string.FragmentFollowingSince) + MiscHandler.GetTimeName(System.currentTimeMillis() + 2);
+                                        String Since2 = getString(R.string.FragmentFollowingSince) + " just now";
 
-                                        Holder.TextViewTime.setText(Since);
+                                        Holder.TextViewTime.setText(Since2);
                                         Holder.TextViewTime.setVisibility(View.VISIBLE);
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
                                     }
@@ -384,8 +383,6 @@ public class FragmentFollowing extends Fragment
                                         Holder.TextViewTime.setVisibility(View.INVISIBLE);
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
                                     }
-
-                                    Adapter.notifyDataSetChanged();
                                 }
                             }
                             catch (Exception e)
@@ -541,10 +538,5 @@ public class FragmentFollowing extends Fragment
         String Username;
         String Avatar;
         int Since;
-
-        Struct()
-        {
-
-        }
     }
 }

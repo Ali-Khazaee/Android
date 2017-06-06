@@ -70,6 +70,7 @@
     <string name="FragmentFollowingSince">Following Since: </string>
 
     <string name="FragmentFollowers">Followers</string>
+    <string name="FragmentFollowersSince">Follower Since: </string>
     <string name="FragmentFollowersFollow">Follow</string>
 
     <string name="ActivityProfileTitle">Edit Profile</string>
