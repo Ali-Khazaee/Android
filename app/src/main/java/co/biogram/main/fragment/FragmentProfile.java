@@ -284,6 +284,20 @@ public class FragmentProfile extends Fragment
 
         RelativeLayout RelativeLayoutFollower = new RelativeLayout(context);
         RelativeLayoutFollower.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        RelativeLayoutFollower.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bundle bundle = new Bundle();
+                bundle.putString("Username", Username);
+
+                Fragment fragment = new FragmentFollowers();
+                fragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentFollowers").commit();
+            }
+        });
 
         LinearLayoutDetails.addView(RelativeLayoutFollower);
 

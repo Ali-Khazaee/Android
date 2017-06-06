@@ -69,6 +69,9 @@
     <string name="FragmentFollowingFollow">Follow</string>
     <string name="FragmentFollowingSince">Following Since: </string>
 
+    <string name="FragmentFollowers">Followers</string>
+    <string name="FragmentFollowersFollow">Follow</string>
+
     <string name="ActivityProfileTitle">Edit Profile</string>
     <string name="ActivityProfileSave">Save</string>
     <string name="ActivityProfileUsernameHint">Username cannot be blank</string>

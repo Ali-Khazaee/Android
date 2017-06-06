@@ -35,16 +35,16 @@ import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 
-public class FragmentFollowing extends Fragment
+public class FragmentFollowers extends Fragment
 {
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
 
     private String Username;
-    private AdapterFollowing Adapter;
+    private AdapterFollowers Adapter;
     private boolean LoadingBottom = false;
-    private final List<Struct> FollowingList = new ArrayList<>();
+    private final List<Struct> FollowersList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -90,7 +90,7 @@ public class FragmentFollowing extends Fragment
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewTitle.setText(getString(R.string.FragmentFollowing));
+        TextViewTitle.setText(getString(R.string.FragmentFollowers));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -106,31 +106,31 @@ public class FragmentFollowing extends Fragment
 
         Root.addView(ViewLine);
 
-        RelativeLayout.LayoutParams RecyclerViewFollowingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        RecyclerViewFollowingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RelativeLayout.LayoutParams RecyclerViewFollowersParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewFollowersParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        final LinearLayoutManager LinearLayoutManagerFollowing;
+        final LinearLayoutManager LinearLayoutManagerFollowers;
 
-        RecyclerView RecyclerViewFollowing = new RecyclerView(context);
-        RecyclerViewFollowing.setLayoutParams(RecyclerViewFollowingParam);
-        RecyclerViewFollowing.setLayoutManager(LinearLayoutManagerFollowing = new LinearLayoutManager(context));
-        RecyclerViewFollowing.setAdapter(Adapter = new AdapterFollowing(context));
-        RecyclerViewFollowing.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RecyclerView RecyclerViewFollowers = new RecyclerView(context);
+        RecyclerViewFollowers.setLayoutParams(RecyclerViewFollowersParam);
+        RecyclerViewFollowers.setLayoutManager(LinearLayoutManagerFollowers = new LinearLayoutManager(context));
+        RecyclerViewFollowers.setAdapter(Adapter = new AdapterFollowers(context));
+        RecyclerViewFollowers.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView recyclerView, int DX, int DY)
             {
-                if (!LoadingBottom && (LinearLayoutManagerFollowing.findLastVisibleItemPosition() + 5) > LinearLayoutManagerFollowing.getItemCount())
+                if (!LoadingBottom && (LinearLayoutManagerFollowers.findLastVisibleItemPosition() + 5) > LinearLayoutManagerFollowers.getItemCount())
                 {
                     LoadingBottom = true;
-                    FollowingList.add(null);
-                    Adapter.notifyItemInserted(FollowingList.size());
+                    FollowersList.add(null);
+                    Adapter.notifyItemInserted(FollowersList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWING_GET))
+                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWERS_GET))
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .addBodyParameter("Skip", String.valueOf(FollowingList.size()))
+                    .addBodyParameter("Skip", String.valueOf(FollowersList.size()))
                     .addBodyParameter("Username", Username)
-                    .setTag("FragmentFollowing")
+                    .setTag("FragmentFollowers")
                     .build().getAsString(new StringRequestListener()
                     {
                         @Override
@@ -146,14 +146,13 @@ public class FragmentFollowing extends Fragment
 
                                     for (int I = 0; I < ResultList.length(); I++)
                                     {
-                                        JSONObject Following = ResultList.getJSONObject(I);
+                                        JSONObject Followers = ResultList.getJSONObject(I);
 
-                                        Struct StructFollow = new Struct();
-                                        StructFollow.Username = Following.getString("Username");
-                                        StructFollow.Avatar = Following.getString("Avatar");
-                                        StructFollow.Since = Following.getInt("Since");
+                                        Struct StructFollowers = new Struct();
+                                        StructFollowers.Username = Followers.getString("Username");
+                                        StructFollowers.Avatar = Followers.getString("Avatar");
 
-                                        FollowingList.add(StructFollow);
+                                        FollowersList.add(StructFollowers);
                                     }
                                 }
                             }
@@ -163,7 +162,7 @@ public class FragmentFollowing extends Fragment
                             }
 
                             LoadingBottom = false;
-                            FollowingList.remove(FollowingList.size() - 1);
+                            FollowersList.remove(FollowersList.size() - 1);
                             Adapter.notifyDataSetChanged();
                         }
 
@@ -171,17 +170,17 @@ public class FragmentFollowing extends Fragment
                         public void onError(ANError anError)
                         {
                             LoadingBottom = false;
-                            FollowingList.remove(FollowingList.size() - 1);
-                            Adapter.notifyItemRemoved(FollowingList.size());
+                            FollowersList.remove(FollowersList.size() - 1);
+                            Adapter.notifyItemRemoved(FollowersList.size());
 
-                            MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
+                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
                         }
                     });
                 }
             }
         });
 
-        Root.addView(RecyclerViewFollowing);
+        Root.addView(RecyclerViewFollowers);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
@@ -221,20 +220,19 @@ public class FragmentFollowing extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentFollowing");
+        AndroidNetworking.cancel("FragmentFollowers");
     }
 
-    private void RetrieveDataFromServer(Context context)
+    private void RetrieveDataFromServer(final Context context)
     {
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWING_GET))
+        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWERS_GET))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
-        .setTag("FragmentFollowing")
-        .build()
-        .getAsString(new StringRequestListener()
+        .setTag("FragmentFollowers")
+        .build().getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -249,14 +247,13 @@ public class FragmentFollowing extends Fragment
 
                         for (int I = 0; I < ResultList.length(); I++)
                         {
-                            JSONObject Following = ResultList.getJSONObject(I);
+                            JSONObject Followers = ResultList.getJSONObject(I);
 
-                            Struct StructFollow = new Struct();
-                            StructFollow.Username = Following.getString("Username");
-                            StructFollow.Avatar = Following.getString("Avatar");
-                            StructFollow.Since = Following.getInt("Time");
+                            Struct StructFollowers = new Struct();
+                            StructFollowers.Username = Followers.getString("Username");
+                            StructFollowers.Avatar = Followers.getString("Avatar");
 
-                            FollowingList.add(StructFollow);
+                            FollowersList.add(StructFollowers);
                         }
 
                         Adapter.notifyDataSetChanged();
@@ -275,16 +272,16 @@ public class FragmentFollowing extends Fragment
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(getActivity(), getString(R.string.GeneralCheckInternet));
+                MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
                 TextViewTry.setVisibility(View.VISIBLE);
                 LoadingViewData.Stop();
             }
         });
     }
 
-    private class AdapterFollowing extends RecyclerView.Adapter<AdapterFollowing.ViewHolderFollowing>
+    private class AdapterFollowers extends RecyclerView.Adapter<AdapterFollowers.ViewHolderFollowing>
     {
-        private Context context;
+        private final Context context;
 
         private final int ID_ICON = MiscHandler.GenerateViewID();
         private final int ID_NAME = MiscHandler.GenerateViewID();
@@ -294,7 +291,7 @@ public class FragmentFollowing extends Fragment
         private final int ID_LOADING = MiscHandler.GenerateViewID();
         private final int ID_LINE = MiscHandler.GenerateViewID();
 
-        AdapterFollowing(Context c)
+        AdapterFollowers(Context c)
         {
             context = c;
         }
@@ -329,21 +326,21 @@ public class FragmentFollowing extends Fragment
         @Override
         public void onBindViewHolder(final ViewHolderFollowing Holder, int position)
         {
-            if (FollowingList.get(position) == null)
+            if (FollowersList.get(position) == null)
                 return;
 
             final int Position = Holder.getAdapterPosition();
 
             Glide.with(context)
-            .load(FollowingList.get(Position).Avatar)
+            .load(FollowersList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
             .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
             .dontAnimate()
             .into(Holder.ImageViewCircleProfile);
 
-            Holder.TextViewUsername.setText(FollowingList.get(Position).Username);
+            Holder.TextViewUsername.setText(FollowersList.get(Position).Username);
 
-            String Since = getString(R.string.FragmentFollowingSince) + MiscHandler.GetTimeName(FollowingList.get(Position).Since);
+            String Since = getString(R.string.FragmentFollowingSince) + MiscHandler.GetTimeName(FollowersList.get(Position).Since);
 
             Holder.TextViewTime.setText(Since);
 
@@ -356,9 +353,9 @@ public class FragmentFollowing extends Fragment
                     Holder.LoadingViewFollow.Start();
 
                     AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
-                    .addBodyParameter("Username", FollowingList.get(Position).Username)
+                    .addBodyParameter("Username", FollowersList.get(Position).Username)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .setTag("FragmentFollowing")
+                    .setTag("FragmentFollowers")
                     .build()
                     .getAsString(new StringRequestListener()
                     {
@@ -409,7 +406,7 @@ public class FragmentFollowing extends Fragment
                 }
             });
 
-            if (Position == FollowingList.size() - 1)
+            if (Position == FollowersList.size() - 1)
                 Holder.ViewLine.setVisibility(View.GONE);
             else
                 Holder.ViewLine.setVisibility(View.VISIBLE);
@@ -526,13 +523,13 @@ public class FragmentFollowing extends Fragment
         @Override
         public int getItemViewType(int position)
         {
-            return FollowingList.get(position)!= null ? 0 : 1;
+            return FollowersList.get(position)!= null ? 0 : 1;
         }
 
         @Override
         public int getItemCount()
         {
-            return FollowingList.size();
+            return FollowersList.size();
         }
     }
 
@@ -540,11 +537,5 @@ public class FragmentFollowing extends Fragment
     {
         String Username;
         String Avatar;
-        int Since;
-
-        Struct()
-        {
-
-        }
     }
 }
