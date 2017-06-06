@@ -651,6 +651,17 @@ public class FragmentComment extends Fragment
             else
                 Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
 
+            if (CommentList.get(Position).LikeCount == 0)
+            {
+                Holder.TextViewLike.setVisibility(View.GONE);
+                Holder.TextViewLikeCount.setVisibility(View.GONE);
+            }
+            else
+            {
+                Holder.TextViewLike.setVisibility(View.VISIBLE);
+                Holder.TextViewLikeCount.setVisibility(View.VISIBLE);
+            }
+
             Holder.ImageViewLike.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -671,6 +682,12 @@ public class FragmentComment extends Fragment
                         CommentList.get(Position).LikeReverse();
 
                         Holder.TextViewLikeCount.setText(String.valueOf(CommentList.get(Position).LikeCount));
+
+                        if (CommentList.get(Position).LikeCount == 0)
+                        {
+                            Holder.TextViewLike.setVisibility(View.GONE);
+                            Holder.TextViewLikeCount.setVisibility(View.GONE);
+                        }
                     }
                     else
                     {
@@ -701,6 +718,12 @@ public class FragmentComment extends Fragment
                         CommentList.get(Position).LikeReverse();
 
                         Holder.TextViewLikeCount.setText(String.valueOf(CommentList.get(Position).LikeCount));
+
+                        if (CommentList.get(Position).LikeCount != 0)
+                        {
+                            Holder.TextViewLike.setVisibility(View.VISIBLE);
+                            Holder.TextViewLikeCount.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIKE))
