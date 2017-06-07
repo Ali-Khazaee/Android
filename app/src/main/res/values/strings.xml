@@ -126,16 +126,21 @@
     <string name="FragmentMomentWriteDialogClipboard">Text Copied To Clipboard</string>
 
     <string name="AdapterPostFollow">Follow</string>
+    <string name="AdapterPostUnFollow">UnFollow</string>
+    <string name="AdapterPostFollowSent">Follow Request Sent</string>
     <string name="AdapterPostTurnOn">Turn On Commenting</string>
     <string name="AdapterPostTurnOff">Turn Off Commenting</string>
     <string name="AdapterPostCopy">Copy</string>
     <string name="AdapterPostDelete">Delete</string>
+    <string name="AdapterPostReportSent">Report Sent</string>
     <string name="AdapterPostReport">Report</string>
     <string name="AdapterPostBlock">Block</string>
     <string name="AdapterPostClipboard">Text Copied To Clipboard</string>
     <string name="AdapterPostBookMark">Bookmark</string>
     <string name="AdapterPostUnBookMark">UnBookmark</string>
+    <string name="AdapterPostBookMarkSent">BookMark Request Sent</string>
     <string name="AdapterPostComment">Commenting is Disabled</string>
+    <string name="AdapterPostCommentSent">Comment Request Sent</string>
     <string name="AdapterPostChoice">Choice</string>
 
     <string name="FragmentProfilePost">Post</string>

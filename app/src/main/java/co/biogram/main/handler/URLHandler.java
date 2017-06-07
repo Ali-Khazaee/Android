@@ -14,6 +14,7 @@ public class URLHandler
 
         POST_WRITE,
         POST_LIST,
+        POST_REPORT,
         POST_DELETE,
         POST_TURN_COMMENT,
         POST_LIKE,
@@ -55,6 +56,7 @@ public class URLHandler
 
             case POST_WRITE:          URL = "PostWrite";         break;
             case POST_LIST:           URL = "PostList";          break;
+            case POST_REPORT:         URL = "PostReport";        break;
             case POST_DELETE:         URL = "PostDelete";        break;
             case POST_TURN_COMMENT:   URL = "PostTurnComment";   break;
             case POST_LIKE:           URL = "PostLike";          break;

@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -51,18 +51,14 @@ import co.biogram.main.handler.URLHandler;
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost>
 {
     private final String Tag;
-    private final GradientDrawable ShapeLink;
     private final FragmentActivity Activity;
-    private List<PostStruct> PostList = new ArrayList<>();
+    private List<Struct> PostList = new ArrayList<>();
 
-    public AdapterPost(FragmentActivity activity, List<PostStruct> list, String tag)
+    public AdapterPost(FragmentActivity activity, List<Struct> list, String tag)
     {
         Activity = activity;
         PostList = list;
         Tag = tag;
-
-        ShapeLink = new GradientDrawable();
-        ShapeLink.setStroke(MiscHandler.ToDimension(activity, 1), ContextCompat.getColor(Activity, R.color.BlueGray));
     }
 
     class ViewHolderPost extends RecyclerView.ViewHolder
@@ -145,32 +141,12 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             return new ViewHolderPost(ItemView, true);
         }
 
-        LoadingView Loading = new LoadingView(Activity);
+        LoadingView Loading = new LoadingView(Parent.getContext());
         Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 56)));
-        Loading.setGravity(Gravity.CENTER);
         Loading.SetShow(true);
         Loading.Start();
 
         return new ViewHolderPost(Loading, false);
-    }
-
-    @Override
-    public void onViewRecycled(ViewHolderPost Holder)
-    {
-        super.onViewRecycled(Holder);
-
-        if (Holder.ImageViewCircleProfile != null)
-        {
-            Glide.clear(Holder.ImageViewCircleProfile);
-            Glide.clear(Holder.ImageViewSingle);
-            Glide.clear(Holder.ImageViewDouble1);
-            Glide.clear(Holder.ImageViewDouble2);
-            Glide.clear(Holder.ImageViewTriple1);
-            Glide.clear(Holder.ImageViewTriple2);
-            Glide.clear(Holder.ImageViewTriple3);
-            Glide.clear(Holder.ImageViewFav);
-            Glide.clear(Holder.ImageViewLike);
-        }
     }
 
     @Override
@@ -230,6 +206,21 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             }
         });
 
+        Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bundle bundle = new Bundle();
+                bundle.putString("Username", PostList.get(Position).Username);
+
+                Fragment fragment = new FragmentProfile();
+                fragment.setArguments(bundle);
+
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+            }
+        });
+
         Holder.TextViewUsername.setText(PostList.get(Position).Username);
         Holder.TextViewTime.setText(MiscHandler.GetTimeName(PostList.get(Position).Time));
         Holder.ImageViewOption.setOnClickListener(new View.OnClickListener()
@@ -246,10 +237,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Root.setBackgroundResource(R.color.White);
                 Root.setOrientation(LinearLayout.VERTICAL);
 
-                TextView Follow = new TextView(Activity);
+                final TextView Follow = new TextView(Activity);
                 Follow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 Follow.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
-                Follow.setText(Activity.getString(R.string.AdapterPostFollow));
                 Follow.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
                 Follow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 Follow.setOnClickListener(new View.OnClickListener()
@@ -257,10 +247,56 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
+                        .addBodyParameter("Username", PostList.get(Position).Username)
+                        .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .setTag("FragmentFollowers")
+                        .build().getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 1000)
+                                    {
+                                        if (Result.getBoolean("Follow"))
+                                        {
+                                            PostList.get(Position).FollowReverse();
+                                            Follow.setText(Activity.getString(R.string.AdapterPostUnFollow));
+                                        }
+                                        else
+                                        {
+                                            PostList.get(Position).FollowReverse();
+                                            Follow.setText(Activity.getString(R.string.AdapterPostFollow));
+                                        }
+
+                                        MiscHandler.Toast(Activity, Activity.getString(R.string.AdapterPostFollowSent));
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    // Leave Me Alone
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError)
+                            {
+                                MiscHandler.Toast(Activity, Activity.getString(R.string.NoInternet));
+                            }
+                        });
+
                         DialogOption.dismiss();
-                        MiscHandler.Toast(Activity, Activity.getString(R.string.Soon));
                     }
                 });
+
+                if (PostList.get(Position).Follow)
+                    Follow.setText(Activity.getString(R.string.AdapterPostUnFollow));
+                else
+                    Follow.setText(Activity.getString(R.string.AdapterPostFollow));
 
                 Root.addView(Follow);
 
@@ -293,14 +329,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
                                     {
-                                        PostList.get(Position).SetComment();
+                                        PostList.get(Position).CommentReverse();
 
                                         if (PostList.get(Position).Comment)
                                             Turn.setText(Activity.getString(R.string.AdapterPostTurnOff));
                                         else
                                             Turn.setText(Activity.getString(R.string.AdapterPostTurnOn));
 
-                                        notifyDataSetChanged();
+                                        MiscHandler.Toast(Activity, Activity.getString(R.string.AdapterPostCommentSent));
                                     }
                                 }
                                 catch (Exception e)
@@ -381,12 +417,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                                 {
                                     if (new JSONObject(Response).getInt("Message") == 1000)
                                     {
-                                        PostList.get(Position).SetBookMark();
+                                        PostList.get(Position).BookMarkReverse();
 
                                         if (PostList.get(Position).BookMark)
                                             BookMark.setText(Activity.getString(R.string.AdapterPostUnBookMark));
                                         else
                                             BookMark.setText(Activity.getString(R.string.AdapterPostBookMark));
+
+                                        MiscHandler.Toast(Activity, Activity.getString(R.string.AdapterPostBookMarkSent));
                                     }
                                 }
                                 catch (Exception e)
@@ -415,30 +453,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 BookMarkLine.setBackgroundResource(R.color.Gray1);
 
                 Root.addView(BookMarkLine);
-
-                TextView Block = new TextView(Activity);
-                Block.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                Block.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
-                Block.setText(Activity.getString(R.string.AdapterPostBlock));
-                Block.setPadding(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 15));
-                Block.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                Block.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view)
-                    {
-                        DialogOption.dismiss();
-                        MiscHandler.Toast(Activity, Activity.getString(R.string.Soon));
-                    }
-                });
-
-                Root.addView(Block);
-
-                View BlockLine = new View(Activity);
-                BlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 1)));
-                BlockLine.setBackgroundResource(R.color.Gray1);
-
-                Root.addView(BlockLine);
 
                 TextView Delete = new TextView(Activity);
                 Delete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -502,8 +516,30 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
+                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_REPORT))
+                        .addBodyParameter("PostID", PostList.get(Position).PostID)
+                        .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                        .setTag(Tag).build().getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                try
+                                {
+                                    if (new JSONObject(Response).getInt("Message") == 1000)
+                                        MiscHandler.Toast(Activity, Activity.getString(R.string.AdapterPostReportSent));
+                                }
+                                catch (Exception e)
+                                {
+                                    // Leave Me Alone
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) { MiscHandler.Log(anError.toString());}
+                        });
+
                         DialogOption.dismiss();
-                        MiscHandler.Toast(Activity, Activity.getString(R.string.Soon));
                     }
                 });
 
@@ -516,9 +552,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
                     Turn.setVisibility(View.VISIBLE);
                     TurnLine.setVisibility(View.VISIBLE);
-
-                    Block.setVisibility(View.GONE);
-                    BlockLine.setVisibility(View.GONE);
 
                     Delete.setVisibility(View.VISIBLE);
                     DeleteLine.setVisibility(View.VISIBLE);
@@ -570,30 +603,24 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 {
                     case 1:
                         Holder.LinearLayoutImageContent1.setVisibility(View.VISIBLE);
-                        Holder.ImageViewSingle.setImageResource(android.R.color.transparent);
                         Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).dontAnimate().into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewSingle);
                         break;
                     case 2:
                         Holder.LinearLayoutImageContent2.setVisibility(View.VISIBLE);
-                        Holder.ImageViewDouble1.setImageResource(android.R.color.transparent);
-                        Holder.ImageViewDouble2.setImageResource(android.R.color.transparent);
                         Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).dontAnimate().into(Holder.ImageViewSingle);
-                        Glide.with(Activity).load(URL.get(1).toString()).dontAnimate().into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewSingle);
                         break;
                     case 3:
                         Holder.LinearLayoutImageContent3.setVisibility(View.VISIBLE);
-                        Holder.ImageViewTriple1.setImageResource(android.R.color.transparent);
-                        Holder.ImageViewTriple2.setImageResource(android.R.color.transparent);
-                        Holder.ImageViewTriple3.setImageResource(android.R.color.transparent);
                         Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).dontAnimate().into(Holder.ImageViewTriple1);
-                        Glide.with(Activity).load(URL.get(1).toString()).dontAnimate().into(Holder.ImageViewTriple2);
-                        Glide.with(Activity).load(URL.get(2).toString()).dontAnimate().into(Holder.ImageViewTriple3);
+                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple1);
+                        Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple2);
+                        Glide.with(Activity).load(URL.get(2).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple3);
                         break;
                 }
             }
@@ -618,6 +645,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         }
         else if (PostList.get(Position).Type == 3)
         {
+            GradientDrawable ShapeLink = new GradientDrawable();
+            ShapeLink.setStroke(MiscHandler.ToDimension(Activity, 1), ContextCompat.getColor(Activity, R.color.BlueGray));
+
             Holder.RelativeLayoutLink.setBackground(ShapeLink);
             Holder.RelativeLayoutLink.setVisibility(View.VISIBLE);
             Holder.TextViewTitle.setText("");
@@ -648,24 +678,30 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                             Holder.TextViewTitle.setLayoutParams(params);
                         }
 
-                        if (new Bidi(Content.Title, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
+                        if (new Bidi(Content.Description, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
                         {
-                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) Holder.TextViewDescription.getLayoutParams();
-                            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                            Holder.TextViewDescription.setLayoutParams(params);
+                            RelativeLayout.LayoutParams LeftParams = (RelativeLayout.LayoutParams) Holder.TextViewDescription.getLayoutParams();
+                            LeftParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                            Holder.TextViewDescription.setLayoutParams(LeftParams);
                         }
                         else
                         {
-                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) Holder.TextViewDescription.getLayoutParams();
-                            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                            Holder.TextViewDescription.setLayoutParams(params);
+                            RelativeLayout.LayoutParams RightParams = (RelativeLayout.LayoutParams) Holder.TextViewDescription.getLayoutParams();
+                            RightParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                            Holder.TextViewDescription.setLayoutParams(RightParams);
                         }
 
                         Holder.TextViewTitle.setText(Content.Title);
                         Holder.TextViewDescription.setText(Content.Description);
                         Holder.LoadingViewLink.Stop();
 
-                        Glide.with(Activity).load(Content.Image).dontAnimate().into(Holder.ImageViewFav);
+                        Holder.ImageViewFav.setVisibility(View.GONE);
+
+                        if (Content.Image.endsWith(".jpg") || Content.Image.endsWith(".png"))
+                        {
+                            Holder.ImageViewFav.setVisibility(View.VISIBLE);
+                            Glide.with(Activity).load(Content.Image).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewFav);
+                        }
                     }
 
                     @Override
@@ -694,6 +730,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             }
             catch (Exception e)
             {
+                MiscHandler.Log(e.toString());
                 // Leave Me Alone
             }
         }
@@ -726,9 +763,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     AnimationSet.play(Fade);
                     AnimationSet.start();
 
-                    Holder.TextViewLikeCount.setText(String.valueOf(Integer.parseInt(Holder.TextViewLikeCount.getText().toString()) - 1));
-                    PostList.get(Position).DecreaseLike();
-                    PostList.get(Position).SetLike();
+                    PostList.get(Position).LikeDecrease();
+                    PostList.get(Position).LikeReverse();
+
+                    Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
                 }
                 else
                 {
@@ -756,9 +794,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     AnimationSet.playTogether(SizeX, SizeY, Fade, SizeX2, SizeY2);
                     AnimationSet.start();
 
-                    Holder.TextViewLikeCount.setText(String.valueOf(Integer.parseInt(Holder.TextViewLikeCount.getText().toString()) + 1));
-                    PostList.get(Position).IncreaseLike();
-                    PostList.get(Position).SetLike();
+                    PostList.get(Position).LikeIncrease();
+                    PostList.get(Position).LikeReverse();
+
+                    Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
                 }
 
                 AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
@@ -851,46 +890,30 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             Holder.ViewLine.setVisibility(View.VISIBLE);
     }
 
-    public static class PostStruct
+    public static class Struct
     {
-        final String PostID;
-        final String OwnerID;
-        public final int Type;
-        final int Category;
-        public final long Time;
-        boolean Comment;
-        public final String Message;
-        public final String Data;
-        public final String Username;
-        public final String Avatar;
-        boolean Like;
-        int LikeCount;
-        final int CommentCount;
-        boolean BookMark;
+        public String PostID;
+        public String OwnerID;
+        public int Type;
+        public int Category;
+        public long Time;
+        public boolean Comment;
+        public String Message;
+        public String Data;
+        public String Username;
+        public String Avatar;
+        public boolean Like;
+        public int LikeCount;
+        public int CommentCount;
+        public boolean BookMark;
+        public boolean Follow;
 
-        public PostStruct(String postID, String ownerID, int type, int category, long time, boolean comment, String message, String data, String username, String avatar, boolean like, int likeCount, int commentCount, boolean bookmark)
-        {
-            PostID = postID;
-            OwnerID = ownerID;
-            Type = type;
-            Category = category;
-            Time = time;
-            Comment = comment;
-            Message = message;
-            Data = data;
-            Username = username;
-            Avatar = avatar;
-            Like = like;
-            LikeCount = likeCount;
-            CommentCount = commentCount;
-            BookMark = bookmark;
-        }
-
-        void IncreaseLike() { LikeCount = LikeCount + 1; }
-        void DecreaseLike() { LikeCount = LikeCount - 1; }
-        void SetLike() { Like = !Like; }
-        void SetComment() { Comment = !Comment; }
-        void SetBookMark() { BookMark = !BookMark; }
+        void LikeIncrease() { LikeCount = LikeCount + 1; }
+        void LikeDecrease() { LikeCount = LikeCount - 1; }
+        void LikeReverse() { Like = !Like; }
+        void CommentReverse() { Comment = !Comment; }
+        void BookMarkReverse() { BookMark = !BookMark; }
+        void FollowReverse() { Follow = !Follow; }
     }
 
     private void OpenPreviewImage(String URL, String URL2, String URL3)

@@ -59,6 +59,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
+
 import com.bumptech.glide.Glide;
 
 import java.io.ByteArrayOutputStream;
@@ -330,6 +331,8 @@ public class FragmentMomentWrite extends Fragment
         EditTextMessage.setMaxLines(5);
         EditTextMessage.setHint(R.string.FragmentMomentWriteMessage);
         EditTextMessage.setBackground(null);
+        EditTextMessage.requestFocus();
+        EditTextMessage.setHintTextColor(ContextCompat.getColor(context, R.color.Gray2));
         EditTextMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });

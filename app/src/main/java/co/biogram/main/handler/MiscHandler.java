@@ -63,7 +63,7 @@ public class MiscHandler
 
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.BOTTOM, 0, MiscHandler.ToDimension(context, 65));
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(Root);
         toast.show();
     }

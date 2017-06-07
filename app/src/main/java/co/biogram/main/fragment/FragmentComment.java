@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -241,10 +242,12 @@ public class FragmentComment extends Fragment
         EditTextComment.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
         EditTextComment.setId(MiscHandler.GenerateViewID());
         EditTextComment.setBackground(null);
+        EditTextComment.requestFocus();
         EditTextComment.setTextColor(ContextCompat.getColor(context, R.color.Black));
         EditTextComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextComment.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
         EditTextComment.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        EditTextComment.setHintTextColor(ContextCompat.getColor(context, R.color.Gray2));
         EditTextComment.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -262,6 +265,9 @@ public class FragmentComment extends Fragment
             @Override
             public void afterTextChanged(Editable editable) { }
         });
+
+        InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         RelativeLayoutBottom.addView(EditTextComment);
 
@@ -286,12 +292,19 @@ public class FragmentComment extends Fragment
             @Override
             public void onRefresh()
             {
-                if (LoadingTop || CommentList.size() <= 0)
+                if (LoadingTop)
                     return;
 
                 LoadingTop = true;
                 SwipeRefreshLayoutComment.setEnabled(false);
                 SwipeRefreshLayoutComment.setRefreshing(false);
+
+                if (CommentList.size() == 0)
+                {
+                    LoadingTop = false;
+                    SwipeRefreshLayoutComment.setEnabled(true);
+                    return;
+                }
 
                 AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
                 .addBodyParameter("CommentTime", String.valueOf(CommentList.get(0).Time))
@@ -354,8 +367,10 @@ public class FragmentComment extends Fragment
 
         Root.addView(SwipeRefreshLayoutComment);
 
+        final LinearLayoutManager LinearLayoutManagerComment = new LinearLayoutManager(context);
+
         RecyclerViewComment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RecyclerViewComment.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerViewComment.setLayoutManager(LinearLayoutManagerComment);
         RecyclerViewComment.setAdapter(Adapter = new AdapterComment(context));
         RecyclerViewComment.setOverScrollMode(View.OVER_SCROLL_NEVER);
         RecyclerViewComment.addOnScrollListener(new RecyclerView.OnScrollListener()
@@ -366,7 +381,7 @@ public class FragmentComment extends Fragment
                 if (DY <= 0)
                     return;
 
-                if (((LinearLayoutManager) View.getLayoutManager()).findLastVisibleItemPosition() + 5 > View.getAdapter().getItemCount() && !LoadingBottom)
+                if (!LoadingBottom && (LinearLayoutManagerComment.findLastVisibleItemPosition() + 5) > LinearLayoutManagerComment.getItemCount())
                 {
                     LoadingBottom = true;
                     CommentList.add(null);
@@ -895,7 +910,7 @@ public class FragmentComment extends Fragment
                 RelativeLayout Root = new RelativeLayout(context);
                 Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-                RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55));
+                RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 35), MiscHandler.ToDimension(context, 35));
                 ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
                 ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(context);
@@ -930,14 +945,14 @@ public class FragmentComment extends Fragment
                 Root.addView(TextViewTime);
 
                 RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewMessageParam.setMargins(0, MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 10), 0);
+                TextViewMessageParam.setMargins(0, MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 10), 0);
                 TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCircleProfile.getId());
                 TextViewMessageParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
 
                 TextView TextViewMessage = new TextView(context);
                 TextViewMessage.setLayoutParams(TextViewMessageParam);
                 TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black3));
-                TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewMessage.setId(ID_Message);
 
                 Root.addView(TextViewMessage);
@@ -996,6 +1011,7 @@ public class FragmentComment extends Fragment
                 TextViewLike.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
                 TextViewLike.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 TextViewLike.setText(getString(R.string.FragmentCommentLike));
+                TextViewLike.setTypeface(null, Typeface.BOLD);
                 TextViewLike.setId(ID_LikeText);
 
                 RelativeLayoutTool.addView(TextViewLike);
@@ -1008,6 +1024,7 @@ public class FragmentComment extends Fragment
                 TextViewLikeCount.setLayoutParams(TextViewLikeCountParam);
                 TextViewLikeCount.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
                 TextViewLikeCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                TextViewLikeCount.setTypeface(null, Typeface.BOLD);
                 TextViewLikeCount.setId(ID_LikeCount);
 
                 RelativeLayoutTool.addView(TextViewLikeCount);
@@ -1026,7 +1043,7 @@ public class FragmentComment extends Fragment
             }
 
             LoadingView Loading = new LoadingView(context);
-            Loading.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+            Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
             Loading.SetShow(true);
             Loading.Start();
 

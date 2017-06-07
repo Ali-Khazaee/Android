@@ -45,11 +45,12 @@ public class FragmentMoment extends Fragment
     private LoadingView LoadingViewData;
     private TextView TextViewTry;
 
-    private AdapterPost PostAdapter;
+    private AdapterPost Adapter;
+
     private boolean IsRunning = false;
     private boolean LoadingTop = false;
     private boolean LoadingBottom = false;
-    private final List<AdapterPost.PostStruct> PostList = new ArrayList<>();
+    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
@@ -133,6 +134,7 @@ public class FragmentMoment extends Fragment
 
                 if (PostList.size() == 0)
                 {
+                    LoadingTop = false;
                     SwipeRefreshLayoutMoment.setEnabled(true);
                     return;
                 }
@@ -146,30 +148,48 @@ public class FragmentMoment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
-                        LoadingTop = false;
-                        SwipeRefreshLayoutMoment.setEnabled(true);
-
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
 
                             if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                             {
-                                JSONArray postList = new JSONArray(Result.getString("Result"));
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                for (int K = 0; K < postList.length(); K++)
+                                for (int K = 0; K < ResultList.length(); K++)
                                 {
-                                    JSONObject Post = postList.getJSONObject(K);
-                                    PostList.add(0, new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                                    JSONObject Post = ResultList.getJSONObject(K);
+
+                                    AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+                                    PostStruct.PostID = Post.getString("PostID");
+                                    PostStruct.OwnerID = Post.getString("OwnerID");
+                                    PostStruct.Type = Post.getInt("Type");
+                                    PostStruct.Category = Post.getInt("Category");
+                                    PostStruct.Time = Post.getInt("Time");
+                                    PostStruct.Comment = Post.getBoolean("Comment");
+                                    PostStruct.Message = Post.getString("Message");
+                                    PostStruct.Data = Post.getString("Data");
+                                    PostStruct.Username = Post.getString("Username");
+                                    PostStruct.Avatar = Post.getString("Avatar");
+                                    PostStruct.Like = Post.getBoolean("Like");
+                                    PostStruct.LikeCount = Post.getInt("LikeCount");
+                                    PostStruct.CommentCount = Post.getInt("CommentCount");
+                                    PostStruct.BookMark = Post.getBoolean("BookMark");
+                                    PostStruct.Follow = Post.getBoolean("Follow");
+
+                                    PostList.add(0, PostStruct);
                                 }
 
-                                PostAdapter.notifyDataSetChanged();
+                                Adapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
                         {
                             // Leave Me Alone
                         }
+
+                        LoadingTop = false;
+                        SwipeRefreshLayoutMoment.setEnabled(true);
                     }
 
                     @Override
@@ -187,12 +207,12 @@ public class FragmentMoment extends Fragment
         Root.addView(SwipeRefreshLayoutMoment);
 
         final ImageView ImageViewWrite = new ImageView(context);
-        PostAdapter = new AdapterPost(getActivity(), PostList, "FragmentMoment");
+        final LinearLayoutManager LinearLayoutManagerMoment = new LinearLayoutManager(context);
 
         RecyclerView RecyclerViewMoment = new RecyclerView(context);
         RecyclerViewMoment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RecyclerViewMoment.setLayoutManager(new LinearLayoutManager(context));
-        RecyclerViewMoment.setAdapter(PostAdapter);
+        RecyclerViewMoment.setLayoutManager(LinearLayoutManagerMoment);
+        RecyclerViewMoment.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "FragmentMoment"));
         RecyclerViewMoment.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
@@ -211,11 +231,11 @@ public class FragmentMoment extends Fragment
                 if (DY <= 0)
                     return;
 
-                if ((((LinearLayoutManager) View.getLayoutManager()).findLastVisibleItemPosition() + 2) > View.getAdapter().getItemCount() && !LoadingBottom)
+                if (!LoadingBottom && (LinearLayoutManagerMoment.findLastVisibleItemPosition() + 2) > LinearLayoutManagerMoment.getItemCount())
                 {
                     LoadingBottom = true;
                     PostList.add(null);
-                    PostAdapter.notifyItemInserted(PostList.size());
+                    Adapter.notifyItemInserted(PostList.size());
 
                     AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
                     .addBodyParameter("Skip", String.valueOf(PostList.size()))
@@ -228,7 +248,7 @@ public class FragmentMoment extends Fragment
                         {
                             LoadingBottom = false;
                             PostList.remove(PostList.size() - 1);
-                            PostAdapter.notifyItemRemoved(PostList.size());
+                            Adapter.notifyItemRemoved(PostList.size());
 
                             try
                             {
@@ -236,15 +256,33 @@ public class FragmentMoment extends Fragment
 
                                 if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                                 {
-                                    JSONArray postList = new JSONArray(Result.getString("Result"));
+                                    JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                    for (int K = 0; K < postList.length(); K++)
+                                    for (int K = 0; K < ResultList.length(); K++)
                                     {
-                                        JSONObject Post = postList.getJSONObject(K);
-                                        PostList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+                                        JSONObject Post = ResultList.getJSONObject(K);
+
+                                        AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+                                        PostStruct.PostID = Post.getString("PostID");
+                                        PostStruct.OwnerID = Post.getString("OwnerID");
+                                        PostStruct.Type = Post.getInt("Type");
+                                        PostStruct.Category = Post.getInt("Category");
+                                        PostStruct.Time = Post.getInt("Time");
+                                        PostStruct.Comment = Post.getBoolean("Comment");
+                                        PostStruct.Message = Post.getString("Message");
+                                        PostStruct.Data = Post.getString("Data");
+                                        PostStruct.Username = Post.getString("Username");
+                                        PostStruct.Avatar = Post.getString("Avatar");
+                                        PostStruct.Like = Post.getBoolean("Like");
+                                        PostStruct.LikeCount = Post.getInt("LikeCount");
+                                        PostStruct.CommentCount = Post.getInt("CommentCount");
+                                        PostStruct.BookMark = Post.getBoolean("BookMark");
+                                        PostStruct.Follow = Post.getBoolean("Follow");
+
+                                        PostList.add(PostStruct);
                                     }
 
-                                    PostAdapter.notifyDataSetChanged();
+                                    Adapter.notifyDataSetChanged();
                                 }
                             }
                             catch (Exception e)
@@ -258,7 +296,7 @@ public class FragmentMoment extends Fragment
                         {
                             LoadingBottom = false;
                             PostList.remove(PostList.size() - 1);
-                            PostAdapter.notifyItemRemoved(PostList.size());
+                            Adapter.notifyItemRemoved(PostList.size());
                         }
                     });
                 }
@@ -306,7 +344,7 @@ public class FragmentMoment extends Fragment
 
         Root.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewData = new LoadingView(context);
@@ -362,10 +400,28 @@ public class FragmentMoment extends Fragment
                         for (int K = 0; K < postList.length(); K++)
                         {
                             JSONObject Post = postList.getJSONObject(K);
-                            PostList.add(new AdapterPost.PostStruct(Post.getString("PostID"), Post.getString("OwnerID"), Post.getInt("Type"), Post.getInt("Category"), Post.getLong("Time"), Post.getBoolean("Comment"), Post.getString("Message"), Post.getString("Data"), Post.getString("Username"), Post.getString("Avatar"), Post.getBoolean("Like"), Post.getInt("LikeCount"), Post.getInt("CommentCount"), Post.getBoolean("BookMark")));
+
+                            AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+                            PostStruct.PostID = Post.getString("PostID");
+                            PostStruct.OwnerID = Post.getString("OwnerID");
+                            PostStruct.Type = Post.getInt("Type");
+                            PostStruct.Category = Post.getInt("Category");
+                            PostStruct.Time = Post.getInt("Time");
+                            PostStruct.Comment = Post.getBoolean("Comment");
+                            PostStruct.Message = Post.getString("Message");
+                            PostStruct.Data = Post.getString("Data");
+                            PostStruct.Username = Post.getString("Username");
+                            PostStruct.Avatar = Post.getString("Avatar");
+                            PostStruct.Like = Post.getBoolean("Like");
+                            PostStruct.LikeCount = Post.getInt("LikeCount");
+                            PostStruct.CommentCount = Post.getInt("CommentCount");
+                            PostStruct.BookMark = Post.getBoolean("BookMark");
+                            PostStruct.Follow = Post.getBoolean("Follow");
+
+                            PostList.add(PostStruct);
                         }
 
-                        PostAdapter.notifyDataSetChanged();
+                        Adapter.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e)

@@ -71,6 +71,8 @@ public class FragmentProfile extends Fragment
     {
         final Context context = getActivity();
 
+        MiscHandler.HideSoftKey(getActivity());
+
         Username = SharedHandler.GetString(context, "Username");
 
         if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
@@ -602,10 +604,10 @@ public class FragmentProfile extends Fragment
                         }
 
                         if (!Data.getString("Avatar").equals(""))
-                            Glide.with(context).load(Data.getString("Avatar")).override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)).dontAnimate().into(ImageViewCircleProfile);
+                            Glide.with(context).load(Data.getString("Avatar")).placeholder(R.color.BlueGray).override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)).dontAnimate().into(ImageViewCircleProfile);
 
                         if (!Data.getString("Cover").equals(""))
-                            Glide.with(context).load(Data.getString("Cover")).dontAnimate().into(ImageViewCover);
+                            Glide.with(context).load(Data.getString("Cover")).placeholder(R.color.BlueLight).dontAnimate().into(ImageViewCover);
 
                         TextViewUsername.setText(Data.getString("Username"));
 
