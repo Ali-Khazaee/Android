@@ -18,18 +18,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.TouchImageView;
 
 public class FragmentImagePreview extends Fragment
 {
     private Bitmap ImageCache = null;
+    private LoadingView LoadingViewData;
     private RelativeLayout RelativeLayoutHeader;
     private final List<String> ImageList = new ArrayList<>();
 
@@ -55,7 +61,7 @@ public class FragmentImagePreview extends Fragment
         RelativeLayoutMain.setBackgroundResource(R.color.Black);
 
         ViewPager ViewPagerPreview = new ViewPager(context);
-        ViewPagerPreview.setAdapter(new ViewPagerAdapter());
+        ViewPagerPreview.setAdapter(new ViewPagerAdapter(context));
 
         RelativeLayoutMain.addView(ViewPagerPreview);
 
@@ -95,6 +101,16 @@ public class FragmentImagePreview extends Fragment
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
+        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        LoadingViewData = new LoadingView(context);
+        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        LoadingViewData.SetColor(R.color.White);
+        LoadingViewData.Start();
+
+        RelativeLayoutMain.addView(LoadingViewData);
+
         return RelativeLayoutMain;
     }
 
@@ -112,18 +128,44 @@ public class FragmentImagePreview extends Fragment
 
     private class ViewPagerAdapter extends PagerAdapter
     {
+        private final Context context;
+
+        ViewPagerAdapter(Context c)
+        {
+            context = c;
+        }
+
         @Override
         public Object instantiateItem(ViewGroup Container, int Position)
         {
-            Context context = getActivity();
-
             TouchImageView ImagePreview = new TouchImageView(context);
             ImagePreview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
             if (ImageCache != null)
+            {
                 ImagePreview.setImageBitmap(ImageCache);
+                LoadingViewData.Stop();
+            }
             else
-                Glide.with(context).load(ImageList.get(Position)).into(ImagePreview);
+            {
+                Glide.with(context)
+                .load(ImageList.get(Position))
+                .listener(new RequestListener<String, GlideDrawable>()
+                {
+                    @Override
+                    public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b)
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1)
+                    {
+                        LoadingViewData.Stop();
+                        return false;
+                    }
+                }).into(ImagePreview);
+            }
 
             Container.addView(ImagePreview);
 

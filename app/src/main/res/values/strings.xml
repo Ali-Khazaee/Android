@@ -134,7 +134,6 @@
     <string name="AdapterPostDelete">Delete</string>
     <string name="AdapterPostReportSent">Report Sent</string>
     <string name="AdapterPostReport">Report</string>
-    <string name="AdapterPostBlock">Block</string>
     <string name="AdapterPostClipboard">Text Copied To Clipboard</string>
     <string name="AdapterPostBookMark">Bookmark</string>
     <string name="AdapterPostUnBookMark">UnBookmark</string>

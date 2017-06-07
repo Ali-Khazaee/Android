@@ -121,7 +121,7 @@ public class FragmentProfile extends Fragment
         GradientDrawable ShapeEdit = new GradientDrawable();
         ShapeEdit.setShape(GradientDrawable.OVAL);
         ShapeEdit.setColor(Color.WHITE);
-        ShapeEdit.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#1f000000"));
+        ShapeEdit.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#10000000"));
 
         ImageViewEdit = new ImageView(context);
         ImageViewEdit.setLayoutParams(ImageViewEditParam);
@@ -148,14 +148,13 @@ public class FragmentProfile extends Fragment
         GradientDrawable ShapeFollow = new GradientDrawable();
         ShapeFollow.setShape(GradientDrawable.OVAL);
         ShapeFollow.setColor(Color.BLUE);
-        ShapeFollow.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#1f000000"));
+        ShapeFollow.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#10000000"));
 
         ImageViewFollow = new ImageView(context);
         ImageViewFollow.setLayoutParams(ImageButtonEditParam);
         ImageViewFollow.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewFollow.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         ImageViewFollow.setBackground(ShapeFollow);
-        ImageViewFollow.setImageResource(R.drawable.ic_setting_black);
         ImageViewFollow.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -601,6 +600,11 @@ public class FragmentProfile extends Fragment
                         {
                             ImageViewEdit.setVisibility(View.GONE);
                             ImageViewFollow.setVisibility(View.VISIBLE);
+
+                            if (Result.getBoolean("Follow"))
+                                ImageViewFollow.setImageResource(R.drawable.ic_follow_block);
+                            else
+                                ImageViewFollow.setImageResource(R.drawable.ic_follow);
                         }
 
                         if (!Data.getString("Avatar").equals(""))

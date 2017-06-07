@@ -1336,7 +1336,7 @@ public class FragmentMomentWrite extends Fragment
         }
     }
 
-    public static  class FragmentCategory extends Fragment
+    public static class FragmentCategory extends Fragment
     {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
