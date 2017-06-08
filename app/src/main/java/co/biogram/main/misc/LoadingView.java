@@ -149,7 +149,7 @@ public class LoadingView extends LinearLayout
 
     public void SetSize(int Size)
     {
-        BounceSize = Size;
+        BounceSize = MiscHandler.ToDimension(getContext(), Size);
     }
 
     public void SetScale(float Scale)

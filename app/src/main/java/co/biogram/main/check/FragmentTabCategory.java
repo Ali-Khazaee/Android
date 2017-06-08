@@ -19,19 +19,6 @@ public class FragmentTabCategory extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        RelativeLayout Root = new RelativeLayout(getContext());
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
-
-        RelativeLayout.LayoutParams LoadingParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(getContext(), 100), MiscHandler.ToDimension(getContext(), 100));
-        LoadingParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        LoadingView Loading = new LoadingView(getContext());
-        Loading.setLayoutParams(LoadingParam);
-        Loading.Start();
-
-        Root.addView(Loading);
-
-        return Root;
+        return inflater.inflate(R.layout.fooo, container, false);
     }
 }

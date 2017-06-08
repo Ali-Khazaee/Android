@@ -19,6 +19,11 @@ public class FragmentProfilePost extends Fragment
         Root.setBackgroundResource(R.color.BlueGray);
         Root.setClickable(true);
 
+        View Red = new View(getActivity());
+        Red.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 3000));
+
+        Root.addView(Red);
+
         return Root;
     }
 }

@@ -1,14 +1,20 @@
 package co.biogram.main.fragment;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -47,6 +53,9 @@ public class FragmentProfile extends Fragment
     private ImageView ImageViewCover;
     private ImageViewCircle ImageViewCircleProfile;
 
+    private GradientDrawable ShapeFollowWhite;
+    private GradientDrawable ShapeFollowBlue;
+
     private ImageView ImageViewEdit;
     private ImageView ImageViewFollow;
 
@@ -78,11 +87,37 @@ public class FragmentProfile extends Fragment
         if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
             Username = getArguments().getString("Username");
 
+        CoordinatorLayout Main = new CoordinatorLayout(context);
+        Main.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
+        Main.setId(MiscHandler.GenerateViewID());
+
+        AppBarLayout AppBar = new AppBarLayout(context);
+        AppBar.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
+        AppBar.setBackgroundResource(R.color.RedLike);
+
+        Main.addView(AppBar);
+
+        CollapsingToolbarLayout CollTool = new CollapsingToolbarLayout(context);
+        CollTool.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
+
+        AppBar.addView(CollTool);
+
+        Toolbar Tool = new Toolbar(context);
+        Tool.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        Tool.setBackgroundResource(R.color.BlueGray2);
+
+        AppBarLayout.LayoutParams ToolParam = (AppBarLayout.LayoutParams) Tool.getLayoutParams();
+        ToolParam.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+
+        CollTool.addView(Tool);
+
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         Root.setBackgroundResource(R.color.White);
         Root.setClickable(true);
         Root.setFocusableInTouchMode(true);
+
+        Main.addView(Root);
 
         ScrollView ScrollLayout = new ScrollView(context);
         ScrollLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -118,16 +153,16 @@ public class FragmentProfile extends Fragment
         ImageViewEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
         ImageViewEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-        GradientDrawable ShapeEdit = new GradientDrawable();
-        ShapeEdit.setShape(GradientDrawable.OVAL);
-        ShapeEdit.setColor(Color.WHITE);
-        ShapeEdit.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#10000000"));
+        ShapeFollowWhite = new GradientDrawable();
+        ShapeFollowWhite.setShape(GradientDrawable.OVAL);
+        ShapeFollowWhite.setColor(Color.WHITE);
+        ShapeFollowWhite.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
 
         ImageViewEdit = new ImageView(context);
         ImageViewEdit.setLayoutParams(ImageViewEditParam);
         ImageViewEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewEdit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageViewEdit.setBackground(ShapeEdit);
+        ImageViewEdit.setBackground(ShapeFollowWhite);
         ImageViewEdit.setImageResource(R.drawable.ic_setting_black);
         ImageViewEdit.setOnClickListener(new View.OnClickListener()
         {
@@ -141,25 +176,60 @@ public class FragmentProfile extends Fragment
 
         RelativeLayoutMain.addView(ImageViewEdit);
 
+        RelativeLayout.LayoutParams LoadingViewFollowParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+        LoadingViewFollowParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
+        LoadingViewFollowParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        final LoadingView LoadingViewFollow = new LoadingView(context);
+        LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
+        LoadingViewFollow.setBackground(ShapeFollowWhite);
+        LoadingViewFollow.SetColor(R.color.BlueLight);
+        LoadingViewFollow.SetSize(4);
+
+        RelativeLayoutMain.addView(LoadingViewFollow);
+
         RelativeLayout.LayoutParams ImageButtonEditParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
         ImageButtonEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
         ImageButtonEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-        GradientDrawable ShapeFollow = new GradientDrawable();
-        ShapeFollow.setShape(GradientDrawable.OVAL);
-        ShapeFollow.setColor(Color.BLUE);
-        ShapeFollow.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#10000000"));
+        ShapeFollowBlue = new GradientDrawable();
+        ShapeFollowBlue.setShape(GradientDrawable.OVAL);
+        ShapeFollowBlue.setColor(Color.parseColor("#1da1f2"));
+        ShapeFollowBlue.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
 
         ImageViewFollow = new ImageView(context);
         ImageViewFollow.setLayoutParams(ImageButtonEditParam);
         ImageViewFollow.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewFollow.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageViewFollow.setBackground(ShapeFollow);
         ImageViewFollow.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                ImageViewFollow.setVisibility(View.GONE);
+                LoadingViewFollow.Start();
+
+                ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewFollow, "scaleX", 1.5f);
+                SizeX.setDuration(200);
+
+                ObjectAnimator SizeY = ObjectAnimator.ofFloat(ImageViewFollow, "scaleY", 1.5f);
+                SizeY.setDuration(200);
+
+                ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewFollow, "alpha",  0.1f, 1f);
+                Fade.setDuration(400);
+
+                ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(ImageViewFollow, "scaleX", 1f);
+                SizeX2.setDuration(200);
+                SizeX2.setStartDelay(200);
+
+                ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(ImageViewFollow, "scaleY", 1f);
+                SizeY2.setDuration(200);
+                SizeY2.setStartDelay(200);
+
+                AnimatorSet AnimationSet = new AnimatorSet();
+                AnimationSet.playTogether(SizeX, SizeY, Fade, SizeX2, SizeY2);
+                AnimationSet.start();
+
                 AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("Username", Username)
@@ -176,10 +246,23 @@ public class FragmentProfile extends Fragment
 
                             if (Result.getInt("Message") == 1000)
                             {
-
-
-
+                                if (Result.getBoolean("Follow"))
+                                {
+                                    ImageViewFollow.setImageResource(R.drawable.ic_follow_block);
+                                    ImageViewFollow.setBackground(ShapeFollowWhite);
+                                    MiscHandler.Toast(context, getString(R.string.FragmentProfileFollow));
+                                }
+                                else
+                                {
+                                    ImageViewFollow.setImageResource(R.drawable.ic_follow);
+                                    ImageViewFollow.setBackground(ShapeFollowBlue);
+                                    MiscHandler.Toast(context, getString(R.string.FragmentProfileUnFollow));
+                                }
                             }
+
+                            LoadingViewFollow.Stop();
+                            ImageViewFollow.setVisibility(View.VISIBLE);
+
                         }
                         catch (Exception e)
                         {
@@ -213,6 +296,7 @@ public class FragmentProfile extends Fragment
 
         LinearLayoutMain2.addView(ViewBlankLine);
         ImageViewCircleProfile.bringToFront();
+        LoadingViewFollow.bringToFront();
         ImageViewFollow.bringToFront();
         ImageViewEdit.bringToFront();
 
@@ -507,7 +591,7 @@ public class FragmentProfile extends Fragment
 
         RetrieveDataFromServer(context);
 
-        return Root;
+        return Main;
     }
 
     @Override
@@ -602,9 +686,15 @@ public class FragmentProfile extends Fragment
                             ImageViewFollow.setVisibility(View.VISIBLE);
 
                             if (Result.getBoolean("Follow"))
+                            {
                                 ImageViewFollow.setImageResource(R.drawable.ic_follow_block);
+                                ImageViewFollow.setBackground(ShapeFollowWhite);
+                            }
                             else
+                            {
                                 ImageViewFollow.setImageResource(R.drawable.ic_follow);
+                                ImageViewFollow.setBackground(ShapeFollowBlue);
+                            }
                         }
 
                         if (!Data.getString("Avatar").equals(""))

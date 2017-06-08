@@ -143,6 +143,8 @@
     <string name="AdapterPostChoice">Choice</string>
 
     <string name="FragmentProfilePost">Post</string>
+    <string name="FragmentProfileFollow">User Followed</string>
+    <string name="FragmentProfileUnFollow">User UnFollowed</string>
     <string name="FragmentProfileFollowers">Followers</string>
     <string name="FragmentProfileFollowing">Following</string>
 
