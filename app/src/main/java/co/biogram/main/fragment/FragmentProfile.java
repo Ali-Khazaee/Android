@@ -1,23 +1,17 @@
 package co.biogram.main.fragment;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.util.TypedValue;
@@ -25,12 +19,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -41,6 +32,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+
 import com.bumptech.glide.Glide;
 
 import org.json.JSONObject;
@@ -61,8 +53,12 @@ public class FragmentProfile extends Fragment
     private TextView TextViewTry;
 
     private String Username;
+    private boolean Self = false;
 
+    private ImageView ImageViewBack;
     private ImageView ImageViewCover;
+    private TextView TextViewDetailTool;
+    private TextView TextViewUsernameTool;
     private ImageViewCircle ImageViewCircleProfile;
 
     private GradientDrawable ShapeFollowWhite;
@@ -124,7 +120,7 @@ public class FragmentProfile extends Fragment
                     Hidden = true;
 
                     ScaleAnimation Fade = new ScaleAnimation(0.75f, 0, 0.75f, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    Fade.setDuration(300);
+                    Fade.setDuration(200);
 
                     AnimationSet FadeAnim = new AnimationSet(true);
                     FadeAnim.addAnimation(Fade);
@@ -134,10 +130,27 @@ public class FragmentProfile extends Fragment
                         @Override public void onAnimationRepeat(Animation animation) { }
                         @Override public void onAnimationEnd(Animation animation) { ImageViewCircleProfile.setVisibility(View.INVISIBLE); }
                     });
+
                     ImageViewCircleProfile.startAnimation(FadeAnim);
 
+                    if (Self)
+                    {
+                        ScaleAnimation Fade2 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        Fade2.setDuration(200);
+
+                        AnimationSet FadeAnim2 = new AnimationSet(true);
+                        FadeAnim2.addAnimation(Fade2);
+                        FadeAnim2.setAnimationListener(new Animation.AnimationListener()
+                        {
+                            @Override public void onAnimationStart(Animation animation) { }
+                            @Override public void onAnimationRepeat(Animation animation) { }
+                            @Override public void onAnimationEnd(Animation animation) { ImageViewEdit.setVisibility(View.INVISIBLE); }
+                        });
+
+                        ImageViewEdit.startAnimation(FadeAnim2);
+                    }
                 }
-                else if (Hidden && Off < Total / 2)
+                else if (Hidden && Off < Total / 1.25)
                 {
                     Hidden = false;
 
@@ -148,7 +161,21 @@ public class FragmentProfile extends Fragment
 
                     AnimationSet FadeAnim = new AnimationSet(true);
                     FadeAnim.addAnimation(Fade);
+
                     ImageViewCircleProfile.setAnimation(FadeAnim);
+
+                    if (Self)
+                    {
+                        ImageViewEdit.setVisibility(View.VISIBLE);
+
+                        ScaleAnimation Fade2 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        Fade2.setDuration(200);
+
+                        AnimationSet FadeAnim2 = new AnimationSet(true);
+                        FadeAnim2.addAnimation(Fade2);
+
+                        ImageViewEdit.startAnimation(FadeAnim2);
+                    }
                 }
             }
         });
@@ -159,7 +186,49 @@ public class FragmentProfile extends Fragment
 
         Root.addView(AppBar);
 
-        CollapsingToolbarLayout Collapsing = new CollapsingToolbarLayout(context);
+        CollapsingToolbarLayout Collapsing = new CollapsingToolbarLayout(context)
+        {
+            private boolean Hidden = false;
+
+            @Override
+            public void setScrimsShown(boolean shown, boolean animate)
+            {
+                super.setScrimsShown(shown, animate);
+
+                if (shown && Hidden)
+                {
+                    Hidden =  false;
+
+                    Animation Fade = new AlphaAnimation(0, 1);
+                    Fade.setDuration(1000);
+
+                    AnimationSet animation = new AnimationSet(false);
+                    animation.addAnimation(Fade);
+
+                    TextViewDetailTool.setAnimation(animation);
+                    TextViewUsernameTool.setAnimation(animation);
+
+                    TextViewDetailTool.setVisibility(View.VISIBLE);
+                    TextViewUsernameTool.setVisibility(View.VISIBLE);
+                }
+                else if (!shown && !Hidden)
+                {
+                    Hidden = true;
+
+                    Animation Fade = new AlphaAnimation(1, 0);
+                    Fade.setDuration(500);
+
+                    AnimationSet animation = new AnimationSet(false);
+                    animation.addAnimation(Fade);
+
+                    TextViewDetailTool.setAnimation(animation);
+                    TextViewUsernameTool.setAnimation(animation);
+
+                    TextViewDetailTool.setVisibility(View.GONE);
+                    TextViewUsernameTool.setVisibility(View.GONE);
+                }
+            }
+        };
         Collapsing.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
         Collapsing.setContentScrimResource(R.color.White);
 
@@ -193,14 +262,46 @@ public class FragmentProfile extends Fragment
 
         Collapsing.addView(ToolBar);
 
-        ImageView ImageViewBack = new ImageView(context);
+        RelativeLayout RelativeTool = new RelativeLayout(context);
+        RelativeTool.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+
+        ToolBar.addView(RelativeTool);
+
+        ImageViewBack = new ImageView(context);
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewBack.setImageResource(R.drawable.ic_back_blue);
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().onBackPressed(); } });
 
-        ToolBar.addView(ImageViewBack);
+        RelativeTool.addView(ImageViewBack);
+
+        RelativeLayout.LayoutParams TextViewUsernameToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewUsernameToolParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        TextViewUsernameToolParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        TextViewUsernameToolParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
+
+        TextViewUsernameTool = new TextView(context);
+        TextViewUsernameTool.setLayoutParams(TextViewUsernameToolParam);
+        TextViewUsernameTool.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewUsernameTool.setTypeface(null, Typeface.BOLD);
+        TextViewUsernameTool.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewUsernameTool.setId(MiscHandler.GenerateViewID());
+
+        RelativeTool.addView(TextViewUsernameTool);
+
+        RelativeLayout.LayoutParams TextViewDetailToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewDetailToolParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        TextViewDetailToolParam.addRule(RelativeLayout.BELOW, TextViewUsernameTool.getId());
+        TextViewDetailToolParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
+
+        TextViewDetailTool = new TextView(context);
+        TextViewDetailTool.setLayoutParams(TextViewDetailToolParam);
+        TextViewDetailTool.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+        TextViewDetailTool.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+        RelativeTool.addView(TextViewDetailTool);
 
         ScrollViewSticky ScrollMain = new ScrollViewSticky(context);
         ScrollMain.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
@@ -229,6 +330,7 @@ public class FragmentProfile extends Fragment
 
         LinearLayout LinearData = new LinearLayout(context);
         LinearData.setLayoutParams(LinearDataParam);
+        LinearData.setBackgroundResource(R.color.White);
         LinearData.setOrientation(LinearLayout.VERTICAL);
 
         Main.addView(LinearData);
@@ -397,7 +499,7 @@ public class FragmentProfile extends Fragment
         LinearData.addView(ViewLine2);
 
         LinearLayout LinearTab = new LinearLayout(context);
-        LinearTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        LinearTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 54)));
         LinearTab.setTag("sticky");
 
         LinearData.addView(LinearTab);
@@ -500,52 +602,28 @@ public class FragmentProfile extends Fragment
         ImageViewCircleProfile.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)));
         ImageViewCircleProfile.setImageResource(R.color.BlueGray);
 
-        CoordinatorLayout.LayoutParams ImageViewCircleProfileParam2 = (CoordinatorLayout.LayoutParams) ImageViewCircleProfile.getLayoutParams();
-        ImageViewCircleProfileParam2.anchorGravity = Gravity.BOTTOM | Gravity.START;
-        ImageViewCircleProfileParam2.leftMargin = MiscHandler.ToDimension(context, 10);
-        ImageViewCircleProfileParam2.setAnchorId(AppBar.getId());
+        CoordinatorLayout.LayoutParams ImageViewCircleProfileParam = (CoordinatorLayout.LayoutParams) ImageViewCircleProfile.getLayoutParams();
+        ImageViewCircleProfileParam.anchorGravity = Gravity.BOTTOM | Gravity.START;
+        ImageViewCircleProfileParam.leftMargin = MiscHandler.ToDimension(context, 10);
+        ImageViewCircleProfileParam.setAnchorId(AppBar.getId());
 
-        ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam2);
+        ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
         ImageViewCircleProfile.requestLayout();
 
         Root.addView(ImageViewCircleProfile);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*RelativeLayout.LayoutParams ImageViewEditParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
-        ImageViewEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
-        ImageViewEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         ShapeFollowWhite = new GradientDrawable();
         ShapeFollowWhite.setShape(GradientDrawable.OVAL);
         ShapeFollowWhite.setColor(Color.WHITE);
         ShapeFollowWhite.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
 
+        ShapeFollowBlue = new GradientDrawable();
+        ShapeFollowBlue.setShape(GradientDrawable.OVAL);
+        ShapeFollowBlue.setColor(Color.parseColor("#1da1f2"));
+        ShapeFollowBlue.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
+
         ImageViewEdit = new ImageView(context);
-        ImageViewEdit.setLayoutParams(ImageViewEditParam);
+        ImageViewEdit.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
         ImageViewEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewEdit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         ImageViewEdit.setBackground(ShapeFollowWhite);
@@ -560,7 +638,37 @@ public class FragmentProfile extends Fragment
             }
         });
 
-        Main.addView(ImageViewEdit);
+        CoordinatorLayout.LayoutParams ImageViewEditParam = (CoordinatorLayout.LayoutParams) ImageViewEdit.getLayoutParams();
+        ImageViewEditParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
+        ImageViewEditParam.rightMargin = MiscHandler.ToDimension(context, 10);
+        ImageViewEditParam.setAnchorId(AppBar.getId());
+
+        ImageViewEdit.setLayoutParams(ImageViewEditParam);
+        ImageViewEdit.requestLayout();
+
+        Root.addView(ImageViewEdit);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
         RelativeLayout.LayoutParams LoadingViewFollowParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
         LoadingViewFollowParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
@@ -578,10 +686,7 @@ public class FragmentProfile extends Fragment
         ImageButtonEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
         ImageButtonEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-        ShapeFollowBlue = new GradientDrawable();
-        ShapeFollowBlue.setShape(GradientDrawable.OVAL);
-        ShapeFollowBlue.setColor(Color.parseColor("#1da1f2"));
-        ShapeFollowBlue.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
+
 
         ImageViewFollow = new ImageView(context);
         ImageViewFollow.setLayoutParams(ImageButtonEditParam);
@@ -665,24 +770,14 @@ public class FragmentProfile extends Fragment
             }
         });
 
-        Main.addView(ImageViewFollow);
-
-
-
-
-
-
-
-
-
-
+        Main.addView(ImageViewFollow);*/
 
         RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
         RelativeLayoutLoading.setClickable(true);
 
-        Main.addView(RelativeLayoutLoading);
+        Root.addView(RelativeLayoutLoading);
 
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -704,7 +799,7 @@ public class FragmentProfile extends Fragment
 
         RelativeLayoutLoading.addView(TextViewTry);
 
-        RetrieveDataFromServer(context);*/
+        RetrieveDataFromServer(context);
 
         return Root;
     }
@@ -787,8 +882,12 @@ public class FragmentProfile extends Fragment
                     {
                         JSONObject Data = new JSONObject(Result.getString("Result"));
 
+                        TextViewUsernameTool.setText(Data.getString("Username"));
+
                         if (Result.getBoolean("Self"))
                         {
+                            Self = true;
+                            ImageViewBack.setVisibility(View.GONE);
                             SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
                             SharedHandler.SetString(context, "Username", Data.getString("Username"));
                         }
