@@ -1,30 +1,26 @@
-package com.amar.library.provider;
+package co.biogram.stickyscroll;
 
 import android.content.Context;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 
-import com.amar.library.provider.interfaces.IScreenInfoProvider;
-
-public class ScreenInfoProvider implements IScreenInfoProvider{
+class ScreenInfoProvider implements IScreenInfoProvider{
 
     private final Context mContext;
 
-    public ScreenInfoProvider(Context context) {
+    ScreenInfoProvider(Context context)
+    {
         mContext = context;
     }
 
     @Override
-    public int getScreenHeight() {
+    public int getScreenHeight()
+    {
         return getDeviceDimension().y;
     }
 
-    @Override
-    public int getScreenWidth() {
-        return getDeviceDimension().x;
-    }
-
-    Point getDeviceDimension() {
+    private Point getDeviceDimension()
+    {
         Point lPoint = new Point();
         DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
         lPoint.x = metrics.widthPixels;

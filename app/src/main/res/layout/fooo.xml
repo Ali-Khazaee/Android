@@ -48,7 +48,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.amar.library.ui.StickyScrollView
+    <co.biogram.stickyscroll.StickyScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:stickyHeader="@+id/www"
@@ -89,6 +89,6 @@
 
         </LinearLayout>
 
-    </com.amar.library.ui.StickyScrollView>
+    </co.biogram.stickyscroll.StickyScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
