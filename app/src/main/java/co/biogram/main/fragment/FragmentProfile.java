@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,6 +16,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.util.TypedValue;
@@ -22,6 +25,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,7 +52,7 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
-import co.biogram.stickyscroll.StickyScrollView;
+import co.biogram.main.misc.ScrollViewSticky;
 
 public class FragmentProfile extends Fragment
 {
@@ -91,7 +101,6 @@ public class FragmentProfile extends Fragment
 
         CoordinatorLayout Root = new CoordinatorLayout(context);
         Root.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
-        Root.setId(MiscHandler.GenerateViewID());
 
         AppBarLayout AppBar = new AppBarLayout(context);
         AppBar.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
@@ -110,18 +119,37 @@ public class FragmentProfile extends Fragment
                 ImageViewCircleProfile.setScaleX(Ratio);
                 ImageViewCircleProfile.setScaleY(Ratio);
 
-                if (Off >= Total && !Hidden)
+                if (!Hidden && Off >= Total)
                 {
                     Hidden = true;
-                    ImageViewCircleProfile.setVisibility(View.INVISIBLE);
+
+                    ScaleAnimation Fade = new ScaleAnimation(0.75f, 0, 0.75f, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    Fade.setDuration(300);
+
+                    AnimationSet FadeAnim = new AnimationSet(true);
+                    FadeAnim.addAnimation(Fade);
+                    FadeAnim.setAnimationListener(new Animation.AnimationListener()
+                    {
+                        @Override public void onAnimationStart(Animation animation) { }
+                        @Override public void onAnimationRepeat(Animation animation) { }
+                        @Override public void onAnimationEnd(Animation animation) { ImageViewCircleProfile.setVisibility(View.INVISIBLE); }
+                    });
+                    ImageViewCircleProfile.startAnimation(FadeAnim);
+
                 }
-                else if (Off < Total / 2 && Hidden)
+                else if (Hidden && Off < Total / 2)
                 {
                     Hidden = false;
-                    ImageViewCircleProfile.setVisibility(View.VISIBLE);
-                }
 
-                MiscHandler.Log("A: " + Ratio + " - " + appBarLayout.getTotalScrollRange());
+                    ImageViewCircleProfile.setVisibility(View.VISIBLE);
+
+                    ScaleAnimation Fade = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    Fade.setDuration(300);
+
+                    AnimationSet FadeAnim = new AnimationSet(true);
+                    FadeAnim.addAnimation(Fade);
+                    ImageViewCircleProfile.setAnimation(FadeAnim);
+                }
             }
         });
         // noinspection all
@@ -134,7 +162,6 @@ public class FragmentProfile extends Fragment
         CollapsingToolbarLayout Collapsing = new CollapsingToolbarLayout(context);
         Collapsing.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
         Collapsing.setContentScrimResource(R.color.White);
-        Collapsing.setId(MiscHandler.GenerateViewID());
 
         AppBarLayout.LayoutParams CollapsingParam = (AppBarLayout.LayoutParams) Collapsing.getLayoutParams();
         CollapsingParam.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
@@ -142,12 +169,11 @@ public class FragmentProfile extends Fragment
         AppBar.addView(Collapsing);
 
         ImageViewCover = new ImageView(context);
-        ImageViewCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
+        ImageViewCover.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
         ImageViewCover.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewCover.setId(MiscHandler.GenerateViewID());
         ImageViewCover.setImageResource(R.color.BlueLight);
 
-        CollapsingToolbarLayout.LayoutParams ImageViewCoverParam = new CollapsingToolbarLayout.LayoutParams(ImageViewCover.getLayoutParams());
+        CollapsingToolbarLayout.LayoutParams ImageViewCoverParam = (CollapsingToolbarLayout.LayoutParams) ImageViewCover.getLayoutParams();
         ImageViewCoverParam.setCollapseMode(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX);
 
         ImageViewCover.setLayoutParams(ImageViewCoverParam);
@@ -156,10 +182,10 @@ public class FragmentProfile extends Fragment
         Collapsing.addView(ImageViewCover);
 
         Toolbar ToolBar = new Toolbar(context);
-        ToolBar.setLayoutParams(new Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        ToolBar.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         ToolBar.setContentInsetsAbsolute(0, 0);
 
-        CollapsingToolbarLayout.LayoutParams ToolBarParam = new CollapsingToolbarLayout.LayoutParams(ToolBar.getLayoutParams());
+        CollapsingToolbarLayout.LayoutParams ToolBarParam = (CollapsingToolbarLayout.LayoutParams) ToolBar.getLayoutParams();
         ToolBarParam.setCollapseMode(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN);
 
         ToolBar.setLayoutParams(ToolBarParam);
@@ -172,12 +198,11 @@ public class FragmentProfile extends Fragment
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewBack.setImageResource(R.drawable.ic_back_blue);
-        ImageViewBack.setId(MiscHandler.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
 
         ToolBar.addView(ImageViewBack);
 
-        StickyScrollView ScrollMain = new StickyScrollView(context);
+        ScrollViewSticky ScrollMain = new ScrollViewSticky(context);
         ScrollMain.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
 
         CoordinatorLayout.LayoutParams ScrollMainParam = (CoordinatorLayout.LayoutParams) ScrollMain.getLayoutParams();
@@ -192,7 +217,7 @@ public class FragmentProfile extends Fragment
 
         ScrollMain.addView(Main);
 
-        /*View ViewLine = new View(context);
+        View ViewLine = new View(context);
         ViewLine.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 5)));
         ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(MiscHandler.GenerateViewID());
@@ -373,7 +398,7 @@ public class FragmentProfile extends Fragment
 
         LinearLayout LinearTab = new LinearLayout(context);
         LinearTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-        LinearTab.setBackgroundResource(R.color.White);
+        LinearTab.setTag("sticky");
 
         LinearData.addView(LinearTab);
 
@@ -468,17 +493,16 @@ public class FragmentProfile extends Fragment
         FrameTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         FrameTab.setId(FrameLayoutID);
 
-        LinearData.addView(FrameTab);*/
+        LinearData.addView(FrameTab);
 
         ImageViewCircleProfile = new ImageViewCircle(context);
-        //ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
+        ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
         ImageViewCircleProfile.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)));
         ImageViewCircleProfile.setImageResource(R.color.BlueGray);
 
         CoordinatorLayout.LayoutParams ImageViewCircleProfileParam2 = (CoordinatorLayout.LayoutParams) ImageViewCircleProfile.getLayoutParams();
-        //ImageViewCircleProfileParam2.setBehavior(new ImageViewCircle.ScrollAwareFABBehavior());
         ImageViewCircleProfileParam2.anchorGravity = Gravity.BOTTOM | Gravity.START;
-        ImageViewCircleProfileParam2.leftMargin = MiscHandler.ToDimension(context, 15);
+        ImageViewCircleProfileParam2.leftMargin = MiscHandler.ToDimension(context, 10);
         ImageViewCircleProfileParam2.setAnchorId(AppBar.getId());
 
         ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam2);
@@ -642,6 +666,16 @@ public class FragmentProfile extends Fragment
         });
 
         Main.addView(ImageViewFollow);
+
+
+
+
+
+
+
+
+
+
 
         RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
