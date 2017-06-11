@@ -53,6 +53,9 @@ public class FragmentProfile extends Fragment
     private TextView TextViewTry;
 
     private String Username;
+    private String PostCount;
+    private String CommentCount;
+    private String LikeCount;
     private boolean Self = false;
 
     private ImageView ImageViewBack;
@@ -65,6 +68,7 @@ public class FragmentProfile extends Fragment
     private GradientDrawable ShapeFollowBlue;
 
     private ImageView ImageViewEdit;
+    private LoadingView LoadingViewFollow;
     private ImageView ImageViewFollow;
 
     private TextView TextViewUsername;
@@ -149,6 +153,32 @@ public class FragmentProfile extends Fragment
 
                         ImageViewEdit.startAnimation(FadeAnim2);
                     }
+                    else
+                    {
+                        ScaleAnimation Fade2 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        Fade2.setDuration(200);
+
+                        AnimationSet FadeAnim2 = new AnimationSet(true);
+                        FadeAnim2.addAnimation(Fade2);
+                        FadeAnim2.setAnimationListener(new Animation.AnimationListener()
+                        {
+                            @Override public void onAnimationStart(Animation animation) { }
+                            @Override public void onAnimationRepeat(Animation animation) { }
+                            @Override public void onAnimationEnd(Animation animation) { LoadingViewFollow.setVisibility(View.INVISIBLE); }
+                        });
+
+                        AnimationSet FadeAnim3 = new AnimationSet(true);
+                        FadeAnim3.addAnimation(Fade2);
+                        FadeAnim3.setAnimationListener(new Animation.AnimationListener()
+                        {
+                            @Override public void onAnimationStart(Animation animation) { }
+                            @Override public void onAnimationRepeat(Animation animation) { }
+                            @Override public void onAnimationEnd(Animation animation) { ImageViewFollow.setVisibility(View.INVISIBLE); }
+                        });
+
+                        LoadingViewFollow.startAnimation(FadeAnim2);
+                        ImageViewFollow.startAnimation(FadeAnim3);
+                    }
                 }
                 else if (Hidden && Off < Total / 1.25)
                 {
@@ -175,6 +205,20 @@ public class FragmentProfile extends Fragment
                         FadeAnim2.addAnimation(Fade2);
 
                         ImageViewEdit.startAnimation(FadeAnim2);
+                    }
+                    else
+                    {
+                        LoadingViewFollow.setVisibility(View.VISIBLE);
+                        ImageViewFollow.setVisibility(View.VISIBLE);
+
+                        ScaleAnimation Fade2 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        Fade2.setDuration(200);
+
+                        AnimationSet FadeAnim2 = new AnimationSet(true);
+                        FadeAnim2.addAnimation(Fade2);
+
+                        LoadingViewFollow.startAnimation(FadeAnim2);
+                        ImageViewFollow.startAnimation(FadeAnim2);
                     }
                 }
             }
@@ -230,7 +274,8 @@ public class FragmentProfile extends Fragment
             }
         };
         Collapsing.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
-        Collapsing.setContentScrimResource(R.color.White);
+        Collapsing.setContentScrimResource(R.color.BlueLight);
+        Collapsing.setScrimVisibleHeightTrigger(MiscHandler.ToDimension(context, 64));
 
         AppBarLayout.LayoutParams CollapsingParam = (AppBarLayout.LayoutParams) Collapsing.getLayoutParams();
         CollapsingParam.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
@@ -271,7 +316,7 @@ public class FragmentProfile extends Fragment
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
-        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setImageResource(R.drawable.ic_back_white);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().onBackPressed(); } });
 
@@ -280,11 +325,11 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams TextViewUsernameToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewUsernameToolParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewUsernameToolParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        TextViewUsernameToolParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
+        TextViewUsernameToolParam.setMargins(0, MiscHandler.ToDimension(context, 5), 0, 0);
 
         TextViewUsernameTool = new TextView(context);
         TextViewUsernameTool.setLayoutParams(TextViewUsernameToolParam);
-        TextViewUsernameTool.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewUsernameTool.setTextColor(ContextCompat.getColor(context, R.color.White));
         TextViewUsernameTool.setTypeface(null, Typeface.BOLD);
         TextViewUsernameTool.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewUsernameTool.setId(MiscHandler.GenerateViewID());
@@ -294,12 +339,11 @@ public class FragmentProfile extends Fragment
         RelativeLayout.LayoutParams TextViewDetailToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewDetailToolParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewDetailToolParam.addRule(RelativeLayout.BELOW, TextViewUsernameTool.getId());
-        TextViewDetailToolParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
 
         TextViewDetailTool = new TextView(context);
         TextViewDetailTool.setLayoutParams(TextViewDetailToolParam);
-        TextViewDetailTool.setTextColor(ContextCompat.getColor(context, R.color.Black4));
-        TextViewDetailTool.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewDetailTool.setTextColor(ContextCompat.getColor(context, R.color.White5));
+        TextViewDetailTool.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
         RelativeTool.addView(TextViewDetailTool);
 
@@ -348,7 +392,7 @@ public class FragmentProfile extends Fragment
         TextViewDescription.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewDescription.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
-        TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewDescription.setVisibility(View.GONE);
 
         LinearData.addView(TextViewDescription);
@@ -499,7 +543,7 @@ public class FragmentProfile extends Fragment
         LinearData.addView(ViewLine2);
 
         LinearLayout LinearTab = new LinearLayout(context);
-        LinearTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 54)));
+        LinearTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         LinearTab.setTag("sticky");
 
         LinearData.addView(LinearTab);
@@ -519,13 +563,12 @@ public class FragmentProfile extends Fragment
         TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewTabPost.setText(getString(R.string.FragmentProfilePost2));
         TextViewTabPost.setPadding(0, MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15));
-        TextViewTabPost.setId(MiscHandler.GenerateViewID());
         TextViewTabPost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeTabPost.addView(TextViewTabPost);
 
         RelativeLayout.LayoutParams ViewTabPostParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(context, 2));
-        ViewTabPostParam.addRule(RelativeLayout.BELOW, TextViewTabPost.getId());
+        ViewTabPostParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         ViewTabPost = new View(context);
         ViewTabPost.setLayoutParams(ViewTabPostParam);
@@ -548,13 +591,12 @@ public class FragmentProfile extends Fragment
         TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewTabComment.setText(getString(R.string.FragmentProfileComment));
         TextViewTabComment.setPadding(0, MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15));
-        TextViewTabComment.setId(MiscHandler.GenerateViewID());
         TextViewTabComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutTabComment.addView(TextViewTabComment);
 
         RelativeLayout.LayoutParams ViewTabCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(context, 2));
-        ViewTabCommentParam.addRule(RelativeLayout.BELOW, TextViewTabComment.getId());
+        ViewTabCommentParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         ViewTabComment = new View(context);
         ViewTabComment.setLayoutParams(ViewTabCommentParam);
@@ -577,13 +619,12 @@ public class FragmentProfile extends Fragment
         TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewTabLike.setText(getString(R.string.FragmentProfileLike));
         TextViewTabLike.setPadding(0, MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15));
-        TextViewTabLike.setId(MiscHandler.GenerateViewID());
         TextViewTabLike.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutTabLike.addView(TextViewTabLike);
 
         RelativeLayout.LayoutParams ViewTabLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(context, 2));
-        ViewTabLikeParam.addRule(RelativeLayout.BELOW, TextViewTabLike.getId());
+        ViewTabLikeParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         ViewTabLike = new View(context);
         ViewTabLike.setLayoutParams(ViewTabLikeParam);
@@ -648,48 +689,25 @@ public class FragmentProfile extends Fragment
 
         Root.addView(ImageViewEdit);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-        RelativeLayout.LayoutParams LoadingViewFollowParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
-        LoadingViewFollowParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
-        LoadingViewFollowParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-        final LoadingView LoadingViewFollow = new LoadingView(context);
-        LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
+        LoadingViewFollow = new LoadingView(context);
+        LoadingViewFollow.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
+        LoadingViewFollow.setVisibility(View.GONE);
         LoadingViewFollow.setBackground(ShapeFollowWhite);
         LoadingViewFollow.SetColor(R.color.BlueLight);
         LoadingViewFollow.SetSize(4);
 
-        Main.addView(LoadingViewFollow);
+        CoordinatorLayout.LayoutParams LoadingViewFollowParam = (CoordinatorLayout.LayoutParams) LoadingViewFollow.getLayoutParams();
+        LoadingViewFollowParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
+        LoadingViewFollowParam.rightMargin = MiscHandler.ToDimension(context, 10);
+        LoadingViewFollowParam.setAnchorId(AppBar.getId());
 
-        RelativeLayout.LayoutParams ImageButtonEditParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
-        ImageButtonEditParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 135), MiscHandler.ToDimension(context, 15), 0);
-        ImageButtonEditParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
+        LoadingViewFollow.requestLayout();
 
-
+        Root.addView(LoadingViewFollow);
 
         ImageViewFollow = new ImageView(context);
-        ImageViewFollow.setLayoutParams(ImageButtonEditParam);
+        ImageViewFollow.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
         ImageViewFollow.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewFollow.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         ImageViewFollow.setOnClickListener(new View.OnClickListener()
@@ -699,27 +717,6 @@ public class FragmentProfile extends Fragment
             {
                 ImageViewFollow.setVisibility(View.GONE);
                 LoadingViewFollow.Start();
-
-                ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewFollow, "scaleX", 1.5f);
-                SizeX.setDuration(200);
-
-                ObjectAnimator SizeY = ObjectAnimator.ofFloat(ImageViewFollow, "scaleY", 1.5f);
-                SizeY.setDuration(200);
-
-                ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewFollow, "alpha",  0.1f, 1f);
-                Fade.setDuration(400);
-
-                ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(ImageViewFollow, "scaleX", 1f);
-                SizeX2.setDuration(200);
-                SizeX2.setStartDelay(200);
-
-                ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(ImageViewFollow, "scaleY", 1f);
-                SizeY2.setDuration(200);
-                SizeY2.setStartDelay(200);
-
-                AnimatorSet AnimationSet = new AnimatorSet();
-                AnimationSet.playTogether(SizeX, SizeY, Fade, SizeX2, SizeY2);
-                AnimationSet.start();
 
                 AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -770,7 +767,15 @@ public class FragmentProfile extends Fragment
             }
         });
 
-        Main.addView(ImageViewFollow);*/
+        CoordinatorLayout.LayoutParams ImageViewFollowParam = (CoordinatorLayout.LayoutParams) ImageViewFollow.getLayoutParams();
+        ImageViewFollowParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
+        ImageViewFollowParam.rightMargin = MiscHandler.ToDimension(context, 10);
+        ImageViewFollowParam.setAnchorId(AppBar.getId());
+
+        ImageViewFollow.setLayoutParams(ImageViewFollowParam);
+        ImageViewFollow.requestLayout();
+
+        Root.addView(ImageViewFollow);
 
         RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -811,8 +816,15 @@ public class FragmentProfile extends Fragment
         AndroidNetworking.cancel("FragmentProfile");
     }
 
-    private void ChangeTab(Context context, int Tab)
+    private void ChangeTab(Context context, int tab)
     {
+        switch (tab)
+        {
+            case 1: TextViewDetailTool.setText((getString(R.string.FragmentProfilePostCount) + PostCount)); break;
+            case 2: TextViewDetailTool.setText((getString(R.string.FragmentProfileCommentCount) + CommentCount)); break;
+            case 3: TextViewDetailTool.setText((getString(R.string.FragmentProfileLikeCount) + LikeCount)); break;
+        }
+
         TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabPost.setBackgroundResource(R.color.White);
         TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
@@ -822,7 +834,7 @@ public class FragmentProfile extends Fragment
 
         Fragment SelectedFragment = new FragmentProfilePost();
 
-        switch (Tab)
+        switch (tab)
         {
             case 1:
                 TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
@@ -884,19 +896,32 @@ public class FragmentProfile extends Fragment
 
                         TextViewUsernameTool.setText(Data.getString("Username"));
 
-                        if (Result.getBoolean("Self"))
+                        if (Data.getBoolean("Self"))
                         {
                             Self = true;
                             ImageViewBack.setVisibility(View.GONE);
                             SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
                             SharedHandler.SetString(context, "Username", Data.getString("Username"));
+
+                            RelativeLayout.LayoutParams TextViewUsernameToolParam = (RelativeLayout.LayoutParams) TextViewUsernameTool.getLayoutParams();
+                            TextViewUsernameToolParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 5), 0, 0);
+
+                            TextViewUsernameTool.setLayoutParams(TextViewUsernameToolParam);
+                            TextViewUsernameTool.requestLayout();
+
+                            RelativeLayout.LayoutParams TextViewDetailToolParam = (RelativeLayout.LayoutParams) TextViewDetailTool.getLayoutParams();
+                            TextViewDetailToolParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
+
+                            TextViewDetailTool.setLayoutParams(TextViewDetailToolParam);
+                            TextViewDetailTool.requestLayout();
                         }
                         else
                         {
                             ImageViewEdit.setVisibility(View.GONE);
+                            LoadingViewFollow.setVisibility(View.VISIBLE);
                             ImageViewFollow.setVisibility(View.VISIBLE);
 
-                            if (Result.getBoolean("Follow"))
+                            if (Data.getBoolean("Follow"))
                             {
                                 ImageViewFollow.setImageResource(R.drawable.ic_follow_block);
                                 ImageViewFollow.setBackground(ShapeFollowWhite);
@@ -931,6 +956,10 @@ public class FragmentProfile extends Fragment
                         TextViewPostCount.setText(Data.getString("Post"));
                         TextViewFollowingCount.setText(Data.getString("Following"));
                         TextViewFollowerCount.setText(Data.getString("Follower"));
+
+                        PostCount = Data.getString("Post");
+                        CommentCount = Data.getString("Comment");
+                        LikeCount = Data.getString("Like");
                     }
 
                     ChangeTab(context, 1);

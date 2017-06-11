@@ -17,7 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/BlueLight"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            android:fitsSystemWindows="true"
+            app:expandedTitleMarginStart="100dp"
+            app:expandedTitleMarginEnd="200dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:src="@drawable/aaa"
@@ -48,10 +51,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <co.biogram.stickyscroll.StickyScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:stickyHeader="@+id/www"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -89,6 +91,6 @@
 
         </LinearLayout>
 
-    </co.biogram.stickyscroll.StickyScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

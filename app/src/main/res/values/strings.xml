@@ -142,6 +142,9 @@
     <string name="AdapterPostCommentSent">Comment Request Sent</string>
     <string name="AdapterPostChoice">Choice</string>
 
+    <string name="FragmentProfilePostCount">Post Count: </string>
+    <string name="FragmentProfileCommentCount">Comment Count: </string>
+    <string name="FragmentProfileLikeCount">Like Count: </string>
     <string name="FragmentProfilePost">Post</string>
     <string name="FragmentProfileFollow">User Followed</string>
     <string name="FragmentProfileUnFollow">User UnFollowed</string>
