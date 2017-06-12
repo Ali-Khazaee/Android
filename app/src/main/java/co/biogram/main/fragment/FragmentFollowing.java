@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -294,9 +296,22 @@ public class FragmentFollowing extends Fragment
         private final int ID_LOADING = MiscHandler.GenerateViewID();
         private final int ID_LINE = MiscHandler.GenerateViewID();
 
+        private final GradientDrawable ShapeFollowBlue;
+        private final GradientDrawable ShapeFollowBlack;
+
         AdapterFollowing(Context c)
         {
             context = c;
+
+            ShapeFollowBlue = new GradientDrawable();
+            ShapeFollowBlue.setShape(GradientDrawable.RECTANGLE);
+            ShapeFollowBlue.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
+            ShapeFollowBlue.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+
+            ShapeFollowBlack = new GradientDrawable();
+            ShapeFollowBlack.setShape(GradientDrawable.RECTANGLE);
+            ShapeFollowBlack.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
+            ShapeFollowBlack.setStroke(MiscHandler.ToDimension(context, 1), ContextCompat.getColor(context, R.color.Gray4));
         }
 
         class ViewHolderFollowing extends RecyclerView.ViewHolder
@@ -392,11 +407,16 @@ public class FragmentFollowing extends Fragment
                                         Holder.TextViewTime.setText(Since2);
                                         Holder.TextViewTime.setVisibility(View.VISIBLE);
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                                        Holder.RelativeLayoutFollow.setBackground(ShapeFollowBlack);
                                     }
                                     else
                                     {
                                         Holder.TextViewTime.setVisibility(View.INVISIBLE);
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.White));
+                                        Holder.RelativeLayoutFollow.setBackground(ShapeFollowBlue);
+                                        MiscHandler.Toast(context, getString(R.string.FragmentFollowingUnFollow));
                                     }
                                 }
                             }
@@ -450,15 +470,10 @@ public class FragmentFollowing extends Fragment
                 RelativeLayoutFollowParam.addRule(RelativeLayout.CENTER_VERTICAL);
                 RelativeLayoutFollowParam.setMargins(0, 0, MiscHandler.ToDimension(context, 10), 0);
 
-                GradientDrawable ShapeButton = new GradientDrawable();
-                ShapeButton.setShape(GradientDrawable.RECTANGLE);
-                ShapeButton.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
-                ShapeButton.setStroke(3, ContextCompat.getColor(context, R.color.BlueLight));
-
                 RelativeLayout RelativeLayoutFollow = new RelativeLayout(context);
                 RelativeLayoutFollow.setLayoutParams(RelativeLayoutFollowParam);
-                RelativeLayoutFollow.setBackground(ShapeButton);
                 RelativeLayoutFollow.setId(MiscHandler.GenerateViewID());
+                RelativeLayoutFollow.setBackground(ShapeFollowBlack);
                 RelativeLayoutFollow.setId(ID_BUTTON);
 
                 Root.addView(RelativeLayoutFollow);
@@ -468,8 +483,9 @@ public class FragmentFollowing extends Fragment
 
                 TextView TextViewFollow = new TextView(context);
                 TextViewFollow.setLayoutParams(TextViewFollowParam);
-                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewFollow.setTypeface(null, Typeface.BOLD);
                 TextViewFollow.setId(ID_FOLLOW);
                 TextViewFollow.setText(getString(R.string.FragmentFollowing));
 
@@ -480,7 +496,6 @@ public class FragmentFollowing extends Fragment
 
                 LoadingView LoadingViewFollow = new LoadingView(context);
                 LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
-                LoadingViewFollow.SetShow(true);
                 LoadingViewFollow.SetScale(1.7f);
                 LoadingViewFollow.SetColor(R.color.BlueLight);
                 LoadingViewFollow.setId(ID_LOADING);
@@ -528,8 +543,8 @@ public class FragmentFollowing extends Fragment
             }
 
             LoadingView Loading = new LoadingView(context);
-            Loading.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-            Loading.SetShow(true);
+            Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            Loading.setGravity(Gravity.CENTER);
             Loading.Start();
 
             return new ViewHolderFollowing(Loading, false);

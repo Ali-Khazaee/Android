@@ -143,7 +143,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
         LoadingView Loading = new LoadingView(Parent.getContext());
         Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 56)));
-        Loading.SetShow(true);
         Loading.Start();
 
         return new ViewHolderPost(Loading, false);

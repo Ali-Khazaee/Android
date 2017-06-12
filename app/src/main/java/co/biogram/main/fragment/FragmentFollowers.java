@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -290,11 +291,18 @@ public class FragmentFollowers extends Fragment
         private final int IDLoading = MiscHandler.GenerateViewID();
         private final int IDLine = MiscHandler.GenerateViewID();
 
+        private final GradientDrawable ShapeFollowBlack;
+
         private final Context context;
 
         AdapterFollowers(Context c)
         {
             context = c;
+
+            ShapeFollowBlack = new GradientDrawable();
+            ShapeFollowBlack.setShape(GradientDrawable.RECTANGLE);
+            ShapeFollowBlack.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
+            ShapeFollowBlack.setStroke(MiscHandler.ToDimension(context, 1), ContextCompat.getColor(context, R.color.BlueLight));
         }
 
         class ViewHolderFollowing extends RecyclerView.ViewHolder
@@ -444,14 +452,8 @@ public class FragmentFollowers extends Fragment
                 RelativeLayoutFollowParam.addRule(RelativeLayout.CENTER_VERTICAL);
                 RelativeLayoutFollowParam.setMargins(0, 0, MiscHandler.ToDimension(context, 10), 0);
 
-                GradientDrawable ShapeButton = new GradientDrawable();
-                ShapeButton.setShape(GradientDrawable.RECTANGLE);
-                ShapeButton.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
-                ShapeButton.setStroke(3, ContextCompat.getColor(context, R.color.BlueLight));
-
                 RelativeLayout RelativeLayoutFollow = new RelativeLayout(context);
                 RelativeLayoutFollow.setLayoutParams(RelativeLayoutFollowParam);
-                RelativeLayoutFollow.setBackground(ShapeButton);
                 RelativeLayoutFollow.setId(MiscHandler.GenerateViewID());
                 RelativeLayoutFollow.setId(IDLayout);
 
@@ -462,7 +464,6 @@ public class FragmentFollowers extends Fragment
 
                 TextView TextViewFollow = new TextView(context);
                 TextViewFollow.setLayoutParams(TextViewFollowParam);
-                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 TextViewFollow.setId(IDFollow);
                 TextViewFollow.setText(getString(R.string.FragmentFollowing));
@@ -474,7 +475,6 @@ public class FragmentFollowers extends Fragment
 
                 LoadingView LoadingViewFollow = new LoadingView(context);
                 LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
-                LoadingViewFollow.SetShow(true);
                 LoadingViewFollow.SetScale(1.7f);
                 LoadingViewFollow.SetColor(R.color.BlueLight);
                 LoadingViewFollow.setId(IDLoading);
@@ -522,8 +522,8 @@ public class FragmentFollowers extends Fragment
             }
 
             LoadingView Loading = new LoadingView(context);
-            Loading.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-            Loading.SetShow(true);
+            Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            Loading.setGravity(Gravity.CENTER);
             Loading.Start();
 
             return new ViewHolderFollowing(Loading, false);

@@ -1044,7 +1044,6 @@ public class FragmentComment extends Fragment
 
             LoadingView Loading = new LoadingView(context);
             Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            Loading.SetShow(true);
             Loading.Start();
 
             return new ViewHolderComment(Loading, false);

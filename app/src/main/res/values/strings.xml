@@ -67,8 +67,8 @@
 
     <string name="FragmentFollowing">Following</string>
     <string name="FragmentFollowingFollow">Follow</string>
-    <string name="FragmentFollowingSince">Following Since: </string>
-
+    <string name="FragmentFollowingSince">Following Since: </string>D
+    <string name="FragmentFollowingUnFollow">User UnFollowed</string>D
     <string name="FragmentFollowers">Followers</string>
     <string name="FragmentFollowersSince">Follower Since: </string>
     <string name="FragmentFollowersFollow">Follow</string>
@@ -142,9 +142,9 @@
     <string name="AdapterPostCommentSent">Comment Request Sent</string>
     <string name="AdapterPostChoice">Choice</string>
 
-    <string name="FragmentProfilePostCount">Post Count: </string>
-    <string name="FragmentProfileCommentCount">Comment Count: </string>
-    <string name="FragmentProfileLikeCount">Like Count: </string>
+    <string name="FragmentProfilePostCount">Posts</string>
+    <string name="FragmentProfileCommentCount">Comments</string>
+    <string name="FragmentProfileLikeCount">Likes</string>
     <string name="FragmentProfilePost">Post</string>
     <string name="FragmentProfileFollow">User Followed</string>
     <string name="FragmentProfileUnFollow">User UnFollowed</string>

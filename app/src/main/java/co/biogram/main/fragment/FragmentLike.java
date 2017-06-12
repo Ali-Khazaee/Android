@@ -354,7 +354,6 @@ public class FragmentLike extends Fragment
 
             LoadingView Loading = new LoadingView(context);
             Loading.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-            Loading.SetShow(true);
             Loading.Start();
 
             return new ViewHolderLike(Loading, false);

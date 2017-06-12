@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="StickyScrollView">
-        <attr name="stickyFooter" format="reference" />
-        <attr name="stickyHeader" format="reference" />
-    </declare-styleable>
     <declare-styleable name="ImageViewCircle">
         <attr name="IVC_BorderWidth" format="dimension" />
         <attr name="IVC_BorderColor" format="color" />

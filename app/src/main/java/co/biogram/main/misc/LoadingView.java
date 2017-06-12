@@ -22,7 +22,6 @@ import co.biogram.main.handler.MiscHandler;
 @SuppressWarnings("unused")
 public class LoadingView extends LinearLayout
 {
-    private boolean ShouldShow = false;
     private float BounceScale = 2.0f;
 
     private int BounceSize;
@@ -50,23 +49,6 @@ public class LoadingView extends LinearLayout
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
-    }
-
-    @Override
-    protected void onDetachedFromWindow()
-    {
-        super.onDetachedFromWindow();
-
-        Stop();
-    }
-
-    @Override
-    protected void onAttachedToWindow()
-    {
-        super.onAttachedToWindow();
-
-        if (ShouldShow)
-            Start();
     }
 
     public void Stop()
@@ -135,11 +117,6 @@ public class LoadingView extends LinearLayout
             GrowAnimator.start();
             AnimatorList.add(GrowAnimator);
         }
-    }
-
-    public void SetShow(boolean Show)
-    {
-        ShouldShow = Show;
     }
 
     public void SetSpeed(int Speed)
