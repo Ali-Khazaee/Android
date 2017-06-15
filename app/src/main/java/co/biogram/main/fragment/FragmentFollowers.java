@@ -153,6 +153,7 @@ public class FragmentFollowers extends Fragment
                                         Struct StructFollowers = new Struct();
                                         StructFollowers.Username = Followers.getString("Username");
                                         StructFollowers.Avatar = Followers.getString("Avatar");
+                                        StructFollowers.Follow = Followers.getBoolean("Follow");
 
                                         FollowersList.add(StructFollowers);
                                     }
@@ -254,6 +255,7 @@ public class FragmentFollowers extends Fragment
                             Struct StructFollowers = new Struct();
                             StructFollowers.Username = Followers.getString("Username");
                             StructFollowers.Avatar = Followers.getString("Avatar");
+                            StructFollowers.Follow = Followers.getBoolean("Follow");
 
                             FollowersList.add(StructFollowers);
                         }
@@ -291,18 +293,11 @@ public class FragmentFollowers extends Fragment
         private final int IDLoading = MiscHandler.GenerateViewID();
         private final int IDLine = MiscHandler.GenerateViewID();
 
-        private final GradientDrawable ShapeFollowBlack;
-
         private final Context context;
 
         AdapterFollowers(Context c)
         {
             context = c;
-
-            ShapeFollowBlack = new GradientDrawable();
-            ShapeFollowBlack.setShape(GradientDrawable.RECTANGLE);
-            ShapeFollowBlack.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
-            ShapeFollowBlack.setStroke(MiscHandler.ToDimension(context, 1), ContextCompat.getColor(context, R.color.BlueLight));
         }
 
         class ViewHolderFollowing extends RecyclerView.ViewHolder
@@ -368,8 +363,16 @@ public class FragmentFollowers extends Fragment
 
             Holder.TextViewTime.setText(Since);
 
-            if (FollowersList.get(Position).Username.equals(SharedHandler.GetString(context, "Username")))
-                Holder.RelativeLayoutFollow.setVisibility(View.GONE);
+            if (FollowersList.get(Position).Follow)
+            {
+                Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
+                Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray6));
+            }
+            else
+            {
+                Holder.TextViewFollow.setText(getString(R.string.FragmentFollowersFollow));
+                Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+            }
 
             Holder.RelativeLayoutFollow.setOnClickListener(new View.OnClickListener()
             {
@@ -395,9 +398,15 @@ public class FragmentFollowers extends Fragment
                                 if (Result.getInt("Message") == 1000)
                                 {
                                     if (Result.getBoolean("Follow"))
+                                    {
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray6));
+                                    }
                                     else
-                                        Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
+                                    {
+                                        Holder.TextViewFollow.setText(getString(R.string.FragmentFollowersFollow));
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+                                    }
 
                                     Adapter.notifyDataSetChanged();
                                 }
@@ -464,9 +473,9 @@ public class FragmentFollowers extends Fragment
 
                 TextView TextViewFollow = new TextView(context);
                 TextViewFollow.setLayoutParams(TextViewFollowParam);
-                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                TextViewFollow.setTypeface(null, Typeface.BOLD);
                 TextViewFollow.setId(IDFollow);
-                TextViewFollow.setText(getString(R.string.FragmentFollowing));
 
                 RelativeLayoutFollow.addView(TextViewFollow);
 
@@ -547,5 +556,6 @@ public class FragmentFollowers extends Fragment
         String Username;
         String Avatar;
         int Since;
+        boolean Follow;
     }
 }

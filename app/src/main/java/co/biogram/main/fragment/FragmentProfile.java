@@ -13,7 +13,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
@@ -44,7 +43,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import org.json.JSONObject;
 
 import co.biogram.main.R;
-import co.biogram.main.activity.ActivityProfile;
+import co.biogram.main.activity.ActivityProfileEdit;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
@@ -249,32 +248,18 @@ public class FragmentProfile extends Fragment
                 {
                     Hidden =  false;
 
-                    Animation Fade = new AlphaAnimation(0, 1);
-                    Fade.setDuration(500);
-
-                    AnimationSet animation = new AnimationSet(false);
-                    animation.addAnimation(Fade);
-
-                    ImageViewCoverLayer.setAnimation(animation);
                     ImageViewCoverLayer.setVisibility(View.VISIBLE);
                 }
                 else if (!shown && !Hidden)
                 {
                     Hidden = true;
 
-                    Animation Fade = new AlphaAnimation(1, 0);
-                    Fade.setDuration(500);
-
-                    AnimationSet animation = new AnimationSet(false);
-                    animation.addAnimation(Fade);
-
-                    ImageViewCoverLayer.setAnimation(animation);
                     ImageViewCoverLayer.setVisibility(View.GONE);
                 }
             }
         };
         Collapsing.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, AppBarLayout.LayoutParams.MATCH_PARENT));
-        Collapsing.setScrimVisibleHeightTrigger(MiscHandler.ToDimension(context, 64));
+        Collapsing.setScrimVisibleHeightTrigger(MiscHandler.ToDimension(context, 57));
 
         AppBarLayout.LayoutParams CollapsingParam = (AppBarLayout.LayoutParams) Collapsing.getLayoutParams();
         CollapsingParam.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
@@ -296,7 +281,14 @@ public class FragmentProfile extends Fragment
 
         ImageViewCoverLayer = new ImageView(context);
         ImageViewCoverLayer.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
+        ImageViewCoverLayer.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewCoverLayer.setVisibility(View.GONE);
+
+        CollapsingToolbarLayout.LayoutParams ImageViewCoverLayerParam = (CollapsingToolbarLayout.LayoutParams) ImageViewCoverLayer.getLayoutParams();
+        ImageViewCoverLayerParam.setCollapseMode(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX);
+
+        ImageViewCoverLayer.setLayoutParams(ImageViewCoverLayerParam);
+        ImageViewCoverLayer.requestLayout();
 
         Collapsing.addView(ImageViewCoverLayer);
 
@@ -363,6 +355,7 @@ public class FragmentProfile extends Fragment
 
         ScrollViewSticky ScrollMain = new ScrollViewSticky(context);
         ScrollMain.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
+        ScrollMain.setFillViewport(true);
         ScrollMain.setOnScrollChangeListener(new ScrollViewSticky.OnScrollChangeListener()
         {
             private boolean Hidden = false;
@@ -746,7 +739,7 @@ public class FragmentProfile extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().startActivity(new Intent(context, ActivityProfile.class));
+                getActivity().startActivity(new Intent(context, ActivityProfileEdit.class));
                 getActivity().finish();
             }
         });
@@ -924,24 +917,12 @@ public class FragmentProfile extends Fragment
             break;
         }
 
-        FragmentManager FragManager = getChildFragmentManager();
-        Fragment FoundFragment = FragManager.findFragmentByTag(SelectedFragment.getClass().getSimpleName());
+        Bundle bundle = new Bundle();
+        bundle.putString("Username", Username);
 
-        if (FoundFragment != null)
-        {
-            for (Fragment Frag : FragManager.getFragments())
-            {
-                if (Frag != null && Frag != FoundFragment)
-                {
-                    FragManager.beginTransaction().hide(Frag).commit();
-                }
-            }
+        SelectedFragment.setArguments(bundle);
 
-            FragManager.beginTransaction().show(FoundFragment).commit();
-            return;
-        }
-
-        FragManager.beginTransaction().replace(FrameLayoutID, SelectedFragment, SelectedFragment.getClass().getSimpleName()).commit();
+        getChildFragmentManager().beginTransaction().replace(FrameLayoutID, SelectedFragment).commit();
     }
 
     private void RetrieveDataFromServer(final Context context)

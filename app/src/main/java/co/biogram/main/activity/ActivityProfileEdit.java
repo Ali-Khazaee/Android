@@ -58,7 +58,9 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
+
 import com.bumptech.glide.Glide;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -89,7 +91,7 @@ import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 
-public class ActivityProfile extends FragmentActivity
+public class ActivityProfileEdit extends FragmentActivity
 {
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
@@ -146,7 +148,7 @@ public class ActivityProfile extends FragmentActivity
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(ActivityProfile.this, ActivityMain.class));
+                startActivity(new Intent(ActivityProfileEdit.this, ActivityMain.class));
                 finish();
             }
         });
@@ -208,7 +210,7 @@ public class ActivityProfile extends FragmentActivity
                 else
                     UploadFile = null;
 
-                final ProgressDialog Progress = new ProgressDialog(ActivityProfile.this);
+                final ProgressDialog Progress = new ProgressDialog(ActivityProfileEdit.this);
                 Progress.setMessage(getString(R.string.ActivityProfileUpload));
                 Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 Progress.setIndeterminate(false);
@@ -227,7 +229,7 @@ public class ActivityProfile extends FragmentActivity
                 .addMultipartParameter("Location", EditTextLocation.getText().toString())
                 .addMultipartParameter("Email", EditTextEmail.getText().toString())
                 .addMultipartFile(UploadFile)
-                .setTag("ActivityProfile")
+                .setTag("ActivityProfileEdit")
                 .build().setUploadProgressListener(new UploadProgressListener()
                 {
                     @Override
@@ -309,7 +311,7 @@ public class ActivityProfile extends FragmentActivity
             @Override
             public void onClick(View v)
             {
-                final Dialog DialogCover = new Dialog(ActivityProfile.this);
+                final Dialog DialogCover = new Dialog(ActivityProfileEdit.this);
                 DialogCover.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogCover.setCancelable(true);
 
@@ -345,7 +347,7 @@ public class ActivityProfile extends FragmentActivity
                     @Override
                     public void onClick(View v)
                     {
-                        _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfile.this, new PermissionHandler.PermissionEvent()
+                        _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfileEdit.this, new PermissionHandler.PermissionEvent()
                         {
                             @Override
                             public void OnGranted()
@@ -428,7 +430,7 @@ public class ActivityProfile extends FragmentActivity
                     {
                         AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .setTag("ActivityProfile")
+                        .setTag("ActivityProfileEdit")
                         .build().getAsString(new StringRequestListener()
                         {
                             @Override
@@ -489,7 +491,7 @@ public class ActivityProfile extends FragmentActivity
             @Override
             public void onClick(View v)
             {
-                final Dialog DialogProfile = new Dialog(ActivityProfile.this);
+                final Dialog DialogProfile = new Dialog(ActivityProfileEdit.this);
                 DialogProfile.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogProfile.setCancelable(true);
 
@@ -525,7 +527,7 @@ public class ActivityProfile extends FragmentActivity
                     @Override
                     public void onClick(View v)
                     {
-                        _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfile.this, new PermissionHandler.PermissionEvent()
+                        _PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, ActivityProfileEdit.this, new PermissionHandler.PermissionEvent()
                         {
                             @Override
                             public void OnGranted()
@@ -608,7 +610,7 @@ public class ActivityProfile extends FragmentActivity
                     {
                         AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .setTag("ActivityProfile")
+                        .setTag("ActivityProfileEdit")
                         .build().getAsString(new StringRequestListener()
                         {
                             @Override
@@ -891,7 +893,7 @@ public class ActivityProfile extends FragmentActivity
     protected void onStop()
     {
         super.onStop();
-        AndroidNetworking.cancel("ActivityProfile");
+        AndroidNetworking.cancel("ActivityProfileEdit");
     }
 
     @Override
@@ -907,7 +909,7 @@ public class ActivityProfile extends FragmentActivity
                 DoCrop();
                 break;
             case FromCamera:
-                _PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, ActivityProfile.this, new PermissionHandler.PermissionEvent()
+                _PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, ActivityProfileEdit.this, new PermissionHandler.PermissionEvent()
                 {
                     @Override
                     public void OnGranted()
@@ -936,7 +938,7 @@ public class ActivityProfile extends FragmentActivity
                     @Override
                     public void OnFailed()
                     {
-                        MiscHandler.Toast(ActivityProfile.this, getString(R.string.GeneralPermissionStorage));
+                        MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.GeneralPermissionStorage));
                     }
                 });
                 break;
@@ -1093,7 +1095,7 @@ public class ActivityProfile extends FragmentActivity
                 @Override
                 public void onClick(View v)
                 {
-                    ActivityProfile Parent = (ActivityProfile) getActivity();
+                    ActivityProfileEdit Parent = (ActivityProfileEdit) getActivity();
 
                     if (_GoogleMap != null)
                     {
@@ -1203,7 +1205,7 @@ public class ActivityProfile extends FragmentActivity
                     _GoogleMap.getUiSettings().setCompassEnabled(true);
 
                     double Lat = 0, Lon = 0;
-                    String[] Position = ((ActivityProfile) getActivity()).Position.split(":");
+                    String[] Position = ((ActivityProfileEdit) getActivity()).Position.split(":");
 
                     if (Position.length > 1 && !Position[0].equals("") && !Position[1].equals(""))
                     {
@@ -1506,7 +1508,7 @@ public class ActivityProfile extends FragmentActivity
                     if (Name.length() > 25)
                         Name = Name.substring(0, 25) + " ...";
 
-                    ActivityProfile Parent = (ActivityProfile) getActivity();
+                    ActivityProfileEdit Parent = (ActivityProfileEdit) getActivity();
                     Parent.Position = (float) Search.Latitude + ":" + (float) Search.Longitude;
                     Parent.EditTextLocation.setText(Name);
                     Parent.onBackPressed();
@@ -1601,7 +1603,7 @@ public class ActivityProfile extends FragmentActivity
 
         AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .setTag("ActivityProfile")
+        .setTag("ActivityProfileEdit")
         .build().getAsString(new StringRequestListener()
         {
             @Override

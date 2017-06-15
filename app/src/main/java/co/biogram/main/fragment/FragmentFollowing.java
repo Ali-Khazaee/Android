@@ -296,22 +296,9 @@ public class FragmentFollowing extends Fragment
         private final int ID_LOADING = MiscHandler.GenerateViewID();
         private final int ID_LINE = MiscHandler.GenerateViewID();
 
-        private final GradientDrawable ShapeFollowBlue;
-        private final GradientDrawable ShapeFollowBlack;
-
         AdapterFollowing(Context c)
         {
             context = c;
-
-            ShapeFollowBlue = new GradientDrawable();
-            ShapeFollowBlue.setShape(GradientDrawable.RECTANGLE);
-            ShapeFollowBlue.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
-            ShapeFollowBlue.setColor(ContextCompat.getColor(context, R.color.BlueLight));
-
-            ShapeFollowBlack = new GradientDrawable();
-            ShapeFollowBlack.setShape(GradientDrawable.RECTANGLE);
-            ShapeFollowBlack.setCornerRadii(new float[] { 8, 8, 8, 8, 8, 8, 8, 8 });
-            ShapeFollowBlack.setStroke(MiscHandler.ToDimension(context, 1), ContextCompat.getColor(context, R.color.Gray4));
         }
 
         class ViewHolderFollowing extends RecyclerView.ViewHolder
@@ -402,20 +389,16 @@ public class FragmentFollowing extends Fragment
                                 {
                                     if (Result.getBoolean("Follow"))
                                     {
-                                        String Since2 = getString(R.string.FragmentFollowingSince) + " just now";
-
-                                        Holder.TextViewTime.setText(Since2);
+                                        Holder.TextViewTime.setText((getString(R.string.FragmentFollowingSince) + " just now"));
                                         Holder.TextViewTime.setVisibility(View.VISIBLE);
                                         Holder.TextViewFollow.setText(getString(R.string.FragmentFollowing));
-                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                                        Holder.RelativeLayoutFollow.setBackground(ShapeFollowBlack);
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray6));
                                     }
                                     else
                                     {
                                         Holder.TextViewTime.setVisibility(View.INVISIBLE);
-                                        Holder.TextViewFollow.setText(getString(R.string.FragmentFollowingFollow));
-                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.White));
-                                        Holder.RelativeLayoutFollow.setBackground(ShapeFollowBlue);
+                                        Holder.TextViewFollow.setText(getString(R.string.FragmentFollowersFollow));
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                                         MiscHandler.Toast(context, getString(R.string.FragmentFollowingUnFollow));
                                     }
                                 }
@@ -473,7 +456,6 @@ public class FragmentFollowing extends Fragment
                 RelativeLayout RelativeLayoutFollow = new RelativeLayout(context);
                 RelativeLayoutFollow.setLayoutParams(RelativeLayoutFollowParam);
                 RelativeLayoutFollow.setId(MiscHandler.GenerateViewID());
-                RelativeLayoutFollow.setBackground(ShapeFollowBlack);
                 RelativeLayoutFollow.setId(ID_BUTTON);
 
                 Root.addView(RelativeLayoutFollow);
@@ -483,8 +465,8 @@ public class FragmentFollowing extends Fragment
 
                 TextView TextViewFollow = new TextView(context);
                 TextViewFollow.setLayoutParams(TextViewFollowParam);
-                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray6));
                 TextViewFollow.setTypeface(null, Typeface.BOLD);
                 TextViewFollow.setId(ID_FOLLOW);
                 TextViewFollow.setText(getString(R.string.FragmentFollowing));
