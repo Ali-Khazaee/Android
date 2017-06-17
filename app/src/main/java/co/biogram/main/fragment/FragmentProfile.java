@@ -1,5 +1,6 @@
 package co.biogram.main.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -80,6 +82,9 @@ public class FragmentProfile extends Fragment
     private TextView TextViewUsername;
     private TextView TextViewDescription;
     private TextView TextViewUrl;
+    private TextView TextViewLocation;
+    private LinearLayout LinearLayoutLocation;
+    private LinearLayout LinearLayoutUrl;
     private TextView TextViewPostCount;
     private TextView TextViewFollowerCount;
     private TextView TextViewFollowingCount;
@@ -107,6 +112,7 @@ public class FragmentProfile extends Fragment
 
         CoordinatorLayout Root = new CoordinatorLayout(context);
         Root.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
+        Root.setBackgroundResource(R.color.White);
 
         AppBarLayout AppBar = new AppBarLayout(context);
         AppBar.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
@@ -326,6 +332,60 @@ public class FragmentProfile extends Fragment
 
         RelativeTool.addView(ImageViewBack);
 
+        RelativeLayout.LayoutParams ImageViewMoreParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewMoreParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageView ImageViewMore = new ImageView(context);
+        ImageViewMore.setLayoutParams(ImageViewMoreParam);
+        ImageViewMore.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewMore.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewMore.setImageResource(R.drawable.ic_back_white);
+        ImageViewMore.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (Self)
+                {
+
+                }
+                else
+                {
+                    final Dialog DialogMore = new Dialog(getActivity());
+                    DialogMore.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    DialogMore.setCancelable(true);
+
+                    LinearLayout Root = new LinearLayout(context);
+                    Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    Root.setBackgroundResource(R.color.White);
+                    Root.setOrientation(LinearLayout.VERTICAL);
+
+                    TextView TextViewReport = new TextView(context);
+                    TextViewReport.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    TextViewReport.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                    TextViewReport.setText(getString(R.string.FragmentProfileReport));
+                    TextViewReport.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+                    TextViewReport.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                    TextViewReport.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view)
+                        {
+                            DialogMore.dismiss();
+                            MiscHandler.Toast(context, getString(R.string.Soon));
+                        }
+                    });
+
+                    Root.addView(TextViewReport);
+
+                    DialogMore.setContentView(Root);
+                    DialogMore.show();
+                }
+            }
+        });
+
+        RelativeTool.addView(ImageViewMore);
+
         RelativeLayout.LayoutParams TextViewUsernameToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewUsernameToolParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewUsernameToolParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -354,8 +414,7 @@ public class FragmentProfile extends Fragment
         RelativeTool.addView(TextViewDetailTool);
 
         ScrollViewSticky ScrollMain = new ScrollViewSticky(context);
-        ScrollMain.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
-        ScrollMain.setFillViewport(true);
+        ScrollMain.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT));
         ScrollMain.setOnScrollChangeListener(new ScrollViewSticky.OnScrollChangeListener()
         {
             private boolean Hidden = false;
@@ -456,16 +515,49 @@ public class FragmentProfile extends Fragment
 
         LinearData.addView(TextViewDescription);
 
+        LinearLayoutUrl = new LinearLayout(context);
+        LinearLayoutUrl.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayoutUrl.setPadding(MiscHandler.ToDimension(context, 10), 0, 0, 0);
+        LinearLayoutUrl.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayoutUrl.setVisibility(View.GONE);
+
+        LinearData.addView(LinearLayoutUrl);
+
+        ImageView ImageViewUrl = new ImageView(context);
+        ImageViewUrl.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 24), MiscHandler.ToDimension(context, 24)));
+        ImageViewUrl.setImageResource(R.drawable.ic_arrow_down_blue);
+
+        LinearLayoutUrl.addView(ImageViewUrl);
+
         TextViewUrl = new TextView(getActivity());
         TextViewUrl.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewUrl.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewUrl.setLinkTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-        TextViewUrl.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
         TextViewUrl.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewUrl.setVisibility(View.GONE);
         Linkify.addLinks(TextViewUrl, Linkify.ALL);
 
-        LinearData.addView(TextViewUrl);
+        LinearLayoutUrl.addView(TextViewUrl);
+
+        LinearLayoutLocation = new LinearLayout(context);
+        LinearLayoutLocation.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayoutLocation.setPadding(MiscHandler.ToDimension(context, 10), 0, 0, 0);
+        LinearLayoutLocation.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayoutLocation.setVisibility(View.GONE);
+
+        LinearData.addView(LinearLayoutLocation);
+
+        ImageView ImageViewLocation = new ImageView(context);
+        ImageViewLocation.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 24), MiscHandler.ToDimension(context, 24)));
+        ImageViewLocation.setImageResource(R.drawable.ic_arrow_down_blue);
+
+        LinearLayoutLocation.addView(ImageViewLocation);
+
+        TextViewLocation = new TextView(getActivity());
+        TextViewLocation.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        TextViewLocation.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
+        TextViewLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+
+        LinearLayoutLocation.addView(TextViewLocation);
 
         LinearLayout LinearDetails = new LinearLayout(context);
         LinearDetails.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -601,11 +693,17 @@ public class FragmentProfile extends Fragment
 
         LinearData.addView(ViewLine2);
 
+        LinearLayout LinearTab2 = new LinearLayout(context);
+        LinearTab2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 57)));
+        LinearTab2.setOrientation(LinearLayout.VERTICAL);
+        LinearTab2.setTag("sticky");
+
+        LinearData.addView(LinearTab2);
+
         LinearLayout LinearTab = new LinearLayout(context);
         LinearTab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-        LinearTab.setTag("sticky");
 
-        LinearData.addView(LinearTab);
+        LinearTab2.addView(LinearTab);
 
         RelativeLayout RelativeTabPost = new RelativeLayout(context);
         RelativeTabPost.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
@@ -671,6 +769,12 @@ public class FragmentProfile extends Fragment
         RelativeLayoutTabLike.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 3); } });
 
         LinearTab.addView(RelativeLayoutTabLike);
+
+        View ViewLine3 = new View(context);
+        ViewLine3.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
+        ViewLine3.setBackgroundResource(R.color.Gray);
+
+        LinearTab2.addView(ViewLine3);
 
         RelativeLayout.LayoutParams TextViewTabLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTabLikeParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -1013,7 +1117,13 @@ public class FragmentProfile extends Fragment
                         if (!Data.getString("Link").equals(""))
                         {
                             TextViewUrl.setText(Data.getString("Link"));
-                            TextViewUrl.setVisibility(View.VISIBLE);
+                            LinearLayoutUrl.setVisibility(View.VISIBLE);
+                        }
+
+                        if (!Data.getString("Location").equals(""))
+                        {
+                            TextViewLocation.setText(Data.getString("Location"));
+                            LinearLayoutLocation.setVisibility(View.VISIBLE);
                         }
 
                         TextViewPostCount.setText(Data.getString("Post"));

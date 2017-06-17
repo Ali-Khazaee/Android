@@ -115,8 +115,6 @@ public class MiscHandler
 
     public static Bitmap Blurry(Bitmap sentBitmap, int radius)
     {
-        Long T = System.currentTimeMillis();
-
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
         int width = bitmap.getWidth();
@@ -328,13 +326,7 @@ public class MiscHandler
 
         bitmap.setPixels(Pixel, 0, width, 0, 0, width, height);
 
-        Log("End: " + (System.currentTimeMillis() - T));
         return bitmap;
-    }
-
-    public static void Log(String Message)
-    {
-        Log.w("Bio", Message);
     }
 
     public static void Debug(String Message)

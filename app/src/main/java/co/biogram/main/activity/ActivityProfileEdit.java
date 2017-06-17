@@ -103,6 +103,7 @@ public class ActivityProfileEdit extends FragmentActivity
     private EditText EditTextUsername;
     private EditText EditTextDescription;
     private EditText EditTextLink;
+    private EditText EditTextPhone;
     private EditText EditTextLocation;
     private EditText EditTextEmail;
     private String Position = "";
@@ -225,6 +226,7 @@ public class ActivityProfileEdit extends FragmentActivity
                 .addMultipartParameter("Username", EditTextUsername.getText().toString())
                 .addMultipartParameter("Description", EditTextDescription.getText().toString())
                 .addMultipartParameter("Link", EditTextLink.getText().toString())
+                .addMultipartParameter("Phone", EditTextPhone.getText().toString())
                 .addMultipartParameter("Position", Position)
                 .addMultipartParameter("Location", EditTextLocation.getText().toString())
                 .addMultipartParameter("Email", EditTextEmail.getText().toString())
@@ -270,6 +272,7 @@ public class ActivityProfileEdit extends FragmentActivity
                     public void onError(ANError anError)
                     {
                         MiscHandler.Toast(context, getString(R.string.NoInternet));
+                        Progress.cancel();
                     }
                 });
             }
@@ -774,8 +777,35 @@ public class ActivityProfileEdit extends FragmentActivity
 
         RelativeLayoutMain.addView(EditTextLink);
 
+        RelativeLayout.LayoutParams TextViewPhoneParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewPhoneParam.addRule(RelativeLayout.BELOW, EditTextLink.getId());
+        TextViewPhoneParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), 0);
+
+        TextView TextViewPhone = new TextView(context);
+        TextViewPhone.setLayoutParams(TextViewPhoneParam);
+        TextViewPhone.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
+        TextViewPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewPhone.setText(getString(R.string.ActivityProfilePhone));
+        TextViewPhone.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutMain.addView(TextViewPhone);
+
+        RelativeLayout.LayoutParams EditTextPhoneParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextPhoneParam.addRule(RelativeLayout.BELOW, TextViewPhone.getId());
+        EditTextPhoneParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
+
+        EditTextPhone = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextPhone.setLayoutParams(EditTextPhoneParam);
+        EditTextPhone.setMaxLines(1);
+        EditTextPhone.setId(MiscHandler.GenerateViewID());
+        EditTextPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextPhone.setFilters(new InputFilter[] { new InputFilter.LengthFilter(15) });
+        EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
+
+        RelativeLayoutMain.addView(EditTextPhone);
+
         RelativeLayout.LayoutParams TextViewLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewLocationParam.addRule(RelativeLayout.BELOW, EditTextLink.getId());
+        TextViewLocationParam.addRule(RelativeLayout.BELOW, EditTextPhone.getId());
         TextViewLocationParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), 0);
 
         TextView TextViewLocation = new TextView(context);

@@ -79,6 +79,7 @@
     <string name="ActivityProfileUsername">Username</string>
     <string name="ActivityProfileDescription">Description</string>
     <string name="ActivityProfileWebsite">Website</string>
+    <string name="ActivityProfilePhone">Phone</string>
     <string name="ActivityProfileLocation">Location</string>
     <string name="ActivityProfileEmail">Email Address</string>
     <string name="ActivityProfileEmailHint">Email cannot be blank</string>
@@ -141,6 +142,7 @@
     <string name="AdapterPostComment">Commenting is Disabled</string>
     <string name="AdapterPostCommentSent">Comment Request Sent</string>
     <string name="AdapterPostChoice">Choice</string>
+    <string name="AdapterPostNoContent">Empty</string>
 
     <string name="FragmentProfilePostCount">Posts</string>
     <string name="FragmentProfileCommentCount">Comments</string>
@@ -150,7 +152,7 @@
     <string name="FragmentProfileUnFollow">User UnFollowed</string>
     <string name="FragmentProfileFollowers">Followers</string>
     <string name="FragmentProfileFollowing">Following</string>
-
+    <string name="FragmentProfileReport">Report</string>
     <string name="FragmentProfilePost2">POST</string>
     <string name="FragmentProfileLike">LIKE</string>
     <string name="FragmentProfileComment">COMMENT</string>

@@ -7,6 +7,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,35 +137,57 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     @Override
     public ViewHolderPost onCreateViewHolder(ViewGroup Parent, int ViewType)
     {
+        Context context = Parent.getContext();
+
         if (ViewType == 0)
         {
-            View ItemView = LayoutInflater.from(Parent.getContext()).inflate(R.layout.general_adapter_post_row, Parent, false);
+            View ItemView = LayoutInflater.from(context).inflate(R.layout.general_adapter_post_row, Parent, false);
             return new ViewHolderPost(ItemView, true);
         }
+        else if (ViewType == 1)
+        {
+            LoadingView Root = new LoadingView(context);
+            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            Root.Start();
 
-        LoadingView Loading = new LoadingView(Parent.getContext());
-        Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(Activity, 56)));
-        Loading.Start();
+            return new ViewHolderPost(Root, false);
+        }
+        else
+        {
+            TextView Root = new TextView(context);
+            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            Root.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
+            Root.setText(context.getString(R.string.AdapterPostNoContent));
+            Root.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            Root.setTypeface(null, Typeface.BOLD);
+            Root.setGravity(Gravity.CENTER);
 
-        return new ViewHolderPost(Loading, false);
-    }
-
-    @Override
-    public int getItemViewType(int position)
-    {
-        return PostList.get(position)!= null ? 0 : 1;
+            return new ViewHolderPost(Root, false);
+        }
     }
 
     @Override
     public int getItemCount()
     {
+        if (PostList.size() == 0)
+            return 1;
+
         return PostList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position)
+    {
+        if (PostList.size() == 0)
+            return 2;
+
+        return PostList.get(position) != null ? 0 : 1;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolderPost Holder, int position)
     {
-        if (PostList.get(position) == null)
+        if (getItemViewType(position) != 0)
             return;
 
         final int Position = Holder.getAdapterPosition();
@@ -535,7 +559,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                             }
 
                             @Override
-                            public void onError(ANError anError) { MiscHandler.Log(anError.toString());}
+                            public void onError(ANError anError) { }
                         });
 
                         DialogOption.dismiss();
@@ -729,7 +753,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             }
             catch (Exception e)
             {
-                MiscHandler.Log(e.toString());
                 // Leave Me Alone
             }
         }
