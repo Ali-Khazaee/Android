@@ -35,6 +35,7 @@ public class URLHandler
         PROFILE_EDIT_COVER_DELETE,
         PROFILE_EDIT_AVATAR_DELETE,
         PROFILE_POST_GET,
+        PROFILE_COMMENT_GET,
         PROFILE_LIKE_GET,
 
         FOLLOW,
@@ -79,6 +80,7 @@ public class URLHandler
             case PROFILE_EDIT_COVER_DELETE:  URL = "ProfileCoverDelete";  break;
             case PROFILE_EDIT_AVATAR_DELETE: URL = "ProfileAvatarDelete"; break;
             case PROFILE_POST_GET:           URL = "ProfilePostGet";      break;
+            case PROFILE_COMMENT_GET:        URL = "ProfileCommentGet";   break;
             case PROFILE_LIKE_GET:           URL = "ProfileLikeGet";      break;
 
             case FOLLOW:        URL = "Follow";       break;
