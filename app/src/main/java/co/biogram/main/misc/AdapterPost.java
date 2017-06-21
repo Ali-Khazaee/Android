@@ -166,27 +166,15 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         }
     }
 
-    private boolean IsEmpty = false;
-
     @Override
     public int getItemCount()
     {
-        if (PostList.size() == 0)
-        {
-            IsEmpty = true;
-            return 1;
-        }
-
-        IsEmpty = true;
         return PostList.size();
     }
 
     @Override
     public int getItemViewType(int position)
     {
-        if (IsEmpty)
-            return 2;
-
         return PostList.get(position) != null ? 0 : 1;
     }
 

@@ -3,6 +3,8 @@ package co.biogram.main.fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +38,7 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
+import co.biogram.main.misc.RecyclerViewScroll;
 
 public class FragmentProfileComment extends Fragment
 {
@@ -43,16 +47,15 @@ public class FragmentProfileComment extends Fragment
 
     private String Username;
     private AdapterComment Adapter;
-    private boolean IsLoadingBottom = false;
     private final List<Struct> CommentList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
-        final LinearLayoutManager LinearLayoutManagerComment = new LinearLayoutManager(context);
 
         Adapter = new AdapterComment(context);
+        Adapter.setHasStableIds(true);
 
         if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
             Username = getArguments().getString("Username");
@@ -64,48 +67,19 @@ public class FragmentProfileComment extends Fragment
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
+        LinearLayoutManager LinearLayoutManagerComment = new LinearLayoutManager(context);
+
         RecyclerViewMoment = new RecyclerView(context);
-        RecyclerViewMoment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RecyclerViewMoment.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMoment.setLayoutManager(LinearLayoutManagerComment);
         RecyclerViewMoment.setNestedScrollingEnabled(false);
         RecyclerViewMoment.setAdapter(Adapter);
-        RecyclerViewMoment.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RecyclerViewMoment.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerComment)
         {
             @Override
-            public void onScrolled(RecyclerView View, int DX, int DY)
+            public void OnLoadMore()
             {
-                if (IsLoadingBottom || CommentList.size() == 0)
-                    return;
-
-                int totalItemCount = LinearLayoutManagerComment.getItemCount();
-
-                if ((LinearLayoutManagerComment.findLastVisibleItemPosition() + 5) > totalItemCount)
-                {
-                    MiscHandler.Debug("A: " + LinearLayoutManagerComment.findLastVisibleItemPosition() + " - " + LinearLayoutManagerComment.getItemCount());
-                    return;
-                }
-
-                if (totalItemCount < previousTotalItemCount)
-                {
-                    this.currentPage = this.startingPageIndex;
-                    this.previousTotalItemCount = totalItemCount;
-
-                    if (totalItemCount == 0)
-                    {
-                        this.loading = true;
-                    }
-                }
-
-                // If it’s still loading, we check to see if the dataset count has
-                // changed, if so we conclude it has finished loading and update the current page
-                // number and total item count.
-                if (loading && (totalItemCount > previousTotalItemCount)) {
-                    loading = false;
-                    previousTotalItemCount = totalItemCount;
-                }
-
-
-                IsLoadingBottom = true;
+                MiscHandler.Debug("Loaded");
                 CommentList.add(null);
                 Adapter.notifyItemInserted(CommentList.size());
 
@@ -120,7 +94,6 @@ public class FragmentProfileComment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
-                        IsLoadingBottom = false;
                         CommentList.remove(CommentList.size() - 1);
                         Adapter.notifyItemRemoved(CommentList.size());
 
@@ -150,7 +123,7 @@ public class FragmentProfileComment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("FragmentProfileComment - L128 - " + e.toString());
+                            MiscHandler.Debug("FragmentProfileComment - L126 - " + e.toString());
                         }
 
                         CheckIfEmpty();
@@ -160,7 +133,6 @@ public class FragmentProfileComment extends Fragment
                     @Override
                     public void onError(ANError anError)
                     {
-                        IsLoadingBottom = false;
                         CommentList.remove(CommentList.size() - 1);
                         Adapter.notifyItemRemoved(CommentList.size());
                         MiscHandler.Toast(context, getString(R.string.NoInternet));
@@ -210,9 +182,8 @@ public class FragmentProfileComment extends Fragment
 
     private void RetrieveDataFromServer(final Context context)
     {
-        MiscHandler.Debug("RetrieveDataFromServer");
         CommentList.add(null);
-        Adapter.notifyDataSetChanged();
+        Adapter.notifyItemInserted(CommentList.size());
 
         AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_COMMENT_GET))
         .addBodyParameter("Username", Username)
@@ -224,13 +195,8 @@ public class FragmentProfileComment extends Fragment
             @Override
             public void onResponse(String Response)
             {
-                for (int i = 0; i < CommentList.size(); i++)
-                    MiscHandler.Debug("Size: " + CommentList.get(i));
-
-                MiscHandler.Debug("Size: " + CommentList.size());
                 CommentList.remove(CommentList.size() - 1);
-                Adapter.notifyDataSetChanged();
-                MiscHandler.Debug("Size: " + CommentList.size());
+                Adapter.notifyItemRemoved(CommentList.size());
 
                 try
                 {
@@ -261,7 +227,7 @@ public class FragmentProfileComment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("FragmentProfileComment - L234 - " + e.toString());
+                    MiscHandler.Debug("FragmentProfileComment - L225 - " + e.toString());
                 }
             }
 
@@ -332,7 +298,13 @@ public class FragmentProfileComment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    // Open Post Details
+                    Bundle bundle = new Bundle();
+                    bundle.putString("PostID", CommentList.get(Position).PostID);
+
+                    Fragment fragment = new FragmentPostDetails();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
                 }
             });
 
@@ -347,7 +319,13 @@ public class FragmentProfileComment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    // Open Profile
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", CommentList.get(Position).Target);
+
+                    Fragment fragment = new FragmentProfile();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
                 }
             });
 
@@ -357,7 +335,13 @@ public class FragmentProfileComment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    // Open Profile
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", CommentList.get(Position).Username);
+
+                    Fragment fragment = new FragmentProfile();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
                 }
             });
 
@@ -367,7 +351,13 @@ public class FragmentProfileComment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    // Open Profile
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", CommentList.get(Position).Target);
+
+                    Fragment fragment = new FragmentProfile();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
                 }
             });
 

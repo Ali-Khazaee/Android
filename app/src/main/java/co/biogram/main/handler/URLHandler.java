@@ -93,6 +93,18 @@ public class URLHandler
         return GetRandomServer() + URL;
     }
 
+    public static String GetURL(String Name)
+    {
+        String URL = "";
+
+        switch (Name)
+        {
+            case "Notification": URL = "NotificationList"; break;
+        }
+
+        return GetRandomServer() + URL;
+    }
+
     private static String GetRandomServer()
     {
         Random random = new Random();

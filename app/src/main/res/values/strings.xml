@@ -2,6 +2,7 @@
 <resources>
     <string name="ApplicationName">BioGram</string>
 
+    <string name="TryAgain">Try Again &#8230;</string>
     <string name="NoInternet">Check Your Network</string>
 
     <string name="FragmentProfileCommentEmpty">No Comment</string>
@@ -26,7 +27,7 @@
 
 
     <string name="Soon">Coming Soon</string>
-    <string name="TryAgain">Try Again &#8230;</string>
+
 
 
     <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>

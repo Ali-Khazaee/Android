@@ -1,6 +1,8 @@
 package co.biogram.main;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 
 import com.androidnetworking.AndroidNetworking;
 
@@ -12,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.CacheHandler;
 
+import co.biogram.main.service.NotificationService;
 import okhttp3.OkHttpClient;
 
 public class App extends Application
@@ -28,9 +31,13 @@ public class App extends Application
 
         LeakCanary.install(this);
 
+        Context context = getApplicationContext();
+
+        context.startService(new Intent(context, NotificationService.class));
+
         OKClient = GetOKClient();
 
-        AndroidNetworking.initialize(getApplicationContext(), OKClient);
+        AndroidNetworking.initialize(context, OKClient);
 
         CacheHandler.SetUp();
     }
