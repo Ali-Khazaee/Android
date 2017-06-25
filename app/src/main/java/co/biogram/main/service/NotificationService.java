@@ -60,17 +60,15 @@ public class NotificationService extends Service
                     @Override
                     public void onResponse(String Response)
                     {
-
+                        handler.postDelayed(runnable, 5000);
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-
+                        handler.postDelayed(runnable, 5000);
                     }
                 });
-
-                handler.postDelayed(runnable, 5000);
             }
         };
 

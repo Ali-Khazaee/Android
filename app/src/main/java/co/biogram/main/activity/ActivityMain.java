@@ -19,6 +19,7 @@ import co.biogram.main.fragment.FragmentMoment;
 import co.biogram.main.check.FragmentTabCategory;
 import co.biogram.main.check.FragmentTabFriend;
 import co.biogram.main.check.FragmentTabNotification;
+import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
 
 public class ActivityMain extends FragmentActivity
@@ -151,10 +152,10 @@ public class ActivityMain extends FragmentActivity
 
         switch (Tab)
         {
-            case 2: SelectedFragment = new FragmentTabFriend();       break;
-            case 3: SelectedFragment = new FragmentTabCategory();     break;
-            case 4: SelectedFragment = new FragmentTabNotification(); break;
-            case 5: SelectedFragment = new FragmentProfile();         break;
+            case 2: SelectedFragment = new FragmentTabFriend();    break;
+            case 3: SelectedFragment = new FragmentTabCategory();  break;
+            case 4: SelectedFragment = new NotificationFragment(); break;
+            case 5: SelectedFragment = new FragmentProfile();      break;
         }
 
         FragmentManager FragManager = getSupportFragmentManager();

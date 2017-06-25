@@ -5,6 +5,33 @@
     <string name="TryAgain">Try Again &#8230;</string>
     <string name="NoInternet">Check Your Network</string>
 
+    <string name="NotificationFragmentPostTag">mentioned you in a post</string>
+    <string name="NotificationFragmentPostLike">liked your post</string>
+    <string name="NotificationFragmentFollow">started following you</string>
+    <string name="NotificationFragmentComment">commented on your post</string>
+    <string name="NotificationFragmentCommentLike">liked your comment</string>
+    <string name="NotificationFragmentCommentTag">mentioned you in a comment</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="FragmentProfileCommentEmpty">No Comment</string>
     <string name="FragmentProfileCommentMessage">Commented in post</string>
     <string name="FragmentProfileCommentReport">Report</string>
