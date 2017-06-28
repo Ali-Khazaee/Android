@@ -99,7 +99,8 @@ public class URLHandler
 
         switch (Name)
         {
-            case "Notification": URL = "NotificationList"; break;
+            case "Notification":        URL = "NotificationList";    break;
+            case "NotificationService": URL = "NotificationService"; break;
         }
 
         return GetRandomServer() + URL;

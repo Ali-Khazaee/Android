@@ -117,7 +117,7 @@ public class NotificationFragment extends Fragment
                 RecyclerViewNotification.setVisibility(View.VISIBLE);
                 LoadingViewNotification.setVisibility(View.GONE);
                 TextViewTryAgain.setVisibility(View.GONE);
-                MiscHandler.Debug(Response);
+
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
