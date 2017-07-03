@@ -12,7 +12,9 @@
     <string name="NotificationFragmentCommentLike">liked your comment</string>
     <string name="NotificationFragmentCommentTag">mentioned you in a comment</string>
 
+    <string name="InboxTitle">Inbox</string>
 
+    <string name="CategoryTitle">Category</string>
 
 
 

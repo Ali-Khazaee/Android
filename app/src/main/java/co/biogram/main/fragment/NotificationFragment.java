@@ -61,7 +61,7 @@ public class NotificationFragment extends Fragment
             @Override
             public void OnLoadMore()
             {
-                MiscHandler.Debug("Called OnLoadMore");
+                //
             }
         });
 
@@ -144,7 +144,7 @@ public class NotificationFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("FragmentProfileComment - L225 - " + e.toString());
+                    //
                 }
             }
 

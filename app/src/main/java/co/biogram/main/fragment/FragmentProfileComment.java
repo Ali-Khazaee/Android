@@ -79,7 +79,6 @@ public class FragmentProfileComment extends Fragment
             @Override
             public void OnLoadMore()
             {
-                MiscHandler.Debug("Loaded");
                 CommentList.add(null);
                 Adapter.notifyItemInserted(CommentList.size());
 
@@ -123,7 +122,7 @@ public class FragmentProfileComment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("FragmentProfileComment - L126 - " + e.toString());
+                            //
                         }
 
                         CheckIfEmpty();
@@ -227,7 +226,7 @@ public class FragmentProfileComment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("FragmentProfileComment - L225 - " + e.toString());
+                    //
                 }
             }
 

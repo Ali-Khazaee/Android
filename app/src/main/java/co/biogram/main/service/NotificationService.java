@@ -28,12 +28,6 @@ public class NotificationService extends Service
     private Handler handler;
 
     @Override
-    public void onCreate()
-    {
-        MiscHandler.Debug("NotificationService Started");
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         final Context context = NotificationService.this;
@@ -51,7 +45,7 @@ public class NotificationService extends Service
                 {
                     @Override
                     public void onResponse(String Response)
-                    {MiscHandler.Debug(Response);
+                    {
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
@@ -82,7 +76,7 @@ public class NotificationService extends Service
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("Notifications - L75 - " + e.toString());
+                            //
                         }
 
                         handler.postDelayed(runnable, 5000);
@@ -122,10 +116,5 @@ public class NotificationService extends Service
     public IBinder onBind(Intent intent)
     {
         return null;
-    }
-
-    public void onDestroy()
-    {
-        MiscHandler.Debug("NotificationService Destroyed");
     }
 }

@@ -14,11 +14,10 @@ import android.widget.RelativeLayout;
 import java.util.List;
 
 import co.biogram.main.R;
+import co.biogram.main.fragment.CategoryFragment;
 import co.biogram.main.fragment.FragmentProfile;
 import co.biogram.main.fragment.FragmentMoment;
-import co.biogram.main.check.FragmentTabCategory;
-import co.biogram.main.check.FragmentTabFriend;
-import co.biogram.main.check.FragmentTabNotification;
+import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
 
@@ -78,7 +77,7 @@ public class ActivityMain extends FragmentActivity
         ImageViewInbox = new ImageView(context);
         ImageViewInbox.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewInbox.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewInbox.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        ImageViewInbox.setPadding(MiscHandler.ToDimension(context, 17), MiscHandler.ToDimension(context, 17), MiscHandler.ToDimension(context, 17), MiscHandler.ToDimension(context, 17));
         ImageViewInbox.setImageResource(R.drawable.ic_inbox_gray);
         ImageViewInbox.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangeTab(2); } });
 
@@ -128,7 +127,7 @@ public class ActivityMain extends FragmentActivity
 
         setContentView(Root);
 
-        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
+        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 3)));
     }
 
     private void ChangeTab(int Tab)
@@ -152,8 +151,8 @@ public class ActivityMain extends FragmentActivity
 
         switch (Tab)
         {
-            case 2: SelectedFragment = new FragmentTabFriend();    break;
-            case 3: SelectedFragment = new FragmentTabCategory();  break;
+            case 2: SelectedFragment = new InboxFragment();        break;
+            case 3: SelectedFragment = new CategoryFragment();     break;
             case 4: SelectedFragment = new NotificationFragment(); break;
             case 5: SelectedFragment = new FragmentProfile();      break;
         }
