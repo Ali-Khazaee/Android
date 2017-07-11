@@ -3,12 +3,9 @@ package co.biogram.main.misc;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import co.biogram.main.handler.MiscHandler;
-
 public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
 {
-    private boolean IsLoading = true;
-    private int PreviousTotalCount = 0;
+    private boolean IsLoading = false;
     private final LinearLayoutManager LayoutManager;
 
     protected RecyclerViewScroll(LinearLayoutManager linearLayoutManager)
@@ -19,33 +16,22 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
     @Override
     public void onScrolled(RecyclerView view, int X, int Y)
     {
-        MiscHandler.Debug(X + " - " + Y);
-
         if (X == 0 && Y == 0)
             return;
 
-        int LastVisibleItemPosition = LayoutManager.findLastVisibleItemPosition();
+        int LastVisibleItemPosition = LayoutManager.findLastVisibleItemPosition() + 5;
         int TotalCount = LayoutManager.getItemCount();
 
-        if (TotalCount < PreviousTotalCount)
-        {
-            PreviousTotalCount = TotalCount;
-
-            if (TotalCount == 0)
-                IsLoading = true;
-        }
-
-        if (IsLoading && (TotalCount > PreviousTotalCount))
-        {
-            IsLoading = false;
-            PreviousTotalCount = TotalCount;
-        }
-
-        if (!IsLoading && (LastVisibleItemPosition + 5) > TotalCount)
+        if (!IsLoading && LastVisibleItemPosition > TotalCount)
         {
             OnLoadMore();
             IsLoading = true;
         }
+    }
+
+    public void ResetLoading()
+    {
+        IsLoading = false;
     }
 
     public abstract void OnLoadMore();

@@ -78,6 +78,14 @@ public class CategoryFragment extends Fragment
         ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new SearchFragment(), "SearchFragment").addToBackStack("SearchFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -136,6 +144,7 @@ public class CategoryFragment extends Fragment
 
     private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderMain>
     {
+        private final int ID_Main = MiscHandler.GenerateViewID();
         private final int ID_Icon = MiscHandler.GenerateViewID();
         private final int ID_Name = MiscHandler.GenerateViewID();
 
@@ -145,33 +154,35 @@ public class CategoryFragment extends Fragment
         AdapterCategory(Context c)
         {
             context = c;
-            CategoryList.add(new Struct(R.drawable.ic_category_news, "News"));
-            CategoryList.add(new Struct(R.drawable.ic_category_fun, "Fun"));
-            CategoryList.add(new Struct(R.drawable.ic_category_music, "Music"));
-            CategoryList.add(new Struct(R.drawable.ic_category_sport, "Sport"));
-            CategoryList.add(new Struct(R.drawable.ic_category_fashion, "Fashion"));
-            CategoryList.add(new Struct(R.drawable.ic_category_food, "Food"));
-            CategoryList.add(new Struct(R.drawable.ic_category_technology, "Technology"));
-            CategoryList.add(new Struct(R.drawable.ic_category_art, "Art"));
-            CategoryList.add(new Struct(R.drawable.ic_category_artist, "Artist"));
-            CategoryList.add(new Struct(R.drawable.ic_category_media, "Media"));
-            CategoryList.add(new Struct(R.drawable.ic_category_business, "Business"));
-            CategoryList.add(new Struct(R.drawable.ic_category_echonomy, "Economy"));
-            CategoryList.add(new Struct(R.drawable.ic_category_lilterature, "Literature"));
-            CategoryList.add(new Struct(R.drawable.ic_category_travel, "Travel"));
-            CategoryList.add(new Struct(R.drawable.ic_category_politics, "Politics"));
-            CategoryList.add(new Struct(R.drawable.ic_category_health, "Health"));
-            CategoryList.add(new Struct(R.drawable.ic_category_other, "Other"));
+            CategoryList.add(new Struct(R.drawable.ic_category_news, "News", 1));
+            CategoryList.add(new Struct(R.drawable.ic_category_fun, "Fun", 2));
+            CategoryList.add(new Struct(R.drawable.ic_category_music, "Music", 3));
+            CategoryList.add(new Struct(R.drawable.ic_category_sport, "Sport", 4));
+            CategoryList.add(new Struct(R.drawable.ic_category_fashion, "Fashion", 5));
+            CategoryList.add(new Struct(R.drawable.ic_category_food, "Food", 6));
+            CategoryList.add(new Struct(R.drawable.ic_category_technology, "Technology", 7));
+            CategoryList.add(new Struct(R.drawable.ic_category_art, "Art", 8));
+            CategoryList.add(new Struct(R.drawable.ic_category_artist, "Artist", 9));
+            CategoryList.add(new Struct(R.drawable.ic_category_media, "Media", 10));
+            CategoryList.add(new Struct(R.drawable.ic_category_business, "Business", 11));
+            CategoryList.add(new Struct(R.drawable.ic_category_echonomy, "Economy", 12));
+            CategoryList.add(new Struct(R.drawable.ic_category_lilterature, "Literature", 13));
+            CategoryList.add(new Struct(R.drawable.ic_category_travel, "Travel", 14));
+            CategoryList.add(new Struct(R.drawable.ic_category_politics, "Politics", 15));
+            CategoryList.add(new Struct(R.drawable.ic_category_health, "Health", 16));
+            CategoryList.add(new Struct(R.drawable.ic_category_other, "Other", 17));
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
+            LinearLayout LinearLayoutMain;
             ImageView ImageViewIcon;
             TextView TextViewName;
 
             ViewHolderMain(View view)
             {
                 super(view);
+                LinearLayoutMain = (LinearLayout) view.findViewById(ID_Main);
                 ImageViewIcon = (ImageView) view.findViewById(ID_Icon);
                 TextViewName = (TextView) view.findViewById(ID_Name);
             }
@@ -180,8 +191,25 @@ public class CategoryFragment extends Fragment
         @Override
         public void onBindViewHolder(final ViewHolderMain Holder, int position)
         {
-            Holder.ImageViewIcon.setImageResource(CategoryList.get(position).Icon);
-            Holder.TextViewName.setText(CategoryList.get(position).Name);
+            final int Position = Holder.getAdapterPosition();
+
+            Holder.LinearLayoutMain.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("CatName", CategoryList.get(Position).Name);
+                    bundle.putInt("CatType", CategoryList.get(Position).Type);
+
+                    Fragment fragment = new SubCategoryFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("SubCategoryFragment").commit();
+                }
+            });
+            Holder.ImageViewIcon.setImageResource(CategoryList.get(Position).Icon);
+            Holder.TextViewName.setText(CategoryList.get(Position).Name);
         }
 
         @Override
@@ -189,6 +217,7 @@ public class CategoryFragment extends Fragment
         {
             LinearLayout LinearLayoutMain = new LinearLayout(context);
             LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayoutMain.setId(ID_Main);
 
             CardView.LayoutParams CardViewMainParam = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
             CardViewMainParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
@@ -197,8 +226,6 @@ public class CategoryFragment extends Fragment
             CardView CardViewMain = new CardView(context);
             CardViewMain.setLayoutParams(CardViewMainParam);
             CardViewMain.setCardBackgroundColor(ContextCompat.getColor(context, R.color.White));
-            //CardViewMain.setCardElevation(3.0f);
-            //CardViewMain.setRadius(0);
 
             LinearLayoutMain.addView(CardViewMain);
 
@@ -242,11 +269,13 @@ public class CategoryFragment extends Fragment
     {
         int Icon;
         String Name;
+        int Type;
 
-        Struct(int icon, String name)
+        Struct(int icon, String name, int type)
         {
             Icon = icon;
             Name = name;
+            Type = type;
         }
     }
 }

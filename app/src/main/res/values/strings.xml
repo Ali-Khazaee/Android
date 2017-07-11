@@ -5,63 +5,26 @@
     <string name="TryAgain">Try Again &#8230;</string>
     <string name="NoInternet">Check Your Network</string>
 
+    <string name="SearchFragmentEditTextSearchHint">Search &#8230;</string>
+    <string name="SearchFragmentTabPeople">People</string>
+    <string name="SearchFragmentTabTag">Tags</string>
+    <string name="SearchFragmentNoFollower">no</string>
+    <string name="SearchFragmentFollowers">followers</string>
+
     <string name="NotificationFragmentPostTag">mentioned you in a post</string>
     <string name="NotificationFragmentPostLike">liked your post</string>
     <string name="NotificationFragmentFollow">started following you</string>
     <string name="NotificationFragmentComment">commented on your post</string>
     <string name="NotificationFragmentCommentLike">liked your comment</string>
     <string name="NotificationFragmentCommentTag">mentioned you in a comment</string>
-
     <string name="InboxTitle">Inbox</string>
-
     <string name="CategoryTitle">Category</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <string name="FragmentProfileCommentEmpty">No Comment</string>
     <string name="FragmentProfileCommentMessage">Commented in post</string>
     <string name="FragmentProfileCommentReport">Report</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <string name="Soon">Coming Soon</string>
-
-
-
     <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>
     <string name="ActivityWelcomeGeneralNext">Next</string>
-
     <string name="ActivityWelcomeHeader">Sign Up to share events and</string>
     <string name="ActivityWelcomeHeader2">See the recently moments</string>
     <string name="ActivityWelcomeSignUp">Sign Up</string>
@@ -72,34 +35,28 @@
     <string name="ActivityWelcomeSignIn">Already have an account ?</string>
     <string name="ActivityWelcomeSignIn2">Sign In</string>
     <string name="ActivityWelcomeGoogleError">Something went wrong, Please Try Again</string>
-
     <string name="FragmentSignUpUsername">Username</string>
     <string name="FragmentSignUpUsernameMessage">Your Username is unique and used to personalize your phone and BioGram account. You can always change it later.</string>
     <string name="FragmentSignUpUsernameError">Username is unavailable</string>
-
     <string name="FragmentSignUpPassword">Password</string>
     <string name="FragmentSignUpPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
-
     <string name="FragmentSignUpEmailTitle">Email</string>
     <string name="FragmentSignUpEmail">Email Address</string>
     <string name="FragmentSignUpEmailMessage">Lotfan Az Email e Motabari Estefade Konid, Ta Ba\'dan be Moshkel Bar nakhorid</string>
     <string name="FragmentSignUpEmailFinish">Finish</string>
     <string name="FragmentSignUpEmailError">Your email address is already used</string>
-
     <string name="FragmentSignInTitle">Sign In</string>
     <string name="FragmentSignInEmailOrUsername">Email or Username</string>
     <string name="FragmentSignInPassword">Password</string>
     <string name="FragmentSignInMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
     <string name="FragmentSignInForgot">Forgot Password ?</string>
     <string name="FragmentSignInError">Your username password doesn\'t matches</string>
-
     <string name="FragmentResetTitle">Reset Password</string>
     <string name="FragmentResetEmailOrUsername">Email or Username</string>
     <string name="FragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
     <string name="FragmentResetSubmit">Submit</string>
     <string name="FragmentResetSuccess">Please, Check your email</string>
     <string name="FragmentResetError">Your submitted email or username doesn\'t exist</string>
-
     <string name="FragmentPostDetailsTitle">Post Details</string>
     <string name="FragmentPostDetailsLike">LIKES</string>
     <string name="FragmentPostDetailsComment">COMMENTS</string>
@@ -113,11 +70,8 @@
     <string name="FragmentPostDetailsClipboard">Text Copied To Clipboard</string>
     <string name="FragmentPostDetailsCommentDisable">Commenting is Disabled</string>
     <string name="FragmentPostDetailsChoice">Choice</string>
-
     <string name="FragmentImagePreview">Image Preview</string>
-
     <string name="FragmentLike">Likes</string>
-
     <string name="FragmentFollowing">Following</string>
     <string name="FragmentFollowingFollow">Follow</string>
     <string name="FragmentFollowingSince">Following Since: </string>D
@@ -125,7 +79,6 @@
     <string name="FragmentFollowers">Followers</string>
     <string name="FragmentFollowersSince">Follower Since: </string>
     <string name="FragmentFollowersFollow">Follow</string>
-
     <string name="ActivityProfileTitle">Edit Profile</string>
     <string name="ActivityProfileSave">Save</string>
     <string name="ActivityProfileUsernameHint">Username cannot be blank</string>
@@ -144,16 +97,13 @@
     <string name="ActivityProfileDialogRemove">Remove Current Profile</string>
     <string name="ActivityProfileDialogTitle">Your Choices</string>
     <string name="ActivityProfileCompleteAction">Complete Action Using</string>
-
     <string name="FragmentMoment">Moment</string>
-
     <string name="FragmentComment">Comment</string>
     <string name="FragmentCommentLike">LIKES</string>
     <string name="FragmentCommentHint">Write Your Comment</string>
     <string name="FragmentCommentAreYouSure">Are You Sure</string>
     <string name="FragmentCommentYes">Yes</string>
     <string name="FragmentCommentNo">No</string>
-
     <string name="FragmentMomentWrite">Write</string>
     <string name="FragmentMomentWriteChoiceCategory">Please Choice a Category</string>
     <string name="FragmentMomentWriteMoreContent">Please, Add More Content</string>
@@ -174,11 +124,9 @@
     <string name="FragmentMomentWriteVideoSupport">Your Device Doesn\'t Support Compression, Max Video Size Is 2MB</string>
     <string name="FragmentMomentWriteVideoCompress">Compressing Video, Please Wait</string>
     <string name="FragmentMomentWriteVideoPreview">Video Preview</string>
-
     <string name="FragmentMomentWriteDialogPaste">Paste</string>
     <string name="FragmentMomentWriteDialogCopy">Copy</string>
     <string name="FragmentMomentWriteDialogClipboard">Text Copied To Clipboard</string>
-
     <string name="AdapterPostFollow">Follow</string>
     <string name="AdapterPostUnFollow">UnFollow</string>
     <string name="AdapterPostFollowSent">Follow Request Sent</string>
@@ -196,7 +144,6 @@
     <string name="AdapterPostCommentSent">Comment Request Sent</string>
     <string name="AdapterPostChoice">Choice</string>
     <string name="AdapterPostNoContent">Empty</string>
-
     <string name="FragmentProfilePostCount">Posts</string>
     <string name="FragmentProfileCommentCount">Comments</string>
     <string name="FragmentProfileLikeCount">Likes</string>
@@ -209,7 +156,6 @@
     <string name="FragmentProfilePost2">POST</string>
     <string name="FragmentProfileLike">LIKE</string>
     <string name="FragmentProfileComment">COMMENT</string>
-
     <string name="GeneralTryAgain">Try Again &#8230;</string>
     <string name="GeneralFileNotFound">File Not Found"</string>
     <string name="GeneralCheckInternet">Check Your Internet</string>

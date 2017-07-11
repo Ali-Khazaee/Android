@@ -102,6 +102,14 @@ public class FragmentMoment extends Fragment
         ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new SearchFragment(), "SearchFragment").addToBackStack("SearchFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 

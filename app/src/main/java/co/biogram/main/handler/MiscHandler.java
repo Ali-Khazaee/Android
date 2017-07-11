@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import co.biogram.main.R;
@@ -110,6 +111,21 @@ public class MiscHandler
         {
             InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             IMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static String GetRandomServer(String URL)
+    {
+        Random random = new Random();
+
+        switch (random.nextInt(5) + 1)
+        {
+            case 1:  return "http://10.48.9.85/" + URL;
+            case 2:  return "http://10.48.9.85/" + URL;
+            case 3:  return "http://10.48.9.85/" + URL;
+            case 4:  return "http://10.48.9.85/" + URL;
+            case 5:  return "http://10.48.9.85/" + URL;
+            default: return "http://10.48.9.85/" + URL;
         }
     }
 

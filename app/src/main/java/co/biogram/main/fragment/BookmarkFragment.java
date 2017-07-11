@@ -33,7 +33,7 @@ import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
-public class InboxFragment extends Fragment
+public class BookmarkFragment extends Fragment
 {
     private LoadingView LoadingViewInbox;
     private TextView TextViewTryAgain;
@@ -120,10 +120,10 @@ public class InboxFragment extends Fragment
                 InboxList.add(null);
                 Adapter.notifyItemInserted(InboxList.size());
 
-                AndroidNetworking.post(URLHandler.GetURL("PostInboxList"))
+                AndroidNetworking.post(URLHandler.GetURL("PostBookMarkList"))
                 .addBodyParameter("Skip", String.valueOf(InboxList.size()))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .setTag("InboxFragment")
+                .setTag("BookmarkFragment")
                 .build().getAsString(new StringRequestListener()
                 {
                     @Override
@@ -217,7 +217,7 @@ public class InboxFragment extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.forceCancel("InboxFragment");
+        AndroidNetworking.forceCancel("BookmarkFragment");
     }
 
     private void RetrieveDataFromServer(final Context context)
@@ -225,9 +225,9 @@ public class InboxFragment extends Fragment
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewInbox.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL("PostInboxList"))
+        AndroidNetworking.post(URLHandler.GetURL("PostBookMarkList"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .setTag("InboxFragment")
+        .setTag("BookmarkFragment")
         .build().getAsString(new StringRequestListener()
         {
             @Override

@@ -33,10 +33,12 @@ import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
-public class InboxFragment extends Fragment
+public class SubCategoryFragment extends Fragment
 {
     private LoadingView LoadingViewInbox;
     private TextView TextViewTryAgain;
+
+    private int CatType = 17;
 
     private AdapterPost Adapter;
     private final List<AdapterPost.Struct> InboxList = new ArrayList<>();
@@ -46,8 +48,17 @@ public class InboxFragment extends Fragment
     {
         final Context context = getActivity();
 
+        String CatName = "";
+
+        if (getArguments() != null)
+        {
+            CatName = getArguments().getString("CatName", "");
+            CatType = getArguments().getInt("CatType", 17);
+        }
+
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
@@ -63,7 +74,7 @@ public class InboxFragment extends Fragment
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(getString(R.string.InboxTitle));
+        TextViewTitle.setText(CatName);
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);
@@ -111,7 +122,7 @@ public class InboxFragment extends Fragment
         RecyclerView RecyclerViewInbox = new RecyclerView(context);
         RecyclerViewInbox.setLayoutParams(RecyclerViewInboxParam);
         RecyclerViewInbox.setLayoutManager(LinearLayoutManagerNotification);
-        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), InboxList, "InboxFragment"));
+        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), InboxList, "SubCategoryFragment"));
         RecyclerViewInbox.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
         {
             @Override
@@ -120,10 +131,11 @@ public class InboxFragment extends Fragment
                 InboxList.add(null);
                 Adapter.notifyItemInserted(InboxList.size());
 
-                AndroidNetworking.post(URLHandler.GetURL("PostInboxList"))
+                AndroidNetworking.post(URLHandler.GetURL("PostCategoryList"))
                 .addBodyParameter("Skip", String.valueOf(InboxList.size()))
+                .addBodyParameter("CatType", String.valueOf(CatType))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .setTag("InboxFragment")
+                .setTag("SubCategoryFragment")
                 .build().getAsString(new StringRequestListener()
                 {
                     @Override
@@ -217,7 +229,7 @@ public class InboxFragment extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.forceCancel("InboxFragment");
+        AndroidNetworking.forceCancel("SubCategoryFragment");
     }
 
     private void RetrieveDataFromServer(final Context context)
@@ -225,9 +237,10 @@ public class InboxFragment extends Fragment
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewInbox.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL("PostInboxList"))
+        AndroidNetworking.post(URLHandler.GetURL("PostCategoryList"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .setTag("InboxFragment")
+        .addBodyParameter("CatType", String.valueOf(CatType))
+        .setTag("SubCategoryFragment")
         .build().getAsString(new StringRequestListener()
         {
             @Override

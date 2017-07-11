@@ -100,6 +100,7 @@ public class URLHandler
         switch (Name)
         {
             case "PostInboxList": URL = "PostInboxList"; break;
+            case "PostCategoryList": URL = "PostCategoryList"; break;
 
             case "Notification":        URL = "NotificationList";    break;
             case "NotificationService": URL = "NotificationService"; break;
