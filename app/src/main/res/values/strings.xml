@@ -8,7 +8,8 @@
     <string name="SearchFragmentEditTextSearchHint">Search &#8230;</string>
     <string name="SearchFragmentTabPeople">People</string>
     <string name="SearchFragmentTabTag">Tags</string>
-    <string name="SearchFragmentNoFollower">no</string>
+    <string name="SearchFragmentNo">no</string>
+    <string name="SearchFragmentPosts">posts</string>
     <string name="SearchFragmentFollowers">followers</string>
 
     <string name="NotificationFragmentPostTag">mentioned you in a post</string>

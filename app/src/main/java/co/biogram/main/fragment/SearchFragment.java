@@ -93,12 +93,16 @@ public class SearchFragment extends Fragment
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 0)
+                PeopleList.clear();
+                TagList.clear();
+
+                if (s.length() <= 0)
+                    return;
+
+                switch (Tab)
                 {
-                    if (Tab == 1)
-                        SearchPeople(context, s);
-                    else
-                        SearchTag(context, s);
+                    case 1: SearchPeople(context, s); break;
+                    case 2: SearchTag(context, s); break;
                 }
             }
         });
@@ -117,6 +121,7 @@ public class SearchFragment extends Fragment
 
         RelativeLayout RelativeLayoutTabPeople = new RelativeLayout(context);
         RelativeLayoutTabPeople.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56), 1.0f));
+        RelativeLayoutTabPeople.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 1); } });
 
         LinearLayoutTab.addView(RelativeLayoutTabPeople);
 
@@ -141,6 +146,7 @@ public class SearchFragment extends Fragment
 
         RelativeLayout RelativeLayoutTabTag = new RelativeLayout(context);
         RelativeLayoutTabTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56), 1.0f));
+        RelativeLayoutTabTag.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 2); } });
 
         LinearLayoutTab.addView(RelativeLayoutTabTag);
 
@@ -204,21 +210,19 @@ public class SearchFragment extends Fragment
         AndroidNetworking.forceCancel("SearchFragment");
     }
 
-    private void SearchTag(Context context, CharSequence text)
+    private void SearchPeople(Context context, CharSequence text)
     {
-        if (text.length() == 0)
-            return;
-
-        AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTag"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("SearchPeople"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("Tag", text.toString())
+        .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
+        .addBodyParameter("Name", text.toString())
         .setTag("SearchFragment")
         .build()
         .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
-            {MiscHandler.Debug(Response);
+            {
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -226,16 +230,15 @@ public class SearchFragment extends Fragment
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
                         JSONArray ResultList = new JSONArray(Result.getString("Result"));
-                        PeopleList.clear();
 
                         for (int I = 0; I < ResultList.length(); I++)
                         {
-                            JSONObject Comment = ResultList.getJSONObject(I);
+                            JSONObject PeopleObject = ResultList.getJSONObject(I);
 
                             PeopleStruct People = new PeopleStruct();
-                            People.Username = Comment.getString("Username");
-                            People.Avatar = Comment.getString("Avatar");
-                            People.Follower = Comment.getInt("Follower");
+                            People.Username = PeopleObject.getString("Username");
+                            People.Avatar = PeopleObject.getString("Avatar");
+                            People.Follower = PeopleObject.getInt("Follower");
 
                             PeopleList.add(People);
                         }
@@ -257,21 +260,18 @@ public class SearchFragment extends Fragment
         });
     }
 
-    private void SearchPeople(Context context, CharSequence text)
+    private void SearchTag(Context context, CharSequence text)
     {
-        if (text.length() == 0)
-            return;
-
-        AndroidNetworking.post(MiscHandler.GetRandomServer("SearchPeople"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTag"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("Name", text.toString())
+        .addBodyParameter("Tag", text.toString())
         .setTag("SearchFragment")
         .build()
         .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
-            {MiscHandler.Debug(Response);
+            {
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -279,26 +279,24 @@ public class SearchFragment extends Fragment
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
                         JSONArray ResultList = new JSONArray(Result.getString("Result"));
-                        PeopleList.clear();
 
                         for (int I = 0; I < ResultList.length(); I++)
                         {
-                            JSONObject Comment = ResultList.getJSONObject(I);
+                            JSONObject TagObject = ResultList.getJSONObject(I);
 
-                            PeopleStruct People = new PeopleStruct();
-                            People.Username = Comment.getString("Username");
-                            People.Avatar = Comment.getString("Avatar");
-                            People.Follower = Comment.getInt("Follower");
+                            TagStruct tag = new TagStruct();
+                            tag.Tag = TagObject.getString("Tag");
+                            tag.Count = TagObject.getInt("Count");
 
-                            PeopleList.add(People);
+                            TagList.add(tag);
                         }
 
-                        PeopleAdapter.notifyDataSetChanged();
+                        TagAdapter.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("SearchFragment-SearchPeople: " + e.toString());
+                    MiscHandler.Debug("SearchFragment-SearchTag: " + e.toString());
                 }
             }
 
@@ -318,18 +316,20 @@ public class SearchFragment extends Fragment
         ViewLineTag.setBackgroundResource(R.color.White);
 
         Tab = tab;
+        TagList.clear();
         PeopleList.clear();
-        PeopleAdapter = new AdapterPeople(context);
 
         switch (tab)
         {
             case 1:
+                PeopleAdapter = new AdapterPeople(context);
                 RecyclerViewMain.setAdapter(PeopleAdapter);
                 TextViewTabPeople.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewLinePeople.setBackgroundResource(R.color.BlueLight);
             break;
             case 2:
-                RecyclerViewMain.setAdapter(PeopleAdapter);
+                TagAdapter = new AdapterTag(context);
+                RecyclerViewMain.setAdapter(TagAdapter);
                 TextViewTabTag.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewLineTag.setBackgroundResource(R.color.BlueLight);
             break;
@@ -434,7 +434,7 @@ public class SearchFragment extends Fragment
             String Follower;
 
             if (PeopleList.get(Position).Follower == 0)
-                Follower = context.getString(R.string.SearchFragmentNoFollower);
+                Follower = context.getString(R.string.SearchFragmentNo);
             else
                 Follower = String.valueOf(PeopleList.get(Position).Follower);
 
@@ -554,13 +554,50 @@ public class SearchFragment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
+            Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Tag", TagList.get(Position).Tag);
+
+                    Fragment fragment = new TagFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("TagFragment").commit();
+                }
+            });
+
             if (new Bidi(TagList.get(Position).Tag, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
             {
-                // English
+                Holder.TextViewTag.setText(TagList.get(Position).Tag);
+
+                String Post;
+
+                if (TagList.get(Position).Count == 0)
+                    Post = context.getString(R.string.SearchFragmentNo);
+                else
+                    Post = String.valueOf(TagList.get(Position).Count);
+
+                Post += " " + context.getString(R.string.SearchFragmentPosts);
+
+                Holder.TextViewPost.setText(Post);
             }
             else
             {
-                // Farsi
+                Holder.TextViewTag.setText(TagList.get(Position).Tag);
+
+                String Post;
+
+                if (TagList.get(Position).Count == 0)
+                    Post = context.getString(R.string.SearchFragmentNo);
+                else
+                    Post = String.valueOf(TagList.get(Position).Count);
+
+                Post += " " + context.getString(R.string.SearchFragmentPosts);
+
+                Holder.TextViewPost.setText(Post);
             }
         }
 
@@ -573,20 +610,21 @@ public class SearchFragment extends Fragment
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                 RelativeLayoutMain.setId(ID_MAIN);
 
-                RelativeLayout.LayoutParams TextViewSharpParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
-                TextViewSharpParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
+                RelativeLayout.LayoutParams TextViewSharpParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,  MiscHandler.ToDimension(context, 50));
+                TextViewSharpParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15));
 
                 TextView TextViewSharp = new TextView(context);
                 TextViewSharp.setLayoutParams(TextViewSharpParam);
-                TextViewSharp.setText("#");
-                TextViewSharp.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+                TextViewSharp.setPadding(MiscHandler.ToDimension(context, 20), 0, MiscHandler.ToDimension(context, 20), 0);
+                TextViewSharp.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewSharp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
                 TextViewSharp.setId(ID_SHARP);
-                TextViewSharp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+                TextViewSharp.setText("#");
 
                 RelativeLayoutMain.addView(TextViewSharp);
 
                 RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
+                TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 20), 0, 0);
                 TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_SHARP);
 
                 TextView TextViewUsername = new TextView(context);
@@ -602,13 +640,22 @@ public class SearchFragment extends Fragment
                 TextViewMessageParam.addRule(RelativeLayout.BELOW, ID_TAG);
                 TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_SHARP);
 
-                TextView TextViewFollow = new TextView(context);
-                TextViewFollow.setLayoutParams(TextViewMessageParam);
-                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
-                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                TextViewFollow.setId(ID_POST);
+                TextView TextViewPost = new TextView(context);
+                TextViewPost.setLayoutParams(TextViewMessageParam);
+                TextViewPost.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+                TextViewPost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                TextViewPost.setId(ID_POST);
 
-                RelativeLayoutMain.addView(TextViewFollow);
+                RelativeLayoutMain.addView(TextViewPost);
+
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, ID_SHARP);
+
+                View ViewLine = new View(context);
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray);
+
+                RelativeLayoutMain.addView(ViewLine);
 
                 return new ViewHolderComment(RelativeLayoutMain, true);
             }
@@ -623,20 +670,20 @@ public class SearchFragment extends Fragment
         @Override
         public int getItemCount()
         {
-            return PeopleList.size();
+            return TagList.size();
         }
 
         @Override
         public int getItemViewType(int position)
         {
-            return PeopleList.get(position) == null ? 1 : 0;
+            return TagList.get(position) == null ? 1 : 0;
         }
     }
 
     private class TagStruct
     {
         String Tag;
-        int Post;
+        int Count;
     }
 
     private class PeopleStruct
