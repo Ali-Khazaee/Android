@@ -32,6 +32,8 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import com.bumptech.glide.Glide;
 
+import com.danikula.videocache.HttpProxyCacheServer;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,6 +41,7 @@ import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentComment;
 import co.biogram.main.fragment.FragmentImagePreview;
@@ -88,6 +91,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         TextView TextViewDescription;
         TextView TextViewTry;
         FrameLayout FrameLayoutVideo;
+        TextureVideoView VideoPlayer;
         ImageView ImageViewLike;
         TextView TextViewLikeCount;
         ImageView ImageViewComment;
@@ -124,6 +128,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 TextViewDescription = (TextView) view.findViewById(R.id.TextViewDescription);
                 TextViewTry = (TextView) view.findViewById(R.id.TextViewTry);
                 FrameLayoutVideo = (FrameLayout) view.findViewById(R.id.FrameLayoutVideo);
+                VideoPlayer = (TextureVideoView) view.findViewById(R.id.VideoPlayer);
                 ImageViewLike = (ImageView) view.findViewById(R.id.ImageViewLike);
                 TextViewLikeCount = (TextView) view.findViewById(R.id.TextViewLikeCount);
                 ImageViewComment = (ImageView) view.findViewById(R.id.ImageViewComment);
@@ -650,10 +655,25 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         {
             try
             {
-                //JSONArray URL = new JSONArray(PostList.get(Position).Data);
+                JSONArray URL = new JSONArray(PostList.get(Position).Data);
 
                 Holder.FrameLayoutVideo.setVisibility(View.VISIBLE);
 
+                HttpProxyCacheServer Proxy = App.GetProxy(Activity);
+                String ProxyUrl = Proxy.getProxyUrl(URL.get(0).toString());
+
+                Holder.VideoPlayer.Start(ProxyUrl);
+                /*Holder.VideoPlayer.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        if (Holder.VideoPlayer.IsPlaying())
+                            Holder.VideoPlayer.Pause();
+                        else
+                            Holder.VideoPlayer.Play();
+                    }
+                });*/
             }
             catch (Exception e)
             {

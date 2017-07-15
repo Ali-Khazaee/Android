@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="co.biogram.main">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="co.biogram.main">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,7 +19,8 @@
         android:icon="@drawable/ic_back_blue"
         android:label="@string/ApplicationName"
         android:theme="@style/ApplicationTheme"
-        android:allowBackup="false">
+        android:allowBackup="false"
+        tools:replace="android:allowBackup">
 
         <activity android:name=".activity.ActivityWelcome" android:screenOrientation="portrait">
             <intent-filter>

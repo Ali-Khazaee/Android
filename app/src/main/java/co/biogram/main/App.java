@@ -8,6 +8,7 @@ import com.androidnetworking.AndroidNetworking;
 
 import com.bumptech.glide.Glide;
 
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,7 @@ import okhttp3.OkHttpClient;
 
 public class App extends Application
 {
+    private HttpProxyCacheServer CacheProxy;
     private static OkHttpClient OKClient;
 
     @Override
@@ -48,6 +50,16 @@ public class App extends Application
         Glide.with(this).onTrimMemory(level);
 
         super.onTrimMemory(level);
+    }
+
+    public static HttpProxyCacheServer GetProxy(Context context)
+    {
+        App app = (App) context.getApplicationContext();
+
+        if (app.CacheProxy == null)
+            app.CacheProxy = new HttpProxyCacheServer(app);
+
+        return app.CacheProxy;
     }
 
     public static OkHttpClient GetOKClient()

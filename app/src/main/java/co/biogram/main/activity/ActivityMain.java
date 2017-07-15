@@ -127,7 +127,7 @@ public class ActivityMain extends FragmentActivity
 
         setContentView(Root);
 
-        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 3)));
+        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 1)));
     }
 
     private void ChangeTab(int Tab)

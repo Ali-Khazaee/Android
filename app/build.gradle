@@ -66,6 +66,11 @@ dependencies
     compile 'com.github.bumptech.glide:okhttp3-integration:1.5.0'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.3'
     compile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    compile 'com.danikula:videocache:2.7.0'
+    compile 'com.google.android.exoplayer:exoplayer:r2.3.1'
+    compile 'com.github.danylovolokh:video-player-manager:0.2.0'
+    compile 'com.github.danylovolokh:list-visibility-utils:0.2.0'
+    compile 'com.klinkerapps:simple_videoview:1.2.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

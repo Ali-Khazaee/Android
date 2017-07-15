@@ -281,7 +281,7 @@ public class FragmentMomentWrite extends Fragment
                 {
                     @Override
                     public void onResponse(String response)
-                    {
+                    {MiscHandler.Debug("MomentWrite: " + response);
                         Progress.cancel();
                         MiscHandler.HideSoftKey(getActivity());
                         getActivity().onBackPressed();

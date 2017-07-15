@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class LoadingView extends LinearLayout
     private int BounceSpeed = 300;
     private int BounceColor = Color.parseColor("#a9bac4");
 
-    private final List<Bounce> BounceList = new ArrayList<>();
-    private final List<Animator> AnimatorList = new ArrayList<>();
+    private final List<WeakReference<Bounce>> BounceList = new ArrayList<>();
+    private final List<WeakReference<ValueAnimator>> AnimatorList = new ArrayList<>();
 
     public LoadingView(Context context)
     {
@@ -53,10 +54,13 @@ public class LoadingView extends LinearLayout
 
     public void Stop()
     {
-        for (Animator animator : AnimatorList)
+        for (WeakReference<ValueAnimator> animator : AnimatorList)
         {
-            animator.removeAllListeners();
-            animator.end();
+            if (animator == null || animator.get() == null)
+                continue;
+
+            animator.get().removeAllListeners();
+            animator.get().end();
         }
 
         AnimatorList.clear();
@@ -83,7 +87,7 @@ public class LoadingView extends LinearLayout
             bounce.setBackground(Shape);
 
             addView(bounce, BounceParam);
-            BounceList.add(bounce);
+            BounceList.add(new WeakReference<>(bounce));
 
             if (I < 2)
             {
@@ -94,10 +98,10 @@ public class LoadingView extends LinearLayout
 
         for (int I = 0; I < 3; I++)
         {
-            View Bounce = BounceList.get(I);
+            Bounce bounce = BounceList.get(I).get();
             long StartDelay = I * (int) (0.4 * BounceSpeed);
 
-            ValueAnimator GrowAnimator = ObjectAnimator.ofFloat(Bounce, "scale", 1.0f, BounceScale, 1.0f);
+            ValueAnimator GrowAnimator = ObjectAnimator.ofFloat(bounce, "scale", 1.0f, BounceScale, 1.0f);
             GrowAnimator.setDuration(BounceSpeed);
 
             if (I == 2)
@@ -107,15 +111,16 @@ public class LoadingView extends LinearLayout
                     @Override
                     public void onAnimationEnd(Animator animation)
                     {
-                        for (Animator animator : AnimatorList)
-                            animator.start();
+                        for (WeakReference<ValueAnimator> animator : AnimatorList)
+                            if (animator != null && animator.get() != null)
+                                animator.get().start();
                     }
                 });
             }
 
             GrowAnimator.setStartDelay(StartDelay);
             GrowAnimator.start();
-            AnimatorList.add(GrowAnimator);
+            AnimatorList.add(new WeakReference<>(GrowAnimator));
         }
     }
 
