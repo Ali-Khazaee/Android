@@ -241,8 +241,8 @@
 
             <co.biogram.main.misc.TextureVideoView
                 android:id="@+id/VideoPlayer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
 
         </FrameLayout>
 

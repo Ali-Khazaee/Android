@@ -662,18 +662,22 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 HttpProxyCacheServer Proxy = App.GetProxy(Activity);
                 String ProxyUrl = Proxy.getProxyUrl(URL.get(0).toString());
 
-                Holder.VideoPlayer.Start(ProxyUrl);
-                /*Holder.VideoPlayer.setOnClickListener(new View.OnClickListener()
+                MiscHandler.Debug(URL.get(0).toString());
+                MiscHandler.Debug(ProxyUrl);
+
+                Holder.VideoPlayer.SetVideoURI(ProxyUrl);
+                Holder.VideoPlayer.start();
+                Holder.VideoPlayer.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View view)
                     {
-                        if (Holder.VideoPlayer.IsPlaying())
-                            Holder.VideoPlayer.Pause();
+                        if (Holder.VideoPlayer.isPlaying())
+                            Holder.VideoPlayer.Suspend();
                         else
-                            Holder.VideoPlayer.Play();
+                            Holder.VideoPlayer.Resume();
                     }
-                });*/
+                });
             }
             catch (Exception e)
             {
