@@ -239,10 +239,10 @@
             android:layout_width="match_parent"
             android:layout_height="150dp">
 
-            <co.biogram.main.misc.TextureVideoView
-                android:id="@+id/VideoPlayer"
+            <ImageView
+                android:id="@+id/ImageViewVideo"
                 android:layout_width="match_parent"
-                android:layout_height="150dp" />
+                android:layout_height="match_parent" />
 
         </FrameLayout>
 

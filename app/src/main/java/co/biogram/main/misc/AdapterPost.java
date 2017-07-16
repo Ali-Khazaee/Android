@@ -7,6 +7,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -91,7 +92,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         TextView TextViewDescription;
         TextView TextViewTry;
         FrameLayout FrameLayoutVideo;
-        TextureVideoView VideoPlayer;
+        ImageView ImageViewVideo;
         ImageView ImageViewLike;
         TextView TextViewLikeCount;
         ImageView ImageViewComment;
@@ -128,7 +129,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 TextViewDescription = (TextView) view.findViewById(R.id.TextViewDescription);
                 TextViewTry = (TextView) view.findViewById(R.id.TextViewTry);
                 FrameLayoutVideo = (FrameLayout) view.findViewById(R.id.FrameLayoutVideo);
-                VideoPlayer = (TextureVideoView) view.findViewById(R.id.VideoPlayer);
+                ImageViewVideo = (ImageView) view.findViewById(R.id.ImageViewVideo);
                 ImageViewLike = (ImageView) view.findViewById(R.id.ImageViewLike);
                 TextViewLikeCount = (TextView) view.findViewById(R.id.TextViewLikeCount);
                 ImageViewComment = (ImageView) view.findViewById(R.id.ImageViewComment);
@@ -659,25 +660,15 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
                 Holder.FrameLayoutVideo.setVisibility(View.VISIBLE);
 
-                HttpProxyCacheServer Proxy = App.GetProxy(Activity);
+                Bitmap aa = MiscHandler.CreateVideoThumbnail(URL.get(0).toString());
+
+                Holder.ImageViewVideo.setImageBitmap(aa);
+
+                /*HttpProxyCacheServer Proxy = App.GetProxy(Activity);
                 String ProxyUrl = Proxy.getProxyUrl(URL.get(0).toString());
 
                 MiscHandler.Debug(URL.get(0).toString());
-                MiscHandler.Debug(ProxyUrl);
-
-                Holder.VideoPlayer.SetVideoURI(ProxyUrl);
-                Holder.VideoPlayer.start();
-                Holder.VideoPlayer.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view)
-                    {
-                        if (Holder.VideoPlayer.isPlaying())
-                            Holder.VideoPlayer.Suspend();
-                        else
-                            Holder.VideoPlayer.Resume();
-                    }
-                });
+                MiscHandler.Debug(ProxyUrl);*/
             }
             catch (Exception e)
             {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
+import android.media.MediaMetadataRetriever;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -15,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -127,6 +130,30 @@ public class MiscHandler
             case 5:  return "http://10.48.9.85/" + URL;
             default: return "http://10.48.9.85/" + URL;
         }
+    }
+
+    public static Bitmap CreateVideoThumbnail(String Url)
+    {
+        Bitmap bitmap = null;
+
+        try
+        {
+            Map<String, String> headers = new HashMap<>();
+
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(Url, headers);
+            bitmap = retriever.getFrameAtTime(5000);
+            retriever.release();
+        }
+        catch (Exception e)
+        {
+            MiscHandler.Debug("CreateVideoThumbnail: " + e.toString());
+        }
+
+        if (bitmap == null)
+            return null;
+
+        return bitmap;
     }
 
     public static Bitmap Blurry(Bitmap sentBitmap, int radius)
