@@ -237,12 +237,22 @@
         <FrameLayout
             android:id="@+id/FrameLayoutVideo"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="150dp"
+            android:background="@color/Black">
 
             <ImageView
                 android:id="@+id/ImageViewVideo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_play"
+                android:scaleType="fitXY" />
 
         </FrameLayout>
 

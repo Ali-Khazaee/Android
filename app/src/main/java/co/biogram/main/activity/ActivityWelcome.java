@@ -264,7 +264,7 @@ public class ActivityWelcome extends FragmentActivity
 
         TextView TextViewSignIn = new TextView(context);
         TextViewSignIn.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewSignIn.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewSignIn.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
         TextViewSignIn.setText(getString(R.string.ActivityWelcomeSignIn));
         TextViewSignIn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 

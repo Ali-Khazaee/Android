@@ -1,6 +1,9 @@
 package co.biogram.main.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,6 +23,7 @@ import co.biogram.main.fragment.FragmentMoment;
 import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.service.NotificationService;
 
 public class ActivityMain extends FragmentActivity
 {
@@ -129,6 +133,22 @@ public class ActivityMain extends FragmentActivity
 
         ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 1)));
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
+    }
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
+        }
+    };
 
     private void ChangeTab(int Tab)
     {

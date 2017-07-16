@@ -12,15 +12,16 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import co.biogram.cache.ACache;
 import co.biogram.main.R;
 
 public class MiscHandler
@@ -132,28 +133,44 @@ public class MiscHandler
         }
     }
 
-    public static Bitmap CreateVideoThumbnail(String Url)
+    public static void CreateVideoThumbnail(final String Url, Context context, final ImageView view)
     {
-        Bitmap bitmap = null;
+        final ACache cache = ACache.get(context);
 
-        try
+        Bitmap cacheBitmap = cache.getAsBitmap(Url);
+
+        if (cacheBitmap != null)
+            view.setImageBitmap(cacheBitmap);
+
+        new Thread(new Runnable()
         {
-            Map<String, String> headers = new HashMap<>();
+            @Override
+            public void run()
+            {
+                try
+                {
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.setDataSource(Url, new HashMap<String, String>());
+                    final Bitmap temp = retriever.getFrameAtTime(5000);
 
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(Url, headers);
-            bitmap = retriever.getFrameAtTime(5000);
-            retriever.release();
-        }
-        catch (Exception e)
-        {
-            MiscHandler.Debug("CreateVideoThumbnail: " + e.toString());
-        }
+                    view.post(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            view.setImageBitmap(temp);
+                        }
+                    });
 
-        if (bitmap == null)
-            return null;
-
-        return bitmap;
+                    cache.put(Url, temp);
+                    retriever.release();
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Debug("CreateVideoThumbnail: " + e.toString());
+                }
+            }
+        }).start();
     }
 
     public static Bitmap Blurry(Bitmap sentBitmap, int radius)

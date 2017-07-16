@@ -660,9 +660,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
                 Holder.FrameLayoutVideo.setVisibility(View.VISIBLE);
 
-                Bitmap aa = MiscHandler.CreateVideoThumbnail(URL.get(0).toString());
-
-                Holder.ImageViewVideo.setImageBitmap(aa);
+                MiscHandler.CreateVideoThumbnail(URL.get(0).toString(), Activity, Holder.ImageViewVideo);
 
                 /*HttpProxyCacheServer Proxy = App.GetProxy(Activity);
                 String ProxyUrl = Proxy.getProxyUrl(URL.get(0).toString());

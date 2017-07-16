@@ -24,6 +24,8 @@ import co.biogram.main.handler.URLHandler;
 
 public class NotificationService extends Service
 {
+    public static final String BROADCAST_ACTION_NEW = "co.biogram.NotificationService.New";
+
     private Runnable runnable;
     private Handler handler;
 
@@ -72,6 +74,8 @@ public class NotificationService extends Service
 
                                     CreateNotification(context, Message);
                                 }
+
+                                new Intent(BROADCAST_ACTION_NEW);
                             }
                         }
                         catch (Exception e)

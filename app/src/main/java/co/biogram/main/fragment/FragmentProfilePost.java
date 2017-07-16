@@ -60,6 +60,7 @@ public class FragmentProfilePost extends Fragment
         RecyclerView RecyclerViewPost = new RecyclerView(context);
         RecyclerViewPost.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewPost.setLayoutManager(LinearLayoutManagerPost);
+        RecyclerViewPost.setNestedScrollingEnabled(false);
         RecyclerViewPost.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "FragmentProfilePost"));
         RecyclerViewPost.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
