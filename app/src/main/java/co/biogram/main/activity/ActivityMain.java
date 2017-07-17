@@ -138,15 +138,22 @@ public class ActivityMain extends FragmentActivity
     public void onResume()
     {
         super.onResume();
-        registerReceiver(broadcastReceiver, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
+        registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
     }
 
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver()
+    private final BroadcastReceiver BroadcastReceiverNotification = new BroadcastReceiver()
     {
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
+            try
+            {
+                ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
+            }
+            catch (Exception e)
+            {
+                MiscHandler.Debug("BroadcastReceiverNotification:" + e.toString());
+            }
         }
     };
 

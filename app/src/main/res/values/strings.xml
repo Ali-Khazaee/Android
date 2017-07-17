@@ -5,6 +5,8 @@
     <string name="TryAgain">Try Again &#8230;</string>
     <string name="NoInternet">Check Your Network</string>
 
+    <string name="VideoPreviewFragment">Video Preview</string>
+
     <string name="SearchFragmentEditTextSearchHint">Search &#8230;</string>
     <string name="SearchFragmentTabPeople">People</string>
     <string name="SearchFragmentTabTag">Tags</string>

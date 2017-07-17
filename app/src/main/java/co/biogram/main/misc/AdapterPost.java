@@ -49,6 +49,7 @@ import co.biogram.main.fragment.FragmentImagePreview;
 import co.biogram.main.fragment.FragmentLike;
 import co.biogram.main.fragment.FragmentPostDetails;
 import co.biogram.main.fragment.FragmentProfile;
+import co.biogram.main.fragment.VideoPreviewFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
@@ -658,15 +659,25 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             {
                 JSONArray URL = new JSONArray(PostList.get(Position).Data);
 
+                final String VideoUrl = URL.get(0).toString();
+
                 Holder.FrameLayoutVideo.setVisibility(View.VISIBLE);
+                Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("VideoURL", VideoUrl);
+
+                        Fragment fragment = new VideoPreviewFragment();
+                        fragment.setArguments(bundle);
+
+                        Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
+                    }
+                });
 
                 MiscHandler.CreateVideoThumbnail(URL.get(0).toString(), Activity, Holder.ImageViewVideo);
-
-                /*HttpProxyCacheServer Proxy = App.GetProxy(Activity);
-                String ProxyUrl = Proxy.getProxyUrl(URL.get(0).toString());
-
-                MiscHandler.Debug(URL.get(0).toString());
-                MiscHandler.Debug(ProxyUrl);*/
             }
             catch (Exception e)
             {
