@@ -154,11 +154,7 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void OnCompletion(MediaPlayer mp)
             {
-                long Current = TextureVideoViewMain.getCurrentPosition();
-                long Duration = TextureVideoViewMain.getDuration();
-                long Position = 1000L * Current / Duration;
-
-                SeekBarMain.setProgress((int) Position);
+                SeekBarMain.setProgress(1000);
                 RelativeLayoutControl.setVisibility(View.VISIBLE);
                 RelativeLayoutHeader.setVisibility(View.VISIBLE);
             }
