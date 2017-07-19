@@ -1,7 +1,6 @@
 package co.biogram.main.fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -10,30 +9,24 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.danikula.videocache.HttpProxyCacheServer;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.TextureVideoView;
 
 public class VideoPreviewFragment extends Fragment
 {
+    private TextureVideoView TextureVideoViewMain;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -104,6 +97,7 @@ public class VideoPreviewFragment extends Fragment
         TextViewTime.setLayoutParams(TextViewTimeParam);
         TextViewTime.setId(MiscHandler.GenerateViewID());
         TextViewTime.setTextColor(ContextCompat.getColor(context, R.color.White));
+        TextViewTime.setText(StringForTime(0) + " / " + StringForTime(0));
 
         RelativeLayoutControl.addView(TextViewTime);
 
@@ -125,7 +119,7 @@ public class VideoPreviewFragment extends Fragment
 
         VideoURL = App.GetProxy(context).getProxyUrl(VideoURL);
 
-        final TextureVideoView TextureVideoViewMain = new TextureVideoView(context);
+        TextureVideoViewMain = new TextureVideoView(context);
         TextureVideoViewMain.setLayoutParams(TextureVideoViewMainParam);
         TextureVideoViewMain.SetVideoURI(VideoURL);
         TextureVideoViewMain.setOnClickListener(new View.OnClickListener()
@@ -166,7 +160,7 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void OnPrepared(MediaPlayer mp)
             {
-                long Duration = TextureVideoViewMain.getDuration();
+                long Duration = mp.getDuration();
 
                 TextViewTime.setText(StringForTime(0) + " / " + StringForTime(Duration));
             }
@@ -216,6 +210,13 @@ public class VideoPreviewFragment extends Fragment
         RelativeLayoutMain.addView(TextureVideoViewMain);
 
         return RelativeLayoutMain;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        TextureVideoViewMain.ClearPlayback();
     }
 
     private String StringForTime(long Time)
