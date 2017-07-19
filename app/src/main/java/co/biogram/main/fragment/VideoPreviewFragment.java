@@ -106,7 +106,7 @@ public class VideoPreviewFragment extends Fragment
         SeekBarMainParam.addRule(RelativeLayout.LEFT_OF, TextViewTime.getId());
         SeekBarMainParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        SeekBar SeekBarMain = new SeekBar(context, null, android.R.attr.progressBarStyleHorizontal);
+        final SeekBar SeekBarMain = new SeekBar(context, null, android.R.attr.progressBarStyleHorizontal);
         SeekBarMain.setLayoutParams(SeekBarMainParam);
         SeekBarMain.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.White), PorterDuff.Mode.MULTIPLY));
         SeekBarMain.setMax(1000);
@@ -127,6 +127,14 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                long Current = TextureVideoViewMain.getCurrentPosition();
+                long Duration = TextureVideoViewMain.getDuration();
+
+                TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
+
+                long Position = 1000L * Current / Duration;
+                SeekBarMain.setProgress((int) Position);
+
                 if (TextureVideoViewMain.isPlaying())
                 {
                     RelativeLayoutControl.setVisibility(View.VISIBLE);
@@ -139,11 +147,6 @@ public class VideoPreviewFragment extends Fragment
                     RelativeLayoutHeader.setVisibility(View.GONE);
                     TextureVideoViewMain.start();
                 }
-
-                long Current = TextureVideoViewMain.getCurrentPosition();
-                long Duration = TextureVideoViewMain.getDuration();
-
-                TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
             }
         });
         TextureVideoViewMain.SetOnCompletion(new TextureVideoView.OnVideoCompletion()
@@ -151,6 +154,11 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void OnCompletion(MediaPlayer mp)
             {
+                long Current = TextureVideoViewMain.getCurrentPosition();
+                long Duration = TextureVideoViewMain.getDuration();
+                long Position = 1000L * Current / Duration;
+
+                SeekBarMain.setProgress((int) Position);
                 RelativeLayoutControl.setVisibility(View.VISIBLE);
                 RelativeLayoutHeader.setVisibility(View.VISIBLE);
             }
@@ -160,9 +168,7 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void OnPrepared(MediaPlayer mp)
             {
-                long Duration = mp.getDuration();
-
-                TextViewTime.setText(StringForTime(0) + " / " + StringForTime(Duration));
+                TextViewTime.setText(StringForTime(0) + " / " + StringForTime(mp.getDuration()));
             }
         });
 
@@ -187,23 +193,16 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (TextureVideoViewMain.isPlaying())
-                {
-                    RelativeLayoutControl.setVisibility(View.VISIBLE);
-                    RelativeLayoutHeader.setVisibility(View.VISIBLE);
-                    TextureVideoViewMain.pause();
-                }
-                else
-                {
-                    RelativeLayoutControl.setVisibility(View.GONE);
-                    RelativeLayoutHeader.setVisibility(View.GONE);
-                    TextureVideoViewMain.start();
-                }
-
                 long Current = TextureVideoViewMain.getCurrentPosition();
                 long Duration = TextureVideoViewMain.getDuration();
+                long Position = 1000L * Current / Duration;
 
+                SeekBarMain.setProgress((int) Position);
                 TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
+
+                RelativeLayoutControl.setVisibility(View.GONE);
+                RelativeLayoutHeader.setVisibility(View.GONE);
+                TextureVideoViewMain.start();
             }
         });
 
