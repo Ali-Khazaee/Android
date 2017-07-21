@@ -26,6 +26,7 @@ import co.biogram.main.misc.TextureVideoView;
 public class VideoPreviewFragment extends Fragment
 {
     private TextureVideoView TextureVideoViewMain;
+    private Runnable runnable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -79,11 +80,11 @@ public class VideoPreviewFragment extends Fragment
 
         RelativeLayoutMain.addView(RelativeLayoutControl);
 
-        ImageView ImageViewPlay = new ImageView(context);
+        final ImageView ImageViewPlay = new ImageView(context);
         ImageViewPlay.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewPlay.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-        ImageViewPlay.setImageResource(R.drawable.ic_play_arrow_white);
+        ImageViewPlay.setImageResource(R.drawable.ic_play_white);
         ImageViewPlay.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutControl.addView(ImageViewPlay);
@@ -137,15 +138,17 @@ public class VideoPreviewFragment extends Fragment
 
                 if (TextureVideoViewMain.isPlaying())
                 {
-                    RelativeLayoutControl.setVisibility(View.VISIBLE);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
+                    ImageViewPlay.setImageResource(R.drawable.ic_play_white);
                     TextureVideoViewMain.pause();
+                    TextureVideoViewMain.removeCallbacks(runnable);
                 }
                 else
                 {
-                    RelativeLayoutControl.setVisibility(View.GONE);
                     RelativeLayoutHeader.setVisibility(View.GONE);
+                    ImageViewPlay.setImageResource(R.drawable.ic_pause);
                     TextureVideoViewMain.start();
+                    TextureVideoViewMain.post(runnable);
                 }
             }
         });
@@ -155,8 +158,9 @@ public class VideoPreviewFragment extends Fragment
             public void OnCompletion(MediaPlayer mp)
             {
                 SeekBarMain.setProgress(1000);
-                RelativeLayoutControl.setVisibility(View.VISIBLE);
                 RelativeLayoutHeader.setVisibility(View.VISIBLE);
+                ImageViewPlay.setImageResource(R.drawable.ic_play_white);
+                TextureVideoViewMain.removeCallbacks(runnable);
             }
         });
         TextureVideoViewMain.SetOnPrepared(new TextureVideoView.OnVideoPrepared()
@@ -173,11 +177,14 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                long Duration = TextureVideoViewMain.getDuration();
-                long NewPosition = (Duration * progress) / 1000L;
+                if (fromUser)
+                {
+                    long Duration = TextureVideoViewMain.getDuration();
+                    long NewPosition = (Duration * progress) / 1000L;
 
-                TextureVideoViewMain.seekTo((int) NewPosition);
-                TextViewTime.setText(StringForTime(NewPosition) + " / " + StringForTime(Duration));
+                    TextureVideoViewMain.seekTo((int) NewPosition);
+                    TextViewTime.setText(StringForTime(NewPosition) + " / " + StringForTime(Duration));
+                }
             }
 
             @Override public void onStartTrackingTouch(SeekBar seekBar) { }
@@ -196,13 +203,49 @@ public class VideoPreviewFragment extends Fragment
                 SeekBarMain.setProgress((int) Position);
                 TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
 
-                RelativeLayoutControl.setVisibility(View.GONE);
-                RelativeLayoutHeader.setVisibility(View.GONE);
-                TextureVideoViewMain.start();
+                if (TextureVideoViewMain.isPlaying())
+                {
+                    RelativeLayoutHeader.setVisibility(View.VISIBLE);
+                    ImageViewPlay.setImageResource(R.drawable.ic_play_white);
+                    TextureVideoViewMain.pause();
+                    TextureVideoViewMain.removeCallbacks(runnable);
+                }
+                else
+                {
+                    RelativeLayoutHeader.setVisibility(View.GONE);
+                    ImageViewPlay.setImageResource(R.drawable.ic_pause);
+                    TextureVideoViewMain.start();
+                    TextureVideoViewMain.post(runnable);
+                }
             }
         });
 
         RelativeLayoutMain.addView(TextureVideoViewMain);
+
+        runnable = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    long Current = TextureVideoViewMain.getCurrentPosition();
+                    long Duration = TextureVideoViewMain.getDuration();
+                    final long Position = 1000L * Current / Duration;
+
+                    SeekBarMain.setProgress((int) Position);
+                    TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
+
+                    MiscHandler.Debug("Done");
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Debug("VideoPreviewFragment: " + e.toString());
+                }
+
+                TextureVideoViewMain.postDelayed(runnable, 500);
+            }
+        };
 
         return RelativeLayoutMain;
     }
@@ -211,6 +254,7 @@ public class VideoPreviewFragment extends Fragment
     public void onPause()
     {
         super.onPause();
+        TextureVideoViewMain.removeCallbacks(runnable);
         TextureVideoViewMain.ClearPlayback();
     }
 
