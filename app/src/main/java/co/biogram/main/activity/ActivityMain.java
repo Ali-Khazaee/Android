@@ -131,7 +131,7 @@ public class ActivityMain extends FragmentActivity
 
         setContentView(Root);
 
-        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 1)));
+        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
     }
 
     @Override
@@ -139,6 +139,13 @@ public class ActivityMain extends FragmentActivity
     {
         super.onResume();
         registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        unregisterReceiver(BroadcastReceiverNotification);
     }
 
     private final BroadcastReceiver BroadcastReceiverNotification = new BroadcastReceiver()

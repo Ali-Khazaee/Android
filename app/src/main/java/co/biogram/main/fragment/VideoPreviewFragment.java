@@ -235,8 +235,6 @@ public class VideoPreviewFragment extends Fragment
 
                     SeekBarMain.setProgress((int) Position);
                     TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
-
-                    MiscHandler.Debug("Done");
                 }
                 catch (Exception e)
                 {

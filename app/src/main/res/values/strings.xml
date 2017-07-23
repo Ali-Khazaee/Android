@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Application -->
     <string name="ApplicationName">BioGram</string>
 
+    <!-- General -->
+    <string name="Soon">Coming Soon</string>
     <string name="TryAgain">Try Again &#8230;</string>
     <string name="NoInternet">Check Your Network</string>
+
+    <!-- Setting Fragment -->
+    <string name="SettingFragment">Settings</string>
+    <string name="SettingFragmentAds">Ads</string>
+    <string name="SettingFragmentBlog">Blog</string>
+    <string name="SettingFragmentAbout">About</string>
+    <string name="SettingFragmentLogout">Logout</string>
+    <string name="SettingFragmentAccount">Account</string>
+    <string name="SettingFragmentContact">Contact</string>
+    <string name="SettingFragmentPolicy">Privacy Policy</string>
+    <string name="SettingFragmentTerms">Terms of Service</string>
+    <string name="SettingFragmentLanguage">Language</string>
+    <string name="SettingFragmentEditProfile">Edit Profile</string>
+    <string name="SettingFragmentHelpCenter">Help Center</string>
+    <string name="SettingFragmentReportProblem">Report a Problem</string>
+    <string name="SettingFragmentChangePassword">Change Password</string>
+
+    <!-- Setting Fragment & Logout -->
+    <string name="SettingFragmentLogoutMessage">Help Center</string>
+    <string name="SettingFragmentLogoutYes">Report a Problem</string>
+    <string name="SettingFragmentLogoutNo">Change Password</string>
+
+    <!-- Change Password Fragment -->
+    <string name="ChangePasswordFragment">Change Password</string>
+    <string name="ChangePasswordFragmentCurrent">Current Password</string>
+    <string name="ChangePasswordFragmentNew">New Password</string>
+    <string name="ChangePasswordFragmentNewRepeat">Repeat Password</string>
+    <string name="ChangePasswordFragmentNewSame">New passwords do not match</string>
+    <string name="ChangePasswordFragmentCurrentEmpty">Current password is empty</string>
+    <string name="ChangePasswordFragmentNewEmpty">New passwords are empty</string>
+    <string name="ChangePasswordFragmentNewBelow">New passwords must be higher than 5 characters</string>
+    <string name="ChangePasswordFragmentNewAbove">New passwords must be lower than 32 characters</string>
+    <string name="ChangePasswordFragmentAccount">Account Do not exist</string>
+    <string name="ChangePasswordFragmentWrong">Current password is wrong</string>
+    <string name="ChangePasswordFragmentDone">Password successfully changed</string>
 
     <string name="VideoPreviewFragment">Video Preview</string>
 
@@ -25,7 +63,7 @@
     <string name="FragmentProfileCommentEmpty">No Comment</string>
     <string name="FragmentProfileCommentMessage">Commented in post</string>
     <string name="FragmentProfileCommentReport">Report</string>
-    <string name="Soon">Coming Soon</string>
+
     <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>
     <string name="ActivityWelcomeGeneralNext">Next</string>
     <string name="ActivityWelcomeHeader">Sign Up to share events and</string>

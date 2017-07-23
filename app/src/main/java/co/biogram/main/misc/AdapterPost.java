@@ -7,7 +7,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -33,8 +32,6 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import com.bumptech.glide.Glide;
 
-import com.danikula.videocache.HttpProxyCacheServer;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,7 +39,6 @@ import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentComment;
 import co.biogram.main.fragment.FragmentImagePreview;

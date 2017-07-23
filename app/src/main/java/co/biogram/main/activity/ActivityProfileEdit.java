@@ -149,7 +149,7 @@ public class ActivityProfileEdit extends FragmentActivity
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(ActivityProfileEdit.this, ActivityMain.class));
+                onBackPressed();
                 finish();
             }
         });

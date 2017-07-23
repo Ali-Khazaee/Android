@@ -347,7 +347,7 @@ public class FragmentProfile extends Fragment
             {
                 if (Self)
                 {
-
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SettingFragment()).addToBackStack("SettingFragment").commit();
                 }
                 else
                 {
@@ -827,11 +827,6 @@ public class FragmentProfile extends Fragment
         ShapeFollowWhite.setColor(Color.WHITE);
         ShapeFollowWhite.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
 
-        ShapeFollowBlue = new GradientDrawable();
-        ShapeFollowBlue.setShape(GradientDrawable.OVAL);
-        ShapeFollowBlue.setColor(Color.parseColor("#1da1f2"));
-        ShapeFollowBlue.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
-
         ImageViewEdit = new ImageView(context);
         ImageViewEdit.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
         ImageViewEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -874,6 +869,11 @@ public class FragmentProfile extends Fragment
         LoadingViewFollow.requestLayout();
 
         Root.addView(LoadingViewFollow);
+
+        ShapeFollowBlue = new GradientDrawable();
+        ShapeFollowBlue.setShape(GradientDrawable.OVAL);
+        ShapeFollowBlue.setColor(Color.parseColor("#1da1f2"));
+        ShapeFollowBlue.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
 
         ImageViewFollow = new ImageView(context);
         ImageViewFollow.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
