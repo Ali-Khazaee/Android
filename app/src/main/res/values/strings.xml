@@ -25,9 +25,9 @@
     <string name="SettingFragmentChangePassword">Change Password</string>
 
     <!-- Setting Fragment & Logout -->
-    <string name="SettingFragmentLogoutMessage">Help Center</string>
-    <string name="SettingFragmentLogoutYes">Report a Problem</string>
-    <string name="SettingFragmentLogoutNo">Change Password</string>
+    <string name="SettingFragmentLogoutMessage">Are you sure you want to logout ?</string>
+    <string name="SettingFragmentLogoutYes">Yes</string>
+    <string name="SettingFragmentLogoutNo">No</string>
 
     <!-- Change Password Fragment -->
     <string name="ChangePasswordFragment">Change Password</string>
@@ -42,6 +42,11 @@
     <string name="ChangePasswordFragmentAccount">Account Do not exist</string>
     <string name="ChangePasswordFragmentWrong">Current password is wrong</string>
     <string name="ChangePasswordFragmentDone">Password successfully changed</string>
+
+    <!-- Contact Fragment -->
+    <string name="ContactFragment">Contact</string>
+    <string name="ContactFragmentFollow">Follow</string>
+    <string name="ContactFragmentFollowing">Following</string>
 
     <string name="VideoPreviewFragment">Video Preview</string>
 

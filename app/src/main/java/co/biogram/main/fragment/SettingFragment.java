@@ -3,8 +3,11 @@ package co.biogram.main.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -176,6 +179,14 @@ public class SettingFragment extends Fragment
         TextViewContact.setTypeface(null, Typeface.BOLD);
         TextViewContact.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewContact.setPadding(MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewContact.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new ContactFragment()).addToBackStack("ContactFragment").commit();
+            }
+        });
 
         LinearLayoutMain.addView(TextViewContact);
 
@@ -247,16 +258,9 @@ public class SettingFragment extends Fragment
                     public void onClick(View view)
                     {
                         context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit().clear().apply();
-
-                        File SharedDir = new File(context.getFilesDir().getPath() + context.getPackageName() + "/shared_prefs/");
-                        File[] SharedFiles = SharedDir.listFiles();
-
-                        for (File file : SharedFiles)
-                            file.delete();
-
                         getActivity().startActivity(new Intent(context, ActivityWelcome.class));
-
                         DialogLogout.dismiss();
+                        getActivity().finish();
                     }
                 });
 
