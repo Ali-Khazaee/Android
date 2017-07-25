@@ -8,6 +8,9 @@
     <string name="TryAgain">Try Again &#8230;</string>
     <string name="NoInternet">Check Your Network</string>
 
+    <!-- Permission -->
+    <string name="PermissionReadContact">You should allow access to your contacts</string>
+
     <!-- Setting Fragment -->
     <string name="SettingFragment">Settings</string>
     <string name="SettingFragmentAds">Ads</string>

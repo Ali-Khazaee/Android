@@ -40,7 +40,7 @@ public class NotificationService extends Service
             @Override
             public void run()
             {
-                AndroidNetworking.post(URLHandler.GetURL("NotificationService"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationService"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .build()
                 .getAsString(new StringRequestListener()

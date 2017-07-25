@@ -45,6 +45,7 @@ public class VideoPreviewFragment extends Fragment
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20ffffff"));
+        RelativeLayoutHeader.setVisibility(View.GONE);
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -84,7 +85,7 @@ public class VideoPreviewFragment extends Fragment
         ImageViewPlay.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewPlay.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-        ImageViewPlay.setImageResource(R.drawable.ic_play_white);
+        ImageViewPlay.setImageResource(R.drawable.ic_pause);
         ImageViewPlay.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutControl.addView(ImageViewPlay);
@@ -229,6 +230,9 @@ public class VideoPreviewFragment extends Fragment
             {
                 try
                 {
+                    if (!TextureVideoViewMain.isPlaying())
+                        TextureVideoViewMain.start();
+
                     long Current = TextureVideoViewMain.getCurrentPosition();
                     long Duration = TextureVideoViewMain.getDuration();
                     final long Position = 1000L * Current / Duration;
@@ -244,6 +248,8 @@ public class VideoPreviewFragment extends Fragment
                 TextureVideoViewMain.postDelayed(runnable, 500);
             }
         };
+
+        TextureVideoViewMain.postDelayed(runnable, 500);
 
         return RelativeLayoutMain;
     }

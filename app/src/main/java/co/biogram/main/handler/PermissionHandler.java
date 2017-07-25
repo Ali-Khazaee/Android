@@ -9,27 +9,27 @@ import android.support.v4.content.ContextCompat;
 public class PermissionHandler
 {
     private FragmentActivity _Activity;
-    private final PermissionEvent _PermissionEvent;
     private Fragment _Fragment;
+    private final PermissionEvent _PermissionEvent;
     private final String _Permission;
     private final int _RequestCode;
 
-    public PermissionHandler(String P, int RC, FragmentActivity A, PermissionEvent PE)
+    public PermissionHandler(String permission, int requestCode, FragmentActivity activity, PermissionEvent permissionEvent)
     {
-        _Activity = A;
-        _PermissionEvent = PE;
-        _RequestCode = RC;
-        _Permission = P;
+        _Activity = activity;
+        _PermissionEvent = permissionEvent;
+        _RequestCode = requestCode;
+        _Permission = permission;
 
         CheckPermission();
     }
 
-    public PermissionHandler(String P, int RC, Fragment F, PermissionEvent PE)
+    public PermissionHandler(String permission, int requestCode, Fragment fragment, PermissionEvent permissionEvent)
     {
-        _Fragment = F;
-        _PermissionEvent = PE;
-        _RequestCode = RC;
-        _Permission = P;
+        _Fragment = fragment;
+        _PermissionEvent = permissionEvent;
+        _RequestCode = requestCode;
+        _Permission = permission;
 
         CheckPermission();
     }
@@ -55,15 +55,15 @@ public class PermissionHandler
             _Fragment.requestPermissions(new String[] { _Permission }, _RequestCode);
     }
 
-    public void GetRequestPermissionResult(int RC, String Permissions[], int[] GrantResults)
+    public void GetRequestPermissionResult(int requestCode, String permissions[], int[] grantResults)
     {
-        if (_RequestCode == RC)
+        if (_RequestCode == requestCode)
         {
-            for (int i = 0; i < Permissions.length; i++)
+            for (int i = 0; i < permissions.length; i++)
             {
-                if (Permissions[i].equals(_Permission))
+                if (permissions[i].equals(_Permission))
                 {
-                    if (GrantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED)
                         _PermissionEvent.OnGranted();
                     else
                         _PermissionEvent.OnFailed();

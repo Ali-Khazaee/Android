@@ -131,7 +131,7 @@ public class SubCategoryFragment extends Fragment
                 InboxList.add(null);
                 Adapter.notifyItemInserted(InboxList.size());
 
-                AndroidNetworking.post(URLHandler.GetURL("PostCategoryList"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostListCategory"))
                 .addBodyParameter("Skip", String.valueOf(InboxList.size()))
                 .addBodyParameter("CatType", String.valueOf(CatType))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -237,7 +237,7 @@ public class SubCategoryFragment extends Fragment
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewInbox.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL("PostCategoryList"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostListCategory"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("CatType", String.valueOf(CatType))
         .setTag("SubCategoryFragment")

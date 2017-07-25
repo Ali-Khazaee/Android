@@ -1,7 +1,5 @@
 package co.biogram.main.handler;
 
-import java.util.Random;
-
 public class URLHandler
 {
     public enum URL
@@ -90,37 +88,6 @@ public class URLHandler
             case MISC_LAST_ONLINE: URL = "LastOnline"; break;
         }
 
-        return GetRandomServer() + URL;
-    }
-
-    public static String GetURL(String Name)
-    {
-        String URL = "";
-
-        switch (Name)
-        {
-            case "PostInboxList": URL = "PostInboxList"; break;
-            case "PostCategoryList": URL = "PostCategoryList"; break;
-
-            case "Notification":        URL = "NotificationList";    break;
-            case "NotificationService": URL = "NotificationService"; break;
-        }
-
-        return GetRandomServer() + URL;
-    }
-
-    private static String GetRandomServer()
-    {
-        Random random = new Random();
-
-        switch (random.nextInt(5) + 1)
-        {
-            case 1:  return "http://10.48.9.85/";
-            case 2:  return "http://10.48.9.85/";
-            case 3:  return "http://10.48.9.85/";
-            case 4:  return "http://10.48.9.85/";
-            case 5:  return "http://10.48.9.85/";
-            default: return "http://10.48.9.85/";
-        }
+        return URL;
     }
 }

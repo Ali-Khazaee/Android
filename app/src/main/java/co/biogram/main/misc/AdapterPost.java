@@ -267,7 +267,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
                         .addBodyParameter("Username", PostList.get(Position).Username)
                         .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
                         .setTag("FragmentFollowers")
@@ -612,6 +612,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         Holder.LinearLayoutImageContent3.setVisibility(View.GONE);
         Holder.RelativeLayoutLink.setVisibility(View.GONE);
         Holder.FrameLayoutVideo.setVisibility(View.GONE);
+        Holder.ImageViewVideo.setImageResource(R.color.BlueGray2);
 
         if (PostList.get(Position).Type == 1)
         {
@@ -630,8 +631,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Holder.LinearLayoutImageContent2.setVisibility(View.VISIBLE);
                         Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewSingle);
-                        Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewSingle);
+                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewDouble1);
+                        Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewDouble2);
                         break;
                     case 3:
                         Holder.LinearLayoutImageContent3.setVisibility(View.VISIBLE);

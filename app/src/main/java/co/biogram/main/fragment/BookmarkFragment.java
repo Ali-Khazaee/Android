@@ -120,11 +120,12 @@ public class BookmarkFragment extends Fragment
                 InboxList.add(null);
                 Adapter.notifyItemInserted(InboxList.size());
 
-                AndroidNetworking.post(URLHandler.GetURL("PostBookMarkList"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostListBookMark"))
                 .addBodyParameter("Skip", String.valueOf(InboxList.size()))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("BookmarkFragment")
-                .build().getAsString(new StringRequestListener()
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
@@ -225,7 +226,7 @@ public class BookmarkFragment extends Fragment
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewInbox.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL("PostBookMarkList"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostListBookMark"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("BookmarkFragment")
         .build().getAsString(new StringRequestListener()

@@ -1,10 +1,12 @@
 package co.biogram.main.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
@@ -40,6 +43,8 @@ public class ContactFragment extends Fragment
 {
     private final List<Struct> ContactList = new ArrayList<>();
     private AdapterContact ContactAdapter;
+
+    private PermissionHandler _PermissionHandler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -125,7 +130,7 @@ public class ContactFragment extends Fragment
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
-        //RelativeLayoutMain.addView(RelativeLayoutLoading);
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -145,44 +150,9 @@ public class ContactFragment extends Fragment
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        //RelativeLayoutLoading.addView(TextViewTryAgain);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        //RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
-
-        Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-
-        if (phones != null)
-        {
-            while (phones.moveToNext())
-            {
-                String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
-                MiscHandler.Debug(name + " - " + phoneNumber);
-            }
-
-            phones.close();
-        }
-        Struct aa = new Struct();
-        aa.Avatar = "";
-        aa.Username = "Salam";
-        aa.Follow = true;
-
-        ContactList.add(aa);
-
-        Struct bb = new Struct();
-        bb.Avatar = "";
-        bb.Username = "alireza";
-        bb.Follow = false;
-
-        ContactList.add(bb);
-
-        Struct cc = new Struct();
-        cc.Avatar = "";
-        cc.Username = "hojjat";
-        cc.Follow = true;
-
-        ContactList.add(cc);
+        RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -194,74 +164,95 @@ public class ContactFragment extends Fragment
         AndroidNetworking.forceCancel("ContactFragment");
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (_PermissionHandler != null)
+            _PermissionHandler.GetRequestPermissionResult(requestCode, permissions, grantResults);
+    }
+
     private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        TextViewTryAgain.setVisibility(View.GONE);
-        LoadingViewMain.Start();
-
-        Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-
-        if (phones != null)
-        {
-            while (phones.moveToNext())
-            {
-                String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
-                MiscHandler.Debug(name + " - " + phoneNumber);
-            }
-
-            phones.close();
-        }
-
-        AndroidNetworking.post(MiscHandler.GetRandomServer("ContactList"))
-        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .setTag("ContactFragment")
-        .build()
-        .getAsString(new StringRequestListener()
+        _PermissionHandler = new PermissionHandler(Manifest.permission.READ_CONTACTS, 100, this, new PermissionHandler.PermissionEvent()
         {
             @Override
-            public void onResponse(String Response)
+            public void OnGranted()
             {
-                try
+                String ContactNumber = "";
+                Cursor Contacts = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+
+                if (Contacts != null)
                 {
-                    JSONObject Result = new JSONObject(Response);
-
-                    if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                    while (Contacts.moveToNext())
                     {
-                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                        ContactNumber += Contacts.getString(Contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + ",";
+                    }
 
-                        for (int I = 0; I < ResultList.length(); I++)
+                    Contacts.close();
+                }
+
+                TextViewTryAgain.setVisibility(View.GONE);
+                LoadingViewMain.Start();
+
+                AndroidNetworking.post(MiscHandler.GetRandomServer("ContactList"))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("Contacts", ContactNumber)
+                .setTag("ContactFragment")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
                         {
-                            JSONObject Contact = ResultList.getJSONObject(I);
+                            JSONObject Result = new JSONObject(Response);
 
-                            Struct ContactStruct = new Struct();
-                            ContactStruct.Username = Contact.getString("Username");
-                            ContactStruct.Avatar = Contact.getString("Avatar");
-                            ContactStruct.Follow = Contact.getBoolean("Follow");
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                            ContactList.add(ContactStruct);
+                                for (int I = 0; I < ResultList.length(); I++)
+                                {
+                                    JSONObject Contact = ResultList.getJSONObject(I);
+
+                                    Struct ContactStruct = new Struct();
+                                    ContactStruct.Username = Contact.getString("Username");
+                                    ContactStruct.Avatar = Contact.getString("Avatar");
+                                    ContactStruct.Follow = Contact.getBoolean("Follow");
+
+                                    ContactList.add(ContactStruct);
+                                }
+
+                                ContactAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // Leave Me Alone
                         }
 
-                        ContactAdapter.notifyDataSetChanged();
+                        LoadingViewMain.Stop();
+                        TextViewTryAgain.setVisibility(View.GONE);
+                        RelativeLayoutLoading.setVisibility(View.GONE);
                     }
-                }
-                catch (Exception e)
-                {
-                    // Leave Me Alone
-                }
 
-                LoadingViewMain.Stop();
-                TextViewTryAgain.setVisibility(View.GONE);
-                RelativeLayoutLoading.setVisibility(View.GONE);
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        LoadingViewMain.Stop();
+                        TextViewTryAgain.setVisibility(View.VISIBLE);
+                        MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
+                    }
+                });
             }
 
             @Override
-            public void onError(ANError anError)
+            public void OnFailed()
             {
-                LoadingViewMain.Stop();
-                TextViewTryAgain.setVisibility(View.VISIBLE);
-                MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
+                MiscHandler.Toast(context, getString(R.string.PermissionReadContact));
             }
         });
     }

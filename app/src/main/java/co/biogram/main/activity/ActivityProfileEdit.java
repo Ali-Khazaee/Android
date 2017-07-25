@@ -221,7 +221,7 @@ public class ActivityProfileEdit extends FragmentActivity
                 if (UploadFile != null)
                     Progress.show();
 
-                AndroidNetworking.upload(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_SET))
+                AndroidNetworking.upload(MiscHandler.GetRandomServer("ProfileSetEdit"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addMultipartParameter("Username", EditTextUsername.getText().toString())
                 .addMultipartParameter("Description", EditTextDescription.getText().toString())
@@ -431,7 +431,7 @@ public class ActivityProfileEdit extends FragmentActivity
                     @Override
                     public void onClick(View v)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_COVER_DELETE))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileCoverDelete"))
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                         .setTag("ActivityProfileEdit")
                         .build().getAsString(new StringRequestListener()
@@ -611,7 +611,7 @@ public class ActivityProfileEdit extends FragmentActivity
                     @Override
                     public void onClick(View v)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_AVATAR_DELETE))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileAvatarDelete"))
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                         .setTag("ActivityProfileEdit")
                         .build().getAsString(new StringRequestListener()
@@ -1631,7 +1631,7 @@ public class ActivityProfileEdit extends FragmentActivity
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_EDIT_GET))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileGetEdit"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("ActivityProfileEdit")
         .build().getAsString(new StringRequestListener()

@@ -186,7 +186,7 @@ public class FragmentProfilePost extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_POST_GET))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfilePostGet"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
         .setTag("FragmentProfilePost")

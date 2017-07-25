@@ -105,7 +105,7 @@ public class NotificationFragment extends Fragment
         LoadingViewNotification.Start();
         TextViewTryAgain.setVisibility(View.GONE);
 
-        AndroidNetworking.post(URLHandler.GetURL("Notification"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("NotificationFragment")
         .build()

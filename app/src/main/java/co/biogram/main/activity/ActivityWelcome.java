@@ -52,7 +52,6 @@ import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
 
 public class ActivityWelcome extends FragmentActivity
@@ -356,7 +355,7 @@ public class ActivityWelcome extends FragmentActivity
                 {
                     final Context context = ActivityWelcome.this;
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_IN_GOOGLE))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("SignInGoogle"))
                     .addBodyParameter("Token", Acc.getIdToken())
                     .addBodyParameter("Session", GenerateSession())
                     .setTag("ActivityWelcome")
@@ -675,7 +674,7 @@ public class ActivityWelcome extends FragmentActivity
                     ButtonUsername.setVisibility(View.INVISIBLE);
                     LoadingViewUsername.Start();
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.USERNAME_IS_AVAILABLE))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("UsernameIsAvailable"))
                     .addBodyParameter("Username", EditTextUsername.getText().toString())
                     .setTag("FragmentSignUpUsername")
                     .build().getAsString(new StringRequestListener()
@@ -1256,7 +1255,7 @@ public class ActivityWelcome extends FragmentActivity
                     ButtonEmail.setVisibility(View.INVISIBLE);
                     LoadingViewEmail.Start();
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_UP))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("SignUp"))
                     .addBodyParameter("Username", Parent.Username)
                     .addBodyParameter("Password", Parent.Password)
                     .addBodyParameter("Email", EditTextEmail.getText().toString())
@@ -1634,7 +1633,7 @@ public class ActivityWelcome extends FragmentActivity
                     ButtonSignIn.setVisibility(View.INVISIBLE);
                     LoadingViewSignIn.Start();
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.SIGN_IN))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("SignIn"))
                     .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
                     .addBodyParameter("Password", EditTextPassword.getText().toString())
                     .addBodyParameter("Session", GenerateSession())
@@ -1908,7 +1907,7 @@ public class ActivityWelcome extends FragmentActivity
                     LinearLayoutLoading.setVisibility(View.VISIBLE);
                     LoadingViewReset.Start();
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.RESET_PASSWORD))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("ResetPassword"))
                     .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
                     .setTag("FragmentReset")
                     .build().getAsString(new StringRequestListener()

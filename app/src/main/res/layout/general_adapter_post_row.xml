@@ -253,7 +253,6 @@
                 android:contentDescription="@null"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_play"
-                android:alpha="0.75"
                 android:scaleType="fitXY" />
 
         </FrameLayout>

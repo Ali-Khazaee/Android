@@ -91,6 +91,14 @@ public class FragmentMoment extends Fragment
         ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
         ImageViewBookMark.setId(MiscHandler.GenerateViewID());
+        ImageViewBookMark.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBookMark);
 

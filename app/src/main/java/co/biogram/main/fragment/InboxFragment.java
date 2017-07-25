@@ -120,7 +120,7 @@ public class InboxFragment extends Fragment
                 InboxList.add(null);
                 Adapter.notifyItemInserted(InboxList.size());
 
-                AndroidNetworking.post(URLHandler.GetURL("PostInboxList"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostListInbox"))
                 .addBodyParameter("Skip", String.valueOf(InboxList.size()))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("InboxFragment")
@@ -225,7 +225,7 @@ public class InboxFragment extends Fragment
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewInbox.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL("PostInboxList"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostListInbox"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("InboxFragment")
         .build().getAsString(new StringRequestListener()
