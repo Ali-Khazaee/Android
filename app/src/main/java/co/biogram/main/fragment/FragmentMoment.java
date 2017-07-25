@@ -35,7 +35,6 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LoadingView;
 
@@ -155,7 +154,7 @@ public class FragmentMoment extends Fragment
                     return;
                 }
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
                 .addBodyParameter("Time", String.valueOf(PostList.get(0).Time))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("FragmentMoment")
@@ -253,7 +252,7 @@ public class FragmentMoment extends Fragment
                     PostList.add(null);
                     Adapter.notifyItemInserted(PostList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
                     .addBodyParameter("Skip", String.valueOf(PostList.size()))
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .setTag("FragmentMoment")
@@ -397,7 +396,7 @@ public class FragmentMoment extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIST))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("FragmentMoment")
         .build().getAsString(new StringRequestListener()

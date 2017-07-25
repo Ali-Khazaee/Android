@@ -30,7 +30,6 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ImageViewCircle;
 
@@ -125,7 +124,7 @@ public class FragmentLike extends Fragment
                     LoadingBottom = true;
                     adapterLike.notifyItemInserted(LikeList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
                     .addBodyParameter("PostID", PostID)
                     .addBodyParameter("Skip", String.valueOf(LikeList.size()))
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -188,7 +187,7 @@ public class FragmentLike extends Fragment
 
     private void RetrieveDataFromServer()
     {
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE_LIST))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
         .addBodyParameter("PostID", PostID)
         .addBodyParameter("Skip", String.valueOf(LikeList.size()))
         .addHeaders("TOKEN", SharedHandler.GetString(getActivity(), "TOKEN"))

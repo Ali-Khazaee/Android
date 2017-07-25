@@ -35,7 +35,6 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
@@ -82,7 +81,7 @@ public class FragmentProfileComment extends Fragment
                 CommentList.add(null);
                 Adapter.notifyItemInserted(CommentList.size());
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_COMMENT_GET))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileCommentGet"))
                 .addBodyParameter("Skip", String.valueOf(CommentList.size()))
                 .addBodyParameter("Username", Username)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -184,7 +183,7 @@ public class FragmentProfileComment extends Fragment
         CommentList.add(null);
         Adapter.notifyItemInserted(CommentList.size());
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_COMMENT_GET))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileCommentGet"))
         .addBodyParameter("Username", Username)
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("FragmentProfileComment")

@@ -27,7 +27,6 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LoadingView;
 
@@ -73,7 +72,7 @@ public class FragmentProfileLike extends Fragment
                     PostList.add(null);
                     Adapter.notifyItemInserted(PostList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_LIKE_GET))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileLikeGet"))
                     .addBodyParameter("Skip", String.valueOf(PostList.size()))
                     .addBodyParameter("Username", Username)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -186,7 +185,7 @@ public class FragmentProfileLike extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_LIKE_GET))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileLikeGet"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
         .setTag("FragmentProfileLike")

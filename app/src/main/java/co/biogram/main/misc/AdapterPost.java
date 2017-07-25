@@ -49,7 +49,6 @@ import co.biogram.main.fragment.VideoPreviewFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
-import co.biogram.main.handler.URLHandler;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost>
 {
@@ -337,7 +336,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostTurnComment"))
                         .addBodyParameter("PostID", PostList.get(Position).PostID)
                         .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
                         .setTag(Tag).build().getAsString(new StringRequestListener()
@@ -425,7 +424,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostBookMark"))
                         .addBodyParameter("PostID", PostList.get(Position).PostID)
                         .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
                         .setTag(Tag).build().getAsString(new StringRequestListener()
@@ -486,7 +485,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostDelete"))
                         .addBodyParameter("PostID", PostList.get(Position).PostID)
                         .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
                         .setTag(Tag).build().getAsString(new StringRequestListener()
@@ -536,7 +535,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_REPORT))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostReport"))
                         .addBodyParameter("PostID", PostList.get(Position).PostID)
                         .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
                         .setTag(Tag).build().getAsString(new StringRequestListener()
@@ -837,7 +836,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
                 }
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostLike"))
                 .addBodyParameter("PostID", PostList.get(Position).PostID)
                 .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
                 .setTag(Tag).build().getAsString(new StringRequestListener()

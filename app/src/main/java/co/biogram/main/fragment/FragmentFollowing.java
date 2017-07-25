@@ -33,7 +33,6 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 
@@ -128,7 +127,7 @@ public class FragmentFollowing extends Fragment
                     FollowingList.add(null);
                     Adapter.notifyItemInserted(FollowingList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWING_GET))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("FollowingGet"))
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .addBodyParameter("Skip", String.valueOf(FollowingList.size()))
                     .addBodyParameter("Username", Username)
@@ -231,7 +230,7 @@ public class FragmentFollowing extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOWING_GET))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("FollowingGet"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
         .setTag("FragmentFollowing")
@@ -372,7 +371,7 @@ public class FragmentFollowing extends Fragment
                     Holder.TextViewFollow.setVisibility(View.GONE);
                     Holder.LoadingViewFollow.Start();
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
                     .addBodyParameter("Username", FollowingList.get(Position).Username)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .setTag("FragmentFollowing")

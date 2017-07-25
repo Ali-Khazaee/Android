@@ -20,7 +20,6 @@ import co.biogram.main.R;
 import co.biogram.main.activity.ActivityMain;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 
 public class NotificationService extends Service
 {

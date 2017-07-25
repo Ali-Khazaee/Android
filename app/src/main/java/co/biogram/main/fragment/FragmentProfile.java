@@ -48,7 +48,6 @@ import co.biogram.main.R;
 import co.biogram.main.activity.ActivityProfileEdit;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ScrollViewSticky;
@@ -887,7 +886,7 @@ public class FragmentProfile extends Fragment
                 ImageViewFollow.setVisibility(View.GONE);
                 LoadingViewFollow.Start();
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.FOLLOW))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("Username", Username)
                 .setTag("FragmentProfile")
@@ -1034,7 +1033,7 @@ public class FragmentProfile extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.PROFILE_GET))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileGet"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
         .setTag("FragmentProfile")

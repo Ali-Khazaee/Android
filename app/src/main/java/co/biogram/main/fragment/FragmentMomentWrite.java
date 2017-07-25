@@ -76,7 +76,6 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.TextCrawler;
 import co.biogram.media.MediaTransCoder;
@@ -261,7 +260,7 @@ public class FragmentMomentWrite extends Fragment
                 Progress.setProgress(0);
                 Progress.show();
 
-                AndroidNetworking.upload(URLHandler.GetURL(URLHandler.URL.POST_WRITE))
+                AndroidNetworking.upload(MiscHandler.GetRandomServer("PostWrite"))
                 .addMultipartParameter("Message", EditTextMessage.getText().toString())
                 .addMultipartParameter("Category", String.valueOf(SelectCategory))
                 .addMultipartParameter("Type", String.valueOf(SelectType))

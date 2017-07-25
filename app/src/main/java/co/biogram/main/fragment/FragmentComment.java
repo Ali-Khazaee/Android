@@ -44,7 +44,6 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ImageViewCircle;
 
@@ -162,7 +161,7 @@ public class FragmentComment extends Fragment
                 LoadingViewSend.Start();
                 ImageViewSend.setVisibility(View.GONE);
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostComment"))
                 .addBodyParameter("Message", EditTextComment.getText().toString())
                 .addBodyParameter("PostID", PostID)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -306,7 +305,7 @@ public class FragmentComment extends Fragment
                     return;
                 }
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
                 .addBodyParameter("CommentTime", String.valueOf(CommentList.get(0).Time))
                 .addBodyParameter("PostID", PostID)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -387,7 +386,7 @@ public class FragmentComment extends Fragment
                     CommentList.add(null);
                     Adapter.notifyItemInserted(CommentList.size());
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
                     .addBodyParameter("Skip", String.valueOf(CommentList.size()))
                     .addBodyParameter("PostID", PostID)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -497,7 +496,7 @@ public class FragmentComment extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIST))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
         .addBodyParameter("PostID", PostID)
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("FragmentComment")
@@ -741,7 +740,7 @@ public class FragmentComment extends Fragment
                         }
                     }
 
-                    AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_LIKE))
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentLike"))
                     .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .setTag("FragmentComment")
@@ -839,7 +838,7 @@ public class FragmentComment extends Fragment
                             @Override
                             public void onClick(View view)
                             {
-                                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_COMMENT_DELETE))
+                                AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentDelete"))
                                 .addBodyParameter("PostID", PostID)
                                 .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
                                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))

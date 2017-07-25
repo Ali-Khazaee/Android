@@ -37,7 +37,6 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
-import co.biogram.main.handler.URLHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.TextCrawler;
@@ -186,7 +185,7 @@ public class FragmentPostDetails extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_TURN_COMMENT))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostTurnComment"))
                         .addBodyParameter("PostID", PostID)
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                         .setTag("FragmentPostDetails")
@@ -292,7 +291,7 @@ public class FragmentPostDetails extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DELETE))
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostDelete"))
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                         .addBodyParameter("PostID", PostID)
                         .setTag("FragmentPostDetails")
@@ -422,7 +421,7 @@ public class FragmentPostDetails extends Fragment
                     AnimationSet.start();
                 }
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_BOOKMARK))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostBookMark"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("PostID", PostID)
                 .setTag("FragmentPostDetails")
@@ -888,7 +887,7 @@ public class FragmentPostDetails extends Fragment
                     TextViewLikeCount.setText(String.valueOf(Integer.parseInt(TextViewLikeCount.getText().toString()) + 1));
                 }
 
-                AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_LIKE))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostLike"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("PostID", PostID)
                 .setTag("FragmentPostDetails")
@@ -1040,7 +1039,7 @@ public class FragmentPostDetails extends Fragment
         TextViewTry.setVisibility(View.GONE);
         LoadingViewData.Start();
 
-        AndroidNetworking.post(URLHandler.GetURL(URLHandler.URL.POST_DETAILS))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostDetails"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("PostID", ((getArguments() == null) ? "" : getArguments().getString("PostID", "")))
         .setTag("FragmentPostDetails")
