@@ -78,6 +78,14 @@ public class InboxFragment extends Fragment
         ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
         ImageViewBookMark.setId(MiscHandler.GenerateViewID());
+        ImageViewBookMark.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBookMark);
 
@@ -89,6 +97,14 @@ public class InboxFragment extends Fragment
         ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -168,16 +184,14 @@ public class InboxFragment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            ResetLoading(false);
                         }
-
-                        ResetLoading();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        ResetLoading();
+                        ResetLoading(false);
                         InboxList.remove(InboxList.size() - 1);
                         Adapter.notifyItemRemoved(InboxList.size());
                     }
@@ -227,7 +241,8 @@ public class InboxFragment extends Fragment
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostListInbox"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("InboxFragment")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)

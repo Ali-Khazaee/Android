@@ -50,9 +50,9 @@ public class MiscHandler
         Shape.setColor(ContextCompat.getColor(context, R.color.Toast));
         Shape.setCornerRadius(50.0f);
 
-        RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackground(Shape);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackground(Shape);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -64,12 +64,12 @@ public class MiscHandler
         TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
-        Root.addView(TextViewMessage);
+        RelativeLayoutMain.addView(TextViewMessage);
 
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.BOTTOM, 0, MiscHandler.ToDimension(context, 65));
         toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(Root);
+        toast.setView(RelativeLayoutMain);
         toast.show();
     }
 
@@ -131,6 +131,11 @@ public class MiscHandler
             case 5:  return "http://10.48.9.85/" + URL;
             default: return "http://10.48.9.85/" + URL;
         }
+    }
+
+    public static void Debug(String Message)
+    {
+        Log.e("Debug", Message);
     }
 
     public static void CreateVideoThumbnail(final String Url, Context context, final ImageView view)
@@ -387,10 +392,5 @@ public class MiscHandler
         bitmap.setPixels(Pixel, 0, width, 0, 0, width, height);
 
         return bitmap;
-    }
-
-    public static void Debug(String Message)
-    {
-        Log.e("Debug", Message);
     }
 }

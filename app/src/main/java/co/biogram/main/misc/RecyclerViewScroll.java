@@ -5,8 +5,9 @@ import android.support.v7.widget.RecyclerView;
 
 public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
 {
-    private boolean IsLoading = false;
     private final LinearLayoutManager LayoutManager;
+    private int PreviousTotalCount = 0;
+    private boolean IsLoading = false;
 
     protected RecyclerViewScroll(LinearLayoutManager linearLayoutManager)
     {
@@ -22,6 +23,12 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
         int LastVisibleItemPosition = LayoutManager.findLastVisibleItemPosition() + 5;
         int TotalCount = LayoutManager.getItemCount();
 
+        if (IsLoading && (TotalCount > PreviousTotalCount))
+        {
+            IsLoading = false;
+            PreviousTotalCount = TotalCount;
+        }
+
         if (!IsLoading && LastVisibleItemPosition > TotalCount)
         {
             OnLoadMore();
@@ -29,9 +36,12 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
         }
     }
 
-    public void ResetLoading()
+    public void ResetLoading(boolean ResetPrevious)
     {
         IsLoading = false;
+
+        if (ResetPrevious)
+            PreviousTotalCount = 0;
     }
 
     public abstract void OnLoadMore();

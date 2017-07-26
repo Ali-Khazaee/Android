@@ -51,14 +51,18 @@
     <string name="ContactFragmentFollow">Follow</string>
     <string name="ContactFragmentFollowing">Following</string>
 
-    <string name="VideoPreviewFragment">Video Preview</string>
+    <!-- BookMark Fragment -->
+    <string name="BookmarkFragment">Bookmark</string>
 
-    <string name="SearchFragmentEditTextSearchHint">Search &#8230;</string>
+    <!-- BookMark Fragment -->
+    <string name="SearchFragmentEditTextSearchHint">Search</string>
     <string name="SearchFragmentTabPeople">People</string>
     <string name="SearchFragmentTabTag">Tags</string>
     <string name="SearchFragmentNo">no</string>
     <string name="SearchFragmentPosts">posts</string>
     <string name="SearchFragmentFollowers">followers</string>
+
+    <string name="VideoPreviewFragment">Video Preview</string>
 
     <string name="NotificationFragmentPostTag">mentioned you in a post</string>
     <string name="NotificationFragmentPostLike">liked your post</string>

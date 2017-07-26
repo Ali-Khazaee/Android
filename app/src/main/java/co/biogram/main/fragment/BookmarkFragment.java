@@ -34,19 +34,18 @@ import co.biogram.main.misc.RecyclerViewScroll;
 
 public class BookmarkFragment extends Fragment
 {
-    private LoadingView LoadingViewInbox;
-    private TextView TextViewTryAgain;
-
-    private AdapterPost Adapter;
-    private final List<AdapterPost.Struct> InboxList = new ArrayList<>();
+    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
+    private AdapterPost PostAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setClickable(true);
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
@@ -55,40 +54,53 @@ public class BookmarkFragment extends Fragment
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
+        ImageView ImageViewBack = new ImageView(context);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                getActivity().onBackPressed();
+            }
+        });
+
+        RelativeLayoutHeader.addView(ImageViewBack);
+
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewTitleParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(getString(R.string.InboxTitle));
+        TextViewTitle.setText(getString(R.string.BookmarkFragment));
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ImageViewBookMarkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
-        ImageViewBookMarkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-        ImageView ImageViewBookMark = new ImageView(context);
-        ImageViewBookMark.setLayoutParams(ImageViewBookMarkParam);
-        ImageViewBookMark.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
-        ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
-        ImageViewBookMark.setId(MiscHandler.GenerateViewID());
-
-        RelativeLayoutHeader.addView(ImageViewBookMark);
-
         RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
-        ImageViewSearchParam.addRule(RelativeLayout.LEFT_OF, ImageViewBookMark.getId());
+        ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         ImageView ImageViewSearch = new ImageView(context);
         ImageViewSearch.setLayoutParams(ImageViewSearchParam);
         ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -102,25 +114,25 @@ public class BookmarkFragment extends Fragment
 
         RelativeLayoutMain.addView(ViewLine);
 
-        RelativeLayout.LayoutParams RecyclerViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        RecyclerViewInboxParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        LinearLayoutManager LinearLayoutManagerNotification = new LinearLayoutManager(context);
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
 
-        RecyclerView RecyclerViewInbox = new RecyclerView(context);
-        RecyclerViewInbox.setLayoutParams(RecyclerViewInboxParam);
-        RecyclerViewInbox.setLayoutManager(LinearLayoutManagerNotification);
-        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), InboxList, "InboxFragment"));
-        RecyclerViewInbox.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostList, "BookmarkFragment"));
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
             public void OnLoadMore()
             {
-                InboxList.add(null);
-                Adapter.notifyItemInserted(InboxList.size());
+                PostList.add(null);
+                PostAdapter.notifyItemInserted(PostList.size());
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("PostListBookMark"))
-                .addBodyParameter("Skip", String.valueOf(InboxList.size()))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostListBookmark"))
+                .addBodyParameter("Skip", String.valueOf(PostList.size()))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("BookmarkFragment")
                 .build()
@@ -129,8 +141,8 @@ public class BookmarkFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        PostList.remove(PostList.size() - 1);
+                        PostAdapter.notifyItemRemoved(PostList.size());
 
                         try
                         {
@@ -161,54 +173,59 @@ public class BookmarkFragment extends Fragment
                                     PostStruct.BookMark = Post.getBoolean("BookMark");
                                     PostStruct.Follow = Post.getBoolean("Follow");
 
-                                    InboxList.add(PostStruct);
+                                    PostList.add(PostStruct);
                                 }
 
-                                Adapter.notifyDataSetChanged();
+                                PostAdapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            ResetLoading(false);
                         }
-
-                        ResetLoading();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        ResetLoading();
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        ResetLoading(false);
+                        PostList.remove(PostList.size() - 1);
+                        PostAdapter.notifyItemRemoved(PostList.size());
                     }
                 });
             }
         });
 
-        RelativeLayoutMain.addView(RecyclerViewInbox);
+        RelativeLayoutMain.addView(RecyclerViewMain);
 
-        RelativeLayout.LayoutParams LoadingViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
-        LoadingViewInboxParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewInbox = new LoadingView(context);
-        LoadingViewInbox.setLayoutParams(LoadingViewInboxParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutMain.addView(LoadingViewInbox);
+        RelativeLayoutMain.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTryAgain = new TextView(context);
+        final TextView TextViewTryAgain = new TextView(context);
         TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
+            }
+        });
 
         RelativeLayoutMain.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -220,15 +237,16 @@ public class BookmarkFragment extends Fragment
         AndroidNetworking.forceCancel("BookmarkFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
-        LoadingViewInbox.Start();
+        LoadingViewMain.Start();
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("PostListBookMark"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostListBookmark"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("BookmarkFragment")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -239,11 +257,11 @@ public class BookmarkFragment extends Fragment
 
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
-                        JSONArray postList = new JSONArray(Result.getString("Result"));
+                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < postList.length(); K++)
+                        for (int K = 0; K < ResultList.length(); K++)
                         {
-                            JSONObject Post = postList.getJSONObject(K);
+                            JSONObject Post = ResultList.getJSONObject(K);
 
                             AdapterPost.Struct PostStruct = new AdapterPost.Struct();
                             PostStruct.PostID = Post.getString("PostID");
@@ -262,10 +280,10 @@ public class BookmarkFragment extends Fragment
                             PostStruct.BookMark = Post.getBoolean("BookMark");
                             PostStruct.Follow = Post.getBoolean("Follow");
 
-                            InboxList.add(PostStruct);
+                            PostList.add(PostStruct);
                         }
 
-                        Adapter.notifyDataSetChanged();
+                        PostAdapter.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e)
@@ -273,16 +291,16 @@ public class BookmarkFragment extends Fragment
                     // Leave Me Alone
                 }
 
-                LoadingViewInbox.Stop();
+                LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.VISIBLE);
-                LoadingViewInbox.Stop();
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
             }
         });
     }

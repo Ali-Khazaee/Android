@@ -8,12 +8,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +32,6 @@ import com.bumptech.glide.Glide;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,29 +49,31 @@ public class SearchFragment extends Fragment
     private AdapterPeople PeopleAdapter;
     private AdapterTag TagAdapter;
     private int Tab = 0;
+    private String Search = "";
 
-    private RecyclerView RecyclerViewMain;
+    private RecyclerViewScroll RecyclerViewScrollMain;
+
     private TextView TextViewTabPeople;
     private View ViewLinePeople;
     private TextView TextViewTabTag;
     private View ViewLineTag;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final RecyclerView RecyclerViewMain = new RecyclerView(context);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
-        LinearLayout LinearLayoutHeader = new LinearLayout(context);
-        LinearLayoutHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-        LinearLayoutHeader.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutHeader.setId(MiscHandler.GenerateViewID());
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+        RelativeLayoutHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(LinearLayoutHeader);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
@@ -79,12 +83,31 @@ public class SearchFragment extends Fragment
         ImageViewBack.setId(MiscHandler.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().onBackPressed(); } });
 
-        LinearLayoutHeader.addView(ImageViewBack);
+        RelativeLayoutHeader.addView(ImageViewBack);
 
-        EditText EditTextSearch = new EditText(context);
-        EditTextSearch.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
+        LoadingViewMain.setId(MiscHandler.GenerateViewID());
+        LoadingViewMain.SetColor(R.color.BlueLight);
+        LoadingViewMain.SetSize(5);
+
+        RelativeLayoutHeader.addView(LoadingViewMain);
+
+        RelativeLayout.LayoutParams EditTextSearchParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        EditTextSearchParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        EditTextSearchParam.addRule(RelativeLayout.LEFT_OF, LoadingViewMain.getId());
+
+        final EditText EditTextSearch = new EditText(context);
+        EditTextSearch.setLayoutParams(EditTextSearchParam);
         EditTextSearch.setHint(R.string.SearchFragmentEditTextSearchHint);
         EditTextSearch.setBackground(null);
+        EditTextSearch.requestFocus();
+        EditTextSearch.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
+        EditTextSearch.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        EditTextSearch.setHintTextColor(ContextCompat.getColor(context, R.color.Gray2));
         EditTextSearch.addTextChangedListener(new TextWatcher()
         {
             @Override public void afterTextChanged(Editable s) { }
@@ -93,24 +116,29 @@ public class SearchFragment extends Fragment
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                PeopleList.clear();
                 TagList.clear();
+                PeopleList.clear();
+                AndroidNetworking.forceCancel("SearchFragment");
 
                 if (s.length() <= 0)
                     return;
 
+                Search = s.toString();
+                LoadingViewMain.Start();
+                RecyclerViewScrollMain.ResetLoading(true);
+
                 switch (Tab)
                 {
-                    case 1: SearchPeople(context, s); break;
-                    case 2: SearchTag(context, s); break;
+                    case 1: SearchPeople(context, s, LoadingViewMain); break;
+                    case 2: SearchTag(context, s, LoadingViewMain);    break;
                 }
             }
         });
 
-        LinearLayoutHeader.addView(EditTextSearch);
+        RelativeLayoutHeader.addView(EditTextSearch);
 
         RelativeLayout.LayoutParams LinearLayoutTabParam = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
-        LinearLayoutTabParam.addRule(RelativeLayout.BELOW, LinearLayoutHeader.getId());
+        LinearLayoutTabParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         LinearLayout LinearLayoutTab = new LinearLayout(context);
         LinearLayoutTab.setLayoutParams(LinearLayoutTabParam);
@@ -121,7 +149,15 @@ public class SearchFragment extends Fragment
 
         RelativeLayout RelativeLayoutTabPeople = new RelativeLayout(context);
         RelativeLayoutTabPeople.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56), 1.0f));
-        RelativeLayoutTabPeople.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 1); } });
+        RelativeLayoutTabPeople.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                EditTextSearch.setText("");
+                ChangeTab(context, 1, RecyclerViewMain);
+            }
+        });
 
         LinearLayoutTab.addView(RelativeLayoutTabPeople);
 
@@ -140,13 +176,20 @@ public class SearchFragment extends Fragment
 
         ViewLinePeople = new View(context);
         ViewLinePeople.setLayoutParams(ViewLinePeopleParam);
-        ViewLinePeople.setBackgroundResource(R.color.BlueLight);
 
         RelativeLayoutTabPeople.addView(ViewLinePeople);
 
         RelativeLayout RelativeLayoutTabTag = new RelativeLayout(context);
         RelativeLayoutTabTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56), 1.0f));
-        RelativeLayoutTabTag.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 2); } });
+        RelativeLayoutTabTag.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                EditTextSearch.setText("");
+                ChangeTab(context, 2, RecyclerViewMain);
+            }
+        });
 
         LinearLayoutTab.addView(RelativeLayoutTabTag);
 
@@ -165,7 +208,6 @@ public class SearchFragment extends Fragment
 
         ViewLineTag = new View(context);
         ViewLineTag.setLayoutParams(ViewLineTagParam);
-        ViewLineTag.setBackgroundResource(R.color.BlueLight);
 
         RelativeLayoutTabTag.addView(ViewLineTag);
 
@@ -184,33 +226,48 @@ public class SearchFragment extends Fragment
 
         LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
 
-        RecyclerViewMain = new RecyclerView(context);
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerMain)
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
             public void OnLoadMore()
             {
+                LoadingViewMain.Start();
 
+                switch (Tab)
+                {
+                    case 1: SearchPeople(context, Search, LoadingViewMain); break;
+                    case 2: SearchTag(context, Search, LoadingViewMain);    break;
+                }
             }
         });
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
-        ChangeTab(context, 1);
+        ChangeTab(context, 1, RecyclerViewMain);
 
         return RelativeLayoutMain;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
+        MiscHandler.HideSoftKey(getActivity());
         AndroidNetworking.forceCancel("SearchFragment");
     }
 
-    private void SearchPeople(Context context, CharSequence text)
+    private void SearchPeople(final Context context, CharSequence text, final LoadingView LoadingViewMain)
     {
         AndroidNetworking.post(MiscHandler.GetRandomServer("SearchPeople"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -248,22 +305,28 @@ public class SearchFragment extends Fragment
                 }
                 catch (Exception e)
                 {
+                    RecyclerViewScrollMain.ResetLoading(false);
                     MiscHandler.Debug("SearchFragment-SearchPeople: " + e.toString());
                 }
+
+                LoadingViewMain.Stop();
             }
 
             @Override
             public void onError(ANError anError)
             {
-
+                LoadingViewMain.Stop();
+                RecyclerViewScrollMain.ResetLoading(false);
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
             }
         });
     }
 
-    private void SearchTag(Context context, CharSequence text)
+    private void SearchTag(final Context context, CharSequence text, final LoadingView LoadingViewMain)
     {
         AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTag"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .addBodyParameter("Skip", String.valueOf(TagList.size()))
         .addBodyParameter("Tag", text.toString())
         .setTag("SearchFragment")
         .build()
@@ -296,19 +359,24 @@ public class SearchFragment extends Fragment
                 }
                 catch (Exception e)
                 {
+                    RecyclerViewScrollMain.ResetLoading(false);
                     MiscHandler.Debug("SearchFragment-SearchTag: " + e.toString());
                 }
+
+                LoadingViewMain.Stop();
             }
 
             @Override
             public void onError(ANError anError)
             {
-
+                LoadingViewMain.Stop();
+                RecyclerViewScrollMain.ResetLoading(false);
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
             }
         });
     }
 
-    private void ChangeTab(Context context, int tab)
+    private void ChangeTab(Context context, int tab, RecyclerView RecyclerViewMain)
     {
         TextViewTabPeople.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewLinePeople.setBackgroundResource(R.color.White);
@@ -338,7 +406,6 @@ public class SearchFragment extends Fragment
 
     private class AdapterPeople extends RecyclerView.Adapter<AdapterPeople.ViewHolderComment>
     {
-        private final int ID_Main = MiscHandler.GenerateViewID();
         private final int ID_Profile = MiscHandler.GenerateViewID();
         private final int ID_Username = MiscHandler.GenerateViewID();
         private final int ID_Follower = MiscHandler.GenerateViewID();
@@ -352,53 +419,29 @@ public class SearchFragment extends Fragment
 
         class ViewHolderComment extends RecyclerView.ViewHolder
         {
-            private RelativeLayout RelativeLayoutMain;
             private ImageViewCircle ImageViewCircleProfile;
             private TextView TextViewUsername;
             private TextView TextViewFollower;
 
-            ViewHolderComment(View view, boolean Content)
+            ViewHolderComment(View view)
             {
                 super(view);
-
-                if (Content)
-                {
-                    RelativeLayoutMain = (RelativeLayout) view.findViewById(ID_Main);
-                    ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
-                    TextViewUsername = (TextView) view.findViewById(ID_Username);
-                    TextViewFollower = (TextView) view.findViewById(ID_Follower);
-                }
+                ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
+                TextViewUsername = (TextView) view.findViewById(ID_Username);
+                TextViewFollower = (TextView) view.findViewById(ID_Follower);
             }
         }
 
         @Override
         public void onBindViewHolder(final ViewHolderComment Holder, int position)
         {
-            if (getItemViewType(position) != 0)
-                return;
-
             final int Position = Holder.getAdapterPosition();
 
-            Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Username", PeopleList.get(Position).Username);
-
-                    Fragment fragment = new FragmentProfile();
-                    fragment.setArguments(bundle);
-
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
-                }
-            });
-
             Glide.with(context)
-                    .load(PeopleList.get(Position).Avatar)
-                    .placeholder(R.color.BlueGray)
-                    .dontAnimate()
-                    .into(Holder.ImageViewCircleProfile);
+            .load(PeopleList.get(Position).Avatar)
+            .placeholder(R.color.BlueGray)
+            .dontAnimate()
+            .into(Holder.ImageViewCircleProfile);
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
             {
@@ -446,56 +489,46 @@ public class SearchFragment extends Fragment
         @Override
         public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
         {
-            if (ViewType == 0)
-            {
-                RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-                RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                RelativeLayoutMain.setId(ID_Main);
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-                RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
-                ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
+            RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40));
+            ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
 
-                ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(context);
-                ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
-                ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
-                ImageViewCircleProfile.setImageResource(R.color.BlueGray);
-                ImageViewCircleProfile.setId(ID_Profile);
+            ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(context);
+            ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
+            ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
+            ImageViewCircleProfile.setImageResource(R.color.BlueGray);
+            ImageViewCircleProfile.setId(ID_Profile);
 
-                RelativeLayoutMain.addView(ImageViewCircleProfile);
+            RelativeLayoutMain.addView(ImageViewCircleProfile);
 
-                RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
+            RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 8), 0, 0);
+            TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
 
-                TextView TextViewUsername = new TextView(context);
-                TextViewUsername.setLayoutParams(TextViewUsernameParam);
-                TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewUsername.setTypeface(null, Typeface.BOLD);
-                TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewUsername.setId(ID_Username);
+            TextView TextViewUsername = new TextView(context);
+            TextViewUsername.setLayoutParams(TextViewUsernameParam);
+            TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
+            TextViewUsername.setTypeface(null, Typeface.BOLD);
+            TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            TextViewUsername.setId(ID_Username);
 
-                RelativeLayoutMain.addView(TextViewUsername);
+            RelativeLayoutMain.addView(TextViewUsername);
 
-                RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewMessageParam.addRule(RelativeLayout.BELOW, ID_Username);
-                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
+            RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewMessageParam.addRule(RelativeLayout.BELOW, ID_Username);
+            TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
 
-                TextView TextViewFollow = new TextView(context);
-                TextViewFollow.setLayoutParams(TextViewMessageParam);
-                TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
-                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                TextViewFollow.setId(ID_Follower);
+            TextView TextViewFollow = new TextView(context);
+            TextViewFollow.setLayoutParams(TextViewMessageParam);
+            TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+            TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewFollow.setId(ID_Follower);
 
-                RelativeLayoutMain.addView(TextViewFollow);
+            RelativeLayoutMain.addView(TextViewFollow);
 
-                return new ViewHolderComment(RelativeLayoutMain, true);
-            }
-
-            LoadingView LoadingViewMain = new LoadingView(context);
-            LoadingViewMain.setLayoutParams(new LoadingView.LayoutParams(LoadingView.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            LoadingViewMain.Start();
-
-            return new ViewHolderComment(LoadingViewMain, false);
+            return new ViewHolderComment(RelativeLayoutMain);
         }
 
         @Override
@@ -503,18 +536,10 @@ public class SearchFragment extends Fragment
         {
             return PeopleList.size();
         }
-
-        @Override
-        public int getItemViewType(int position)
-        {
-            return PeopleList.get(position) == null ? 1 : 0;
-        }
     }
 
     private class AdapterTag extends RecyclerView.Adapter<AdapterTag.ViewHolderComment>
     {
-        private final int ID_MAIN = MiscHandler.GenerateViewID();
-        private final int ID_SHARP = MiscHandler.GenerateViewID();
         private final int ID_TAG = MiscHandler.GenerateViewID();
         private final int ID_POST = MiscHandler.GenerateViewID();
 
@@ -527,156 +552,96 @@ public class SearchFragment extends Fragment
 
         class ViewHolderComment extends RecyclerView.ViewHolder
         {
-            private RelativeLayout RelativeLayoutMain;
-            private TextView TextViewSharp;
             private TextView TextViewTag;
             private TextView TextViewPost;
 
-            ViewHolderComment(View view, boolean Content)
+            ViewHolderComment(View view)
             {
                 super(view);
-
-                if (Content)
-                {
-                    RelativeLayoutMain = (RelativeLayout) view.findViewById(ID_MAIN);
-                    TextViewSharp = (TextView) view.findViewById(ID_SHARP);
-                    TextViewTag = (TextView) view.findViewById(ID_TAG);
-                    TextViewPost = (TextView) view.findViewById(ID_POST);
-                }
+                TextViewTag = (TextView) view.findViewById(ID_TAG);
+                TextViewPost = (TextView) view.findViewById(ID_POST);
             }
         }
 
         @Override
         public void onBindViewHolder(final ViewHolderComment Holder, int position)
         {
-            if (getItemViewType(position) != 0)
-                return;
-
             final int Position = Holder.getAdapterPosition();
 
-            Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Tag", TagList.get(Position).Tag);
+            Holder.TextViewTag.setText(TagList.get(Position).Tag);
 
-                    Fragment fragment = new TagFragment();
-                    fragment.setArguments(bundle);
+            String Post;
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("TagFragment").commit();
-                }
-            });
-
-            if (new Bidi(TagList.get(Position).Tag, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
-            {
-                Holder.TextViewTag.setText(TagList.get(Position).Tag);
-
-                String Post;
-
-                if (TagList.get(Position).Count == 0)
-                    Post = context.getString(R.string.SearchFragmentNo);
-                else
-                    Post = String.valueOf(TagList.get(Position).Count);
-
-                Post += " " + context.getString(R.string.SearchFragmentPosts);
-
-                Holder.TextViewPost.setText(Post);
-            }
+            if (TagList.get(Position).Count == 0)
+                Post = context.getString(R.string.SearchFragmentNo);
             else
-            {
-                Holder.TextViewTag.setText(TagList.get(Position).Tag);
+                Post = String.valueOf(TagList.get(Position).Count);
 
-                String Post;
+            Post += " " + context.getString(R.string.SearchFragmentPosts);
 
-                if (TagList.get(Position).Count == 0)
-                    Post = context.getString(R.string.SearchFragmentNo);
-                else
-                    Post = String.valueOf(TagList.get(Position).Count);
-
-                Post += " " + context.getString(R.string.SearchFragmentPosts);
-
-                Holder.TextViewPost.setText(Post);
-            }
+            Holder.TextViewPost.setText(Post);
         }
 
         @Override
         public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
         {
-            if (ViewType == 0)
-            {
-                RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-                RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                RelativeLayoutMain.setId(ID_MAIN);
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-                RelativeLayout.LayoutParams TextViewSharpParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,  MiscHandler.ToDimension(context, 50));
-                TextViewSharpParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15));
+            RelativeLayout.LayoutParams TextViewSharpParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,  MiscHandler.ToDimension(context, 50));
+            TextViewSharpParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15));
 
-                TextView TextViewSharp = new TextView(context);
-                TextViewSharp.setLayoutParams(TextViewSharpParam);
-                TextViewSharp.setPadding(MiscHandler.ToDimension(context, 20), 0, MiscHandler.ToDimension(context, 20), 0);
-                TextViewSharp.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewSharp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
-                TextViewSharp.setId(ID_SHARP);
-                TextViewSharp.setText("#");
+            TextView TextViewSharp = new TextView(context);
+            TextViewSharp.setLayoutParams(TextViewSharpParam);
+            TextViewSharp.setPadding(MiscHandler.ToDimension(context, 20), 0, MiscHandler.ToDimension(context, 20), 0);
+            TextViewSharp.setTextColor(ContextCompat.getColor(context, R.color.Black));
+            TextViewSharp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
+            TextViewSharp.setId(MiscHandler.GenerateViewID());
+            TextViewSharp.setText("#");
 
-                RelativeLayoutMain.addView(TextViewSharp);
+            RelativeLayoutMain.addView(TextViewSharp);
 
-                RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 20), 0, 0);
-                TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_SHARP);
+            RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 20), 0, 0);
+            TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, TextViewSharp.getId());
 
-                TextView TextViewUsername = new TextView(context);
-                TextViewUsername.setLayoutParams(TextViewUsernameParam);
-                TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewUsername.setTypeface(null, Typeface.BOLD);
-                TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewUsername.setId(ID_TAG);
+            TextView TextViewUsername = new TextView(context);
+            TextViewUsername.setLayoutParams(TextViewUsernameParam);
+            TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
+            TextViewUsername.setTypeface(null, Typeface.BOLD);
+            TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            TextViewUsername.setId(ID_TAG);
 
-                RelativeLayoutMain.addView(TextViewUsername);
+            RelativeLayoutMain.addView(TextViewUsername);
 
-                RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewMessageParam.addRule(RelativeLayout.BELOW, ID_TAG);
-                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_SHARP);
+            RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewMessageParam.addRule(RelativeLayout.BELOW, ID_TAG);
+            TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, TextViewSharp.getId());
 
-                TextView TextViewPost = new TextView(context);
-                TextViewPost.setLayoutParams(TextViewMessageParam);
-                TextViewPost.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
-                TextViewPost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                TextViewPost.setId(ID_POST);
+            TextView TextViewPost = new TextView(context);
+            TextViewPost.setLayoutParams(TextViewMessageParam);
+            TextViewPost.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+            TextViewPost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewPost.setId(ID_POST);
 
-                RelativeLayoutMain.addView(TextViewPost);
+            RelativeLayoutMain.addView(TextViewPost);
 
-                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
-                ViewLineParam.addRule(RelativeLayout.BELOW, ID_SHARP);
+            RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+            ViewLineParam.addRule(RelativeLayout.BELOW, TextViewSharp.getId());
 
-                View ViewLine = new View(context);
-                ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundResource(R.color.Gray);
+            View ViewLine = new View(context);
+            ViewLine.setLayoutParams(ViewLineParam);
+            ViewLine.setBackgroundResource(R.color.Gray);
 
-                RelativeLayoutMain.addView(ViewLine);
+            RelativeLayoutMain.addView(ViewLine);
 
-                return new ViewHolderComment(RelativeLayoutMain, true);
-            }
-
-            LoadingView LoadingViewMain = new LoadingView(context);
-            LoadingViewMain.setLayoutParams(new LoadingView.LayoutParams(LoadingView.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            LoadingViewMain.Start();
-
-            return new ViewHolderComment(LoadingViewMain, false);
+            return new ViewHolderComment(RelativeLayoutMain);
         }
 
         @Override
         public int getItemCount()
         {
             return TagList.size();
-        }
-
-        @Override
-        public int getItemViewType(int position)
-        {
-            return TagList.get(position) == null ? 1 : 0;
         }
     }
 

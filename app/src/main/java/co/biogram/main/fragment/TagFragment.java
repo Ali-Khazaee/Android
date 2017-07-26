@@ -175,16 +175,14 @@ public class TagFragment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            ResetLoading(false);
                         }
-
-                        ResetLoading();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        ResetLoading();
+                        ResetLoading(false);
                         InboxList.remove(InboxList.size() - 1);
                         Adapter.notifyItemRemoved(InboxList.size());
                     }
