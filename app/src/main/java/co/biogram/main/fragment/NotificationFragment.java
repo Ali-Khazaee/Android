@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,12 +35,9 @@ import co.biogram.main.misc.RecyclerViewScroll;
 
 public class NotificationFragment extends Fragment
 {
-    private RecyclerView RecyclerViewNotification;
-    private LoadingView LoadingViewNotification;
-    private TextView TextViewTryAgain;
-
-    private AdapterNotification Adapter;
     private final List<Struct> NotificationList = new ArrayList<>();
+    private RecyclerViewScroll RecyclerViewScrollMain;
+    private AdapterNotification Adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
@@ -48,45 +46,155 @@ public class NotificationFragment extends Fragment
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setClickable(true);
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
 
-        LinearLayoutManager LinearLayoutManagerNotification = new LinearLayoutManager(context);
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        RecyclerViewNotification = new RecyclerView(context);
-        RecyclerViewNotification.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RecyclerViewNotification.setLayoutManager(LinearLayoutManagerNotification);
-        RecyclerViewNotification.setAdapter(Adapter = new AdapterNotification(context));
-        RecyclerViewNotification.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
+
+        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+        TextView TextViewTitle = new TextView(context);
+        TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setText(getString(R.string.NotificationFragment));
+        TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTitle.setTypeface(null, Typeface.BOLD);
+
+        RelativeLayoutHeader.addView(TextViewTitle);
+
+        RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageView ImageViewSearch = new ImageView(context);
+        ImageViewSearch.setLayoutParams(ImageViewSearchParam);
+        ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
+        ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
+            }
+        });
+
+        RelativeLayoutHeader.addView(ImageViewSearch);
+
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+        View ViewLine = new View(context);
+        ViewLine.setLayoutParams(ViewLineParam);
+        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutMain.addView(ViewLine);
+
+        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
+
+        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
             public void OnLoadMore()
             {
-                //
-            }
-        });
+                NotificationList.add(null);
+                Adapter.notifyItemInserted(NotificationList.size());
 
-        RelativeLayoutMain.addView(RecyclerViewNotification);
+                AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("Skip", String.valueOf(NotificationList.size()))
+                .setTag("NotificationFragment")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                                for (int I = 0; I < ResultList.length(); I++)
+                                {
+                                    JSONObject Comment = ResultList.getJSONObject(I);
+
+                                    Struct NotificationStruct = new Struct();
+                                    NotificationStruct.Username = Comment.getString("Username");
+                                    NotificationStruct.Avatar = Comment.getString("Avatar");
+                                    NotificationStruct.Type = Comment.getInt("Type");
+                                    NotificationStruct.Time = Comment.getInt("Time");
+
+                                    NotificationList.add(NotificationStruct);
+                                }
+                            }
+
+                            Adapter.notifyDataSetChanged();
+                        }
+                        catch (Exception e)
+                        {
+                            RecyclerViewScrollMain.ResetLoading(false);
+                        }
+
+                        NotificationList.remove(NotificationList.size() - 1);
+                        Adapter.notifyItemRemoved(NotificationList.size());
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        RecyclerViewScrollMain.ResetLoading(false);
+                        NotificationList.remove(NotificationList.size() - 1);
+                        Adapter.notifyItemRemoved(NotificationList.size());
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
+                    }
+                });
+            }
+        };
+
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.setAdapter(Adapter = new AdapterNotification(context));
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
+
+        RelativeLayoutMain.addView(RecyclerViewMain);
 
         RelativeLayout.LayoutParams LoadingViewNotificationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewNotificationParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewNotification = new LoadingView(context);
-        LoadingViewNotification.setLayoutParams(LoadingViewNotificationParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewNotificationParam);
 
-        RelativeLayoutMain.addView(LoadingViewNotification);
+        RelativeLayoutMain.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTryAgain = new TextView(context);
+        final TextView TextViewTryAgain = new TextView(context);
         TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain); } });
 
         RelativeLayoutMain.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -98,11 +206,10 @@ public class NotificationFragment extends Fragment
         AndroidNetworking.forceCancel("NotificationFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        RecyclerViewNotification.setVisibility(View.GONE);
-        LoadingViewNotification.Start();
         TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -113,10 +220,6 @@ public class NotificationFragment extends Fragment
             @Override
             public void onResponse(String Response)
             {
-                RecyclerViewNotification.setVisibility(View.VISIBLE);
-                LoadingViewNotification.setVisibility(View.GONE);
-                TextViewTryAgain.setVisibility(View.GONE);
-
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -143,16 +246,16 @@ public class NotificationFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    //
+                    RecyclerViewScrollMain.ResetLoading(false);
                 }
             }
 
             @Override
             public void onError(ANError anError)
             {
-                LoadingViewNotification.setVisibility(View.GONE);
+                RecyclerViewScrollMain.ResetLoading(false);
+                LoadingViewMain.setVisibility(View.GONE);
                 TextViewTryAgain.setVisibility(View.VISIBLE);
-
                 MiscHandler.Toast(context, getString(R.string.NoInternet));
             }
         });
@@ -202,10 +305,10 @@ public class NotificationFragment extends Fragment
             final int Position = Holder.getAdapterPosition();
 
             Glide.with(context)
-                    .load(NotificationList.get(Position).Avatar)
-                    .placeholder(R.color.BlueGray)
-                    .dontAnimate()
-                    .into(Holder.ImageViewCircleProfile);
+            .load(NotificationList.get(Position).Avatar)
+            .placeholder(R.color.BlueGray)
+            .dontAnimate()
+            .into(Holder.ImageViewCircleProfile);
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
             {

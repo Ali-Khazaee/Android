@@ -62,14 +62,36 @@
     <string name="SearchFragmentPosts">posts</string>
     <string name="SearchFragmentFollowers">followers</string>
 
-    <string name="VideoPreviewFragment">Video Preview</string>
-
+    <!-- Notification Fragment -->
+    <string name="NotificationFragment">Notification</string>
     <string name="NotificationFragmentPostTag">mentioned you in a post</string>
     <string name="NotificationFragmentPostLike">liked your post</string>
     <string name="NotificationFragmentFollow">started following you</string>
     <string name="NotificationFragmentComment">commented on your post</string>
     <string name="NotificationFragmentCommentLike">liked your comment</string>
     <string name="NotificationFragmentCommentTag">mentioned you in a comment</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="VideoPreviewFragment">Video Preview</string>
+
+
     <string name="InboxTitle">Inbox</string>
     <string name="CategoryTitle">Category</string>
     <string name="FragmentProfileCommentEmpty">No Comment</string>
