@@ -16,6 +16,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.util.TypedValue;
@@ -28,7 +30,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -54,15 +55,14 @@ import co.biogram.main.misc.ScrollViewSticky;
 
 public class FragmentProfile extends Fragment
 {
-    private RelativeLayout RelativeLayoutLoading;
-    private LoadingView LoadingViewData;
-    private TextView TextViewTry;
-
+    private int Tab = 0;
     private String Username;
     private String PostCount;
     private String CommentCount;
     private String LikeCount;
     private boolean Self = false;
+
+    private RecyclerView RecyclerViewMain;
 
     private ImageView ImageViewBack;
     private ImageView ImageViewCover;
@@ -95,8 +95,6 @@ public class FragmentProfile extends Fragment
     private TextView TextViewTabLike;
     private View ViewTabLike;
 
-    private final int FrameLayoutID = MiscHandler.GenerateViewID();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -104,19 +102,20 @@ public class FragmentProfile extends Fragment
 
         MiscHandler.HideSoftKey(getActivity());
 
-        Username = SharedHandler.GetString(context, "Username");
-
         if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
             Username = getArguments().getString("Username");
+        else
+            Username = SharedHandler.GetString(context, "Username");
 
-        CoordinatorLayout Root = new CoordinatorLayout(context);
-        Root.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
+        CoordinatorLayout RelativeLayoutMain = new CoordinatorLayout(context);
+        RelativeLayoutMain.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
-        AppBarLayout AppBar = new AppBarLayout(context);
-        AppBar.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
-        AppBar.setId(MiscHandler.GenerateViewID());
-        AppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()
+        AppBarLayout AppBarLayoutMain = new AppBarLayout(context);
+        AppBarLayoutMain.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
+        AppBarLayoutMain.setId(MiscHandler.GenerateViewID());
+        AppBarLayoutMain.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()
         {
             private boolean Hidden = false;
 
@@ -148,11 +147,11 @@ public class FragmentProfile extends Fragment
 
                     ImageViewCircleProfile.startAnimation(FadeAnim);
 
+                    ScaleAnimation Fade2 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    Fade2.setDuration(200);
+
                     if (Self)
                     {
-                        ScaleAnimation Fade2 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        Fade2.setDuration(200);
-
                         AnimationSet FadeAnim2 = new AnimationSet(true);
                         FadeAnim2.addAnimation(Fade2);
                         FadeAnim2.setAnimationListener(new Animation.AnimationListener()
@@ -166,9 +165,6 @@ public class FragmentProfile extends Fragment
                     }
                     else
                     {
-                        ScaleAnimation Fade2 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        Fade2.setDuration(200);
-
                         AnimationSet FadeAnim2 = new AnimationSet(true);
                         FadeAnim2.addAnimation(Fade2);
                         FadeAnim2.setAnimationListener(new Animation.AnimationListener()
@@ -205,12 +201,12 @@ public class FragmentProfile extends Fragment
 
                     ImageViewCircleProfile.setAnimation(FadeAnim);
 
+                    ScaleAnimation Fade2 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    Fade2.setDuration(200);
+
                     if (Self)
                     {
                         ImageViewEdit.setVisibility(View.VISIBLE);
-
-                        ScaleAnimation Fade2 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        Fade2.setDuration(200);
 
                         AnimationSet FadeAnim2 = new AnimationSet(true);
                         FadeAnim2.addAnimation(Fade2);
@@ -221,9 +217,6 @@ public class FragmentProfile extends Fragment
                     {
                         LoadingViewFollow.setVisibility(View.VISIBLE);
                         ImageViewFollow.setVisibility(View.VISIBLE);
-
-                        ScaleAnimation Fade2 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        Fade2.setDuration(200);
 
                         AnimationSet FadeAnim2 = new AnimationSet(true);
                         FadeAnim2.addAnimation(Fade2);
@@ -236,9 +229,9 @@ public class FragmentProfile extends Fragment
         });
 
         if (Build.VERSION.SDK_INT > 20)
-            AppBar.setOutlineProvider(null);
+            AppBarLayoutMain.setOutlineProvider(null);
 
-        Root.addView(AppBar);
+        RelativeLayoutMain.addView(AppBarLayoutMain);
 
         CollapsingToolbarLayout Collapsing = new CollapsingToolbarLayout(context)
         {
@@ -252,13 +245,11 @@ public class FragmentProfile extends Fragment
                 if (shown && Hidden)
                 {
                     Hidden =  false;
-
                     ImageViewCoverLayer.setVisibility(View.VISIBLE);
                 }
                 else if (!shown && !Hidden)
                 {
                     Hidden = true;
-
                     ImageViewCoverLayer.setVisibility(View.GONE);
                 }
             }
@@ -267,9 +258,9 @@ public class FragmentProfile extends Fragment
         Collapsing.setScrimVisibleHeightTrigger(MiscHandler.ToDimension(context, 57));
 
         AppBarLayout.LayoutParams CollapsingParam = (AppBarLayout.LayoutParams) Collapsing.getLayoutParams();
-        CollapsingParam.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        CollapsingParam.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
 
-        AppBar.addView(Collapsing);
+        AppBarLayoutMain.addView(Collapsing);
 
         ImageViewCover = new ImageView(context);
         ImageViewCover.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 160)));
@@ -471,7 +462,7 @@ public class FragmentProfile extends Fragment
 
         ScrollMain.requestLayout();
 
-        Root.addView(ScrollMain);
+        RelativeLayoutMain.addView(ScrollMain);
 
         RelativeLayout Main = new RelativeLayout(context);
         Main.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -797,14 +788,13 @@ public class FragmentProfile extends Fragment
 
         RelativeLayoutTabLike.addView(ViewTabLike);
 
-        RelativeLayout.LayoutParams ViewLine3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
-        ViewLine3Param.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        LinearLayoutManager LinearLayoutManager = new LinearLayoutManager(context);
 
-        FrameLayout FrameTab = new FrameLayout(context);
-        FrameTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-        FrameTab.setId(FrameLayoutID);
+        RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        RecyclerViewMain.setLayoutManager(LinearLayoutManager);
 
-        LinearData.addView(FrameTab);
+        LinearData.addView(RecyclerViewMain);
 
         ImageViewCircleProfile = new ImageViewCircle(context);
         ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
@@ -814,12 +804,12 @@ public class FragmentProfile extends Fragment
         CoordinatorLayout.LayoutParams ImageViewCircleProfileParam = (CoordinatorLayout.LayoutParams) ImageViewCircleProfile.getLayoutParams();
         ImageViewCircleProfileParam.anchorGravity = Gravity.BOTTOM | Gravity.START;
         ImageViewCircleProfileParam.leftMargin = MiscHandler.ToDimension(context, 10);
-        ImageViewCircleProfileParam.setAnchorId(AppBar.getId());
+        ImageViewCircleProfileParam.setAnchorId(AppBarLayoutMain.getId());
 
         ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
         ImageViewCircleProfile.requestLayout();
 
-        Root.addView(ImageViewCircleProfile);
+        RelativeLayoutMain.addView(ImageViewCircleProfile);
 
         ShapeFollowWhite = new GradientDrawable();
         ShapeFollowWhite.setShape(GradientDrawable.OVAL);
@@ -845,12 +835,12 @@ public class FragmentProfile extends Fragment
         CoordinatorLayout.LayoutParams ImageViewEditParam = (CoordinatorLayout.LayoutParams) ImageViewEdit.getLayoutParams();
         ImageViewEditParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
         ImageViewEditParam.rightMargin = MiscHandler.ToDimension(context, 10);
-        ImageViewEditParam.setAnchorId(AppBar.getId());
+        ImageViewEditParam.setAnchorId(AppBarLayoutMain.getId());
 
         ImageViewEdit.setLayoutParams(ImageViewEditParam);
         ImageViewEdit.requestLayout();
 
-        Root.addView(ImageViewEdit);
+        RelativeLayoutMain.addView(ImageViewEdit);
 
         LoadingViewFollow = new LoadingView(context);
         LoadingViewFollow.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
@@ -862,12 +852,12 @@ public class FragmentProfile extends Fragment
         CoordinatorLayout.LayoutParams LoadingViewFollowParam = (CoordinatorLayout.LayoutParams) LoadingViewFollow.getLayoutParams();
         LoadingViewFollowParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
         LoadingViewFollowParam.rightMargin = MiscHandler.ToDimension(context, 10);
-        LoadingViewFollowParam.setAnchorId(AppBar.getId());
+        LoadingViewFollowParam.setAnchorId(AppBarLayoutMain.getId());
 
         LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
         LoadingViewFollow.requestLayout();
 
-        Root.addView(LoadingViewFollow);
+        RelativeLayoutMain.addView(LoadingViewFollow);
 
         ShapeFollowBlue = new GradientDrawable();
         ShapeFollowBlue.setShape(GradientDrawable.OVAL);
@@ -915,21 +905,21 @@ public class FragmentProfile extends Fragment
                                     MiscHandler.Toast(context, getString(R.string.FragmentProfileUnFollow));
                                 }
                             }
-
-                            LoadingViewFollow.Stop();
-                            ImageViewFollow.setVisibility(View.VISIBLE);
-
                         }
                         catch (Exception e)
                         {
                             // Leave Me Alone
                         }
+
+                        LoadingViewFollow.Stop();
+                        ImageViewFollow.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        MiscHandler.Toast(context, getString(R.string.NoInternet));
+                        LoadingViewFollow.Stop();
+                        ImageViewFollow.setVisibility(View.VISIBLE);
                     }
                 });
             }
@@ -938,50 +928,50 @@ public class FragmentProfile extends Fragment
         CoordinatorLayout.LayoutParams ImageViewFollowParam = (CoordinatorLayout.LayoutParams) ImageViewFollow.getLayoutParams();
         ImageViewFollowParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
         ImageViewFollowParam.rightMargin = MiscHandler.ToDimension(context, 10);
-        ImageViewFollowParam.setAnchorId(AppBar.getId());
+        ImageViewFollowParam.setAnchorId(AppBarLayoutMain.getId());
 
         ImageViewFollow.setLayoutParams(ImageViewFollowParam);
         ImageViewFollow.requestLayout();
 
-        Root.addView(ImageViewFollow);
+        RelativeLayoutMain.addView(ImageViewFollow);
 
-        RelativeLayoutLoading = new RelativeLayout(context);
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
         RelativeLayoutLoading.setClickable(true);
 
-        Root.addView(RelativeLayoutLoading);
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewDataParam);
 
-        RelativeLayoutLoading.addView(LoadingViewData);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
-        RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(context);
-        TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTry.setText(getString(R.string.GeneralTryAgain));
-        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTryAgain.setText(getString(R.string.GeneralTryAgain));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutLoading.addView(TextViewTry);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
-        return Root;
+        return RelativeLayoutMain;
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentProfile");
+        AndroidNetworking.forceCancel("FragmentProfile");
     }
 
     private void ChangeTab(Context context, int tab)
@@ -993,14 +983,14 @@ public class FragmentProfile extends Fragment
             case 3: TextViewDetailTool.setText((LikeCount + " " + getString(R.string.FragmentProfileLikeCount))); break;
         }
 
+        Tab = tab;
+
         TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabPost.setBackgroundResource(R.color.White);
         TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabComment.setBackgroundResource(R.color.White);
         TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabLike.setBackgroundResource(R.color.White);
-
-        Fragment SelectedFragment = new FragmentProfilePost();
 
         switch (tab)
         {
@@ -1009,35 +999,29 @@ public class FragmentProfile extends Fragment
                 ViewTabPost.setBackgroundResource(R.color.BlueLight);
             break;
             case 2:
-                SelectedFragment = new FragmentProfileComment();
+
                 TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabComment.setBackgroundResource(R.color.BlueLight);
             break;
             case 3:
-                SelectedFragment = new FragmentProfileLike();
+
                 TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabLike.setBackgroundResource(R.color.BlueLight);
             break;
         }
-
-        Bundle bundle = new Bundle();
-        bundle.putString("Username", Username);
-
-        SelectedFragment.setArguments(bundle);
-
-        getChildFragmentManager().beginTransaction().replace(FrameLayoutID, SelectedFragment).commit();
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        TextViewTry.setVisibility(View.GONE);
-        LoadingViewData.Start();
+        TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileGet"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
         .setTag("FragmentProfile")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -1133,25 +1117,24 @@ public class FragmentProfile extends Fragment
                         CommentCount = Data.getString("Comment");
                         LikeCount = Data.getString("Like");
                     }
-
-                    ChangeTab(context, 1);
                 }
                 catch (Exception e)
                 {
                     // Leave Me Alone
                 }
 
+                ChangeTab(context, 1);
+
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
                 RelativeLayoutLoading.setVisibility(View.GONE);
-                TextViewTry.setVisibility(View.GONE);
-                LoadingViewData.Stop();
             }
 
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                TextViewTry.setVisibility(View.VISIBLE);
-                LoadingViewData.Stop();
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
             }
         });
     }

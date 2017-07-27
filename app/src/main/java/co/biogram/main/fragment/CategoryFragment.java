@@ -170,6 +170,7 @@ public class CategoryFragment extends Fragment
             CategoryList.add(new Struct(R.drawable.ic_category_politics, "Politics", 15));
             CategoryList.add(new Struct(R.drawable.ic_category_health, "Health", 16));
             CategoryList.add(new Struct(R.drawable.ic_category_other, "Other", 17));
+            CategoryList.add(new Struct(R.drawable.ic_category_other, "Religious", 18));
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder

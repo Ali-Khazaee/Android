@@ -5,13 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.NestedScrollView;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,27 +37,11 @@ public class ActivityMain extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.aa);
 
-        final NestedScrollView aa = (NestedScrollView) findViewById(R.id.aa);
-        final LinearLayout bb = (LinearLayout) findViewById(R.id.bb);
+        Context context = this;
 
-        aa.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener()
-        {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
-            {
-                bb.setTranslationY(scrollY);
-
-            }
-        });
-
-     
-
-        /*Context context = this;
-
-        RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         RelativeLayout.LayoutParams LinearLayoutMenuParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 57));
         LinearLayoutMenuParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -70,7 +51,7 @@ public class ActivityMain extends FragmentActivity
         LinearLayoutMenu.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutMenu.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(LinearLayoutMenu);
+        RelativeLayoutMain.addView(LinearLayoutMenu);
 
         View ViewLine = new View(context);
         ViewLine.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
@@ -140,17 +121,17 @@ public class ActivityMain extends FragmentActivity
         FrameLayoutContent.setLayoutParams(FrameLayoutContentParam);
         FrameLayoutContent.setId(R.id.ActivityMainContentContainer);
 
-        Root.addView(FrameLayoutContent);
+        RelativeLayoutMain.addView(FrameLayoutContent);
 
         FrameLayout FrameLayoutFull = new FrameLayout(context);
         FrameLayoutFull.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         FrameLayoutFull.setId(R.id.ActivityMainFullContainer);
 
-        Root.addView(FrameLayoutFull);
+        RelativeLayoutMain.addView(FrameLayoutFull);
 
-        setContentView(Root);
+        setContentView(RelativeLayoutMain);
 
-        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));*/
+        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
     }
 
     @Override

@@ -922,7 +922,7 @@ public class ActivityProfileEdit extends FragmentActivity
     protected void onStop()
     {
         super.onStop();
-        AndroidNetworking.cancel("ActivityProfileEdit");
+        AndroidNetworking.forceCancel("ActivityProfileEdit");
     }
 
     @Override
