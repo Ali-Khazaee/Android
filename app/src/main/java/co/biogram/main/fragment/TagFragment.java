@@ -34,16 +34,12 @@ import co.biogram.main.misc.RecyclerViewScroll;
 
 public class TagFragment extends Fragment
 {
-    private LoadingView LoadingViewInbox;
-    private TextView TextViewTryAgain;
-
+    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
+    private AdapterPost PostAdapter;
     private String Tag = "";
 
-    private AdapterPost Adapter;
-    private final List<AdapterPost.Struct> InboxList = new ArrayList<>();
-
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
@@ -53,6 +49,7 @@ public class TagFragment extends Fragment
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
@@ -61,9 +58,26 @@ public class TagFragment extends Fragment
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
+        ImageView ImageViewBack = new ImageView(context);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                getActivity().onBackPressed();
+            }
+        });
+
+        RelativeLayoutHeader.addView(ImageViewBack);
+
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewTitleParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         TextView TextViewTitle = new TextView(context);
@@ -84,6 +98,14 @@ public class TagFragment extends Fragment
         ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
         ImageViewBookMark.setId(MiscHandler.GenerateViewID());
+        ImageViewBookMark.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBookMark);
 
@@ -95,6 +117,14 @@ public class TagFragment extends Fragment
         ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -116,27 +146,28 @@ public class TagFragment extends Fragment
         RecyclerView RecyclerViewInbox = new RecyclerView(context);
         RecyclerViewInbox.setLayoutParams(RecyclerViewInboxParam);
         RecyclerViewInbox.setLayoutManager(LinearLayoutManagerNotification);
-        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), InboxList, "SubCategoryFragment"));
+        RecyclerViewInbox.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostList, "TagFragment"));
         RecyclerViewInbox.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
         {
             @Override
             public void OnLoadMore()
             {
-                InboxList.add(null);
-                Adapter.notifyItemInserted(InboxList.size());
+                PostList.add(null);
+                PostAdapter.notifyItemInserted(PostList.size());
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTagList"))
-                .addBodyParameter("Skip", String.valueOf(InboxList.size()))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostListTag"))
+                .addBodyParameter("Skip", String.valueOf(PostList.size()))
                 .addBodyParameter("Tag", Tag)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("TagFragment")
-                .build().getAsString(new StringRequestListener()
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
                     {
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        PostList.remove(PostList.size() - 1);
+                        PostAdapter.notifyItemRemoved(PostList.size());
 
                         try
                         {
@@ -167,10 +198,10 @@ public class TagFragment extends Fragment
                                     PostStruct.BookMark = Post.getBoolean("BookMark");
                                     PostStruct.Follow = Post.getBoolean("Follow");
 
-                                    InboxList.add(PostStruct);
+                                    PostList.add(PostStruct);
                                 }
 
-                                Adapter.notifyDataSetChanged();
+                                PostAdapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
@@ -183,8 +214,8 @@ public class TagFragment extends Fragment
                     public void onError(ANError anError)
                     {
                         ResetLoading(false);
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        PostList.remove(PostList.size() - 1);
+                        PostAdapter.notifyItemRemoved(PostList.size());
                     }
                 });
             }
@@ -192,27 +223,27 @@ public class TagFragment extends Fragment
 
         RelativeLayoutMain.addView(RecyclerViewInbox);
 
-        RelativeLayout.LayoutParams LoadingViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
-        LoadingViewInboxParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewInbox = new LoadingView(context);
-        LoadingViewInbox.setLayoutParams(LoadingViewInboxParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutMain.addView(LoadingViewInbox);
+        RelativeLayoutMain.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTryAgain = new TextView(context);
+        final TextView TextViewTryAgain = new TextView(context);
         TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain); } });
 
         RelativeLayoutMain.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -224,20 +255,21 @@ public class TagFragment extends Fragment
         AndroidNetworking.forceCancel("TagFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
-        LoadingViewInbox.Start();
+        LoadingViewMain.Start();
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTagList"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("PostListTag"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Tag", Tag)
         .setTag("TagFragment")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
-            {MiscHandler.Debug("QQ" + Response);
+            {
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -267,10 +299,10 @@ public class TagFragment extends Fragment
                             PostStruct.BookMark = Post.getBoolean("BookMark");
                             PostStruct.Follow = Post.getBoolean("Follow");
 
-                            InboxList.add(PostStruct);
+                            PostList.add(PostStruct);
                         }
 
-                        Adapter.notifyDataSetChanged();
+                        PostAdapter.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e)
@@ -278,16 +310,15 @@ public class TagFragment extends Fragment
                     // Leave Me Alone
                 }
 
-                LoadingViewInbox.Stop();
+                LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(context, getString(R.string.NoInternet));
                 TextViewTryAgain.setVisibility(View.VISIBLE);
-                LoadingViewInbox.Stop();
+                LoadingViewMain.Stop();
             }
         });
     }

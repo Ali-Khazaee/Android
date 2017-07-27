@@ -404,7 +404,7 @@ public class NotificationFragment extends Fragment
                 RelativeLayoutMain.addView(TextViewMessage);
 
                 RelativeLayout.LayoutParams TextViewTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewTimeParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
+                TextViewTimeParam.setMargins(0, MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), 0);
                 TextViewTimeParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
                 TextView TextViewTime = new TextView(context);

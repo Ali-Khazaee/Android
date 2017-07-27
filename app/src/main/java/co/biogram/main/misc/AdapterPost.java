@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -695,7 +696,24 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
             try
             {
-                JSONArray URL = new JSONArray(PostList.get(Position).Data);
+                final JSONArray URL = new JSONArray(PostList.get(Position).Data);
+
+                Holder.RelativeLayoutLink.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        try
+                        {
+                            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(URL.get(0).toString()));
+                            Activity.startActivity(i);
+                        }
+                        catch (Exception e)
+                        {
+                            MiscHandler.Debug("AdapterPost-Link: " + e.toString());
+                        }
+                    }
+                });
 
                 final TextCrawler Request = new TextCrawler(URL.get(0).toString(), Tag, new TextCrawler.TextCrawlerCallBack()
                 {

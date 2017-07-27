@@ -17,6 +17,7 @@ import android.view.View;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentProfile;
+import co.biogram.main.fragment.TagFragment;
 
 public class TagHandler
 {
@@ -30,7 +31,6 @@ public class TagHandler
         textView.setHighlightColor(Color.TRANSPARENT);
 
         int Index = 0;
-        int StartIndexOfNextTagSign;
         CharSequence Text = textView.getText();
 
         while (Index < Text.length() - 1)
@@ -46,13 +46,12 @@ public class TagHandler
                 if (Sign == '@')
                     TagType = 2;
 
-                StartIndexOfNextTagSign = Index;
-                NextNotLetterDigitCharIndex = FindNextValidTagChar(Text, StartIndexOfNextTagSign);
+                NextNotLetterDigitCharIndex = FindNextValidTagChar(Text, Index);
 
                 Spannable Span = (Spannable) textView.getText();
                 CharacterStyle TagChar = new ClickableForegroundColorSpan(TagType, ContextCompat.getColor(textView.getContext(), R.color.BlueLight), activity);
 
-                Span.setSpan(TagChar, StartIndexOfNextTagSign, NextNotLetterDigitCharIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                Span.setSpan(TagChar, Index, NextNotLetterDigitCharIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
             Index = NextNotLetterDigitCharIndex;
@@ -83,9 +82,9 @@ public class TagHandler
 
     private class ClickableForegroundColorSpan extends ClickableSpan
     {
-        private final int TagType;
-        private final int TagColor;
         private final FragmentActivity Activity;
+        private final int TagColor;
+        private final int TagType;
 
         ClickableForegroundColorSpan(int Type, int Color, FragmentActivity activity)
         {
@@ -109,10 +108,18 @@ public class TagHandler
             int End = Span.getSpanEnd(this);
             String Message = Text.subSequence(Start + 1, End).toString();
 
-            if (TagType == 2)
+            if (TagType == 1)
             {
-                MiscHandler.HideSoftKey(Activity);
+                Bundle bundle = new Bundle();
+                bundle.putString("Tag", Message);
 
+                Fragment fragment = new TagFragment();
+                fragment.setArguments(bundle);
+
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("TagFragment").commit();
+            }
+            else if (TagType == 2)
+            {
                 Bundle bundle = new Bundle();
                 bundle.putString("Username", Message);
 
@@ -121,6 +128,8 @@ public class TagHandler
 
                 Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
             }
+
+            MiscHandler.HideSoftKey(Activity);
         }
     }
 }

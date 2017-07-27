@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,8 +40,24 @@ public class ActivityMain extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.aa);
 
-        Context context = this;
+        final NestedScrollView aa = (NestedScrollView) findViewById(R.id.aa);
+        final LinearLayout bb = (LinearLayout) findViewById(R.id.bb);
+
+        aa.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener()
+        {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
+            {
+                bb.setTranslationY(scrollY);
+
+            }
+        });
+
+     
+
+        /*Context context = this;
 
         RelativeLayout Root = new RelativeLayout(context);
         Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -131,7 +150,7 @@ public class ActivityMain extends FragmentActivity
 
         setContentView(Root);
 
-        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
+        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));*/
     }
 
     @Override
