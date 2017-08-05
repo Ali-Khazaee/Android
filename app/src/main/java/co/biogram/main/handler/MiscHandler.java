@@ -124,12 +124,12 @@ public class MiscHandler
 
         switch (random.nextInt(5) + 1)
         {
-            case 1:  return "http://10.48.9.85/" + URL;
-            case 2:  return "http://10.48.9.85/" + URL;
-            case 3:  return "http://10.48.9.85/" + URL;
-            case 4:  return "http://10.48.9.85/" + URL;
-            case 5:  return "http://10.48.9.85/" + URL;
-            default: return "http://10.48.9.85/" + URL;
+            case 1:  return "http://5.160.219.220/" + URL;
+            case 2:  return "http://5.160.219.220/" + URL;
+            case 3:  return "http://5.160.219.220/" + URL;
+            case 4:  return "http://5.160.219.220/" + URL;
+            case 5:  return "http://5.160.219.220/" + URL;
+            default: return "http://5.160.219.220/" + URL;
         }
     }
 
