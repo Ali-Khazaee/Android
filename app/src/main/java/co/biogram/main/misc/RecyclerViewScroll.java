@@ -8,6 +8,7 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
     private final LinearLayoutManager LayoutManager;
     private int PreviousTotalCount = 0;
     private boolean IsLoading = false;
+    private long PreviousRequestTime = 0;
 
     protected RecyclerViewScroll(LinearLayoutManager linearLayoutManager)
     {
@@ -25,14 +26,19 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
 
         if (IsLoading && (TotalCount > PreviousTotalCount))
         {
-            IsLoading = false;
             PreviousTotalCount = TotalCount;
+
+            if (PreviousRequestTime > System.currentTimeMillis())
+                return;
+
+            IsLoading = false;
         }
 
         if (!IsLoading && LastVisibleItemPosition > TotalCount)
         {
             OnLoadMore();
             IsLoading = true;
+            PreviousRequestTime = System.currentTimeMillis() + 500;
         }
     }
 

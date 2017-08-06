@@ -104,7 +104,7 @@ public class LikeFragment extends Fragment
             public void OnLoadMore()
             {
                 LikeList.add(null);
-                Adapter.notifyItemInserted(LikeList.size());
+                Adapter.notifyDataSetChanged();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
                 .addBodyParameter("PostID", PostID)
@@ -118,7 +118,7 @@ public class LikeFragment extends Fragment
                     public void onResponse(String Response)
                     {
                         LikeList.remove(LikeList.size() - 1);
-                        Adapter.notifyItemRemoved(LikeList.size());
+                        Adapter.notifyDataSetChanged();
 
                         try
                         {
@@ -148,7 +148,7 @@ public class LikeFragment extends Fragment
                     public void onError(ANError anError)
                     {
                         LikeList.remove(LikeList.size() - 1);
-                        Adapter.notifyItemRemoved(LikeList.size());
+                        Adapter.notifyDataSetChanged();
                         RecyclerViewScrollMain.ResetLoading(false);
                     }
                 });
@@ -229,9 +229,9 @@ public class LikeFragment extends Fragment
 
         private final Context context;
 
-        AdapterMain(Context context)
+        AdapterMain(Context c)
         {
-            this.context = context;
+            context = c;
         }
 
         class ViewHolderLike extends RecyclerView.ViewHolder

@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -46,25 +45,21 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ImageViewCircle;
+import co.biogram.main.misc.RecyclerViewScroll;
 
 public class CommentFragment extends Fragment
 {
-    private RelativeLayout RelativeLayoutLoading;
-    private LoadingView LoadingViewData;
-    private TextView TextViewTry;
-
-    private String PostID = "";
-    private boolean IsOwner = false;
-    private boolean LoadingBottom = false;
-
-    private EditText EditTextComment;
-    private AdapterComment Adapter;
     private final List<StructComment> CommentList = new ArrayList<>();
+    private RecyclerViewScroll RecyclerViewScrollMain;
+    private EditText EditTextComment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final String PostID = getArguments().getString("PostID", "");
+        final RecyclerView RecyclerViewMain = new RecyclerView(context);
+        final AdapterMain Adapter = new AdapterMain(context, getArguments().getString("OwnerID", "").equals(SharedHandler.GetString(context, "ID")), PostID);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -179,14 +174,15 @@ public class CommentFragment extends Fragment
                                 StructComment.CommentID = Result.getString("CommentID");
                                 StructComment.OwnerID = SharedHandler.GetString(context, "ID");
                                 StructComment.Username = SharedHandler.GetString(context, "Username");
-                                StructComment.Time = System.currentTimeMillis() + 10;
+                                StructComment.Time = (System.currentTimeMillis() / 1000) - 2;
                                 StructComment.Message = EditTextComment.getText().toString();
                                 StructComment.LikeCount = 0;
                                 StructComment.Like = false;
                                 StructComment.Avatar = SharedHandler.GetString(context, "Avatar");
 
-                                CommentList.add(0, StructComment);
-                                Adapter.notifyItemInserted(0);
+                                CommentList.add(CommentList.size(), StructComment);
+                                Adapter.notifyDataSetChanged();
+                                RecyclerViewMain.scrollToPosition(CommentList.size() - 1);
                             }
                         }
                         catch (Exception e)
@@ -220,7 +216,7 @@ public class CommentFragment extends Fragment
         RelativeLayout.LayoutParams EditTextCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         EditTextCommentParam.addRule(RelativeLayout.LEFT_OF, RelativeLayoutSend.getId());
 
-        EditText EditTextComment = new EditText(context);
+        EditTextComment = new EditText(context);
         EditTextComment.setLayoutParams(EditTextCommentParam);
         EditTextComment.setHint(R.string.CommentFragmentHint);
         EditTextComment.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
@@ -262,158 +258,118 @@ public class CommentFragment extends Fragment
 
         RelativeLayoutMain.addView(ViewLine2);
 
+        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RecyclerViewMainParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
 
-        if (getArguments() != null)
-        {
-            PostID = getArguments().getString("PostID", "");
+        LinearLayoutManager LinearLayoutManagerComment = new LinearLayoutManager(context);
 
-            if (getArguments().getString("OwnerID", "").equals(SharedHandler.GetString(context, "ID")))
-                IsOwner = true;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        final LinearLayoutManager LinearLayoutManagerComment = new LinearLayoutManager(context);
-
-        final RecyclerView RecyclerViewComment = new RecyclerView(context);
-        RecyclerViewComment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RecyclerViewComment.setLayoutManager(LinearLayoutManagerComment);
-        RecyclerViewComment.setAdapter(Adapter = new AdapterComment(context));
-        RecyclerViewComment.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        RecyclerViewComment.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerComment)
         {
             @Override
-            public void onScrolled(RecyclerView View, int DX, int DY)
+            public void OnLoadMore()
             {
-                if (DY <= 0)
-                    return;
+                MiscHandler.Debug("OnLoadMore Called!");
+                CommentList.add(null);
+                Adapter.notifyDataSetChanged();
 
-                if (!LoadingBottom && (LinearLayoutManagerComment.findLastVisibleItemPosition() + 5) > LinearLayoutManagerComment.getItemCount())
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
+                .addBodyParameter("Skip", String.valueOf(CommentList.size()))
+                .addBodyParameter("PostID", PostID)
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .setTag("CommentFragment")
+                .build()
+                .getAsString(new StringRequestListener()
                 {
-                    LoadingBottom = true;
-                    CommentList.add(null);
-                    Adapter.notifyItemInserted(CommentList.size());
-
-                    AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
-                    .addBodyParameter("Skip", String.valueOf(CommentList.size()))
-                    .addBodyParameter("PostID", PostID)
-                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .setTag("CommentFragment")
-                    .build().getAsString(new StringRequestListener()
+                    @Override
+                    public void onResponse(String Response)
                     {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
+                        CommentList.remove(CommentList.size() - 1);
 
-                                if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                                for (int K = 0; K < ResultList.length(); K++)
                                 {
-                                    JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                                    JSONObject Comment = ResultList.getJSONObject(K);
 
-                                    for (int K = 0; K < ResultList.length(); K++)
-                                    {
-                                        JSONObject Comment = ResultList.getJSONObject(K);
+                                    StructComment StructComment = new StructComment();
+                                    StructComment.CommentID = Comment.getString("CommentID");
+                                    StructComment.OwnerID = Comment.getString("OwnerID");
+                                    StructComment.Username = Comment.getString("Username");
+                                    StructComment.Time = Comment.getInt("Time");
+                                    StructComment.Message = Comment.getString("Message");
+                                    StructComment.LikeCount = Comment.getInt("LikeCount");
+                                    StructComment.Like = Comment.getBoolean("Like");
+                                    StructComment.Avatar = Comment.getString("Avatar");
 
-                                        StructComment StructComment = new StructComment();
-                                        StructComment.CommentID = Comment.getString("CommentID");
-                                        StructComment.OwnerID = Comment.getString("OwnerID");
-                                        StructComment.Username = Comment.getString("Username");
-                                        StructComment.Time = Comment.getInt("Time");
-                                        StructComment.Message = Comment.getString("Message");
-                                        StructComment.LikeCount = Comment.getInt("LikeCount");
-                                        StructComment.Like = Comment.getBoolean("Like");
-                                        StructComment.Avatar = Comment.getString("Avatar");
-
-                                        CommentList.add(StructComment);
-                                    }
-
-                                    Adapter.notifyDataSetChanged();
+                                    CommentList.add(StructComment);
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                // Leave Me Alone
-                            }
 
-                            LoadingBottom = false;
-                            CommentList.remove(CommentList.size() - 1);
-                            Adapter.notifyItemRemoved(CommentList.size());
+                                Adapter.notifyDataSetChanged();
+                            }
                         }
-
-                        @Override
-                        public void onError(ANError error)
+                        catch (Exception e)
                         {
-                            LoadingBottom = false;
-                            CommentList.remove(CommentList.size() - 1);
-                            Adapter.notifyItemRemoved(CommentList.size());
-
-                            MiscHandler.Toast(context, getString(R.string.NoInternet));
+                            RecyclerViewScrollMain.ResetLoading(false);
                         }
-                    });
-                }
-            }
-        });
+                    }
 
+                    @Override
+                    public void onError(ANError error)
+                    {
+                        CommentList.remove(CommentList.size() - 1);
+                        Adapter.notifyDataSetChanged();
+                        RecyclerViewScrollMain.ResetLoading(false);
+
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
+                    }
+                });
+            }
+        };
+
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerComment);
+        RecyclerViewMain.setAdapter(Adapter);
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
+
+        RelativeLayoutMain.addView(RecyclerViewMain);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
-        RelativeLayoutLoadingParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
 
-        RelativeLayoutLoading = new RelativeLayout(context);
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
         RelativeLayoutMain.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutLoading.addView(LoadingViewData);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
-        RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(context);
-        TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setText(getString(R.string.TryAgain));
-        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, PostID, Adapter, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutLoading.addView(TextViewTry);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, PostID, Adapter, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -425,22 +381,21 @@ public class CommentFragment extends Fragment
         AndroidNetworking.forceCancel("CommentFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, String PostID, final AdapterMain Adapter, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        TextViewTry.setVisibility(View.GONE);
-        LoadingViewData.Start();
+        TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
         .addBodyParameter("PostID", PostID)
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("CommentFragment")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
             {
-                RelativeLayoutLoading.setVisibility(View.GONE);
-
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -465,28 +420,36 @@ public class CommentFragment extends Fragment
 
                             CommentList.add(StructComment);
                         }
-                        InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
                         Adapter.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("CommentFragment-RequestSent: " + e.toString());
+                    RecyclerViewScrollMain.ResetLoading(false);
                 }
+
+                InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+                LoadingViewMain.Stop();
+                RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ANError error)
             {
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.VISIBLE);
+                RecyclerViewScrollMain.ResetLoading(false);
+
                 MiscHandler.Toast(context, getString(R.string.NoInternet));
-                TextViewTry.setVisibility(View.GONE);
-                LoadingViewData.Stop();
             }
         });
     }
 
-    private class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHolderComment>
+    private class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolderComment>
     {
         private final int ID_Profile = MiscHandler.GenerateViewID();
         private final int ID_Username = MiscHandler.GenerateViewID();
@@ -499,10 +462,14 @@ public class CommentFragment extends Fragment
         private final int ID_LikeCount = MiscHandler.GenerateViewID();
         private final int ID_Line = MiscHandler.GenerateViewID();
 
+        private final String PostID;
+        private final boolean IsOwner;
         private final Context context;
 
-        AdapterComment(Context c)
+        AdapterMain(Context c, boolean isOwner, String postID)
         {
+            PostID = postID;
+            IsOwner = isOwner;
             context = c;
         }
 
@@ -542,7 +509,7 @@ public class CommentFragment extends Fragment
         @Override
         public void onBindViewHolder(final ViewHolderComment Holder, int position)
         {
-            if (CommentList.get(position) == null)
+            if (getItemViewType(position) == 1)
                 return;
 
             final int Position = Holder.getAdapterPosition();
@@ -550,7 +517,7 @@ public class CommentFragment extends Fragment
             Glide.with(context)
             .load(CommentList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
-            .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
+            .override(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40))
             .dontAnimate()
             .into(Holder.ImageViewProfile);
 
@@ -572,7 +539,7 @@ public class CommentFragment extends Fragment
             String Username = CommentList.get(Position).Username;
 
             if (Username.length() > 25)
-                Username = Username.substring(0, 25) + " ...";
+                Username = Username.substring(0, 30) + "...";
 
             Holder.TextViewUsername.setText(Username);
             Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
@@ -679,7 +646,8 @@ public class CommentFragment extends Fragment
                     .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                     .setTag("CommentFragment")
-                    .build().getAsString(new StringRequestListener()
+                    .build()
+                    .getAsString(new StringRequestListener()
                     {
                         @Override
                         public void onResponse(String Response)
@@ -698,7 +666,7 @@ public class CommentFragment extends Fragment
                             }
                             catch (Exception e)
                             {
-                                // Leave Me Alone
+                                MiscHandler.Debug("CommentFragment-RequestLike: " + e.toString());
                             }
                         }
 
@@ -718,9 +686,9 @@ public class CommentFragment extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-                        LinearLayout Root = new LinearLayout(context);
-                        Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                        Root.setOrientation(LinearLayout.VERTICAL);
+                        LinearLayout LinearLayoutMain = new LinearLayout(context);
+                        LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                        LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                         TextView TextViewTitle = new TextView(context);
                         TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -729,19 +697,19 @@ public class CommentFragment extends Fragment
                         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         TextViewTitle.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
 
-                        Root.addView(TextViewTitle);
+                        LinearLayoutMain.addView(TextViewTitle);
 
                         View ViewLine = new View(context);
                         ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                         ViewLine.setBackgroundResource(R.color.Gray2);
 
-                        Root.addView(ViewLine);
+                        LinearLayoutMain.addView(ViewLine);
 
                         LinearLayout LinearLayoutChoice = new LinearLayout(context);
                         LinearLayoutChoice.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         LinearLayoutChoice.setOrientation(LinearLayout.HORIZONTAL);
 
-                        Root.addView(LinearLayoutChoice);
+                        LinearLayoutMain.addView(LinearLayoutChoice);
 
                         TextView TextViewYes = new TextView(context);
                         TextViewYes.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
@@ -765,7 +733,7 @@ public class CommentFragment extends Fragment
 
                         final Dialog DialogDelete = new Dialog(getActivity());
                         DialogDelete.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        DialogDelete.setContentView(Root);
+                        DialogDelete.setContentView(LinearLayoutMain);
                         DialogDelete.show();
 
                         TextViewYes.setOnClickListener(new View.OnClickListener()
@@ -778,7 +746,8 @@ public class CommentFragment extends Fragment
                                 .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
                                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                                 .setTag("CommentFragment")
-                                .build().getAsString(new StringRequestListener()
+                                .build()
+                                .getAsString(new StringRequestListener()
                                 {
                                     @Override
                                     public void onResponse(String Response)
@@ -788,12 +757,12 @@ public class CommentFragment extends Fragment
                                             if (new JSONObject(Response).getInt("Message") == 1000)
                                             {
                                                 CommentList.remove(Position);
-                                                Adapter.notifyItemRemoved(Position);
+                                                notifyDataSetChanged();
                                             }
                                         }
                                         catch (Exception e)
                                         {
-                                            // Leave Me Alone
+                                            MiscHandler.Debug("CommentFragment-RequestDelete: " + e.toString());
                                         }
                                     }
 
@@ -841,8 +810,8 @@ public class CommentFragment extends Fragment
         {
             if (ViewType == 0)
             {
-                RelativeLayout Root = new RelativeLayout(context);
-                Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+                RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
                 RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40));
                 ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
@@ -851,7 +820,7 @@ public class CommentFragment extends Fragment
                 ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
                 ImageViewCircleProfile.setId(ID_Profile);
 
-                Root.addView(ImageViewCircleProfile);
+                RelativeLayoutMain.addView(ImageViewCircleProfile);
 
                 RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
@@ -863,7 +832,7 @@ public class CommentFragment extends Fragment
                 TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewUsername.setId(ID_Username);
 
-                Root.addView(TextViewUsername);
+                RelativeLayoutMain.addView(TextViewUsername);
 
                 RelativeLayout.LayoutParams TextViewTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewTimeParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
@@ -876,7 +845,7 @@ public class CommentFragment extends Fragment
                 TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 TextViewTime.setId(ID_Time);
 
-                Root.addView(TextViewTime);
+                RelativeLayoutMain.addView(TextViewTime);
 
                 RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewMessageParam.setMargins(0, MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 10), 0);
@@ -889,7 +858,7 @@ public class CommentFragment extends Fragment
                 TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewMessage.setId(ID_Message);
 
-                Root.addView(TextViewMessage);
+                RelativeLayoutMain.addView(TextViewMessage);
 
                 RelativeLayout.LayoutParams RelativeLayoutToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 RelativeLayoutToolParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCircleProfile.getId());
@@ -899,7 +868,7 @@ public class CommentFragment extends Fragment
                 RelativeLayoutTool.setLayoutParams(RelativeLayoutToolParam);
                 RelativeLayoutTool.setId(MiscHandler.GenerateViewID());
 
-                Root.addView(RelativeLayoutTool);
+                RelativeLayoutMain.addView(RelativeLayoutTool);
 
                 ImageView ImageViewLike = new ImageView(context);
                 ImageViewLike.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 30), MiscHandler.ToDimension(context, 30)));
@@ -971,16 +940,16 @@ public class CommentFragment extends Fragment
                 ViewLine.setBackgroundResource(R.color.Gray);
                 ViewLine.setId(ID_Line);
 
-                Root.addView(ViewLine);
+                RelativeLayoutMain.addView(ViewLine);
 
-                return new ViewHolderComment(Root, true);
+                return new ViewHolderComment(RelativeLayoutMain, true);
             }
 
-            LoadingView Loading = new LoadingView(context);
-            Loading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            Loading.Start();
+            LoadingView LoadingViewMain = new LoadingView(context);
+            LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            LoadingViewMain.Start();
 
-            return new ViewHolderComment(Loading, false);
+            return new ViewHolderComment(LoadingViewMain, false);
         }
 
         @Override
@@ -992,7 +961,7 @@ public class CommentFragment extends Fragment
         @Override
         public int getItemViewType(int position)
         {
-            return CommentList.get(position)!= null ? 0 : 1;
+            return CommentList.get(position) != null ? 0 : 1;
         }
     }
 
