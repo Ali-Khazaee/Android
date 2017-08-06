@@ -451,7 +451,7 @@ public class SearchFragment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", PeopleList.get(Position).Username);
 
-                    Fragment fragment = new FragmentProfile();
+                    Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
@@ -467,7 +467,7 @@ public class SearchFragment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", PeopleList.get(Position).Username);
 
-                    Fragment fragment = new FragmentProfile();
+                    Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();

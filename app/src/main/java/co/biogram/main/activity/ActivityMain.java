@@ -18,7 +18,7 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.CategoryFragment;
-import co.biogram.main.fragment.FragmentProfile;
+import co.biogram.main.fragment.ProfileFragment;
 import co.biogram.main.fragment.FragmentMoment;
 import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
@@ -188,7 +188,7 @@ public class ActivityMain extends FragmentActivity
             case 2: SelectedFragment = new InboxFragment();        break;
             case 3: SelectedFragment = new CategoryFragment();     break;
             case 4: SelectedFragment = new NotificationFragment(); break;
-            case 5: SelectedFragment = new FragmentProfile();      break;
+            case 5: SelectedFragment = new ProfileFragment();      break;
         }
 
         FragmentManager FragManager = getSupportFragmentManager();

@@ -318,7 +318,7 @@ public class NotificationFragment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", NotificationList.get(Position).Username);
 
-                    Fragment fragment = new FragmentProfile();
+                    Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
@@ -348,7 +348,7 @@ public class NotificationFragment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", NotificationList.get(Position).Username);
 
-                    Fragment fragment = new FragmentProfile();
+                    Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();

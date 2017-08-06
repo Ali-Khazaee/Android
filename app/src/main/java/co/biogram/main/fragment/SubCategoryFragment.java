@@ -66,9 +66,26 @@ public class SubCategoryFragment extends Fragment
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
+        ImageView ImageViewBack = new ImageView(context);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                getActivity().onBackPressed();
+            }
+        });
+
+        RelativeLayoutHeader.addView(ImageViewBack);
+
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewTitleParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         TextView TextViewTitle = new TextView(context);
@@ -89,6 +106,14 @@ public class SubCategoryFragment extends Fragment
         ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
         ImageViewBookMark.setId(MiscHandler.GenerateViewID());
+        ImageViewBookMark.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBookMark);
 
@@ -100,6 +125,14 @@ public class SubCategoryFragment extends Fragment
         ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new SearchFragment(), "SearchFragment").addToBackStack("SearchFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 

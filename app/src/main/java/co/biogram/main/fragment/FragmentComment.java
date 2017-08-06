@@ -627,7 +627,7 @@ public class FragmentComment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", CommentList.get(Position).Username);
 
-                    Fragment fragment = new FragmentProfile();
+                    Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
@@ -648,7 +648,7 @@ public class FragmentComment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", CommentList.get(Position).Username);
 
-                    Fragment fragment = new FragmentProfile();
+                    Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();

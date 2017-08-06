@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -60,6 +62,8 @@ public class FragmentPostDetails extends Fragment
     private ImageView ImageViewTriple1;
     private ImageView ImageViewTriple2;
     private ImageView ImageViewTriple3;
+    private FrameLayout FrameLayoutVideo;
+    private ImageView ImageViewVideo;
     private RelativeLayout RelativeLayoutContentLink;
     private LoadingView LoadingViewLink;
     private TextView TextViewTryLink;
@@ -628,6 +632,28 @@ public class FragmentPostDetails extends Fragment
 
         RelativeLayoutTripleLayout.addView(ImageViewTriple3);
 
+        FrameLayoutVideo = new FrameLayout(context);
+        FrameLayoutVideo.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 150)));
+        FrameLayoutVideo.setBackgroundResource(R.color.Black);
+
+        RelativeLayoutContent.addView(FrameLayoutVideo);
+
+        ImageViewVideo = new ImageView(context);
+        ImageViewVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageViewVideo.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        FrameLayoutVideo.addView(ImageViewVideo);
+
+        LinearLayout.LayoutParams ImageViewPlayParam = new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+        ImageViewPlayParam.gravity = Gravity.CENTER;
+
+        ImageView ImageViewPlay = new ImageView(context);
+        ImageViewPlay.setLayoutParams(ImageViewPlayParam);
+        ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_XY);
+        ImageViewPlay.setImageResource(R.drawable.ic_play);
+
+        FrameLayoutVideo.addView(ImageViewPlay);
+
         GradientDrawable ShapeLink = new GradientDrawable();
         ShapeLink.setStroke(MiscHandler.ToDimension(context, 1), ContextCompat.getColor(context, R.color.BlueGray));
 
@@ -1031,7 +1057,7 @@ public class FragmentPostDetails extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentPostDetails");
+        AndroidNetworking.forceCancel("FragmentPostDetails");
     }
 
     private void RetrieveDataFromServer(final Context context)
@@ -1074,7 +1100,7 @@ public class FragmentPostDetails extends Fragment
                                 Bundle bundle = new Bundle();
                                 bundle.putString("Username", Username);
 
-                                Fragment fragment = new FragmentProfile();
+                                Fragment fragment = new ProfileFragment();
                                 fragment.setArguments(bundle);
 
                                 getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
@@ -1143,8 +1169,27 @@ public class FragmentPostDetails extends Fragment
                         }
                         else if (Result.getInt("Type") == 2)
                         {
-                            // Fill Me Later
-                            Result.getInt("Type");
+                             JSONArray URL = new JSONArray(Result.getString("Data"));
+
+                            final String VideoUrl = URL.get(0).toString();
+
+                            FrameLayoutVideo.setVisibility(View.VISIBLE);
+                            ImageViewVideo.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("VideoURL", VideoUrl);
+
+                                    Fragment fragment = new VideoPreviewFragment();
+                                    fragment.setArguments(bundle);
+
+                                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
+                                }
+                            });
+
+                            MiscHandler.CreateVideoThumbnail(URL.get(0).toString(), getActivity(), ImageViewVideo);
                         }
                         else if (Result.getInt("Type") == 3)
                         {

@@ -17,12 +17,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -43,41 +45,45 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.activity.ActivityProfileEdit;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
+import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
+import co.biogram.main.misc.RecyclerViewScroll;
 import co.biogram.main.misc.ScrollViewSticky;
 
-public class FragmentProfile extends Fragment
+public class ProfileFragment extends Fragment
 {
-    private int Tab = 0;
-    private String Username;
+    private List<StructComment> CommentList = new ArrayList<>();
+    private List<AdapterPost.Struct> PostList = new ArrayList<>();
+    private List<AdapterPost.Struct> PostListLike = new ArrayList<>();
+
+    private AdapterPost PostAdapter;
+    private AdapterComment CommentAdapter;
+
+    private int CurrentTab = 0;
+
     private String PostCount;
     private String CommentCount;
     private String LikeCount;
-    private boolean Self = false;
 
-    private RecyclerView RecyclerViewMain;
+    private boolean IsMine = false;
 
-    private ImageView ImageViewBack;
-    private ImageView ImageViewCover;
-    private TextView TextViewDetailTool;
-    private TextView TextViewUsernameTool;
-    private ImageView ImageViewCoverLayer;
-    private ImageViewCircle ImageViewCircleProfile;
-
-    private GradientDrawable ShapeFollowWhite;
-    private GradientDrawable ShapeFollowBlue;
-
-    private ImageView ImageViewEdit;
-    private LoadingView LoadingViewFollow;
-    private ImageView ImageViewFollow;
-
+    private TextView TextViewTabPost;
+    private View ViewTabPost;
+    private TextView TextViewTabComment;
+    private View ViewTabComment;
+    private TextView TextViewTabLike;
+    private View ViewTabLike;
     private TextView TextViewUsername;
     private TextView TextViewDescription;
     private TextView TextViewUrl;
@@ -87,13 +93,20 @@ public class FragmentProfile extends Fragment
     private TextView TextViewPostCount;
     private TextView TextViewFollowerCount;
     private TextView TextViewFollowingCount;
+    private ImageView ImageViewEdit;
+    private LoadingView LoadingViewFollow;
+    private ImageView ImageViewFollow;
+    private ImageView ImageViewBack;
+    private ImageView ImageViewCover;
+    private TextView TextViewDetailTool;
+    private TextView TextViewUsernameTool;
+    private ImageView ImageViewCoverLayer;
+    private ImageViewCircle ImageViewCircleProfile;
+    private RecyclerView RecyclerViewMain;
+    private RecyclerViewScroll RecyclerViewScrollMain;
 
-    private TextView TextViewTabPost;
-    private View ViewTabPost;
-    private TextView TextViewTabComment;
-    private View ViewTabComment;
-    private TextView TextViewTabLike;
-    private View ViewTabLike;
+    private GradientDrawable ShapeFollowWhite;
+    private GradientDrawable ShapeFollowBlue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -101,6 +114,8 @@ public class FragmentProfile extends Fragment
         final Context context = getActivity();
 
         MiscHandler.HideSoftKey(getActivity());
+
+        final String Username;
 
         if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
             Username = getArguments().getString("Username");
@@ -150,7 +165,7 @@ public class FragmentProfile extends Fragment
                     ScaleAnimation Fade2 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     Fade2.setDuration(200);
 
-                    if (Self)
+                    if (IsMine)
                     {
                         AnimationSet FadeAnim2 = new AnimationSet(true);
                         FadeAnim2.addAnimation(Fade2);
@@ -204,7 +219,7 @@ public class FragmentProfile extends Fragment
                     ScaleAnimation Fade2 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     Fade2.setDuration(200);
 
-                    if (Self)
+                    if (IsMine)
                     {
                         ImageViewEdit.setVisibility(View.VISIBLE);
 
@@ -329,13 +344,13 @@ public class FragmentProfile extends Fragment
         ImageViewMore.setLayoutParams(ImageViewMoreParam);
         ImageViewMore.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewMore.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
-        ImageViewMore.setImageResource(R.drawable.ic_back_white);
+        ImageViewMore.setImageResource(R.drawable.ic_more_white);
         ImageViewMore.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                if (Self)
+                if (IsMine)
                 {
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SettingFragment()).addToBackStack("SettingFragment").commit();
                 }
@@ -515,7 +530,7 @@ public class FragmentProfile extends Fragment
 
         ImageView ImageViewUrl = new ImageView(context);
         ImageViewUrl.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 24), MiscHandler.ToDimension(context, 24)));
-        ImageViewUrl.setImageResource(R.drawable.ic_arrow_down_blue);
+        ImageViewUrl.setImageResource(R.drawable.ic_link_black);
 
         LinearLayoutUrl.addView(ImageViewUrl);
 
@@ -538,7 +553,7 @@ public class FragmentProfile extends Fragment
 
         ImageView ImageViewLocation = new ImageView(context);
         ImageViewLocation.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 24), MiscHandler.ToDimension(context, 24)));
-        ImageViewLocation.setImageResource(R.drawable.ic_arrow_down_blue);
+        ImageViewLocation.setImageResource(R.drawable.ic_location_black);
 
         LinearLayoutLocation.addView(ImageViewLocation);
 
@@ -698,7 +713,7 @@ public class FragmentProfile extends Fragment
         RelativeLayout RelativeTabPost = new RelativeLayout(context);
         RelativeTabPost.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         RelativeTabPost.setBackgroundResource(R.color.White);
-        RelativeTabPost.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 1); } });
+        RelativeTabPost.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 1, Username); } });
 
         LinearTab.addView(RelativeTabPost);
 
@@ -727,7 +742,7 @@ public class FragmentProfile extends Fragment
         RelativeLayout RelativeLayoutTabComment = new RelativeLayout(context);
         RelativeLayoutTabComment.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         RelativeLayoutTabComment.setBackgroundResource(R.color.White);
-        RelativeLayoutTabComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 2); } });
+        RelativeLayoutTabComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 2, Username); } });
 
         LinearTab.addView(RelativeLayoutTabComment);
 
@@ -756,7 +771,7 @@ public class FragmentProfile extends Fragment
         RelativeLayout RelativeLayoutTabLike = new RelativeLayout(context);
         RelativeLayoutTabLike.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         RelativeLayoutTabLike.setBackgroundResource(R.color.White);
-        RelativeLayoutTabLike.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 3); } });
+        RelativeLayoutTabLike.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(context, 3, Username); } });
 
         LinearTab.addView(RelativeLayoutTabLike);
 
@@ -788,11 +803,21 @@ public class FragmentProfile extends Fragment
 
         RelativeLayoutTabLike.addView(ViewTabLike);
 
-        LinearLayoutManager LinearLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
+
+        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
+        {
+            @Override
+            public void OnLoadMore()
+            {
+                RetrieveDataFor(context, Username);
+            }
+        };
 
         RecyclerViewMain = new RecyclerView(context);
         RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        RecyclerViewMain.setLayoutManager(LinearLayoutManager);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
 
         LinearData.addView(RecyclerViewMain);
 
@@ -958,11 +983,11 @@ public class FragmentProfile extends Fragment
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewTryAgain.setText(getString(R.string.GeneralTryAgain));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
         RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
+        RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -974,7 +999,191 @@ public class FragmentProfile extends Fragment
         AndroidNetworking.forceCancel("FragmentProfile");
     }
 
-    private void ChangeTab(Context context, int tab)
+    private void RetrieveDataFor(Context context, String Username)
+    {
+        switch (CurrentTab)
+        {
+            case 1:
+            {
+                AndroidNetworking.post(MiscHandler.GetRandomServer("ProfilePostGet"))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("Username", Username)
+                .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                .setTag("ProfileFragment")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray postList = new JSONArray(Result.getString("Result"));
+
+                                for (int K = 0; K < postList.length(); K++)
+                                {
+                                    JSONObject Post = postList.getJSONObject(K);
+
+                                    AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+                                    PostStruct.PostID = Post.getString("PostID");
+                                    PostStruct.OwnerID = Post.getString("OwnerID");
+                                    PostStruct.Type = Post.getInt("Type");
+                                    PostStruct.Category = Post.getInt("Category");
+                                    PostStruct.Time = Post.getInt("Time");
+                                    PostStruct.Comment = Post.getBoolean("Comment");
+                                    PostStruct.Message = Post.getString("Message");
+                                    PostStruct.Data = Post.getString("Data");
+                                    PostStruct.Username = Post.getString("Username");
+                                    PostStruct.Avatar = Post.getString("Avatar");
+                                    PostStruct.Like = Post.getBoolean("Like");
+                                    PostStruct.LikeCount = Post.getInt("LikeCount");
+                                    PostStruct.CommentCount = Post.getInt("CommentCount");
+                                    PostStruct.BookMark = Post.getBoolean("BookMark");
+                                    PostStruct.Follow = Post.getBoolean("Follow");
+
+                                    PostList.add(PostStruct);
+                                }
+
+                                PostAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            RecyclerViewScrollMain.ResetLoading(false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        RecyclerViewScrollMain.ResetLoading(false);
+                    }
+                });
+            }
+            break;
+            case 2:
+            {
+                AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileCommentGet"))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("Username", Username)
+                .addBodyParameter("Skip", String.valueOf(CommentList.size()))
+                .setTag("ProfileFragment")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                                for (int I = 0; I < ResultList.length(); I++)
+                                {
+                                    JSONObject Comment = ResultList.getJSONObject(I);
+
+                                    StructComment commentStruct = new StructComment();
+                                    commentStruct.PostID = Comment.getString("PostID");
+                                    commentStruct.Username = Comment.getString("Username");
+                                    commentStruct.Avatar = Comment.getString("Avatar");
+                                    commentStruct.Target = Comment.getString("Target");
+                                    commentStruct.Comment = Comment.getString("Comment");
+                                    commentStruct.Time = Comment.getInt("Time");
+
+                                    CommentList.add(commentStruct);
+                                }
+                            }
+
+                            CommentAdapter.notifyDataSetChanged();
+                        }
+                        catch (Exception e)
+                        {
+                            RecyclerViewScrollMain.ResetLoading(false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        RecyclerViewScrollMain.ResetLoading(false);
+                    }
+                });
+            }
+            break;
+            case 3:
+            {
+                AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileLikeGet"))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("Username", Username)
+                .addBodyParameter("Skip", String.valueOf(PostListLike.size()))
+                .setTag("ProfileFragment")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray postList = new JSONArray(Result.getString("Result"));
+
+                                for (int K = 0; K < postList.length(); K++)
+                                {
+                                    JSONObject Post = postList.getJSONObject(K);
+
+                                    AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+                                    PostStruct.PostID = Post.getString("PostID");
+                                    PostStruct.OwnerID = Post.getString("OwnerID");
+                                    PostStruct.Type = Post.getInt("Type");
+                                    PostStruct.Category = Post.getInt("Category");
+                                    PostStruct.Time = Post.getInt("Time");
+                                    PostStruct.Comment = Post.getBoolean("Comment");
+                                    PostStruct.Message = Post.getString("Message");
+                                    PostStruct.Data = Post.getString("Data");
+                                    PostStruct.Username = Post.getString("Username");
+                                    PostStruct.Avatar = Post.getString("Avatar");
+                                    PostStruct.Like = Post.getBoolean("Like");
+                                    PostStruct.LikeCount = Post.getInt("LikeCount");
+                                    PostStruct.CommentCount = Post.getInt("CommentCount");
+                                    PostStruct.BookMark = Post.getBoolean("BookMark");
+                                    PostStruct.Follow = Post.getBoolean("Follow");
+
+                                    PostListLike.add(PostStruct);
+                                }
+
+                                PostAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            RecyclerViewScrollMain.ResetLoading(false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        RecyclerViewScrollMain.ResetLoading(false);
+                    }
+                });
+            }
+            break;
+        }
+    }
+
+    private void ChangeTab(Context context, int tab, String Username)
     {
         switch (tab)
         {
@@ -983,7 +1192,7 @@ public class FragmentProfile extends Fragment
             case 3: TextViewDetailTool.setText((LikeCount + " " + getString(R.string.FragmentProfileLikeCount))); break;
         }
 
-        Tab = tab;
+        CurrentTab = tab;
 
         TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
         ViewTabPost.setBackgroundResource(R.color.White);
@@ -995,23 +1204,26 @@ public class FragmentProfile extends Fragment
         switch (tab)
         {
             case 1:
+                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostList, "FragmentProfile"));
                 TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabPost.setBackgroundResource(R.color.BlueLight);
             break;
             case 2:
-
+                RecyclerViewMain.setAdapter(CommentAdapter = new AdapterComment(context));
                 TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabComment.setBackgroundResource(R.color.BlueLight);
             break;
             case 3:
-
+                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostListLike, "FragmentProfile"));
                 TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabLike.setBackgroundResource(R.color.BlueLight);
             break;
         }
+
+        RetrieveDataFor(context, Username);
     }
 
-    private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
+    private void RetrieveDataFromServer(final Context context, final String Username, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewMain.Start();
@@ -1038,7 +1250,7 @@ public class FragmentProfile extends Fragment
 
                         if (Data.getBoolean("Self"))
                         {
-                            Self = true;
+                            IsMine = true;
                             ImageViewBack.setVisibility(View.GONE);
                             SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
                             SharedHandler.SetString(context, "Username", Data.getString("Username"));
@@ -1123,7 +1335,7 @@ public class FragmentProfile extends Fragment
                     // Leave Me Alone
                 }
 
-                ChangeTab(context, 1);
+                ChangeTab(context, 1, Username);
 
                 LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
@@ -1137,5 +1349,277 @@ public class FragmentProfile extends Fragment
                 TextViewTryAgain.setVisibility(View.GONE);
             }
         });
+    }
+
+    private class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHolderComment>
+    {
+        private final int ID_Main = MiscHandler.GenerateViewID();
+        private final int ID_Profile = MiscHandler.GenerateViewID();
+        private final int ID_Username = MiscHandler.GenerateViewID();
+        private final int ID_Target = MiscHandler.GenerateViewID();
+        private final int ID_More = MiscHandler.GenerateViewID();
+        private final int ID_Comment = MiscHandler.GenerateViewID();
+        private final int ID_Time = MiscHandler.GenerateViewID();
+
+        private final Context context;
+
+        AdapterComment(Context c)
+        {
+            context = c;
+        }
+
+        class ViewHolderComment extends RecyclerView.ViewHolder
+        {
+            private RelativeLayout RelativeLayoutMain;
+            private ImageViewCircle ImageViewCircleProfile;
+            private TextView TextViewUsername;
+            private TextView TextViewTarget;
+            private ImageView ImageViewMore;
+            private TextView TextViewTime;
+            private TextView TextViewComment;
+
+            ViewHolderComment(View view, boolean Content)
+            {
+                super(view);
+
+                if (Content)
+                {
+                    RelativeLayoutMain = (RelativeLayout) view.findViewById(ID_Main);
+                    ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
+                    TextViewUsername = (TextView) view.findViewById(ID_Username);
+                    TextViewTarget = (TextView) view.findViewById(ID_Target);
+                    ImageViewMore = (ImageView) view.findViewById(ID_More);
+                    TextViewTime = (TextView) view.findViewById(ID_Time);
+                    TextViewComment = (TextView) view.findViewById(ID_Comment);
+                }
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolderComment Holder, int position)
+        {
+            if (getItemViewType(position) != 0)
+                return;
+
+            final int Position = Holder.getAdapterPosition();
+
+            Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("PostID", CommentList.get(Position).PostID);
+
+                    Fragment fragment = new FragmentPostDetails();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
+                }
+            });
+
+            Glide.with(context)
+                    .load(CommentList.get(Position).Avatar)
+                    .placeholder(R.color.BlueGray)
+                    .dontAnimate()
+                    .into(Holder.ImageViewCircleProfile);
+
+            Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", CommentList.get(Position).Target);
+
+                    Fragment fragment = new ProfileFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                }
+            });
+
+            Holder.TextViewUsername.setText(CommentList.get(Position).Username);
+            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", CommentList.get(Position).Username);
+
+                    Fragment fragment = new ProfileFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                }
+            });
+
+            Holder.TextViewTarget.setText(CommentList.get(Position).Target);
+            Holder.TextViewTarget.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", CommentList.get(Position).Target);
+
+                    Fragment fragment = new ProfileFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                }
+            });
+
+            Holder.TextViewTime.setText(MiscHandler.GetTimeName(CommentList.get(Position).Time));
+
+            Holder.ImageViewMore.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    PopupMenu PopMenu = new PopupMenu(context, Holder.ImageViewMore);
+                    PopMenu.getMenu().add(getString(R.string.FragmentProfileCommentReport));
+                    PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                    {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item)
+                        {
+                            return false;
+                        }
+                    });
+                    PopMenu.show();
+                }
+            });
+
+            Holder.TextViewComment.setText(CommentList.get(Position).Comment);
+        }
+
+        @Override
+        public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
+        {
+            if (ViewType == 0)
+            {
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+                RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                RelativeLayoutMain.setId(ID_Main);
+
+                RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+                ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
+
+                ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(context);
+                ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
+                ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
+                ImageViewCircleProfile.setImageResource(R.color.BlueGray);
+                ImageViewCircleProfile.setId(ID_Profile);
+
+                RelativeLayoutMain.addView(ImageViewCircleProfile);
+
+                RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
+                TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
+
+                TextView TextViewUsername = new TextView(context);
+                TextViewUsername.setLayoutParams(TextViewUsernameParam);
+                TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewUsername.setTypeface(null, Typeface.BOLD);
+                TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewUsername.setId(ID_Username);
+
+                RelativeLayoutMain.addView(TextViewUsername);
+
+                RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewMessageParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), 0, 0);
+                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_Username);
+
+                TextView TextViewMessage = new TextView(context);
+                TextViewMessage.setLayoutParams(TextViewMessageParam);
+                TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+                TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewMessage.setId(MiscHandler.GenerateViewID());
+                TextViewMessage.setText(getString(R.string.FragmentProfileCommentMessage));
+
+                RelativeLayoutMain.addView(TextViewMessage);
+
+                RelativeLayout.LayoutParams TextViewTargetParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewTargetParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), 0, 0);
+                TextViewTargetParam.addRule(RelativeLayout.RIGHT_OF, TextViewMessage.getId());
+
+                TextView TextViewTarget = new TextView(context);
+                TextViewTarget.setLayoutParams(TextViewTargetParam);
+                TextViewTarget.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewTarget.setTypeface(null, Typeface.BOLD);
+                TextViewTarget.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewTarget.setId(ID_Target);
+
+                RelativeLayoutMain.addView(TextViewTarget);
+
+                RelativeLayout.LayoutParams ImageViewMoreParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 32), MiscHandler.ToDimension(context, 32));
+                ImageViewMoreParam.setMargins(0, MiscHandler.ToDimension(context, 10), 0, 0);
+                ImageViewMoreParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+                ImageView ImageViewMore = new ImageView(context);
+                ImageViewMore.setLayoutParams(ImageViewMoreParam);
+                ImageViewMore.setPadding(MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1));
+                ImageViewMore.setImageResource(R.drawable.ic_option);
+                ImageViewMore.setId(ID_More);
+
+                RelativeLayoutMain.addView(ImageViewMore);
+
+                RelativeLayout.LayoutParams TextViewTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewTimeParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
+                TextViewTimeParam.addRule(RelativeLayout.LEFT_OF, ID_More);
+
+                TextView TextViewTime = new TextView(context);
+                TextViewTime.setLayoutParams(TextViewTimeParam);
+                TextViewTime.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
+                TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                TextViewTime.setId(ID_Time);
+
+                RelativeLayoutMain.addView(TextViewTime);
+
+                RelativeLayout.LayoutParams TextViewCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
+                TextViewCommentParam.addRule(RelativeLayout.BELOW, ID_More);
+
+                TextView TextViewComment = new TextView(context);
+                TextViewComment.setLayoutParams(TextViewCommentParam);
+                TextViewComment.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+                TextViewComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                TextViewComment.setId(ID_Comment);
+
+                RelativeLayoutMain.addView(TextViewComment);
+
+                return new ViewHolderComment(RelativeLayoutMain, true);
+            }
+
+            LoadingView LoadingViewMain = new LoadingView(context);
+            LoadingViewMain.setLayoutParams(new LoadingView.LayoutParams(LoadingView.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+            LoadingViewMain.Start();
+
+            return new ViewHolderComment(LoadingViewMain, false);
+        }
+
+        @Override
+        public int getItemCount()
+        {
+            return CommentList.size();
+        }
+
+        @Override
+        public int getItemViewType(int position)
+        {
+            return CommentList.get(position) == null ? 1 : 0;
+        }
+    }
+
+    private class StructComment
+    {
+        private String PostID;
+        private String Username;
+        private String Avatar;
+        private String Target;
+        private String Comment;
+        private int Time;
     }
 }

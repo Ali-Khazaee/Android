@@ -104,7 +104,7 @@ public class CategoryFragment extends Fragment
         RecyclerView RecyclerViewCategory = new RecyclerView(context);
         RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
         RecyclerViewCategory.setLayoutManager(new GridLayoutManager(context, 2));
-        RecyclerViewCategory.addItemDecoration(new GridSpacingItemDecoration(2, MiscHandler.ToDimension(context, 10)));
+        RecyclerViewCategory.addItemDecoration(new GridSpacingItemDecoration(2, MiscHandler.ToDimension(context, 15)));
         RecyclerViewCategory.setItemAnimator(new DefaultItemAnimator());
         RecyclerViewCategory.setClipToPadding(false);
         RecyclerViewCategory.setAdapter(new AdapterCategory(context));
@@ -235,7 +235,7 @@ public class CategoryFragment extends Fragment
 
             CardViewMain.addView(LinearLayoutCard);
 
-            LinearLayout.LayoutParams ImageViewIconParam = new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+            LinearLayout.LayoutParams ImageViewIconParam = new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 45), MiscHandler.ToDimension(context, 45));
             ImageViewIconParam.gravity = Gravity.CENTER;
 
             ImageView ImageViewIcon = new ImageView(context);

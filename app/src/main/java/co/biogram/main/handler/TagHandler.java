@@ -16,7 +16,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 
 import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentProfile;
+import co.biogram.main.fragment.ProfileFragment;
 import co.biogram.main.fragment.TagFragment;
 
 public class TagHandler
@@ -123,7 +123,7 @@ public class TagHandler
                 Bundle bundle = new Bundle();
                 bundle.putString("Username", Message);
 
-                Fragment fragment = new FragmentProfile();
+                Fragment fragment = new ProfileFragment();
                 fragment.setArguments(bundle);
 
                 Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
