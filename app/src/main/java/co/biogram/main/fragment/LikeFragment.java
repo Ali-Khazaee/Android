@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -32,30 +33,29 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ImageViewCircle;
+import co.biogram.main.misc.RecyclerViewScroll;
 
-public class FragmentLike extends Fragment
+public class LikeFragment extends Fragment
 {
-    private String PostID;
-    private AdapterLike adapterLike;
-
-    private boolean LoadingBottom = false;
-    private final List<LikeStruct> LikeList = new ArrayList<>();
+    private final List<StructLike> LikeList = new ArrayList<>();
+    private RecyclerViewScroll RecyclerViewScrollMain;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
-        RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(RelativeLayoutHeader);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
@@ -63,14 +63,7 @@ public class FragmentLike extends Fragment
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
         ImageViewBack.setImageResource(R.drawable.ic_back_blue);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                getActivity().onBackPressed();
-            }
-        });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {  @Override public void onClick(View view) { getActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -95,104 +88,102 @@ public class FragmentLike extends Fragment
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine);
+        RelativeLayoutMain.addView(ViewLine);
 
-        RelativeLayout.LayoutParams RVLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        RVLikeParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RecyclerView RecyclerViewLike = new RecyclerView(context);
-        RecyclerViewLike.setLayoutParams(RVLikeParam);
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
 
-        Root.addView(RecyclerViewLike);
+        final String PostID = getArguments().getString("PostID", "");
+        final AdapterMain Adapter = new AdapterMain(context);
 
-        PostID = getArguments().getString("PostID", "");
-        adapterLike = new AdapterLike();
-
-        RecyclerViewLike.setLayoutManager(new LinearLayoutManager(context));
-        RecyclerViewLike.setAdapter(adapterLike);
-        RecyclerViewLike.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
-            public void onScrolled(RecyclerView View, int dx, int DY)
+            public void OnLoadMore()
             {
-                if (DY <= 0)
-                    return;
+                LikeList.add(null);
+                Adapter.notifyItemInserted(LikeList.size());
 
-                if (((LinearLayoutManager) View.getLayoutManager()).findLastVisibleItemPosition() + 2 > View.getAdapter().getItemCount() && !LoadingBottom)
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
+                .addBodyParameter("PostID", PostID)
+                .addBodyParameter("Skip", String.valueOf(LikeList.size()))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .setTag("LikeFragment")
+                .build()
+                .getAsString(new StringRequestListener()
                 {
-                    LikeList.add(null);
-                    LoadingBottom = true;
-                    adapterLike.notifyItemInserted(LikeList.size());
-
-                    AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
-                    .addBodyParameter("PostID", PostID)
-                    .addBodyParameter("Skip", String.valueOf(LikeList.size()))
-                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .setTag("FragmentLike")
-                    .build().getAsString(new StringRequestListener()
+                    @Override
+                    public void onResponse(String Response)
                     {
-                        @Override
-                        public void onResponse(String Response)
+                        LikeList.remove(LikeList.size() - 1);
+                        Adapter.notifyItemRemoved(LikeList.size());
+
+                        try
                         {
-                            LikeList.remove(LikeList.size() - 1);
-                            adapterLike.notifyItemRemoved(LikeList.size());
-                            LoadingBottom = false;
+                            JSONObject Result = new JSONObject(Response);
 
-                            try
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                             {
-                                JSONObject Result = new JSONObject(Response);
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                                for (int K = 0; K < ResultList.length(); K++)
                                 {
-                                    JSONArray Likes = new JSONArray(Result.getString("Result"));
-
-                                    for (int K = 0; K < Likes.length(); K++)
-                                    {
-                                        JSONObject Like = Likes.getJSONObject(K);
-                                        LikeList.add(new LikeStruct(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
-                                    }
-
-                                    adapterLike.notifyDataSetChanged();
+                                    JSONObject Like = ResultList.getJSONObject(K);
+                                    LikeList.add(new StructLike(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                // Leave Me Alone
+
+                                Adapter.notifyDataSetChanged();
                             }
                         }
-
-                        @Override
-                        public void onError(ANError anError)
+                        catch (Exception e)
                         {
-                            LikeList.remove(LikeList.size() - 1);
-                            adapterLike.notifyItemRemoved(LikeList.size());
-                            LoadingBottom = false;
+                            MiscHandler.Debug("LikeFragment-RequestMain: " + e.toString());
+                            RecyclerViewScrollMain.ResetLoading(false);
                         }
-                    });
-                }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        LikeList.remove(LikeList.size() - 1);
+                        Adapter.notifyItemRemoved(LikeList.size());
+                        RecyclerViewScrollMain.ResetLoading(false);
+                    }
+                });
             }
-        });
+        };
 
-        RetrieveDataFromServer();
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.setAdapter(Adapter);
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
 
-        return Root;
+        RelativeLayoutMain.addView(RecyclerViewMain);
+
+        RetrieveDataFromServer(context, PostID, Adapter);
+
+        return RelativeLayoutMain;
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentLike");
+        AndroidNetworking.forceCancel("LikeFragment");
     }
 
-    private void RetrieveDataFromServer()
+    private void RetrieveDataFromServer(Context context, String PostID, final AdapterMain Adapter)
     {
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
         .addBodyParameter("PostID", PostID)
         .addBodyParameter("Skip", String.valueOf(LikeList.size()))
-        .addHeaders("TOKEN", SharedHandler.GetString(getActivity(), "TOKEN"))
-        .setTag("FragmentLike")
-        .build().getAsString(new StringRequestListener()
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .setTag("LikeFragment")
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -203,34 +194,45 @@ public class FragmentLike extends Fragment
 
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
-                        JSONArray Likes = new JSONArray(Result.getString("Result"));
+                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < Likes.length(); K++)
+                        for (int K = 0; K < ResultList.length(); K++)
                         {
-                            JSONObject Like = Likes.getJSONObject(K);
-                            LikeList.add(new LikeStruct(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
+                            JSONObject Like = ResultList.getJSONObject(K);
+                            LikeList.add(new StructLike(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
                         }
 
-                        adapterLike.notifyDataSetChanged();
+                        Adapter.notifyDataSetChanged();
                     }
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("LikeFragment-RequestMain: " + e.toString());
+                    RecyclerViewScrollMain.ResetLoading(false);
                 }
             }
 
             @Override
-            public void onError(ANError anError) { }
+            public void onError(ANError anError)
+            {
+                RecyclerViewScrollMain.ResetLoading(false);
+            }
         });
     }
 
-    class AdapterLike extends RecyclerView.Adapter<AdapterLike.ViewHolderLike>
+    class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolderLike>
     {
         private final int ID_ICON = MiscHandler.GenerateViewID();
         private final int ID_NAME = MiscHandler.GenerateViewID();
         private final int ID_TIME = MiscHandler.GenerateViewID();
         private final int ID_LINE = MiscHandler.GenerateViewID();
+
+        private final Context context;
+
+        AdapterMain(Context context)
+        {
+            this.context = context;
+        }
 
         class ViewHolderLike extends RecyclerView.ViewHolder
         {
@@ -256,16 +258,16 @@ public class FragmentLike extends Fragment
         @Override
         public void onBindViewHolder(ViewHolderLike Holder, int position)
         {
-            if (LikeList.get(position) == null)
+            if (getItemViewType(position) == 1)
                 return;
 
             final int Position = Holder.getAdapterPosition();
 
-            Context context = getActivity();
-
             Glide.with(context)
             .load(LikeList.get(Position).Avatar)
-            .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
+            .placeholder(R.color.BlueGray)
+            .override(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40))
+            .dontAnimate()
             .into(Holder.ImageViewCircleProfile);
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
@@ -279,11 +281,26 @@ public class FragmentLike extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
                 }
             });
 
             Holder.TextViewUsername.setText(LikeList.get(Position).Username);
+            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Username", LikeList.get(Position).Username);
+
+                    Fragment fragment = new ProfileFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                }
+            });
+
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(LikeList.get(Position).Time));
 
             if (Position == LikeList.size() - 1)
@@ -295,12 +312,10 @@ public class FragmentLike extends Fragment
         @Override
         public ViewHolderLike onCreateViewHolder(ViewGroup parent, int ViewType)
         {
-            Context context = getActivity();
-
             if (ViewType == 0)
             {
-                RelativeLayout Root = new RelativeLayout(context);
-                Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+                RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
                 RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40));
                 ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
@@ -310,7 +325,7 @@ public class FragmentLike extends Fragment
                 ImageViewCircleProfile.setImageResource(R.color.BlueGray);
                 ImageViewCircleProfile.setId(ID_ICON);
 
-                Root.addView(ImageViewCircleProfile);
+                RelativeLayoutMain.addView(ImageViewCircleProfile);
 
                 RelativeLayout.LayoutParams LinearLayoutRowParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 LinearLayoutRowParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCircleProfile.getId());
@@ -320,7 +335,7 @@ public class FragmentLike extends Fragment
                 LinearLayoutRow.setLayoutParams(LinearLayoutRowParam);
                 LinearLayoutRow.setOrientation(LinearLayout.VERTICAL);
 
-                Root.addView(LinearLayoutRow);
+                RelativeLayoutMain.addView(LinearLayoutRow);
 
                 TextView TextViewUsername = new TextView(context);
                 TextViewUsername.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -346,22 +361,22 @@ public class FragmentLike extends Fragment
                 ViewLine.setBackgroundResource(R.color.Gray);
                 ViewLine.setId(ID_LINE);
 
-                Root.addView(ViewLine);
+                RelativeLayoutMain.addView(ViewLine);
 
-                return new ViewHolderLike(Root, true);
+                return new ViewHolderLike(RelativeLayoutMain, true);
             }
 
-            LoadingView Loading = new LoadingView(context);
-            Loading.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-            Loading.Start();
+            LoadingView LoadingViewMain = new LoadingView(context);
+            LoadingViewMain.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+            LoadingViewMain.Start();
 
-            return new ViewHolderLike(Loading, false);
+            return new ViewHolderLike(LoadingViewMain, false);
         }
 
         @Override
         public int getItemViewType(int position)
         {
-            return LikeList.get(position)!= null ? 0 : 1;
+            return LikeList.get(position) != null ? 0 : 1;
         }
 
         @Override
@@ -371,13 +386,13 @@ public class FragmentLike extends Fragment
         }
     }
 
-    private class LikeStruct
+    private class StructLike
     {
         final String Username;
         final long Time;
         final String Avatar;
 
-        LikeStruct(String username, long time, String avatar)
+        StructLike(String username, long time, String avatar)
         {
             Username = username;
             Time = time;

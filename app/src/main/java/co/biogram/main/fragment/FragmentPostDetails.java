@@ -747,10 +747,10 @@ public class FragmentPostDetails extends Fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("PostID", PostID);
 
-                Fragment fragment = new FragmentLike();
+                Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentLike").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
             }
         });
 
@@ -771,10 +771,10 @@ public class FragmentPostDetails extends Fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("PostID", PostID);
 
-                Fragment fragment = new FragmentLike();
+                Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentLike").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
             }
         });
 
@@ -797,10 +797,10 @@ public class FragmentPostDetails extends Fragment
                     bundle.putString("PostID", PostID);
                     bundle.putString("OwnerID", OwnerID);
 
-                    Fragment fragment = new FragmentComment();
+                    Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentComment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 
@@ -828,10 +828,10 @@ public class FragmentPostDetails extends Fragment
                     bundle.putString("PostID", PostID);
                     bundle.putString("OwnerID", OwnerID);
 
-                    Fragment fragment = new FragmentComment();
+                    Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentComment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 
@@ -964,10 +964,10 @@ public class FragmentPostDetails extends Fragment
                     bundle.putString("PostID", PostID);
                     bundle.putString("OwnerID", OwnerID);
 
-                    Fragment fragment = new FragmentComment();
+                    Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentComment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 

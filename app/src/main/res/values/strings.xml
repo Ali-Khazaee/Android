@@ -51,10 +51,13 @@
     <string name="ContactFragmentFollow">Follow</string>
     <string name="ContactFragmentFollowing">Following</string>
 
-    <!-- BookMark Fragment -->
+    <!-- Bookmark Fragment -->
     <string name="BookmarkFragment">Bookmark</string>
 
-    <!-- BookMark Fragment -->
+    <!-- Like Fragment -->
+    <string name="LikeFragment">Likes</string>
+
+    <!-- Search Fragment -->
     <string name="SearchFragmentEditTextSearchHint">Search</string>
     <string name="SearchFragmentTabPeople">People</string>
     <string name="SearchFragmentTabTag">Tags</string>
@@ -71,6 +74,13 @@
     <string name="NotificationFragmentCommentLike">liked your comment</string>
     <string name="NotificationFragmentCommentTag">mentioned you in a comment</string>
 
+    <!-- Comment Fragment -->
+    <string name="CommentFragment">Comment</string>
+    <string name="CommentFragmentLike">LIKES</string>
+    <string name="CommentFragmentHint">Write Your Comment</string>
+    <string name="CommentFragmentAreYouSure">Are You Sure</string>
+    <string name="CommentFragmentYes">Yes</string>
+    <string name="CommentFragmentNo">No</string>
 
 
 
@@ -146,7 +156,7 @@
     <string name="FragmentPostDetailsCommentDisable">Commenting is Disabled</string>
     <string name="FragmentPostDetailsChoice">Choice</string>
     <string name="FragmentImagePreview">Image Preview</string>
-    <string name="FragmentLike">Likes</string>
+
     <string name="FragmentFollowing">Following</string>
     <string name="FragmentFollowingFollow">Follow</string>
     <string name="FragmentFollowingSince">Following Since: </string>D
@@ -173,12 +183,7 @@
     <string name="ActivityProfileDialogTitle">Your Choices</string>
     <string name="ActivityProfileCompleteAction">Complete Action Using</string>
     <string name="FragmentMoment">Moment</string>
-    <string name="FragmentComment">Comment</string>
-    <string name="FragmentCommentLike">LIKES</string>
-    <string name="FragmentCommentHint">Write Your Comment</string>
-    <string name="FragmentCommentAreYouSure">Are You Sure</string>
-    <string name="FragmentCommentYes">Yes</string>
-    <string name="FragmentCommentNo">No</string>
+
     <string name="FragmentMomentWrite">Write</string>
     <string name="FragmentMomentWriteChoiceCategory">Please Choice a Category</string>
     <string name="FragmentMomentWriteMoreContent">Please, Add More Content</string>

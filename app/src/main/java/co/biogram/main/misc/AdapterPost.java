@@ -41,9 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentComment;
+import co.biogram.main.fragment.CommentFragment;
 import co.biogram.main.fragment.FragmentImagePreview;
-import co.biogram.main.fragment.FragmentLike;
+import co.biogram.main.fragment.LikeFragment;
 import co.biogram.main.fragment.FragmentPostDetails;
 import co.biogram.main.fragment.ProfileFragment;
 import co.biogram.main.fragment.VideoPreviewFragment;
@@ -895,10 +895,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Bundle bundle = new Bundle();
                 bundle.putString("PostID", PostList.get(Position).PostID);
 
-                Fragment fragment = new FragmentLike();
+                Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentLike").commit();
+                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
             }
         });
 
@@ -914,10 +914,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     bundle.putString("PostID", PostList.get(Position).PostID);
                     bundle.putString("OwnerID", PostList.get(Position).OwnerID);
 
-                    Fragment fragment = new FragmentComment();
+                    Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentComment").commit();
+                    Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 

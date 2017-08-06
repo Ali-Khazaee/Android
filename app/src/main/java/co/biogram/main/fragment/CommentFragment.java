@@ -47,7 +47,7 @@ import co.biogram.main.handler.TagHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ImageViewCircle;
 
-public class FragmentComment extends Fragment
+public class CommentFragment extends Fragment
 {
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
@@ -55,38 +55,28 @@ public class FragmentComment extends Fragment
 
     private String PostID = "";
     private boolean IsOwner = false;
-    private boolean IsSending = false;
-    private boolean LoadingTop = false;
     private boolean LoadingBottom = false;
 
     private EditText EditTextComment;
     private AdapterComment Adapter;
-    private final List<Struct> CommentList = new ArrayList<>();
+    private final List<StructComment> CommentList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
-        if (getArguments() != null)
-        {
-            PostID = getArguments().getString("PostID", "");
-
-            if (getArguments().getString("OwnerID", "").equals(SharedHandler.GetString(context, "ID")))
-                IsOwner = true;
-        }
-
-        RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
-        Root.setClickable(true);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(RelativeLayoutHeader);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -119,7 +109,7 @@ public class FragmentComment extends Fragment
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine);
+        RelativeLayoutMain.addView(ViewLine);
 
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -129,11 +119,10 @@ public class FragmentComment extends Fragment
         RelativeLayoutBottom.setBackgroundResource(R.color.White5);
         RelativeLayoutBottom.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(RelativeLayoutBottom);
+        RelativeLayoutMain.addView(RelativeLayoutBottom);
 
         RelativeLayout.LayoutParams RelativeLayoutSendParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         RelativeLayoutSendParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        RelativeLayoutSendParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         RelativeLayout RelativeLayoutSend = new RelativeLayout(context);
         RelativeLayoutSend.setLayoutParams(RelativeLayoutSendParam);
@@ -141,70 +130,75 @@ public class FragmentComment extends Fragment
 
         RelativeLayoutBottom.addView(RelativeLayoutSend);
 
-        final LoadingView LoadingViewSend = new LoadingView(context);
-        final RecyclerView RecyclerViewComment = new RecyclerView(context);
-        final ImageView ImageViewSend = new ImageView(context);
+        RelativeLayout.LayoutParams LoadingViewSendParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        LoadingViewSendParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
+        final LoadingView LoadingViewSend = new LoadingView(context);
+        LoadingViewSend.setLayoutParams(LoadingViewSendParam);
+        LoadingViewSend.SetColor(R.color.BlueLight);
+
+        RelativeLayoutSend.addView(LoadingViewSend);
+
+        final ImageView ImageViewSend = new ImageView(context);
         ImageViewSend.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
         ImageViewSend.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSend.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         ImageViewSend.setImageResource(R.drawable.ic_send_gray);
         ImageViewSend.setOnClickListener(new View.OnClickListener()
         {
+            private boolean IsSending = false;
+
             @Override
             public void onClick(View view)
             {
                 if (IsSending || EditTextComment.getText().toString().equals(""))
                     return;
 
-                IsSending = true;
-                LoadingViewSend.Start();
                 ImageViewSend.setVisibility(View.GONE);
+                LoadingViewSend.Start();
+                IsSending = true;
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostComment"))
                 .addBodyParameter("Message", EditTextComment.getText().toString())
                 .addBodyParameter("PostID", PostID)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .setTag("FragmentComment")
-                .build().getAsString(new StringRequestListener()
+                .setTag("CommentFragment")
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
                     {
-                        IsSending = false;
-                        LoadingViewSend.Stop();
-
-                        ImageViewSend.setVisibility(View.VISIBLE);
-                        ImageViewSend.setImageResource(R.drawable.ic_send_blue);
-
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
 
                             if (Result.getInt("Message") == 1000)
                             {
-                                Struct StructComment = new Struct();
+                                StructComment StructComment = new StructComment();
                                 StructComment.CommentID = Result.getString("CommentID");
                                 StructComment.OwnerID = SharedHandler.GetString(context, "ID");
                                 StructComment.Username = SharedHandler.GetString(context, "Username");
-                                StructComment.Time = (int) (System.currentTimeMillis() + 1000);
+                                StructComment.Time = System.currentTimeMillis() + 10;
                                 StructComment.Message = EditTextComment.getText().toString();
                                 StructComment.LikeCount = 0;
                                 StructComment.Like = false;
                                 StructComment.Avatar = SharedHandler.GetString(context, "Avatar");
 
                                 CommentList.add(0, StructComment);
-
                                 Adapter.notifyItemInserted(0);
-                                RecyclerViewComment.scrollToPosition(0);
-                                ImageViewSend.setImageResource(R.drawable.ic_send_gray);
-                                EditTextComment.setText("");
                             }
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            MiscHandler.Debug("CommentFragment-CommentSent: " + e.toString());
                         }
+
+                        IsSending = false;
+                        LoadingViewSend.Stop();
+                        EditTextComment.setText("");
+                        ImageViewSend.setVisibility(View.VISIBLE);
+                        ImageViewSend.setImageResource(R.drawable.ic_send_gray);
                     }
 
                     @Override
@@ -212,7 +206,6 @@ public class FragmentComment extends Fragment
                     {
                         IsSending = false;
                         LoadingViewSend.Stop();
-
                         ImageViewSend.setVisibility(View.VISIBLE);
                         ImageViewSend.setImageResource(R.drawable.ic_send_blue);
 
@@ -224,18 +217,10 @@ public class FragmentComment extends Fragment
 
         RelativeLayoutSend.addView(ImageViewSend);
 
-        RelativeLayout.LayoutParams LoadingViewSendParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        LoadingViewSendParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        LoadingViewSend.setLayoutParams(LoadingViewSendParam);
-        LoadingViewSend.SetColor(R.color.BlueLight);
-
-        RelativeLayoutSend.addView(LoadingViewSend);
-
         RelativeLayout.LayoutParams EditTextCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         EditTextCommentParam.addRule(RelativeLayout.LEFT_OF, RelativeLayoutSend.getId());
 
-        EditTextComment = new EditText(context);
+        EditText EditTextComment = new EditText(context);
         EditTextComment.setLayoutParams(EditTextCommentParam);
         EditTextComment.setHint(R.string.FragmentCommentHint);
         EditTextComment.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
@@ -257,16 +242,13 @@ public class FragmentComment extends Fragment
             {
                 if (s.length() == 0)
                     ImageViewSend.setImageResource(R.drawable.ic_send_gray);
-                else if (!IsSending)
+                else
                     ImageViewSend.setImageResource(R.drawable.ic_send_blue);
             }
 
             @Override
             public void afterTextChanged(Editable editable) { }
         });
-
-        InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         RelativeLayoutBottom.addView(EditTextComment);
 
@@ -278,96 +260,49 @@ public class FragmentComment extends Fragment
         ViewLine2.setBackgroundResource(R.color.Gray2);
         ViewLine2.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine2);
+        RelativeLayoutMain.addView(ViewLine2);
 
-        RelativeLayout.LayoutParams SwipeRefreshLayoutCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        SwipeRefreshLayoutCommentParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
-        SwipeRefreshLayoutCommentParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
 
-        final SwipeRefreshLayout SwipeRefreshLayoutComment = new SwipeRefreshLayout(context);
-        SwipeRefreshLayoutComment.setLayoutParams(SwipeRefreshLayoutCommentParam);
-        SwipeRefreshLayoutComment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        if (getArguments() != null)
         {
-            @Override
-            public void onRefresh()
-            {
-                if (LoadingTop)
-                    return;
+            PostID = getArguments().getString("PostID", "");
 
-                LoadingTop = true;
-                SwipeRefreshLayoutComment.setEnabled(false);
-                SwipeRefreshLayoutComment.setRefreshing(false);
+            if (getArguments().getString("OwnerID", "").equals(SharedHandler.GetString(context, "ID")))
+                IsOwner = true;
+        }
 
-                if (CommentList.size() == 0)
-                {
-                    LoadingTop = false;
-                    SwipeRefreshLayoutComment.setEnabled(true);
-                    return;
-                }
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
-                .addBodyParameter("CommentTime", String.valueOf(CommentList.get(0).Time))
-                .addBodyParameter("PostID", PostID)
-                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .setTag("FragmentComment")
-                .build().getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingTop = false;
-                        SwipeRefreshLayoutComment.setEnabled(true);
 
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
 
-                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
-                            {
-                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                for (int K = 0; K < ResultList.length(); K++)
-                                {
-                                    JSONObject Comment = ResultList.getJSONObject(K);
 
-                                    Struct StructComment = new Struct();
-                                    StructComment.CommentID = Comment.getString("CommentID");
-                                    StructComment.OwnerID = Comment.getString("OwnerID");
-                                    StructComment.Username = Comment.getString("Username");
-                                    StructComment.Time = Comment.getInt("Time");
-                                    StructComment.Message = Comment.getString("Message");
-                                    StructComment.LikeCount = Comment.getInt("LikeCount");
-                                    StructComment.Like = Comment.getBoolean("Like");
-                                    StructComment.Avatar = Comment.getString("Avatar");
 
-                                    CommentList.add(StructComment);
-                                }
 
-                                Adapter.notifyDataSetChanged();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            // Leave Me Alone
-                        }
-                    }
 
-                    @Override
-                    public void onError(ANError error)
-                    {
-                        LoadingTop = false;
-                        SwipeRefreshLayoutComment.setEnabled(true);
 
-                        MiscHandler.Toast(context, getString(R.string.NoInternet));
-                    }
-                });
-            }
-        });
 
-        Root.addView(SwipeRefreshLayoutComment);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         final LinearLayoutManager LinearLayoutManagerComment = new LinearLayoutManager(context);
 
+        final RecyclerView RecyclerViewComment = new RecyclerView(context);
         RecyclerViewComment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewComment.setLayoutManager(LinearLayoutManagerComment);
         RecyclerViewComment.setAdapter(Adapter = new AdapterComment(context));
@@ -390,7 +325,7 @@ public class FragmentComment extends Fragment
                     .addBodyParameter("Skip", String.valueOf(CommentList.size()))
                     .addBodyParameter("PostID", PostID)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .setTag("FragmentComment")
+                    .setTag("CommentFragment")
                     .build().getAsString(new StringRequestListener()
                     {
                         @Override
@@ -408,7 +343,7 @@ public class FragmentComment extends Fragment
                                     {
                                         JSONObject Comment = ResultList.getJSONObject(K);
 
-                                        Struct StructComment = new Struct();
+                                        StructComment StructComment = new StructComment();
                                         StructComment.CommentID = Comment.getString("CommentID");
                                         StructComment.OwnerID = Comment.getString("OwnerID");
                                         StructComment.Username = Comment.getString("Username");
@@ -448,7 +383,6 @@ public class FragmentComment extends Fragment
             }
         });
 
-        SwipeRefreshLayoutComment.addView(RecyclerViewComment);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
@@ -457,7 +391,7 @@ public class FragmentComment extends Fragment
         RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
 
-        Root.addView(RelativeLayoutLoading);
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -481,14 +415,14 @@ public class FragmentComment extends Fragment
 
         RetrieveDataFromServer(context);
 
-        return Root;
+        return RelativeLayoutMain;
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentComment");
+        AndroidNetworking.forceCancel("CommentFragment");
     }
 
     private void RetrieveDataFromServer(final Context context)
@@ -499,7 +433,7 @@ public class FragmentComment extends Fragment
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
         .addBodyParameter("PostID", PostID)
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .setTag("FragmentComment")
+        .setTag("CommentFragment")
         .build().getAsString(new StringRequestListener()
         {
             @Override
@@ -519,7 +453,7 @@ public class FragmentComment extends Fragment
                         {
                             JSONObject Comment = ResultList.getJSONObject(K);
 
-                            Struct StructComment = new Struct();
+                            StructComment StructComment = new StructComment();
                             StructComment.CommentID = Comment.getString("CommentID");
                             StructComment.OwnerID = Comment.getString("OwnerID");
                             StructComment.Username = Comment.getString("Username");
@@ -531,7 +465,8 @@ public class FragmentComment extends Fragment
 
                             CommentList.add(StructComment);
                         }
-
+                        InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
                         Adapter.notifyDataSetChanged();
                     }
                 }
@@ -743,7 +678,7 @@ public class FragmentComment extends Fragment
                     AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentLike"))
                     .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .setTag("FragmentComment")
+                    .setTag("CommentFragment")
                     .build().getAsString(new StringRequestListener()
                     {
                         @Override
@@ -842,7 +777,7 @@ public class FragmentComment extends Fragment
                                 .addBodyParameter("PostID", PostID)
                                 .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
                                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                                .setTag("FragmentComment")
+                                .setTag("CommentFragment")
                                 .build().getAsString(new StringRequestListener()
                                 {
                                     @Override
@@ -1061,12 +996,12 @@ public class FragmentComment extends Fragment
         }
     }
 
-    private class Struct
+    private class StructComment
     {
         String CommentID;
         String OwnerID;
         String Username;
-        int Time;
+        long Time;
         String Message;
         int LikeCount;
         boolean Like;

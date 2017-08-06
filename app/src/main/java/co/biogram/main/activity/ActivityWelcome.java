@@ -681,7 +681,7 @@ public class ActivityWelcome extends FragmentActivity
                     {
                         @Override
                         public void onResponse(String Response)
-                        {MiscHandler.Debug("AA" + Response);
+                        {
                             ButtonUsername.setVisibility(View.VISIBLE);
                             LoadingViewUsername.Stop();
 
@@ -699,14 +699,14 @@ public class ActivityWelcome extends FragmentActivity
                                 MiscHandler.Toast(context, getString(R.string.FragmentSignUpUsernameError));
                             }
                             catch (Exception e)
-                            {MiscHandler.Debug("AA" + e.toString());
+                            {
                                 // Leave Me Alone
                             }
                         }
 
                         @Override
                         public void onError(ANError anError)
-                        {MiscHandler.Debug("AA" + anError.toString());
+                        {
                             ButtonUsername.setVisibility(View.VISIBLE);
                             LoadingViewUsername.Stop();
 
