@@ -94,7 +94,7 @@ public class CommentFragment extends Fragment
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(getString(R.string.FragmentComment));
+        TextViewTitle.setText(getString(R.string.CommentFragment));
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);
@@ -222,7 +222,7 @@ public class CommentFragment extends Fragment
 
         EditText EditTextComment = new EditText(context);
         EditTextComment.setLayoutParams(EditTextCommentParam);
-        EditTextComment.setHint(R.string.FragmentCommentHint);
+        EditTextComment.setHint(R.string.CommentFragmentHint);
         EditTextComment.setPadding(MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15), 0);
         EditTextComment.setId(MiscHandler.GenerateViewID());
         EditTextComment.setBackground(null);
@@ -725,7 +725,7 @@ public class CommentFragment extends Fragment
                         TextView TextViewTitle = new TextView(context);
                         TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black2));
-                        TextViewTitle.setText(getString(R.string.FragmentCommentAreYouSure));
+                        TextViewTitle.setText(getString(R.string.CommentFragmentAreYouSure));
                         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         TextViewTitle.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
 
@@ -746,7 +746,7 @@ public class CommentFragment extends Fragment
                         TextView TextViewYes = new TextView(context);
                         TextViewYes.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
                         TextViewYes.setTextColor(ContextCompat.getColor(context, R.color.Black4));
-                        TextViewYes.setText(getString(R.string.FragmentCommentYes));
+                        TextViewYes.setText(getString(R.string.CommentFragmentYes));
                         TextViewYes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         TextViewYes.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
                         TextViewYes.setGravity(Gravity.CENTER);
@@ -756,7 +756,7 @@ public class CommentFragment extends Fragment
                         TextView TextViewNo = new TextView(context);
                         TextViewNo.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
                         TextViewNo.setTextColor(ContextCompat.getColor(context, R.color.Black4));
-                        TextViewNo.setText(getString(R.string.FragmentCommentNo));
+                        TextViewNo.setText(getString(R.string.CommentFragmentNo));
                         TextViewNo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         TextViewNo.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
                         TextViewNo.setGravity(Gravity.CENTER);
@@ -944,7 +944,7 @@ public class CommentFragment extends Fragment
                 TextViewLike.setLayoutParams(TextViewLikeParam);
                 TextViewLike.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
                 TextViewLike.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                TextViewLike.setText(getString(R.string.FragmentCommentLike));
+                TextViewLike.setText(getString(R.string.CommentFragmentLike));
                 TextViewLike.setTypeface(null, Typeface.BOLD);
                 TextViewLike.setId(ID_LikeText);
 

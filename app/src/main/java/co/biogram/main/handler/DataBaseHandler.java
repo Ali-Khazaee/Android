@@ -8,109 +8,61 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHandler
 {
-    private static SQLiteDatabase DB;
-    private static SQLiteOpenHelper Helper;
+    private DatabaseHelper DBHelper;
 
-    private static synchronized void Prepare()
+    public DataBaseHandler(Context context)
     {
-        if (Helper == null)
-            Helper = new DataBaseHelper(null);
+        DBHelper = new DatabaseHelper(context);
     }
 
-    public synchronized static void AddOrUpdate(String Table, String[] Columns, String Where, String[] Args, ContentValues Content)
+    public long Insert(String table, ContentValues values)
     {
-        Prepare();
+        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        return db.insert(table, null, values);
+    }
 
-        SQLiteDatabase DataBase = Helper.getWritableDatabase();
-        Cursor cursor = DataBase.query(Table, Columns, Where, Args, null, null, null);
+    public int Delete(String table, String selection, String[] selectionArgs)
+    {
+        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        return db.delete(table, selection, selectionArgs);
+    }
 
-        if (cursor.getCount() > 0)
+    public int Update(String table, ContentValues values, String selection, String[] selectionArgs)
+    {
+        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        return db.update(table, values, selection, selectionArgs);
+    }
+
+    public Cursor Find(String table, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+    {
+        SQLiteDatabase db = DBHelper.getReadableDatabase();
+        return db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
+    }
+
+    private class DatabaseHelper extends SQLiteOpenHelper
+    {
+        private static final int DATABASE_VERSION = 1;
+        private static final String DATABASE_NAME = "BioGram.db";
+
+        private DatabaseHelper(Context context)
         {
-            DataBase.update(Table, Content, Where, Args);
-        }
-        else
-        {
-            DataBase.beginTransaction();
-            DataBase.insert(Table, null, Content);
-            DataBase.setTransactionSuccessful();
-            DataBase.endTransaction();
-        }
-
-        DataBase.close();
-        cursor.close();
-    }
-
-    public synchronized static void Add(String Table, ContentValues Content)
-    {
-        Prepare();
-
-        SQLiteDatabase DataBase = Helper.getWritableDatabase();
-        DataBase.beginTransaction();
-        DataBase.insert(Table, null, Content);
-        DataBase.setTransactionSuccessful();
-        DataBase.endTransaction();
-        DataBase.close();
-    }
-
-    public synchronized static void Update(String Table, ContentValues Content, String Where, String[] Args)
-    {
-        Prepare();
-
-        SQLiteDatabase DataBase = Helper.getWritableDatabase();
-        DataBase.update(Table, Content, Where, Args);
-        DataBase.close();
-    }
-
-    public synchronized static void Remove(String Table, String Where, String[] Args)
-    {
-        Prepare();
-
-        SQLiteDatabase DataBase = Helper.getWritableDatabase();
-        DataBase.delete(Table, Where, Args);
-        DataBase.close();
-    }
-
-    public synchronized static Cursor Find(String Table, String[] Columns, String Selection, String[] Args, String Order, String Limit)
-    {
-        Prepare();
-
-        DB = Helper.getReadableDatabase();
-        return DB.query(Table, Columns, Selection, Args, null, null, Order, Limit);
-    }
-
-    public synchronized static void Close(Cursor cursor)
-    {
-        if (cursor != null)
-            cursor.close();
-
-        if (DB != null)
-            DB.close();
-    }
-
-    public synchronized static void SetUp()
-    {
-        Prepare();
-
-        SQLiteDatabase DataBase = Helper.getWritableDatabase();
-        DataBase.execSQL("CREATE TABLE IF NOT EXISTS `POST` (`PostID`, `OwnerID`, `Type`, `Category`, `Time`, `Comment`, `Message`, `Data`, `Username`, `Avatar`, `Like`, `LikeCount`, `CommentCount`, `BookMark`);");
-        DataBase.close();
-    }
-
-    private static class DataBaseHelper extends SQLiteOpenHelper
-    {
-        DataBaseHelper(Context context)
-        {
-            super(context, "BioGram.db", null, 1);
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         public void onCreate(SQLiteDatabase db)
         {
-
+            db.execSQL("CREATE TABLE IF NOT EXISTS `POST` (`PostID`, `OwnerID`, `Type`, `Category`, `Time`, `Comment`, `Message`, `Data`, `Username`, `Avatar`, `Like`, `LikeCount`, `CommentCount`, `BookMark`, `Follow`);");
         }
 
-        public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion)
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
         {
+            db.execSQL("DROP TABLE IF EXISTS `POST`;");
+            onCreate(db);
+        }
 
+        public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
+        {
+            onUpgrade(db, oldVersion, newVersion);
         }
     }
 }

@@ -149,7 +149,6 @@ public class ActivityProfileEdit extends FragmentActivity
             public void onClick(View v)
             {
                 onBackPressed();
-                finish();
             }
         });
 

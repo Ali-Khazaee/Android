@@ -153,24 +153,24 @@ public class CategoryFragment extends Fragment
         AdapterCategory(Context c)
         {
             context = c;
-            CategoryList.add(new Struct(R.drawable.ic_category_news, "News", 1));
-            CategoryList.add(new Struct(R.drawable.ic_category_fun, "Fun", 2));
-            CategoryList.add(new Struct(R.drawable.ic_category_music, "Music", 3));
-            CategoryList.add(new Struct(R.drawable.ic_category_sport, "Sport", 4));
-            CategoryList.add(new Struct(R.drawable.ic_category_fashion, "Fashion", 5));
-            CategoryList.add(new Struct(R.drawable.ic_category_food, "Food", 6));
-            CategoryList.add(new Struct(R.drawable.ic_category_technology, "Technology", 7));
-            CategoryList.add(new Struct(R.drawable.ic_category_art, "Art", 8));
-            CategoryList.add(new Struct(R.drawable.ic_category_artist, "Artist", 9));
-            CategoryList.add(new Struct(R.drawable.ic_category_media, "Media", 10));
-            CategoryList.add(new Struct(R.drawable.ic_category_business, "Business", 11));
-            CategoryList.add(new Struct(R.drawable.ic_category_echonomy, "Economy", 12));
-            CategoryList.add(new Struct(R.drawable.ic_category_lilterature, "Literature", 13));
-            CategoryList.add(new Struct(R.drawable.ic_category_travel, "Travel", 14));
-            CategoryList.add(new Struct(R.drawable.ic_category_politics, "Politics", 15));
-            CategoryList.add(new Struct(R.drawable.ic_category_health, "Health", 16));
-            CategoryList.add(new Struct(R.drawable.ic_category_other, "Other", 17));
-            CategoryList.add(new Struct(R.drawable.ic_category_other, "Religious", 18));
+            CategoryList.add(new Struct(R.drawable.ic_category_news, getString(R.string.CategoryFragmentNews), 1));
+            CategoryList.add(new Struct(R.drawable.ic_category_fun, getString(R.string.CategoryFragmentFun), 2));
+            CategoryList.add(new Struct(R.drawable.ic_category_music, getString(R.string.CategoryFragmentMusic), 3));
+            CategoryList.add(new Struct(R.drawable.ic_category_sport, getString(R.string.CategoryFragmentSport), 4));
+            CategoryList.add(new Struct(R.drawable.ic_category_fashion, getString(R.string.CategoryFragmentFashion), 5));
+            CategoryList.add(new Struct(R.drawable.ic_category_food, getString(R.string.CategoryFragmentFood), 6));
+            CategoryList.add(new Struct(R.drawable.ic_category_technology, getString(R.string.CategoryFragmentTechnology), 7));
+            CategoryList.add(new Struct(R.drawable.ic_category_art, getString(R.string.CategoryFragmentArt), 8));
+            CategoryList.add(new Struct(R.drawable.ic_category_artist, getString(R.string.CategoryFragmentArtist), 9));
+            CategoryList.add(new Struct(R.drawable.ic_category_media, getString(R.string.CategoryFragmentMedia), 10));
+            CategoryList.add(new Struct(R.drawable.ic_category_business, getString(R.string.CategoryFragmentBusiness), 11));
+            CategoryList.add(new Struct(R.drawable.ic_category_echonomy, getString(R.string.CategoryFragmentEconomy), 12));
+            CategoryList.add(new Struct(R.drawable.ic_category_lilterature, getString(R.string.CategoryFragmentLiterature), 13));
+            CategoryList.add(new Struct(R.drawable.ic_category_travel, getString(R.string.CategoryFragmentTravel), 14));
+            CategoryList.add(new Struct(R.drawable.ic_category_politics, getString(R.string.CategoryFragmentPolitics), 15));
+            CategoryList.add(new Struct(R.drawable.ic_category_health, getString(R.string.CategoryFragmentHealth), 16));
+            CategoryList.add(new Struct(R.drawable.ic_category_other, getString(R.string.CategoryFragmentOther), 17));
+            CategoryList.add(new Struct(R.drawable.ic_category_other, getString(R.string.CategoryFragmentReligious), 18));
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder

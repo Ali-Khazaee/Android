@@ -74,7 +74,7 @@ public class LikeFragment extends Fragment
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewTitle.setText(getString(R.string.FragmentLike));
+        TextViewTitle.setText(getString(R.string.LikeFragment));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 

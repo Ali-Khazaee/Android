@@ -853,7 +853,6 @@ public class ProfileFragment extends Fragment
             public void onClick(View v)
             {
                 getActivity().startActivity(new Intent(context, ActivityProfileEdit.class));
-                getActivity().finish();
             }
         });
 

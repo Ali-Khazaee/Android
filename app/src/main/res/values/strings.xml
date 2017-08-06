@@ -42,7 +42,7 @@
     <string name="ChangePasswordFragmentNewEmpty">New passwords are empty</string>
     <string name="ChangePasswordFragmentNewBelow">New passwords must be higher than 5 characters</string>
     <string name="ChangePasswordFragmentNewAbove">New passwords must be lower than 32 characters</string>
-    <string name="ChangePasswordFragmentAccount">Account Do not exist</string>
+    <string name="ChangePasswordFragmentAccount">Account Does not exist</string>
     <string name="ChangePasswordFragmentWrong">Current password is wrong</string>
     <string name="ChangePasswordFragmentDone">Password successfully changed</string>
 
@@ -82,6 +82,25 @@
     <string name="CommentFragmentYes">Yes</string>
     <string name="CommentFragmentNo">No</string>
 
+    <!-- Category Fragment -->
+    <string name="CategoryFragmentNews">News</string>
+    <string name="CategoryFragmentFun">Fun</string>
+    <string name="CategoryFragmentMusic">Music</string>
+    <string name="CategoryFragmentSport">Sport</string>
+    <string name="CategoryFragmentFashion">Fashion</string>
+    <string name="CategoryFragmentFood">Food</string>
+    <string name="CategoryFragmentTechnology">Technology</string>
+    <string name="CategoryFragmentArt">Art</string>
+    <string name="CategoryFragmentArtist">Artist</string>
+    <string name="CategoryFragmentMedia">Media</string>
+    <string name="CategoryFragmentBusiness">Business</string>
+    <string name="CategoryFragmentEconomy">Economy</string>
+    <string name="CategoryFragmentLiterature">Literature</string>
+    <string name="CategoryFragmentTravel">Travel</string>
+    <string name="CategoryFragmentPolitics">Politics</string>
+    <string name="CategoryFragmentHealth">Health</string>
+    <string name="CategoryFragmentReligious">Religious</string>
+    <string name="CategoryFragmentOther">Other</string>
 
 
 
