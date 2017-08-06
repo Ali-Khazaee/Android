@@ -39,6 +39,11 @@ public class DataBaseHandler
         return db.query(table, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
+    public void Close()
+    {
+        DBHelper.close();
+    }
+
     private class DatabaseHelper extends SQLiteOpenHelper
     {
         private static final int DATABASE_VERSION = 1;
