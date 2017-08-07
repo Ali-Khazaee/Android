@@ -6,7 +6,7 @@
     <!-- General -->
     <string name="Soon">Coming soon</string>
     <string name="TryAgain">Try again &#8230;</string>
-    <string name="NoInternet">Check your network</string>
+    <string name="NoInternet">Check your connection</string>
 
     <!-- Permission -->
     <string name="PermissionReadContact">You should allow access to your contacts</string>
@@ -102,6 +102,61 @@
     <string name="CategoryFragmentReligious">Religious</string>
     <string name="CategoryFragmentOther">Other</string>
 
+    <!-- Welcome Activity -->
+    <string name="WelcomeActivityGeneralTerm">Term &amp; Privacy</string>
+    <string name="WelcomeActivityGeneralNext">Next</string>
+    <string name="WelcomeActivityHeader">Sign Up to share events and</string>
+    <string name="WelcomeActivityHeader2">See the recently moments</string>
+    <string name="WelcomeActivitySignUp">Sign Up</string>
+    <string name="WelcomeActivityOR">OR</string>
+    <string name="WelcomeActivitySignInGoogle">Sign in with Google</string>
+    <string name="WelcomeActivityTerm">By Signing Up you agree to our</string>
+    <string name="WelcomeActivityTerm2">Terms &amp; Privacy and Policy</string>
+    <string name="WelcomeActivitySignIn">Already have an account ?</string>
+    <string name="WelcomeActivitySignIn2">Sign In</string>
+    <string name="WelcomeActivityGoogleError">Something went wrong, Please try again</string>
+
+    <!-- SignUp Fragment Username -->
+    <string name="SignUpFragmentUsername">Username</string>
+    <string name="SignUpFragmentUsernameMessage">Your username is unique and used to personalize your phone and BioGram account. You can always change it later.</string>
+    <string name="SignUpFragmentUsernameError">Username is unavailable</string>
+
+    <!-- SignUp Fragment Password -->
+    <string name="SignUpFragmentPassword">Password</string>
+    <string name="SignUpFragmentPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
+
+    <!-- SignUp Fragment Email -->
+    <string name="SignUpFragmentEmailTitle">Email</string>
+    <string name="SignUpFragmentEmail">Email Address</string>
+    <string name="SignUpFragmentEmailMessage">Your recovery email address will be used in the event you forget your BioGram password and require assistance from BioGram to reset your password</string>
+    <string name="SignUpFragmentEmailFinish">Finish</string>
+    <string name="SignUpFragmentEmailError">Your email address is already used</string>
+
+    <!-- SignIn Fragment -->
+    <string name="SignInFragmentTitle">Sign In</string>
+    <string name="SignInFragmentEmailOrUsername">Email or Username</string>
+    <string name="SignInFragmentPassword">Password</string>
+    <string name="SignInFragmentMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
+    <string name="SignInFragmentForgot">Forgot Password ?</string>
+    <string name="SignInFragmentError">Your username password doesn\'t match</string>
+
+    <!-- Reset Fragment -->
+    <string name="FragmentResetTitle">Reset Password</string>
+    <string name="FragmentResetEmailOrUsername">Email or Username</string>
+    <string name="FragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
+    <string name="FragmentResetSubmit">Submit</string>
+    <string name="FragmentResetSuccess">A recovery link has been sent to your email address</string>
+    <string name="FragmentResetError">Your submitted email or username doesn\'t exist</string>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -127,40 +182,6 @@
     <string name="FragmentProfileCommentMessage">Commented in post</string>
     <string name="FragmentProfileCommentReport">Report</string>
 
-    <string name="ActivityWelcomeGeneralTerm">Term &amp; Privacy</string>
-    <string name="ActivityWelcomeGeneralNext">Next</string>
-    <string name="ActivityWelcomeHeader">Sign Up to share events and</string>
-    <string name="ActivityWelcomeHeader2">See the recently moments</string>
-    <string name="ActivityWelcomeSignUp">Sign Up</string>
-    <string name="ActivityWelcomeOR">OR</string>
-    <string name="ActivityWelcomeSignInGoogle">Sign in with Google</string>
-    <string name="ActivityWelcomeTerm">By Signing Up you agree to our</string>
-    <string name="ActivityWelcomeTerm2">Terms &amp; Privacy and Policy</string>
-    <string name="ActivityWelcomeSignIn">Already have an account ?</string>
-    <string name="ActivityWelcomeSignIn2">Sign In</string>
-    <string name="ActivityWelcomeGoogleError">Something went wrong, Please try again</string>
-    <string name="FragmentSignUpUsername">Username</string>
-    <string name="FragmentSignUpUsernameMessage">Your username is unique and used to personalize your phone and BioGram account. You can always change it later.</string>
-    <string name="FragmentSignUpUsernameError">Username is unavailable</string>
-    <string name="FragmentSignUpPassword">Password</string>
-    <string name="FragmentSignUpPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
-    <string name="FragmentSignUpEmailTitle">Email</string>
-    <string name="FragmentSignUpEmail">Email Address</string>
-    <string name="FragmentSignUpEmailMessage">Your recovery email address will be used in the event you forget your BioGram password and require assistance from BioGram to reset your password</string>
-    <string name="FragmentSignUpEmailFinish">Finish</string>
-    <string name="FragmentSignUpEmailError">Your email address is already used</string>
-    <string name="FragmentSignInTitle">Sign In</string>
-    <string name="FragmentSignInEmailOrUsername">Email or Username</string>
-    <string name="FragmentSignInPassword">Password</string>
-    <string name="FragmentSignInMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
-    <string name="FragmentSignInForgot">Forgot Password ?</string>
-    <string name="FragmentSignInError">Your username password doesn\'t match</string>
-    <string name="FragmentResetTitle">Reset Password</string>
-    <string name="FragmentResetEmailOrUsername">Email or Username</string>
-    <string name="FragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
-    <string name="FragmentResetSubmit">Submit</string>
-    <string name="FragmentResetSuccess">A recovery link has been sent to your email address</string>
-    <string name="FragmentResetError">Your submitted email or username doesn\'t exist</string>
     <string name="FragmentPostDetailsTitle">Post Details</string>
     <string name="FragmentPostDetailsLike">LIKES</string>
     <string name="FragmentPostDetailsComment">COMMENTS</string>

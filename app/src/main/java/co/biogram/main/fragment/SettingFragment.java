@@ -3,11 +3,8 @@ package co.biogram.main.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -22,11 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.io.File;
-
 import co.biogram.main.R;
 import co.biogram.main.activity.ActivityProfileEdit;
-import co.biogram.main.activity.ActivityWelcome;
+import co.biogram.main.activity.WelcomeActivity;
 import co.biogram.main.handler.MiscHandler;
 
 public class SettingFragment extends Fragment
@@ -258,7 +253,7 @@ public class SettingFragment extends Fragment
                     public void onClick(View view)
                     {
                         context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit().clear().apply();
-                        getActivity().startActivity(new Intent(context, ActivityWelcome.class));
+                        getActivity().startActivity(new Intent(context, WelcomeActivity.class));
                         DialogLogout.dismiss();
                         getActivity().finish();
                     }

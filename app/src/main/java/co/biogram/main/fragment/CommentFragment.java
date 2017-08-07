@@ -269,7 +269,6 @@ public class CommentFragment extends Fragment
             @Override
             public void OnLoadMore()
             {
-                MiscHandler.Debug("OnLoadMore Called!");
                 CommentList.add(null);
                 Adapter.notifyDataSetChanged();
 

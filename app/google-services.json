@@ -13,21 +13,29 @@
       },
       "oauth_client": [
         {
-          "client_id": "590625045379-k70ptnkhj49baeo5mkprpod9as58srme.apps.googleusercontent.com",
+          "client_id": "590625045379-a07c9a2898jf93qce30vf5dhr30n2kif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.biogram.main",
+            "certificate_hash": "b87b3e8c41c34a7965f1673f11d6bd7f605e3d19"
+          }
+        },
+        {
+          "client_id": "590625045379-p3n5r37fq4o0u25l4ujvgnkjpbct26pf.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "590625045379-4ki2iq32lgoeu217qaarbaev99at447l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "co.biogram.main",
             "certificate_hash": "dc1f2e67c2af26e674ce964718090a934466bb22"
           }
-        },
-        {
-          "client_id": "590625045379-9pgbc6r8v0794rij59jj50o1gp6ijnvl.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDk6q6zfPlHe7oQTqVomrp5gBtDQbuNHss"
+          "current_key": "AIzaSyAHdNFcxAt-FnY30TjLdSJWPV_CpRkBs2Q"
         }
       ],
       "services": {
