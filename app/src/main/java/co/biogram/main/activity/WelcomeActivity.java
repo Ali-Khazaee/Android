@@ -336,7 +336,7 @@ public class WelcomeActivity extends FragmentActivity
 
         setContentView(RelativeLayoutMain);
 
-        GoogleSignInOptions GoogleOption = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-p3n5r37fq4o0u25l4ujvgnkjpbct26pf.apps.googleusercontent.com").build();
+        GoogleSignInOptions GoogleOption = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-sdgme2k81supeig9iruse656uj2e3geb.apps.googleusercontent.com").build();
         GoogleClientApi = new GoogleApiClient.Builder(context).enableAutoManage(this, null).addApi(Auth.GOOGLE_SIGN_IN_API, GoogleOption).build();
 
         if (GoogleClientApi.isConnected())
@@ -349,7 +349,7 @@ public class WelcomeActivity extends FragmentActivity
         if (RequestCode == 100)
         {
             GoogleSignInResult Result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
-
+            MiscHandler.Debug("QQ: " + Result.getStatus() + " - " + Result.toString());
             if (Result.isSuccess())
             {
                 GoogleSignInAccount Acc = Result.getSignInAccount();

@@ -25,10 +25,10 @@ android
     {
         release
         {
+            storeFile file('C:\\Users\\pc\\Desktop\\Ali\\Android\\app\\Sign.jks')
+            storePassword BioKeyPassword
             keyAlias BioAlias
             keyPassword BioPassword
-            storeFile file('E:/Biogram/Android/app/SignKey.jks')
-            storePassword BioPassword
         }
     }
 
@@ -42,11 +42,6 @@ android
             zipAlignEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-
-        debug
-        {
             signingConfig signingConfigs.release
         }
     }
