@@ -141,12 +141,12 @@
     <string name="SignInFragmentError">Your username password doesn\'t match</string>
 
     <!-- Reset Fragment -->
-    <string name="FragmentResetTitle">Reset Password</string>
-    <string name="FragmentResetEmailOrUsername">Email or Username</string>
-    <string name="FragmentResetMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
-    <string name="FragmentResetSubmit">Submit</string>
-    <string name="FragmentResetSuccess">A recovery link has been sent to your email address</string>
-    <string name="FragmentResetError">Your submitted email or username doesn\'t exist</string>
+    <string name="ResetFragmentTitle">Reset Password</string>
+    <string name="ResetFragmentEmailOrUsername">Email or Username</string>
+    <string name="ResetFragmentMessage">We can help you reset your password using your BioGram username or the email address linked to your account</string>
+    <string name="ResetFragmentSubmit">Submit</string>
+    <string name="ResetFragmentSuccess">A recovery link has been sent to your email address</string>
+    <string name="ResetFragmentError">Your submitted email or username doesn\'t exist</string>
 
 
 

@@ -349,7 +349,7 @@ public class WelcomeActivity extends FragmentActivity
         if (RequestCode == 100)
         {
             GoogleSignInResult Result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
-            MiscHandler.Debug("QQ: " + Result.getStatus() + " - " + Result.toString());
+
             if (Result.isSuccess())
             {
                 GoogleSignInAccount Acc = Result.getSignInAccount();
@@ -358,7 +358,6 @@ public class WelcomeActivity extends FragmentActivity
                 {
                     final Context context = WelcomeActivity.this;
 
-                    MiscHandler.Debug("QQ1: " + Acc.getIdToken());
                     AndroidNetworking.post(MiscHandler.GetRandomServer("SignInGoogle"))
                     .addBodyParameter("Token", Acc.getIdToken())
                     .addBodyParameter("Session", GenerateSession())
@@ -368,7 +367,7 @@ public class WelcomeActivity extends FragmentActivity
                     {
                         @Override
                         public void onResponse(String Response)
-                        {MiscHandler.Debug("QQ2: " + Response);
+                        {
                             try
                             {
                                 JSONObject Result = new JSONObject(Response);
@@ -376,10 +375,11 @@ public class WelcomeActivity extends FragmentActivity
                                 if (Result.getInt("Message") == 1000)
                                 {
                                     SharedHandler.SetBoolean(context, "IsLogin", true);
-                                    SharedHandler.SetString(context, "TOKEN", Result.getString("Token"));
+                                    SharedHandler.SetString(context, "TOKEN", Result.getString("TOKEN"));
                                     SharedHandler.SetString(context, "ID", Result.getString("ID"));
                                     SharedHandler.SetString(context, "Username", Result.getString("Username"));
                                     SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
+                                    SharedHandler.SetBoolean(context, "Password", Result.getBoolean("Password"));
 
                                     startActivity(new Intent(context, ActivityMain.class));
                                     finish();
@@ -412,6 +412,10 @@ public class WelcomeActivity extends FragmentActivity
     public void onPause()
     {
         super.onPause();
+
+        if (GoogleClientApi.isConnected())
+            Auth.GoogleSignInApi.signOut(GoogleClientApi);
+
         GoogleClientApi.disconnect();
         MiscHandler.HideSoftKey(this);
         AndroidNetworking.forceCancel("WelcomeActivity");
@@ -1690,61 +1694,53 @@ public class WelcomeActivity extends FragmentActivity
 
     public static class ResetFragment extends Fragment
     {
-        private ScrollView Root;
-        private ViewTreeObserver.OnGlobalLayoutListener RootListener;
-
-        private Button ButtonReset;
-        private LoadingView LoadingViewReset;
-        private LinearLayout LinearLayoutLoading;
-
-        private int LastDifferenceHeight = 0;
+        private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
+        private int RelativeLayoutMainHeightDifference = 0;
+        private RelativeLayout RelativeLayoutMain;
 
         @Override
-        public View onCreateView(LayoutInflater a, ViewGroup b, Bundle c)
+        public View onCreateView(LayoutInflater inflater, ViewGroup Parent, Bundle savedInstanceState)
         {
             final Context context = getActivity();
+            final Button ButtonReset = new Button(context, null, android.R.attr.borderlessButtonStyle);
+            final LoadingView LoadingViewReset = new LoadingView(context);
+            final LinearLayout LinearLayoutLoading = new LinearLayout(context);
 
-            Root = new ScrollView(context);
-            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            Root.setBackgroundResource(R.color.White);
-            Root.setHorizontalScrollBarEnabled(false);
-            Root.setVerticalScrollBarEnabled(false);
-            Root.setFillViewport(true);
-            Root.setClickable(true);
+            RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            RelativeLayoutMain.setBackgroundResource(R.color.White);
+            RelativeLayoutMain.setClickable(true);
 
-            RootListener = new ViewTreeObserver.OnGlobalLayoutListener()
+            RelativeLayoutMainListener = new ViewTreeObserver.OnGlobalLayoutListener()
             {
                 @Override
                 public void onGlobalLayout()
                 {
                     Rect rect = new Rect();
-                    Root.getWindowVisibleDisplayFrame(rect);
+                    RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
-                    int ScreenHeight = Root.getHeight();
+                    int ScreenHeight = RelativeLayoutMain.getHeight();
                     int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                    if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != LastDifferenceHeight)
+                    if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
-                        LastDifferenceHeight = DifferenceHeight;
+                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
-                    else if (DifferenceHeight != LastDifferenceHeight)
+                    else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
-                        LastDifferenceHeight = DifferenceHeight;
+                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
-                    else if (LastDifferenceHeight != 0)
+                    else if (RelativeLayoutMainHeightDifference != 0)
                     {
-                        Root.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(LastDifferenceHeight)));
-                        LastDifferenceHeight = 0;
+                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
+                        RelativeLayoutMainHeightDifference = 0;
                     }
+
+                    RelativeLayoutMain.requestLayout();
                 }
             };
-
-            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-
-            Root.addView(RelativeLayoutMain);
 
             RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
             RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
@@ -1778,7 +1774,7 @@ public class WelcomeActivity extends FragmentActivity
             TextView TextViewHeader = new TextView(context);
             TextViewHeader.setLayoutParams(TextViewHeaderParam);
             TextViewHeader.setTextColor(ContextCompat.getColor(context, R.color.White));
-            TextViewHeader.setText(getString(R.string.FragmentResetTitle));
+            TextViewHeader.setText(getString(R.string.ResetFragmentTitle));
             TextViewHeader.setTypeface(null, Typeface.BOLD);
             TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -1794,20 +1790,34 @@ public class WelcomeActivity extends FragmentActivity
 
             RelativeLayoutMain.addView(ViewLine);
 
+            RelativeLayout.LayoutParams ScrollViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            ScrollViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+            ScrollView ScrollViewMain = new ScrollView(context);
+            ScrollViewMain.setLayoutParams(ScrollViewMainParam);
+            ScrollViewMain.setFillViewport(true);
+            ScrollViewMain.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(ScrollViewMain);
+
+            RelativeLayout RelativeLayoutMain2 = new RelativeLayout(context);
+            RelativeLayoutMain2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+            ScrollViewMain.addView(RelativeLayoutMain2);
+
             RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewMessageParam.setMargins(MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 25));
-            TextViewMessageParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
             TextViewMessageParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
             TextView TextViewMessage = new TextView(context);
             TextViewMessage.setLayoutParams(TextViewMessageParam);
             TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
-            TextViewMessage.setText(getString(R.string.FragmentResetMessage));
+            TextViewMessage.setText(getString(R.string.ResetFragmentMessage));
             TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             TextViewMessage.setGravity(Gravity.CENTER);
             TextViewMessage.setId(MiscHandler.GenerateViewID());
 
-            RelativeLayoutMain.addView(TextViewMessage);
+            RelativeLayoutMain2.addView(TextViewMessage);
 
             RelativeLayout.LayoutParams EditTextEmailOrUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 45));
             EditTextEmailOrUsernameParam.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
@@ -1815,10 +1825,9 @@ public class WelcomeActivity extends FragmentActivity
 
             final EditText EditTextEmailOrUsername = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
             EditTextEmailOrUsername.setLayoutParams(EditTextEmailOrUsernameParam);
-            EditTextEmailOrUsername.setMaxLines(1);
             EditTextEmailOrUsername.setGravity(Gravity.CENTER);
             EditTextEmailOrUsername.setPadding(MiscHandler.ToDimension(context, 10),MiscHandler.ToDimension(context, 10),MiscHandler.ToDimension(context, 10),MiscHandler.ToDimension(context, 10));
-            EditTextEmailOrUsername.setHint(getString(R.string.FragmentResetEmailOrUsername));
+            EditTextEmailOrUsername.setHint(getString(R.string.ResetFragmentEmailOrUsername));
             EditTextEmailOrUsername.setId(MiscHandler.GenerateViewID());
             EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
@@ -1841,7 +1850,7 @@ public class WelcomeActivity extends FragmentActivity
                 }
             });
 
-            RelativeLayoutMain.addView(EditTextEmailOrUsername);
+            RelativeLayoutMain2.addView(EditTextEmailOrUsername);
 
             RelativeLayout.LayoutParams ButtonResetParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 45));
             ButtonResetParam.addRule(RelativeLayout.BELOW, EditTextEmailOrUsername.getId());
@@ -1855,16 +1864,15 @@ public class WelcomeActivity extends FragmentActivity
             ShapeDisable.setCornerRadius(MiscHandler.ToDimension(context, 7));
             ShapeDisable.setColor(ContextCompat.getColor(context, R.color.Gray2));
 
-            StateListDrawable StateEmail = new StateListDrawable();
-            StateEmail.addState(new int[] {android.R.attr.state_enabled}, ShapeEnable);
-            StateEmail.addState(new int[] {-android.R.attr.state_enabled}, ShapeDisable);
+            StateListDrawable StateReset = new StateListDrawable();
+            StateReset.addState(new int[] { android.R.attr.state_enabled }, ShapeEnable);
+            StateReset.addState(new int[] { -android.R.attr.state_enabled }, ShapeDisable);
 
-            ButtonReset = new Button(context, null, android.R.attr.borderlessButtonStyle);
             ButtonReset.setLayoutParams(ButtonResetParam);
             ButtonReset.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             ButtonReset.setTextColor(ContextCompat.getColor(context, R.color.White));
-            ButtonReset.setText(getString(R.string.FragmentResetSubmit));
-            ButtonReset.setBackground(StateEmail);
+            ButtonReset.setText(getString(R.string.ResetFragmentSubmit));
+            ButtonReset.setBackground(StateReset);
             ButtonReset.setPadding(0, 0, 0, 0);
             ButtonReset.setEnabled(false);
             ButtonReset.setAllCaps(false);
@@ -1879,74 +1887,71 @@ public class WelcomeActivity extends FragmentActivity
 
                     AndroidNetworking.post(MiscHandler.GetRandomServer("ResetPassword"))
                     .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
-                    .setTag("FragmentReset")
-                    .build().getAsString(new StringRequestListener()
+                    .setTag("ResetPassword")
+                    .build()
+                    .getAsString(new StringRequestListener()
                     {
                         @Override
                         public void onResponse(String Response)
                         {
-                            ButtonReset.setVisibility(View.VISIBLE);
-                            LinearLayoutLoading.setVisibility(View.GONE);
                             LoadingViewReset.Stop();
+                            LinearLayoutLoading.setVisibility(View.INVISIBLE);
+                            ButtonReset.setVisibility(View.VISIBLE);
 
                             try
                             {
                                 if (new JSONObject(Response).getInt("Message") == 1000)
-                                    MiscHandler.Toast(context, getString(R.string.FragmentResetSuccess));
+                                    MiscHandler.Toast(context, getString(R.string.ResetFragmentSuccess));
                                 else
-                                    MiscHandler.Toast(context, getString(R.string.FragmentResetError));
+                                    MiscHandler.Toast(context, getString(R.string.ResetFragmentError));
                             }
                             catch (Exception e)
                             {
-                                // Leave Me Alone
+                                MiscHandler.Debug("WelcomeActivity-RequestReset: " + e.toString());
                             }
                         }
 
                         @Override
                         public void onError(ANError anError)
                         {
-                            ButtonReset.setVisibility(View.VISIBLE);
-                            LinearLayoutLoading.setVisibility(View.GONE);
                             LoadingViewReset.Stop();
-
+                            LinearLayoutLoading.setVisibility(View.INVISIBLE);
+                            ButtonReset.setVisibility(View.VISIBLE);
                             MiscHandler.Toast(context, getString(R.string.NoInternet));
                         }
                     });
                 }
             });
 
-            RelativeLayoutMain.addView(ButtonReset);
+            RelativeLayoutMain2.addView(ButtonReset);
 
             RelativeLayout.LayoutParams LinearLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 45));
             LinearLayoutLoadingParam.addRule(RelativeLayout.BELOW, EditTextEmailOrUsername.getId());
             LinearLayoutLoadingParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
-            LinearLayoutLoading = new LinearLayout(context);
             LinearLayoutLoading.setLayoutParams(LinearLayoutLoadingParam);
             LinearLayoutLoading.setVisibility(View.INVISIBLE);
             LinearLayoutLoading.setGravity(Gravity.CENTER);
             LinearLayoutLoading.setBackground(ShapeEnable);
 
-            RelativeLayoutMain.addView(LinearLayoutLoading);
+            RelativeLayoutMain2.addView(LinearLayoutLoading);
 
-            RelativeLayout.LayoutParams LoadingViewResetParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams LoadingViewResetParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             LoadingViewResetParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-            LoadingViewReset = new LoadingView(context);
             LoadingViewReset.setLayoutParams(LoadingViewResetParam);
             LoadingViewReset.SetColor(R.color.White);
 
             LinearLayoutLoading.addView(LoadingViewReset);
 
-            return  Root;
+            return RelativeLayoutMain;
         }
 
         @Override
         public void onResume()
         {
             super.onResume();
-
-            Root.getViewTreeObserver().addOnGlobalLayoutListener(RootListener);
+            RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(RelativeLayoutMainListener);
 
             InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -1956,8 +1961,9 @@ public class WelcomeActivity extends FragmentActivity
         public void onPause()
         {
             super.onPause();
-            AndroidNetworking.cancel("FragmentReset");
-            Root.getViewTreeObserver().removeOnGlobalLayoutListener(RootListener);
+            MiscHandler.HideSoftKey(getActivity());
+            AndroidNetworking.forceCancel("ResetFragment");
+            RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
         }
     }
 
