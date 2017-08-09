@@ -148,8 +148,11 @@
     <string name="ResetFragmentSuccess">A recovery link has been sent to your email address</string>
     <string name="ResetFragmentError">Your submitted email or username doesn\'t exist</string>
 
+    <!-- Moment Fragment -->
+    <string name="MomentFragment">Moment</string>
 
-
+    <!-- Inbox Fragment -->
+    <string name="InboxFragment">Inbox</string>
 
 
 
@@ -176,7 +179,7 @@
     <string name="VideoPreviewFragment">Video Preview</string>
 
 
-    <string name="InboxTitle">Inbox</string>
+
     <string name="CategoryTitle">Category</string>
     <string name="FragmentProfileCommentEmpty">No Comments</string>
     <string name="FragmentProfileCommentMessage">Commented in post</string>
@@ -222,7 +225,7 @@
     <string name="ActivityProfileDialogRemove">Remove current photo</string>
     <string name="ActivityProfileDialogTitle">Your choices</string>
     <string name="ActivityProfileCompleteAction">Complete action using</string>
-    <string name="FragmentMoment">Moment</string>
+
 
     <string name="FragmentMomentWrite">Write</string>
     <string name="FragmentMomentWriteChoiceCategory">Please choose a category</string>

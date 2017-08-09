@@ -34,19 +34,17 @@ import co.biogram.main.misc.RecyclerViewScroll;
 
 public class InboxFragment extends Fragment
 {
-    private LoadingView LoadingViewInbox;
-    private TextView TextViewTryAgain;
-
+    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
     private AdapterPost Adapter;
-    private final List<AdapterPost.Struct> InboxList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
@@ -62,7 +60,7 @@ public class InboxFragment extends Fragment
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(getString(R.string.InboxTitle));
+        TextViewTitle.setText(getString(R.string.InboxFragment));
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);
@@ -83,7 +81,7 @@ public class InboxFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
             }
         });
 
@@ -102,7 +100,7 @@ public class InboxFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
             }
         });
 
@@ -126,26 +124,26 @@ public class InboxFragment extends Fragment
         RecyclerView RecyclerViewInbox = new RecyclerView(context);
         RecyclerViewInbox.setLayoutParams(RecyclerViewInboxParam);
         RecyclerViewInbox.setLayoutManager(LinearLayoutManagerNotification);
-        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), InboxList, "InboxFragment"));
+        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "InboxFragment"));
         RecyclerViewInbox.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
         {
             @Override
             public void OnLoadMore()
             {
-                InboxList.add(null);
-                Adapter.notifyItemInserted(InboxList.size());
+                PostList.add(null);
+                Adapter.notifyItemInserted(PostList.size());
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostListInbox"))
-                .addBodyParameter("Skip", String.valueOf(InboxList.size()))
+                .addBodyParameter("Skip", String.valueOf(PostList.size()))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("InboxFragment")
-                .build().getAsString(new StringRequestListener()
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
                     {
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        PostList.remove(PostList.size() - 1);
 
                         try
                         {
@@ -176,7 +174,7 @@ public class InboxFragment extends Fragment
                                     PostStruct.BookMark = Post.getBoolean("BookMark");
                                     PostStruct.Follow = Post.getBoolean("Follow");
 
-                                    InboxList.add(PostStruct);
+                                    PostList.add(PostStruct);
                                 }
 
                                 Adapter.notifyDataSetChanged();
@@ -185,6 +183,7 @@ public class InboxFragment extends Fragment
                         catch (Exception e)
                         {
                             ResetLoading(false);
+                            MiscHandler.Debug("InboxFragment-RequestMore: " + e.toString());
                         }
                     }
 
@@ -192,8 +191,8 @@ public class InboxFragment extends Fragment
                     public void onError(ANError anError)
                     {
                         ResetLoading(false);
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        PostList.remove(PostList.size() - 1);
+                        Adapter.notifyItemRemoved(PostList.size());
                     }
                 });
             }
@@ -204,24 +203,24 @@ public class InboxFragment extends Fragment
         RelativeLayout.LayoutParams LoadingViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewInboxParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewInbox = new LoadingView(context);
-        LoadingViewInbox.setLayoutParams(LoadingViewInboxParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewInboxParam);
 
-        RelativeLayoutMain.addView(LoadingViewInbox);
+        RelativeLayoutMain.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTryAgain = new TextView(context);
+        final TextView TextViewTryAgain = new TextView(context);
         TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain); } });
 
         RelativeLayoutMain.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -233,10 +232,10 @@ public class InboxFragment extends Fragment
         AndroidNetworking.forceCancel("InboxFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
-        LoadingViewInbox.Start();
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostListInbox"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -246,18 +245,18 @@ public class InboxFragment extends Fragment
         {
             @Override
             public void onResponse(String Response)
-            {
+            {MiscHandler.Debug(Response + " qq");
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
 
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
-                        JSONArray postList = new JSONArray(Result.getString("Result"));
+                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < postList.length(); K++)
+                        for (int K = 0; K < ResultList.length(); K++)
                         {
-                            JSONObject Post = postList.getJSONObject(K);
+                            JSONObject Post = ResultList.getJSONObject(K);
 
                             AdapterPost.Struct PostStruct = new AdapterPost.Struct();
                             PostStruct.PostID = Post.getString("PostID");
@@ -276,7 +275,7 @@ public class InboxFragment extends Fragment
                             PostStruct.BookMark = Post.getBoolean("BookMark");
                             PostStruct.Follow = Post.getBoolean("Follow");
 
-                            InboxList.add(PostStruct);
+                            PostList.add(PostStruct);
                         }
 
                         Adapter.notifyDataSetChanged();
@@ -284,19 +283,18 @@ public class InboxFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("InboxFragment-RequestStart: " + e.toString());
                 }
 
-                LoadingViewInbox.Stop();
+                LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.VISIBLE);
-                LoadingViewInbox.Stop();
             }
         });
     }

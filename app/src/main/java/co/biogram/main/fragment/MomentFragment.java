@@ -37,35 +37,31 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LoadingView;
+import co.biogram.main.misc.RecyclerViewScroll;
 
-public class FragmentMoment extends Fragment
+public class MomentFragment extends Fragment
 {
-    private RelativeLayout RelativeLayoutLoading;
-    private LoadingView LoadingViewData;
-    private TextView TextViewTry;
-
+    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
+    private RecyclerViewScroll RecyclerViewScrollMain;
     private AdapterPost Adapter;
 
-    private boolean IsRunning = false;
-    private boolean LoadingTop = false;
-    private boolean LoadingBottom = false;
-    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
-
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final ImageView ImageViewWrite = new ImageView(context);
 
-        RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(RelativeLayoutHeader);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -74,35 +70,35 @@ public class FragmentMoment extends Fragment
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(getString(R.string.FragmentMoment));
+        TextViewTitle.setText(getString(R.string.MomentFragment));
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ImageViewBookMarkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
-        ImageViewBookMarkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        RelativeLayout.LayoutParams ImageViewBookbarkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewBookbarkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-        ImageView ImageViewBookMark = new ImageView(context);
-        ImageViewBookMark.setLayoutParams(ImageViewBookMarkParam);
-        ImageViewBookMark.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
-        ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
-        ImageViewBookMark.setId(MiscHandler.GenerateViewID());
-        ImageViewBookMark.setOnClickListener(new View.OnClickListener()
+        ImageView ImageViewBookbark = new ImageView(context);
+        ImageViewBookbark.setLayoutParams(ImageViewBookbarkParam);
+        ImageViewBookbark.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBookbark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
+        ImageViewBookbark.setImageResource(R.drawable.ic_bookmark_blue);
+        ImageViewBookbark.setId(MiscHandler.GenerateViewID());
+        ImageViewBookbark.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
             }
         });
 
-        RelativeLayoutHeader.addView(ImageViewBookMark);
+        RelativeLayoutHeader.addView(ImageViewBookbark);
 
         RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
-        ImageViewSearchParam.addRule(RelativeLayout.LEFT_OF, ImageViewBookMark.getId());
+        ImageViewSearchParam.addRule(RelativeLayout.LEFT_OF, ImageViewBookbark.getId());
 
         ImageView ImageViewSearch = new ImageView(context);
         ImageViewSearch.setLayoutParams(ImageViewSearchParam);
@@ -128,15 +124,17 @@ public class FragmentMoment extends Fragment
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine);
+        RelativeLayoutMain.addView(ViewLine);
 
-        RelativeLayout.LayoutParams SwipeRefreshLayoutMomentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        SwipeRefreshLayoutMomentParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RelativeLayout.LayoutParams SwipeRefreshLayoutMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        SwipeRefreshLayoutMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        final SwipeRefreshLayout SwipeRefreshLayoutMoment = new SwipeRefreshLayout(context);
-        SwipeRefreshLayoutMoment.setLayoutParams(SwipeRefreshLayoutMomentParam);
-        SwipeRefreshLayoutMoment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        final SwipeRefreshLayout SwipeRefreshLayoutMain = new SwipeRefreshLayout(context);
+        SwipeRefreshLayoutMain.setLayoutParams(SwipeRefreshLayoutMainParam);
+        SwipeRefreshLayoutMain.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
+            private boolean LoadingTop = false;
+
             @Override
             public void onRefresh()
             {
@@ -144,25 +142,29 @@ public class FragmentMoment extends Fragment
                     return;
 
                 LoadingTop = true;
-                SwipeRefreshLayoutMoment.setEnabled(false);
-                SwipeRefreshLayoutMoment.setRefreshing(false);
+                SwipeRefreshLayoutMain.setRefreshing(false);
+                SwipeRefreshLayoutMain.setEnabled(false);
 
                 if (PostList.size() == 0)
                 {
                     LoadingTop = false;
-                    SwipeRefreshLayoutMoment.setEnabled(true);
+                    SwipeRefreshLayoutMain.setEnabled(true);
                     return;
                 }
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
                 .addBodyParameter("Time", String.valueOf(PostList.get(0).Time))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .setTag("FragmentMoment")
-                .build().getAsString(new StringRequestListener()
+                .setTag("MomentFragment")
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
                     {
+                        LoadingTop = false;
+                        SwipeRefreshLayoutMain.setEnabled(true);
+
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
@@ -200,36 +202,106 @@ public class FragmentMoment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            MiscHandler.Debug("FragmentMoment-RequestNew: " + e.toString());
                         }
-
-                        LoadingTop = false;
-                        SwipeRefreshLayoutMoment.setEnabled(true);
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
                         LoadingTop = false;
-                        SwipeRefreshLayoutMoment.setEnabled(true);
-
-                        MiscHandler.Toast(context, getString(R.string.NoInternet));
+                        SwipeRefreshLayoutMain.setEnabled(true);
                     }
                 });
             }
         });
 
-        Root.addView(SwipeRefreshLayoutMoment);
+        RelativeLayoutMain.addView(SwipeRefreshLayoutMain);
 
-        final ImageView ImageViewWrite = new ImageView(context);
-        final LinearLayoutManager LinearLayoutManagerMoment = new LinearLayoutManager(context);
-
-        RecyclerView RecyclerViewMoment = new RecyclerView(context);
-        RecyclerViewMoment.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RecyclerViewMoment.setLayoutManager(LinearLayoutManagerMoment);
-        RecyclerViewMoment.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "FragmentMoment"));
-        RecyclerViewMoment.addOnScrollListener(new RecyclerView.OnScrollListener()
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
+        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
         {
+            @Override
+            public void OnLoadMore()
+            {
+                PostList.add(null);
+                Adapter.notifyItemInserted(PostList.size());
+
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
+                .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .setTag("MomentFragment")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        PostList.remove(PostList.size() - 1);
+                        Adapter.notifyItemRemoved(PostList.size());
+
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                                for (int K = 0; K < ResultList.length(); K++)
+                                {
+                                    JSONObject Post = ResultList.getJSONObject(K);
+
+                                    AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+                                    PostStruct.PostID = Post.getString("PostID");
+                                    PostStruct.OwnerID = Post.getString("OwnerID");
+                                    PostStruct.Type = Post.getInt("Type");
+                                    PostStruct.Category = Post.getInt("Category");
+                                    PostStruct.Time = Post.getInt("Time");
+                                    PostStruct.Comment = Post.getBoolean("Comment");
+                                    PostStruct.Message = Post.getString("Message");
+                                    PostStruct.Data = Post.getString("Data");
+                                    PostStruct.Username = Post.getString("Username");
+                                    PostStruct.Avatar = Post.getString("Avatar");
+                                    PostStruct.Like = Post.getBoolean("Like");
+                                    PostStruct.LikeCount = Post.getInt("LikeCount");
+                                    PostStruct.CommentCount = Post.getInt("CommentCount");
+                                    PostStruct.BookMark = Post.getBoolean("BookMark");
+                                    PostStruct.Follow = Post.getBoolean("Follow");
+
+                                    PostList.add(PostStruct);
+                                }
+
+                                Adapter.notifyDataSetChanged();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            MiscHandler.Debug("MomentFragment-RequestBottom: " + e.toString());
+                            RecyclerViewScrollMain.ResetLoading(false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        PostList.remove(PostList.size() - 1);
+                        Adapter.notifyItemRemoved(PostList.size());
+                        RecyclerViewScrollMain.ResetLoading(false);
+                    }
+                });
+            }
+        };
+
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "MomentFragment"));
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
+        RecyclerViewMain.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            private boolean IsRunning = false;
+
             @Override
             public void onScrolled(RecyclerView View, int DX, int DY)
             {
@@ -242,101 +314,28 @@ public class FragmentMoment extends Fragment
                     else
                         ImageViewWrite.animate().setDuration(400).translationY(0).withEndAction(new Runnable() { @Override public void run() { IsRunning = false; } }).setInterpolator(new DecelerateInterpolator(2)).start();
                 }
-
-                if (DY <= 0)
-                    return;
-
-                if (!LoadingBottom && (LinearLayoutManagerMoment.findLastVisibleItemPosition() + 2) > LinearLayoutManagerMoment.getItemCount())
-                {
-                    LoadingBottom = true;
-                    PostList.add(null);
-                    Adapter.notifyItemInserted(PostList.size());
-
-                    AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
-                    .addBodyParameter("Skip", String.valueOf(PostList.size()))
-                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .setTag("FragmentMoment")
-                    .build().getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            LoadingBottom = false;
-                            PostList.remove(PostList.size() - 1);
-                            Adapter.notifyItemRemoved(PostList.size());
-
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
-
-                                if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
-                                {
-                                    JSONArray ResultList = new JSONArray(Result.getString("Result"));
-
-                                    for (int K = 0; K < ResultList.length(); K++)
-                                    {
-                                        JSONObject Post = ResultList.getJSONObject(K);
-
-                                        AdapterPost.Struct PostStruct = new AdapterPost.Struct();
-                                        PostStruct.PostID = Post.getString("PostID");
-                                        PostStruct.OwnerID = Post.getString("OwnerID");
-                                        PostStruct.Type = Post.getInt("Type");
-                                        PostStruct.Category = Post.getInt("Category");
-                                        PostStruct.Time = Post.getInt("Time");
-                                        PostStruct.Comment = Post.getBoolean("Comment");
-                                        PostStruct.Message = Post.getString("Message");
-                                        PostStruct.Data = Post.getString("Data");
-                                        PostStruct.Username = Post.getString("Username");
-                                        PostStruct.Avatar = Post.getString("Avatar");
-                                        PostStruct.Like = Post.getBoolean("Like");
-                                        PostStruct.LikeCount = Post.getInt("LikeCount");
-                                        PostStruct.CommentCount = Post.getInt("CommentCount");
-                                        PostStruct.BookMark = Post.getBoolean("BookMark");
-                                        PostStruct.Follow = Post.getBoolean("Follow");
-
-                                        PostList.add(PostStruct);
-                                    }
-
-                                    Adapter.notifyDataSetChanged();
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                // Leave Me Alone
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError anError)
-                        {
-                            LoadingBottom = false;
-                            PostList.remove(PostList.size() - 1);
-                            Adapter.notifyItemRemoved(PostList.size());
-                        }
-                    });
-                }
             }
         });
 
-        SwipeRefreshLayoutMoment.addView(RecyclerViewMoment);
+        SwipeRefreshLayoutMain.addView(RecyclerViewMain);
 
         RelativeLayout.LayoutParams ImageViewWriteParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 60), MiscHandler.ToDimension(context, 60));
         ImageViewWriteParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         ImageViewWriteParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         ImageViewWriteParam.setMargins(MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20));
 
-        GradientDrawable Shape = new GradientDrawable();
-        Shape.setShape(GradientDrawable.OVAL);
-        Shape.setColor(Color.parseColor("#1f000000"));
+        GradientDrawable ShapeBorder = new GradientDrawable();
+        ShapeBorder.setShape(GradientDrawable.OVAL);
+        ShapeBorder.setColor(Color.parseColor("#1f000000"));
 
-        GradientDrawable Shape2 = new GradientDrawable();
-        Shape2.setShape(GradientDrawable.OVAL);
-        Shape2.setColor(ContextCompat.getColor(context, R.color.BlueLight));
-        Shape2.setStroke(MiscHandler.ToDimension(context, 4), Color.TRANSPARENT);
+        GradientDrawable ShapeContent = new GradientDrawable();
+        ShapeContent.setShape(GradientDrawable.OVAL);
+        ShapeContent.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+        ShapeContent.setStroke(MiscHandler.ToDimension(context, 4), Color.TRANSPARENT);
 
         ImageViewWrite.setLayoutParams(ImageViewWriteParam);
         ImageViewWrite.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewWrite.setBackground(new LayerDrawable(new Drawable[] { Shape, Shape2 }));
+        ImageViewWrite.setBackground(new LayerDrawable(new Drawable[] { ShapeBorder, ShapeContent }));
         ImageViewWrite.setImageResource(R.drawable.ic_write);
         ImageViewWrite.setPadding(MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18));
         ImageViewWrite.setOnClickListener(new View.OnClickListener()
@@ -344,62 +343,63 @@ public class FragmentMoment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentMomentWrite(), "FragmentMomentWrite").addToBackStack("FragmentMomentWrite").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new FragmentMomentWrite()).addToBackStack("FragmentMomentWrite").commit();
             }
         });
 
-        Root.addView(ImageViewWrite);
+        RelativeLayoutMain.addView(ImageViewWrite);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RelativeLayoutLoading = new RelativeLayout(context);
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
-        Root.addView(RelativeLayoutLoading);
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutLoading.addView(LoadingViewData);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(context);
-        TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setText(getString(R.string.TryAgain));
-        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryParam);
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutLoading.addView(TextViewTry);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
-        return Root;
+        return RelativeLayoutMain;
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentMoment");
+        AndroidNetworking.forceCancel("MomentFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        TextViewTry.setVisibility(View.GONE);
-        LoadingViewData.Start();
+        TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .setTag("FragmentMoment")
-        .build().getAsString(new StringRequestListener()
+        .setTag("MomentFragment")
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -410,11 +410,11 @@ public class FragmentMoment extends Fragment
 
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                     {
-                        JSONArray postList = new JSONArray(Result.getString("Result"));
+                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < postList.length(); K++)
+                        for (int K = 0; K < ResultList.length(); K++)
                         {
-                            JSONObject Post = postList.getJSONObject(K);
+                            JSONObject Post = ResultList.getJSONObject(K);
 
                             AdapterPost.Struct PostStruct = new AdapterPost.Struct();
                             PostStruct.PostID = Post.getString("PostID");
@@ -441,20 +441,19 @@ public class FragmentMoment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("MomentFragment-RequestFirst: " + e.toString());
                 }
 
-                LoadingViewData.Stop();
-                TextViewTry.setVisibility(View.GONE);
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
                 RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                TextViewTry.setVisibility(View.VISIBLE);
-                LoadingViewData.Stop();
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.VISIBLE);
             }
         });
     }

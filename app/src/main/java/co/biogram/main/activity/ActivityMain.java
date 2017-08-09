@@ -18,8 +18,8 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.CategoryFragment;
+import co.biogram.main.fragment.MomentFragment;
 import co.biogram.main.fragment.ProfileFragment;
-import co.biogram.main.fragment.FragmentMoment;
 import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
@@ -181,7 +181,7 @@ public class ActivityMain extends FragmentActivity
             case 5: ImageViewProfile.setImageResource(R.drawable.ic_profile_black);           break;
         }
 
-        Fragment SelectedFragment = new FragmentMoment();
+        Fragment SelectedFragment = new MomentFragment();
 
         switch (Tab)
         {
