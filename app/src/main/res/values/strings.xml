@@ -154,6 +154,20 @@
     <!-- Inbox Fragment -->
     <string name="InboxFragment">Inbox</string>
 
+    <!-- Post Fragment -->
+    <string name="PostFragment">Post Details</string>
+    <string name="PostFragmentLike">LIKES</string>
+    <string name="PostFragmentComment">COMMENTS</string>
+    <string name="PostFragmentFollow">Follow</string>
+    <string name="PostFragmentTurnOn">Turn on commenting</string>
+    <string name="PostFragmentTurnOff">Turn off commenting</string>
+    <string name="PostFragmentCopy">Copy</string>
+    <string name="PostFragmentDelete">Delete</string>
+    <string name="PostFragmentReport">Report</string>
+    <string name="PostFragmentBlock">Block</string>
+    <string name="PostFragmentClipboard">Text has been copied to clipboard</string>
+    <string name="PostFragmentCommentDisable">Commenting is Disabled</string>
+    <string name="PostFragmentChoice">Choice</string>
 
 
 
@@ -185,19 +199,7 @@
     <string name="FragmentProfileCommentMessage">Commented in post</string>
     <string name="FragmentProfileCommentReport">Report</string>
 
-    <string name="FragmentPostDetailsTitle">Post Details</string>
-    <string name="FragmentPostDetailsLike">LIKES</string>
-    <string name="FragmentPostDetailsComment">COMMENTS</string>
-    <string name="FragmentPostDetailsFollow">Follow</string>
-    <string name="FragmentPostDetailsTurnOn">Turn on commenting</string>
-    <string name="FragmentPostDetailsTurnOff">Turn off commenting</string>
-    <string name="FragmentPostDetailsCopy">Copy</string>
-    <string name="FragmentPostDetailsDelete">Delete</string>
-    <string name="FragmentPostDetailsReport">Report</string>
-    <string name="FragmentPostDetailsBlock">Block</string>
-    <string name="FragmentPostDetailsClipboard">Text has been copied to clipboard</string>
-    <string name="FragmentPostDetailsCommentDisable">Commenting is Disabled</string>
-    <string name="FragmentPostDetailsChoice">Choice</string>
+
     <string name="FragmentImagePreview">Image Preview</string>
 
     <string name="FragmentFollowing">Following</string>

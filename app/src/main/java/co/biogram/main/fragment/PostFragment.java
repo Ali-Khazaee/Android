@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
+
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -45,10 +46,6 @@ import co.biogram.main.misc.TextCrawler;
 
 public class PostFragment extends Fragment
 {
-    private RelativeLayout RelativeLayoutLoading;
-    private LoadingView LoadingViewData;
-    private TextView TextViewTry;
-
     private ImageViewCircle ImageViewCircleProfile;
     private TextView TextViewUsername;
     private TextView TextViewTime;
@@ -88,17 +85,17 @@ public class PostFragment extends Fragment
     {
         final Context context = getActivity();
 
-        RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
-        Root.setClickable(true);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
-        RelativeLayout Header = new RelativeLayout(context);
-        Header.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-        Header.setBackgroundResource(R.color.White5);
-        Header.setId(MiscHandler.GenerateViewID());
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(Header);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
@@ -115,7 +112,7 @@ public class PostFragment extends Fragment
             }
         });
 
-        Header.addView(ImageViewBack);
+        RelativeLayoutHeader.addView(ImageViewBack);
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
@@ -124,11 +121,11 @@ public class PostFragment extends Fragment
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewTitle.setText(getString(R.string.FragmentPostDetailsTitle));
+        TextViewTitle.setText(getString(R.string.PostFragment));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
-        Header.addView(TextViewTitle);
+        RelativeLayoutHeader.addView(TextViewTitle);
 
         RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         ImageViewOptionParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -157,7 +154,7 @@ public class PostFragment extends Fragment
                 TextView TextViewFollow = new TextView(context);
                 TextViewFollow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewFollow.setText(getString(R.string.FragmentPostDetailsFollow));
+                TextViewFollow.setText(getString(R.string.PostFragmentFollow));
                 TextViewFollow.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewFollow.setOnClickListener(new View.OnClickListener()
@@ -372,7 +369,7 @@ public class PostFragment extends Fragment
             }
         });
 
-        Header.addView(ImageViewOption);
+        RelativeLayoutHeader.addView(ImageViewOption);
 
         RelativeLayout.LayoutParams BookMarkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         BookMarkParam.addRule(RelativeLayout.LEFT_OF, ImageViewOption.getId());
@@ -458,17 +455,17 @@ public class PostFragment extends Fragment
             }
         });
 
-        Header.addView(ImageViewBookMark);
+        RelativeLayoutHeader.addView(ImageViewBookMark);
 
         RelativeLayout.LayoutParams LineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
-        LineParam.addRule(RelativeLayout.BELOW, Header.getId());
+        LineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(context);
         ViewLine.setLayoutParams(LineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine);
+        RelativeLayoutMain.addView(ViewLine);
 
         RelativeLayout.LayoutParams ScrollParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         ScrollParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
@@ -479,7 +476,7 @@ public class PostFragment extends Fragment
         ScrollViewMain.setVerticalScrollBarEnabled(false);
         ScrollViewMain.setHorizontalScrollBarEnabled(false);
 
-        Root.addView(ScrollViewMain);
+        RelativeLayoutMain.addView(ScrollViewMain);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -1016,7 +1013,7 @@ public class PostFragment extends Fragment
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
         RelativeLayoutLoading.setVisibility(View.VISIBLE);
 
-        Root.addView(RelativeLayoutLoading);
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -1025,7 +1022,7 @@ public class PostFragment extends Fragment
         LoadingViewData = new LoadingView(context);
         LoadingViewData.setLayoutParams(LoadingViewDataParam);
 
-        Root.addView(LoadingViewData);
+        RelativeLayoutMain.addView(LoadingViewData);
 
         RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -1046,11 +1043,11 @@ public class PostFragment extends Fragment
             }
         });
 
-        Root.addView(TextViewTry);
+        RelativeLayoutMain.addView(TextViewTry);
 
         RetrieveDataFromServer(context);
 
-        return Root;
+        return RelativeLayoutMain;
     }
 
     @Override
