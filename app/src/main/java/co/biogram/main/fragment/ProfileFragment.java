@@ -1410,10 +1410,10 @@ public class ProfileFragment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("PostID", CommentList.get(Position).PostID);
 
-                    Fragment fragment = new FragmentPostDetails();
+                    Fragment fragment = new PostFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
                 }
             });
 

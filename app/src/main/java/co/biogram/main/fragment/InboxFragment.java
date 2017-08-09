@@ -245,7 +245,7 @@ public class InboxFragment extends Fragment
         {
             @Override
             public void onResponse(String Response)
-            {MiscHandler.Debug(Response + " qq");
+            {
                 try
                 {
                     JSONObject Result = new JSONObject(Response);

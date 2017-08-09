@@ -44,7 +44,7 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.CommentFragment;
 import co.biogram.main.fragment.FragmentImagePreview;
 import co.biogram.main.fragment.LikeFragment;
-import co.biogram.main.fragment.FragmentPostDetails;
+import co.biogram.main.fragment.PostFragment;
 import co.biogram.main.fragment.ProfileFragment;
 import co.biogram.main.fragment.VideoPreviewFragment;
 import co.biogram.main.handler.MiscHandler;
@@ -197,10 +197,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Bundle bundle = new Bundle();
                 bundle.putString("PostID", PostList.get(Position).PostID);
 
-                Fragment fragment = new FragmentPostDetails();
+                Fragment fragment = new PostFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPostDetails").commit();
+                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
             }
         });
 

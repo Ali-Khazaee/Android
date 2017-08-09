@@ -43,7 +43,7 @@ import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.TextCrawler;
 
-public class FragmentPostDetails extends Fragment
+public class PostFragment extends Fragment
 {
     private RelativeLayout RelativeLayoutLoading;
     private LoadingView LoadingViewData;
@@ -192,7 +192,7 @@ public class FragmentPostDetails extends Fragment
                         AndroidNetworking.post(MiscHandler.GetRandomServer("PostTurnComment"))
                         .addBodyParameter("PostID", PostID)
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .setTag("FragmentPostDetails")
+                        .setTag("PostFragment")
                         .build().getAsString(new StringRequestListener()
                         {
                             @Override
@@ -298,7 +298,7 @@ public class FragmentPostDetails extends Fragment
                         AndroidNetworking.post(MiscHandler.GetRandomServer("PostDelete"))
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                         .addBodyParameter("PostID", PostID)
-                        .setTag("FragmentPostDetails")
+                        .setTag("PostFragment")
                         .build().getAsString(new StringRequestListener()
                         {
                             @Override
@@ -428,7 +428,7 @@ public class FragmentPostDetails extends Fragment
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostBookMark"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("PostID", PostID)
-                .setTag("FragmentPostDetails")
+                .setTag("PostFragment")
                 .build().getAsString(new StringRequestListener()
                 {
                     @Override
@@ -916,7 +916,7 @@ public class FragmentPostDetails extends Fragment
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostLike"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("PostID", PostID)
-                .setTag("FragmentPostDetails")
+                .setTag("PostFragment")
                 .build().getAsString(new StringRequestListener()
                 {
                     @Override
@@ -1057,7 +1057,7 @@ public class FragmentPostDetails extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.forceCancel("FragmentPostDetails");
+        AndroidNetworking.forceCancel("PostFragment");
     }
 
     private void RetrieveDataFromServer(final Context context)
@@ -1068,7 +1068,7 @@ public class FragmentPostDetails extends Fragment
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostDetails"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("PostID", ((getArguments() == null) ? "" : getArguments().getString("PostID", "")))
-        .setTag("FragmentPostDetails")
+        .setTag("PostFragment")
         .build().getAsString(new StringRequestListener()
         {
             @Override
@@ -1200,7 +1200,7 @@ public class FragmentPostDetails extends Fragment
                             {
                                 JSONArray URL = new JSONArray(Result.getString("Data"));
 
-                                final TextCrawler Request = new TextCrawler(URL.get(0).toString(), "FragmentPostDetails", new TextCrawler.TextCrawlerCallBack()
+                                final TextCrawler Request = new TextCrawler(URL.get(0).toString(), "PostFragment", new TextCrawler.TextCrawlerCallBack()
                                 {
                                     @Override
                                     public void OnCompleted(TextCrawler.URLContent Content)
