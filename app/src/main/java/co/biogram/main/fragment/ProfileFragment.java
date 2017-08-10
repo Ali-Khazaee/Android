@@ -1413,7 +1413,7 @@ public class ProfileFragment extends Fragment
                     Fragment fragment = new PostFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
                 }
             });
 

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,7 @@ public class PostFragment extends Fragment
     private ImageView ImageViewTriple1;
     private ImageView ImageViewTriple2;
     private ImageView ImageViewTriple3;
-    private FrameLayout FrameLayoutVideo;
+    private RelativeLayout RelativeLayoutVideo;
     private ImageView ImageViewVideo;
     private RelativeLayout RelativeLayoutContentLink;
     private LoadingView LoadingViewLink;
@@ -74,16 +73,22 @@ public class PostFragment extends Fragment
     private ImageView ImageViewBookMark;
     private ImageView ImageViewLike;
 
-    private String PostID = "";
     private String OwnerID = "";
+    private String Username = "";
     private boolean IsLike = false;
     private boolean IsComment = false;
-    private boolean IsBookMark = false;
+    private boolean IsBookmark = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        final String PostID;
         final Context context = getActivity();
+
+        if (getArguments() != null)
+            PostID = getArguments().getString("PostID", "");
+        else
+            PostID = "";
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -146,12 +151,12 @@ public class PostFragment extends Fragment
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
 
-                LinearLayout Root = new LinearLayout(context);
-                Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                Root.setBackgroundResource(R.color.White);
-                Root.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout LinearLayoutMain = new LinearLayout(context);
+                LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
-                TextView TextViewFollow = new TextView(context);
+                final TextView TextViewFollow = new TextView(context);
                 TextViewFollow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 TextViewFollow.setText(getString(R.string.PostFragmentFollow));
@@ -162,18 +167,51 @@ public class PostFragment extends Fragment
                     @Override
                     public void onClick(View view)
                     {
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
+                        .addBodyParameter("Username", Username)
+                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .setTag("PostFragment")
+                        .build()
+                        .getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 1000)
+                                    {
+                                        if (Result.getBoolean("Follow"))
+                                            TextViewFollow.setText(getString(R.string.PostFragmentUnfollow));
+                                        else
+                                             TextViewFollow.setText(getString(R.string.PostFragmentFollow));
+
+                                        MiscHandler.Toast(context, getString(R.string.PostFragmentFollowRequest));
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    MiscHandler.Debug("PostFragment-RequestFollow: " + e.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) { }
+                        });
+
                         DialogOption.dismiss();
-                        MiscHandler.Toast(context, getString(R.string.Soon));
                     }
                 });
 
-                Root.addView(TextViewFollow);
+                LinearLayoutMain.addView(TextViewFollow);
 
                 View ViewFollowLine = new View(context);
                 ViewFollowLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewFollowLine.setBackgroundResource(R.color.Gray1);
 
-                Root.addView(ViewFollowLine);
+                LinearLayoutMain.addView(ViewFollowLine);
 
                 final TextView TextViewTurn = new TextView(context);
                 TextViewTurn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -190,7 +228,8 @@ public class PostFragment extends Fragment
                         .addBodyParameter("PostID", PostID)
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                         .setTag("PostFragment")
-                        .build().getAsString(new StringRequestListener()
+                        .build()
+                        .getAsString(new StringRequestListener()
                         {
                             @Override
                             public void onResponse(String Response)
@@ -202,7 +241,7 @@ public class PostFragment extends Fragment
                                 }
                                 catch (Exception e)
                                 {
-                                    // Leave Me Alone
+                                    MiscHandler.Debug("PostFragment-RequestTurn: " + e.toString());
                                 }
                             }
 
@@ -215,23 +254,23 @@ public class PostFragment extends Fragment
                 });
 
                 if (IsComment)
-                    TextViewTurn.setText(getString(R.string.FragmentPostDetailsTurnOn));
+                    TextViewTurn.setText(getString(R.string.PostFragmentTurnOn));
                 else
-                    TextViewTurn.setText(getString(R.string.FragmentPostDetailsTurnOff));
+                    TextViewTurn.setText(getString(R.string.PostFragmentTurnOff));
 
-                Root.addView(TextViewTurn);
+                LinearLayoutMain.addView(TextViewTurn);
 
                 View ViewTurnLine = new View(context);
                 ViewTurnLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewTurnLine.setBackgroundResource(R.color.Gray1);
                 ViewTurnLine.setVisibility(View.GONE);
 
-                Root.addView(ViewTurnLine);
+                LinearLayoutMain.addView(ViewTurnLine);
 
                 TextView TextViewCopy = new TextView(context);
                 TextViewCopy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewCopy.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewCopy.setText(getString(R.string.FragmentPostDetailsCopy));
+                TextViewCopy.setText(getString(R.string.PostFragmentCopy));
                 TextViewCopy.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewCopy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewCopy.setOnClickListener(new View.OnClickListener()
@@ -243,23 +282,23 @@ public class PostFragment extends Fragment
                         ClipData Clip = ClipData.newPlainText(PostID, TextViewMessage.getText().toString());
                         ClipBoard.setPrimaryClip(Clip);
 
-                        MiscHandler.Toast(context, getString(R.string.FragmentPostDetailsClipboard));
+                        MiscHandler.Toast(context, getString(R.string.PostFragmentClipboard));
                         DialogOption.dismiss();
                     }
                 });
 
-                Root.addView(TextViewCopy);
+                LinearLayoutMain.addView(TextViewCopy);
 
                 View ViewCopyLine = new View(context);
                 ViewCopyLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewCopyLine.setBackgroundResource(R.color.Gray1);
 
-                Root.addView(ViewCopyLine);
+                LinearLayoutMain.addView(ViewCopyLine);
 
                 TextView TextViewBlock = new TextView(context);
                 TextViewBlock.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewBlock.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewBlock.setText(getString(R.string.FragmentPostDetailsBlock));
+                TextViewBlock.setText(getString(R.string.PostFragmentBlock));
                 TextViewBlock.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewBlock.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewBlock.setOnClickListener(new View.OnClickListener()
@@ -272,18 +311,18 @@ public class PostFragment extends Fragment
                     }
                 });
 
-                Root.addView(TextViewBlock);
+                LinearLayoutMain.addView(TextViewBlock);
 
                 View ViewBlockLine = new View(context);
                 ViewBlockLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewBlockLine.setBackgroundResource(R.color.Gray1);
 
-                Root.addView(ViewBlockLine);
+                LinearLayoutMain.addView(ViewBlockLine);
 
                 TextView TextViewDelete = new TextView(context);
                 TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewDelete.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewDelete.setText(getString(R.string.FragmentPostDetailsDelete));
+                TextViewDelete.setText(getString(R.string.PostFragmentDelete));
                 TextViewDelete.setVisibility(View.GONE);
                 TextViewDelete.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewDelete.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -296,7 +335,8 @@ public class PostFragment extends Fragment
                         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                         .addBodyParameter("PostID", PostID)
                         .setTag("PostFragment")
-                        .build().getAsString(new StringRequestListener()
+                        .build()
+                        .getAsString(new StringRequestListener()
                         {
                             @Override
                             public void onResponse(String Response)
@@ -308,7 +348,7 @@ public class PostFragment extends Fragment
                                 }
                                 catch (Exception e)
                                 {
-                                    // Leave Me Alone
+                                    MiscHandler.Debug("PostFragment-RequestDelete: " + e.toString());
                                 }
                             }
 
@@ -320,19 +360,19 @@ public class PostFragment extends Fragment
                     }
                 });
 
-                Root.addView(TextViewDelete);
+                LinearLayoutMain.addView(TextViewDelete);
 
                 View ViewDeleteLine = new View(context);
                 ViewDeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewDeleteLine.setBackgroundResource(R.color.Gray1);
                 ViewDeleteLine.setVisibility(View.GONE);
 
-                Root.addView(ViewDeleteLine);
+                LinearLayoutMain.addView(ViewDeleteLine);
 
                 TextView TextViewReport = new TextView(context);
                 TextViewReport.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewReport.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewReport.setText(getString(R.string.FragmentPostDetailsReport));
+                TextViewReport.setText(getString(R.string.PostFragmentReport));
                 TextViewReport.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewReport.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewReport.setOnClickListener(new View.OnClickListener()
@@ -340,12 +380,36 @@ public class PostFragment extends Fragment
                     @Override
                     public void onClick(View view)
                     {
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostReport"))
+                        .addBodyParameter("PostID", PostID)
+                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .setTag("PostFragment")
+                        .build()
+                        .getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                try
+                                {
+                                    if (new JSONObject(Response).getInt("Message") == 1000)
+                                        MiscHandler.Toast(context, getString(R.string.PostFragmentReportSent));
+                                }
+                                catch (Exception e)
+                                {
+                                    MiscHandler.Debug("PostFragment-RequestReport: " + e.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) { }
+                        });
+
                         DialogOption.dismiss();
-                        MiscHandler.Toast(context, getString(R.string.Soon));
                     }
                 });
 
-                Root.addView(TextViewReport);
+                LinearLayoutMain.addView(TextViewReport);
 
                 if (OwnerID.equals(SharedHandler.GetString(context, "ID")))
                 {
@@ -364,7 +428,7 @@ public class PostFragment extends Fragment
                     TextViewReport.setVisibility(View.GONE);
                 }
 
-                DialogOption.setContentView(Root);
+                DialogOption.setContentView(LinearLayoutMain);
                 DialogOption.show();
             }
         });
@@ -385,9 +449,9 @@ public class PostFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (IsBookMark)
+                if (IsBookmark)
                 {
-                    ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black2);
+                    ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black);
 
                     ObjectAnimator Fade = ObjectAnimator.ofFloat(ImageViewBookMark, "alpha",  0.1f, 1f);
                     Fade.setDuration(400);
@@ -395,10 +459,12 @@ public class PostFragment extends Fragment
                     AnimatorSet AnimationSet = new AnimatorSet();
                     AnimationSet.play(Fade);
                     AnimationSet.start();
+
+                    IsBookmark = false;
                 }
                 else
                 {
-                    ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black);
+                    ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black2);
 
                     ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewBookMark, "scaleX", 1.5f);
                     SizeX.setDuration(200);
@@ -420,13 +486,16 @@ public class PostFragment extends Fragment
                     AnimatorSet AnimationSet = new AnimatorSet();
                     AnimationSet.playTogether(SizeX, SizeY, Fade, SizeX2, SizeY2);
                     AnimationSet.start();
+
+                    IsBookmark = true;
                 }
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("PostBookMark"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostBookmark"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("PostID", PostID)
                 .setTag("PostFragment")
-                .build().getAsString(new StringRequestListener()
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
@@ -437,7 +506,7 @@ public class PostFragment extends Fragment
 
                             if (Result.getInt("Message") == 1000)
                             {
-                                if (Result.getBoolean("BookMark"))
+                                if (Result.getBoolean("Bookmark"))
                                     ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black2);
                                 else
                                     ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black);
@@ -445,7 +514,7 @@ public class PostFragment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            MiscHandler.Debug("PostFragment-RequestBookmark: " + e.toString());
                         }
                     }
 
@@ -473,15 +542,13 @@ public class PostFragment extends Fragment
         ScrollView ScrollViewMain = new ScrollView(context);
         ScrollViewMain.setLayoutParams(ScrollParam);
         ScrollViewMain.setFillViewport(true);
-        ScrollViewMain.setVerticalScrollBarEnabled(false);
-        ScrollViewMain.setHorizontalScrollBarEnabled(false);
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayout RelativeLayoutMain2 = new RelativeLayout(context);
+        RelativeLayoutMain2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
-        ScrollViewMain.addView(RelativeLayoutMain);
+        ScrollViewMain.addView(RelativeLayoutMain2);
 
         RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55));
         ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
@@ -491,7 +558,7 @@ public class PostFragment extends Fragment
         ImageViewCircleProfile.setImageResource(R.color.BlueGray);
         ImageViewCircleProfile.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(ImageViewCircleProfile);
+        RelativeLayoutMain2.addView(ImageViewCircleProfile);
 
         RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCircleProfile.getId());
@@ -504,7 +571,7 @@ public class PostFragment extends Fragment
         TextViewUsername.setId(MiscHandler.GenerateViewID());
         TextViewUsername.setTypeface(null, Typeface.BOLD);
 
-        RelativeLayoutMain.addView(TextViewUsername);
+        RelativeLayoutMain2.addView(TextViewUsername);
 
         RelativeLayout.LayoutParams TextViewTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTimeParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
@@ -515,7 +582,7 @@ public class PostFragment extends Fragment
         TextViewTime.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
         TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
-        RelativeLayoutMain.addView(TextViewTime);
+        RelativeLayoutMain2.addView(TextViewTime);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, ImageViewCircleProfile.getId());
@@ -529,7 +596,7 @@ public class PostFragment extends Fragment
         TextViewMessage.setLineSpacing(1f, 1.25f);
         TextViewMessage.setVisibility(View.GONE);
 
-        RelativeLayoutMain.addView(TextViewMessage);
+        RelativeLayoutMain2.addView(TextViewMessage);
 
         RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutContentParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), 0);
@@ -539,7 +606,7 @@ public class PostFragment extends Fragment
         RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
         RelativeLayoutContent.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(RelativeLayoutContent);
+        RelativeLayoutMain2.addView(RelativeLayoutContent);
 
         LinearLayoutContentSingle = new LinearLayout(context);
         LinearLayoutContentSingle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -629,27 +696,28 @@ public class PostFragment extends Fragment
 
         RelativeLayoutTripleLayout.addView(ImageViewTriple3);
 
-        FrameLayoutVideo = new FrameLayout(context);
-        FrameLayoutVideo.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 150)));
-        FrameLayoutVideo.setBackgroundResource(R.color.Black);
+        RelativeLayoutVideo = new RelativeLayout(context);
+        RelativeLayoutVideo.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 150)));
+        RelativeLayoutVideo.setBackgroundResource(R.color.Black);
+        RelativeLayoutVideo.setVisibility(View.GONE);
 
-        RelativeLayoutContent.addView(FrameLayoutVideo);
+        RelativeLayoutContent.addView(RelativeLayoutVideo);
 
         ImageViewVideo = new ImageView(context);
         ImageViewVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewVideo.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-        FrameLayoutVideo.addView(ImageViewVideo);
+        RelativeLayoutVideo.addView(ImageViewVideo);
 
-        LinearLayout.LayoutParams ImageViewPlayParam = new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
-        ImageViewPlayParam.gravity = Gravity.CENTER;
+        RelativeLayout.LayoutParams ImageViewPlayParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+        ImageViewPlayParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         ImageView ImageViewPlay = new ImageView(context);
         ImageViewPlay.setLayoutParams(ImageViewPlayParam);
         ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewPlay.setImageResource(R.drawable.ic_play);
 
-        FrameLayoutVideo.addView(ImageViewPlay);
+        RelativeLayoutVideo.addView(ImageViewPlay);
 
         GradientDrawable ShapeLink = new GradientDrawable();
         ShapeLink.setStroke(MiscHandler.ToDimension(context, 1), ContextCompat.getColor(context, R.color.BlueGray));
@@ -728,7 +796,7 @@ public class PostFragment extends Fragment
         LinearLayoutInfo.setId(MiscHandler.GenerateViewID());
         LinearLayoutInfo.setPadding(0, MiscHandler.ToDimension(context, 15), 0, MiscHandler.ToDimension(context, 15));
 
-        RelativeLayoutMain.addView(LinearLayoutInfo);
+        RelativeLayoutMain2.addView(LinearLayoutInfo);
 
         TextViewLikeCount = new TextView(context);
         TextViewLikeCount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -747,7 +815,7 @@ public class PostFragment extends Fragment
                 Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
             }
         });
 
@@ -758,7 +826,7 @@ public class PostFragment extends Fragment
         TextViewLike.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewLike.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         TextViewLike.setTypeface(null, Typeface.BOLD);
-        TextViewLike.setText(getString(R.string.FragmentPostDetailsLike));
+        TextViewLike.setText(getString(R.string.PostFragmentLike));
         TextViewLike.setPadding(MiscHandler.ToDimension(context, 5), 0, 0, 0);
         TextViewLike.setOnClickListener(new View.OnClickListener()
         {
@@ -771,7 +839,7 @@ public class PostFragment extends Fragment
                 Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
             }
         });
 
@@ -797,11 +865,11 @@ public class PostFragment extends Fragment
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 
-                MiscHandler.Toast(context, getString(R.string.FragmentPostDetailsCommentDisable));
+                MiscHandler.Toast(context, getString(R.string.PostFragmentCommentDisable));
             }
         });
 
@@ -812,7 +880,7 @@ public class PostFragment extends Fragment
         TextViewComment.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
         TextViewComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         TextViewComment.setTypeface(null, Typeface.BOLD);
-        TextViewComment.setText(getString(R.string.FragmentPostDetailsComment));
+        TextViewComment.setText(getString(R.string.PostFragmentComment));
         TextViewComment.setPadding(MiscHandler.ToDimension(context, 5), 0, 0, 0);
         TextViewComment.setOnClickListener(new View.OnClickListener()
         {
@@ -828,11 +896,11 @@ public class PostFragment extends Fragment
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 
-                MiscHandler.Toast(context, getString(R.string.FragmentPostDetailsCommentDisable));
+                MiscHandler.Toast(context, getString(R.string.PostFragmentCommentDisable));
             }
         });
 
@@ -846,7 +914,7 @@ public class PostFragment extends Fragment
         ViewLine2.setBackgroundResource(R.color.Gray);
         ViewLine2.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(ViewLine2);
+        RelativeLayoutMain2.addView(ViewLine2);
 
         RelativeLayout.LayoutParams LinearLayoutToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         LinearLayoutToolParam.addRule(RelativeLayout.BELOW, ViewLine2.getId());
@@ -855,7 +923,7 @@ public class PostFragment extends Fragment
         LinearLayoutTool.setLayoutParams(LinearLayoutToolParam);
         LinearLayoutTool.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(LinearLayoutTool);
+        RelativeLayoutMain2.addView(LinearLayoutTool);
 
         ImageViewLike = new ImageView(context);
         ImageViewLike.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
@@ -914,7 +982,8 @@ public class PostFragment extends Fragment
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("PostID", PostID)
                 .setTag("PostFragment")
-                .build().getAsString(new StringRequestListener()
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
@@ -933,7 +1002,7 @@ public class PostFragment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            MiscHandler.Debug("PostFragment-RequestLike: " + e.toString());
                         }
                     }
 
@@ -964,11 +1033,11 @@ public class PostFragment extends Fragment
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 
-                MiscHandler.Toast(context, getString(R.string.FragmentPostDetailsCommentDisable));
+                MiscHandler.Toast(context, getString(R.string.PostFragmentCommentDisable));
             }
         });
 
@@ -986,9 +1055,9 @@ public class PostFragment extends Fragment
             {
                 Intent SendIntent = new Intent();
                 SendIntent.setAction(Intent.ACTION_SEND);
-                SendIntent.putExtra(Intent.EXTRA_TEXT, TextViewMessage.getText().toString() + "\n http://BioGram.Co/");
+                SendIntent.putExtra(Intent.EXTRA_TEXT, TextViewMessage.getText().toString() + "\n http://biogram.co/" + PostID);
                 SendIntent.setType("text/plain");
-                getActivity().startActivity(Intent.createChooser(SendIntent, getString(R.string.FragmentPostDetailsChoice)));
+                getActivity().startActivity(Intent.createChooser(SendIntent, getString(R.string.PostFragmentChoice)));
             }
         });
 
@@ -1003,49 +1072,49 @@ public class PostFragment extends Fragment
         ViewLine3.setBackgroundResource(R.color.Gray);
         ViewLine3.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(ViewLine3);
+        RelativeLayoutMain2.addView(ViewLine3);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RelativeLayoutLoading = new RelativeLayout(context);
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
-        RelativeLayoutLoading.setVisibility(View.VISIBLE);
+        RelativeLayoutLoading.setClickable(true);
 
-        RelativeLayoutMain.addView(RelativeLayoutLoading);
+        RelativeLayoutMain2.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutMain.addView(LoadingViewData);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
-        RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTryParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        TextViewTryParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextViewTry = new TextView(context);
-        TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewTry.setTypeface(null, Typeface.BOLD);
-        TextViewTry.setText(getString(R.string.TryAgain));
-        TextViewTry.setOnClickListener(new View.OnClickListener()
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewTryAgain.setTypeface(null, Typeface.BOLD);
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                RetrieveDataFromServer(context);
+                RetrieveDataFromServer(context, PostID, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
             }
         });
 
-        RelativeLayoutMain.addView(TextViewTry);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, PostID, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -1057,16 +1126,17 @@ public class PostFragment extends Fragment
         AndroidNetworking.forceCancel("PostFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, String PostID, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        TextViewTry.setVisibility(View.GONE);
-        LoadingViewData.Start();
+        TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostDetails"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("PostID", ((getArguments() == null) ? "" : getArguments().getString("PostID", "")))
+        .addBodyParameter("PostID", PostID)
         .setTag("PostFragment")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -1140,37 +1210,37 @@ public class PostFragment extends Fragment
                                         LinearLayoutContentSingle.setVisibility(View.VISIBLE);
                                         ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewSingle);
-                                        break;
+                                    break;
                                     case 2:
                                         LinearLayoutContentDouble.setVisibility(View.VISIBLE);
                                         ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewSingle);
-                                        Glide.with(context).load(URL.get(1).toString()).dontAnimate().into(ImageViewSingle);
-                                        break;
+                                        Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewDouble1);
+                                        Glide.with(context).load(URL.get(1).toString()).dontAnimate().into(ImageViewDouble2);
+                                    break;
                                     case 3:
                                         LinearLayoutContentTriple.setVisibility(View.VISIBLE);
                                         ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                                         ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                                        Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewSingle);
-                                        Glide.with(context).load(URL.get(1).toString()).dontAnimate().into(ImageViewSingle);
-                                        Glide.with(context).load(URL.get(2).toString()).dontAnimate().into(ImageViewSingle);
-                                        break;
+                                        Glide.with(context).load(URL.get(0).toString()).dontAnimate().into(ImageViewTriple1);
+                                        Glide.with(context).load(URL.get(1).toString()).dontAnimate().into(ImageViewTriple2);
+                                        Glide.with(context).load(URL.get(2).toString()).dontAnimate().into(ImageViewTriple3);
+                                    break;
                                 }
                             }
                             catch (Exception e)
                             {
-                                // Leave Me Alone
+                                MiscHandler.Debug("PostFragment-RequestStart3: " + e.toString());
                             }
                         }
                         else if (Result.getInt("Type") == 2)
                         {
-                             JSONArray URL = new JSONArray(Result.getString("Data"));
+                            JSONArray URL = new JSONArray(Result.getString("Data"));
 
                             final String VideoUrl = URL.get(0).toString();
 
-                            FrameLayoutVideo.setVisibility(View.VISIBLE);
+                            RelativeLayoutVideo.setVisibility(View.VISIBLE);
                             ImageViewVideo.setOnClickListener(new View.OnClickListener()
                             {
                                 @Override
@@ -1258,23 +1328,22 @@ public class PostFragment extends Fragment
                             }
                             catch (Exception e)
                             {
-                                // Leave Me Alone
+                                MiscHandler.Debug("PostFragment-RequestStart2: " + e.toString());
                             }
                         }
 
                         TextViewLikeCount.setText(String.valueOf(Result.getInt("LikeCount")));
                         TextViewCommentCount.setText(String.valueOf(Result.getInt("CommentCount")));
 
-                        PostID = Result.getString("PostID");
                         OwnerID = Result.getString("OwnerID");
                         IsLike = Result.getBoolean("Like");
                         IsComment = Result.getBoolean("Comment");
-                        IsBookMark = Result.getBoolean("BookMark");
+                        IsBookmark = Result.getBoolean("BookMark");
 
                         if (IsLike)
                             ImageViewLike.setImageResource(R.drawable.ic_like_red);
 
-                        if (IsBookMark)
+                        if (IsBookmark)
                             ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_black2);
 
                         ImageViewOption.setVisibility(View.VISIBLE);
@@ -1283,18 +1352,19 @@ public class PostFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("PostFragment-RequestStart: " + e.toString());
                 }
 
-                LoadingViewData.Stop();
-                TextViewTry.setVisibility(View.GONE);
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
                 RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(context, getString(R.string.NoInternet));
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
             }
         });
     }
@@ -1313,6 +1383,6 @@ public class PostFragment extends Fragment
         Fragment fragment = new FragmentImagePreview();
         fragment.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
     }
 }

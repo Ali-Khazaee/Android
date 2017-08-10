@@ -281,7 +281,7 @@ public class LikeFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
                 }
             });
 
@@ -297,7 +297,7 @@ public class LikeFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
                 }
             });
 

@@ -168,6 +168,10 @@
     <string name="PostFragmentClipboard">Text has been copied to clipboard</string>
     <string name="PostFragmentCommentDisable">Commenting is Disabled</string>
     <string name="PostFragmentChoice">Choice</string>
+    <string name="PostFragmentUnfollow">Unfollow</string>
+    <string name="PostFragmentFollowRequest">Follow request sent</string>
+    <string name="PostFragmentReportSent">Report sent</string>
+
 
 
 

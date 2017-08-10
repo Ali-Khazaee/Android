@@ -81,7 +81,7 @@ public class InboxFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
             }
         });
 
@@ -100,7 +100,7 @@ public class InboxFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
             }
         });
 

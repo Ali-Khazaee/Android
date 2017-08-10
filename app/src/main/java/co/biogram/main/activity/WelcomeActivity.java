@@ -158,7 +158,7 @@ public class WelcomeActivity extends FragmentActivity
             @Override
             public void onClick(View v)
             {
-                getSupportFragmentManager().beginTransaction().replace(R.id.WelcomeActivityContainer, new SignUpFragmentUsername()).addToBackStack("SignUpFragmentUsername").commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new SignUpFragmentUsername()).addToBackStack("SignUpFragmentUsername").commit();
             }
         });
 
@@ -258,7 +258,7 @@ public class WelcomeActivity extends FragmentActivity
             @Override
             public void onClick(View v)
             {
-                getSupportFragmentManager().beginTransaction().replace(R.id.WelcomeActivityContainer, new SignInFragment()).addToBackStack("SignInFragment").commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new SignInFragment()).addToBackStack("SignInFragment").commit();
             }
         });
 
@@ -692,7 +692,7 @@ public class WelcomeActivity extends FragmentActivity
                                 {
                                     WelcomeActivity Parent = (WelcomeActivity) getActivity();
                                     Parent.Username = EditTextUsername.getText().toString();
-                                    Parent.getSupportFragmentManager().beginTransaction().replace(R.id.WelcomeActivityContainer, new SignUpFragmentPassword()).addToBackStack("SignUpFragmentPassword").commit();
+                                    Parent.getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new SignUpFragmentPassword()).addToBackStack("SignUpFragmentPassword").commit();
                                     return;
                                 }
 
@@ -976,7 +976,7 @@ public class WelcomeActivity extends FragmentActivity
                 {
                     WelcomeActivity Parent = (WelcomeActivity) getActivity();
                     Parent.Password = EditTextPassword.getText().toString();
-                    Parent.getSupportFragmentManager().beginTransaction().replace(R.id.WelcomeActivityContainer, new SignUpFragmentEmail()).addToBackStack("SignUpFragmentEmail").commit();
+                    Parent.getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new SignUpFragmentEmail()).addToBackStack("SignUpFragmentEmail").commit();
                 }
             });
 
@@ -1565,7 +1565,7 @@ public class WelcomeActivity extends FragmentActivity
                 @Override
                 public void onClick(View view)
                 {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.WelcomeActivityContainer, new ResetFragment()).addToBackStack("ResetFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new ResetFragment()).addToBackStack("ResetFragment").commit();
                 }
             });
 

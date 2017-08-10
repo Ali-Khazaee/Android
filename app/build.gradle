@@ -25,10 +25,10 @@ android
     {
         release
         {
-            storeFile file('C:\\Users\\pc\\Desktop\\Ali\\Android\\app\\Sign.jks')
-            storePassword BioKeyPassword
-            keyAlias BioAlias
-            keyPassword BioPassword
+            storeFile file('E:\\Biogram\\Android\\app\\Sign.jks')
+            storePassword SignPassword
+            keyAlias SignAlias
+            keyPassword SignAliasPassword
         }
     }
 

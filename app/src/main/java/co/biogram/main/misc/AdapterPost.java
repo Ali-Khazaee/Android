@@ -200,7 +200,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Fragment fragment = new PostFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
             }
         });
 
@@ -898,7 +898,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("LikeFragment").commit();
             }
         });
 
@@ -917,7 +917,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("CommentFragment").commit();
                     return;
                 }
 
@@ -984,6 +984,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         Fragment fragment = new FragmentImagePreview();
         fragment.setArguments(bundle);
 
-        Activity.getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+        Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
     }
 }
