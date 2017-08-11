@@ -221,7 +221,7 @@ public class FragmentFollowers extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentFollowers");
+        AndroidNetworking.forceCancel("FragmentFollowers");
     }
 
     private void RetrieveDataFromServer(final Context context)

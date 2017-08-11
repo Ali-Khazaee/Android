@@ -74,7 +74,6 @@ public class BookmarkFragment extends Fragment
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
-        TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);

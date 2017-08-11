@@ -221,7 +221,7 @@ public class FragmentFollowing extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentFollowing");
+        AndroidNetworking.forceCancel("FragmentFollowing");
     }
 
     private void RetrieveDataFromServer(Context context)

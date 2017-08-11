@@ -949,7 +949,7 @@ public class FragmentMomentWrite extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentMomentWrite");
+        AndroidNetworking.forceCancel("FragmentMomentWrite");
     }
 
     @Override

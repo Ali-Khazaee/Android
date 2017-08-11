@@ -540,6 +540,7 @@ public class SearchFragment extends Fragment
 
     private class AdapterTag extends RecyclerView.Adapter<AdapterTag.ViewHolderComment>
     {
+        private final int ID_SHARP = MiscHandler.GenerateViewID();
         private final int ID_TAG = MiscHandler.GenerateViewID();
         private final int ID_POST = MiscHandler.GenerateViewID();
 
@@ -552,12 +553,14 @@ public class SearchFragment extends Fragment
 
         class ViewHolderComment extends RecyclerView.ViewHolder
         {
+            private TextView TextViewSharp;
             private TextView TextViewTag;
             private TextView TextViewPost;
 
             ViewHolderComment(View view)
             {
                 super(view);
+                TextViewSharp = (TextView) view.findViewById(ID_SHARP);
                 TextViewTag = (TextView) view.findViewById(ID_TAG);
                 TextViewPost = (TextView) view.findViewById(ID_POST);
             }
@@ -567,6 +570,36 @@ public class SearchFragment extends Fragment
         public void onBindViewHolder(final ViewHolderComment Holder, int position)
         {
             final int Position = Holder.getAdapterPosition();
+
+            Holder.TextViewSharp.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Tag", TagList.get(Position).Tag);
+
+                    Fragment fragment = new TagFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("TagFragment").commit();
+                }
+            });
+
+            Holder.TextViewTag.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Tag", TagList.get(Position).Tag);
+
+                    Fragment fragment = new TagFragment();
+                    fragment.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("TagFragment").commit();
+                }
+            });
 
             Holder.TextViewTag.setText(TagList.get(Position).Tag);
 
@@ -596,14 +629,14 @@ public class SearchFragment extends Fragment
             TextViewSharp.setPadding(MiscHandler.ToDimension(context, 20), 0, MiscHandler.ToDimension(context, 20), 0);
             TextViewSharp.setTextColor(ContextCompat.getColor(context, R.color.Black));
             TextViewSharp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
-            TextViewSharp.setId(MiscHandler.GenerateViewID());
+            TextViewSharp.setId(ID_SHARP);
             TextViewSharp.setText("#");
 
             RelativeLayoutMain.addView(TextViewSharp);
 
             RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 20), 0, 0);
-            TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, TextViewSharp.getId());
+            TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_SHARP);
 
             TextView TextViewUsername = new TextView(context);
             TextViewUsername.setLayoutParams(TextViewUsernameParam);
@@ -616,7 +649,7 @@ public class SearchFragment extends Fragment
 
             RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewMessageParam.addRule(RelativeLayout.BELOW, ID_TAG);
-            TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, TextViewSharp.getId());
+            TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_SHARP);
 
             TextView TextViewPost = new TextView(context);
             TextViewPost.setLayoutParams(TextViewMessageParam);
@@ -627,7 +660,7 @@ public class SearchFragment extends Fragment
             RelativeLayoutMain.addView(TextViewPost);
 
             RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
-            ViewLineParam.addRule(RelativeLayout.BELOW, TextViewSharp.getId());
+            ViewLineParam.addRule(RelativeLayout.BELOW, ID_SHARP);
 
             View ViewLine = new View(context);
             ViewLine.setLayoutParams(ViewLineParam);

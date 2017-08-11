@@ -118,7 +118,7 @@ public class FragmentImagePreview extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.cancel("FragmentImagePreview");
+        AndroidNetworking.forceCancel("FragmentImagePreview");
     }
 
     public void SetBitmap(Bitmap bitmap)
