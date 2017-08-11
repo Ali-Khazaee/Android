@@ -66,6 +66,14 @@ public class CategoryFragment extends Fragment
         ImageViewBookMark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewBookMark.setImageResource(R.drawable.ic_bookmark_blue);
         ImageViewBookMark.setId(MiscHandler.GenerateViewID());
+        ImageViewBookMark.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBookMark);
 
@@ -82,7 +90,7 @@ public class CategoryFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ActivityMainFullContainer, new SearchFragment(), "SearchFragment").addToBackStack("SearchFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
             }
         });
 
