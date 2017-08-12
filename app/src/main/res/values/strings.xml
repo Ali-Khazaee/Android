@@ -73,6 +73,8 @@
     <string name="NotificationFragmentComment">commented on your post</string>
     <string name="NotificationFragmentCommentLike">liked your comment</string>
     <string name="NotificationFragmentCommentTag">mentioned you in a comment</string>
+    <string name="NotificationFragmentTurnOn">Turn on Notification</string>
+    <string name="NotificationFragmentTurnOff">Turn off Notification</string>
 
     <!-- Comment Fragment -->
     <string name="CommentFragment">Comment</string>

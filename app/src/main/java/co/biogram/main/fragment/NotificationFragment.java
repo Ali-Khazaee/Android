@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -70,8 +72,38 @@ public class NotificationFragment extends Fragment
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
+        RelativeLayout.LayoutParams ImageViewMoreParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewMoreParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        final ImageView ImageViewMore = new ImageView(context);
+        ImageViewMore.setLayoutParams(ImageViewMoreParam);
+        ImageViewMore.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewMore.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
+        ImageViewMore.setImageResource(R.drawable.ic_moment_black);
+        ImageViewMore.setId(MiscHandler.GenerateViewID());
+        ImageViewMore.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                PopupMenu PopMenu = new PopupMenu(context, ImageViewMore);
+                PopMenu.getMenu().add(getString(R.string.NotificationFragmentTurnOn));
+                PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        return false;
+                    }
+                });
+                PopMenu.show();
+            }
+        });
+
+        RelativeLayoutHeader.addView(ImageViewMore);
+
         RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
-        ImageViewSearchParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        ImageViewSearchParam.addRule(RelativeLayout.LEFT_OF, ImageViewMore.getId());
 
         ImageView ImageViewSearch = new ImageView(context);
         ImageViewSearch.setLayoutParams(ImageViewSearchParam);
@@ -112,7 +144,7 @@ public class NotificationFragment extends Fragment
                 NotificationList.add(null);
                 Adapter.notifyItemInserted(NotificationList.size());
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationList"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("Skip", String.valueOf(NotificationList.size()))
                 .setTag("NotificationFragment")
@@ -149,6 +181,7 @@ public class NotificationFragment extends Fragment
                         catch (Exception e)
                         {
                             RecyclerViewScrollMain.ResetLoading(false);
+                            MiscHandler.Debug("Notification-RequestMore: " + e.toString());
                         }
 
                         NotificationList.remove(NotificationList.size() - 1);
@@ -161,7 +194,6 @@ public class NotificationFragment extends Fragment
                         RecyclerViewScrollMain.ResetLoading(false);
                         NotificationList.remove(NotificationList.size() - 1);
                         Adapter.notifyItemRemoved(NotificationList.size());
-                        MiscHandler.Toast(context, getString(R.string.NoInternet));
                     }
                 });
             }
@@ -212,7 +244,7 @@ public class NotificationFragment extends Fragment
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewMain.Start();
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationList"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("NotificationFragment")
         .build()
@@ -231,13 +263,13 @@ public class NotificationFragment extends Fragment
 
                         for (int I = 0; I < ResultList.length(); I++)
                         {
-                            JSONObject Comment = ResultList.getJSONObject(I);
+                            JSONObject Notification = ResultList.getJSONObject(I);
 
                             Struct NotificationStruct = new Struct();
-                            NotificationStruct.Username = Comment.getString("Username");
-                            NotificationStruct.Avatar = Comment.getString("Avatar");
-                            NotificationStruct.Type = Comment.getInt("Type");
-                            NotificationStruct.Time = Comment.getInt("Time");
+                            NotificationStruct.Username = Notification.getString("Username");
+                            NotificationStruct.Avatar = Notification.getString("Avatar");
+                            NotificationStruct.Type = Notification.getInt("Type");
+                            NotificationStruct.Time = Notification.getInt("Time");
 
                             NotificationList.add(NotificationStruct);
                         }
@@ -248,7 +280,11 @@ public class NotificationFragment extends Fragment
                 catch (Exception e)
                 {
                     RecyclerViewScrollMain.ResetLoading(false);
+                    MiscHandler.Debug("Notification-RequestStart: " + e.toString());
                 }
+
+                LoadingViewMain.setVisibility(View.GONE);
+                TextViewTryAgain.setVisibility(View.GONE);
             }
 
             @Override
@@ -257,7 +293,6 @@ public class NotificationFragment extends Fragment
                 RecyclerViewScrollMain.ResetLoading(false);
                 LoadingViewMain.setVisibility(View.GONE);
                 TextViewTryAgain.setVisibility(View.VISIBLE);
-                MiscHandler.Toast(context, getString(R.string.NoInternet));
             }
         });
     }
