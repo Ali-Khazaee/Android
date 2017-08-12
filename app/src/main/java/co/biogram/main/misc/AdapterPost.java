@@ -876,7 +876,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            MiscHandler.Debug("AdapterPost-RequestLike: " + e.toString());
                         }
                     }
 

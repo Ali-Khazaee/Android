@@ -24,6 +24,7 @@ import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.service.NotificationService;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class ActivityMain extends FragmentActivity
 {
@@ -132,6 +133,8 @@ public class ActivityMain extends FragmentActivity
         setContentView(RelativeLayoutMain);
 
         ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
+
+        ShortcutBadger.removeCount(context);
     }
 
     @Override
@@ -153,6 +156,8 @@ public class ActivityMain extends FragmentActivity
         @Override
         public void onReceive(Context context, Intent intent)
         {
+            MiscHandler.Debug("BroadcastReceiverNotification");
+
             try
             {
                 ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);

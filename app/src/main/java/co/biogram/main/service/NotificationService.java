@@ -20,6 +20,7 @@ import co.biogram.main.R;
 import co.biogram.main.activity.ActivityMain;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class NotificationService extends Service
 {
@@ -39,6 +40,12 @@ public class NotificationService extends Service
             @Override
             public void run()
             {
+                if (SharedHandler.GetBoolean(context, "Notification"))
+                {
+                    handler.postDelayed(runnable, 5000);
+                    return;
+                }
+
                 AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationService"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .build()
@@ -46,13 +53,14 @@ public class NotificationService extends Service
                 {
                     @Override
                     public void onResponse(String Response)
-                    {
+                    {MiscHandler.Debug("Q: " + Response);
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
 
                             if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                             {
+                                int Count = 0;
                                 JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
                                 for (int I = 0; I < ResultList.length(); I++)
@@ -70,16 +78,20 @@ public class NotificationService extends Service
                                         case 5: Message += context.getString(R.string.NotificationFragmentComment);     break;
                                         case 6: Message += context.getString(R.string.NotificationFragmentCommentTag);  break;
                                     }
-
+MiscHandler.Debug("aaaaaaaaaaaaa " + Message);
+                                    Count++;
                                     CreateNotification(context, Message);
                                 }
 
-                                new Intent(BROADCAST_ACTION_NEW);
+                                if (Count > 0)
+                                    ShortcutBadger.applyCount(context, Count);
+
+                                //new Intent(BROADCAST_ACTION_NEW);
                             }
                         }
                         catch (Exception e)
                         {
-                            //
+                            MiscHandler.Debug("NotificationService-RequestNotification: " + e.toString());
                         }
 
                         handler.postDelayed(runnable, 5000);
@@ -103,12 +115,12 @@ public class NotificationService extends Service
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
         .setSmallIcon(R.drawable.ic_back_white)
-        .setContentTitle("BioGram")
+        .setContentTitle("Biogram")
         .setContentText(Message);
 
-        PendingIntent pi = PendingIntent.getActivity(context, 0, new Intent(context, ActivityMain.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent i = PendingIntent.getActivity(context, 0, new Intent(context, ActivityMain.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        builder.setContentIntent(pi);
+        builder.setContentIntent(i);
         builder.setAutoCancel(true);
 
         NotificationManager Manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

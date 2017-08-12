@@ -180,9 +180,9 @@ public class CommentFragment extends Fragment
                                 StructComment.Like = false;
                                 StructComment.Avatar = SharedHandler.GetString(context, "Avatar");
 
-                                CommentList.add(CommentList.size(), StructComment);
+                                CommentList.add(0, StructComment);
                                 Adapter.notifyDataSetChanged();
-                                RecyclerViewMain.scrollToPosition(CommentList.size() - 1);
+                                RecyclerViewMain.scrollToPosition(0);
                             }
                         }
                         catch (Exception e)
@@ -316,6 +316,7 @@ public class CommentFragment extends Fragment
                         catch (Exception e)
                         {
                             RecyclerViewScrollMain.ResetLoading(false);
+                            MiscHandler.Debug("CommentFragment-RequestMore: " + e.toString());
                         }
                     }
 

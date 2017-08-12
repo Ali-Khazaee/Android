@@ -62,6 +62,7 @@ dependencies
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.3'
     compile 'com.squareup.leakcanary:leakcanary-android:1.5'
     compile 'com.danikula:videocache:2.7.0'
+    compile "me.leolin:ShortcutBadger:1.1.16@aar"
 }
 
 apply plugin: 'com.google.gms.google-services'

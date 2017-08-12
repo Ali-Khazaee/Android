@@ -8,6 +8,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -41,6 +44,8 @@ public class NotificationFragment extends Fragment
     private final List<Struct> NotificationList = new ArrayList<>();
     private RecyclerViewScroll RecyclerViewScrollMain;
     private AdapterNotification Adapter;
+
+    private boolean NotificationTurn = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
@@ -78,8 +83,8 @@ public class NotificationFragment extends Fragment
         final ImageView ImageViewMore = new ImageView(context);
         ImageViewMore.setLayoutParams(ImageViewMoreParam);
         ImageViewMore.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewMore.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
-        ImageViewMore.setImageResource(R.drawable.ic_moment_black);
+        ImageViewMore.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewMore.setImageResource(R.drawable.ic_more_blue);
         ImageViewMore.setId(MiscHandler.GenerateViewID());
         ImageViewMore.setOnClickListener(new View.OnClickListener()
         {
@@ -87,12 +92,50 @@ public class NotificationFragment extends Fragment
             public void onClick(View v)
             {
                 PopupMenu PopMenu = new PopupMenu(context, ImageViewMore);
-                PopMenu.getMenu().add(getString(R.string.NotificationFragmentTurnOn));
+
+                if (NotificationTurn)
+                    PopMenu.getMenu().add(getString(R.string.NotificationFragmentTurnOn));
+                else
+                    PopMenu.getMenu().add(getString(R.string.NotificationFragmentTurnOff));
+
                 PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                 {
                     @Override
                     public boolean onMenuItemClick(MenuItem item)
                     {
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
+                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                        .setTag("NotificationFragment")
+                        .build()
+                        .getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {MiscHandler.Debug("AA" + Response);
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 1000)
+                                    {
+                                        NotificationTurn = Result.getBoolean("Notification");
+
+                                        if (NotificationTurn)
+                                            SharedHandler.SetBoolean(context, "Notification", true);
+                                        else
+                                            SharedHandler.SetBoolean(context, "Notification", false);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    MiscHandler.Debug("NotificationFragment-RequestNotification: " + e.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) { }
+                        });
+
                         return false;
                     }
                 });
@@ -273,6 +316,13 @@ public class NotificationFragment extends Fragment
 
                             NotificationList.add(NotificationStruct);
                         }
+
+                        NotificationTurn = Result.getBoolean("Notification");
+
+                        if (NotificationTurn)
+                            SharedHandler.SetBoolean(context, "Notification", true);
+                        else
+                            SharedHandler.SetBoolean(context, "Notification", false);
                     }
 
                     Adapter.notifyDataSetChanged();
@@ -300,7 +350,6 @@ public class NotificationFragment extends Fragment
     private class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.ViewHolderMain>
     {
         private final int ID_Profile = MiscHandler.GenerateViewID();
-        private final int ID_Username = MiscHandler.GenerateViewID();
         private final int ID_Message = MiscHandler.GenerateViewID();
         private final int ID_Time = MiscHandler.GenerateViewID();
 
@@ -314,7 +363,6 @@ public class NotificationFragment extends Fragment
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
             private ImageViewCircle ImageViewCircleProfile;
-            private TextView TextViewUsername;
             private TextView TextViewMessage;
             private TextView TextViewTime;
 
@@ -325,7 +373,6 @@ public class NotificationFragment extends Fragment
                 if (Content)
                 {
                     ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
-                    TextViewUsername = (TextView) view.findViewById(ID_Username);
                     TextViewMessage = (TextView) view.findViewById(ID_Message);
                     TextViewTime = (TextView) view.findViewById(ID_Time);
                 }
@@ -361,35 +408,22 @@ public class NotificationFragment extends Fragment
                 }
             });
 
-            String Message = "";
+            String Message = NotificationList.get(Position).Username + " ";
 
             switch (NotificationList.get(Position).Type)
             {
-                case 1: Message = context.getString(R.string.NotificationFragmentPostTag);     break;
-                case 2: Message = context.getString(R.string.NotificationFragmentPostLike);    break;
-                case 3: Message = context.getString(R.string.NotificationFragmentFollow);      break;
-                case 4: Message = context.getString(R.string.NotificationFragmentCommentLike); break;
-                case 5: Message = context.getString(R.string.NotificationFragmentComment);     break;
-                case 6: Message = context.getString(R.string.NotificationFragmentCommentTag);  break;
+                case 1: Message += context.getString(R.string.NotificationFragmentPostTag);     break;
+                case 2: Message += context.getString(R.string.NotificationFragmentPostLike);    break;
+                case 3: Message += context.getString(R.string.NotificationFragmentFollow);      break;
+                case 4: Message += context.getString(R.string.NotificationFragmentCommentLike); break;
+                case 5: Message += context.getString(R.string.NotificationFragmentComment);     break;
+                case 6: Message += context.getString(R.string.NotificationFragmentCommentTag);  break;
             }
 
-            Holder.TextViewMessage.setText(Message);
+            SpannableString SpanMessage = new SpannableString(Message);
+            SpanMessage.setSpan(new StyleSpan(Typeface.BOLD), 0, NotificationList.get(Position).Username.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            Holder.TextViewUsername.setText(NotificationList.get(Position).Username);
-            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Username", NotificationList.get(Position).Username);
-
-                    Fragment fragment = new ProfileFragment();
-                    fragment.setArguments(bundle);
-
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
-                }
-            });
+            Holder.TextViewMessage.setText(SpanMessage);
 
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(NotificationList.get(Position).Time));
         }
@@ -399,6 +433,8 @@ public class NotificationFragment extends Fragment
         {
             if (ViewType == 0)
             {
+                TextView TextViewTime = new TextView(context);
+
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
@@ -413,29 +449,16 @@ public class NotificationFragment extends Fragment
 
                 RelativeLayoutMain.addView(ImageViewCircleProfile);
 
-                RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
-
-                TextView TextViewUsername = new TextView(context);
-                TextViewUsername.setLayoutParams(TextViewUsernameParam);
-                TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewUsername.setTypeface(null, Typeface.BOLD);
-                TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewUsername.setId(ID_Username);
-
-                RelativeLayoutMain.addView(TextViewUsername);
-
                 RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewMessageParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_Username);
+                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
+                TextViewMessageParam.addRule(RelativeLayout.LEFT_OF, ID_Time);
 
                 TextView TextViewMessage = new TextView(context);
                 TextViewMessage.setLayoutParams(TextViewMessageParam);
                 TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                 TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewMessage.setId(ID_Message);
-                TextViewMessage.setText(getString(R.string.FragmentProfileCommentMessage));
 
                 RelativeLayoutMain.addView(TextViewMessage);
 
@@ -443,7 +466,6 @@ public class NotificationFragment extends Fragment
                 TextViewTimeParam.setMargins(0, MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), 0);
                 TextViewTimeParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-                TextView TextViewTime = new TextView(context);
                 TextViewTime.setLayoutParams(TextViewTimeParam);
                 TextViewTime.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
                 TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
