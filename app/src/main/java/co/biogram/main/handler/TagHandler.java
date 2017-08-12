@@ -110,6 +110,7 @@ public class TagHandler
 
             if (TagType == 1)
             {
+                MiscHandler.Debug("Tag: " + Message);
                 Bundle bundle = new Bundle();
                 bundle.putString("Tag", Message);
 

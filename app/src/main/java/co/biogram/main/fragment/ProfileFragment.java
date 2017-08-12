@@ -903,7 +903,7 @@ public class ProfileFragment extends Fragment
                 AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("Username", Username)
-                .setTag("FragmentProfile")
+                .setTag("ProfileFragment")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -995,7 +995,7 @@ public class ProfileFragment extends Fragment
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.forceCancel("FragmentProfile");
+        AndroidNetworking.forceCancel("ProfileFragment");
     }
 
     private void RetrieveDataFor(Context context, String Username)
@@ -1203,7 +1203,7 @@ public class ProfileFragment extends Fragment
         switch (tab)
         {
             case 1:
-                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostList, "FragmentProfile"));
+                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostList, "ProfileFragment"));
                 TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabPost.setBackgroundResource(R.color.BlueLight);
             break;
@@ -1213,7 +1213,7 @@ public class ProfileFragment extends Fragment
                 ViewTabComment.setBackgroundResource(R.color.BlueLight);
             break;
             case 3:
-                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostListLike, "FragmentProfile"));
+                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostListLike, "ProfileFragment"));
                 TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                 ViewTabLike.setBackgroundResource(R.color.BlueLight);
             break;
@@ -1230,7 +1230,7 @@ public class ProfileFragment extends Fragment
         AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileGet"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
-        .setTag("FragmentProfile")
+        .setTag("ProfileFragment")
         .build()
         .getAsString(new StringRequestListener()
         {
@@ -1434,7 +1434,7 @@ public class ProfileFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                 }
             });
 
@@ -1450,7 +1450,7 @@ public class ProfileFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                 }
             });
 
@@ -1466,7 +1466,7 @@ public class ProfileFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                 }
             });
 

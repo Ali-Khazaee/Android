@@ -857,32 +857,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostLike"))
                 .addBodyParameter("PostID", PostList.get(Position).PostID)
                 .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
-                .setTag(Tag).build().getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            if (Result.getInt("Message") == 1000)
-                            {
-                                if (Result.getBoolean("Like"))
-                                    Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
-                                else
-                                    Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            MiscHandler.Debug("AdapterPost-RequestLike: " + e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) { }
-                });
+                .setTag(Tag)
+                .build()
+                .getAsString(null);
             }
         });
 

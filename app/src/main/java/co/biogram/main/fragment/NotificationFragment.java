@@ -38,6 +38,7 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class NotificationFragment extends Fragment
 {
@@ -111,7 +112,7 @@ public class NotificationFragment extends Fragment
                         {
                             @Override
                             public void onResponse(String Response)
-                            {MiscHandler.Debug("AA" + Response);
+                            {
                                 try
                                 {
                                     JSONObject Result = new JSONObject(Response);
@@ -335,6 +336,7 @@ public class NotificationFragment extends Fragment
 
                 LoadingViewMain.setVisibility(View.GONE);
                 TextViewTryAgain.setVisibility(View.GONE);
+                ShortcutBadger.removeCount(context);
             }
 
             @Override

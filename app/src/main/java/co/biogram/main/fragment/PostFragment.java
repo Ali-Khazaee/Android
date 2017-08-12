@@ -983,32 +983,7 @@ public class PostFragment extends Fragment
                 .addBodyParameter("PostID", PostID)
                 .setTag("PostFragment")
                 .build()
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            if (Result.getInt("Message") == 1000)
-                            {
-                                if (Result.getBoolean("Like"))
-                                    ImageViewLike.setImageResource(R.drawable.ic_like_red);
-                                else
-                                    ImageViewLike.setImageResource(R.drawable.ic_like);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            MiscHandler.Debug("PostFragment-RequestLike: " + e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) { }
-                });
+                .getAsString(null);
             }
         });
 

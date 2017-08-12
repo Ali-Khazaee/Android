@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -53,7 +54,7 @@ public class NotificationService extends Service
                 {
                     @Override
                     public void onResponse(String Response)
-                    {MiscHandler.Debug("Q: " + Response);
+                    {
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
@@ -78,15 +79,16 @@ public class NotificationService extends Service
                                         case 5: Message += context.getString(R.string.NotificationFragmentComment);     break;
                                         case 6: Message += context.getString(R.string.NotificationFragmentCommentTag);  break;
                                     }
-MiscHandler.Debug("aaaaaaaaaaaaa " + Message);
+
                                     Count++;
-                                    CreateNotification(context, Message);
+                                    CreateNotification(context, Message, Notification.getString("ID"), Notification.getInt("Type"));
                                 }
 
                                 if (Count > 0)
+                                {
                                     ShortcutBadger.applyCount(context, Count);
-
-                                //new Intent(BROADCAST_ACTION_NEW);
+                                    sendBroadcast(new Intent(BROADCAST_ACTION_NEW));
+                                }
                             }
                         }
                         catch (Exception e)
@@ -111,16 +113,24 @@ MiscHandler.Debug("aaaaaaaaaaaaa " + Message);
         return START_STICKY;
     }
 
-    private void CreateNotification(Context context, String Message)
+    private void CreateNotification(Context context, String Message, String ID, int Type)
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
         .setSmallIcon(R.drawable.ic_back_white)
         .setContentTitle("Biogram")
         .setContentText(Message);
 
-        PendingIntent i = PendingIntent.getActivity(context, 0, new Intent(context, ActivityMain.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        Bundle bundle = new Bundle();
+        bundle.putInt("Type", Type);
+        bundle.putString("OwnerID", ID);
 
-        builder.setContentIntent(i);
+        Intent intent = new Intent(context, ActivityMain.class);
+        intent.putExtra("PostID", ID);
+        intent.putExtra("Type", Type);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
 
         NotificationManager Manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

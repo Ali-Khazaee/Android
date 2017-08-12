@@ -133,14 +133,13 @@ public class ActivityMain extends FragmentActivity
         setContentView(RelativeLayoutMain);
 
         ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
-
-        ShortcutBadger.removeCount(context);
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
+        ShortcutBadger.removeCount(this);
         registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
     }
 
@@ -156,15 +155,16 @@ public class ActivityMain extends FragmentActivity
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            MiscHandler.Debug("BroadcastReceiverNotification");
-
-            try
+            if (intent.getAction().equalsIgnoreCase(NotificationService.BROADCAST_ACTION_NEW))
             {
-                ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
-            }
-            catch (Exception e)
-            {
-                MiscHandler.Debug("BroadcastReceiverNotification:" + e.toString());
+                try
+                {
+                    ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Debug("BroadcastReceiverNotification:" + e.toString());
+                }
             }
         }
     };
