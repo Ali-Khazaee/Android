@@ -980,7 +980,7 @@ public class ProfileFragment extends Fragment
         final TextView TextViewTryAgain = new TextView(context);
         TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTryAgain.setText(getString(R.string.GeneralTryAgain));
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 

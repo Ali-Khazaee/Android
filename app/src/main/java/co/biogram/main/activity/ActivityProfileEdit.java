@@ -896,7 +896,7 @@ public class ActivityProfileEdit extends FragmentActivity
         TextViewTry = new TextView(context);
         TextViewTry.setLayoutParams(TextViewTryParam);
         TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTry.setText(getString(R.string.GeneralTryAgain));
+        TextViewTry.setText(getString(R.string.TryAgain));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
 

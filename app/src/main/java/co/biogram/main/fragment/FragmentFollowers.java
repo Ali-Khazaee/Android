@@ -174,7 +174,7 @@ public class FragmentFollowers extends Fragment
                             FollowersList.remove(FollowersList.size() - 1);
                             Adapter.notifyItemRemoved(FollowersList.size());
 
-                            MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
+                            MiscHandler.Toast(context, getString(R.string.NoInternet));
                         }
                     });
                 }
@@ -206,7 +206,7 @@ public class FragmentFollowers extends Fragment
         TextViewTry = new TextView(context);
         TextViewTry.setLayoutParams(TextViewTryParam);
         TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTry.setText(getString(R.string.GeneralTryAgain));
+        TextViewTry.setText(getString(R.string.TryAgain));
         TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
 
@@ -274,7 +274,7 @@ public class FragmentFollowers extends Fragment
             @Override
             public void onError(ANError anError)
             {
-                MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
                 TextViewTry.setVisibility(View.VISIBLE);
                 LoadingViewData.Stop();
             }

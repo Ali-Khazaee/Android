@@ -146,7 +146,7 @@ public class ContactFragment extends Fragment
         final TextView TextViewTryAgain = new TextView(context);
         TextViewTryAgain.setLayoutParams(TextViewTryParam);
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTryAgain.setText(getString(R.string.GeneralTryAgain));
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
@@ -244,7 +244,7 @@ public class ContactFragment extends Fragment
                     {
                         LoadingViewMain.Stop();
                         TextViewTryAgain.setVisibility(View.VISIBLE);
-                        MiscHandler.Toast(context, getString(R.string.GeneralCheckInternet));
+                        MiscHandler.Toast(context, getString(R.string.NoInternet));
                     }
                 });
             }

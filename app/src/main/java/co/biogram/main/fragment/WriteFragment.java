@@ -19,7 +19,6 @@ import android.media.ExifInterface;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,7 +36,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -53,7 +51,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -62,12 +59,10 @@ import com.androidnetworking.interfaces.UploadProgressListener;
 
 import com.bumptech.glide.Glide;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.Bidi;
 import java.util.ArrayList;
@@ -80,42 +75,23 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.LoadingView;
+import co.biogram.main.misc.RecyclerViewOnClick;
 import co.biogram.main.misc.TextCrawler;
 import co.biogram.media.MediaTransCoder;
 
 public class WriteFragment extends Fragment
 {
+    private PermissionHandler _PermissionHandler;
+
     private ImageView ImageViewImage;
     private ImageView ImageViewVideo;
     private ImageView ImageViewLink;
 
-    private EditText EditTextMessage;
-
-    private TextView TextViewCategorySelect;
-    private String SelectLink = "";
-
-
-    private RelativeLayout RelativeLayoutLink;
-    private LoadingView LoadingViewLink;
-    private TextView TextViewTryLink;
-    private ImageView ImageViewRemoveLink;
-    private TextView TextViewTitleLink;
-    private TextView TextViewDescriptionLink;
-    private ImageView ImageViewFavLink;
+    private ImageView ImageViewThumbVideo;
+    private RelativeLayout RelativeLayoutVideo;
 
     private ViewPager ViewPagerImage;
     private ViewPagerAdapter ViewPagerAdapterImage;
-
-
-
-    private RelativeLayout RelativeLayoutVideo;
-    private ImageView ImageViewThumbVideo;
-
-    private boolean IsPermissionStorageAllowed = false;
-    private PermissionHandler _PermissionHandler;
-
-
-
 
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private RelativeLayout RelativeLayoutMain;
@@ -125,11 +101,21 @@ public class WriteFragment extends Fragment
     private int SelectCategory = 0;
     private File SelectVideo;
     private int SelectType = 0;
+    private String SelectLink = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final EditText EditTextMessage = new EditText(context);
+        final RelativeLayout RelativeLayoutLink = new RelativeLayout(context);
+        final LoadingView LoadingViewLink = new LoadingView(context);
+        final TextView TextViewTryLink = new TextView(context);
+        final ImageView ImageViewRemoveLink = new ImageView(context);
+        final TextView TextViewTitleLink = new TextView(context);
+        final TextView TextViewDescriptionLink = new TextView(context);
+        final ImageView ImageViewFavLink = new ImageView(context);
+        final TextView TextViewCategorySelect = new TextView(context);
 
         RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -347,7 +333,6 @@ public class WriteFragment extends Fragment
         RelativeLayout.LayoutParams EditTextMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextMessageParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        EditTextMessage = new EditText(context);
         EditTextMessage.setLayoutParams(EditTextMessageParam);
         EditTextMessage.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
         EditTextMessage.setId(MiscHandler.GenerateViewID());
@@ -762,7 +747,106 @@ public class WriteFragment extends Fragment
             {
                 EditTextMessage.clearFocus();
                 MiscHandler.HideSoftKey(getActivity());
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentCategory()).addToBackStack("FragmentCategory").commit();
+
+                final Dialog DialogCategory = new Dialog(getActivity());
+                DialogCategory.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogCategory.setCancelable(false);
+
+                RelativeLayout LinearLayoutMain = new RelativeLayout(context);
+                LinearLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setClickable(true);
+
+                RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+                RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+                RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+                RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+                LinearLayoutMain.addView(RelativeLayoutHeader);
+
+                ImageView ImageViewBack = new ImageView(context);
+                ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+                ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+                ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+                ImageViewBack.setId(MiscHandler.GenerateViewID());
+                ImageViewBack.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        DialogCategory.dismiss();
+                    }
+                });
+
+                RelativeLayoutHeader.addView(ImageViewBack);
+
+                RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewNameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+                TextView TextViewName = new TextView(context);
+                TextViewName.setLayoutParams(TextViewNameParam);
+                TextViewName.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewName.setText(getString(R.string.WriteFragmentCategory2));
+                TextViewName.setTypeface(null, Typeface.BOLD);
+                TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+                RelativeLayoutHeader.addView(TextViewName);
+
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+                View ViewLine = new View(context);
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray2);
+                ViewLine.setId(MiscHandler.GenerateViewID());
+
+                LinearLayoutMain.addView(ViewLine);
+
+                RelativeLayout.LayoutParams RecyclerViewCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                RecyclerViewCategoryParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+                RecyclerView RecyclerViewCategory = new RecyclerView(context);
+                RecyclerViewCategory.setLayoutManager(new LinearLayoutManager(context));
+                RecyclerViewCategory.setAdapter(new AdapterCategory(context));
+                RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
+                RecyclerViewCategory.addOnItemTouchListener(new RecyclerViewOnClick(context, RecyclerViewCategory, new RecyclerViewOnClick.OnItemClickListener()
+                {
+                    @Override
+                    public void OnClick(View view, int Position)
+                    {
+                        switch (Position)
+                        {
+                            case 0:  TextViewCategorySelect.setText(getString(R.string.CategoryNews));       SelectCategory = 1;  break;
+                            case 1:  TextViewCategorySelect.setText(getString(R.string.CategoryFun));        SelectCategory = 2;  break;
+                            case 2:  TextViewCategorySelect.setText(getString(R.string.CategoryMusic));      SelectCategory = 3;  break;
+                            case 3:  TextViewCategorySelect.setText(getString(R.string.CategorySport));      SelectCategory = 4;  break;
+                            case 4:  TextViewCategorySelect.setText(getString(R.string.CategoryFashion));    SelectCategory = 5;  break;
+                            case 5:  TextViewCategorySelect.setText(getString(R.string.CategoryFood));       SelectCategory = 6;  break;
+                            case 6:  TextViewCategorySelect.setText(getString(R.string.CategoryTechnology)); SelectCategory = 7;  break;
+                            case 7:  TextViewCategorySelect.setText(getString(R.string.CategoryArt));        SelectCategory = 8;  break;
+                            case 8:  TextViewCategorySelect.setText(getString(R.string.CategoryArtist));     SelectCategory = 9;  break;
+                            case 9:  TextViewCategorySelect.setText(getString(R.string.CategoryMedia));      SelectCategory = 10; break;
+                            case 10: TextViewCategorySelect.setText(getString(R.string.CategoryBusiness));   SelectCategory = 11; break;
+                            case 11: TextViewCategorySelect.setText(getString(R.string.CategoryEconomy));    SelectCategory = 12; break;
+                            case 12: TextViewCategorySelect.setText(getString(R.string.CategoryLiterature)); SelectCategory = 13; break;
+                            case 13: TextViewCategorySelect.setText(getString(R.string.CategoryTravel));     SelectCategory = 14; break;
+                            case 14: TextViewCategorySelect.setText(getString(R.string.CategoryPolitics));   SelectCategory = 15; break;
+                            case 15: TextViewCategorySelect.setText(getString(R.string.CategoryHealth));     SelectCategory = 16; break;
+                            case 16: TextViewCategorySelect.setText(getString(R.string.CategoryReligious));  SelectCategory = 18; break;
+                            case 17: TextViewCategorySelect.setText(getString(R.string.CategoryOther));      SelectCategory = 17; break;
+                        }
+
+                        DialogCategory.dismiss();
+                    }
+
+                    @Override public void OnLongClick(View view, int position) { }
+                }));
+
+                LinearLayoutMain.addView(RecyclerViewCategory);
+
+                DialogCategory.setContentView(LinearLayoutMain);
+                DialogCategory.show();
             }
         });
 
@@ -779,7 +863,6 @@ public class WriteFragment extends Fragment
 
         LinearLayoutCategory.addView(TextViewCategory);
 
-        TextViewCategorySelect = new TextView(context);
         TextViewCategorySelect.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewCategorySelect.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewCategorySelect.setText(getString(R.string.WriteFragmentCategorySelect));
@@ -810,7 +893,6 @@ public class WriteFragment extends Fragment
         GradientDrawable Shape = new GradientDrawable();
         Shape.setStroke(MiscHandler.ToDimension(context, 1), ContextCompat.getColor(context, R.color.BlueGray));
 
-        RelativeLayoutLink = new RelativeLayout(context);
         RelativeLayoutLink.setLayoutParams(RelativeLayoutLinkParam);
         RelativeLayoutLink.setVisibility(View.GONE);
         RelativeLayoutLink.setBackground(Shape);
@@ -820,7 +902,6 @@ public class WriteFragment extends Fragment
         RelativeLayout.LayoutParams LoadingViewLinkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewLinkParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewLink = new LoadingView(context);
         LoadingViewLink.setLayoutParams(LoadingViewLinkParam);
 
         RelativeLayoutLink.addView(LoadingViewLink);
@@ -828,7 +909,6 @@ public class WriteFragment extends Fragment
         RelativeLayout.LayoutParams TextViewTryLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryLinkParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTryLink = new TextView(context);
         TextViewTryLink.setLayoutParams(TextViewTryLinkParam);
         TextViewTryLink.setVisibility(View.GONE);
         TextViewTryLink.setText(getString(R.string.TryAgain));
@@ -841,7 +921,6 @@ public class WriteFragment extends Fragment
         ImageViewRemoveLinkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         ImageViewRemoveLinkParam.setMargins(0, MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), 0);
 
-        ImageViewRemoveLink = new ImageView(context);
         ImageViewRemoveLink.setLayoutParams(ImageViewRemoveLinkParam);
         ImageViewRemoveLink.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewRemoveLink.setImageResource(R.drawable.ic_remove);
@@ -854,7 +933,6 @@ public class WriteFragment extends Fragment
         TextViewTitleLinkParam.addRule(RelativeLayout.LEFT_OF, ImageViewRemoveLink.getId());
         TextViewTitleLinkParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 5), 0, 0);
 
-        TextViewTitleLink = new TextView(context);
         TextViewTitleLink.setLayoutParams(TextViewTitleLinkParam);
         TextViewTitleLink.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewTitleLink.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -867,7 +945,6 @@ public class WriteFragment extends Fragment
         TextViewDescriptionLinkParam.addRule(RelativeLayout.BELOW, TextViewTitleLink.getId());
         TextViewDescriptionLinkParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 3), 0, MiscHandler.ToDimension(context, 5));
 
-        TextViewDescriptionLink = new TextView(context);
         TextViewDescriptionLink.setLayoutParams(TextViewDescriptionLinkParam);
         TextViewDescriptionLink.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewDescriptionLink.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -879,7 +956,6 @@ public class WriteFragment extends Fragment
         ImageViewFavLinkParam.addRule(RelativeLayout.BELOW, TextViewDescriptionLink.getId());
         ImageViewFavLinkParam.setMargins(MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1));
 
-        ImageViewFavLink = new ImageView(context);
         ImageViewFavLink.setLayoutParams(ImageViewFavLinkParam);
         ImageViewFavLink.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -986,243 +1062,236 @@ public class WriteFragment extends Fragment
     }
 
     @Override
-    public void onActivityResult(int RequestCode, int ResultCode, Intent Data)
+    public void onActivityResult(final int RequestCode, int ResultCode, Intent Data)
     {
-        if (ResultCode != -1)
-            return;
+        final String URL;
+        final Context context = getActivity();
 
-        Context context = getActivity();
+        Cursor cursor = context.getContentResolver().query(Data.getData(), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
 
-        try
+        if (cursor != null && cursor.moveToFirst())
         {
-            Uri ResultUri = Data.getData();
+            URL = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+            cursor.close();
+        }
+        else
+        {
+            MiscHandler.Toast(context, getString(R.string.FileNotFound));
+            return;
+        }
 
-            String URL = null;
-            Cursor _Cursor = context.getContentResolver().query(ResultUri, new String[] { MediaStore.Images.Media.DATA }, null, null, null);
-
-            if (_Cursor != null && _Cursor.moveToFirst())
+        _PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
+        {
+            @Override
+            public void OnGranted()
             {
-                URL = _Cursor.getString(_Cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                _Cursor.close();
-            }
-
-            if (URL == null)
-            {
-                MiscHandler.Toast(context, getString(R.string.GeneralFileNotFound));
-                return;
-            }
-
-            _PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
-            {
-                @Override
-                public void OnGranted()
+                if (RequestCode == 0)
                 {
-                    IsPermissionStorageAllowed = true;
-                }
-
-                @Override
-                public void OnFailed()
-                {
-                    IsPermissionStorageAllowed = false;
-                }
-            });
-
-            if (!IsPermissionStorageAllowed)
-            {
-                MiscHandler.Toast(context, getString(R.string.GeneralPermissionStorage));
-                return;
-            }
-
-            if (RequestCode == 0)
-            {
-                File IMG = new File(URL);
-                Bitmap ResizeBitmap;
-
-                if (IMG.length() > 66560)
-                {
-                    BitmapFactory.Options O = new BitmapFactory.Options();
-                    O.inJustDecodeBounds = true;
-                    BitmapFactory.decodeStream(new FileInputStream(IMG), null, O);
-
-                    int Scale = 1;
-
-                    while ((O.outWidth / Scale / 2) >= 250 && (O.outHeight / Scale / 2) >= 250)
+                    try
                     {
-                        Scale *= 2;
+                        File ImageFile = new File(URL);
+                        Bitmap ResizeBitmap;
+
+                        if (ImageFile.length() > 66560)
+                        {
+                            BitmapFactory.Options O = new BitmapFactory.Options();
+                            O.inJustDecodeBounds = true;
+                            BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+
+                            int Scale = 1;
+                            int Height = O.outHeight;
+                            int Width = O.outWidth;
+
+                            if (Height > 250 || Width > 250)
+                            {
+                                int HalfHeight = Height / 2;
+                                int HalfWidth = Width / 2;
+
+                                while ((HalfHeight / Scale) >= 250 && (HalfWidth / Scale) >= 250)
+                                {
+                                    Scale *= 2;
+                                }
+                            }
+
+                            O.inJustDecodeBounds = false;
+                            O.inSampleSize = Scale;
+
+                            ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+
+                            Matrix matrix = new Matrix();
+                            int Orientation = new ExifInterface(URL).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+
+                            if (Orientation == 6)
+                                matrix.postRotate(90);
+                            else if (Orientation == 3)
+                                matrix.postRotate(180);
+                            else if (Orientation == 8)
+                                matrix.postRotate(270);
+
+                            ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
+                        }
+                        else
+                            ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath());
+
+                        ChangeType(1);
+                        SelectImage.add(ResizeBitmap);
+                        ViewPagerAdapterImage.notifyDataSetChanged();
+                        ViewPagerImage.setCurrentItem(SelectImage.size());
+                        ViewPagerImage.setVisibility(View.VISIBLE);
                     }
-
-                    BitmapFactory.Options O2 = new BitmapFactory.Options();
-                    O2.inSampleSize = Scale;
-                    ResizeBitmap = BitmapFactory.decodeStream(new FileInputStream(IMG), null, O2);
-
-                    Matrix matrix = new Matrix();
-                    int Orientation = new ExifInterface(URL).getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-
-                    if (Orientation == 6)
-                        matrix.postRotate(90);
-                    else if (Orientation == 3)
-                        matrix.postRotate(180);
-                    else if (Orientation == 8)
-                        matrix.postRotate(270);
-
-                    ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
-                }
-                else
-                {
-                    ResizeBitmap = BitmapFactory.decodeStream(new FileInputStream(IMG));
-                }
-
-                ChangeType(1);
-                SelectImage.add(ResizeBitmap);
-                ViewPagerAdapterImage.notifyDataSetChanged();
-                ViewPagerImage.setCurrentItem(SelectImage.size());
-                ViewPagerImage.setVisibility(View.VISIBLE);
-            }
-
-            if (RequestCode == 1)
-            {
-                final MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                Retriever.setDataSource(URL);
-                int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
-
-                if (Time > 180)
-                {
-                    MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
-                    return;
-                }
-
-                SelectVideo = new File(URL);
-
-                if (SelectVideo.length() > 31452800)
-                {
-                    MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSize));
-                    return;
-                }
-
-                if (Build.VERSION.SDK_INT <= 17)
-                {
-                    if (SelectVideo.length() > 15728640)
+                    catch (Exception e)
                     {
-                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSupport));
+                        MiscHandler.Debug("WriteFragment-ImageCompress: " + e.toString());
+                    }
+                }
+
+                if (RequestCode == 1)
+                {
+                    final MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
+                    Retriever.setDataSource(URL);
+                    int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
+
+                    if (Time > 180)
+                    {
+                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
                         return;
                     }
 
-                    ChangeType(2);
-                    ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                    RelativeLayoutVideo.setVisibility(View.VISIBLE);
-                    return;
-                }
+                    SelectVideo = new File(URL);
 
-                if (SelectVideo.length() < 3145728)
-                {
-                    ChangeType(2);
-                    ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                    RelativeLayoutVideo.setVisibility(View.VISIBLE);
-                    return;
-                }
-
-                boolean IsCreated = true;
-                File Root = new File(Environment.getExternalStorageDirectory(), "BioGram");
-
-                if (!Root.exists())
-                    IsCreated = Root.mkdirs();
-
-                if (!IsCreated)
-                {
-                    MiscHandler.Toast(context, getString(R.string.WriteFragmentCantCreateFolder));
-                    return;
-                }
-
-                SelectVideo = new File(Root, "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
-
-                final ProgressDialog Progress = new ProgressDialog(getActivity());
-                Progress.setMessage(getString(R.string.WriteFragmentVideoCompress));
-                Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                Progress.setIndeterminate(false);
-                Progress.setMax(100);
-                Progress.setCancelable(false);
-                Progress.setProgress(0);
-                Progress.show();
-
-                MediaTransCoder.Start(URL, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
-                {
-                    @Override
-                    public MediaFormat CreateVideo(MediaFormat Format)
+                    if (SelectVideo.length() > 31452800)
                     {
-                        int Frame = 30;
-                        int BitRate = 450000;
-                        int Width = Format.getInteger(MediaFormat.KEY_WIDTH);
-                        int Height = Format.getInteger(MediaFormat.KEY_HEIGHT);
+                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSize));
+                        return;
+                    }
 
-                        if (Width > 640 || Height > 640)
+                    if (Build.VERSION.SDK_INT <= 17)
+                    {
+                        if (SelectVideo.length() > 15728640)
                         {
-                            Width = Width / 2;
-                            Height = Height / 2;
+                            MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSupport));
+                            return;
                         }
 
-                        try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) { /* Leave Me Alone  */ }
-
-                        MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
-                        format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
-                        format.setInteger(MediaFormat.KEY_FRAME_RATE, Frame);
-                        format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
-                        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, 0x7F000789);
-                        return format;
+                        ChangeType(2);
+                        ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                        RelativeLayoutVideo.setVisibility(View.VISIBLE);
+                        return;
                     }
 
-                    @Override
-                    public MediaFormat CreateAudio(MediaFormat Format)
+                    if (SelectVideo.length() < 3145728)
                     {
-                        int Sample = 44100;
-                        int Channel = 1;
-
-                        try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { /* Leave Me Alone  */ }
-                        try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) { /* Leave Me Alone  */ }
-
-                        int Bitrate = Sample * Channel;
-
-                        MediaFormat format = MediaFormat.createAudioFormat("audio/mp4a-latm", Sample, Channel);
-                        format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
-                        format.setInteger(MediaFormat.KEY_BIT_RATE, Bitrate);
-                        return format;
-                    }
-                },
-                new MediaTransCoder.CallBack()
-                {
-                    @Override
-                    public void OnProgress(double progress)
-                    {
-                        Progress.setProgress((int) (((progress + 0.001) * 100) % 100));
+                        ChangeType(2);
+                        ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                        RelativeLayoutVideo.setVisibility(View.VISIBLE);
+                        return;
                     }
 
-                    @Override
-                    public void OnCompleted()
+                    boolean IsCreated = true;
+                    File Root = new File(Environment.getExternalStorageDirectory(), "BioGram");
+
+                    if (!Root.exists())
+                        IsCreated = Root.mkdirs();
+
+                    if (!IsCreated)
                     {
-                        getActivity().runOnUiThread(new Runnable()
+                        MiscHandler.Toast(context, getString(R.string.WriteFragmentCantCreateFolder));
+                        return;
+                    }
+
+                    SelectVideo = new File(Root, "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
+
+                    final ProgressDialog Progress = new ProgressDialog(getActivity());
+                    Progress.setMessage(getString(R.string.WriteFragmentVideoCompress));
+                    Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    Progress.setIndeterminate(false);
+                    Progress.setMax(100);
+                    Progress.setCancelable(false);
+                    Progress.setProgress(0);
+                    Progress.show();
+
+                    MediaTransCoder.Start(URL, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
+                    {
+                        @Override
+                        public MediaFormat CreateVideo(MediaFormat Format)
                         {
-                            @Override
-                            public void run()
-                            {
-                                Progress.cancel();
-                                ChangeType(2);
-                                ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                                RelativeLayoutVideo.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
+                            int Frame = 30;
+                            int BitRate = 450000;
+                            int Width = Format.getInteger(MediaFormat.KEY_WIDTH);
+                            int Height = Format.getInteger(MediaFormat.KEY_HEIGHT);
 
-                    @Override
-                    public void OnFailed(Exception exception)
+                            if (Width > 640 || Height > 640)
+                            {
+                                Width = Width / 2;
+                                Height = Height / 2;
+                            }
+
+                            try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) { /* Leave Me Alone  */ }
+
+                            MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
+                            format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
+                            format.setInteger(MediaFormat.KEY_FRAME_RATE, Frame);
+                            format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
+                            format.setInteger(MediaFormat.KEY_COLOR_FORMAT, 0x7F000789);
+                            return format;
+                        }
+
+                        @Override
+                        public MediaFormat CreateAudio(MediaFormat Format)
+                        {
+                            int Sample = 44100;
+                            int Channel = 1;
+
+                            try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { /* Leave Me Alone  */ }
+                            try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) { /* Leave Me Alone  */ }
+
+                            int Bitrate = Sample * Channel;
+
+                            MediaFormat format = MediaFormat.createAudioFormat("audio/mp4a-latm", Sample, Channel);
+                            format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
+                            format.setInteger(MediaFormat.KEY_BIT_RATE, Bitrate);
+                            return format;
+                        }
+                    },
+                    new MediaTransCoder.CallBack()
                     {
-                        Progress.cancel();
-                    }
-                });
+                        @Override
+                        public void OnProgress(double progress)
+                        {
+                            Progress.setProgress((int) (((progress + 0.001) * 100) % 100));
+                        }
+
+                        @Override
+                        public void OnCompleted()
+                        {
+                            getActivity().runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    Progress.cancel();
+                                    ChangeType(2);
+                                    ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                                    RelativeLayoutVideo.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void OnFailed(Exception exception)
+                        {
+                            Progress.cancel();
+                        }
+                    });
+                }
             }
-        }
-        catch (Exception e)
-        {
-            // Leave Me Alone
-        }
+
+            @Override
+            public void OnFailed()
+            {
+                MiscHandler.Toast(context, getString(R.string.GeneralPermissionStorage));
+            }
+        });
     }
 
     private void ChangeType(int type)
@@ -1359,216 +1428,132 @@ public class WriteFragment extends Fragment
         }
     }
 
-    public static class FragmentCategory extends Fragment
+    private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderCategory>
     {
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        private final List<Struct> CategoryList = new ArrayList<>();
+
+        private final int ID_ICON = MiscHandler.GenerateViewID();
+        private final int ID_NAME = MiscHandler.GenerateViewID();
+        private final int ID_LINE = MiscHandler.GenerateViewID();
+
+        private final Context context;
+
+        AdapterCategory(Context c)
         {
-            Context context = getActivity();
+            context = c;
 
-            RelativeLayout Root = new RelativeLayout(context);
-            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            Root.setBackgroundResource(R.color.White);
-            Root.setClickable(true);
+            CategoryList.clear();
+            CategoryList.add(new Struct(getString(R.string.CategoryNews), R.drawable.ic_category_news));
+            CategoryList.add(new Struct(getString(R.string.CategoryFun), R.drawable.ic_category_fun));
+            CategoryList.add(new Struct(getString(R.string.CategoryMusic), R.drawable.ic_category_music));
+            CategoryList.add(new Struct(getString(R.string.CategorySport), R.drawable.ic_category_sport));
+            CategoryList.add(new Struct(getString(R.string.CategoryFashion), R.drawable.ic_category_fashion));
+            CategoryList.add(new Struct(getString(R.string.CategoryFood), R.drawable.ic_category_food));
+            CategoryList.add(new Struct(getString(R.string.CategoryTechnology), R.drawable.ic_category_technology));
+            CategoryList.add(new Struct(getString(R.string.CategoryArt), R.drawable.ic_category_art));
+            CategoryList.add(new Struct(getString(R.string.CategoryArtist), R.drawable.ic_category_artist));
+            CategoryList.add(new Struct(getString(R.string.CategoryMedia), R.drawable.ic_category_media));
+            CategoryList.add(new Struct(getString(R.string.CategoryBusiness), R.drawable.ic_category_business));
+            CategoryList.add(new Struct(getString(R.string.CategoryEconomy), R.drawable.ic_category_echonomy));
+            CategoryList.add(new Struct(getString(R.string.CategoryLiterature), R.drawable.ic_category_lilterature));
+            CategoryList.add(new Struct(getString(R.string.CategoryTravel), R.drawable.ic_category_travel));
+            CategoryList.add(new Struct(getString(R.string.CategoryPolitics), R.drawable.ic_category_politics));
+            CategoryList.add(new Struct(getString(R.string.CategoryHealth), R.drawable.ic_category_health));
+            CategoryList.add(new Struct(getString(R.string.CategoryReligious), R.drawable.ic_category_religious));
+            CategoryList.add(new Struct(getString(R.string.CategoryOther), R.drawable.ic_category_other));
+        }
 
-            RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
-            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            RelativeLayoutHeader.setBackgroundResource(R.color.White5);
-            RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+        class ViewHolderCategory extends RecyclerView.ViewHolder
+        {
+            final ImageView ImageViewIcon;
+            final TextView TextViewName;
+            final View ViewLine;
 
-            Root.addView(RelativeLayoutHeader);
-
-            ImageView ImageViewBack = new ImageView(context);
-            ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
-            ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-            ImageViewBack.setImageResource(R.drawable.ic_back_blue);
-            ImageViewBack.setId(MiscHandler.GenerateViewID());
-            ImageViewBack.setOnClickListener(new View.OnClickListener()
+            ViewHolderCategory(View view)
             {
-                @Override
-                public void onClick(View view)
-                {
-                    getActivity().onBackPressed();
-                }
-            });
+                super(view);
+                ImageViewIcon = (ImageView) view.findViewById(ID_ICON);
+                TextViewName = (TextView) view.findViewById(ID_NAME);
+                ViewLine = view.findViewById(ID_LINE);
+            }
+        }
 
-            RelativeLayoutHeader.addView(ImageViewBack);
+        @Override
+        public void onBindViewHolder(ViewHolderCategory Holder, int p)
+        {
+            final int Position = Holder.getAdapterPosition();
+
+            Glide.with(context)
+            .load(CategoryList.get(Position).Image)
+            .override(MiscHandler.ToDimension(context, 45), MiscHandler.ToDimension(context, 45))
+            .dontAnimate()
+            .into(Holder.ImageViewIcon);
+
+            Holder.TextViewName.setText(CategoryList.get(Position).Name);
+
+            if (Position == CategoryList.size() - 1)
+                Holder.ViewLine.setVisibility(View.GONE);
+            else
+                Holder.ViewLine.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public int getItemCount()
+        {
+            return CategoryList.size();
+        }
+
+        @Override
+        public ViewHolderCategory onCreateViewHolder(ViewGroup parent, int ViewType)
+        {
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            RelativeLayoutMain.setId(MiscHandler.GenerateViewID());
+            RelativeLayoutMain.setClickable(true);
+
+            ImageView ImageViewIcon = new ImageView(context);
+            ImageViewIcon.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
+            ImageViewIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewIcon.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 45), MiscHandler.ToDimension(context, 45)));
+            ImageViewIcon.setId(ID_ICON);
+
+            RelativeLayoutMain.addView(ImageViewIcon);
 
             RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
-            TextViewNameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+            TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ID_ICON);
+            TextViewNameParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
+            TextViewNameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
             TextView TextViewName = new TextView(context);
             TextViewName.setLayoutParams(TextViewNameParam);
             TextViewName.setTextColor(ContextCompat.getColor(context, R.color.Black));
-            TextViewName.setText(getString(R.string.WriteFragmentCategory));
-            TextViewName.setTypeface(null, Typeface.BOLD);
-            TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            TextViewName.setId(ID_NAME);
+            TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
-            RelativeLayoutHeader.addView(TextViewName);
+            RelativeLayoutMain.addView(TextViewName);
 
             RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
-            ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+            ViewLineParam.addRule(RelativeLayout.BELOW, ID_ICON);
 
             View ViewLine = new View(context);
             ViewLine.setLayoutParams(ViewLineParam);
-            ViewLine.setBackgroundResource(R.color.Gray2);
-            ViewLine.setId(MiscHandler.GenerateViewID());
+            ViewLine.setBackgroundResource(R.color.Gray);
+            ViewLine.setId(ID_LINE);
 
-            Root.addView(ViewLine);
+            RelativeLayoutMain.addView(ViewLine);
 
-            RelativeLayout.LayoutParams RecyclerViewCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            RecyclerViewCategoryParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
-
-            RecyclerView RecyclerViewCategory = new RecyclerView(context);
-            RecyclerViewCategory.setLayoutManager(new LinearLayoutManager(context));
-            RecyclerViewCategory.setAdapter(new AdapterCategory());
-            RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
-
-            Root.addView(RecyclerViewCategory);
-
-            return Root;
+            return new ViewHolderCategory(RelativeLayoutMain);
         }
 
-        private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderCategory>
+        class Struct
         {
-            private final List<Struct> CategoryList = new ArrayList<>();
+            final String Name;
+            final int Image;
 
-            private final int ID_ROOT = MiscHandler.GenerateViewID();
-            private final int ID_ICON = MiscHandler.GenerateViewID();
-            private final int ID_NAME = MiscHandler.GenerateViewID();
-            private final int ID_LINE = MiscHandler.GenerateViewID();
-
-            AdapterCategory()
+            Struct(String name, int image)
             {
-                CategoryList.clear();
-                CategoryList.add(new Struct(1, "News", R.drawable.ic_category_news));
-                CategoryList.add(new Struct(2, "Fun", R.drawable.ic_category_fun));
-                CategoryList.add(new Struct(3, "Music", R.drawable.ic_category_music));
-                CategoryList.add(new Struct(4, "Sport", R.drawable.ic_category_sport));
-                CategoryList.add(new Struct(5, "Fashion", R.drawable.ic_category_fashion));
-                CategoryList.add(new Struct(6, "Food", R.drawable.ic_category_food));
-                CategoryList.add(new Struct(7, "Technology", R.drawable.ic_category_technology));
-                CategoryList.add(new Struct(8, "Art", R.drawable.ic_category_art));
-                CategoryList.add(new Struct(9, "Artist", R.drawable.ic_category_artist));
-                CategoryList.add(new Struct(10, "Media", R.drawable.ic_category_media));
-                CategoryList.add(new Struct(11, "Business", R.drawable.ic_category_business));
-                CategoryList.add(new Struct(12, "Economy", R.drawable.ic_category_echonomy));
-                CategoryList.add(new Struct(13, "Literature", R.drawable.ic_category_lilterature));
-                CategoryList.add(new Struct(14, "Travel", R.drawable.ic_category_travel));
-                CategoryList.add(new Struct(15, "Politics", R.drawable.ic_category_politics));
-                CategoryList.add(new Struct(16, "Health", R.drawable.ic_category_health));
-                CategoryList.add(new Struct(18, "Religious", R.drawable.ic_category_religious));
-                CategoryList.add(new Struct(17, "Other", R.drawable.ic_category_other));
-            }
-
-            class ViewHolderCategory extends RecyclerView.ViewHolder
-            {
-                final RelativeLayout RelativeLayoutRoot;
-                final ImageView ImageViewIcon;
-                final TextView TextViewName;
-                final View ViewLine;
-
-                ViewHolderCategory(View view)
-                {
-                    super(view);
-                    RelativeLayoutRoot = (RelativeLayout) view.findViewById(ID_ROOT);
-                    ImageViewIcon = (ImageView) view.findViewById(ID_ICON);
-                    TextViewName = (TextView) view.findViewById(ID_NAME);
-                    ViewLine = view.findViewById(ID_LINE);
-                }
-            }
-
-            @Override
-            public void onBindViewHolder(ViewHolderCategory Holder, int p)
-            {
-                final int Position = Holder.getAdapterPosition();
-
-                Holder.RelativeLayoutRoot.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        WriteFragment Parent = (WriteFragment) getActivity().getSupportFragmentManager().findFragmentByTag("WriteFragment");
-                        Parent.TextViewCategorySelect.setText(CategoryList.get(Position).Name);
-                        Parent.SelectCategory = CategoryList.get(Position).ID;
-
-                        getActivity().onBackPressed();
-                    }
-                });
-
-                Holder.ImageViewIcon.setImageResource(CategoryList.get(Position).Image);
-                Holder.TextViewName.setText(CategoryList.get(Position).Name);
-
-                if (Position == CategoryList.size() - 1)
-                    Holder.ViewLine.setVisibility(View.GONE);
-                else
-                    Holder.ViewLine.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public int getItemCount()
-            {
-                return CategoryList.size();
-            }
-
-            @Override
-            public ViewHolderCategory onCreateViewHolder(ViewGroup parent, int ViewType)
-            {
-                Context context = getActivity();
-
-                RelativeLayout root = new RelativeLayout(context);
-                root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                root.setId(ID_ROOT);
-                root.setClickable(true);
-
-                ImageView ImageViewIcon = new ImageView(context);
-                ImageViewIcon.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
-                ImageViewIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                ImageViewIcon.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 45), MiscHandler.ToDimension(context, 45)));
-                ImageViewIcon.setId(ID_ICON);
-
-                root.addView(ImageViewIcon);
-
-                RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ID_ICON);
-                TextViewNameParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
-                TextViewNameParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-
-                TextView TextViewName = new TextView(context);
-                TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewName.setId(ID_NAME);
-                TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-
-                root.addView(TextViewName);
-
-                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
-                ViewLineParam.addRule(RelativeLayout.BELOW, ID_ICON);
-
-                View ViewLine = new View(context);
-                ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundResource(R.color.Gray);
-                ViewLine.setId(ID_LINE);
-
-                root.addView(ViewLine);
-
-                return new ViewHolderCategory(root);
-            }
-
-            class Struct
-            {
-                final int ID;
-                final String Name;
-                final int Image;
-
-                Struct(int id, String name, int image)
-                {
-                    ID = id;
-                    Name = name;
-                    Image = image;
-                }
+                Name = name;
+                Image = image;
             }
         }
     }

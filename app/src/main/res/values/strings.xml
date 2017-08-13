@@ -7,6 +7,7 @@
     <string name="Soon">Coming soon</string>
     <string name="TryAgain">Try again &#8230;</string>
     <string name="NoInternet">Check your connection</string>
+    <string name="FileNotFound">File not found"</string>
 
     <!-- Permission -->
     <string name="PermissionReadContact">You should allow access to your contacts</string>
@@ -181,6 +182,7 @@
     <string name="WriteFragmentMessage">Your Message</string>
     <string name="WriteFragmentMessageCount">150</string>
     <string name="WriteFragmentCategory">Category:</string>
+    <string name="WriteFragmentCategory2">Category</string>
     <string name="WriteFragmentCategorySelect">None</string>
     <string name="WriteFragmentUploadFailed">Upload failed</string>
     <string name="WriteFragmentMaxImage">You have been reached maximum pictures</string>
@@ -199,6 +201,26 @@
     <string name="WriteFragmentDialogPaste">Paste</string>
     <string name="WriteFragmentDialogCopy">Copy</string>
     <string name="WriteFragmentDialogClipboard">Text has been copied to clipboard</string>
+
+    <!-- Category List -->
+    <string name="CategoryNews">News</string>
+    <string name="CategoryFun">Fun</string>
+    <string name="CategoryMusic">Music</string>
+    <string name="CategorySport">Sport</string>
+    <string name="CategoryFashion">Fashion</string>
+    <string name="CategoryFood">Food</string>
+    <string name="CategoryTechnology">Technology</string>
+    <string name="CategoryArt">Art</string>
+    <string name="CategoryArtist">Artist</string>
+    <string name="CategoryMedia">Media</string>
+    <string name="CategoryBusiness">Business</string>
+    <string name="CategoryEconomy">Economy</string>
+    <string name="CategoryLiterature">Literature</string>
+    <string name="CategoryTravel">Travel</string>
+    <string name="CategoryPolitics">Politics</string>
+    <string name="CategoryHealth">Health</string>
+    <string name="CategoryReligious">Religious</string>
+    <string name="CategoryOther">Other</string>
 
 
 
@@ -290,9 +312,6 @@
     <string name="FragmentProfilePost2">POST</string>
     <string name="FragmentProfileLike">LIKE</string>
     <string name="FragmentProfileComment">COMMENT</string>
-    <string name="GeneralTryAgain">Try again &#8230;</string>
-    <string name="GeneralFileNotFound">File not found"</string>
-    <string name="GeneralCheckInternet">Check your internet connection</string>
     <string name="GeneralPermissionCamera">You should allow access to your camera</string>
     <string name="GeneralPermissionStorage">You should allow access to your storage</string>
 </resources>

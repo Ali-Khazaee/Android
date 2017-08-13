@@ -355,6 +355,7 @@ public class MomentFragment extends Fragment
         final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
 
         RelativeLayoutMain.addView(RelativeLayoutLoading);
 

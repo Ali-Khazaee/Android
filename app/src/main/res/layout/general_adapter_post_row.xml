@@ -196,7 +196,7 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:visibility="gone"
-                android:text="@string/GeneralTryAgain"
+                android:text="@string/TryAgain"
                 android:textColor="@color/Black"
                 android:textSize="@dimen/FontMedium" />
 
