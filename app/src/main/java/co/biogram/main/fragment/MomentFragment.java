@@ -343,7 +343,7 @@ public class MomentFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new FragmentMomentWrite()).addToBackStack("FragmentMomentWrite").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new WriteFragment()).addToBackStack("WriteFragment").commit();
             }
         });
 

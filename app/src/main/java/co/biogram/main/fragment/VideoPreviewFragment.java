@@ -119,7 +119,8 @@ public class VideoPreviewFragment extends Fragment
         RelativeLayout.LayoutParams TextureVideoViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         TextureVideoViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        VideoURL = App.GetProxy(context).getProxyUrl(VideoURL);
+        if (VideoURL.startsWith("http"))
+            VideoURL = App.GetProxy(context).getProxyUrl(VideoURL);
 
         TextureVideoViewMain = new TextureVideoView(context);
         TextureVideoViewMain.setLayoutParams(TextureVideoViewMainParam);

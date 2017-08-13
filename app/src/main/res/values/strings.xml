@@ -174,6 +174,31 @@
     <string name="PostFragmentFollowRequest">Follow request sent</string>
     <string name="PostFragmentReportSent">Report sent</string>
 
+    <!-- Write Fragment -->
+    <string name="WriteFragment">Write</string>
+    <string name="WriteFragmentChoiceCategory">Please choose a category</string>
+    <string name="WriteFragmentMoreContent">Please add more content</string>
+    <string name="WriteFragmentMessage">Your Message</string>
+    <string name="WriteFragmentMessageCount">150</string>
+    <string name="WriteFragmentCategory">Category:</string>
+    <string name="WriteFragmentCategorySelect">None</string>
+    <string name="WriteFragmentUploadFailed">Upload failed</string>
+    <string name="WriteFragmentMaxImage">You have been reached maximum pictures</string>
+    <string name="WriteFragmentSelectImage">Select Image From</string>
+    <string name="WriteFragmentSelectVideo">Select Video From</string>
+    <string name="WriteFragmentShareLink">Share Your Link</string>
+    <string name="WriteFragmentShareLinkSub">Submit</string>
+    <string name="WriteFragmentShareLinkCan">Cancel</string>
+    <string name="WriteFragmentCantCreateFolder">Couldn\'t create BioGram\'s folder</string>
+    <string name="WriteFragmentUpload">Uploading to server, Please be patient</string>
+    <string name="WriteFragmentVideoLength">Video duration is too long, Max duration is 4 minutes</string>
+    <string name="WriteFragmentVideoSize">Video size is too high, Max size is 30MB</string>
+    <string name="WriteFragmentVideoSupport">Your device doesn\'t support compression, Max video size is 2MB</string>
+    <string name="WriteFragmentVideoCompress">Compressing video, Please be patient</string>
+    <string name="WriteFragmentVideoPreview">Video Preview</string>
+    <string name="WriteFragmentDialogPaste">Paste</string>
+    <string name="WriteFragmentDialogCopy">Copy</string>
+    <string name="WriteFragmentDialogClipboard">Text has been copied to clipboard</string>
 
 
 
@@ -235,29 +260,7 @@
     <string name="ActivityProfileCompleteAction">Complete action using</string>
 
 
-    <string name="FragmentMomentWrite">Write</string>
-    <string name="FragmentMomentWriteChoiceCategory">Please choose a category</string>
-    <string name="FragmentMomentWriteMoreContent">Please add more content</string>
-    <string name="FragmentMomentWriteMessage">Your Message</string>
-    <string name="FragmentMomentWriteMessageCount">150</string>
-    <string name="FragmentMomentWriteCategory">Category:</string>
-    <string name="FragmentMomentWriteCategorySelect">None</string>
-    <string name="FragmentMomentWriteMaxImage">You have been reached maximum pictures</string>
-    <string name="FragmentMomentWriteSelectImage">Select Image From</string>
-    <string name="FragmentMomentWriteSelectVideo">Select Video From</string>
-    <string name="FragmentMomentWriteShareLink">Share Your Link</string>
-    <string name="FragmentMomentWriteShareLinkSub">Submit</string>
-    <string name="FragmentMomentWriteShareLinkCan">Cancel</string>
-    <string name="FragmentMomentWriteCantCreateFolder">Couldn\'t create BioGram\'s folder</string>
-    <string name="FragmentMomentWriteUpload">Uploading to server, Please be patient</string>
-    <string name="FragmentMomentWriteVideoLength">Video duration is too long, Max duration is 4 minutes</string>
-    <string name="FragmentMomentWriteVideoSize">Video size is too high, Max size is 30MB</string>
-    <string name="FragmentMomentWriteVideoSupport">Your device doesn\'t support compression, Max video size is 2MB</string>
-    <string name="FragmentMomentWriteVideoCompress">Compressing video, Please be patient</string>
-    <string name="FragmentMomentWriteVideoPreview">Video Preview</string>
-    <string name="FragmentMomentWriteDialogPaste">Paste</string>
-    <string name="FragmentMomentWriteDialogCopy">Copy</string>
-    <string name="FragmentMomentWriteDialogClipboard">Text has been copied to clipboard</string>
+
     <string name="AdapterPostFollow">Follow</string>
     <string name="AdapterPostUnFollow">Unfollow</string>
     <string name="AdapterPostFollowSent">Follow request sent</string>

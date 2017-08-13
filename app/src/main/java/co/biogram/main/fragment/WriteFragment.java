@@ -62,6 +62,9 @@ import com.androidnetworking.interfaces.UploadProgressListener;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,20 +83,17 @@ import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.TextCrawler;
 import co.biogram.media.MediaTransCoder;
 
-public class FragmentMomentWrite extends Fragment
+public class WriteFragment extends Fragment
 {
-    private int LastDifferenceHeight = 0;
-
     private ImageView ImageViewImage;
     private ImageView ImageViewVideo;
     private ImageView ImageViewLink;
 
-    private int SelectType = 0;
     private EditText EditTextMessage;
 
     private TextView TextViewCategorySelect;
     private String SelectLink = "";
-    private int SelectCategory = 0;
+
 
     private RelativeLayout RelativeLayoutLink;
     private LoadingView LoadingViewLink;
@@ -105,60 +105,74 @@ public class FragmentMomentWrite extends Fragment
 
     private ViewPager ViewPagerImage;
     private ViewPagerAdapter ViewPagerAdapterImage;
-    private final List<Bitmap> SelectImage = new ArrayList<>();
 
-    private File SelectVideo;
+
+
     private RelativeLayout RelativeLayoutVideo;
     private ImageView ImageViewThumbVideo;
 
     private boolean IsPermissionStorageAllowed = false;
     private PermissionHandler _PermissionHandler;
 
+
+
+
+    private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
+    private RelativeLayout RelativeLayoutMain;
+    private int RelativeLayoutMainHeightDifference = 0;
+
+    private final List<Bitmap> SelectImage = new ArrayList<>();
+    private int SelectCategory = 0;
+    private File SelectVideo;
+    private int SelectType = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
-        final RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
-        Root.setClickable(true);
+        RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
-        Root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        RelativeLayoutMainListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
             @Override
             public void onGlobalLayout()
             {
                 Rect rect = new Rect();
-                Root.getWindowVisibleDisplayFrame(rect);
+                RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
-                int ScreenHeight = Root.getHeight();
+                int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != LastDifferenceHeight)
+                if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != RelativeLayoutMainHeightDifference)
                 {
-                    Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
-                    LastDifferenceHeight = DifferenceHeight;
+                    RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                    RelativeLayoutMainHeightDifference = DifferenceHeight;
                 }
-                else if (DifferenceHeight != LastDifferenceHeight)
+                else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
                 {
-                    Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
-                    LastDifferenceHeight = DifferenceHeight;
+                    RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                    RelativeLayoutMainHeightDifference = DifferenceHeight;
                 }
-                else if (LastDifferenceHeight != 0)
+                else if (RelativeLayoutMainHeightDifference != 0)
                 {
-                    Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(LastDifferenceHeight)));
-                    LastDifferenceHeight = 0;
+                    RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
+                    RelativeLayoutMainHeightDifference = 0;
                 }
-            }
-        });
 
-        final RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+                RelativeLayoutMain.requestLayout();
+            }
+        };
+
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(RelativeLayoutHeader);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -176,18 +190,18 @@ public class FragmentMomentWrite extends Fragment
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(getString(R.string.FragmentMomentWrite));
+        TextViewTitle.setText(getString(R.string.WriteFragment));
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ButtonSendParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
-        ButtonSendParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        RelativeLayout.LayoutParams ImageViewSendParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        ImageViewSendParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         ImageView ImageViewSend = new ImageView(context);
-        ImageViewSend.setLayoutParams(ButtonSendParam);
+        ImageViewSend.setLayoutParams(ImageViewSendParam);
         ImageViewSend.setImageResource(R.drawable.ic_send_blue2);
         ImageViewSend.setId(MiscHandler.GenerateViewID());
         ImageViewSend.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
@@ -198,13 +212,13 @@ public class FragmentMomentWrite extends Fragment
             {
                 if (SelectCategory == 0)
                 {
-                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteChoiceCategory));
+                    MiscHandler.Toast(context, getString(R.string.WriteFragmentChoiceCategory));
                     return;
                 }
 
-                if (EditTextMessage.getText().length() <= 19 && SelectType == 0)
+                if (EditTextMessage.getText().length() <= 30 && SelectType == 0)
                 {
-                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteMoreContent));
+                    MiscHandler.Toast(context, getString(R.string.WriteFragmentMoreContent));
                     return;
                 }
 
@@ -214,36 +228,26 @@ public class FragmentMomentWrite extends Fragment
                 {
                     try
                     {
-                        boolean IsCreated = true;
-                        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram");
+                        File RootFile = new File(context.getCacheDir(), "BioGram");
 
-                        if (!Root.exists())
-                            IsCreated = Root.mkdirs();
-
-                        if (!IsCreated)
+                        for (int I = 0; I < SelectImage.size(); I++)
                         {
-                            MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteCantCreateFolder));
-                            return;
-                        }
+                            ByteArrayOutputStream ByteArrayStream = new ByteArrayOutputStream();
+                            File ImageFile = new File(RootFile, "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
 
-                        for (int A = 0; A < SelectImage.size(); A++)
-                        {
-                            File IMG = new File(Root, "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
+                            SelectImage.get(I).compress(Bitmap.CompressFormat.JPEG, 75, ByteArrayStream);
 
-                            ByteArrayOutputStream BOS = new ByteArrayOutputStream();
-                            SelectImage.get(A).compress(Bitmap.CompressFormat.JPEG, 90, BOS);
+                            FileOutputStream FileStream = new FileOutputStream(ImageFile);
+                            FileStream.write(ByteArrayStream.toByteArray());
+                            FileStream.flush();
+                            FileStream.close();
 
-                            FileOutputStream FOS = new FileOutputStream(IMG);
-                            FOS.write(BOS.toByteArray());
-                            FOS.flush();
-                            FOS.close();
-
-                            UploadFile.put(("Image" + A), IMG);
+                            UploadFile.put(("Image" + I), ImageFile);
                         }
                     }
                     catch (Exception e)
                     {
-                        // Leave Me Alone
+                        MiscHandler.Debug("WriteFragment-ImageCompress: " + e.toString());
                     }
                 }
                 else if (SelectType == 2)
@@ -252,10 +256,10 @@ public class FragmentMomentWrite extends Fragment
                     UploadFile = null;
 
                 final ProgressDialog Progress = new ProgressDialog(getActivity());
-                Progress.setMessage(getString(R.string.FragmentMomentWriteUpload));
+                Progress.setMessage(getString(R.string.WriteFragmentUpload));
                 Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 Progress.setIndeterminate(false);
-                Progress.setCancelable(true);
+                Progress.setCancelable(false);
                 Progress.setMax(100);
                 Progress.setProgress(0);
                 Progress.show();
@@ -267,8 +271,9 @@ public class FragmentMomentWrite extends Fragment
                 .addMultipartParameter("Link", SelectLink)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addMultipartFile(UploadFile)
-                .setTag("FragmentMomentWrite")
-                .build().setUploadProgressListener(new UploadProgressListener()
+                .setTag("WriteFragment")
+                .build()
+                .setUploadProgressListener(new UploadProgressListener()
                 {
                     @Override
                     public void onProgress(long bytesUploaded, long totalBytes)
@@ -279,16 +284,35 @@ public class FragmentMomentWrite extends Fragment
                 .getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void onResponse(String response)
-                    {MiscHandler.Debug("MomentWrite: " + response);
+                    public void onResponse(String Response)
+                    {
+                        MiscHandler.Debug("WriteFragment: " + Response);
+
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000)
+                            {
+                                MiscHandler.HideSoftKey(getActivity());
+                                getActivity().onBackPressed();
+                                return;
+                            }
+
+                            MiscHandler.Toast(context, getString(R.string.WriteFragmentUploadFailed));
+                        }
+                        catch (Exception e)
+                        {
+                            MiscHandler.Debug("WriteFragment-RequestPost: " + e.toString());
+                        }
+
                         Progress.cancel();
-                        MiscHandler.HideSoftKey(getActivity());
-                        getActivity().onBackPressed();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
+                        Progress.cancel();
                         MiscHandler.Toast(context, getString(R.string.NoInternet));
                     }
                 });
@@ -304,7 +328,7 @@ public class FragmentMomentWrite extends Fragment
 
         final TextView TextViewMessageCount = new TextView(context);
         TextViewMessageCount.setLayoutParams(TextViewMessageCountParam);
-        TextViewMessageCount.setText(getString(R.string.FragmentMomentWriteMessageCount));
+        TextViewMessageCount.setText(getString(R.string.WriteFragmentMessageCount));
         TextViewMessageCount.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
         TextViewMessageCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
@@ -318,7 +342,7 @@ public class FragmentMomentWrite extends Fragment
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine);
+        RelativeLayoutMain.addView(ViewLine);
 
         RelativeLayout.LayoutParams EditTextMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextMessageParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
@@ -328,7 +352,7 @@ public class FragmentMomentWrite extends Fragment
         EditTextMessage.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
         EditTextMessage.setId(MiscHandler.GenerateViewID());
         EditTextMessage.setMaxLines(5);
-        EditTextMessage.setHint(R.string.FragmentMomentWriteMessage);
+        EditTextMessage.setHint(R.string.WriteFragmentMessage);
         EditTextMessage.setBackground(null);
         EditTextMessage.requestFocus();
         EditTextMessage.setHintTextColor(ContextCompat.getColor(context, R.color.Gray2));
@@ -345,17 +369,14 @@ public class FragmentMomentWrite extends Fragment
         });
         EditTextMessage.addTextChangedListener(new TextWatcher()
         {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override public void afterTextChanged(Editable editable) { }
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2)
             {
                 TextViewMessageCount.setText(String.valueOf(150 - s.length()));
             }
-
-            @Override
-            public void afterTextChanged(Editable editable) { }
         });
         EditTextMessage.setOnLongClickListener(new View.OnLongClickListener()
         {
@@ -366,15 +387,15 @@ public class FragmentMomentWrite extends Fragment
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
 
-                LinearLayout Root = new LinearLayout(context);
-                Root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                Root.setBackgroundResource(R.color.White);
-                Root.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout LinearLayoutMain = new LinearLayout(context);
+                LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                 TextView TextViewPaste = new TextView(context);
                 TextViewPaste.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewPaste.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewPaste.setText(getActivity().getString(R.string.FragmentMomentWriteDialogPaste));
+                TextViewPaste.setText(getActivity().getString(R.string.WriteFragmentDialogPaste));
                 TextViewPaste.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewPaste.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewPaste.setOnClickListener(new View.OnClickListener()
@@ -395,18 +416,18 @@ public class FragmentMomentWrite extends Fragment
                     }
                 });
 
-                Root.addView(TextViewPaste);
+                LinearLayoutMain.addView(TextViewPaste);
 
                 View PasteLine = new View(context);
                 PasteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 PasteLine.setBackgroundResource(R.color.Gray1);
 
-                Root.addView(PasteLine);
+                LinearLayoutMain.addView(PasteLine);
 
                 TextView TextViewCopy = new TextView(context);
                 TextViewCopy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewCopy.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewCopy.setText(getActivity().getString(R.string.FragmentMomentWriteDialogCopy));
+                TextViewCopy.setText(getActivity().getString(R.string.WriteFragmentDialogCopy));
                 TextViewCopy.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewCopy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewCopy.setOnClickListener(new View.OnClickListener()
@@ -418,20 +439,20 @@ public class FragmentMomentWrite extends Fragment
                         ClipData clip = ClipData.newPlainText("WriteMessage", EditTextMessage.getText().toString());
                         clipboard.setPrimaryClip(clip);
 
-                        MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteDialogClipboard));
+                        MiscHandler.Toast(context, getString(R.string.WriteFragmentDialogClipboard));
                         DialogOption.dismiss();
                     }
                 });
 
-                Root.addView(TextViewCopy);
+                LinearLayoutMain.addView(TextViewCopy);
 
-                DialogOption.setContentView(Root);
+                DialogOption.setContentView(LinearLayoutMain);
                 DialogOption.show();
                 return false;
             }
         });
 
-        Root.addView(EditTextMessage);
+        RelativeLayoutMain.addView(EditTextMessage);
 
         RelativeLayout.LayoutParams LinearLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LinearLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -442,7 +463,7 @@ public class FragmentMomentWrite extends Fragment
         LinearLayoutBottom.setBackgroundResource(R.color.White5);
         LinearLayoutBottom.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(LinearLayoutBottom);
+        RelativeLayoutMain.addView(LinearLayoutBottom);
 
         ImageViewImage = new ImageView(context);
         ImageViewImage.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(context, 56), 1.0f));
@@ -456,14 +477,14 @@ public class FragmentMomentWrite extends Fragment
             {
                 if (SelectImage.size() >= 3)
                 {
-                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteMaxImage));
+                    MiscHandler.Toast(context, getString(R.string.WriteFragmentMaxImage));
                     return;
                 }
 
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.FragmentMomentWriteSelectImage)), 0);
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.WriteFragmentSelectImage)), 0);
             }
         });
 
@@ -482,7 +503,7 @@ public class FragmentMomentWrite extends Fragment
                 Intent intent = new Intent();
                 intent.setType("video/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.FragmentMomentWriteSelectVideo)), 1);
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.WriteFragmentSelectVideo)), 1);
             }
         });
 
@@ -502,25 +523,25 @@ public class FragmentMomentWrite extends Fragment
                 DialogLink.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogLink.setCancelable(false);
 
-                LinearLayout RootLink = new LinearLayout(context);
-                RootLink.setBackgroundResource(R.color.White);
-                RootLink.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout LinearLayoutMain = new LinearLayout(context);
+                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                 TextView TextViewTitleLink2 = new TextView(context);
                 TextViewTitleLink2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewTitleLink2.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewTitleLink2.setText(getString(R.string.FragmentMomentWriteShareLink));
+                TextViewTitleLink2.setText(getString(R.string.WriteFragmentShareLink));
                 TextViewTitleLink2.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewTitleLink2.setTypeface(null, Typeface.BOLD);
                 TextViewTitleLink2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
-                RootLink.addView(TextViewTitleLink2);
+                LinearLayoutMain.addView(TextViewTitleLink2);
 
                 View ViewLine = new View(context);
                 ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1)));
                 ViewLine.setBackgroundResource(R.color.Gray2);
 
-                RootLink.addView(ViewLine);
+                LinearLayoutMain.addView(ViewLine);
 
                 LinearLayout.LayoutParams EditTextURLParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 EditTextURLParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
@@ -532,18 +553,18 @@ public class FragmentMomentWrite extends Fragment
                 EditTextURL.setBackgroundColor(Color.TRANSPARENT);
                 EditTextURL.setInputType(0x00000010);
 
-                RootLink.addView(EditTextURL);
+                LinearLayoutMain.addView(EditTextURL);
 
                 LinearLayout LinearLayoutButton = new LinearLayout(context);
                 LinearLayoutButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 LinearLayoutButton.setBackgroundResource(R.color.White);
                 LinearLayoutButton.setOrientation(LinearLayout.HORIZONTAL);
 
-                RootLink.addView(LinearLayoutButton);
+                LinearLayoutMain.addView(LinearLayoutButton);
 
                 final TextView TextViewSubmit = new TextView(context);
                 TextViewSubmit.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-                TextViewSubmit.setText(getString(R.string.FragmentMomentWriteShareLinkSub));
+                TextViewSubmit.setText(getString(R.string.WriteFragmentShareLinkSub));
                 TextViewSubmit.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
                 TextViewSubmit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewSubmit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -554,7 +575,7 @@ public class FragmentMomentWrite extends Fragment
 
                 TextView TextViewCancel = new TextView(context);
                 TextViewCancel.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-                TextViewCancel.setText(getString(R.string.FragmentMomentWriteShareLinkCan));
+                TextViewCancel.setText(getString(R.string.WriteFragmentShareLinkCan));
                 TextViewCancel.setTextColor(ContextCompat.getColor(context, R.color.Black));
                 TextViewCancel.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewCancel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -562,21 +583,19 @@ public class FragmentMomentWrite extends Fragment
 
                 LinearLayoutButton.addView(TextViewCancel);
 
-                DialogLink.setContentView(RootLink);
+                DialogLink.setContentView(LinearLayoutMain);
                 DialogLink.show();
 
                 if (SelectLink == null || SelectLink.equals(""))
-                {
                     EditTextURL.setText(String.valueOf("http://"));
-                    EditTextURL.setSelection(EditTextURL.getText().length());
-                }
                 else
                 {
                     TextViewSubmit.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                     TextViewSubmit.setEnabled(true);
                     EditTextURL.setText(SelectLink);
-                    EditTextURL.setSelection(EditTextURL.getText().length());
                 }
+
+                EditTextURL.setSelection(EditTextURL.getText().length());
 
                 EditTextURL.addTextChangedListener(new TextWatcher()
                 {
@@ -595,11 +614,8 @@ public class FragmentMomentWrite extends Fragment
                         }
                     }
 
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int y, int u, int i) { }
-
-                    @Override
-                    public void afterTextChanged(Editable e) { }
+                    @Override public void beforeTextChanged(CharSequence s, int y, int u, int i) { }
+                    @Override public void afterTextChanged(Editable e) { }
                 });
 
                 if (DialogLink.getWindow() != null)
@@ -650,7 +666,7 @@ public class FragmentMomentWrite extends Fragment
                             }
                         });
 
-                        final TextCrawler Request = new TextCrawler(SelectLink, "FragmentMomentWrite", new TextCrawler.TextCrawlerCallBack()
+                        final TextCrawler Request = new TextCrawler(SelectLink, "WriteFragment", new TextCrawler.TextCrawlerCallBack()
                         {
                             @Override
                             public void OnCompleted(TextCrawler.URLContent Content)
@@ -659,28 +675,28 @@ public class FragmentMomentWrite extends Fragment
 
                                 if (new Bidi(Content.Title, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
                                 {
-                                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewTitleLink.getLayoutParams();
-                                    params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                                    TextViewTitleLink.setLayoutParams(params);
+                                    RelativeLayout.LayoutParams TextViewTitleLinkParam = (RelativeLayout.LayoutParams) TextViewTitleLink.getLayoutParams();
+                                    TextViewTitleLinkParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                                    TextViewTitleLink.setLayoutParams(TextViewTitleLinkParam);
                                 }
                                 else
                                 {
-                                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewTitleLink.getLayoutParams();
-                                    params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                                    TextViewTitleLink.setLayoutParams(params);
+                                    RelativeLayout.LayoutParams TextViewTitleLinkParam = (RelativeLayout.LayoutParams) TextViewTitleLink.getLayoutParams();
+                                    TextViewTitleLinkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                    TextViewTitleLink.setLayoutParams(TextViewTitleLinkParam);
                                 }
 
                                 if (new Bidi(Content.Title, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).getBaseLevel() == 0)
                                 {
-                                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewDescriptionLink.getLayoutParams();
-                                    params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                                    TextViewDescriptionLink.setLayoutParams(params);
+                                    RelativeLayout.LayoutParams TextViewDescriptionLinkParam = (RelativeLayout.LayoutParams) TextViewDescriptionLink.getLayoutParams();
+                                    TextViewDescriptionLinkParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                                    TextViewDescriptionLink.setLayoutParams(TextViewDescriptionLinkParam);
                                 }
                                 else
                                 {
-                                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) TextViewDescriptionLink.getLayoutParams();
-                                    params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                                    TextViewDescriptionLink.setLayoutParams(params);
+                                    RelativeLayout.LayoutParams TextViewDescriptionLinkParam = (RelativeLayout.LayoutParams) TextViewDescriptionLink.getLayoutParams();
+                                    TextViewDescriptionLinkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                    TextViewDescriptionLink.setLayoutParams(TextViewDescriptionLinkParam);
                                 }
 
                                 TextViewTitleLink.setText(Content.Title);
@@ -727,7 +743,7 @@ public class FragmentMomentWrite extends Fragment
         ViewLine2.setBackgroundResource(R.color.Gray2);
         ViewLine2.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine2);
+        RelativeLayoutMain.addView(ViewLine2);
 
         RelativeLayout.LayoutParams LinearLayoutCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 40));
         LinearLayoutCategoryParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
@@ -750,8 +766,7 @@ public class FragmentMomentWrite extends Fragment
             }
         });
 
-
-        Root.addView(LinearLayoutCategory);
+        RelativeLayoutMain.addView(LinearLayoutCategory);
 
         RelativeLayout.LayoutParams TextViewCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewCategoryParam.setMargins(MiscHandler.ToDimension(context, 5), 0, 0, 0);
@@ -759,7 +774,7 @@ public class FragmentMomentWrite extends Fragment
         TextView TextViewCategory = new TextView(context);
         TextViewCategory.setLayoutParams(TextViewCategoryParam);
         TextViewCategory.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewCategory.setText(getString(R.string.FragmentMomentWriteCategory));
+        TextViewCategory.setText(getString(R.string.WriteFragmentCategory));
         TextViewCategory.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
 
         LinearLayoutCategory.addView(TextViewCategory);
@@ -767,7 +782,7 @@ public class FragmentMomentWrite extends Fragment
         TextViewCategorySelect = new TextView(context);
         TextViewCategorySelect.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewCategorySelect.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewCategorySelect.setText(getString(R.string.FragmentMomentWriteCategorySelect));
+        TextViewCategorySelect.setText(getString(R.string.WriteFragmentCategorySelect));
         TextViewCategorySelect.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewCategorySelect.setPadding(MiscHandler.ToDimension(context, 5), 0, MiscHandler.ToDimension(context, 5), 0);
 
@@ -786,7 +801,7 @@ public class FragmentMomentWrite extends Fragment
         RelativeLayout RelativeLayoutContent = new RelativeLayout(context);
         RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
 
-        Root.addView(RelativeLayoutContent);
+        RelativeLayoutMain.addView(RelativeLayoutContent);
 
         RelativeLayout.LayoutParams RelativeLayoutLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutLinkParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -899,12 +914,12 @@ public class FragmentMomentWrite extends Fragment
                 MiscHandler.HideSoftKey(getActivity());
 
                 Bundle bundle = new Bundle();
-                bundle.putString("Video", SelectVideo.getAbsolutePath());
+                bundle.putString("VideoURL", SelectVideo.getAbsolutePath());
 
-                Fragment fragment = new FragmentPreviewVideo();
+                Fragment fragment = new VideoPreviewFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentPreviewVideo").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
             }
         });
 
@@ -942,14 +957,23 @@ public class FragmentMomentWrite extends Fragment
 
         RelativeLayoutVideo.addView(ImageViewPlayVideo);
 
-        return Root;
+        return RelativeLayoutMain;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(RelativeLayoutMainListener);
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.forceCancel("FragmentMomentWrite");
+        AndroidNetworking.forceCancel("WriteFragment");
+        MiscHandler.HideSoftKey(getActivity());
+        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
     }
 
     @Override
@@ -1063,7 +1087,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (Time > 180)
                 {
-                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteVideoLength));
+                    MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
                     return;
                 }
 
@@ -1071,7 +1095,7 @@ public class FragmentMomentWrite extends Fragment
 
                 if (SelectVideo.length() > 31452800)
                 {
-                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteVideoSize));
+                    MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSize));
                     return;
                 }
 
@@ -1079,7 +1103,7 @@ public class FragmentMomentWrite extends Fragment
                 {
                     if (SelectVideo.length() > 15728640)
                     {
-                        MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteVideoSupport));
+                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSupport));
                         return;
                     }
 
@@ -1105,14 +1129,14 @@ public class FragmentMomentWrite extends Fragment
 
                 if (!IsCreated)
                 {
-                    MiscHandler.Toast(context, getString(R.string.FragmentMomentWriteCantCreateFolder));
+                    MiscHandler.Toast(context, getString(R.string.WriteFragmentCantCreateFolder));
                     return;
                 }
 
                 SelectVideo = new File(Root, "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
 
                 final ProgressDialog Progress = new ProgressDialog(getActivity());
-                Progress.setMessage(getString(R.string.FragmentMomentWriteVideoCompress));
+                Progress.setMessage(getString(R.string.WriteFragmentVideoCompress));
                 Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 Progress.setIndeterminate(false);
                 Progress.setMax(100);
@@ -1378,7 +1402,7 @@ public class FragmentMomentWrite extends Fragment
             TextView TextViewName = new TextView(context);
             TextViewName.setLayoutParams(TextViewNameParam);
             TextViewName.setTextColor(ContextCompat.getColor(context, R.color.Black));
-            TextViewName.setText(getString(R.string.FragmentMomentWriteCategory));
+            TextViewName.setText(getString(R.string.WriteFragmentCategory));
             TextViewName.setTypeface(null, Typeface.BOLD);
             TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -1435,6 +1459,7 @@ public class FragmentMomentWrite extends Fragment
                 CategoryList.add(new Struct(14, "Travel", R.drawable.ic_category_travel));
                 CategoryList.add(new Struct(15, "Politics", R.drawable.ic_category_politics));
                 CategoryList.add(new Struct(16, "Health", R.drawable.ic_category_health));
+                CategoryList.add(new Struct(18, "Religious", R.drawable.ic_category_religious));
                 CategoryList.add(new Struct(17, "Other", R.drawable.ic_category_other));
             }
 
@@ -1465,7 +1490,7 @@ public class FragmentMomentWrite extends Fragment
                     @Override
                     public void onClick(View v)
                     {
-                        FragmentMomentWrite Parent = (FragmentMomentWrite) getActivity().getSupportFragmentManager().findFragmentByTag("FragmentMomentWrite");
+                        WriteFragment Parent = (WriteFragment) getActivity().getSupportFragmentManager().findFragmentByTag("WriteFragment");
                         Parent.TextViewCategorySelect.setText(CategoryList.get(Position).Name);
                         Parent.SelectCategory = CategoryList.get(Position).ID;
 
@@ -1545,112 +1570,6 @@ public class FragmentMomentWrite extends Fragment
                     Image = image;
                 }
             }
-        }
-    }
-
-    public static class FragmentPreviewVideo extends Fragment
-    {
-        private RelativeLayout RelativeLayoutHeader;
-        private ImageView ImageViewPlay;
-        private boolean IsPlaying = false;
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            Context context = getActivity();
-
-            RelativeLayout Root = new RelativeLayout(context);
-            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            Root.setBackgroundResource(R.color.Black);
-            Root.setClickable(true);
-
-            RelativeLayout.LayoutParams VideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            VideoParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-            final VideoView Video = new VideoView(context);
-            Video.setLayoutParams(VideoParam);
-            Video.setVideoPath(getArguments().getString("Video"));
-            Video.seekTo(100);
-            Video.setOnTouchListener(new View.OnTouchListener()
-            {
-                @Override
-                public boolean onTouch(View v, MotionEvent event)
-                {
-                    if (RelativeLayoutHeader.getVisibility() == View.VISIBLE)
-                        RelativeLayoutHeader.setVisibility(View.GONE);
-                    else
-                        RelativeLayoutHeader.setVisibility(View.VISIBLE);
-
-                    if (ImageViewPlay.getVisibility() == View.VISIBLE)
-                        ImageViewPlay.setVisibility(View.GONE);
-                    else
-                        ImageViewPlay.setVisibility(View.VISIBLE);
-
-                    if (IsPlaying)
-                    {
-                        IsPlaying = false;
-                        Video.pause();
-                    }
-                    else
-                    {
-                        IsPlaying = true;
-                        Video.start();
-                    }
-
-                    return false;
-                }
-            });
-
-            Root.addView(Video);
-
-            RelativeLayoutHeader = new RelativeLayout(context);
-            RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#3f000000"));
-
-            Root.addView(RelativeLayoutHeader);
-
-            ImageView ImageViewBack = new ImageView(context);
-            ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
-            ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-            ImageViewBack.setImageResource(R.drawable.ic_back_white);
-            ImageViewBack.setId(MiscHandler.GenerateViewID());
-            ImageViewBack.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    getActivity().onBackPressed();
-                }
-            });
-
-            RelativeLayoutHeader.addView(ImageViewBack);
-
-            RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
-            TextViewTitleParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-            TextView TextViewTitle = new TextView(context);
-            TextViewTitle.setLayoutParams(TextViewTitleParam);
-            TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.White));
-            TextViewTitle.setText(getString(R.string.FragmentMomentWriteVideoPreview));
-            TextViewTitle.setTypeface(null, Typeface.BOLD);
-            TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-
-            RelativeLayoutHeader.addView(TextViewTitle);
-
-            RelativeLayout.LayoutParams ImageViewPlayParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 65), MiscHandler.ToDimension(context, 65));
-            ImageViewPlayParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-            ImageViewPlay = new ImageView(context);
-            ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewPlay.setLayoutParams(ImageViewPlayParam);
-            ImageViewPlay.setImageResource(R.drawable.ic_play);
-            ImageViewPlay.setId(MiscHandler.GenerateViewID());
-
-            Root.addView(ImageViewPlay);
-
-            return Root;
         }
     }
 }

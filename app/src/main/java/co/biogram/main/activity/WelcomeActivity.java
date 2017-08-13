@@ -452,17 +452,17 @@ public class WelcomeActivity extends FragmentActivity
 
                     if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (RelativeLayoutMainHeightDifference != 0)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
                         RelativeLayoutMainHeightDifference = 0;
                     }
 
@@ -778,17 +778,17 @@ public class WelcomeActivity extends FragmentActivity
 
                     if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (RelativeLayoutMainHeightDifference != 0)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
                         RelativeLayoutMainHeightDifference = 0;
                     }
 
@@ -1035,17 +1035,17 @@ public class WelcomeActivity extends FragmentActivity
 
                     if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (RelativeLayoutMainHeightDifference != 0)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
                         RelativeLayoutMainHeightDifference = 0;
                     }
 
@@ -1354,17 +1354,17 @@ public class WelcomeActivity extends FragmentActivity
 
                     if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (RelativeLayoutMainHeightDifference != 0)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
                         RelativeLayoutMainHeightDifference = 0;
                     }
 
@@ -1724,17 +1724,17 @@ public class WelcomeActivity extends FragmentActivity
 
                     if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                         RelativeLayoutMainHeightDifference = DifferenceHeight;
                     }
                     else if (RelativeLayoutMainHeightDifference != 0)
                     {
-                        RelativeLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
+                        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
                         RelativeLayoutMainHeightDifference = 0;
                     }
 

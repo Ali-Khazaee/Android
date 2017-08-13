@@ -285,22 +285,14 @@ public class TextureVideoView extends TextureView implements MediaPlayerControl
                     int VideoHeight = mp.getVideoHeight();
                     int ScreenWidth = getWidth();
 
-                    int Height;
-
                     if (VideoWidth > ScreenWidth)
-                    {
-                        int Width = VideoWidth - ScreenWidth;
-                        Height = VideoHeight - Width;
-                    }
+                        VideoHeight -= VideoWidth - ScreenWidth;
                     else
-                    {
-                        int Width = ScreenWidth - VideoWidth;
-                        Height = VideoHeight + Width;
-                    }
+                        VideoHeight += ScreenWidth - VideoWidth;
 
                     ViewGroup.LayoutParams TextureViewParam = getLayoutParams();
                     TextureViewParam.width = ScreenWidth;
-                    TextureViewParam.height = Height;
+                    TextureViewParam.height = VideoHeight;
 
                     setLayoutParams(TextureViewParam);
 
