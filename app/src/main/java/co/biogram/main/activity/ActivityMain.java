@@ -19,6 +19,7 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.fragment.CategoryFragment;
 import co.biogram.main.fragment.MomentFragment;
+import co.biogram.main.fragment.PostFragment;
 import co.biogram.main.fragment.ProfileFragment;
 import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
@@ -132,7 +133,7 @@ public class ActivityMain extends FragmentActivity
 
         setContentView(RelativeLayoutMain);
 
-        ChangeTab(getIntent().getIntExtra("Tab", getIntent().getIntExtra("TAB", 5)));
+        ChangeTab(getIntent().getIntExtra("Tab", 1));
     }
 
     @Override
@@ -141,6 +142,28 @@ public class ActivityMain extends FragmentActivity
         super.onResume();
         ShortcutBadger.removeCount(this);
         registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
+
+        if (getIntent().getIntExtra("Type", 0) == 1)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString("Username", getIntent().getStringExtra("Data"));
+
+            Fragment fragment = new ProfileFragment();
+            fragment.setArguments(bundle);
+
+            getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+        }
+
+        if (getIntent().getIntExtra("Type", 0) == 2)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString("PostID", getIntent().getStringExtra("Data"));
+
+            Fragment fragment = new PostFragment();
+            fragment.setArguments(bundle);
+
+            getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
+        }
     }
 
     @Override

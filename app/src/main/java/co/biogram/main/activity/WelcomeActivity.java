@@ -865,7 +865,7 @@ public class WelcomeActivity extends FragmentActivity
             TextView TextViewPassword = new TextView(context);
             TextViewPassword.setLayoutParams(TextViewPasswordParam);
             TextViewPassword.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
-            TextViewPassword.setText(getString(R.string.SignUpFragmentUsername));
+            TextViewPassword.setText(getString(R.string.SignUpFragmentPassword));
             TextViewPassword.setTypeface(null, Typeface.BOLD);
             TextViewPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             TextViewPassword.setId(MiscHandler.GenerateViewID());

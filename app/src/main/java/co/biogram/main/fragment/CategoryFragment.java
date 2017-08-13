@@ -29,7 +29,7 @@ import co.biogram.main.handler.MiscHandler;
 public class CategoryFragment extends Fragment
 {
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
 
@@ -177,8 +177,8 @@ public class CategoryFragment extends Fragment
             CategoryList.add(new Struct(R.drawable.ic_category_travel, getString(R.string.CategoryFragmentTravel), 14));
             CategoryList.add(new Struct(R.drawable.ic_category_politics, getString(R.string.CategoryFragmentPolitics), 15));
             CategoryList.add(new Struct(R.drawable.ic_category_health, getString(R.string.CategoryFragmentHealth), 16));
+            CategoryList.add(new Struct(R.drawable.ic_category_religious, getString(R.string.CategoryFragmentReligious), 18));
             CategoryList.add(new Struct(R.drawable.ic_category_other, getString(R.string.CategoryFragmentOther), 17));
-            CategoryList.add(new Struct(R.drawable.ic_category_other, getString(R.string.CategoryFragmentReligious), 18));
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder

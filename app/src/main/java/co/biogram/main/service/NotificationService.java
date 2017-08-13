@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -21,6 +20,7 @@ import co.biogram.main.R;
 import co.biogram.main.activity.ActivityMain;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
+
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class NotificationService extends Service
@@ -68,20 +68,26 @@ public class NotificationService extends Service
                                 {
                                     JSONObject Notification = ResultList.getJSONObject(I);
 
+                                    int Type = 2;
+                                    String Data = Notification.getString("PostID");
                                     String Message = Notification.getString("Username") + " ";
 
                                     switch (Notification.getInt("Type"))
                                     {
-                                        case 1: Message += context.getString(R.string.NotificationFragmentPostTag);     break;
-                                        case 2: Message += context.getString(R.string.NotificationFragmentPostLike);    break;
-                                        case 3: Message += context.getString(R.string.NotificationFragmentFollow);      break;
-                                        case 4: Message += context.getString(R.string.NotificationFragmentCommentLike); break;
-                                        case 5: Message += context.getString(R.string.NotificationFragmentComment);     break;
-                                        case 6: Message += context.getString(R.string.NotificationFragmentCommentTag);  break;
+                                        case 1: Message += context.getString(R.string.NotificationFragmentPostTag);          break;
+                                        case 2: Message += context.getString(R.string.NotificationFragmentPostLike);         break;
+                                        case 3:
+                                            Type = 1;
+                                            Data = Notification.getString("Username");
+                                            Message += context.getString(R.string.NotificationFragmentFollow);
+                                        break;
+                                        case 4: Message += context.getString(R.string.NotificationFragmentCommentLike);      break;
+                                        case 5: Message += context.getString(R.string.NotificationFragmentComment);          break;
+                                        case 6: Message += context.getString(R.string.NotificationFragmentCommentTag);       break;
                                     }
 
                                     Count++;
-                                    CreateNotification(context, Message, Notification.getString("ID"), Notification.getInt("Type"));
+                                    CreateNotification(context, Message, Data, Type);
                                 }
 
                                 if (Count > 0)
@@ -113,19 +119,15 @@ public class NotificationService extends Service
         return START_STICKY;
     }
 
-    private void CreateNotification(Context context, String Message, String ID, int Type)
+    private void CreateNotification(Context context, String Message, String Data, int Type)
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
         .setSmallIcon(R.drawable.ic_back_white)
         .setContentTitle("Biogram")
         .setContentText(Message);
 
-        Bundle bundle = new Bundle();
-        bundle.putInt("Type", Type);
-        bundle.putString("OwnerID", ID);
-
         Intent intent = new Intent(context, ActivityMain.class);
-        intent.putExtra("PostID", ID);
+        intent.putExtra("Data", Data);
         intent.putExtra("Type", Type);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
