@@ -58,6 +58,7 @@ public class ImagePreviewFragment extends Fragment
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.Black);
+        RelativeLayoutMain.setClickable(true);
 
         ViewPager ViewPagerPreview = new ViewPager(context);
         ViewPagerPreview.setAdapter(new ViewPagerAdapter(context));
@@ -108,6 +109,10 @@ public class ImagePreviewFragment extends Fragment
         LoadingViewMain.SetColor(R.color.White);
 
         RelativeLayoutMain.addView(LoadingViewMain);
+
+        ViewPagerPreview.bringToFront();
+        RelativeLayoutHeader.bringToFront();
+        ImageViewBack.bringToFront();
 
         return RelativeLayoutMain;
     }

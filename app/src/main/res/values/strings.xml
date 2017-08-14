@@ -225,7 +225,19 @@
     <!-- Image Preview Fragment -->
     <string name="ImagePreviewFragment">Image Preview</string>
 
-
+    <!-- Profile Fragment -->
+    <string name="ProfileFragmentPostCount">Posts</string>
+    <string name="ProfileFragmentCommentCount">Comments</string>
+    <string name="ProfileFragmentLikeCount">Likes</string>
+    <string name="ProfileFragmentPost">Post</string>
+    <string name="ProfileFragmentFollow">User Followed</string>
+    <string name="ProfileFragmentUnFollow">User Unfollowed</string>
+    <string name="ProfileFragmentFollowers">Followers</string>
+    <string name="ProfileFragmentFollowing">Following</string>
+    <string name="ProfileFragmentReport">Report</string>
+    <string name="ProfileFragmentPost2">POST</string>
+    <string name="ProfileFragmentLike">LIKE</string>
+    <string name="ProfileFragmentComment">COMMENT</string>
 
 
 
@@ -302,18 +314,7 @@
     <string name="AdapterPostCommentSent">Comment Request Sent</string>
     <string name="AdapterPostChoice">Choice</string>
     <string name="AdapterPostNoContent">Empty</string>
-    <string name="FragmentProfilePostCount">Posts</string>
-    <string name="FragmentProfileCommentCount">Comments</string>
-    <string name="FragmentProfileLikeCount">Likes</string>
-    <string name="FragmentProfilePost">Post</string>
-    <string name="FragmentProfileFollow">User Followed</string>
-    <string name="FragmentProfileUnFollow">User Unfollowed</string>
-    <string name="FragmentProfileFollowers">Followers</string>
-    <string name="FragmentProfileFollowing">Following</string>
-    <string name="FragmentProfileReport">Report</string>
-    <string name="FragmentProfilePost2">POST</string>
-    <string name="FragmentProfileLike">LIKE</string>
-    <string name="FragmentProfileComment">COMMENT</string>
+
     <string name="GeneralPermissionCamera">You should allow access to your camera</string>
     <string name="GeneralPermissionStorage">You should allow access to your storage</string>
 </resources>

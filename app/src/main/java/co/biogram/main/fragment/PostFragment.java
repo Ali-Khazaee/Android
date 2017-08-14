@@ -697,7 +697,7 @@ public class PostFragment extends Fragment
         RelativeLayoutTripleLayout.addView(ImageViewTriple3);
 
         RelativeLayoutVideo = new RelativeLayout(context);
-        RelativeLayoutVideo.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 150)));
+        RelativeLayoutVideo.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 180)));
         RelativeLayoutVideo.setBackgroundResource(R.color.Black);
         RelativeLayoutVideo.setVisibility(View.GONE);
 
@@ -1242,7 +1242,7 @@ public class PostFragment extends Fragment
                             {
                                 JSONArray URL = new JSONArray(Result.getString("Data"));
 
-                                final TextCrawler Request = new TextCrawler(URL.get(0).toString(), "PostFragment", new TextCrawler.TextCrawlerCallBack()
+                                final TextCrawler Request = new TextCrawler(context, URL.get(0).toString(), "PostFragment", new TextCrawler.TextCrawlerCallBack()
                                 {
                                     @Override
                                     public void OnCompleted(TextCrawler.URLContent Content)

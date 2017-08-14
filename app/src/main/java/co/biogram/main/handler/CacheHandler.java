@@ -1,11 +1,7 @@
 package co.biogram.main.handler;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.util.LruCache;
-import android.widget.ImageView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -105,116 +101,18 @@ public class CacheHandler
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private static final LruCache<String, Bitmap> MemoryCache = new LruCache<String, Bitmap>(((int) (Runtime.getRuntime().maxMemory() / 1024)) / 8)
-    {
-        @Override
-        protected int sizeOf(String key, Bitmap bitmap)
-        {
-            return bitmap.getByteCount() / 1024;
-        }
-    };
-
-    private static void AddBitmapToMemoryCache(String Key, Bitmap bitmap)
-    {
-        if (MemoryCache.get(Key) == null)
-            MemoryCache.put(Key, bitmap);
-    }
-
-    private static Bitmap GetBitmapFromMemCache(String Key)
-    {
-        return MemoryCache.get(Key);
-    }
-
-    static boolean HasPicture(String Name)
-    {
-        File PictureFile = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
-        boolean IsCreated = true;
-
-        if (!PictureFile.exists())
-            IsCreated = PictureFile.mkdirs();
-
-        return IsCreated && new File(PictureFile, Name).exists();
-    }
-
-    static void GetPicture(String Name, ImageView Image)
-    {
-        Bitmap CacheBitmap = GetBitmapFromMemCache(Name);
-
-        if (CacheBitmap != null)
-        {
-            Image.setImageBitmap(CacheBitmap);
-            return;
-        }
-
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        Bitmap DecodeBitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/BioGram/Picture/" + Name, o);
-        Image.setImageBitmap(DecodeBitmap);
-
-        AddBitmapToMemoryCache(Name, DecodeBitmap);
-    }
-
-    static void StorePicture(String Name, byte[] Data)
-    {
-        try
-        {
-            File PictureFile = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
-            boolean IsCreated = true;
-
-            if (!PictureFile.exists())
-                IsCreated = PictureFile.mkdirs();
-
-            if (!IsCreated)
-                return;
-
-            FileOutputStream FOS = new FileOutputStream(new File(PictureFile, Name));
-            FOS.write(Data);
-            FOS.flush();
-            FOS.close();
-
-            StoreCacheData(":::2:::" + Name);
-        }
-        catch (Exception e)
-        {
-            // Leave Me Alone
-        }
-    }
-
-    public static boolean HasLink(String Name)
+    public static boolean LinkIsCache(String Name)
     {
         File LinkFile = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
-        boolean IsCreated = true;
 
-        if (!LinkFile.exists())
-            IsCreated = LinkFile.mkdirs();
-
-        return IsCreated && new File(LinkFile, Name.replaceAll("[^a-zA-Z0-9.-]", "_")).exists();
+        return LinkFile.exists() && new File(LinkFile, Name.replaceAll("[^a-zA-Z0-9.-]", "")).exists();
     }
 
-    public static String[] GetLink(String Name)
+    public static String[] FindLink(String Name)
     {
         try
         {
-            File LinkFile = new File(Environment.getExternalStorageDirectory(), "/BioGram/Link/" + Name.replaceAll("[^a-zA-Z0-9.-]", "_"));
+            File LinkFile = new File(Environment.getExternalStorageDirectory(), "/BioGram/Link/" + Name.replaceAll("[^a-zA-Z0-9.-]", ""));
 
             BufferedReader Reader = new BufferedReader(new FileReader(LinkFile));
             String[] Result = Reader.readLine().split(":::");
@@ -224,17 +122,17 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            // Leave Me Alone
+            MiscHandler.Debug("CacheHandler-GetLink: " + e.toString());
         }
 
         return null;
     }
 
-    public static void StoreLink(String Name, String Title, String Description, String Image)
+    public static void StoreLink(Context context, String Name, String Title, String Description, String Image)
     {
         try
         {
-            File FolderLink = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
+            File FolderLink = new File(context.getCacheDir(), "BioGramCache");
             boolean IsCreated = true;
 
             if (!FolderLink.exists())
@@ -243,7 +141,7 @@ public class CacheHandler
             if (!IsCreated)
                 return;
 
-            Name = Name.replaceAll("[^a-zA-Z0-9.-]", "_");
+            Name = Name.replaceAll("[^a-zA-Z0-9.-]", "");
             File LinkFile = new File(FolderLink, Name);
 
             if (!LinkFile.createNewFile())
@@ -254,20 +152,19 @@ public class CacheHandler
             Writer.flush();
             Writer.close();
 
-            StoreCacheData(":::4:::" + Name);
+            StoreCacheData(context, ":::4:::" + Name);
         }
         catch (Exception e)
         {
-
-            // Leave Me Alone
+            MiscHandler.Debug("CacheHandler-StoreLink: " + e.toString());
         }
     }
 
-    private static void StoreCacheData(String Data)
+    private static void StoreCacheData(Context context, String Data)
     {
         try
         {
-            File CacheList = new File(new File(Environment.getExternalStorageDirectory(), "BioGram/Document"), "Cache.List");
+            File CacheList = new File(context.getCacheDir(), "BioGramCache");
             boolean IsCreated = true;
 
             if (!CacheList.exists())
@@ -285,7 +182,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            // Leave Me Alone
+            MiscHandler.Debug("CacheHandler-StoreCacheData: " + e.toString());
         }
     }
 }

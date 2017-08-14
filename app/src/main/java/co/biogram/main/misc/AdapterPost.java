@@ -715,7 +715,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     }
                 });
 
-                final TextCrawler Request = new TextCrawler(URL.get(0).toString(), Tag, new TextCrawler.TextCrawlerCallBack()
+                final TextCrawler Request = new TextCrawler(Activity, URL.get(0).toString(), Tag, new TextCrawler.TextCrawlerCallBack()
                 {
                     @Override
                     public void OnCompleted(TextCrawler.URLContent Content)

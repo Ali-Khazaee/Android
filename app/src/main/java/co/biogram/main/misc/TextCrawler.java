@@ -1,5 +1,7 @@
 package co.biogram.main.misc;
 
+import android.content.Context;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
@@ -16,13 +18,16 @@ import co.biogram.main.handler.CacheHandler;
 
 public class TextCrawler
 {
+    private URLContent UrlContent;
+
     private final String URL;
     private final String Tag;
-    private URLContent _URLContent;
+    private final Context context;
     private final TextCrawlerCallBack CallBackListener;
 
-    public TextCrawler(String url, String tag, TextCrawlerCallBack CallBack)
+    public TextCrawler(Context c, String url, String tag, TextCrawlerCallBack CallBack)
     {
+        context = c;
         URL = url;
         Tag = tag;
         CallBackListener = CallBack;
@@ -30,19 +35,19 @@ public class TextCrawler
 
     public void Start()
     {
-        _URLContent = new URLContent();
+        UrlContent = new URLContent();
 
-        if (CacheHandler.HasLink(URL))
+        if (CacheHandler.LinkIsCache(URL))
         {
-            String[] Data = CacheHandler.GetLink(URL);
+            String[] Data = CacheHandler.FindLink(URL);
 
             if (Data != null && Data.length > 1)
             {
-                _URLContent.Title = Data[0];
-                _URLContent.Description = Data[1];
-                _URLContent.Image = Data[2];
+                UrlContent.Title = Data[0];
+                UrlContent.Description = Data[1];
+                UrlContent.Image = Data[2];
 
-                CallBackListener.OnCompleted(_URLContent);
+                CallBackListener.OnCompleted(UrlContent);
                 return;
             }
         }
@@ -60,25 +65,25 @@ public class TextCrawler
                     if (Title.length() > 25)
                         Title = Title.substring(0, 25) + "...";
 
-                    _URLContent.Title = Title;
+                    UrlContent.Title = Title;
 
                     String HTML = ExtendedTrim(Response);
 
                     HashMap<String, String> MetaTags = GetMetaTags(HTML);
 
-                    _URLContent.Description = MetaTags.get("description");
+                    UrlContent.Description = MetaTags.get("description");
 
-                    if (_URLContent.Description == null || _URLContent.Description.equals(""))
-                        _URLContent.Description = "No Description ...";
+                    if (UrlContent.Description == null || UrlContent.Description.equals(""))
+                        UrlContent.Description = "No Description ...";
 
                     if (!MetaTags.get("image").startsWith("http://") && !MetaTags.get("image").startsWith("https://"))
-                        _URLContent.Image = URL + MetaTags.get("image");
+                        UrlContent.Image = URL + MetaTags.get("image");
                     else
-                        _URLContent.Image = MetaTags.get("image");
+                        UrlContent.Image = MetaTags.get("image");
 
-                    CallBackListener.OnCompleted(_URLContent);
+                    CallBackListener.OnCompleted(UrlContent);
 
-                    CacheHandler.StoreLink(URL, _URLContent.Title, _URLContent.Description, _URLContent.Image);
+                    CacheHandler.StoreLink(context, URL, UrlContent.Title, UrlContent.Description, UrlContent.Image);
                 }
                 catch (Exception e)
                 {
@@ -96,15 +101,15 @@ public class TextCrawler
 
     public interface TextCrawlerCallBack
     {
-        void OnCompleted(URLContent c);
+        void OnCompleted(URLContent UrlContent);
         void OnFailed();
     }
 
     public class URLContent
     {
-        public String Image = "";
-        public String Title = "";
-        public String Description = "";
+        public String Image;
+        public String Title;
+        public String Description;
     }
 
     private String ExtendedTrim(String Content)

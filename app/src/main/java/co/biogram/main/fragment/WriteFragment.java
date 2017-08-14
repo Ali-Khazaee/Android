@@ -647,7 +647,7 @@ public class WriteFragment extends Fragment
                             }
                         });
 
-                        final TextCrawler Request = new TextCrawler(SelectLink, "WriteFragment", new TextCrawler.TextCrawlerCallBack()
+                        final TextCrawler Request = new TextCrawler(context, SelectLink, "WriteFragment", new TextCrawler.TextCrawlerCallBack()
                         {
                             @Override
                             public void OnCompleted(TextCrawler.URLContent Content)
