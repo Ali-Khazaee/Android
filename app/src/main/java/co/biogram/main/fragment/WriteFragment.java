@@ -214,14 +214,12 @@ public class WriteFragment extends Fragment
                 {
                     try
                     {
-                        File RootFile = new File(context.getCacheDir(), "BioGram");
-
                         for (int I = 0; I < SelectImage.size(); I++)
                         {
                             ByteArrayOutputStream ByteArrayStream = new ByteArrayOutputStream();
-                            File ImageFile = new File(RootFile, "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
+                            File ImageFile = new File(Environment.getExternalStorageDirectory() + "/BioGram/Cache/" + "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
 
-                            SelectImage.get(I).compress(Bitmap.CompressFormat.JPEG, 75, ByteArrayStream);
+                            SelectImage.get(I).compress(Bitmap.CompressFormat.JPEG, 95, ByteArrayStream);
 
                             FileOutputStream FileStream = new FileOutputStream(ImageFile);
                             FileStream.write(ByteArrayStream.toByteArray());
@@ -272,7 +270,7 @@ public class WriteFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
-                        MiscHandler.Debug("WriteFragment: " + Response);
+                        Progress.cancel();
 
                         try
                         {
@@ -291,8 +289,6 @@ public class WriteFragment extends Fragment
                         {
                             MiscHandler.Debug("WriteFragment-RequestPost: " + e.toString());
                         }
-
-                        Progress.cancel();
                     }
 
                     @Override
@@ -764,11 +760,14 @@ public class WriteFragment extends Fragment
 
                 LinearLayoutMain.addView(RelativeLayoutHeader);
 
+                RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+                ImageViewBackParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
                 ImageView ImageViewBack = new ImageView(context);
-                ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+                ImageViewBack.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
                 ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
-                ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+                ImageViewBack.setLayoutParams(ImageViewBackParam);
+                ImageViewBack.setImageResource(R.drawable.ic_close_blue);
                 ImageViewBack.setId(MiscHandler.GenerateViewID());
                 ImageViewBack.setOnClickListener(new View.OnClickListener()
                 {
@@ -782,7 +781,8 @@ public class WriteFragment extends Fragment
                 RelativeLayoutHeader.addView(ImageViewBack);
 
                 RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewNameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+                TextViewNameParam.addRule(RelativeLayout.CENTER_VERTICAL);
+                TextViewNameParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
 
                 TextView TextViewName = new TextView(context);
                 TextViewName.setLayoutParams(TextViewNameParam);
@@ -1064,6 +1064,9 @@ public class WriteFragment extends Fragment
     @Override
     public void onActivityResult(final int RequestCode, int ResultCode, Intent Data)
     {
+        if (Data == null || ResultCode == 0)
+            return;
+
         final String URL;
         final Context context = getActivity();
 
@@ -1151,7 +1154,7 @@ public class WriteFragment extends Fragment
                     Retriever.setDataSource(URL);
                     int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
 
-                    if (Time > 180)
+                    if (Time > 120)
                     {
                         MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
                         return;
@@ -1159,15 +1162,17 @@ public class WriteFragment extends Fragment
 
                     SelectVideo = new File(URL);
 
-                    if (SelectVideo.length() > 31452800)
+                    if (SelectVideo.length() < 3145728)
                     {
-                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSize));
+                        ChangeType(2);
+                        ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                        RelativeLayoutVideo.setVisibility(View.VISIBLE);
                         return;
                     }
 
                     if (Build.VERSION.SDK_INT <= 17)
                     {
-                        if (SelectVideo.length() > 15728640)
+                        if (SelectVideo.length() > 3145728)
                         {
                             MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSupport));
                             return;
@@ -1179,27 +1184,13 @@ public class WriteFragment extends Fragment
                         return;
                     }
 
-                    if (SelectVideo.length() < 3145728)
+                    if (SelectVideo.length() > 31452800)
                     {
-                        ChangeType(2);
-                        ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                        RelativeLayoutVideo.setVisibility(View.VISIBLE);
+                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSize));
                         return;
                     }
 
-                    boolean IsCreated = true;
-                    File Root = new File(Environment.getExternalStorageDirectory(), "BioGram");
-
-                    if (!Root.exists())
-                        IsCreated = Root.mkdirs();
-
-                    if (!IsCreated)
-                    {
-                        MiscHandler.Toast(context, getString(R.string.WriteFragmentCantCreateFolder));
-                        return;
-                    }
-
-                    SelectVideo = new File(Root, "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
+                    SelectVideo = new File(Environment.getExternalStorageDirectory() + "/BioGram/Cache/" + "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
 
                     final ProgressDialog Progress = new ProgressDialog(getActivity());
                     Progress.setMessage(getString(R.string.WriteFragmentVideoCompress));
@@ -1226,7 +1217,7 @@ public class WriteFragment extends Fragment
                                 Height = Height / 2;
                             }
 
-                            try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) { /* Leave Me Alone  */ }
+                            try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) { /* */ }
 
                             MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
                             format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
@@ -1242,8 +1233,8 @@ public class WriteFragment extends Fragment
                             int Sample = 44100;
                             int Channel = 1;
 
-                            try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { /* Leave Me Alone  */ }
-                            try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) { /* Leave Me Alone  */ }
+                            try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { /* */ }
+                            try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) { /* */ }
 
                             int Bitrate = Sample * Channel;
 
@@ -1281,6 +1272,7 @@ public class WriteFragment extends Fragment
                         public void OnFailed(Exception exception)
                         {
                             Progress.cancel();
+                            MiscHandler.Debug("WriteFragment-VideoCompress: " + exception.toString());
                         }
                     });
                 }
@@ -1342,8 +1334,8 @@ public class WriteFragment extends Fragment
         {
             final Context context = getActivity();
 
-            RelativeLayout Root = new RelativeLayout(context);
-            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
             RelativeLayout.LayoutParams ImageViewImageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewImageParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
@@ -1361,15 +1353,15 @@ public class WriteFragment extends Fragment
                     {
                         MiscHandler.HideSoftKey(getActivity());
 
-                        FragmentImagePreview fragment = new FragmentImagePreview();
+                        ImagePreviewFragment fragment = new ImagePreviewFragment();
                         fragment.SetBitmap(SelectImage.get(Position));
 
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
                     }
                 }
             });
 
-            Root.addView(ImageViewImage);
+            RelativeLayoutMain.addView(ImageViewImage);
 
             RelativeLayout.LayoutParams ImageViewRemoveParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 30), MiscHandler.ToDimension(context, 30));
             ImageViewRemoveParam.setMargins(0, MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 20), 0);
@@ -1396,11 +1388,11 @@ public class WriteFragment extends Fragment
                 }
             });
 
-            Root.addView(ImageViewRemove);
+            RelativeLayoutMain.addView(ImageViewRemove);
 
-            Container.addView(Root);
+            Container.addView(RelativeLayoutMain);
 
-            return Root;
+            return RelativeLayoutMain;
         }
 
         @Override

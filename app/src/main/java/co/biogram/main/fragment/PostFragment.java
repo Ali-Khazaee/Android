@@ -1355,9 +1355,9 @@ public class PostFragment extends Fragment
         if (URL3 != null && !URL3.equals(""))
             bundle.putString("URL3", URL3);
 
-        Fragment fragment = new FragmentImagePreview();
+        Fragment fragment = new ImagePreviewFragment();
         fragment.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
     }
 }

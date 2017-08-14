@@ -1,5 +1,6 @@
 package co.biogram.main.handler;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -16,6 +17,112 @@ import java.io.PrintWriter;
 
 public class CacheHandler
 {
+    public static void SetUp(Context context)
+    {
+        try
+        {
+            File FolderDocument = new File(Environment.getExternalStorageDirectory(), "BioGram/Document");
+            FolderDocument.mkdirs();
+
+            new File(FolderDocument, ".nomedia").createNewFile();
+
+            File FolderPicture = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
+            FolderPicture.mkdirs();
+
+            new File(FolderPicture, ".nomedia").createNewFile();
+
+            File FolderVideo = new File(Environment.getExternalStorageDirectory(), "BioGram/Video");
+            FolderVideo.mkdirs();
+
+            new File(FolderVideo, ".nomedia").createNewFile();
+
+            File FolderLink = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
+            FolderLink.mkdirs();
+
+            new File(FolderLink, ".nomedia").createNewFile();
+
+            File FolderCache = new File(Environment.getExternalStorageDirectory(), "BioGram/Cache");
+            FolderCache.mkdirs();
+
+            for (String File : FolderCache.list())
+            {
+                File TempFile = new File(FolderCache.getAbsolutePath() + "/" + File);
+
+                if (!TempFile.isDirectory())
+                    TempFile.delete();
+            }
+
+            new File(FolderCache, ".nomedia").createNewFile();
+
+            File CacheFile = new File(context.getCacheDir(), "BioGramCache");
+
+            if (!CacheFile.exists())
+                return;
+
+            File CacheTemp = new File(CacheFile.getAbsolutePath() + ".tmp");
+
+            if (!CacheTemp.exists())
+                return;
+
+            BufferedReader Reader = new BufferedReader(new FileReader(CacheFile));
+            PrintWriter Writer = new PrintWriter(new FileWriter(CacheTemp));
+            String Row;
+
+            while ((Row = Reader.readLine()) != null)
+            {
+                String[] Data = Row.split(":::");
+
+                if (Integer.parseInt(Data[0]) < (System.currentTimeMillis() / 1000))
+                {
+                    String Type = "";
+
+                    switch (Data[1])
+                    {
+                        case "1": Type = "/BioGram/Document/"; break;
+                        case "2": Type = "/BioGram/Picture/";  break;
+                        case "3": Type = "/BioGram/Video/";    break;
+                        case "4": Type = "/BioGram/Link/";     break;
+                    }
+
+                    new File(Environment.getExternalStorageDirectory() + Type + Data[2]).delete();
+                }
+                else
+                {
+                    Writer.println(Row);
+                    Writer.flush();
+                }
+            }
+
+            Writer.close();
+            Reader.close();
+
+            if (CacheFile.delete())
+                CacheTemp.renameTo(CacheFile);
+        }
+        catch (Exception e)
+        {
+            MiscHandler.Debug("CacheHandler-SetUp: " + e.toString());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private static final LruCache<String, Bitmap> MemoryCache = new LruCache<String, Bitmap>(((int) (Runtime.getRuntime().maxMemory() / 1024)) / 8)
     {
         @Override
@@ -153,81 +260,6 @@ public class CacheHandler
         {
 
             // Leave Me Alone
-        }
-    }
-
-    public static void SetUp()
-    {
-        try
-        {
-            File FolderDocument = new File(Environment.getExternalStorageDirectory(), "BioGram/Document");
-            FolderDocument.mkdirs();
-
-            new File(FolderDocument, ".nomedia").createNewFile();
-
-            File FolderPicture = new File(Environment.getExternalStorageDirectory(), "BioGram/Picture");
-            FolderPicture.mkdirs();
-
-            new File(FolderPicture, ".nomedia").createNewFile();
-
-            File FolderVideo = new File(Environment.getExternalStorageDirectory(), "BioGram/Video");
-            FolderVideo.mkdirs();
-
-            new File(FolderVideo, ".nomedia").createNewFile();
-
-            File FolderLink = new File(Environment.getExternalStorageDirectory(), "BioGram/Link");
-            FolderLink.mkdirs();
-
-            new File(FolderLink, ".nomedia").createNewFile();
-
-            File CacheFile = new File(FolderDocument, "Cache.List");
-
-            if (!CacheFile.exists())
-                return;
-
-            File CacheTemp = new File(CacheFile.getAbsolutePath() + ".tmp");
-
-            if (!CacheTemp.exists())
-                return;
-
-            BufferedReader Reader = new BufferedReader(new FileReader(CacheFile));
-            PrintWriter Writer = new PrintWriter(new FileWriter(CacheTemp));
-            String Row;
-
-            while ((Row = Reader.readLine()) != null)
-            {
-                String[] Data = Row.split(":::");
-
-                if (Integer.parseInt(Data[0]) < (System.currentTimeMillis() / 1000))
-                {
-                    String Type = "";
-
-                    switch (Data[1])
-                    {
-                        case "1": Type = "/BioGram/Document/"; break;
-                        case "2": Type = "/BioGram/Picture/";  break;
-                        case "3": Type = "/BioGram/Video/";    break;
-                        case "4": Type = "/BioGram/Link/";     break;
-                    }
-
-                    new File(Environment.getExternalStorageDirectory() + Type + Data[2]).delete();
-                }
-                else
-                {
-                    Writer.println(Row);
-                    Writer.flush();
-                }
-            }
-
-            Writer.close();
-            Reader.close();
-
-            if (CacheFile.delete())
-                CacheTemp.renameTo(CacheFile);
-        }
-        catch (Exception e)
-        {
-            // Leave Me ALone
         }
     }
 

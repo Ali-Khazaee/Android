@@ -42,7 +42,7 @@ public class App extends Application
 
         AndroidNetworking.initialize(context, OKClient);
 
-        CacheHandler.SetUp();
+        CacheHandler.SetUp(context);
     }
 
     @Override

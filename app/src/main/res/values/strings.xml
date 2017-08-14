@@ -193,9 +193,9 @@
     <string name="WriteFragmentShareLinkCan">Cancel</string>
     <string name="WriteFragmentCantCreateFolder">Couldn\'t create BioGram\'s folder</string>
     <string name="WriteFragmentUpload">Uploading to server, Please be patient</string>
-    <string name="WriteFragmentVideoLength">Video duration is too long, Max duration is 4 minutes</string>
+    <string name="WriteFragmentVideoLength">Video duration is too long, Max duration is 2 minutes</string>
     <string name="WriteFragmentVideoSize">Video size is too high, Max size is 30MB</string>
-    <string name="WriteFragmentVideoSupport">Your device doesn\'t support compression, Max video size is 2MB</string>
+    <string name="WriteFragmentVideoSupport">Your device doesn\'t support compression, Max video size is 3MB</string>
     <string name="WriteFragmentVideoCompress">Compressing video, Please be patient</string>
     <string name="WriteFragmentVideoPreview">Video Preview</string>
     <string name="WriteFragmentDialogPaste">Paste</string>
@@ -222,6 +222,8 @@
     <string name="CategoryReligious">Religious</string>
     <string name="CategoryOther">Other</string>
 
+    <!-- Image Preview Fragment -->
+    <string name="ImagePreviewFragment">Image Preview</string>
 
 
 
@@ -253,7 +255,7 @@
     <string name="FragmentProfileCommentReport">Report</string>
 
 
-    <string name="FragmentImagePreview">Image Preview</string>
+
 
     <string name="FragmentFollowing">Following</string>
     <string name="FragmentFollowingFollow">Follow</string>

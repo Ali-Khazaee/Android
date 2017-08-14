@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.androidnetworking.AndroidNetworking;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -32,12 +30,13 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.TouchImageView;
 
-public class FragmentImagePreview extends Fragment
+public class ImagePreviewFragment extends Fragment
 {
-    private Bitmap ImageCache = null;
-    private LoadingView LoadingViewData;
-    private RelativeLayout RelativeLayoutHeader;
     private final List<String> ImageList = new ArrayList<>();
+    private RelativeLayout RelativeLayoutHeader;
+    private LoadingView LoadingViewMain;
+
+    private Bitmap ImageCache = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -95,7 +94,7 @@ public class FragmentImagePreview extends Fragment
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.White));
-        TextViewTitle.setText(getString(R.string.FragmentImagePreview));
+        TextViewTitle.setText(getString(R.string.ImagePreviewFragment));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -104,21 +103,13 @@ public class FragmentImagePreview extends Fragment
         RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingViewDataParam);
-        LoadingViewData.SetColor(R.color.White);
-        LoadingViewData.Start();
+        LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewDataParam);
+        LoadingViewMain.SetColor(R.color.White);
 
-        RelativeLayoutMain.addView(LoadingViewData);
+        RelativeLayoutMain.addView(LoadingViewMain);
 
         return RelativeLayoutMain;
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        AndroidNetworking.forceCancel("FragmentImagePreview");
     }
 
     public void SetBitmap(Bitmap bitmap)
@@ -138,13 +129,15 @@ public class FragmentImagePreview extends Fragment
         @Override
         public Object instantiateItem(ViewGroup Container, int Position)
         {
+            LoadingViewMain.Start();
+
             TouchImageView ImagePreview = new TouchImageView(context);
             ImagePreview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
             if (ImageCache != null)
             {
                 ImagePreview.setImageBitmap(ImageCache);
-                LoadingViewData.Stop();
+                LoadingViewMain.Stop();
             }
             else
             {
@@ -161,7 +154,7 @@ public class FragmentImagePreview extends Fragment
                     @Override
                     public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1)
                     {
-                        LoadingViewData.Stop();
+                        LoadingViewMain.Stop();
                         return false;
                     }
                 }).into(ImagePreview);

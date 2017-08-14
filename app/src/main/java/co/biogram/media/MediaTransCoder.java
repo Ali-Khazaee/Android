@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 
 public class MediaTransCoder
 {
-    public static void Start(final String InPut, final String OutPut, final MediaStrategy Strategy, final CallBack CallBackListener)
+    public static void Start(final String Input, final String Output, final MediaStrategy Strategy, final CallBack CallBackListener)
     {
         Thread thread = new Thread(new Runnable()
         {
@@ -23,9 +23,9 @@ public class MediaTransCoder
 
                 try
                 {
-                    InputStream = new FileInputStream(InPut);
+                    InputStream = new FileInputStream(Input);
 
-                    new MediaTransCoderEngine().TransCodeVideo(InputStream.getFD(), OutPut, Strategy, new MediaTransCoderEngine.ProgressCallback()
+                    new MediaTransCoderEngine().TransCodeVideo(InputStream.getFD(), Output, Strategy, new MediaTransCoderEngine.ProgressCallback()
                     {
                         @Override
                         public void OnProgress(double Progress)
@@ -34,13 +34,14 @@ public class MediaTransCoder
                         }
                     });
 
-                    InputStream.close();
                     CallBackListener.OnCompleted();
                 }
                 catch (Exception e)
                 {
                     CallBackListener.OnFailed(e);
-
+                }
+                finally
+                {
                     try
                     {
                         if (InputStream != null)

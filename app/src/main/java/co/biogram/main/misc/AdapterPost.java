@@ -42,7 +42,7 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.CommentFragment;
-import co.biogram.main.fragment.FragmentImagePreview;
+import co.biogram.main.fragment.ImagePreviewFragment;
 import co.biogram.main.fragment.LikeFragment;
 import co.biogram.main.fragment.PostFragment;
 import co.biogram.main.fragment.ProfileFragment;
@@ -958,9 +958,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         if (URL3 != null && !URL3.equals(""))
             bundle.putString("URL3", URL3);
 
-        Fragment fragment = new FragmentImagePreview();
+        Fragment fragment = new ImagePreviewFragment();
         fragment.setArguments(bundle);
 
-        Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentImagePreview").commit();
+        Activity.getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
     }
 }
