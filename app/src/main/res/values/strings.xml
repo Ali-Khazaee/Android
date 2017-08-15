@@ -191,13 +191,11 @@
     <string name="WriteFragmentShareLink">Share Your Link</string>
     <string name="WriteFragmentShareLinkSub">Submit</string>
     <string name="WriteFragmentShareLinkCan">Cancel</string>
-    <string name="WriteFragmentCantCreateFolder">Couldn\'t create BioGram\'s folder</string>
     <string name="WriteFragmentUpload">Uploading to server, Please be patient</string>
     <string name="WriteFragmentVideoLength">Video duration is too long, Max duration is 2 minutes</string>
     <string name="WriteFragmentVideoSize">Video size is too high, Max size is 30MB</string>
     <string name="WriteFragmentVideoSupport">Your device doesn\'t support compression, Max video size is 3MB</string>
     <string name="WriteFragmentVideoCompress">Compressing video, Please be patient</string>
-    <string name="WriteFragmentVideoPreview">Video Preview</string>
     <string name="WriteFragmentDialogPaste">Paste</string>
     <string name="WriteFragmentDialogCopy">Copy</string>
     <string name="WriteFragmentDialogClipboard">Text has been copied to clipboard</string>
@@ -238,10 +236,28 @@
     <string name="ProfileFragmentPost2">POST</string>
     <string name="ProfileFragmentLike">LIKE</string>
     <string name="ProfileFragmentComment">COMMENT</string>
-    <string name="ProfileFragmentCommentEmpty">No Comments</string>
+    <string name="ProfileFragmentCommentEmpty">no comments yet</string>
     <string name="ProfileFragmentCommentMessage">Commented in post</string>
     <string name="ProfileFragmentCommentReport">Report</string>
 
+    <!-- Post Adapter -->
+    <string name="AdapterPostFollow">Follow</string>
+    <string name="AdapterPostUnFollow">Unfollow</string>
+    <string name="AdapterPostFollowSent">Follow request sent</string>
+    <string name="AdapterPostTurnOn">Turn on commenting</string>
+    <string name="AdapterPostTurnOff">Turn off commenting</string>
+    <string name="AdapterPostCopy">Copy</string>
+    <string name="AdapterPostDelete">Delete</string>
+    <string name="AdapterPostReportSent">Report sent</string>
+    <string name="AdapterPostReport">Report</string>
+    <string name="AdapterPostClipboard">Text has been copied to clipboard</string>
+    <string name="AdapterPostBookMark">Bookmark</string>
+    <string name="AdapterPostUnBookMark">UnBookmark</string>
+    <string name="AdapterPostBookMarkSent">Bookmark Request Sent</string>
+    <string name="AdapterPostComment">Commenting is Disabled</string>
+    <string name="AdapterPostCommentSent">Comment Request Sent</string>
+    <string name="AdapterPostChoice">Choice</string>
+    <string name="AdapterPostNoContent">no posts yet</string>
 
 
 
@@ -270,7 +286,6 @@
 
 
     <string name="FragmentFollowing">Following</string>
-    <string name="FragmentFollowingFollow">Follow</string>
     <string name="FragmentFollowingSince">Following Since: </string>
     <string name="FragmentFollowingUnFollow">User Unfollowed</string>
     <string name="FragmentFollowers">Followers</string>
@@ -297,23 +312,7 @@
 
 
 
-    <string name="AdapterPostFollow">Follow</string>
-    <string name="AdapterPostUnFollow">Unfollow</string>
-    <string name="AdapterPostFollowSent">Follow request sent</string>
-    <string name="AdapterPostTurnOn">Turn on commenting</string>
-    <string name="AdapterPostTurnOff">Turn off commenting</string>
-    <string name="AdapterPostCopy">Copy</string>
-    <string name="AdapterPostDelete">Delete</string>
-    <string name="AdapterPostReportSent">Report sent</string>
-    <string name="AdapterPostReport">Report</string>
-    <string name="AdapterPostClipboard">Text has been copied to clipboard</string>
-    <string name="AdapterPostBookMark">Bookmark</string>
-    <string name="AdapterPostUnBookMark">UnBookmark</string>
-    <string name="AdapterPostBookMarkSent">Bookmark Request Sent</string>
-    <string name="AdapterPostComment">Commenting is Disabled</string>
-    <string name="AdapterPostCommentSent">Comment Request Sent</string>
-    <string name="AdapterPostChoice">Choice</string>
-    <string name="AdapterPostNoContent">Empty</string>
+
 
     <string name="GeneralPermissionCamera">You should allow access to your camera</string>
     <string name="GeneralPermissionStorage">You should allow access to your storage</string>

@@ -7,7 +7,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +51,9 @@ import co.biogram.main.handler.TagHandler;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost>
 {
-    private final String Tag;
-    private final FragmentActivity Activity;
     private List<Struct> PostList = new ArrayList<>();
+    private final FragmentActivity Activity;
+    private final String Tag;
 
     public AdapterPost(FragmentActivity activity, List<Struct> list, String tag)
     {
@@ -140,44 +138,67 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     @Override
     public ViewHolderPost onCreateViewHolder(ViewGroup Parent, int ViewType)
     {
-        Context context = Parent.getContext();
+        Context context = Activity;
+
+        if (ViewType == 2)
+        {
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+            RelativeLayout.LayoutParams ImageViewPostParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 80), MiscHandler.ToDimension(context, 80));
+            ImageViewPostParam.setMargins(0, MiscHandler.ToDimension(context, 30), 0, MiscHandler.ToDimension(context, 10));
+            ImageViewPostParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+            ImageView ImageViewPost = new ImageView(context);
+            ImageViewPost.setLayoutParams(ImageViewPostParam);
+            ImageViewPost.setImageResource(R.drawable.ic_post_gray);
+            ImageViewPost.setId(MiscHandler.GenerateViewID());
+
+            RelativeLayoutMain.addView(ImageViewPost);
+
+            RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewMessageParam.addRule(RelativeLayout.BELOW, ImageViewPost.getId());
+            TextViewMessageParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+            TextView TextViewMessage = new TextView(context);
+            TextViewMessage.setLayoutParams(TextViewMessageParam);
+            TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Gray2));
+            TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            TextViewMessage.setText(context.getString(R.string.AdapterPostNoContent));
+
+            RelativeLayoutMain.addView(TextViewMessage);
+
+            return new ViewHolderPost(RelativeLayoutMain, false);
+        }
 
         if (ViewType == 0)
         {
             View ItemView = LayoutInflater.from(context).inflate(R.layout.general_adapter_post_row, Parent, false);
             return new ViewHolderPost(ItemView, true);
         }
-        else if (ViewType == 1)
-        {
-            LoadingView Root = new LoadingView(context);
-            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            Root.Start();
 
-            return new ViewHolderPost(Root, false);
-        }
-        else
-        {
-            TextView Root = new TextView(context);
-            Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
-            Root.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
-            Root.setText(context.getString(R.string.AdapterPostNoContent));
-            Root.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            Root.setTypeface(null, Typeface.BOLD);
-            Root.setGravity(Gravity.CENTER);
+        LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        LoadingViewMain.Start();
 
-            return new ViewHolderPost(Root, false);
-        }
+        return new ViewHolderPost(LoadingViewMain, false);
     }
 
     @Override
     public int getItemCount()
     {
+        if (PostList.size() == 0)
+            return 1;
+
         return PostList.size();
     }
 
     @Override
     public int getItemViewType(int position)
     {
+        if (PostList.size() == 0)
+            return 2;
+
         return PostList.get(position) != null ? 0 : 1;
     }
 

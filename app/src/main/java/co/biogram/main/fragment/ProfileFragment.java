@@ -1494,6 +1494,37 @@ public class ProfileFragment extends Fragment
         @Override
         public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
         {
+            if (ViewType == 2)
+            {
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+                RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+                RelativeLayout.LayoutParams ImageViewCommentParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 80), MiscHandler.ToDimension(context, 80));
+                ImageViewCommentParam.setMargins(0, MiscHandler.ToDimension(context, 30), 0, MiscHandler.ToDimension(context, 10));
+                ImageViewCommentParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                ImageView ImageViewComment = new ImageView(context);
+                ImageViewComment.setLayoutParams(ImageViewCommentParam);
+                ImageViewComment.setImageResource(R.drawable.ic_comment_gray);
+                ImageViewComment.setId(MiscHandler.GenerateViewID());
+
+                RelativeLayoutMain.addView(ImageViewComment);
+
+                RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewMessageParam.addRule(RelativeLayout.BELOW, ImageViewComment.getId());
+                TextViewMessageParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                TextView TextViewMessage = new TextView(context);
+                TextViewMessage.setLayoutParams(TextViewMessageParam);
+                TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Gray2));
+                TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                TextViewMessage.setText(getString(R.string.ProfileFragmentCommentEmpty));
+
+                RelativeLayoutMain.addView(TextViewMessage);
+
+                return new ViewHolderComment(RelativeLayoutMain, false);
+            }
+
             if (ViewType == 0)
             {
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
@@ -1584,12 +1615,18 @@ public class ProfileFragment extends Fragment
         @Override
         public int getItemCount()
         {
+            if (CommentList.size() == 0)
+                return 1;
+
             return CommentList.size();
         }
 
         @Override
         public int getItemViewType(int position)
         {
+            if (CommentList.size() == 0)
+                return 2;
+
             return CommentList.get(position) == null ? 1 : 0;
         }
     }

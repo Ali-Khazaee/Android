@@ -5,13 +5,10 @@
     <color name="ColorAccent">#000</color>
 
     <color name="Black">#000</color>
-    <color name="Black1">#111</color>
     <color name="Black2">#222</color>
     <color name="Black3">#333</color>
     <color name="Black4">#444</color>
 
-    <color name="Gray9">#555</color>
-    <color name="Gray8">#666</color>
     <color name="Gray7">#777</color>
     <color name="Gray6">#888</color>
     <color name="Gray5">#999</color>
@@ -22,10 +19,6 @@
     <color name="Gray">#eee</color>
 
     <color name="White">#fff</color>
-    <color name="White1">#fefefe</color>
-    <color name="White2">#fdfdfd</color>
-    <color name="White3">#fcfcfc</color>
-    <color name="White4">#fbfbfb</color>
     <color name="White5">#fafafa</color>
 
     <color name="Toast">#d3eaf9</color>
