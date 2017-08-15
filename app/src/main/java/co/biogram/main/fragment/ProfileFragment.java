@@ -2,7 +2,6 @@ package co.biogram.main.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -20,6 +19,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -52,13 +54,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
-import co.biogram.main.activity.ActivityProfileEdit;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
-import co.biogram.main.misc.RecyclerViewScroll;
 import co.biogram.main.misc.ScrollViewSticky;
 
 public class ProfileFragment extends Fragment
@@ -69,6 +69,7 @@ public class ProfileFragment extends Fragment
 
     private AdapterComment CommentAdapter;
     private AdapterPost PostAdapter;
+    private AdapterPost LikeAdapter;
 
     private int CurrentTab = 0;
 
@@ -77,6 +78,7 @@ public class ProfileFragment extends Fragment
     private String LikeCount;
 
     private boolean IsPrivate = false;
+    private boolean IsLoading = false;
 
     private TextView TextViewTabPost;
     private View ViewTabPost;
@@ -96,14 +98,12 @@ public class ProfileFragment extends Fragment
     private ImageView ImageViewEdit;
     private LoadingView LoadingViewFollow;
     private ImageView ImageViewFollow;
-    private ImageView ImageViewBack;
     private ImageView ImageViewCover;
     private TextView TextViewDetailTool;
     private TextView TextViewUsernameTool;
     private ImageView ImageViewCoverLayer;
     private ImageViewCircle ImageViewCircleProfile;
     private RecyclerView RecyclerViewMain;
-    private RecyclerViewScroll RecyclerViewScrollMain;
 
     private GradientDrawable ShapeFollowWhite;
     private GradientDrawable ShapeFollowBlue;
@@ -317,13 +317,16 @@ public class ProfileFragment extends Fragment
 
         ToolbarMain.addView(RelativeLayoutToolBar);
 
-        ImageViewBack = new ImageView(context);
+        ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewBack.setImageResource(R.drawable.ic_back_white);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().onBackPressed(); } });
+
+        if (getArguments() != null && getArguments().getBoolean("HideBack", false))
+            ImageViewBack.setVisibility(View.GONE);
 
         RelativeLayoutToolBar.addView(ImageViewBack);
 
@@ -415,10 +418,22 @@ public class ProfileFragment extends Fragment
             private boolean Hidden = false;
 
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
+            public void onScrollChange(NestedScrollView view, int X, int Y, int OldX, int OldY)
             {
+                if (view.getChildAt(view.getChildCount() - 1) != null)
+                {
+                    if ((Y >= (view.getChildAt(view.getChildCount() - 1).getMeasuredHeight() - view.getMeasuredHeight())) && Y > OldY)
+                    {
+                        if (!IsLoading)
+                        {
+                            IsLoading = true;
+                            RetrieveDataFor(context, Username);
+                        }
+                    }
+                }
+
                 Rect rect = new Rect();
-                v.getHitRect(rect);
+                view.getHitRect(rect);
 
                 if (TextViewUsername != null)
                 {
@@ -795,21 +810,9 @@ public class ProfileFragment extends Fragment
 
         LinearLayoutTab.addView(ViewLine3);
 
-        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
-
-        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
-        {
-            @Override
-            public void OnLoadMore()
-            {
-                RetrieveDataFor(context, Username);
-            }
-        };
-
         RecyclerViewMain = new RecyclerView(context);
         RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
+        RecyclerViewMain.setLayoutManager(new LinearLayoutManager(context));
         RecyclerViewMain.setNestedScrollingEnabled(false);
 
         LinearLayoutMain.addView(RecyclerViewMain);
@@ -826,179 +829,34 @@ public class ProfileFragment extends Fragment
 
         CoordinatorLayoutMain.addView(ImageViewCircleProfile);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
-        RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutLoading.setBackgroundResource(R.color.White);
-        RelativeLayoutLoading.setClickable(true);
-
-        CoordinatorLayoutMain.addView(RelativeLayoutLoading);
-
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        final LoadingView LoadingViewMain = new LoadingView(context);
-        LoadingViewMain.setLayoutParams(LoadingViewDataParam);
-
-        RelativeLayoutLoading.addView(LoadingViewMain);
-
-        RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        final TextView TextViewTryAgain = new TextView(context);
-        TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
-        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTryAgain.setText(getString(R.string.TryAgain));
-        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
-
-        RelativeLayoutLoading.addView(TextViewTryAgain);
-
-        RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        CoordinatorLayout.LayoutParams RelativeLayoutFABParam = new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
+        RelativeLayoutFABParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
+        RelativeLayoutFABParam.rightMargin = MiscHandler.ToDimension(context, 10);
+        RelativeLayoutFABParam.setAnchorId(AppBarLayoutMain.getId());
 
         ShapeFollowWhite = new GradientDrawable();
         ShapeFollowWhite.setShape(GradientDrawable.OVAL);
         ShapeFollowWhite.setColor(Color.WHITE);
         ShapeFollowWhite.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
 
-        ImageViewEdit = new ImageView(context);
-        ImageViewEdit.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
-        ImageViewEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewEdit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageViewEdit.setBackground(ShapeFollowWhite);
-        ImageViewEdit.setImageResource(R.drawable.ic_setting_black);
-        ImageViewEdit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                getActivity().startActivity(new Intent(context, ActivityProfileEdit.class));
-            }
-        });
-
-        CoordinatorLayout.LayoutParams ImageViewEditParam = (CoordinatorLayout.LayoutParams) ImageViewEdit.getLayoutParams();
-        ImageViewEditParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
-        ImageViewEditParam.rightMargin = MiscHandler.ToDimension(context, 10);
-        ImageViewEditParam.setAnchorId(AppBarLayoutMain.getId());
-
-        ImageViewEdit.setLayoutParams(ImageViewEditParam);
-        ImageViewEdit.requestLayout();
-
-        CoordinatorLayoutMain.addView(ImageViewEdit);
-
-        LoadingViewFollow = new LoadingView(context);
-        LoadingViewFollow.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
-        LoadingViewFollow.setVisibility(View.GONE);
-        LoadingViewFollow.setBackground(ShapeFollowWhite);
-        LoadingViewFollow.SetColor(R.color.BlueLight);
-        LoadingViewFollow.SetSize(4);
-
-        CoordinatorLayout.LayoutParams LoadingViewFollowParam = (CoordinatorLayout.LayoutParams) LoadingViewFollow.getLayoutParams();
-        LoadingViewFollowParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
-        LoadingViewFollowParam.rightMargin = MiscHandler.ToDimension(context, 10);
-        LoadingViewFollowParam.setAnchorId(AppBarLayoutMain.getId());
-
-        LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
-        LoadingViewFollow.requestLayout();
-
-        CoordinatorLayoutMain.addView(LoadingViewFollow);
-
         ShapeFollowBlue = new GradientDrawable();
         ShapeFollowBlue.setShape(GradientDrawable.OVAL);
         ShapeFollowBlue.setColor(Color.parseColor("#1da1f2"));
         ShapeFollowBlue.setStroke(MiscHandler.ToDimension(context, 2), Color.parseColor("#09000000"));
 
-        ImageViewFollow = new ImageView(context);
-        ImageViewFollow.setLayoutParams(new CoordinatorLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
-        ImageViewFollow.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewFollow.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        ImageViewFollow.setOnClickListener(new View.OnClickListener()
+        RelativeLayout RelativeLayoutFAB = new RelativeLayout(context);
+        RelativeLayoutFAB.setLayoutParams(RelativeLayoutFABParam);
+        RelativeLayoutFAB.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                if (IsPrivate)
+                {
+                    // TODO getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new EditFragment()).addToBackStack("EditFragment").commit();
+                    return;
+                }
+
                 ImageViewFollow.setVisibility(View.GONE);
                 LoadingViewFollow.Start();
 
@@ -1034,7 +892,7 @@ public class ProfileFragment extends Fragment
                         }
                         catch (Exception e)
                         {
-                            // Leave Me Alone
+                            MiscHandler.Debug("ProfileFragment-RequestFollow: " + e.toString());
                         }
 
                         LoadingViewFollow.Stop();
@@ -1051,15 +909,65 @@ public class ProfileFragment extends Fragment
             }
         });
 
-        CoordinatorLayout.LayoutParams ImageViewFollowParam = (CoordinatorLayout.LayoutParams) ImageViewFollow.getLayoutParams();
-        ImageViewFollowParam.anchorGravity = Gravity.BOTTOM | Gravity.END;
-        ImageViewFollowParam.rightMargin = MiscHandler.ToDimension(context, 10);
-        ImageViewFollowParam.setAnchorId(AppBarLayoutMain.getId());
+        CoordinatorLayoutMain.addView(RelativeLayoutFAB);
 
-        ImageViewFollow.setLayoutParams(ImageViewFollowParam);
-        ImageViewFollow.requestLayout();
+        ImageViewEdit = new ImageView(context);
+        ImageViewEdit.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
+        ImageViewEdit.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewEdit.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        ImageViewEdit.setBackground(ShapeFollowWhite);
+        ImageViewEdit.setImageResource(R.drawable.ic_setting_black);
 
-        CoordinatorLayoutMain.addView(ImageViewFollow);
+        RelativeLayoutFAB.addView(ImageViewEdit);
+
+        LoadingViewFollow = new LoadingView(context);
+        LoadingViewFollow.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
+        LoadingViewFollow.setVisibility(View.GONE);
+        LoadingViewFollow.setBackground(ShapeFollowWhite);
+        LoadingViewFollow.SetColor(R.color.BlueLight);
+        LoadingViewFollow.SetSize(4);
+
+        RelativeLayoutFAB.addView(LoadingViewFollow);
+
+        ImageViewFollow = new ImageView(context);
+        ImageViewFollow.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50)));
+        ImageViewFollow.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewFollow.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+        RelativeLayoutFAB.addView(ImageViewFollow);
+
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
+        RelativeLayoutLoading.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
+
+        CoordinatorLayoutMain.addView(RelativeLayoutLoading);
+
+        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewDataParam);
+
+        RelativeLayoutLoading.addView(LoadingViewMain);
+
+        RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
+
+        RelativeLayoutLoading.addView(TextViewTryAgain);
+
+        RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
+
+        PostAdapter = new AdapterPost(getActivity(), PostList, "ProfileFragment");
+        CommentAdapter = new AdapterComment(context);
+        LikeAdapter = new AdapterPost(getActivity(), PostListLike, "ProfileFragment");
 
         return CoordinatorLayoutMain;
     }
@@ -1099,21 +1007,14 @@ public class ProfileFragment extends Fragment
                         if (Data.getBoolean("Self"))
                         {
                             IsPrivate = true;
-                            ImageViewBack.setVisibility(View.GONE);
                             SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
                             SharedHandler.SetString(context, "Username", Data.getString("Username"));
 
                             RelativeLayout.LayoutParams TextViewUsernameToolParam = (RelativeLayout.LayoutParams) TextViewUsernameTool.getLayoutParams();
                             TextViewUsernameToolParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 5), 0, 0);
 
-                            TextViewUsernameTool.setLayoutParams(TextViewUsernameToolParam);
-                            TextViewUsernameTool.requestLayout();
-
                             RelativeLayout.LayoutParams TextViewDetailToolParam = (RelativeLayout.LayoutParams) TextViewDetailTool.getLayoutParams();
                             TextViewDetailToolParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
-
-                            TextViewDetailTool.setLayoutParams(TextViewDetailToolParam);
-                            TextViewDetailTool.requestLayout();
                         }
                         else
                         {
@@ -1134,11 +1035,23 @@ public class ProfileFragment extends Fragment
                         }
 
                         if (!Data.getString("Avatar").equals(""))
-                            Glide.with(context).load(Data.getString("Avatar")).placeholder(R.color.BlueGray).override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90)).dontAnimate().into(ImageViewCircleProfile);
+                        {
+                            Glide.with(context)
+                            .load(Data.getString("Avatar"))
+                            .placeholder(R.color.BlueGray)
+                            .override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90))
+                            .dontAnimate()
+                            .into(ImageViewCircleProfile);
+                        }
 
                         if (!Data.getString("Cover").equals(""))
                         {
-                            Glide.with(context).load(Data.getString("Cover")).asBitmap().placeholder(R.color.BlueLight).dontAnimate().into(new SimpleTarget<Bitmap>()
+                            Glide.with(context)
+                            .load(Data.getString("Cover"))
+                            .asBitmap()
+                            .placeholder(R.color.BlueLight)
+                            .dontAnimate()
+                            .into(new SimpleTarget<Bitmap>()
                             {
                                 @Override
                                 public void onResourceReady(Bitmap bitmap, GlideAnimation anim)
@@ -1180,7 +1093,7 @@ public class ProfileFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("ProfileFragment-RequestNew: " + e.toString());
                 }
 
                 ChangeTab(context, 1, Username);
@@ -1194,9 +1107,49 @@ public class ProfileFragment extends Fragment
             public void onError(ANError anError)
             {
                 LoadingViewMain.Stop();
-                TextViewTryAgain.setVisibility(View.GONE);
+                TextViewTryAgain.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void ChangeTab(Context context, int tab, String username)
+    {
+        switch (tab)
+        {
+            case 1: TextViewDetailTool.setText((PostCount + " " + getString(R.string.ProfileFragmentPostCount))); break;
+            case 2: TextViewDetailTool.setText((CommentCount + " " + getString(R.string.ProfileFragmentCommentCount))); break;
+            case 3: TextViewDetailTool.setText((LikeCount + " " + getString(R.string.ProfileFragmentLikeCount))); break;
+        }
+
+        CurrentTab = tab;
+
+        TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
+        ViewTabPost.setBackgroundResource(R.color.White);
+        TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
+        ViewTabComment.setBackgroundResource(R.color.White);
+        TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
+        ViewTabLike.setBackgroundResource(R.color.White);
+
+        switch (tab)
+        {
+            case 1:
+                RecyclerViewMain.setAdapter(PostAdapter);
+                TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+                ViewTabPost.setBackgroundResource(R.color.BlueLight);
+            break;
+            case 2:
+                RecyclerViewMain.setAdapter(CommentAdapter);
+                TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+                ViewTabComment.setBackgroundResource(R.color.BlueLight);
+            break;
+            case 3:
+                RecyclerViewMain.setAdapter(LikeAdapter);
+                TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+                ViewTabLike.setBackgroundResource(R.color.BlueLight);
+            break;
+        }
+
+        RetrieveDataFor(context, username);
     }
 
     private void RetrieveDataFor(Context context, String Username)
@@ -1205,10 +1158,13 @@ public class ProfileFragment extends Fragment
         {
             case 1:
             {
+                PostList.add(null);
+                PostAdapter.notifyDataSetChanged();
+
                 AndroidNetworking.post(MiscHandler.GetRandomServer("ProfilePostGet"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("Username", Username)
-                .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))
                 .setTag("ProfileFragment")
                 .build()
                 .getAsString(new StringRequestListener()
@@ -1216,17 +1172,19 @@ public class ProfileFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
+                        PostList.remove(PostList.size() - 1);
+
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
 
                             if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                             {
-                                JSONArray postList = new JSONArray(Result.getString("Result"));
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                for (int K = 0; K < postList.length(); K++)
+                                for (int K = 0; K < ResultList.length(); K++)
                                 {
-                                    JSONObject Post = postList.getJSONObject(K);
+                                    JSONObject Post = ResultList.getJSONObject(K);
 
                                     AdapterPost.Struct PostStruct = new AdapterPost.Struct();
                                     PostStruct.PostID = Post.getString("PostID");
@@ -1247,30 +1205,36 @@ public class ProfileFragment extends Fragment
 
                                     PostList.add(PostStruct);
                                 }
-
-                                PostAdapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
                         {
-                            RecyclerViewScrollMain.ResetLoading(false);
+                            MiscHandler.Debug("ProfileFragment-RequestPost: " + e.toString());
                         }
+
+                        IsLoading = false;
+                        PostAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        RecyclerViewScrollMain.ResetLoading(false);
+                        IsLoading = false;
+                        PostList.remove(PostList.size() - 1);
+                        PostAdapter.notifyDataSetChanged();
                     }
                 });
             }
             break;
             case 2:
             {
+                CommentList.add(null);
+                CommentAdapter.notifyDataSetChanged();
+
                 AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileCommentGet"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("Username", Username)
-                .addBodyParameter("Skip", String.valueOf(CommentList.size()))
+                .addBodyParameter("Skip", String.valueOf(CommentList.size() - 1))
                 .setTag("ProfileFragment")
                 .build()
                 .getAsString(new StringRequestListener()
@@ -1278,6 +1242,8 @@ public class ProfileFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
+                        CommentList.remove(CommentList.size() - 1);
+
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
@@ -1301,29 +1267,35 @@ public class ProfileFragment extends Fragment
                                     CommentList.add(commentStruct);
                                 }
                             }
-
-                            CommentAdapter.notifyDataSetChanged();
                         }
                         catch (Exception e)
                         {
-                            RecyclerViewScrollMain.ResetLoading(false);
+                            MiscHandler.Debug("ProfileFragment-RequestComment: " + e.toString());
                         }
+
+                        IsLoading = false;
+                        CommentAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        RecyclerViewScrollMain.ResetLoading(false);
+                        IsLoading = false;
+                        CommentList.remove(CommentList.size() - 1);
+                        CommentAdapter.notifyDataSetChanged();
                     }
                 });
             }
             break;
             case 3:
             {
+                PostListLike.add(null);
+                LikeAdapter.notifyDataSetChanged();
+
                 AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileLikeGet"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .addBodyParameter("Username", Username)
-                .addBodyParameter("Skip", String.valueOf(PostListLike.size()))
+                .addBodyParameter("Skip", String.valueOf(PostListLike.size() - 1))
                 .setTag("ProfileFragment")
                 .build()
                 .getAsString(new StringRequestListener()
@@ -1331,17 +1303,19 @@ public class ProfileFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
+                        PostListLike.remove(PostListLike.size() -1);
+
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
 
                             if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                             {
-                                JSONArray postList = new JSONArray(Result.getString("Result"));
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                for (int K = 0; K < postList.length(); K++)
+                                for (int K = 0; K < ResultList.length(); K++)
                                 {
-                                    JSONObject Post = postList.getJSONObject(K);
+                                    JSONObject Post = ResultList.getJSONObject(K);
 
                                     AdapterPost.Struct PostStruct = new AdapterPost.Struct();
                                     PostStruct.PostID = Post.getString("PostID");
@@ -1362,20 +1336,23 @@ public class ProfileFragment extends Fragment
 
                                     PostListLike.add(PostStruct);
                                 }
-
-                                PostAdapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
                         {
-                            RecyclerViewScrollMain.ResetLoading(false);
+                            MiscHandler.Debug("ProfileFragment-RequestLike: " + e.toString());
                         }
+
+                        IsLoading = false;
+                        LikeAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        RecyclerViewScrollMain.ResetLoading(false);
+                        IsLoading = false;
+                        PostListLike.remove(PostListLike.size() -1);
+                        LikeAdapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -1383,57 +1360,15 @@ public class ProfileFragment extends Fragment
         }
     }
 
-    private void ChangeTab(Context context, int tab, String Username)
-    {
-        switch (tab)
-        {
-            case 1: TextViewDetailTool.setText((PostCount + " " + getString(R.string.ProfileFragmentPostCount))); break;
-            case 2: TextViewDetailTool.setText((CommentCount + " " + getString(R.string.ProfileFragmentCommentCount))); break;
-            case 3: TextViewDetailTool.setText((LikeCount + " " + getString(R.string.ProfileFragmentLikeCount))); break;
-        }
-
-        CurrentTab = tab;
-
-        TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
-        ViewTabPost.setBackgroundResource(R.color.White);
-        TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
-        ViewTabComment.setBackgroundResource(R.color.White);
-        TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
-        ViewTabLike.setBackgroundResource(R.color.White);
-
-        switch (tab)
-        {
-            case 1:
-                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostList, "ProfileFragment"));
-                TextViewTabPost.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-                ViewTabPost.setBackgroundResource(R.color.BlueLight);
-            break;
-            case 2:
-                RecyclerViewMain.setAdapter(CommentAdapter = new AdapterComment(context));
-                TextViewTabComment.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-                ViewTabComment.setBackgroundResource(R.color.BlueLight);
-            break;
-            case 3:
-                RecyclerViewMain.setAdapter(PostAdapter = new AdapterPost(getActivity(), PostListLike, "ProfileFragment"));
-                TextViewTabLike.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-                ViewTabLike.setBackgroundResource(R.color.BlueLight);
-            break;
-        }
-
-        RetrieveDataFor(context, Username);
-    }
-
-
-
     private class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHolderComment>
     {
-        private final int ID_Main = MiscHandler.GenerateViewID();
-        private final int ID_Profile = MiscHandler.GenerateViewID();
-        private final int ID_Username = MiscHandler.GenerateViewID();
-        private final int ID_Target = MiscHandler.GenerateViewID();
-        private final int ID_More = MiscHandler.GenerateViewID();
-        private final int ID_Comment = MiscHandler.GenerateViewID();
-        private final int ID_Time = MiscHandler.GenerateViewID();
+        private final int ID_MAIN = MiscHandler.GenerateViewID();
+        private final int ID_PROFILE = MiscHandler.GenerateViewID();
+        private final int ID_MESSAGE = MiscHandler.GenerateViewID();
+        private final int ID_MORE = MiscHandler.GenerateViewID();
+        private final int ID_COMMENT = MiscHandler.GenerateViewID();
+        private final int ID_TIME = MiscHandler.GenerateViewID();
+        private final int ID_LINE = MiscHandler.GenerateViewID();
 
         private final Context context;
 
@@ -1446,11 +1381,11 @@ public class ProfileFragment extends Fragment
         {
             private RelativeLayout RelativeLayoutMain;
             private ImageViewCircle ImageViewCircleProfile;
-            private TextView TextViewUsername;
-            private TextView TextViewTarget;
+            private TextView TextViewMessage;
             private ImageView ImageViewMore;
             private TextView TextViewTime;
             private TextView TextViewComment;
+            private View ViewLine;
 
             ViewHolderComment(View view, boolean Content)
             {
@@ -1458,13 +1393,13 @@ public class ProfileFragment extends Fragment
 
                 if (Content)
                 {
-                    RelativeLayoutMain = (RelativeLayout) view.findViewById(ID_Main);
-                    ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
-                    TextViewUsername = (TextView) view.findViewById(ID_Username);
-                    TextViewTarget = (TextView) view.findViewById(ID_Target);
-                    ImageViewMore = (ImageView) view.findViewById(ID_More);
-                    TextViewTime = (TextView) view.findViewById(ID_Time);
-                    TextViewComment = (TextView) view.findViewById(ID_Comment);
+                    RelativeLayoutMain = (RelativeLayout) view.findViewById(ID_MAIN);
+                    ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_PROFILE);
+                    TextViewMessage = (TextView) view.findViewById(ID_MESSAGE);
+                    ImageViewMore = (ImageView) view.findViewById(ID_MORE);
+                    TextViewTime = (TextView) view.findViewById(ID_TIME);
+                    TextViewComment = (TextView) view.findViewById(ID_COMMENT);
+                    ViewLine = view.findViewById(ID_LINE);
                 }
             }
         }
@@ -1493,10 +1428,10 @@ public class ProfileFragment extends Fragment
             });
 
             Glide.with(context)
-                    .load(CommentList.get(Position).Avatar)
-                    .placeholder(R.color.BlueGray)
-                    .dontAnimate()
-                    .into(Holder.ImageViewCircleProfile);
+            .load(CommentList.get(Position).Avatar)
+            .placeholder(R.color.BlueGray)
+            .dontAnimate()
+            .into(Holder.ImageViewCircleProfile);
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
             {
@@ -1513,37 +1448,14 @@ public class ProfileFragment extends Fragment
                 }
             });
 
-            Holder.TextViewUsername.setText(CommentList.get(Position).Username);
-            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Username", CommentList.get(Position).Username);
+            String Message = CommentList.get(Position).Username + " " + getString(R.string.ProfileFragmentCommentMessage) + " " + CommentList.get(Position).Target;
+            int UsernameLength = CommentList.get(Position).Username .length();
 
-                    Fragment fragment = new ProfileFragment();
-                    fragment.setArguments(bundle);
+            SpannableString SpanMessage = new SpannableString(Message);
+            SpanMessage.setSpan(new StyleSpan(Typeface.BOLD), SpanMessage.length() - CommentList.get(Position).Target.length(), SpanMessage.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpanMessage.setSpan(new StyleSpan(Typeface.BOLD), 0, UsernameLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ProfileFragment").commit();
-                }
-            });
-
-            Holder.TextViewTarget.setText(CommentList.get(Position).Target);
-            Holder.TextViewTarget.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Username", CommentList.get(Position).Target);
-
-                    Fragment fragment = new ProfileFragment();
-                    fragment.setArguments(bundle);
-
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ProfileFragment").commit();
-                }
-            });
+            Holder.TextViewMessage.setText(SpanMessage);
 
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(CommentList.get(Position).Time));
 
@@ -1553,7 +1465,7 @@ public class ProfileFragment extends Fragment
                 public void onClick(View v)
                 {
                     PopupMenu PopMenu = new PopupMenu(context, Holder.ImageViewMore);
-                    PopMenu.getMenu().add(getString(R.string.FragmentProfileCommentReport));
+                    PopMenu.getMenu().add(getString(R.string.ProfileFragmentCommentReport));
                     PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                     {
                         @Override
@@ -1566,7 +1478,17 @@ public class ProfileFragment extends Fragment
                 }
             });
 
-            Holder.TextViewComment.setText(CommentList.get(Position).Comment);
+            String Comment = CommentList.get(Position).Comment;
+
+            if (Comment.length() > 20)
+                Comment = Comment.substring(0, 20) + " ...";
+
+            Holder.TextViewComment.setText(Comment);
+
+            if (Position == CommentList.size() - 1)
+                Holder.ViewLine.setVisibility(View.GONE);
+            else
+                Holder.ViewLine.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -1576,7 +1498,7 @@ public class ProfileFragment extends Fragment
             {
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                RelativeLayoutMain.setId(ID_Main);
+                RelativeLayoutMain.setId(ID_MAIN);
 
                 RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
                 ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
@@ -1585,48 +1507,22 @@ public class ProfileFragment extends Fragment
                 ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
                 ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
                 ImageViewCircleProfile.setImageResource(R.color.BlueGray);
-                ImageViewCircleProfile.setId(ID_Profile);
+                ImageViewCircleProfile.setId(ID_PROFILE);
 
                 RelativeLayoutMain.addView(ImageViewCircleProfile);
 
-                RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewUsernameParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
-
-                TextView TextViewUsername = new TextView(context);
-                TextViewUsername.setLayoutParams(TextViewUsernameParam);
-                TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewUsername.setTypeface(null, Typeface.BOLD);
-                TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewUsername.setId(ID_Username);
-
-                RelativeLayoutMain.addView(TextViewUsername);
-
                 RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewMessageParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_Username);
+                TextViewMessageParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
+                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_PROFILE);
+                TextViewMessageParam.addRule(RelativeLayout.LEFT_OF, ID_TIME);
 
                 TextView TextViewMessage = new TextView(context);
                 TextViewMessage.setLayoutParams(TextViewMessageParam);
                 TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                 TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewMessage.setId(MiscHandler.GenerateViewID());
-                TextViewMessage.setText(getString(R.string.FragmentProfileCommentMessage));
+                TextViewMessage.setId(ID_MESSAGE);
 
                 RelativeLayoutMain.addView(TextViewMessage);
-
-                RelativeLayout.LayoutParams TextViewTargetParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewTargetParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewTargetParam.addRule(RelativeLayout.RIGHT_OF, TextViewMessage.getId());
-
-                TextView TextViewTarget = new TextView(context);
-                TextViewTarget.setLayoutParams(TextViewTargetParam);
-                TextViewTarget.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewTarget.setTypeface(null, Typeface.BOLD);
-                TextViewTarget.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewTarget.setId(ID_Target);
-
-                RelativeLayoutMain.addView(TextViewTarget);
 
                 RelativeLayout.LayoutParams ImageViewMoreParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 32), MiscHandler.ToDimension(context, 32));
                 ImageViewMoreParam.setMargins(0, MiscHandler.ToDimension(context, 10), 0, 0);
@@ -1636,33 +1532,44 @@ public class ProfileFragment extends Fragment
                 ImageViewMore.setLayoutParams(ImageViewMoreParam);
                 ImageViewMore.setPadding(MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 1));
                 ImageViewMore.setImageResource(R.drawable.ic_option);
-                ImageViewMore.setId(ID_More);
+                ImageViewMore.setId(ID_MORE);
 
                 RelativeLayoutMain.addView(ImageViewMore);
 
                 RelativeLayout.LayoutParams TextViewTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewTimeParam.setMargins(0, MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewTimeParam.addRule(RelativeLayout.LEFT_OF, ID_More);
+                TextViewTimeParam.addRule(RelativeLayout.LEFT_OF, ID_MORE);
 
                 TextView TextViewTime = new TextView(context);
                 TextViewTime.setLayoutParams(TextViewTimeParam);
                 TextViewTime.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
                 TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                TextViewTime.setId(ID_Time);
+                TextViewTime.setId(ID_TIME);
 
                 RelativeLayoutMain.addView(TextViewTime);
 
                 RelativeLayout.LayoutParams TextViewCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
-                TextViewCommentParam.addRule(RelativeLayout.BELOW, ID_More);
+                TextViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID_PROFILE);
+                TextViewCommentParam.addRule(RelativeLayout.BELOW, ID_MESSAGE);
 
                 TextView TextViewComment = new TextView(context);
                 TextViewComment.setLayoutParams(TextViewCommentParam);
                 TextViewComment.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                 TextViewComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                TextViewComment.setId(ID_Comment);
+                TextViewComment.setId(ID_COMMENT);
 
                 RelativeLayoutMain.addView(TextViewComment);
+
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+                ViewLineParam.setMargins(0, MiscHandler.ToDimension(context, 5), 0, MiscHandler.ToDimension(context, 5));
+                ViewLineParam.addRule(RelativeLayout.BELOW, ID_COMMENT);
+
+                TextView ViewLine = new TextView(context);
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray);
+                ViewLine.setId(ID_LINE);
+
+                RelativeLayoutMain.addView(ViewLine);
 
                 return new ViewHolderComment(RelativeLayoutMain, true);
             }

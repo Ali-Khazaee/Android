@@ -179,16 +179,7 @@ public class ActivityMain extends FragmentActivity
         public void onReceive(Context context, Intent intent)
         {
             if (intent.getAction().equalsIgnoreCase(NotificationService.BROADCAST_ACTION_NEW))
-            {
-                try
-                {
-                    ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
-                }
-                catch (Exception e)
-                {
-                    MiscHandler.Debug("BroadcastReceiverNotification:" + e.toString());
-                }
-            }
+                ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
         }
     };
 
@@ -216,7 +207,13 @@ public class ActivityMain extends FragmentActivity
             case 2: SelectedFragment = new InboxFragment();        break;
             case 3: SelectedFragment = new CategoryFragment();     break;
             case 4: SelectedFragment = new NotificationFragment(); break;
-            case 5: SelectedFragment = new ProfileFragment();      break;
+            case 5:
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("HideBack", true);
+
+                SelectedFragment = new ProfileFragment();
+                SelectedFragment.setArguments(bundle);
+            break;
         }
 
         FragmentManager FragManager = getSupportFragmentManager();
