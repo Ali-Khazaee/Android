@@ -228,7 +228,7 @@ public class MomentFragment extends Fragment
                 Adapter.notifyItemInserted(PostList.size());
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
-                .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("MomentFragment")
                 .build()

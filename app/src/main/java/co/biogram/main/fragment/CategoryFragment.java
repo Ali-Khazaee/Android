@@ -50,7 +50,7 @@ public class CategoryFragment extends Fragment
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(getString(R.string.CategoryTitle));
+        TextViewTitle.setText(getString(R.string.CategoryFragment));
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);

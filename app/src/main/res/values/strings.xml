@@ -11,6 +11,8 @@
 
     <!-- Permission -->
     <string name="PermissionReadContact">You should allow access to your contacts</string>
+    <string name="PermissionCamera">You should allow access to your camera</string>
+    <string name="PermissionStorage">You should allow access to your storage</string>
 
     <!-- Setting Fragment -->
     <string name="SettingFragment">Settings</string>
@@ -223,6 +225,9 @@
     <!-- Image Preview Fragment -->
     <string name="ImagePreviewFragment">Image Preview</string>
 
+    <!-- Video Fragment -->
+    <string name="VideoPreviewFragment">Video Preview</string>
+
     <!-- Profile Fragment -->
     <string name="ProfileFragmentPostCount">Posts</string>
     <string name="ProfileFragmentCommentCount">Comments</string>
@@ -259,6 +264,18 @@
     <string name="AdapterPostChoice">Choice</string>
     <string name="AdapterPostNoContent">no posts yet</string>
 
+    <!-- Following Fragment -->
+    <string name="FollowingFragment">Following</string>
+    <string name="FollowingFragmentSince">Following since: </string>
+    <string name="FollowingFragmentUnfollow">User Unfollowed</string>
+
+    <!-- Followers Fragment -->
+    <string name="FollowersFragment">Followers</string>
+    <string name="FollowersFragmentSince">Follower since: </string>
+    <string name="FollowersFragmentFollow">Follow</string>
+
+    <!-- Category Fragment -->
+    <string name="CategoryFragment">Category</string>
 
 
 
@@ -275,22 +292,11 @@
 
 
 
-    <string name="VideoPreviewFragment">Video Preview</string>
-
-
-
-    <string name="CategoryTitle">Category</string>
 
 
 
 
 
-    <string name="FragmentFollowing">Following</string>
-    <string name="FragmentFollowingSince">Following Since: </string>
-    <string name="FragmentFollowingUnFollow">User Unfollowed</string>
-    <string name="FragmentFollowers">Followers</string>
-    <string name="FragmentFollowersSince">Follower Since: </string>
-    <string name="FragmentFollowersFollow">Follow</string>
     <string name="ActivityProfileTitle">Edit Profile</string>
     <string name="ActivityProfileSave">Save</string>
     <string name="ActivityProfileUsernameHint">Username cannot be blank</string>
@@ -309,11 +315,4 @@
     <string name="ActivityProfileDialogRemove">Remove current photo</string>
     <string name="ActivityProfileDialogTitle">Your choices</string>
     <string name="ActivityProfileCompleteAction">Complete action using</string>
-
-
-
-
-
-    <string name="GeneralPermissionCamera">You should allow access to your camera</string>
-    <string name="GeneralPermissionStorage">You should allow access to your storage</string>
 </resources>

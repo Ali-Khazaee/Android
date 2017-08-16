@@ -163,11 +163,12 @@ public class SubCategoryFragment extends Fragment
                 Adapter.notifyItemInserted(InboxList.size());
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostListCategory"))
-                .addBodyParameter("Skip", String.valueOf(InboxList.size()))
+                .addBodyParameter("Skip", String.valueOf(InboxList.size() - 1))
                 .addBodyParameter("CatType", String.valueOf(CatType))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("SubCategoryFragment")
-                .build().getAsString(new StringRequestListener()
+                .build()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
                     public void onResponse(String Response)
@@ -270,7 +271,8 @@ public class SubCategoryFragment extends Fragment
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("CatType", String.valueOf(CatType))
         .setTag("SubCategoryFragment")
-        .build().getAsString(new StringRequestListener()
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)

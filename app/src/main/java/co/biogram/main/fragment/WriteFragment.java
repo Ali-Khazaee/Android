@@ -1281,7 +1281,7 @@ public class WriteFragment extends Fragment
             @Override
             public void OnFailed()
             {
-                MiscHandler.Toast(context, getString(R.string.GeneralPermissionStorage));
+                MiscHandler.Toast(context, getString(R.string.PermissionStorage));
             }
         });
     }

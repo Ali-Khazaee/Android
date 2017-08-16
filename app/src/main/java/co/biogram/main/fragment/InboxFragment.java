@@ -134,7 +134,7 @@ public class InboxFragment extends Fragment
                 Adapter.notifyItemInserted(PostList.size());
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostListInbox"))
-                .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("InboxFragment")
                 .build()
@@ -176,8 +176,6 @@ public class InboxFragment extends Fragment
 
                                     PostList.add(PostStruct);
                                 }
-
-                                Adapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
@@ -185,6 +183,8 @@ public class InboxFragment extends Fragment
                             ResetLoading(false);
                             MiscHandler.Debug("InboxFragment-RequestMore: " + e.toString());
                         }
+
+                        Adapter.notifyDataSetChanged();
                     }
 
                     @Override

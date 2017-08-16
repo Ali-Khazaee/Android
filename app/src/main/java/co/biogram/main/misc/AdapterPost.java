@@ -291,7 +291,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
                         .addBodyParameter("Username", PostList.get(Position).Username)
                         .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
-                        .setTag("FragmentFollowers")
+                        .setTag("FollowersFragment")
                         .build().getAsString(new StringRequestListener()
                         {
                             @Override

@@ -373,7 +373,7 @@ public class ActivityProfileEdit extends FragmentActivity
                             @Override
                             public void OnFailed()
                             {
-                                MiscHandler.Toast(context, getString(R.string.GeneralPermissionCamera));
+                                MiscHandler.Toast(context, getString(R.string.PermissionCamera));
                             }
                         });
 
@@ -553,7 +553,7 @@ public class ActivityProfileEdit extends FragmentActivity
                             @Override
                             public void OnFailed()
                             {
-                                MiscHandler.Toast(context, getString(R.string.GeneralPermissionCamera));
+                                MiscHandler.Toast(context, getString(R.string.PermissionCamera));
                             }
                         });
 
@@ -966,7 +966,7 @@ public class ActivityProfileEdit extends FragmentActivity
                     @Override
                     public void OnFailed()
                     {
-                        MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.GeneralPermissionStorage));
+                        MiscHandler.Toast(ActivityProfileEdit.this, getString(R.string.PermissionStorage));
                     }
                 });
                 break;

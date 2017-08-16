@@ -271,7 +271,7 @@ public class SearchFragment extends Fragment
     {
         AndroidNetworking.post(MiscHandler.GetRandomServer("SearchPeople"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
+        .addBodyParameter("Skip", String.valueOf(PeopleList.size() - 1))
         .addBodyParameter("Name", text.toString())
         .setTag("SearchFragment")
         .build()
@@ -326,7 +326,7 @@ public class SearchFragment extends Fragment
     {
         AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTag"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("Skip", String.valueOf(TagList.size()))
+        .addBodyParameter("Skip", String.valueOf(TagList.size() - 1))
         .addBodyParameter("Tag", text.toString())
         .setTag("SearchFragment")
         .build()

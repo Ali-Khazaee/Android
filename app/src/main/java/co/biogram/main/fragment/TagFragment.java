@@ -156,7 +156,7 @@ public class TagFragment extends Fragment
                 PostAdapter.notifyItemInserted(PostList.size());
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostListTag"))
-                .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))
                 .addBodyParameter("Tag", Tag)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("TagFragment")

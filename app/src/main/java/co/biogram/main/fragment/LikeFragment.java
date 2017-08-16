@@ -108,7 +108,7 @@ public class LikeFragment extends Fragment
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
                 .addBodyParameter("PostID", PostID)
-                .addBodyParameter("Skip", String.valueOf(LikeList.size()))
+                .addBodyParameter("Skip", String.valueOf(LikeList.size() - 1))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("LikeFragment")
                 .build()
@@ -118,7 +118,6 @@ public class LikeFragment extends Fragment
                     public void onResponse(String Response)
                     {
                         LikeList.remove(LikeList.size() - 1);
-                        Adapter.notifyDataSetChanged();
 
                         try
                         {
@@ -133,8 +132,6 @@ public class LikeFragment extends Fragment
                                     JSONObject Like = ResultList.getJSONObject(K);
                                     LikeList.add(new StructLike(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
                                 }
-
-                                Adapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
@@ -142,6 +139,8 @@ public class LikeFragment extends Fragment
                             MiscHandler.Debug("LikeFragment-RequestMain: " + e.toString());
                             RecyclerViewScrollMain.ResetLoading(false);
                         }
+
+                        Adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -179,7 +178,6 @@ public class LikeFragment extends Fragment
     {
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
         .addBodyParameter("PostID", PostID)
-        .addBodyParameter("Skip", String.valueOf(LikeList.size()))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .setTag("LikeFragment")
         .build()

@@ -34,37 +34,35 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
+import co.biogram.main.misc.RecyclerViewScroll;
 
-public class FragmentFollowers extends Fragment
+public class FollowersFragment extends Fragment
 {
-    private RelativeLayout RelativeLayoutLoading;
-    private LoadingView LoadingViewData;
-    private TextView TextViewTry;
-
-    private String Username;
-    private AdapterFollowers Adapter;
-    private boolean LoadingBottom = false;
     private final List<Struct> FollowersList = new ArrayList<>();
+    private AdapterFollowers Adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final String Username;
 
-        if (getArguments() != null && !getArguments().getString("Username", "").equals(""))
-            Username = getArguments().getString("Username");
+        if (getArguments() != null)
+            Username = getArguments().getString("Username", "");
+        else
+            Username = "";
 
-        RelativeLayout Root = new RelativeLayout(context);
-        Root.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        Root.setBackgroundResource(R.color.White);
-        Root.setClickable(true);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(RelativeLayoutHeader);
+        RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         ImageView ImageViewBack = new ImageView(context);
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
@@ -72,14 +70,7 @@ public class FragmentFollowers extends Fragment
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
         ImageViewBack.setImageResource(R.drawable.ic_back_blue);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                getActivity().onBackPressed();
-            }
-        });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { getActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -90,7 +81,7 @@ public class FragmentFollowers extends Fragment
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewTitle.setText(getString(R.string.FragmentFollowers));
+        TextViewTitle.setText(getString(R.string.FollowersFragment));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -104,136 +95,136 @@ public class FragmentFollowers extends Fragment
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
-        Root.addView(ViewLine);
+        RelativeLayoutMain.addView(ViewLine);
 
         RelativeLayout.LayoutParams RecyclerViewFollowersParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewFollowersParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        final LinearLayoutManager LinearLayoutManagerFollowers;
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
 
-        RecyclerView RecyclerViewFollowers = new RecyclerView(context);
-        RecyclerViewFollowers.setLayoutParams(RecyclerViewFollowersParam);
-        RecyclerViewFollowers.setLayoutManager(LinearLayoutManagerFollowers = new LinearLayoutManager(context));
-        RecyclerViewFollowers.setAdapter(Adapter = new AdapterFollowers(context));
-        RecyclerViewFollowers.addOnScrollListener(new RecyclerView.OnScrollListener()
+        RecyclerViewScroll RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int DX, int DY)
+            public void OnLoadMore()
             {
-                if (!LoadingBottom && (LinearLayoutManagerFollowers.findLastVisibleItemPosition() + 5) > LinearLayoutManagerFollowers.getItemCount())
+                FollowersList.add(null);
+                Adapter.notifyDataSetChanged();
+
+                AndroidNetworking.post(MiscHandler.GetRandomServer("FollowersGet"))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .addBodyParameter("Skip", String.valueOf(FollowersList.size() - 1))
+                .addBodyParameter("Username", Username)
+                .setTag("FollowersFragment")
+                .build()
+                .getAsString(new StringRequestListener()
                 {
-                    LoadingBottom = true;
-                    FollowersList.add(null);
-                    Adapter.notifyItemInserted(FollowersList.size());
-
-                    AndroidNetworking.post(MiscHandler.GetRandomServer("FollowersGet"))
-                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .addBodyParameter("Skip", String.valueOf(FollowersList.size()))
-                    .addBodyParameter("Username", Username)
-                    .setTag("FragmentFollowers")
-                    .build().getAsString(new StringRequestListener()
+                    @Override
+                    public void onResponse(String Response)
                     {
-                        @Override
-                        public void onResponse(String Response)
+                        FollowersList.remove(FollowersList.size() - 1);
+
+                        try
                         {
-                            try
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
                             {
-                                JSONObject Result = new JSONObject(Response);
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                                for (int I = 0; I < ResultList.length(); I++)
                                 {
-                                    JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                                    JSONObject Follower = ResultList.getJSONObject(I);
 
-                                    for (int I = 0; I < ResultList.length(); I++)
-                                    {
-                                        JSONObject Followers = ResultList.getJSONObject(I);
+                                    Struct StructFollowers = new Struct();
+                                    StructFollowers.Username = Follower.getString("Username");
+                                    StructFollowers.Avatar = Follower.getString("Avatar");
+                                    StructFollowers.Follow = Follower.getBoolean("Follow");
+                                    StructFollowers.Since = Follower.getInt("Since");
 
-                                        Struct StructFollowers = new Struct();
-                                        StructFollowers.Username = Followers.getString("Username");
-                                        StructFollowers.Avatar = Followers.getString("Avatar");
-                                        StructFollowers.Follow = Followers.getBoolean("Follow");
-
-                                        FollowersList.add(StructFollowers);
-                                    }
+                                    FollowersList.add(StructFollowers);
                                 }
                             }
-                            catch (Exception e)
-                            {
-                                // Leave Me Alone
-                            }
-
-                            LoadingBottom = false;
-                            FollowersList.remove(FollowersList.size() - 1);
-                            Adapter.notifyDataSetChanged();
                         }
-
-                        @Override
-                        public void onError(ANError anError)
+                        catch (Exception e)
                         {
-                            LoadingBottom = false;
-                            FollowersList.remove(FollowersList.size() - 1);
-                            Adapter.notifyItemRemoved(FollowersList.size());
-
-                            MiscHandler.Toast(context, getString(R.string.NoInternet));
+                            ResetLoading(false);
+                            MiscHandler.Debug("FollowersFragment-RequestMore: " + e.toString());
                         }
-                    });
-                }
-            }
-        });
 
-        Root.addView(RecyclerViewFollowers);
+                        Adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        ResetLoading(false);
+                        FollowersList.remove(FollowersList.size() - 1);
+                        Adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        };
+
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewFollowersParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.setAdapter(Adapter = new AdapterFollowers(context));
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
+
+        RelativeLayoutMain.addView(RecyclerViewMain);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RelativeLayoutLoading = new RelativeLayout(context);
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
 
-        Root.addView(RelativeLayoutLoading);
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutLoading.addView(LoadingViewData);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
-        RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        final RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(context);
-        TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTry.setText(getString(R.string.TryAgain));
-        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutLoading.addView(TextViewTry);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, Username, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
-        return Root;
+        return RelativeLayoutMain;
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        AndroidNetworking.forceCancel("FragmentFollowers");
+        AndroidNetworking.forceCancel("FollowersFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, String Username, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        TextViewTry.setVisibility(View.GONE);
-        LoadingViewData.Start();
+        TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("FollowersGet"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Username", Username)
-        .setTag("FragmentFollowers")
-        .build().getAsString(new StringRequestListener()
+        .setTag("FollowersFragment")
+        .build()
+        .getAsString(new StringRequestListener()
         {
             @Override
             public void onResponse(String Response)
@@ -263,20 +254,20 @@ public class FragmentFollowers extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("FollowersFragment-RequestNew: " + e.toString());
                 }
 
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
                 RelativeLayoutLoading.setVisibility(View.GONE);
-                TextViewTry.setVisibility(View.GONE);
-                LoadingViewData.Stop();
             }
 
             @Override
             public void onError(ANError anError)
             {
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.VISIBLE);
                 MiscHandler.Toast(context, getString(R.string.NoInternet));
-                TextViewTry.setVisibility(View.VISIBLE);
-                LoadingViewData.Stop();
             }
         });
     }
@@ -383,7 +374,7 @@ public class FragmentFollowers extends Fragment
                     AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
                     .addBodyParameter("Username", FollowersList.get(Position).Username)
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .setTag("FragmentFollowers")
+                    .setTag("FollowersFragment")
                     .build().getAsString(new StringRequestListener()
                     {
                         @Override
@@ -402,7 +393,7 @@ public class FragmentFollowers extends Fragment
                                     }
                                     else
                                     {
-                                        Holder.TextViewFollow.setText(getString(R.string.FragmentFollowersFollow));
+                                        Holder.TextViewFollow.setText(getString(R.string.FollowersFragmentFollow));
                                         Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
                                     }
 

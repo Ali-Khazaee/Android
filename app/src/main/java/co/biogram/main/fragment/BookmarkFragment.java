@@ -131,7 +131,7 @@ public class BookmarkFragment extends Fragment
                 PostAdapter.notifyItemInserted(PostList.size());
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostListBookmark"))
-                .addBodyParameter("Skip", String.valueOf(PostList.size()))
+                .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("BookmarkFragment")
                 .build()

@@ -190,7 +190,7 @@ public class NotificationFragment extends Fragment
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationList"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .addBodyParameter("Skip", String.valueOf(NotificationList.size()))
+                .addBodyParameter("Skip", String.valueOf(NotificationList.size() - 1))
                 .setTag("NotificationFragment")
                 .build()
                 .getAsString(new StringRequestListener()

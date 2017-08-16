@@ -619,10 +619,10 @@ public class ProfileFragment extends Fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("Username", Username);
 
-                Fragment fragment = new FragmentFollowers();
+                Fragment fragment = new FollowersFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentFollowers").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FollowersFragment").commit();
             }
         });
 
