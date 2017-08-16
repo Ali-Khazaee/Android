@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import co.biogram.cache.ACache;
 import co.biogram.main.R;
 
 public class MiscHandler
@@ -138,44 +138,44 @@ public class MiscHandler
         Log.e("Debug", Message);
     }
 
-    public static void CreateVideoThumbnail(final String Url, Context context, final ImageView view)
+    public static void CreateVideoThumbnail(String Url, Context context, ImageView View)
     {
-        final ACache cache = ACache.get(context);
-
-        Bitmap cacheBitmap = cache.getAsBitmap(Url);
-
-        if (cacheBitmap != null)
-            view.setImageBitmap(cacheBitmap);
-
-        new Thread(new Runnable()
+        if (CacheHandler.BitmapIsCache(context, Url))
         {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                    retriever.setDataSource(Url, new HashMap<String, String>());
-                    final Bitmap temp = retriever.getFrameAtTime(5000);
+            Bitmap bitmap = CacheHandler.BitmapFind(context, Url);
+            View.setImageBitmap(bitmap);
+            return;
+        }
 
-                    view.post(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            view.setImageBitmap(temp);
-                        }
-                    });
+        new VideoThumbnailTask(View, Url).execute();
+    }
 
-                    cache.put(Url, temp);
-                    retriever.release();
-                }
-                catch (Exception e)
-                {
-                    MiscHandler.Debug("CreateVideoThumbnail: " + e.toString());
-                }
-            }
-        }).start();
+    private static class VideoThumbnailTask extends AsyncTask<Void, Void, Bitmap>
+    {
+        String Url;
+        ImageView ImageViewMain;
+
+        VideoThumbnailTask(ImageView imageView, String url)
+        {
+            ImageViewMain = imageView;
+            Url = url;
+        }
+
+        protected Bitmap doInBackground(Void... Voids)
+        {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(Url, new HashMap<String, String>());
+            Bitmap bitmap = retriever.getFrameAtTime(5000);
+            retriever.release();
+
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap Result)
+        {
+            ImageViewMain.setImageBitmap(Result);
+            CacheHandler.BitmapStore(ImageViewMain.getContext(), Result, Url);
+        }
     }
 
     public static Bitmap Blurry(Bitmap sentBitmap, int radius)
