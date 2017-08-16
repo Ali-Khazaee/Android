@@ -273,7 +273,7 @@ public class CommentFragment extends Fragment
                 Adapter.notifyDataSetChanged();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentList"))
-                .addBodyParameter("Skip", String.valueOf(CommentList.size()))
+                .addBodyParameter("Skip", String.valueOf(CommentList.size() - 1))
                 .addBodyParameter("PostID", PostID)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("CommentFragment")

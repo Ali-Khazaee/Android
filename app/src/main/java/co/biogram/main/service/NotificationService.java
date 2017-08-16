@@ -84,6 +84,7 @@ public class NotificationService extends Service
                                         case 4: Message += context.getString(R.string.NotificationFragmentCommentLike);      break;
                                         case 5: Message += context.getString(R.string.NotificationFragmentComment);          break;
                                         case 6: Message += context.getString(R.string.NotificationFragmentCommentTag);       break;
+                                        case 7: Message += context.getString(R.string.NotificationFragmentUnfollow);         break;
                                     }
 
                                     Count++;

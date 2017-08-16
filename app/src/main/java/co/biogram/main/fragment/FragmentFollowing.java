@@ -128,7 +128,7 @@ public class FragmentFollowing extends Fragment
 
                     AndroidNetworking.post(MiscHandler.GetRandomServer("FollowingGet"))
                     .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                    .addBodyParameter("Skip", String.valueOf(FollowingList.size()))
+                    .addBodyParameter("Skip", String.valueOf(FollowingList.size() - 1))
                     .addBodyParameter("Username", Username)
                     .setTag("FragmentFollowing")
                     .build().getAsString(new StringRequestListener()
