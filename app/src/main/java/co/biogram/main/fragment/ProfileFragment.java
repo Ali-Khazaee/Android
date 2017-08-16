@@ -664,10 +664,10 @@ public class ProfileFragment extends Fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("Username", Username);
 
-                Fragment fragment = new FragmentFollowing();
+                Fragment fragment = new FollowingFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FragmentFollowing").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("FollowingFragment").commit();
             }
         });
 
@@ -1096,7 +1096,8 @@ public class ProfileFragment extends Fragment
                     MiscHandler.Debug("ProfileFragment-RequestNew: " + e.toString());
                 }
 
-                ChangeTab(context, 1, Username);
+                if (isVisible())
+                    ChangeTab(context, 1, Username);
 
                 LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);

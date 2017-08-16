@@ -267,6 +267,8 @@
 
     <!-- Following Fragment -->
     <string name="FollowingFragment">Following</string>
+    <string name="FollowingFragmentFollow">Follow</string>
+    <string name="FollowingFragmentNow">just now</string>
     <string name="FollowingFragmentSince">Following since: </string>
     <string name="FollowingFragmentUnfollow">User Unfollowed</string>
 

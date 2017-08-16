@@ -173,6 +173,31 @@ public class ActivityMain extends FragmentActivity
         unregisterReceiver(BroadcastReceiverNotification);
     }
 
+    @Override
+    public void onAttachFragment(Fragment fragment)
+    {
+        super.onAttachFragment(fragment);
+
+        FragmentManager FragManager = getSupportFragmentManager();
+
+        if (FragManager.getBackStackEntryCount() > 3)
+        {
+            List<Fragment> FragList = FragManager.getFragments();
+
+            if (FragList != null)
+            {
+                for (Fragment frag : FragList)
+                {
+                    if (frag != null)
+                    {
+                        FragManager.beginTransaction().remove(fragment).commit();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     private final BroadcastReceiver BroadcastReceiverNotification = new BroadcastReceiver()
     {
         @Override

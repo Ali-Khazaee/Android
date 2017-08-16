@@ -272,7 +272,7 @@ public class FollowersFragment extends Fragment
         });
     }
 
-    private class AdapterFollowers extends RecyclerView.Adapter<AdapterFollowers.ViewHolderFollowing>
+    private class AdapterFollowers extends RecyclerView.Adapter<AdapterFollowers.ViewHolderFollowers>
     {
         private final int ID_PROFILE = MiscHandler.GenerateViewID();
         private final int ID_USERNAME = MiscHandler.GenerateViewID();
@@ -289,7 +289,7 @@ public class FollowersFragment extends Fragment
             context = c;
         }
 
-        class ViewHolderFollowing extends RecyclerView.ViewHolder
+        class ViewHolderFollowers extends RecyclerView.ViewHolder
         {
             ImageViewCircle ImageViewCircleProfile;
             TextView TextViewUsername;
@@ -299,7 +299,7 @@ public class FollowersFragment extends Fragment
             LoadingView LoadingViewFollow;
             View ViewLine;
 
-            ViewHolderFollowing(View view, boolean Content)
+            ViewHolderFollowers(View view, boolean Content)
             {
                 super(view);
 
@@ -317,7 +317,7 @@ public class FollowersFragment extends Fragment
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolderFollowing Holder, int position)
+        public void onBindViewHolder(final ViewHolderFollowers Holder, int position)
         {
             if (getItemViewType(position) != 0)
                 return;
@@ -424,7 +424,7 @@ public class FollowersFragment extends Fragment
         }
 
         @Override
-        public ViewHolderFollowing onCreateViewHolder(ViewGroup parent, int ViewType)
+        public ViewHolderFollowers onCreateViewHolder(ViewGroup parent, int ViewType)
         {
             if (ViewType == 0)
             {
@@ -510,14 +510,14 @@ public class FollowersFragment extends Fragment
 
                 RelativeLayoutMain.addView(ViewLine);
 
-                return new ViewHolderFollowing(RelativeLayoutMain, true);
+                return new ViewHolderFollowers(RelativeLayoutMain, true);
             }
 
             LoadingView LoadingViewMain = new LoadingView(context);
             LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
             LoadingViewMain.Start();
 
-            return new ViewHolderFollowing(LoadingViewMain, false);
+            return new ViewHolderFollowers(LoadingViewMain, false);
         }
 
         @Override
