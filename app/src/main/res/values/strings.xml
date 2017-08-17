@@ -301,5 +301,6 @@
     <string name="EditFragmentWebsite">Website</string>
     <string name="EditFragmentPhone">Phone</string>
     <string name="EditFragmentLocation">Location</string>
+    <string name="EditFragmentUnknownLocation">Unknown location</string>
     <string name="EditFragmentCrop">Image Crop</string>
 </resources>
