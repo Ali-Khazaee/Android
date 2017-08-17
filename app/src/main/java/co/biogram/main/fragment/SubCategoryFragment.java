@@ -34,26 +34,16 @@ import co.biogram.main.misc.RecyclerViewScroll;
 
 public class SubCategoryFragment extends Fragment
 {
-    private LoadingView LoadingViewInbox;
-    private TextView TextViewTryAgain;
-
-    private int CatType = 17;
-
+    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
     private AdapterPost Adapter;
-    private final List<AdapterPost.Struct> InboxList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final int CatType = getArguments().getInt("CatType", 17);
 
-        String CatName = "";
-
-        if (getArguments() != null)
-        {
-            CatName = getArguments().getString("CatName", "");
-            CatType = getArguments().getInt("CatType", 17);
-        }
+        String CatName = getArguments().getString("CatName", "");
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -145,25 +135,25 @@ public class SubCategoryFragment extends Fragment
 
         RelativeLayoutMain.addView(ViewLine);
 
-        RelativeLayout.LayoutParams RecyclerViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        RecyclerViewInboxParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
         LinearLayoutManager LinearLayoutManagerNotification = new LinearLayoutManager(context);
 
-        RecyclerView RecyclerViewInbox = new RecyclerView(context);
-        RecyclerViewInbox.setLayoutParams(RecyclerViewInboxParam);
-        RecyclerViewInbox.setLayoutManager(LinearLayoutManagerNotification);
-        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), InboxList, "SubCategoryFragment"));
-        RecyclerViewInbox.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerNotification);
+        RecyclerViewMain.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "SubCategoryFragment"));
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
         {
             @Override
             public void OnLoadMore()
             {
-                InboxList.add(null);
-                Adapter.notifyItemInserted(InboxList.size());
+                PostList.add(null);
+                Adapter.notifyDataSetChanged();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostListCategory"))
-                .addBodyParameter("Skip", String.valueOf(InboxList.size() - 1))
+                .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))
                 .addBodyParameter("CatType", String.valueOf(CatType))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("SubCategoryFragment")
@@ -173,8 +163,7 @@ public class SubCategoryFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        PostList.remove(PostList.size() - 1);
 
                         try
                         {
@@ -205,52 +194,62 @@ public class SubCategoryFragment extends Fragment
                                     PostStruct.BookMark = Post.getBoolean("BookMark");
                                     PostStruct.Follow = Post.getBoolean("Follow");
 
-                                    InboxList.add(PostStruct);
+                                    PostList.add(PostStruct);
                                 }
-
-                                Adapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
                         {
                             ResetLoading(false);
                         }
+
+                        Adapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
                         ResetLoading(false);
-                        InboxList.remove(InboxList.size() - 1);
-                        Adapter.notifyItemRemoved(InboxList.size());
+                        PostList.remove(PostList.size() - 1);
+                        Adapter.notifyDataSetChanged();
                     }
                 });
             }
         });
 
-        RelativeLayoutMain.addView(RecyclerViewInbox);
+        RelativeLayoutMain.addView(RecyclerViewMain);
+
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
+
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
         RelativeLayout.LayoutParams LoadingViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewInboxParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewInbox = new LoadingView(context);
-        LoadingViewInbox.setLayoutParams(LoadingViewInboxParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewInboxParam);
 
-        RelativeLayoutMain.addView(LoadingViewInbox);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTryAgain = new TextView(context);
+        final TextView TextViewTryAgain = new TextView(context);
         TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, CatType, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutMain.addView(TextViewTryAgain);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context);
+        RetrieveDataFromServer(context, CatType, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -262,10 +261,10 @@ public class SubCategoryFragment extends Fragment
         AndroidNetworking.forceCancel("SubCategoryFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context)
+    private void RetrieveDataFromServer(final Context context, int CatType, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
-        LoadingViewInbox.Start();
+        LoadingViewMain.Start();
 
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostListCategory"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -306,7 +305,7 @@ public class SubCategoryFragment extends Fragment
                             PostStruct.BookMark = Post.getBoolean("BookMark");
                             PostStruct.Follow = Post.getBoolean("Follow");
 
-                            InboxList.add(PostStruct);
+                            PostList.add(PostStruct);
                         }
 
                         Adapter.notifyDataSetChanged();
@@ -314,11 +313,12 @@ public class SubCategoryFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("SubCategoryFragment-RequestNew: " + e.toString());
                 }
 
-                LoadingViewInbox.Stop();
+                LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
+                RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override
@@ -326,7 +326,7 @@ public class SubCategoryFragment extends Fragment
             {
                 MiscHandler.Toast(context, getString(R.string.NoInternet));
                 TextViewTryAgain.setVisibility(View.VISIBLE);
-                LoadingViewInbox.Stop();
+                LoadingViewMain.Stop();
             }
         });
     }

@@ -36,15 +36,12 @@ public class TagFragment extends Fragment
 {
     private final List<AdapterPost.Struct> PostList = new ArrayList<>();
     private AdapterPost PostAdapter;
-    private String Tag = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
-
-        if (getArguments() != null)
-            Tag = getArguments().getString("Tag", "");
+        final String Tag = getArguments().getString("Tag", "");
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -78,7 +75,6 @@ public class TagFragment extends Fragment
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
-        TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
@@ -153,9 +149,9 @@ public class TagFragment extends Fragment
             public void OnLoadMore()
             {
                 PostList.add(null);
-                PostAdapter.notifyItemInserted(PostList.size());
+                PostAdapter.notifyDataSetChanged();
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("PostListTag"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTagList"))
                 .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))
                 .addBodyParameter("Tag", Tag)
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -167,7 +163,6 @@ public class TagFragment extends Fragment
                     public void onResponse(String Response)
                     {
                         PostList.remove(PostList.size() - 1);
-                        PostAdapter.notifyItemRemoved(PostList.size());
 
                         try
                         {
@@ -200,14 +195,15 @@ public class TagFragment extends Fragment
 
                                     PostList.add(PostStruct);
                                 }
-
-                                PostAdapter.notifyDataSetChanged();
                             }
                         }
                         catch (Exception e)
                         {
                             ResetLoading(false);
+                            MiscHandler.Debug("TagFragment-RequestMore: " + e.toString());
                         }
+
+                        PostAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -215,7 +211,7 @@ public class TagFragment extends Fragment
                     {
                         ResetLoading(false);
                         PostList.remove(PostList.size() - 1);
-                        PostAdapter.notifyItemRemoved(PostList.size());
+                        PostAdapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -223,13 +219,23 @@ public class TagFragment extends Fragment
 
         RelativeLayoutMain.addView(RecyclerViewInbox);
 
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
+
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
+
         RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         final LoadingView LoadingViewMain = new LoadingView(context);
         LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutMain.addView(LoadingViewMain);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -239,11 +245,11 @@ public class TagFragment extends Fragment
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, Tag, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutMain.addView(TextViewTryAgain);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
+        RetrieveDataFromServer(context, Tag, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -255,12 +261,12 @@ public class TagFragment extends Fragment
         AndroidNetworking.forceCancel("TagFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
+    private void RetrieveDataFromServer(final Context context, String Tag, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewMain.Start();
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("PostListTag"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("SearchTagList"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
         .addBodyParameter("Tag", Tag)
         .setTag("TagFragment")
@@ -307,11 +313,12 @@ public class TagFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("TagFragment-RequestNew: " + e.toString());
                 }
 
                 LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
+                RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override

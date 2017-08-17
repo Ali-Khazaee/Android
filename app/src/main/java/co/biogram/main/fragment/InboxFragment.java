@@ -200,13 +200,23 @@ public class InboxFragment extends Fragment
 
         RelativeLayoutMain.addView(RecyclerViewInbox);
 
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
+
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
+
         RelativeLayout.LayoutParams LoadingViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewInboxParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         final LoadingView LoadingViewMain = new LoadingView(context);
         LoadingViewMain.setLayoutParams(LoadingViewInboxParam);
 
-        RelativeLayoutMain.addView(LoadingViewMain);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -216,11 +226,11 @@ public class InboxFragment extends Fragment
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutMain.addView(TextViewTryAgain);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
+        RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -232,7 +242,7 @@ public class InboxFragment extends Fragment
         AndroidNetworking.forceCancel("InboxFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
+    private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewMain.Start();
@@ -288,6 +298,7 @@ public class InboxFragment extends Fragment
 
                 LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
+                RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override

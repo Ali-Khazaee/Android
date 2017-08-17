@@ -271,7 +271,7 @@ public class SearchFragment extends Fragment
     {
         AndroidNetworking.post(MiscHandler.GetRandomServer("SearchPeople"))
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-        .addBodyParameter("Skip", String.valueOf(PeopleList.size() - 1))
+        .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
         .addBodyParameter("Name", text.toString())
         .setTag("SearchFragment")
         .build()
