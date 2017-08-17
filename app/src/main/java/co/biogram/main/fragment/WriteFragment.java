@@ -995,7 +995,7 @@ public class WriteFragment extends Fragment
                 Fragment fragment = new VideoPreviewFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
             }
         });
 
@@ -1356,7 +1356,7 @@ public class WriteFragment extends Fragment
                         ImagePreviewFragment fragment = new ImagePreviewFragment();
                         fragment.SetBitmap(SelectImage.get(Position));
 
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
                     }
                 }
             });

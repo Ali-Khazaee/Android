@@ -71,7 +71,7 @@ public class WelcomeActivity extends FragmentActivity
 
         if (SharedHandler.GetBoolean(context, "IsLogin"))
         {
-            startActivity(new Intent(WelcomeActivity.this, ActivityMain.class));
+            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
             finish();
             return;
         }
@@ -381,7 +381,7 @@ public class WelcomeActivity extends FragmentActivity
                                     SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
                                     SharedHandler.SetBoolean(context, "Password", Result.getBoolean("Password"));
 
-                                    startActivity(new Intent(context, ActivityMain.class));
+                                    startActivity(new Intent(context, MainActivity.class));
                                     finish();
                                     return;
                                 }
@@ -1263,7 +1263,7 @@ public class WelcomeActivity extends FragmentActivity
                                     SharedHandler.SetString(context, "Username", Result.getString("Username"));
                                     SharedHandler.SetString(context, "Avatar", "");
 
-                                    Parent.startActivity(new Intent(context, ActivityMain.class));
+                                    Parent.startActivity(new Intent(context, MainActivity.class));
                                     Parent.finish();
                                     return;
                                 }
@@ -1635,7 +1635,7 @@ public class WelcomeActivity extends FragmentActivity
                                     SharedHandler.SetString(context, "Username", Result.getString("Username"));
                                     SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
 
-                                    getActivity().startActivity(new Intent(context, ActivityMain.class));
+                                    getActivity().startActivity(new Intent(context, MainActivity.class));
                                     getActivity().finish();
                                     return;
                                 }

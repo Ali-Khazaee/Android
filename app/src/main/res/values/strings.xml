@@ -280,42 +280,31 @@
     <!-- Category Fragment -->
     <string name="CategoryFragment">Category</string>
 
+    <!-- Edit Fragment -->
+    <string name="EditFragment">Edit Profile</string>
+    <string name="EditFragmentSave">Save</string>
+    <string name="EditFragmentWrong">Something went wrong</string>
+    <string name="EditFragmentDialogTitle">Your choices</string>
+    <string name="EditFragmentDialogGallery">Select from gallery</string>
+    <string name="EditFragmentCompleteAction">Complete action using</string>
+    <string name="EditFragmentDialogRemove">Remove current photo</string>
+    <string name="EditFragmentImageCover">Cover photo has removed</string>
+
+
+    <string name="EditFragmentUsernameHint">Username cannot be blank</string>
+    <string name="EditFragmentUsername">Username</string>
+    <string name="EditFragmentDescription">Description</string>
+    <string name="EditFragmentWebsite">Website</string>
+    <string name="EditFragmentPhone">Phone</string>
+    <string name="EditFragmentLocation">Location</string>
+    <string name="EditFragmentEmail">Email Address</string>
+    <string name="EditFragmentEmailHint">Email cannot be blank</string>
+    <string name="EditFragmentUpload">Please Wait, Uploading Data &#8230;</string>
+    <string name="EditFragmentCrop">Image Crop</string>
+
+    <string name="EditFragmentDialogCamera">Take From Camera</string>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <string name="ActivityProfileTitle">Edit Profile</string>
-    <string name="ActivityProfileSave">Save</string>
-    <string name="ActivityProfileUsernameHint">Username cannot be blank</string>
-    <string name="ActivityProfileUsername">Username</string>
-    <string name="ActivityProfileDescription">Description</string>
-    <string name="ActivityProfileWebsite">Website</string>
-    <string name="ActivityProfilePhone">Phone</string>
-    <string name="ActivityProfileLocation">Location</string>
-    <string name="ActivityProfileEmail">Email Address</string>
-    <string name="ActivityProfileEmailHint">Email cannot be blank</string>
-    <string name="ActivityProfileUpload">Please Wait, Uploading Data &#8230;</string>
-    <string name="ActivityProfileCrop">Image Crop</string>
-    <string name="ActivityProfileImageCover">Cover Image Was Removed</string>
-    <string name="ActivityProfileDialogCamera">Take From Camera</string>
-    <string name="ActivityProfileDialogGallery">Select From Gallery</string>
-    <string name="ActivityProfileDialogRemove">Remove current photo</string>
-    <string name="ActivityProfileDialogTitle">Your choices</string>
-    <string name="ActivityProfileCompleteAction">Complete action using</string>
 </resources>

@@ -91,7 +91,7 @@ public class MomentFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
             }
         });
 
@@ -110,7 +110,7 @@ public class MomentFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new SearchFragment(), "SearchFragment").addToBackStack("SearchFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new SearchFragment(), "SearchFragment").addToBackStack("SearchFragment").commit();
             }
         });
 
@@ -343,7 +343,7 @@ public class MomentFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new WriteFragment()).addToBackStack("WriteFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new WriteFragment()).addToBackStack("WriteFragment").commit();
             }
         });
 

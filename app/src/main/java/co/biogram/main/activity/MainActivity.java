@@ -27,7 +27,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.service.NotificationService;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
-public class ActivityMain extends FragmentActivity
+public class MainActivity extends FragmentActivity
 {
     private ImageView ImageViewMoment;
     private ImageView ImageViewInbox;
@@ -121,13 +121,13 @@ public class ActivityMain extends FragmentActivity
 
         FrameLayout FrameLayoutContent = new FrameLayout(context);
         FrameLayoutContent.setLayoutParams(FrameLayoutContentParam);
-        FrameLayoutContent.setId(R.id.ActivityMainContentContainer);
+        FrameLayoutContent.setId(R.id.MainActivityContentContainer);
 
         RelativeLayoutMain.addView(FrameLayoutContent);
 
         FrameLayout FrameLayoutFull = new FrameLayout(context);
         FrameLayoutFull.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        FrameLayoutFull.setId(R.id.ActivityMainFullContainer);
+        FrameLayoutFull.setId(R.id.MainActivityFullContainer);
 
         RelativeLayoutMain.addView(FrameLayoutFull);
 
@@ -151,7 +151,7 @@ public class ActivityMain extends FragmentActivity
             Fragment fragment = new ProfileFragment();
             fragment.setArguments(bundle);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
         }
 
         if (getIntent().getIntExtra("Type", 0) == 2)
@@ -162,7 +162,7 @@ public class ActivityMain extends FragmentActivity
             Fragment fragment = new PostFragment();
             fragment.setArguments(bundle);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, fragment).addToBackStack("PostFragment").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commit();
         }
     }
 
@@ -255,6 +255,6 @@ public class ActivityMain extends FragmentActivity
             }
         }
 
-        FragManager.beginTransaction().add(R.id.ActivityMainContentContainer, SelectedFragment).commit();
+        FragManager.beginTransaction().add(R.id.MainActivityContentContainer, SelectedFragment).commit();
     }
 }

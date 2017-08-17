@@ -125,7 +125,7 @@ public class SettingFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new ChangePasswordFragment()).addToBackStack("ChangePasswordFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new ChangePasswordFragment()).addToBackStack("ChangePasswordFragment").commit();
             }
         });
 
@@ -179,7 +179,7 @@ public class SettingFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.ActivityMainFullContainer, new ContactFragment()).addToBackStack("ContactFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new ContactFragment()).addToBackStack("ContactFragment").commit();
             }
         });
 

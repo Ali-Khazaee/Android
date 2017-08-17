@@ -17,7 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import co.biogram.main.R;
-import co.biogram.main.activity.ActivityMain;
+import co.biogram.main.activity.MainActivity;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 
@@ -127,7 +127,7 @@ public class NotificationService extends Service
         .setContentTitle("Biogram")
         .setContentText(Message);
 
-        Intent intent = new Intent(context, ActivityMain.class);
+        Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("Data", Data);
         intent.putExtra("Type", Type);
 
