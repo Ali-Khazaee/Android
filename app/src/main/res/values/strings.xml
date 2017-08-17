@@ -202,6 +202,7 @@
     <string name="WriteFragmentDialogPaste">Paste</string>
     <string name="WriteFragmentDialogCopy">Copy</string>
     <string name="WriteFragmentDialogClipboard">Text has been copied to clipboard</string>
+    <string name="WriteFragmentWrong">Something went wrong</string>
 
     <!-- Category List -->
     <string name="CategoryNews">News</string>
@@ -289,22 +290,16 @@
     <string name="EditFragmentCompleteAction">Complete action using</string>
     <string name="EditFragmentDialogRemove">Remove current photo</string>
     <string name="EditFragmentImageCover">Cover photo has removed</string>
-
-
+    <string name="EditFragmentImageProfile">Profile photo has removed</string>
+    <string name="EditFragmentEmail">Email address</string>
+    <string name="EditFragmentEmailHint">Email cannot be blank</string>
+    <string name="EditFragmentUpload">Please wait, pploading data &#8230;</string>
+    <string name="EditFragmentDialogCamera">Take From Camera</string>
     <string name="EditFragmentUsernameHint">Username cannot be blank</string>
     <string name="EditFragmentUsername">Username</string>
     <string name="EditFragmentDescription">Description</string>
     <string name="EditFragmentWebsite">Website</string>
     <string name="EditFragmentPhone">Phone</string>
     <string name="EditFragmentLocation">Location</string>
-    <string name="EditFragmentEmail">Email Address</string>
-    <string name="EditFragmentEmailHint">Email cannot be blank</string>
-    <string name="EditFragmentUpload">Please Wait, Uploading Data &#8230;</string>
     <string name="EditFragmentCrop">Image Crop</string>
-
-    <string name="EditFragmentDialogCamera">Take From Camera</string>
-
-
-
-
 </resources>

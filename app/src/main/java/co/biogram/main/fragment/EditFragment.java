@@ -3,14 +3,22 @@ package co.biogram.main.fragment;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.view.ContextThemeWrapper;
@@ -33,6 +41,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
+
+import com.bumptech.glide.Glide;
+
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONObject;
 
@@ -59,6 +71,9 @@ public class EditFragment extends Fragment
     private File ProfileFile;
     private boolean IsCover = false;
 
+    private ImageView ImageViewCover;
+    private ImageViewCircle ImageViewCircleProfile;
+
     private EditText EditTextUsername;
     private EditText EditTextDescription;
     private EditText EditTextLink;
@@ -67,12 +82,13 @@ public class EditFragment extends Fragment
     private EditText EditTextEmail;
     private String Position = "";
 
+    private RelativeLayout RelativeLayoutCrop;
+    private CropImageView CropImageViewMain;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
-        final ImageView ImageViewCover = new ImageView(context);
-        final ImageViewCircle ImageViewCircleProfile = new ImageViewCircle(context);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -160,7 +176,7 @@ public class EditFragment extends Fragment
                     UploadFile = null;
 
                 final ProgressDialog Progress = new ProgressDialog(getActivity());
-                Progress.setMessage(getString(R.string.ActivityProfileUpload));
+                Progress.setMessage(getString(R.string.EditFragmentUpload));
                 Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 Progress.setIndeterminate(false);
                 Progress.setMax(100);
@@ -247,6 +263,7 @@ public class EditFragment extends Fragment
         ScrollView ScrollViewMain = new ScrollView(context);
         ScrollViewMain.setLayoutParams(ScrollViewMainParam);
         ScrollViewMain.setFillViewport(true);
+        ScrollViewMain.setClickable(true);
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
@@ -291,7 +308,7 @@ public class EditFragment extends Fragment
                 TextView TextViewCamera = new TextView(context);
                 TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewCamera.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewCamera.setText(getString(R.string.ActivityProfileDialogCamera));
+                TextViewCamera.setText(getString(R.string.EditFragmentDialogCamera));
                 TextViewCamera.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewCamera.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewCamera.setOnClickListener(new View.OnClickListener()
@@ -406,8 +423,9 @@ public class EditFragment extends Fragment
             }
         });
 
-        RelativeLayoutMain.addView(RelativeLayoutCover);
+        RelativeLayoutMain2.addView(RelativeLayoutCover);
 
+        ImageViewCover = new ImageView(context);
         ImageViewCover.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewCover.setScaleType(ImageView.ScaleType.FIT_XY);
 
@@ -433,9 +451,16 @@ public class EditFragment extends Fragment
         RelativeLayout.LayoutParams RelativeLayoutProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90));
         RelativeLayoutProfileParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 110), 0, 0);
 
+        GradientDrawable ShapeViewProfile = new GradientDrawable();
+        ShapeViewProfile.setShape(GradientDrawable.OVAL);
+        ShapeViewProfile.setCornerRadius(MiscHandler.ToDimension(context, 15));
+        ShapeViewProfile.setColor(0xFFFFFFFF);
+        ShapeViewProfile.setStroke(MiscHandler.ToDimension(context, 3), 0xFFFFFFFF);
+
         RelativeLayout RelativeLayoutProfile = new RelativeLayout(context);
         RelativeLayoutProfile.setLayoutParams(RelativeLayoutProfileParam);
         RelativeLayoutProfile.setId(MiscHandler.GenerateViewID());
+        RelativeLayoutProfile.setBackground(ShapeViewProfile);
         RelativeLayoutProfile.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -469,7 +494,7 @@ public class EditFragment extends Fragment
                 TextView TextViewCamera = new TextView(context);
                 TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewCamera.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewCamera.setText(getString(R.string.ActivityProfileDialogCamera));
+                TextViewCamera.setText(getString(R.string.EditFragmentDialogCamera));
                 TextViewCamera.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewCamera.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewCamera.setOnClickListener(new View.OnClickListener()
@@ -531,7 +556,7 @@ public class EditFragment extends Fragment
                         Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, getString(R.string.ActivityProfileCompleteAction)), FromFile);
+                        startActivityForResult(Intent.createChooser(intent, getString(R.string.EditFragmentCompleteAction)), FromFile);
 
                         DialogProfile.dismiss();
                     }
@@ -548,7 +573,7 @@ public class EditFragment extends Fragment
                 TextView TextViewRemove = new TextView(context);
                 TextViewRemove.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewRemove.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewRemove.setText(getString(R.string.ActivityProfileDialogRemove));
+                TextViewRemove.setText(getString(R.string.EditFragmentDialogRemove));
                 TextViewRemove.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
                 TextViewRemove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewRemove.setOnClickListener(new View.OnClickListener()
@@ -566,7 +591,7 @@ public class EditFragment extends Fragment
                             public void onResponse(String response)
                             {
                                 ImageViewCircleProfile.setImageResource(R.color.BlueLight);
-                                MiscHandler.Toast(context, getString(R.string.ActivityProfileImageCover));
+                                MiscHandler.Toast(context, getString(R.string.EditFragmentImageProfile));
                             }
 
                             @Override
@@ -584,8 +609,9 @@ public class EditFragment extends Fragment
             }
         });
 
-        RelativeLayoutMain.addView(RelativeLayoutProfile);
+        RelativeLayoutMain2.addView(RelativeLayoutProfile);
 
+        ImageViewCircleProfile = new ImageViewCircle(context);
         ImageViewCircleProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewCircleProfile.SetBorderColor(R.color.White);
         ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
@@ -593,15 +619,15 @@ public class EditFragment extends Fragment
 
         RelativeLayoutProfile.addView(ImageViewCircleProfile);
 
-        GradientDrawable ShapeViewProfile = new GradientDrawable();
-        ShapeViewProfile.setShape(GradientDrawable.OVAL);
-        ShapeViewProfile.setCornerRadius(MiscHandler.ToDimension(context, 15));
-        ShapeViewProfile.setColor(0xFF000000);
-        ShapeViewProfile.setStroke(MiscHandler.ToDimension(context, 3), 0xFFFFFFFF);
+        GradientDrawable ShapeViewProfile2 = new GradientDrawable();
+        ShapeViewProfile2.setShape(GradientDrawable.OVAL);
+        ShapeViewProfile2.setCornerRadius(MiscHandler.ToDimension(context, 15));
+        ShapeViewProfile2.setColor(0xFF000000);
+        ShapeViewProfile2.setStroke(MiscHandler.ToDimension(context, 3), 0xFFFFFFFF);
 
         View ViewBlackProfile = new View(context);
         ViewBlackProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        ViewBlackProfile.setBackground(ShapeViewProfile);
+        ViewBlackProfile.setBackground(ShapeViewProfile2);
         ViewBlackProfile.setAlpha(0.25f);
 
         RelativeLayoutProfile.addView(ViewBlackProfile);
@@ -625,10 +651,10 @@ public class EditFragment extends Fragment
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewUsername.setText(getString(R.string.ActivityProfileUsername));
+        TextViewUsername.setText(getString(R.string.EditFragmentUsername));
         TextViewUsername.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(TextViewUsername);
+        RelativeLayoutMain2.addView(TextViewUsername);
 
         RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
@@ -639,7 +665,7 @@ public class EditFragment extends Fragment
         EditTextUsername.setMaxLines(1);
         EditTextUsername.setId(MiscHandler.GenerateViewID());
         EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextUsername.setHint(R.string.ActivityProfileUsernameHint);
+        EditTextUsername.setHint(R.string.EditFragmentUsernameHint);
         EditTextUsername.setFilters(new InputFilter[]
         {
             new InputFilter.LengthFilter(32), new InputFilter()
@@ -666,7 +692,7 @@ public class EditFragment extends Fragment
         });
         EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
-        RelativeLayoutMain.addView(EditTextUsername);
+        RelativeLayoutMain2.addView(EditTextUsername);
 
         RelativeLayout.LayoutParams TextViewDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewDescriptionParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
@@ -676,10 +702,10 @@ public class EditFragment extends Fragment
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
         TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewDescription.setText(getString(R.string.ActivityProfileDescription));
+        TextViewDescription.setText(getString(R.string.EditFragmentDescription));
         TextViewDescription.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(TextViewDescription);
+        RelativeLayoutMain2.addView(TextViewDescription);
 
         RelativeLayout.LayoutParams EditTextDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
@@ -693,7 +719,7 @@ public class EditFragment extends Fragment
         EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
-        RelativeLayoutMain.addView(EditTextDescription);
+        RelativeLayoutMain2.addView(EditTextDescription);
 
         RelativeLayout.LayoutParams TextViewLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewLinkParam.addRule(RelativeLayout.BELOW, EditTextDescription.getId());
@@ -703,10 +729,10 @@ public class EditFragment extends Fragment
         TextViewLink.setLayoutParams(TextViewLinkParam);
         TextViewLink.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewLink.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewLink.setText(getString(R.string.ActivityProfileWebsite));
+        TextViewLink.setText(getString(R.string.EditFragmentWebsite));
         TextViewLink.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(TextViewLink);
+        RelativeLayoutMain2.addView(TextViewLink);
 
         RelativeLayout.LayoutParams EditTextLinkParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextLinkParam.addRule(RelativeLayout.BELOW, TextViewLink.getId());
@@ -720,7 +746,7 @@ public class EditFragment extends Fragment
         EditTextLink.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
         EditTextLink.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
 
-        RelativeLayoutMain.addView(EditTextLink);
+        RelativeLayoutMain2.addView(EditTextLink);
 
         RelativeLayout.LayoutParams TextViewPhoneParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPhoneParam.addRule(RelativeLayout.BELOW, EditTextLink.getId());
@@ -730,10 +756,10 @@ public class EditFragment extends Fragment
         TextViewPhone.setLayoutParams(TextViewPhoneParam);
         TextViewPhone.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewPhone.setText(getString(R.string.ActivityProfilePhone));
+        TextViewPhone.setText(getString(R.string.EditFragmentPhone));
         TextViewPhone.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(TextViewPhone);
+        RelativeLayoutMain2.addView(TextViewPhone);
 
         RelativeLayout.LayoutParams EditTextPhoneParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextPhoneParam.addRule(RelativeLayout.BELOW, TextViewPhone.getId());
@@ -747,7 +773,7 @@ public class EditFragment extends Fragment
         EditTextPhone.setFilters(new InputFilter[] { new InputFilter.LengthFilter(15) });
         EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
 
-        RelativeLayoutMain.addView(EditTextPhone);
+        RelativeLayoutMain2.addView(EditTextPhone);
 
         RelativeLayout.LayoutParams TextViewLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewLocationParam.addRule(RelativeLayout.BELOW, EditTextPhone.getId());
@@ -757,10 +783,10 @@ public class EditFragment extends Fragment
         TextViewLocation.setLayoutParams(TextViewLocationParam);
         TextViewLocation.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewLocation.setText(getString(R.string.ActivityProfileLocation));
+        TextViewLocation.setText(getString(R.string.EditFragmentLocation));
         TextViewLocation.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(TextViewLocation);
+        RelativeLayoutMain2.addView(TextViewLocation);
 
         RelativeLayout.LayoutParams EditTextLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextLocationParam.addRule(RelativeLayout.BELOW, TextViewLocation.getId());
@@ -777,14 +803,14 @@ public class EditFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (getCurrentFocus() != null)
-                    getCurrentFocus().clearFocus();
+                if (getActivity().getCurrentFocus() != null)
+                    getActivity().getCurrentFocus().clearFocus();
 
                 //getFragmentManager().beginTransaction().add(R.id.ActivityProfileContainer, new FragmentMap()).addToBackStack("FragmentMap").commit();
             }
         });
 
-        RelativeLayoutMain.addView(EditTextLocation);
+        RelativeLayoutMain2.addView(EditTextLocation);
 
         RelativeLayout.LayoutParams TextViewEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewEmailParam.addRule(RelativeLayout.BELOW, EditTextLocation.getId());
@@ -794,64 +820,421 @@ public class EditFragment extends Fragment
         TextViewEmail.setLayoutParams(TextViewEmailParam);
         TextViewEmail.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
         TextViewEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewEmail.setText(getString(R.string.ActivityProfileEmail));
+        TextViewEmail.setText(getString(R.string.EditFragmentEmail));
         TextViewEmail.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain.addView(TextViewEmail);
+        RelativeLayoutMain2.addView(TextViewEmail);
 
         RelativeLayout.LayoutParams EditTextEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
         EditTextEmailParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextEmail = new EditText(new ContextThemeWrapper(this, R.style.GeneralEditTextTheme));
+        EditTextEmail = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
         EditTextEmail.setLayoutParams(EditTextEmailParam);
         EditTextEmail.setMaxLines(1);
-        EditTextEmail.setHint(R.string.ActivityProfileEmailHint);
+        EditTextEmail.setHint(R.string.EditFragmentEmailHint);
         EditTextEmail.setId(MiscHandler.GenerateViewID());
         EditTextEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextEmail.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
         EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
-        RelativeLayoutMain.addView(EditTextEmail);
+        RelativeLayoutMain2.addView(EditTextEmail);
 
-        FrameLayout FrameLayoutTab = new FrameLayout(context);
-        FrameLayoutTab.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        FrameLayoutTab.setId(R.id.ActivityProfileContainer);
+        RelativeLayoutCrop = new RelativeLayout(context);
+        RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutCrop.setBackgroundResource(R.color.White);
+        RelativeLayoutCrop.setVisibility(View.GONE);
+        RelativeLayoutCrop.setClickable(true);
 
-        Root.addView(FrameLayoutTab);
+        RelativeLayoutMain.addView(RelativeLayoutCrop);
+
+        RelativeLayout RelativeLayoutCropHeader = new RelativeLayout(context);
+        RelativeLayoutCropHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayoutCropHeader.setBackgroundResource(R.color.White5);
+        RelativeLayoutCropHeader.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutCrop.addView(RelativeLayoutCropHeader);
+
+        ImageView ImageViewCropBack = new ImageView(context);
+        ImageViewCropBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageViewCropBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewCropBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewCropBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewCropBack.setId(MiscHandler.GenerateViewID());
+        ImageViewCropBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                RelativeLayoutCrop.setVisibility(View.GONE);
+            }
+        });
+
+        RelativeLayoutCropHeader.addView(ImageViewCropBack);
+
+        RelativeLayout.LayoutParams TextViewCropTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewCropTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCropBack.getId());
+        TextViewCropTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+
+        TextView TextViewCropTitle = new TextView(context);
+        TextViewCropTitle.setLayoutParams(TextViewCropTitleParam);
+        TextViewCropTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewCropTitle.setText(getString(R.string.EditFragmentCrop));
+        TextViewCropTitle.setTypeface(null, Typeface.BOLD);
+        TextViewCropTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+        RelativeLayoutCropHeader.addView(TextViewCropTitle);
+
+        RelativeLayout.LayoutParams LoadingViewCropParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        LoadingViewCropParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        LoadingViewCropParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        LoadingViewCropParam.setMargins(0, 0, MiscHandler.ToDimension(context, 15), 0);
+
+        final LoadingView LoadingViewCrop = new LoadingView(context);
+        LoadingViewCrop.setLayoutParams(LoadingViewCropParam);
+        LoadingViewCrop.SetColor(R.color.BlueLight);
+
+        RelativeLayoutCropHeader.addView(LoadingViewCrop);
+
+        RelativeLayout.LayoutParams ImageViewCropParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        ImageViewCropParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        ImageViewCropParam.addRule(RelativeLayout.CENTER_VERTICAL);
+
+        final ImageView ImageViewCrop = new ImageView(context);
+        ImageViewCrop.setLayoutParams(ImageViewCropParam);
+        ImageViewCrop.setImageResource(R.drawable.ic_send_blue2);
+        ImageViewCrop.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
+        ImageViewCrop.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ImageViewCrop.setVisibility(View.GONE);
+                LoadingViewCrop.Start();
+
+                Bitmap Cropped = CropImageViewMain.getCroppedImage();
+                ImageViewCover.setImageBitmap(Cropped);
+
+                LoadingViewCrop.Stop();
+                ImageViewCrop.setVisibility(View.VISIBLE);
+                RelativeLayoutCrop.setVisibility(View.GONE);
+            }
+        });
+
+        RelativeLayoutCropHeader.addView(ImageViewCrop);
+
+        RelativeLayout.LayoutParams ViewLineCropParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        ViewLineCropParam.addRule(RelativeLayout.BELOW, RelativeLayoutCropHeader.getId());
+
+        View ViewLineCrop = new View(context);
+        ViewLineCrop.setLayoutParams(ViewLineCropParam);
+        ViewLineCrop.setBackgroundResource(R.color.Gray2);
+        ViewLineCrop.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutCrop.addView(ViewLineCrop);
+
+        RelativeLayout.LayoutParams CropImageViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        CropImageViewMainParam.addRule(RelativeLayout.BELOW, ViewLineCrop.getId());
+
+        CropImageViewMain = new CropImageView(context);
+        CropImageViewMain.setLayoutParams(CropImageViewMainParam);
+        CropImageViewMain.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
+        CropImageViewMain.setFixedAspectRatio(true);
+        CropImageViewMain.setAutoZoomEnabled(true);
+
+        RelativeLayoutCrop.addView(CropImageViewMain);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewBlankLine.getId());
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RelativeLayoutLoading = new RelativeLayout(context);
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
         RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
         RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
 
-        Root.addView(RelativeLayoutLoading);
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewData = new LoadingView(context);
-        LoadingViewData.setLayoutParams(LoadingViewDataParam);
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutLoading.addView(LoadingViewData);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextViewTry = new TextView(context);
-        TextViewTry.setLayoutParams(TextViewTryParam);
-        TextViewTry.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
-        TextViewTry.setText(getString(R.string.TryAgain));
-        TextViewTry.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTry.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(); } });
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryParam);
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
 
-        RelativeLayoutLoading.addView(TextViewTry);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
+
         EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
 
-        RetrieveDataFromServer();
+        RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int RequestCode, @NonNull String[] Permissions, @NonNull int[] GrantResults)
+    {
+        super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
+
+        if (PermissionHandler != null)
+            PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        AndroidNetworking.forceCancel("EditFragment");
+    }
+
+    @Override
+    public void onActivityResult(int RequestCode, int ResultCode, Intent Data)
+    {
+        if (ResultCode != -1)
+            return;
+
+        final Context context = getActivity();
+
+        switch (RequestCode)
+        {
+            case FromFile:
+                CaptureUri = Data.getData();
+                DoCrop();
+            break;
+            case FromCamera:
+                PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, EditFragment.this, new PermissionHandler.PermissionEvent()
+                {
+                    @Override
+                    public void OnGranted()
+                    {
+                        ContentResolver _ContentResolver = context.getContentResolver();
+                        ContentValues _ContentValues = new ContentValues();
+
+                        _ContentValues.put(MediaStore.Images.Media.DATA, CaptureUri.getPath());
+                        _ContentValues.put(MediaStore.Images.Media.IS_PRIVATE, 0);
+                        _ContentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, _ContentValues);
+
+                        String[] SelectionArgs = { CaptureUri.getPath() };
+
+                        Cursor _Cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " = ?", SelectionArgs, null);
+
+                        if (_Cursor != null && _Cursor.moveToFirst())
+                        {
+                            CaptureUri = Uri.parse("content://media/external/images/media/" + _Cursor.getInt(_Cursor.getColumnIndex(MediaStore.Images.Media._ID)));
+                            _Cursor.close();
+                        }
+
+                        DoCrop();
+                    }
+
+                    @Override
+                    public void OnFailed()
+                    {
+                        MiscHandler.Toast(context, getString(R.string.PermissionStorage));
+                    }
+                });
+            break;
+            /*case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                Uri ResultURI = CropImage.getActivityResult(Data).getUri();
+
+                if (IsCover)
+                {
+                    try
+                    {
+                        boolean IsCreated = true;
+                        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Temp/Picture");
+
+                        if (!Root.exists())
+                            IsCreated = Root.mkdirs();
+
+                        if (IsCreated)
+                        {
+                            FileCover = new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+                            FileOutputStream FileStream = new FileOutputStream(FileCover);
+                            ByteArrayOutputStream ImageByteArray = new ByteArrayOutputStream();
+                            MediaStore.Images.Media.getBitmap(getContentResolver(), ResultURI).compress(Bitmap.CompressFormat.JPEG, 70, ImageByteArray);
+                            ImageByteArray.writeTo(FileStream);
+                            FileStream.close();
+
+                            ImageViewCover.setImageURI(ResultURI);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Leave Me Alone
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        boolean IsCreated = true;
+                        File Root = new File(Environment.getExternalStorageDirectory(), "BioGram/Temp/Picture");
+
+                        if (!Root.exists())
+                            IsCreated = Root.mkdirs();
+
+                        if (IsCreated)
+                        {
+                            FileProfile = new File(Root, ("BIO_IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+                            FileOutputStream FileStream = new FileOutputStream(FileProfile);
+                            ByteArrayOutputStream ImageByteArray = new ByteArrayOutputStream();
+                            MediaStore.Images.Media.getBitmap(getContentResolver(), ResultURI).compress(Bitmap.CompressFormat.JPEG, 70, ImageByteArray);
+                            ImageByteArray.writeTo(FileStream);
+                            FileStream.close();
+
+                            ImageViewCircleProfile.setImageURI(ResultURI);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Leave Me Alone
+                    }
+                }
+            break;*/
+        }
+    }
+
+    private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
+    {
+        TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
+
+        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileGetEdit"))
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .setTag("EditFragment")
+        .build()
+        .getAsString(new StringRequestListener()
+        {
+            @Override
+            public void onResponse(String Response)
+            {
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
+                RelativeLayoutLoading.setVisibility(View.GONE);
+
+                try
+                {
+                    JSONObject Result = new JSONObject(Response);
+
+                    if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                    {
+                        JSONObject Data = new JSONObject(Result.getString("Result"));
+
+                        EditTextUsername.setText(Data.getString("Username"));
+                        EditTextDescription.setText(Data.getString("Description"));
+                        EditTextLink.setText(Data.getString("Link"));
+                        EditTextLocation.setText(Data.getString("Location"));
+                        EditTextEmail.setText(Data.getString("Email"));
+                        Position = Data.getString("Position");
+
+                        Glide.with(context)
+                        .load(Data.getString("Cover"))
+                        .dontAnimate()
+                        .into(ImageViewCover);
+
+                        Glide.with(context)
+                        .load(Data.getString("Avatar"))
+                        .override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90))
+                        .dontAnimate()
+                        .into(ImageViewCircleProfile);
+                    }
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Debug("EditFragment-RequestNew: " + e.toString());
+                }
+            }
+
+            @Override
+            public void onError(ANError anError)
+            {
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.VISIBLE);
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
+            }
+        });
+    }
+
+    private void DoCrop()
+    {
+        Context context = getActivity();
+
+        try
+        {
+            String URL = null;
+            Cursor _Cursor = context.getContentResolver().query(CaptureUri, new String[] { MediaStore.Images.Media.DATA }, null, null, null);
+
+            if (_Cursor != null && _Cursor.moveToFirst())
+            {
+                URL = _Cursor.getString(_Cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                _Cursor.close();
+            }
+
+            if (URL == null)
+                return;
+
+            File ImageFile = new File(URL);
+
+            BitmapFactory.Options O = new BitmapFactory.Options();
+            O.inJustDecodeBounds = true;
+
+            BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+
+            int Scale = 1;
+            int Height = O.outHeight;
+            int Width = O.outWidth;
+
+            if (Height > 500 || Width > 500)
+            {
+                int HalfHeight = Height / 2;
+                int HalfWidth = Width / 2;
+
+                while ((HalfHeight / Scale) >= 500 && (HalfWidth / Scale) >= 500)
+                {
+                    Scale *= 2;
+                }
+            }
+
+            O.inSampleSize = Scale;
+            O.inJustDecodeBounds = false;
+
+            Bitmap ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+
+            Matrix matrix = new Matrix();
+            int Orientation = new ExifInterface(URL).getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+
+            if (Orientation == 6)
+                matrix.postRotate(90);
+            else if (Orientation == 3)
+                matrix.postRotate(180);
+            else if (Orientation == 8)
+                matrix.postRotate(270);
+
+            ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
+            String ResizeBitmapPath = MediaStore.Images.Media.insertImage(context.getContentResolver(), ResizeBitmap, "BioGram Crop Image", null);
+
+            if (IsCover)
+                CropImageViewMain.setAspectRatio(2, 1);
+            else
+                CropImageViewMain.setAspectRatio(1, 1);
+
+            CropImageViewMain.setImageUriAsync(Uri.parse(ResizeBitmapPath));
+            RelativeLayoutCrop.setVisibility(View.VISIBLE);
+        }
+        catch (Exception e)
+        {
+            MiscHandler.Debug("EditFragment-DoCrop: " + e.toString());
+        }
     }
 }

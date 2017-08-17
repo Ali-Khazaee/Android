@@ -9,12 +9,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.bumptech.glide.Glide;
 
 import com.danikula.videocache.HttpProxyCacheServer;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.CacheHandler;
-
 import co.biogram.main.service.NotificationService;
 
 import okhttp3.OkHttpClient;
@@ -28,11 +26,6 @@ public class App extends Application
     public void onCreate()
     {
         super.onCreate();
-
-        if (LeakCanary.isInAnalyzerProcess(this))
-            return;
-
-        LeakCanary.install(this);
 
         Context context = getApplicationContext();
 

@@ -216,17 +216,22 @@ public class WriteFragment extends Fragment
                     {
                         for (int I = 0; I < SelectImage.size(); I++)
                         {
-                            ByteArrayOutputStream ByteArrayStream = new ByteArrayOutputStream();
-                            File ImageFile = new File(Environment.getExternalStorageDirectory() + "/BioGram/Cache/" + "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
+                            File CacheFolder = new File(context.getCacheDir(), "BioGram");
 
-                            SelectImage.get(I).compress(Bitmap.CompressFormat.JPEG, 95, ByteArrayStream);
+                            if (CacheFolder.exists() || CacheFolder.mkdir())
+                            {
+                                ByteArrayOutputStream ByteArrayStream = new ByteArrayOutputStream();
+                                File ImageFile = new File(CacheFolder, "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
 
-                            FileOutputStream FileStream = new FileOutputStream(ImageFile);
-                            FileStream.write(ByteArrayStream.toByteArray());
-                            FileStream.flush();
-                            FileStream.close();
+                                SelectImage.get(I).compress(Bitmap.CompressFormat.JPEG, 95, ByteArrayStream);
 
-                            UploadFile.put(("Image" + I), ImageFile);
+                                FileOutputStream FileStream = new FileOutputStream(ImageFile);
+                                FileStream.write(ByteArrayStream.toByteArray());
+                                FileStream.flush();
+                                FileStream.close();
+
+                                UploadFile.put(("Image" + I), ImageFile);
+                            }
                         }
                     }
                     catch (Exception e)
@@ -1099,6 +1104,7 @@ public class WriteFragment extends Fragment
                         {
                             BitmapFactory.Options O = new BitmapFactory.Options();
                             O.inJustDecodeBounds = true;
+
                             BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
 
                             int Scale = 1;
@@ -1190,7 +1196,15 @@ public class WriteFragment extends Fragment
                         return;
                     }
 
-                    SelectVideo = new File(Environment.getExternalStorageDirectory() + "/BioGram/Cache/" + "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
+                    File CacheFolder = new File(context.getCacheDir(), "BioGram");
+
+                    if (!CacheFolder.exists() && !CacheFolder.mkdir())
+                    {
+                        MiscHandler.Toast(context, getString(R.string.WriteFragmentWrong));
+                        return;
+                    }
+
+                    SelectVideo = new File(CacheFolder, "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
 
                     final ProgressDialog Progress = new ProgressDialog(getActivity());
                     Progress.setMessage(getString(R.string.WriteFragmentVideoCompress));

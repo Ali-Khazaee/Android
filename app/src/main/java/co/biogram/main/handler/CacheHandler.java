@@ -20,6 +20,21 @@ public class CacheHandler
     {
         try
         {
+            File TempFolder = new File(context.getCacheDir(), "BioGram");
+
+            if (TempFolder.exists() && TempFolder.isDirectory())
+            {
+                File[] TempFiles = TempFolder.listFiles();
+
+                if (TempFiles != null)
+                {
+                    for (File file : TempFiles)
+                    {
+                        file.delete();
+                    }
+                }
+            }
+
             File CacheFolder = new File(context.getCacheDir(), "BioGramCache");
 
             if (!CacheFolder.exists())
