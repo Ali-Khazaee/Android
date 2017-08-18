@@ -165,7 +165,7 @@ public class MiscHandler
         {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(Url, new HashMap<String, String>());
-            Bitmap bitmap = retriever.getFrameAtTime(5000);
+            Bitmap bitmap = retriever.getFrameAtTime();
             retriever.release();
 
             return bitmap;
