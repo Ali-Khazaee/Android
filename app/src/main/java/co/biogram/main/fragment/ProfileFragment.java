@@ -63,9 +63,9 @@ import co.biogram.main.misc.ScrollViewSticky;
 
 public class ProfileFragment extends Fragment
 {
-    private List<AdapterPost.Struct> PostListLike = new ArrayList<>();
-    private List<AdapterPost.Struct> PostList = new ArrayList<>();
-    private List<StructComment> CommentList = new ArrayList<>();
+    private final List<AdapterPost.Struct> PostListLike = new ArrayList<>();
+    private final List<AdapterPost.Struct> PostList = new ArrayList<>();
+    private final List<StructComment> CommentList = new ArrayList<>();
 
     private AdapterComment CommentAdapter;
     private AdapterPost PostAdapter;
@@ -853,7 +853,7 @@ public class ProfileFragment extends Fragment
             {
                 if (IsPrivate)
                 {
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new EditFragment()).addToBackStack("EditFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new EditFragment(), "EditFragment").addToBackStack("EditFragment").commit();
                     return;
                 }
 

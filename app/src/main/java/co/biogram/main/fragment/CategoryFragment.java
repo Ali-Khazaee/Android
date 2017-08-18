@@ -124,8 +124,8 @@ public class CategoryFragment extends Fragment
 
     private class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
     {
-        private int spanCount;
-        private int spacing;
+        private final int spanCount;
+        private final int spacing;
 
         GridSpacingItemDecoration(int spanCount, int spacing)
         {
@@ -183,9 +183,9 @@ public class CategoryFragment extends Fragment
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
-            LinearLayout LinearLayoutMain;
-            ImageView ImageViewIcon;
-            TextView TextViewName;
+            final LinearLayout LinearLayoutMain;
+            final ImageView ImageViewIcon;
+            final TextView TextViewName;
 
             ViewHolderMain(View view)
             {
@@ -275,9 +275,9 @@ public class CategoryFragment extends Fragment
 
     private class Struct
     {
-        int Icon;
-        String Name;
-        int Type;
+        final int Icon;
+        final String Name;
+        final int Type;
 
         Struct(int icon, String name, int type)
         {

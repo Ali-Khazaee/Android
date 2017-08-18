@@ -20,7 +20,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import co.biogram.main.R;
-import co.biogram.main.activity.ActivityProfileEdit;
 import co.biogram.main.activity.WelcomeActivity;
 import co.biogram.main.handler.MiscHandler;
 
@@ -143,7 +142,7 @@ public class SettingFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().startActivity(new Intent(context, ActivityProfileEdit.class));
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new EditFragment(), "EditFragment").addToBackStack("EditFragment").commit();
             }
         });
 

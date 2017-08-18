@@ -419,9 +419,9 @@ public class SearchFragment extends Fragment
 
         class ViewHolderComment extends RecyclerView.ViewHolder
         {
-            private ImageViewCircle ImageViewCircleProfile;
-            private TextView TextViewUsername;
-            private TextView TextViewFollower;
+            private final ImageViewCircle ImageViewCircleProfile;
+            private final TextView TextViewUsername;
+            private final TextView TextViewFollower;
 
             ViewHolderComment(View view)
             {
@@ -553,9 +553,9 @@ public class SearchFragment extends Fragment
 
         class ViewHolderComment extends RecyclerView.ViewHolder
         {
-            private TextView TextViewSharp;
-            private TextView TextViewTag;
-            private TextView TextViewPost;
+            private final TextView TextViewSharp;
+            private final TextView TextViewTag;
+            private final TextView TextViewPost;
 
             ViewHolderComment(View view)
             {

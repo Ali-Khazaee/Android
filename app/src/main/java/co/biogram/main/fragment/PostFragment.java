@@ -74,7 +74,7 @@ public class PostFragment extends Fragment
     private ImageView ImageViewLike;
 
     private String OwnerID = "";
-    private String Username = "";
+    private final String Username = "";
     private boolean IsLike = false;
     private boolean IsComment = false;
     private boolean IsBookmark = false;

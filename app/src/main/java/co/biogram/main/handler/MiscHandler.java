@@ -152,8 +152,8 @@ public class MiscHandler
 
     private static class VideoThumbnailTask extends AsyncTask<Void, Void, Bitmap>
     {
-        String Url;
-        ImageView ImageViewMain;
+        final String Url;
+        final ImageView ImageViewMain;
 
         VideoThumbnailTask(ImageView imageView, String url)
         {

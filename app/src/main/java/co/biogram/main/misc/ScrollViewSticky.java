@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ScrollViewSticky extends NestedScrollView
 {
-    private ArrayList<View> stickyViews = new ArrayList<>();
+    private final ArrayList<View> stickyViews = new ArrayList<>();
     private View currentlyStickingView;
     private float stickyViewTopOffset;
     private int stickyViewLeftOffset;

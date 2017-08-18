@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.biogram.main">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="co.biogram.main">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -30,7 +28,7 @@
 
         <activity android:name=".activity.MainActivity" android:screenOrientation="portrait" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB-e78nDHYGAetSf7w2XKuaODt8-D-wuHE" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyC-lFYdoUT4Wr1X77W-0RcTQbzcMfDo_8E" />
         <meta-data android:name="co.biogram.main.misc.GlideConfig" android:value="GlideModule" />
 
         <service android:name=".service.NotificationService" />
