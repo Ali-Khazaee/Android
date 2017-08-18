@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity
 
         setContentView(RelativeLayoutMain);
 
-        ChangeTab(getIntent().getIntExtra("Tab", 5));
+        ChangeTab(getIntent().getIntExtra("Tab", 1));
     }
 
     @Override

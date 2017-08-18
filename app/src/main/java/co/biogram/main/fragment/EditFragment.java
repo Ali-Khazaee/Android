@@ -119,6 +119,7 @@ public class EditFragment extends Fragment
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setFocusableInTouchMode(true);
+        RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
@@ -133,15 +134,7 @@ public class EditFragment extends Fragment
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewBack.setImageResource(R.drawable.ic_back_blue);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                MiscHandler.HideSoftKey(getActivity());
-                getActivity().onBackPressed();
-            }
-        });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { MiscHandler.HideSoftKey(getActivity()); getActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -158,7 +151,7 @@ public class EditFragment extends Fragment
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams LoadingViewSaveParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams LoadingViewSaveParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
         LoadingViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         LoadingViewSaveParam.addRule(RelativeLayout.CENTER_VERTICAL);
         LoadingViewSaveParam.setMargins(0, 0, MiscHandler.ToDimension(context, 15), 0);
@@ -837,7 +830,7 @@ public class EditFragment extends Fragment
                     @Override public void OnFailed() { }
                 });
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new MapFragment()).addToBackStack("MapFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new MapFragment(), "MapFragment").addToBackStack("MapFragment").commit();
             }
         });
 
@@ -1250,36 +1243,6 @@ public class EditFragment extends Fragment
             MiscHandler.Debug("EditFragment-DoCrop: " + e.toString());
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public static class MapFragment extends Fragment
     {
@@ -1764,12 +1727,17 @@ public class EditFragment extends Fragment
                     if (Name.length() > 25)
                         Name = Name.substring(0, 25) + " ...";
 
-                    EditFragment Parent = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
+                    MapFragment mapFragment = ((MapFragment) getActivity().getSupportFragmentManager().findFragmentByTag("MapFragment"));
 
-                    if (Parent != null)
+                    if (mapFragment != null)
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
+
+                    EditFragment editFragment = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
+
+                    if (editFragment != null)
                     {
-                        Parent.Position = (float) Search.Latitude + ":" + (float) Search.Longitude;
-                        Parent.EditTextLocation.setText(Name);
+                        editFragment.Position = (float) Search.Latitude + ":" + (float) Search.Longitude;
+                        editFragment.EditTextLocation.setText(Name);
                     }
 
                     getActivity().onBackPressed();

@@ -1110,12 +1110,12 @@ public class WriteFragment extends Fragment
                             int Height = O.outHeight;
                             int Width = O.outWidth;
 
-                            if (Height > 250 || Width > 250)
+                            if (Height > 500 || Width > 500)
                             {
                                 int HalfHeight = Height / 2;
                                 int HalfWidth = Width / 2;
 
-                                while ((HalfHeight / Scale) >= 250 && (HalfWidth / Scale) >= 250)
+                                while ((HalfHeight / Scale) >= 500 && (HalfWidth / Scale) >= 500)
                                 {
                                     Scale *= 2;
                                 }
