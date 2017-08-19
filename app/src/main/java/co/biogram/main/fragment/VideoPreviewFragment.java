@@ -6,7 +6,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -17,6 +19,33 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.Cache;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.CacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.SimpleCache;
+import com.google.android.exoplayer2.util.Util;
+
+import java.io.File;
 
 import co.biogram.main.App;
 import co.biogram.main.R;
@@ -116,10 +145,41 @@ public class VideoPreviewFragment extends Fragment
 
         RelativeLayoutControl.addView(SeekBarMain);
 
-        RelativeLayout.LayoutParams TextureVideoViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        TextureVideoViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams SimpleExoPlayerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        SimpleExoPlayerViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        if (VideoURL.startsWith("http"))
+        SimpleExoPlayerView SimpleExoPlayerViewMain = new SimpleExoPlayerView(context);
+        SimpleExoPlayerViewMain.setLayoutParams(SimpleExoPlayerViewMainParam);
+
+        RelativeLayoutMain.addView(SimpleExoPlayerViewMain);
+
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+
+        SimpleExoPlayerViewMain.setPlayer(player);
+
+        DataSource.Factory dataSourceFactory = new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", null);
+
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
+
+
+        CacheEvictor cacheEvictor = new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024);
+        Cache cache = new SimpleCache(new File(context.getCacheDir(), "media_cache"), cacheEvictor);
+        DataSource.Factory dataSourceFactory2 = new CacheDataSourceFactory(cache, dataSourceFactory, CacheDataSource.FLAG_BLOCK_ON_CACHE, 100 * 1024 * 1024);
+        //return new HlsMediaSource(uri, dataSourceFactory, mainHandler, eventLogger);
+
+
+        MediaSource videoSource = new ExtractorMediaSource(Uri.parse(VideoURL), dataSourceFactory2, extractorsFactory, null, null);
+
+        player.prepare(videoSource);
+
+
+
+        /*if (VideoURL.startsWith("http"))
             VideoURL = App.GetProxy(context).getProxyUrl(VideoURL);
 
         TextureVideoViewMain = new TextureVideoView(context);
@@ -250,7 +310,7 @@ public class VideoPreviewFragment extends Fragment
             }
         };
 
-        TextureVideoViewMain.postDelayed(runnable, 500);
+        TextureVideoViewMain.postDelayed(runnable, 500);*/
 
         return RelativeLayoutMain;
     }
@@ -259,8 +319,8 @@ public class VideoPreviewFragment extends Fragment
     public void onPause()
     {
         super.onPause();
-        TextureVideoViewMain.removeCallbacks(runnable);
-        TextureVideoViewMain.ClearPlayback();
+        //TextureVideoViewMain.removeCallbacks(runnable);
+        //TextureVideoViewMain.ClearPlayback();
     }
 
     private String StringForTime(long Time)
