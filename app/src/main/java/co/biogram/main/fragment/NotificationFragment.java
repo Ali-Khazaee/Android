@@ -480,7 +480,7 @@ public class NotificationFragment extends Fragment
             }
 
             LoadingView LoadingViewMain = new LoadingView(context);
-            LoadingViewMain.setLayoutParams(new LoadingView.LayoutParams(LoadingView.LayoutParams.MATCH_PARENT, LoadingView.LayoutParams.MATCH_PARENT));
+            LoadingViewMain.setLayoutParams(new LoadingView.LayoutParams(LoadingView.LayoutParams.MATCH_PARENT, LoadingView.LayoutParams.WRAP_CONTENT));
             LoadingViewMain.Start();
 
             return new ViewHolderMain(LoadingViewMain, false);
