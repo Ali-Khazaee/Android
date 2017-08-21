@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Application -->
-    <string name="ApplicationName">BioGram</string>
+    <string name="ApplicationName">Biogram</string>
 
     <!-- General -->
     <string name="Soon">Coming soon</string>

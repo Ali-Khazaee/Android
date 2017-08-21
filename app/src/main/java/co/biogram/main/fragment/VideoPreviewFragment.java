@@ -38,9 +38,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
@@ -56,7 +54,9 @@ import co.biogram.main.handler.MiscHandler;
 
 public class VideoPreviewFragment extends Fragment
 {
+    private SimpleExoPlayerView SimpleExoPlayerViewMain;
     private SimpleExoPlayer SimpleExoPlayerMain;
+    private Runnable runnable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -154,33 +154,43 @@ public class VideoPreviewFragment extends Fragment
         TrackSelector TrackSelectorMain = new DefaultTrackSelector(TrackSelectionMain);
         SimpleExoPlayerMain = ExoPlayerFactory.newSimpleInstance(context, TrackSelectorMain);
 
-        SimpleExoPlayerView SimpleExoPlayerViewMain = new SimpleExoPlayerView(context);
+        SimpleExoPlayerViewMain = new SimpleExoPlayerView(context);
         SimpleExoPlayerViewMain.setLayoutParams(SimpleExoPlayerViewMainParam);
-        //SimpleExoPlayerViewMain.setUseController(false);
+        SimpleExoPlayerViewMain.setUseController(false);
         SimpleExoPlayerViewMain.setPlayer(SimpleExoPlayerMain);
+        SimpleExoPlayerViewMain.getVideoSurfaceView().setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                long Current = SimpleExoPlayerMain.getCurrentPosition();
+                long Duration = SimpleExoPlayerMain.getDuration();
+
+                TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
+
+                long Position = 1000L * Current / Duration;
+                SeekBarMain.setProgress((int) Position);
+
+                if (SimpleExoPlayerMain.getPlayWhenReady())
+                {
+                    RelativeLayoutHeader.setVisibility(View.VISIBLE);
+                    ImageViewPlay.setImageResource(R.drawable.ic_play_white);
+                    SimpleExoPlayerMain.setPlayWhenReady(false);
+                    SimpleExoPlayerViewMain.removeCallbacks(runnable);
+                }
+                else
+                {
+                    RelativeLayoutHeader.setVisibility(View.GONE);
+                    ImageViewPlay.setImageResource(R.drawable.ic_pause);
+                    SimpleExoPlayerMain.setPlayWhenReady(true);
+                    SimpleExoPlayerViewMain.post(runnable);
+                }
+            }
+        });
 
         RelativeLayoutMain.addView(SimpleExoPlayerViewMain);
 
-        DataSource.Factory DataSourceMain = new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", new TransferListener<DataSource>()
-        {
-            @Override
-            public void onTransferStart(DataSource source, DataSpec dataSpec)
-            {
-                MiscHandler.Debug("onTransferStart Called: " + source.getUri() + " - " + dataSpec.length + " - " + dataSpec.key + " - " + dataSpec.uri);
-            }
-
-            @Override
-            public void onBytesTransferred(DataSource source, int bytesTransferred)
-            {
-                MiscHandler.Debug("onBytesTransferred Called: " + bytesTransferred);
-            }
-
-            @Override
-            public void onTransferEnd(DataSource source)
-            {
-                MiscHandler.Debug("onTransferEnd Called: " + source.getUri());
-            }
-        });
+        DataSource.Factory DataSourceMain = new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", null);
 
         ExtractorsFactory ExtractorsFactoryMain = new DefaultExtractorsFactory();
         CacheEvictor CacheEvictorMain = new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024);
@@ -189,132 +199,51 @@ public class VideoPreviewFragment extends Fragment
         MediaSource MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain2, ExtractorsFactoryMain, null, null);
 
         SimpleExoPlayerMain.prepare(MediaSourceMain);
-        //SimpleExoPlayerMain.setPlayWhenReady(true);
+        SimpleExoPlayerMain.setPlayWhenReady(true);
         SimpleExoPlayerMain.addListener(new Player.EventListener()
         {
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest)
+            @Override public void onTimelineChanged(Timeline timeline, Object manifest) { }
+            @Override public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) { }
+            @Override public void onLoadingChanged(boolean isLoading) { }
+            @Override public void onRepeatModeChanged(int repeatMode) { }
+            @Override public void onPlayerError(ExoPlaybackException error) { }
+            @Override public void onPositionDiscontinuity() { }
+            @Override public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) { }
+            @Override public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
             {
-                MiscHandler.Debug("onTimelineChanged Called: ");
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
-            {
-                MiscHandler.Debug("onTracksChanged Called: ");
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading)
-            {
-                MiscHandler.Debug("onLoadingChanged Called: ");
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
-            {
-                MiscHandler.Debug("onPlayerStateChanged Called: ");
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode)
-            {
-                MiscHandler.Debug("onRepeatModeChanged Called: ");
-            }
-
-            @Override
-            public void onPlayerError(ExoPlaybackException error)
-            {
-                MiscHandler.Debug("onPlayerError Called: ");
-            }
-
-            @Override
-            public void onPositionDiscontinuity()
-            {
-                MiscHandler.Debug("onPositionDiscontinuity Called: ");
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters)
-            {
-                MiscHandler.Debug("onPlaybackParametersChanged Called: ");
-            }
-        });
-
-
-
-        /*if (VideoURL.startsWith("http"))
-            VideoURL = App.GetProxy(context).getProxyUrl(VideoURL);
-
-        TextureVideoViewMain = new TextureVideoView(context);
-        TextureVideoViewMain.setLayoutParams(TextureVideoViewMainParam);
-        TextureVideoViewMain.SetVideoURI(VideoURL);
-        TextureVideoViewMain.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                long Current = TextureVideoViewMain.getCurrentPosition();
-                long Duration = TextureVideoViewMain.getDuration();
-
-                TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
-
-                long Position = 1000L * Current / Duration;
-                SeekBarMain.setProgress((int) Position);
-
-                if (TextureVideoViewMain.isPlaying())
+                if (playbackState == 4)
                 {
+                    SeekBarMain.setProgress(1000);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     ImageViewPlay.setImageResource(R.drawable.ic_play_white);
-                    TextureVideoViewMain.pause();
-                    TextureVideoViewMain.removeCallbacks(runnable);
+                    SimpleExoPlayerMain.setPlayWhenReady(false);
+                    SeekBarMain.setProgress(0);
+                    SimpleExoPlayerMain.seekTo(0);
+                    SimpleExoPlayerViewMain.removeCallbacks(runnable);
                 }
-                else
+                else if (playbackState == 3)
                 {
-                    RelativeLayoutHeader.setVisibility(View.GONE);
-                    ImageViewPlay.setImageResource(R.drawable.ic_pause);
-                    TextureVideoViewMain.start();
-                    TextureVideoViewMain.post(runnable);
+                    TextViewTime.setText(StringForTime(SimpleExoPlayerMain.getCurrentPosition()) + " / " + StringForTime(SimpleExoPlayerMain.getDuration()));
                 }
-            }
-        });
-        TextureVideoViewMain.SetOnCompletion(new TextureVideoView.OnVideoCompletion()
-        {
-            @Override
-            public void OnCompletion(MediaPlayer mp)
-            {
-                SeekBarMain.setProgress(1000);
-                RelativeLayoutHeader.setVisibility(View.VISIBLE);
-                ImageViewPlay.setImageResource(R.drawable.ic_play_white);
-                TextureVideoViewMain.removeCallbacks(runnable);
-            }
-        });
-        TextureVideoViewMain.SetOnPrepared(new TextureVideoView.OnVideoPrepared()
-        {
-            @Override
-            public void OnPrepared(MediaPlayer mp)
-            {
-                TextViewTime.setText(StringForTime(0) + " / " + StringForTime(mp.getDuration()));
             }
         });
 
         SeekBarMain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
+            @Override public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override public void onStopTrackingTouch(SeekBar seekBar) { }
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
                 if (fromUser)
                 {
-                    long Duration = TextureVideoViewMain.getDuration();
+                    long Duration = SimpleExoPlayerMain.getDuration();
                     long NewPosition = (Duration * progress) / 1000L;
 
-                    TextureVideoViewMain.seekTo((int) NewPosition);
+                    SimpleExoPlayerMain.seekTo((int) NewPosition);
                     TextViewTime.setText(StringForTime(NewPosition) + " / " + StringForTime(Duration));
                 }
             }
-
-            @Override public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
         ImageViewPlay.setOnClickListener(new View.OnClickListener()
@@ -322,31 +251,29 @@ public class VideoPreviewFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                long Current = TextureVideoViewMain.getCurrentPosition();
-                long Duration = TextureVideoViewMain.getDuration();
+                long Current = SimpleExoPlayerMain.getCurrentPosition();
+                long Duration = SimpleExoPlayerMain.getDuration();
                 long Position = 1000L * Current / Duration;
 
                 SeekBarMain.setProgress((int) Position);
                 TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
 
-                if (TextureVideoViewMain.isPlaying())
+                if (SimpleExoPlayerMain.getPlayWhenReady())
                 {
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     ImageViewPlay.setImageResource(R.drawable.ic_play_white);
-                    TextureVideoViewMain.pause();
-                    TextureVideoViewMain.removeCallbacks(runnable);
+                    SimpleExoPlayerMain.setPlayWhenReady(false);
+                    SimpleExoPlayerViewMain.removeCallbacks(runnable);
                 }
                 else
                 {
                     RelativeLayoutHeader.setVisibility(View.GONE);
                     ImageViewPlay.setImageResource(R.drawable.ic_pause);
-                    TextureVideoViewMain.start();
-                    TextureVideoViewMain.post(runnable);
+                    SimpleExoPlayerMain.setPlayWhenReady(true);
+                    SimpleExoPlayerViewMain.post(runnable);
                 }
             }
         });
-
-        RelativeLayoutMain.addView(TextureVideoViewMain);
 
         runnable = new Runnable()
         {
@@ -355,26 +282,26 @@ public class VideoPreviewFragment extends Fragment
             {
                 try
                 {
-                    if (!TextureVideoViewMain.isPlaying())
-                        TextureVideoViewMain.start();
+                    if (SimpleExoPlayerMain.getPlayWhenReady())
+                    {
+                        long Current = SimpleExoPlayerMain.getCurrentPosition();
+                        long Duration = SimpleExoPlayerMain.getDuration();
+                        final long Position = 1000L * Current / Duration;
 
-                    long Current = TextureVideoViewMain.getCurrentPosition();
-                    long Duration = TextureVideoViewMain.getDuration();
-                    final long Position = 1000L * Current / Duration;
-
-                    SeekBarMain.setProgress((int) Position);
-                    TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
+                        SeekBarMain.setProgress((int) Position);
+                        TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
+                    }
                 }
                 catch (Exception e)
                 {
                     MiscHandler.Debug("VideoPreviewFragment: " + e.toString());
                 }
 
-                TextureVideoViewMain.postDelayed(runnable, 500);
+                SimpleExoPlayerViewMain.postDelayed(runnable, 500);
             }
         };
 
-        TextureVideoViewMain.postDelayed(runnable, 500);*/
+        SimpleExoPlayerViewMain.postDelayed(runnable, 500);
 
         return RelativeLayoutMain;
     }
@@ -383,6 +310,14 @@ public class VideoPreviewFragment extends Fragment
     public void onPause()
     {
         super.onPause();
+        SimpleExoPlayerMain.setPlayWhenReady(false);
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        SimpleExoPlayerViewMain.removeCallbacks(runnable);
         SimpleExoPlayerMain.release();
     }
 
