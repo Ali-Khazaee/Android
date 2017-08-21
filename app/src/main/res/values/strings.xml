@@ -292,7 +292,7 @@
     <string name="EditFragmentImageProfile">Profile photo has removed</string>
     <string name="EditFragmentEmail">Email address</string>
     <string name="EditFragmentEmailHint">Email cannot be blank</string>
-    <string name="EditFragmentUpload">Please wait, pploading data &#8230;</string>
+    <string name="EditFragmentUpload">Please wait, uploading data &#8230;</string>
     <string name="EditFragmentDialogCamera">Take From Camera</string>
     <string name="EditFragmentUsernameHint">Username cannot be blank</string>
     <string name="EditFragmentUsername">Username</string>

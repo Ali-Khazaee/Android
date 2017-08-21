@@ -110,7 +110,6 @@ public class TagHandler
 
             if (TagType == 1)
             {
-                MiscHandler.Debug("Tag: " + Message);
                 Bundle bundle = new Bundle();
                 bundle.putString("Tag", Message);
 
@@ -121,13 +120,16 @@ public class TagHandler
             }
             else if (TagType == 2)
             {
+                if (SharedHandler.GetString(Activity, "Username").equals(Message))
+                    return;
+
                 Bundle bundle = new Bundle();
                 bundle.putString("Username", Message);
 
                 Fragment fragment = new ProfileFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
             }
 
             MiscHandler.HideSoftKey(Activity);

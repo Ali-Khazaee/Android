@@ -404,7 +404,7 @@ public class SearchFragment extends Fragment
         }
     }
 
-    private class AdapterPeople extends RecyclerView.Adapter<AdapterPeople.ViewHolderComment>
+    private class AdapterPeople extends RecyclerView.Adapter<AdapterPeople.ViewHolderPeople>
     {
         private final int ID_Profile = MiscHandler.GenerateViewID();
         private final int ID_Username = MiscHandler.GenerateViewID();
@@ -417,13 +417,13 @@ public class SearchFragment extends Fragment
             context = c;
         }
 
-        class ViewHolderComment extends RecyclerView.ViewHolder
+        class ViewHolderPeople extends RecyclerView.ViewHolder
         {
             private final ImageViewCircle ImageViewCircleProfile;
             private final TextView TextViewUsername;
             private final TextView TextViewFollower;
 
-            ViewHolderComment(View view)
+            ViewHolderPeople(View view)
             {
                 super(view);
                 ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
@@ -433,7 +433,7 @@ public class SearchFragment extends Fragment
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolderComment Holder, int position)
+        public void onBindViewHolder(final ViewHolderPeople Holder, int position)
         {
             final int Position = Holder.getAdapterPosition();
 
@@ -448,13 +448,16 @@ public class SearchFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
+                    if (SharedHandler.GetString(context, "Username").equals(PeopleList.get(Position).Username))
+                        return;
+
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", PeopleList.get(Position).Username);
 
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                 }
             });
 
@@ -464,13 +467,16 @@ public class SearchFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
+                    if (SharedHandler.GetString(context, "Username").equals(PeopleList.get(Position).Username))
+                        return;
+
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", PeopleList.get(Position).Username);
 
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                 }
             });
 
@@ -487,7 +493,7 @@ public class SearchFragment extends Fragment
         }
 
         @Override
-        public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
+        public ViewHolderPeople onCreateViewHolder(ViewGroup parent, int ViewType)
         {
             RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -528,7 +534,7 @@ public class SearchFragment extends Fragment
 
             RelativeLayoutMain.addView(TextViewFollow);
 
-            return new ViewHolderComment(RelativeLayoutMain);
+            return new ViewHolderPeople(RelativeLayoutMain);
         }
 
         @Override
@@ -538,7 +544,7 @@ public class SearchFragment extends Fragment
         }
     }
 
-    private class AdapterTag extends RecyclerView.Adapter<AdapterTag.ViewHolderComment>
+    private class AdapterTag extends RecyclerView.Adapter<AdapterTag.ViewHolderTag>
     {
         private final int ID_SHARP = MiscHandler.GenerateViewID();
         private final int ID_TAG = MiscHandler.GenerateViewID();
@@ -551,13 +557,13 @@ public class SearchFragment extends Fragment
             context = c;
         }
 
-        class ViewHolderComment extends RecyclerView.ViewHolder
+        class ViewHolderTag extends RecyclerView.ViewHolder
         {
             private final TextView TextViewSharp;
             private final TextView TextViewTag;
             private final TextView TextViewPost;
 
-            ViewHolderComment(View view)
+            ViewHolderTag(View view)
             {
                 super(view);
                 TextViewSharp = (TextView) view.findViewById(ID_SHARP);
@@ -567,7 +573,7 @@ public class SearchFragment extends Fragment
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolderComment Holder, int position)
+        public void onBindViewHolder(final ViewHolderTag Holder, int position)
         {
             final int Position = Holder.getAdapterPosition();
 
@@ -616,7 +622,7 @@ public class SearchFragment extends Fragment
         }
 
         @Override
-        public ViewHolderComment onCreateViewHolder(ViewGroup parent, int ViewType)
+        public ViewHolderTag onCreateViewHolder(ViewGroup parent, int ViewType)
         {
             RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -668,7 +674,7 @@ public class SearchFragment extends Fragment
 
             RelativeLayoutMain.addView(ViewLine);
 
-            return new ViewHolderComment(RelativeLayoutMain);
+            return new ViewHolderTag(RelativeLayoutMain);
         }
 
         @Override

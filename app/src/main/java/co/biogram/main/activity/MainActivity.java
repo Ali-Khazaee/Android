@@ -24,6 +24,7 @@ import co.biogram.main.fragment.ProfileFragment;
 import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.service.NotificationService;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
@@ -145,6 +146,9 @@ public class MainActivity extends FragmentActivity
 
         if (getIntent().getIntExtra("Type", 0) == 1)
         {
+            if (SharedHandler.GetString(this, "Username").equals(getIntent().getStringExtra("Data")))
+                return;
+
             Bundle bundle = new Bundle();
             bundle.putString("Username", getIntent().getStringExtra("Data"));
 
@@ -204,7 +208,7 @@ public class MainActivity extends FragmentActivity
         public void onReceive(Context context, Intent intent)
         {
             if (intent.getAction().equalsIgnoreCase(NotificationService.BROADCAST_ACTION_NEW))
-                ImageViewNotification.setImageResource(R.drawable.ic_notification_gray_new);
+                ImageViewNotification.setImageResource(R.drawable.ic_notification_red);
         }
     };
 

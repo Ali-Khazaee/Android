@@ -1439,6 +1439,9 @@ public class ProfileFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
+                    if (SharedHandler.GetString(context, "Username").equals(CommentList.get(Position).Username))
+                        return;
+
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", CommentList.get(Position).Target);
 
@@ -1484,7 +1487,7 @@ public class ProfileFragment extends Fragment
             if (Comment.length() > 20)
                 Comment = Comment.substring(0, 20) + " ...";
 
-            Holder.TextViewComment.setText(Comment);
+            Holder.TextViewComment.setText(("\" " + Comment + " \""));
 
             if (Position == CommentList.size() - 1)
                 Holder.ViewLine.setVisibility(View.GONE);
@@ -1586,7 +1589,7 @@ public class ProfileFragment extends Fragment
 
                 TextView TextViewComment = new TextView(context);
                 TextViewComment.setLayoutParams(TextViewCommentParam);
-                TextViewComment.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+                TextViewComment.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
                 TextViewComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewComment.setId(ID_COMMENT);
 

@@ -123,7 +123,7 @@ public class NotificationService extends Service
     private void CreateNotification(Context context, String Message, String Data, int Type)
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-        .setSmallIcon(R.drawable.ic_back_white)
+        .setSmallIcon(R.drawable.ic_notification)
         .setContentTitle("Biogram")
         .setContentText(Message);
 

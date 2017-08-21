@@ -237,13 +237,16 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             @Override
             public void onClick(View v)
             {
+                if (SharedHandler.GetString(Activity, "Username").equals(PostList.get(Position).Username))
+                    return;
+
                 Bundle bundle = new Bundle();
                 bundle.putString("Username", PostList.get(Position).Username);
 
                 Fragment fragment = new ProfileFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
             }
         });
 
@@ -252,13 +255,16 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             @Override
             public void onClick(View v)
             {
+                if (SharedHandler.GetString(Activity, "Username").equals(PostList.get(Position).Username))
+                    return;
+
                 Bundle bundle = new Bundle();
                 bundle.putString("Username", PostList.get(Position).Username);
 
                 Fragment fragment = new ProfileFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
             }
         });
 

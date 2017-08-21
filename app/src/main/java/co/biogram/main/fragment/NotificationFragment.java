@@ -186,7 +186,7 @@ public class NotificationFragment extends Fragment
             public void OnLoadMore()
             {
                 NotificationList.add(null);
-                Adapter.notifyItemInserted(NotificationList.size());
+                Adapter.notifyDataSetChanged();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationList"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -198,6 +198,8 @@ public class NotificationFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
+                        NotificationList.remove(NotificationList.size() - 1);
+
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
@@ -219,8 +221,6 @@ public class NotificationFragment extends Fragment
                                     NotificationList.add(NotificationStruct);
                                 }
                             }
-
-                            Adapter.notifyDataSetChanged();
                         }
                         catch (Exception e)
                         {
@@ -228,8 +228,7 @@ public class NotificationFragment extends Fragment
                             MiscHandler.Debug("Notification-RequestMore: " + e.toString());
                         }
 
-                        NotificationList.remove(NotificationList.size() - 1);
-                        Adapter.notifyItemRemoved(NotificationList.size());
+                        Adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -400,13 +399,16 @@ public class NotificationFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
+                    if (SharedHandler.GetString(context, "Username").equals(NotificationList.get(Position).Username))
+                        return;
+
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", NotificationList.get(Position).Username);
 
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                 }
             });
 

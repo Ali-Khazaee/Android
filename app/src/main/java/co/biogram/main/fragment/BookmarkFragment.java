@@ -197,13 +197,23 @@ public class BookmarkFragment extends Fragment
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
+
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
+
         RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
         LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         final LoadingView LoadingViewMain = new LoadingView(context);
         LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
-        RelativeLayoutMain.addView(LoadingViewMain);
+        RelativeLayoutLoading.addView(LoadingViewMain);
 
         RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -218,13 +228,13 @@ public class BookmarkFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
+                RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
             }
         });
 
-        RelativeLayoutMain.addView(TextViewTryAgain);
+        RelativeLayoutLoading.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
+        RetrieveDataFromServer(context, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -236,7 +246,7 @@ public class BookmarkFragment extends Fragment
         AndroidNetworking.forceCancel("BookmarkFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
+    private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewMain.Start();
@@ -287,11 +297,12 @@ public class BookmarkFragment extends Fragment
                 }
                 catch (Exception e)
                 {
-                    // Leave Me Alone
+                    MiscHandler.Debug("BookmarkFragment-RequestNew: " + e.toString());
                 }
 
                 LoadingViewMain.Stop();
                 TextViewTryAgain.setVisibility(View.GONE);
+                RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
             @Override

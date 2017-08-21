@@ -1139,13 +1139,16 @@ public class PostFragment extends Fragment
                             @Override
                             public void onClick(View v)
                             {
+                                if (SharedHandler.GetString(context, "Username").equals(Username))
+                                    return;
+
                                 Bundle bundle = new Bundle();
                                 bundle.putString("Username", Username);
 
                                 Fragment fragment = new ProfileFragment();
                                 fragment.setArguments(bundle);
 
-                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                             }
                         });
 

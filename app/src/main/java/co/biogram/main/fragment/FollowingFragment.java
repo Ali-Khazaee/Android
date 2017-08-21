@@ -336,13 +336,16 @@ public class FollowingFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
+                    if (SharedHandler.GetString(context, "Username").equals(FollowingList.get(Position).Username))
+                        return;
+
                     Bundle bundle = new Bundle();
                     bundle.putString("Username", FollowingList.get(Position).Username);
 
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FragmentProfile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
                 }
             });
 

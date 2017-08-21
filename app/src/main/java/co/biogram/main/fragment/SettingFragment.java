@@ -98,7 +98,7 @@ public class SettingFragment extends Fragment
 
         TextView TextViewAccount = new TextView(context);
         TextViewAccount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewAccount.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+        TextViewAccount.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewAccount.setText(getString(R.string.SettingFragmentAccount));
         TextViewAccount.setTypeface(null, Typeface.BOLD);
         TextViewAccount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -182,7 +182,7 @@ public class SettingFragment extends Fragment
             }
         });
 
-        LinearLayoutMain.addView(TextViewContact);
+        //LinearLayoutMain.addView(TextViewContact);
 
         TextView TextViewLogout = new TextView(context);
         TextViewLogout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -273,7 +273,7 @@ public class SettingFragment extends Fragment
 
         TextView TextViewAbout = new TextView(context);
         TextViewAbout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewAbout.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+        TextViewAbout.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewAbout.setText(getString(R.string.SettingFragmentAbout));
         TextViewAbout.setTypeface(null, Typeface.BOLD);
         TextViewAbout.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
