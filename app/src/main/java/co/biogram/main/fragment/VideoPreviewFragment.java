@@ -5,10 +5,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -20,42 +18,45 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.CacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
-import com.google.android.exoplayer2.util.Util;
 
 import java.io.File;
 
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.misc.TextureVideoView;
 
 public class VideoPreviewFragment extends Fragment
 {
-    private TextureVideoView TextureVideoViewMain;
-    private Runnable runnable;
+    private SimpleExoPlayer SimpleExoPlayerMain;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -148,34 +149,97 @@ public class VideoPreviewFragment extends Fragment
         RelativeLayout.LayoutParams SimpleExoPlayerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         SimpleExoPlayerViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
+        BandwidthMeter BandwidthMeterMain = new DefaultBandwidthMeter();
+        TrackSelection.Factory TrackSelectionMain = new AdaptiveTrackSelection.Factory(BandwidthMeterMain);
+        TrackSelector TrackSelectorMain = new DefaultTrackSelector(TrackSelectionMain);
+        SimpleExoPlayerMain = ExoPlayerFactory.newSimpleInstance(context, TrackSelectorMain);
+
         SimpleExoPlayerView SimpleExoPlayerViewMain = new SimpleExoPlayerView(context);
         SimpleExoPlayerViewMain.setLayoutParams(SimpleExoPlayerViewMainParam);
+        //SimpleExoPlayerViewMain.setUseController(false);
+        SimpleExoPlayerViewMain.setPlayer(SimpleExoPlayerMain);
 
         RelativeLayoutMain.addView(SimpleExoPlayerViewMain);
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+        DataSource.Factory DataSourceMain = new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", new TransferListener<DataSource>()
+        {
+            @Override
+            public void onTransferStart(DataSource source, DataSpec dataSpec)
+            {
+                MiscHandler.Debug("onTransferStart Called: " + source.getUri() + " - " + dataSpec.length + " - " + dataSpec.key + " - " + dataSpec.uri);
+            }
 
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+            @Override
+            public void onBytesTransferred(DataSource source, int bytesTransferred)
+            {
+                MiscHandler.Debug("onBytesTransferred Called: " + bytesTransferred);
+            }
 
-        SimpleExoPlayerViewMain.setPlayer(player);
+            @Override
+            public void onTransferEnd(DataSource source)
+            {
+                MiscHandler.Debug("onTransferEnd Called: " + source.getUri());
+            }
+        });
 
-        DataSource.Factory dataSourceFactory = new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", null);
+        ExtractorsFactory ExtractorsFactoryMain = new DefaultExtractorsFactory();
+        CacheEvictor CacheEvictorMain = new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024);
+        Cache CacheMain = new SimpleCache(new File(context.getCacheDir(), "BioGramVideo"), CacheEvictorMain);
+        DataSource.Factory DataSourceMain2 = new CacheDataSourceFactory(CacheMain, DataSourceMain, CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
+        MediaSource MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain2, ExtractorsFactoryMain, null, null);
 
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        SimpleExoPlayerMain.prepare(MediaSourceMain);
+        //SimpleExoPlayerMain.setPlayWhenReady(true);
+        SimpleExoPlayerMain.addListener(new Player.EventListener()
+        {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest)
+            {
+                MiscHandler.Debug("onTimelineChanged Called: ");
+            }
 
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
+            {
+                MiscHandler.Debug("onTracksChanged Called: ");
+            }
 
+            @Override
+            public void onLoadingChanged(boolean isLoading)
+            {
+                MiscHandler.Debug("onLoadingChanged Called: ");
+            }
 
-        CacheEvictor cacheEvictor = new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024);
-        Cache cache = new SimpleCache(new File(context.getCacheDir(), "media_cache"), cacheEvictor);
-        DataSource.Factory dataSourceFactory2 = new CacheDataSourceFactory(cache, dataSourceFactory, CacheDataSource.FLAG_BLOCK_ON_CACHE, 100 * 1024 * 1024);
-        //return new HlsMediaSource(uri, dataSourceFactory, mainHandler, eventLogger);
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
+            {
+                MiscHandler.Debug("onPlayerStateChanged Called: ");
+            }
 
+            @Override
+            public void onRepeatModeChanged(int repeatMode)
+            {
+                MiscHandler.Debug("onRepeatModeChanged Called: ");
+            }
 
-        MediaSource videoSource = new ExtractorMediaSource(Uri.parse(VideoURL), dataSourceFactory2, extractorsFactory, null, null);
+            @Override
+            public void onPlayerError(ExoPlaybackException error)
+            {
+                MiscHandler.Debug("onPlayerError Called: ");
+            }
 
-        player.prepare(videoSource);
+            @Override
+            public void onPositionDiscontinuity()
+            {
+                MiscHandler.Debug("onPositionDiscontinuity Called: ");
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters)
+            {
+                MiscHandler.Debug("onPlaybackParametersChanged Called: ");
+            }
+        });
 
 
 
@@ -319,8 +383,7 @@ public class VideoPreviewFragment extends Fragment
     public void onPause()
     {
         super.onPause();
-        //TextureVideoViewMain.removeCallbacks(runnable);
-        //TextureVideoViewMain.ClearPlayback();
+        SimpleExoPlayerMain.release();
     }
 
     private String StringForTime(long Time)

@@ -14,7 +14,7 @@
 
     <application
         android:name=".App"
-        android:icon="@drawable/ic_back_blue"
+        android:icon="@drawable/icon"
         android:label="@string/ApplicationName"
         android:theme="@style/ApplicationTheme"
         android:allowBackup="false">
