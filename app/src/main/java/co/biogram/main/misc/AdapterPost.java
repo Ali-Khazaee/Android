@@ -936,7 +936,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
             {
                 Intent SendIntent = new Intent();
                 SendIntent.setAction(Intent.ACTION_SEND);
-                SendIntent.putExtra(Intent.EXTRA_TEXT, PostList.get(Position).Message + "\n http://BioGram.Co/");
+                SendIntent.putExtra(Intent.EXTRA_TEXT, PostList.get(Position).Message + "\n http://biogram.co/post/" + PostList.get(Position).PostID);
                 SendIntent.setType("text/plain");
                 Activity.startActivity(Intent.createChooser(SendIntent, Activity.getString(R.string.AdapterPostChoice)));
             }

@@ -7,7 +7,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -19,9 +19,9 @@ import android.media.ExifInterface;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -58,6 +58,10 @@ import com.androidnetworking.interfaces.UploadProgressListener;
 
 import com.bumptech.glide.Glide;
 
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -80,7 +84,7 @@ import co.biogram.media.MediaTransCoder;
 
 public class WriteFragment extends Fragment
 {
-    private PermissionHandler _PermissionHandler;
+    private PermissionHandler PermissionHandler;
 
     private ImageView ImageViewImage;
     private ImageView ImageViewVideo;
@@ -466,10 +470,27 @@ public class WriteFragment extends Fragment
                     return;
                 }
 
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.WriteFragmentSelectImage)), 0);
+                PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, WriteFragment.this, new PermissionHandler.PermissionEvent()
+                {
+                    @Override
+                    public void OnGranted()
+                    {
+                        Matisse.from(WriteFragment.this)
+                        .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
+                        .countable(false)
+                        .gridExpectedSize(MiscHandler.ToDimension(context, 90))
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new GlideEngine())
+                        .forResult(0);
+                    }
+
+                    @Override
+                    public void OnFailed()
+                    {
+                        MiscHandler.Toast(context, getString(R.string.PermissionStorage));
+                    }
+                });
             }
         });
 
@@ -485,6 +506,28 @@ public class WriteFragment extends Fragment
             @Override
             public void onClick(View view)
             {
+                PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, WriteFragment.this, new PermissionHandler.PermissionEvent()
+                {
+                    @Override
+                    public void OnGranted()
+                    {
+                        Matisse.from(WriteFragment.this)
+                                .choose(MimeType.of(MimeType.valueOf("video/*")))
+                                .countable(false)
+                                .gridExpectedSize(MiscHandler.ToDimension(context, 90))
+                                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                                .thumbnailScale(0.85f)
+                                .imageEngine(new GlideEngine())
+                                .forResult(1);
+                    }
+
+                    @Override
+                    public void OnFailed()
+                    {
+                        MiscHandler.Toast(context, getString(R.string.PermissionStorage));
+                    }
+                });
+
                 Intent intent = new Intent();
                 intent.setType("video/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -1061,33 +1104,19 @@ public class WriteFragment extends Fragment
     {
         super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
-        if (_PermissionHandler != null)
-            _PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
+        if (PermissionHandler != null)
+            PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
     }
 
     @Override
-    public void onActivityResult(final int RequestCode, int ResultCode, Intent Data)
+    public void onActivityResult(final int RequestCode, int ResultCode, final Intent Data)
     {
         if (Data == null || ResultCode == 0)
             return;
 
-        final String URL;
         final Context context = getActivity();
 
-        Cursor cursor = context.getContentResolver().query(Data.getData(), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst())
-        {
-            URL = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-            cursor.close();
-        }
-        else
-        {
-            MiscHandler.Toast(context, getString(R.string.FileNotFound));
-            return;
-        }
-
-        _PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
+        PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
         {
             @Override
             public void OnGranted()
@@ -1096,7 +1125,9 @@ public class WriteFragment extends Fragment
                 {
                     try
                     {
-                        File ImageFile = new File(URL);
+                        Uri CaptureUri = Matisse.obtainResult(Data).get(0);
+
+                        File ImageFile = new File(CaptureUri.getPath());
                         Bitmap ResizeBitmap;
 
                         if (ImageFile.length() > 66560)
@@ -1127,7 +1158,7 @@ public class WriteFragment extends Fragment
                             ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
 
                             Matrix matrix = new Matrix();
-                            int Orientation = new ExifInterface(URL).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+                            int Orientation = new ExifInterface(CaptureUri.getPath()).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
 
                             if (Orientation == 6)
                                 matrix.postRotate(90);
@@ -1155,8 +1186,12 @@ public class WriteFragment extends Fragment
 
                 if (RequestCode == 1)
                 {
+                    Uri CaptureUri = Matisse.obtainResult(Data).get(0);
+
+                    SelectVideo = new File(CaptureUri.getPath());
+
                     final MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                    Retriever.setDataSource(URL);
+                    Retriever.setDataSource(SelectVideo.getAbsolutePath());
                     int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
 
                     if (Time > 120)
@@ -1164,8 +1199,6 @@ public class WriteFragment extends Fragment
                         MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
                         return;
                     }
-
-                    SelectVideo = new File(URL);
 
                     if (SelectVideo.length() < 3145728)
                     {
@@ -1214,7 +1247,7 @@ public class WriteFragment extends Fragment
                     Progress.setProgress(0);
                     Progress.show();
 
-                    MediaTransCoder.Start(URL, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
+                    MediaTransCoder.Start(CaptureUri.getPath(), SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
                     {
                         @Override
                         public MediaFormat CreateVideo(MediaFormat Format)

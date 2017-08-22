@@ -336,7 +336,7 @@ public class WelcomeActivity extends FragmentActivity
 
         setContentView(RelativeLayoutMain);
 
-        GoogleSignInOptions GoogleOption = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-sdgme2k81supeig9iruse656uj2e3geb.apps.googleusercontent.com").build();
+        GoogleSignInOptions GoogleOption = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com").build();
         GoogleClientApi = new GoogleApiClient.Builder(context).enableAutoManage(this, null).addApi(Auth.GOOGLE_SIGN_IN_API, GoogleOption).build();
 
         if (GoogleClientApi.isConnected())
@@ -380,6 +380,7 @@ public class WelcomeActivity extends FragmentActivity
                                     SharedHandler.SetString(context, "Username", Result.getString("Username"));
                                     SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
                                     SharedHandler.SetBoolean(context, "Password", Result.getBoolean("Password"));
+                                    SharedHandler.SetBoolean(context, "IsGoogle", true);
 
                                     startActivity(new Intent(context, MainActivity.class));
                                     finish();
