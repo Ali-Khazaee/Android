@@ -8,6 +8,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -19,9 +20,9 @@ import android.media.ExifInterface;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -57,7 +58,6 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
 
 import com.bumptech.glide.Glide;
-
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -527,11 +527,6 @@ public class WriteFragment extends Fragment
                         MiscHandler.Toast(context, getString(R.string.PermissionStorage));
                     }
                 });
-
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.WriteFragmentSelectVideo)), 1);
             }
         });
 
@@ -1109,12 +1104,26 @@ public class WriteFragment extends Fragment
     }
 
     @Override
-    public void onActivityResult(final int RequestCode, int ResultCode, final Intent Data)
+    public void onActivityResult(final int RequestCode, int ResultCode, Intent Data)
     {
         if (Data == null || ResultCode == 0)
             return;
 
+        final String URL;
         final Context context = getActivity();
+
+        Cursor cursor = context.getContentResolver().query(Matisse.obtainResult(Data).get(0), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst())
+        {
+            URL = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+            cursor.close();
+        }
+        else
+        {
+            MiscHandler.Toast(context, getString(R.string.FileNotFound));
+            return;
+        }
 
         PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
         {
@@ -1125,9 +1134,7 @@ public class WriteFragment extends Fragment
                 {
                     try
                     {
-                        Uri CaptureUri = Matisse.obtainResult(Data).get(0);
-
-                        File ImageFile = new File(CaptureUri.getPath());
+                        File ImageFile = new File(URL);
                         Bitmap ResizeBitmap;
 
                         if (ImageFile.length() > 66560)
@@ -1158,7 +1165,7 @@ public class WriteFragment extends Fragment
                             ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
 
                             Matrix matrix = new Matrix();
-                            int Orientation = new ExifInterface(CaptureUri.getPath()).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+                            int Orientation = new ExifInterface(URL).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
 
                             if (Orientation == 6)
                                 matrix.postRotate(90);
@@ -1186,12 +1193,8 @@ public class WriteFragment extends Fragment
 
                 if (RequestCode == 1)
                 {
-                    Uri CaptureUri = Matisse.obtainResult(Data).get(0);
-
-                    SelectVideo = new File(CaptureUri.getPath());
-
                     final MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                    Retriever.setDataSource(SelectVideo.getAbsolutePath());
+                    Retriever.setDataSource(URL);
                     int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
 
                     if (Time > 120)
@@ -1199,6 +1202,8 @@ public class WriteFragment extends Fragment
                         MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
                         return;
                     }
+
+                    SelectVideo = new File(URL);
 
                     if (SelectVideo.length() < 3145728)
                     {
@@ -1247,7 +1252,7 @@ public class WriteFragment extends Fragment
                     Progress.setProgress(0);
                     Progress.show();
 
-                    MediaTransCoder.Start(CaptureUri.getPath(), SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
+                    MediaTransCoder.Start(URL, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
                     {
                         @Override
                         public MediaFormat CreateVideo(MediaFormat Format)
