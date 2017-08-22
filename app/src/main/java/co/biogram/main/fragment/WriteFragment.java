@@ -512,13 +512,13 @@ public class WriteFragment extends Fragment
                     public void OnGranted()
                     {
                         Matisse.from(WriteFragment.this)
-                                .choose(MimeType.of(MimeType.valueOf("video/*")))
-                                .countable(false)
-                                .gridExpectedSize(MiscHandler.ToDimension(context, 90))
-                                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                                .thumbnailScale(0.85f)
-                                .imageEngine(new GlideEngine())
-                                .forResult(1);
+                        .choose(MimeType.ofVideo())
+                        .countable(false)
+                        .gridExpectedSize(MiscHandler.ToDimension(context, 90))
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new GlideEngine())
+                        .forResult(1);
                     }
 
                     @Override

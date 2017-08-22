@@ -1,5 +1,6 @@
 package co.biogram.main.fragment;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -52,6 +53,9 @@ public class NotificationFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+
+        NotificationManager NotificationManagerMain = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManagerMain.cancelAll();
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));

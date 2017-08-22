@@ -757,33 +757,33 @@ public class CommentFragment extends Fragment
                             public void onClick(View view)
                             {
                                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentDelete"))
-                                        .addBodyParameter("PostID", PostID)
-                                        .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
-                                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                                        .setTag("CommentFragment")
-                                        .build()
-                                        .getAsString(new StringRequestListener()
+                                .addBodyParameter("PostID", PostID)
+                                .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
+                                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                                .setTag("CommentFragment")
+                                .build()
+                                .getAsString(new StringRequestListener()
+                                {
+                                    @Override
+                                    public void onResponse(String Response)
+                                    {
+                                        try
                                         {
-                                            @Override
-                                            public void onResponse(String Response)
+                                            if (new JSONObject(Response).getInt("Message") == 1000)
                                             {
-                                                try
-                                                {
-                                                    if (new JSONObject(Response).getInt("Message") == 1000)
-                                                    {
-                                                        CommentList.remove(Position);
-                                                        notifyDataSetChanged();
-                                                    }
-                                                }
-                                                catch (Exception e)
-                                                {
-                                                    MiscHandler.Debug("CommentFragment-RequestDelete: " + e.toString());
-                                                }
+                                                CommentList.remove(Position);
+                                                notifyDataSetChanged();
                                             }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MiscHandler.Debug("CommentFragment-RequestDelete: " + e.toString());
+                                        }
+                                    }
 
-                                            @Override
-                                            public void onError(ANError anError) { }
-                                        });
+                                    @Override
+                                    public void onError(ANError anError) { }
+                                });
 
                                 DialogDelete.dismiss();
                             }
