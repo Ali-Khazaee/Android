@@ -186,7 +186,7 @@ public class PostFragment extends Fragment
                                         if (Result.getBoolean("Follow"))
                                             TextViewFollow.setText(getString(R.string.PostFragmentUnfollow));
                                         else
-                                             TextViewFollow.setText(getString(R.string.PostFragmentFollow));
+                                            TextViewFollow.setText(getString(R.string.PostFragmentFollow));
 
                                         MiscHandler.Toast(context, getString(R.string.PostFragmentFollowRequest));
                                     }

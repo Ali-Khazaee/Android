@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.LoadingView;
 
 public class ChangePasswordFragment extends Fragment
@@ -264,6 +265,7 @@ public class ChangePasswordFragment extends Fragment
                 AndroidNetworking.post(MiscHandler.GetRandomServer("ChangePassword"))
                 .addBodyParameter("PasswordCurrent", EditTextCurrentPassword.getText().toString())
                 .addBodyParameter("PasswordNew", EditTextNewPassword.getText().toString())
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("ChangePasswordFragment")
                 .build().getAsString(new StringRequestListener()
                 {
@@ -277,13 +279,18 @@ public class ChangePasswordFragment extends Fragment
 
                             switch (Result.getInt("Message"))
                             {
-                                case 1:    getString(R.string.ChangePasswordFragmentCurrentEmpty); break;
-                                case 2:    getString(R.string.ChangePasswordFragmentNewEmpty); break;
-                                case 3:    getString(R.string.ChangePasswordFragmentNewBelow); break;
-                                case 4:    getString(R.string.ChangePasswordFragmentNewAbove); break;
-                                case 5:    getString(R.string.ChangePasswordFragmentAccount); break;
-                                case 6:    getString(R.string.ChangePasswordFragmentWrong); break;
-                                case 1000: getString(R.string.ChangePasswordFragmentDone); break;
+                                case 1: Return = getString(R.string.ChangePasswordFragmentCurrentEmpty); break;
+                                case 2: Return = getString(R.string.ChangePasswordFragmentNewEmpty); break;
+                                case 3: Return = getString(R.string.ChangePasswordFragmentNewBelow); break;
+                                case 4: Return = getString(R.string.ChangePasswordFragmentNewAbove); break;
+                                case 5: Return = getString(R.string.ChangePasswordFragmentAccount); break;
+                                case 6: Return = getString(R.string.ChangePasswordFragmentWrong); break;
+                                case 1000:
+                                    Return = getString(R.string.ChangePasswordFragmentDone);
+
+                                    MiscHandler.HideSoftKey(getActivity());
+                                    getActivity().onBackPressed();
+                                    break;
                             }
 
                             MiscHandler.Toast(context, Return);

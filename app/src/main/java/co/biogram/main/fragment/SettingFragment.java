@@ -221,30 +221,39 @@ public class SettingFragment extends Fragment
 
                 LinearLayoutMain.addView(LinearLayoutChoice);
 
-                TextView TextViewYes = new TextView(context);
-                TextViewYes.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                TextViewYes.setTextColor(ContextCompat.getColor(context, R.color.Black4));
-                TextViewYes.setText(getString(R.string.SettingFragmentLogoutYes));
-                TextViewYes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewYes.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
-                TextViewYes.setGravity(Gravity.CENTER);
-
-                LinearLayoutChoice.addView(TextViewYes);
-
                 TextView TextViewNo = new TextView(context);
                 TextViewNo.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
                 TextViewNo.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                 TextViewNo.setText(getString(R.string.SettingFragmentLogoutNo));
                 TextViewNo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewNo.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
+                TextViewNo.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), 0);
                 TextViewNo.setGravity(Gravity.CENTER);
 
                 LinearLayoutChoice.addView(TextViewNo);
+
+                TextView TextViewYes = new TextView(context);
+                TextViewYes.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                TextViewYes.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+                TextViewYes.setText(getString(R.string.SettingFragmentLogoutYes));
+                TextViewYes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewYes.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), 0);
+                TextViewYes.setGravity(Gravity.CENTER);
+
+                LinearLayoutChoice.addView(TextViewYes);
 
                 final Dialog DialogLogout = new Dialog(getActivity());
                 DialogLogout.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogLogout.setContentView(LinearLayoutMain);
                 DialogLogout.show();
+
+                TextViewNo.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        DialogLogout.dismiss();
+                    }
+                });
 
                 TextViewYes.setOnClickListener(new View.OnClickListener()
                 {
@@ -255,15 +264,6 @@ public class SettingFragment extends Fragment
                         getActivity().startActivity(new Intent(context, WelcomeActivity.class));
                         DialogLogout.dismiss();
                         getActivity().finish();
-                    }
-                });
-
-                TextViewNo.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view)
-                    {
-                        DialogLogout.dismiss();
                     }
                 });
             }

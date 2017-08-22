@@ -717,30 +717,39 @@ public class CommentFragment extends Fragment
 
                         LinearLayoutMain.addView(LinearLayoutChoice);
 
-                        TextView TextViewYes = new TextView(context);
-                        TextViewYes.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                        TextViewYes.setTextColor(ContextCompat.getColor(context, R.color.Black4));
-                        TextViewYes.setText(getString(R.string.CommentFragmentYes));
-                        TextViewYes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                        TextViewYes.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
-                        TextViewYes.setGravity(Gravity.CENTER);
-
-                        LinearLayoutChoice.addView(TextViewYes);
-
                         TextView TextViewNo = new TextView(context);
                         TextViewNo.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
                         TextViewNo.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                         TextViewNo.setText(getString(R.string.CommentFragmentNo));
                         TextViewNo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                        TextViewNo.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
+                        TextViewNo.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), 0);
                         TextViewNo.setGravity(Gravity.CENTER);
 
                         LinearLayoutChoice.addView(TextViewNo);
+
+                        TextView TextViewYes = new TextView(context);
+                        TextViewYes.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                        TextViewYes.setTextColor(ContextCompat.getColor(context, R.color.Black4));
+                        TextViewYes.setText(getString(R.string.CommentFragmentYes));
+                        TextViewYes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                        TextViewYes.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), 0);
+                        TextViewYes.setGravity(Gravity.CENTER);
+
+                        LinearLayoutChoice.addView(TextViewYes);
 
                         final Dialog DialogDelete = new Dialog(getActivity());
                         DialogDelete.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         DialogDelete.setContentView(LinearLayoutMain);
                         DialogDelete.show();
+
+                        TextViewNo.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                DialogDelete.dismiss();
+                            }
+                        });
 
                         TextViewYes.setOnClickListener(new View.OnClickListener()
                         {
@@ -748,43 +757,34 @@ public class CommentFragment extends Fragment
                             public void onClick(View view)
                             {
                                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostCommentDelete"))
-                                .addBodyParameter("PostID", PostID)
-                                .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
-                                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                                .setTag("CommentFragment")
-                                .build()
-                                .getAsString(new StringRequestListener()
-                                {
-                                    @Override
-                                    public void onResponse(String Response)
-                                    {
-                                        try
+                                        .addBodyParameter("PostID", PostID)
+                                        .addBodyParameter("CommentID", CommentList.get(Position).CommentID)
+                                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                                        .setTag("CommentFragment")
+                                        .build()
+                                        .getAsString(new StringRequestListener()
                                         {
-                                            if (new JSONObject(Response).getInt("Message") == 1000)
+                                            @Override
+                                            public void onResponse(String Response)
                                             {
-                                                CommentList.remove(Position);
-                                                notifyDataSetChanged();
+                                                try
+                                                {
+                                                    if (new JSONObject(Response).getInt("Message") == 1000)
+                                                    {
+                                                        CommentList.remove(Position);
+                                                        notifyDataSetChanged();
+                                                    }
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    MiscHandler.Debug("CommentFragment-RequestDelete: " + e.toString());
+                                                }
                                             }
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            MiscHandler.Debug("CommentFragment-RequestDelete: " + e.toString());
-                                        }
-                                    }
 
-                                    @Override
-                                    public void onError(ANError anError) { }
-                                });
+                                            @Override
+                                            public void onError(ANError anError) { }
+                                        });
 
-                                DialogDelete.dismiss();
-                            }
-                        });
-
-                        TextViewNo.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View view)
-                            {
                                 DialogDelete.dismiss();
                             }
                         });

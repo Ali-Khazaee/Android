@@ -663,7 +663,7 @@ public class WriteFragment extends Fragment
                         ChangeType(3);
                         SelectLink = EditTextURL.getText().toString();
 
-                        if (!SelectLink.startsWith("http://"))
+                        if (!SelectLink.startsWith("http://") && !SelectLink.startsWith("https://"))
                             SelectLink = "http://" + SelectLink;
 
                         DialogLink.dismiss();
