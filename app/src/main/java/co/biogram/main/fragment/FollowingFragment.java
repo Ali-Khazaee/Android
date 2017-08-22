@@ -363,6 +363,11 @@ public class FollowingFragment extends Fragment
                 Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
             }
 
+            if (SharedHandler.GetString(context, "Username").equals(FollowingList.get(Position).Username))
+                Holder.RelativeLayoutFollow.setVisibility(View.GONE);
+            else
+                Holder.RelativeLayoutFollow.setVisibility(View.VISIBLE);
+
             Holder.RelativeLayoutFollow.setOnClickListener(new View.OnClickListener()
             {
                 @Override

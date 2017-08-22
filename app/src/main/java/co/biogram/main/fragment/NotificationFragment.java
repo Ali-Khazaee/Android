@@ -99,47 +99,62 @@ public class NotificationFragment extends Fragment
                 PopupMenu PopMenu = new PopupMenu(context, ImageViewMore);
 
                 if (NotificationTurn)
-                    PopMenu.getMenu().add(getString(R.string.NotificationFragmentTurnOn));
+                    PopMenu.getMenu().add(0, 0, 0, getString(R.string.NotificationFragmentTurnOn));
                 else
-                    PopMenu.getMenu().add(getString(R.string.NotificationFragmentTurnOff));
+                    PopMenu.getMenu().add(0, 0, 0, getString(R.string.NotificationFragmentTurnOff));
+
+                if (SharedHandler.GetBoolean(context, "VibrateNotification"))
+                    PopMenu.getMenu().add(0, 1, 1, getString(R.string.NotificationFragmentTurnOnVibrator));
+                else
+                    PopMenu.getMenu().add(0, 1, 1, getString(R.string.NotificationFragmentTurnOffVibrator));
 
                 PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                 {
                     @Override
                     public boolean onMenuItemClick(MenuItem item)
                     {
-                        AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
-                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .setTag("NotificationFragment")
-                        .build()
-                        .getAsString(new StringRequestListener()
+                        if (item.getItemId() == 0)
                         {
-                            @Override
-                            public void onResponse(String Response)
+                            AndroidNetworking.post(MiscHandler.GetRandomServer("Notification"))
+                            .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                            .setTag("NotificationFragment")
+                            .build()
+                            .getAsString(new StringRequestListener()
                             {
-                                try
+                                @Override
+                                public void onResponse(String Response)
                                 {
-                                    JSONObject Result = new JSONObject(Response);
-
-                                    if (Result.getInt("Message") == 1000)
+                                    try
                                     {
-                                        NotificationTurn = Result.getBoolean("Notification");
+                                        JSONObject Result = new JSONObject(Response);
 
-                                        if (NotificationTurn)
-                                            SharedHandler.SetBoolean(context, "Notification", true);
-                                        else
-                                            SharedHandler.SetBoolean(context, "Notification", false);
+                                        if (Result.getInt("Message") == 1000)
+                                        {
+                                            NotificationTurn = Result.getBoolean("Notification");
+
+                                            if (NotificationTurn)
+                                                SharedHandler.SetBoolean(context, "Notification", true);
+                                            else
+                                                SharedHandler.SetBoolean(context, "Notification", false);
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MiscHandler.Debug("NotificationFragment-RequestNotification: " + e.toString());
                                     }
                                 }
-                                catch (Exception e)
-                                {
-                                    MiscHandler.Debug("NotificationFragment-RequestNotification: " + e.toString());
-                                }
-                            }
 
-                            @Override
-                            public void onError(ANError anError) { }
-                        });
+                                @Override
+                                public void onError(ANError anError) { }
+                            });
+                        }
+                        else if (item.getItemId() == 1)
+                        {
+                            if (SharedHandler.GetBoolean(context, "VibrateNotification"))
+                                SharedHandler.SetBoolean(context, "VibrateNotification", false);
+                            else
+                                SharedHandler.SetBoolean(context, "VibrateNotification", true);
+                        }
 
                         return false;
                     }
@@ -219,6 +234,7 @@ public class NotificationFragment extends Fragment
                                     Struct NotificationStruct = new Struct();
                                     NotificationStruct.Username = Comment.getString("Username");
                                     NotificationStruct.Avatar = Comment.getString("Avatar");
+                                    NotificationStruct.PostID = Comment.getString("PostID");
                                     NotificationStruct.Type = Comment.getInt("Type");
                                     NotificationStruct.Time = Comment.getInt("Time");
 
@@ -315,6 +331,7 @@ public class NotificationFragment extends Fragment
                             Struct NotificationStruct = new Struct();
                             NotificationStruct.Username = Notification.getString("Username");
                             NotificationStruct.Avatar = Notification.getString("Avatar");
+                            NotificationStruct.PostID = Notification.getString("PostID");
                             NotificationStruct.Type = Notification.getInt("Type");
                             NotificationStruct.Time = Notification.getInt("Time");
 
@@ -354,6 +371,7 @@ public class NotificationFragment extends Fragment
 
     private class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.ViewHolderMain>
     {
+        private final int ID_MAIN = MiscHandler.GenerateViewID();
         private final int ID_Profile = MiscHandler.GenerateViewID();
         private final int ID_Message = MiscHandler.GenerateViewID();
         private final int ID_Time = MiscHandler.GenerateViewID();
@@ -367,6 +385,7 @@ public class NotificationFragment extends Fragment
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
+            private RelativeLayout RelativeLayoutMain;
             private ImageViewCircle ImageViewCircleProfile;
             private TextView TextViewMessage;
             private TextView TextViewTime;
@@ -377,6 +396,7 @@ public class NotificationFragment extends Fragment
 
                 if (Content)
                 {
+                    RelativeLayoutMain = (RelativeLayout) view.findViewById(ID_MAIN);
                     ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
                     TextViewMessage = (TextView) view.findViewById(ID_Message);
                     TextViewTime = (TextView) view.findViewById(ID_Time);
@@ -429,6 +449,39 @@ public class NotificationFragment extends Fragment
                 case 7: Message += context.getString(R.string.NotificationFragmentUnfollow);    break;
             }
 
+            Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    MiscHandler.Debug("A: " + NotificationList.get(Position).Type);
+
+                    if (NotificationList.get(Position).Type == 3 || NotificationList.get(Position).Type == 7)
+                    {
+                        if (SharedHandler.GetString(context, "Username").equals(NotificationList.get(Position).Username))
+                            return;
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Username", NotificationList.get(Position).Username);
+
+                        Fragment fragment = new ProfileFragment();
+                        fragment.setArguments(bundle);
+
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                    }
+                    else if (NotificationList.get(Position).Type == 1 || NotificationList.get(Position).Type == 2 || NotificationList.get(Position).Type == 4 || NotificationList.get(Position).Type == 5 || NotificationList.get(Position).Type == 6)
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("PostID", NotificationList.get(Position).PostID);
+
+                        Fragment fragment = new PostFragment();
+                        fragment.setArguments(bundle);
+
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commit();
+                    }
+                }
+            });
+
             SpannableString SpanMessage = new SpannableString(Message);
             SpanMessage.setSpan(new StyleSpan(Typeface.BOLD), 0, NotificationList.get(Position).Username.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -446,6 +499,7 @@ public class NotificationFragment extends Fragment
 
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                RelativeLayoutMain.setId(ID_MAIN);
 
                 RelativeLayout.LayoutParams ImageViewCircleProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 50), MiscHandler.ToDimension(context, 50));
                 ImageViewCircleProfileParam.setMargins(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 10));
@@ -509,6 +563,7 @@ public class NotificationFragment extends Fragment
     {
         private String Username;
         private String Avatar;
+        private String PostID;
         private int Type;
         private int Time;
     }

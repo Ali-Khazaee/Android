@@ -20,6 +20,7 @@ import android.media.ExifInterface;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -477,7 +478,8 @@ public class WriteFragment extends Fragment
                     {
                         Matisse.from(WriteFragment.this)
                         .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
-                        .countable(false)
+                        .countable(true)
+                        .maxSelectable(3)
                         .gridExpectedSize(MiscHandler.ToDimension(context, 90))
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                         .thumbnailScale(0.85f)
@@ -1104,7 +1106,7 @@ public class WriteFragment extends Fragment
     }
 
     @Override
-    public void onActivityResult(final int RequestCode, int ResultCode, Intent Data)
+    public void onActivityResult(final int RequestCode, int ResultCode, final Intent Data)
     {
         if (Data == null || ResultCode == 0)
             return;
@@ -1134,56 +1136,70 @@ public class WriteFragment extends Fragment
                 {
                     try
                     {
-                        File ImageFile = new File(URL);
-                        Bitmap ResizeBitmap;
-
-                        if (ImageFile.length() > 66560)
+                        for (int I = 0; I < Matisse.obtainResult(Data).size(); I++)
                         {
-                            BitmapFactory.Options O = new BitmapFactory.Options();
-                            O.inJustDecodeBounds = true;
+                            String ImagePath = "";
+                            Cursor cursor = context.getContentResolver().query(Matisse.obtainResult(Data).get(I), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
 
-                            BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
-
-                            int Scale = 1;
-                            int Height = O.outHeight;
-                            int Width = O.outWidth;
-
-                            if (Height > 500 || Width > 500)
+                            if (cursor != null && cursor.moveToFirst())
                             {
-                                int HalfHeight = Height / 2;
-                                int HalfWidth = Width / 2;
-
-                                while ((HalfHeight / Scale) >= 500 && (HalfWidth / Scale) >= 500)
-                                {
-                                    Scale *= 2;
-                                }
+                                ImagePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                                cursor.close();
                             }
+                            else
+                                continue;
 
-                            O.inJustDecodeBounds = false;
-                            O.inSampleSize = Scale;
+                            File ImageFile = new File(ImagePath);
+                            Bitmap ResizeBitmap;
 
-                            ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+                            if (ImageFile.length() > 66560)
+                            {
+                                BitmapFactory.Options O = new BitmapFactory.Options();
+                                O.inJustDecodeBounds = true;
 
-                            Matrix matrix = new Matrix();
-                            int Orientation = new ExifInterface(URL).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+                                BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
 
-                            if (Orientation == 6)
-                                matrix.postRotate(90);
-                            else if (Orientation == 3)
-                                matrix.postRotate(180);
-                            else if (Orientation == 8)
-                                matrix.postRotate(270);
+                                int Scale = 1;
+                                int Height = O.outHeight;
+                                int Width = O.outWidth;
 
-                            ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
+                                if (Height > 500 || Width > 500)
+                                {
+                                    int HalfHeight = Height / 2;
+                                    int HalfWidth = Width / 2;
+
+                                    while ((HalfHeight / Scale) >= 500 && (HalfWidth / Scale) >= 500)
+                                    {
+                                        Scale *= 2;
+                                    }
+                                }
+
+                                O.inJustDecodeBounds = false;
+                                O.inSampleSize = Scale;
+
+                                ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+
+                                Matrix matrix = new Matrix();
+                                int Orientation = new ExifInterface(ImagePath).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+
+                                if (Orientation == 6)
+                                    matrix.postRotate(90);
+                                else if (Orientation == 3)
+                                    matrix.postRotate(180);
+                                else if (Orientation == 8)
+                                    matrix.postRotate(270);
+
+                                ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
+                            }
+                            else
+                                ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath());
+
+                            ChangeType(1);
+                            SelectImage.add(ResizeBitmap);
+                            ViewPagerAdapterImage.notifyDataSetChanged();
+                            ViewPagerImage.setCurrentItem(SelectImage.size());
+                            ViewPagerImage.setVisibility(View.VISIBLE);
                         }
-                        else
-                            ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath());
-
-                        ChangeType(1);
-                        SelectImage.add(ResizeBitmap);
-                        ViewPagerAdapterImage.notifyDataSetChanged();
-                        ViewPagerImage.setCurrentItem(SelectImage.size());
-                        ViewPagerImage.setVisibility(View.VISIBLE);
                     }
                     catch (Exception e)
                     {

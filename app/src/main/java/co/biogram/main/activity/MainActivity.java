@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +31,8 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainActivity extends FragmentActivity
 {
+    private boolean IsNotification = false;
+
     private ImageView ImageViewMoment;
     private ImageView ImageViewInbox;
     private ImageView ImageViewCategory;
@@ -177,38 +180,20 @@ public class MainActivity extends FragmentActivity
         unregisterReceiver(BroadcastReceiverNotification);
     }
 
-    @Override
-    public void onAttachFragment(Fragment fragment)
-    {
-        super.onAttachFragment(fragment);
-
-        FragmentManager FragManager = getSupportFragmentManager();
-
-        if (FragManager.getBackStackEntryCount() > 3)
-        {
-            List<Fragment> FragList = FragManager.getFragments();
-
-            if (FragList != null)
-            {
-                for (Fragment frag : FragList)
-                {
-                    if (frag != null)
-                    {
-                        FragManager.beginTransaction().remove(fragment).commit();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
     private final BroadcastReceiver BroadcastReceiverNotification = new BroadcastReceiver()
     {
         @Override
         public void onReceive(Context context, Intent intent)
         {
             if (intent.getAction().equalsIgnoreCase(NotificationService.BROADCAST_ACTION_NEW))
+            {
+                IsNotification = true;
+
+                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(1);
+
                 ImageViewNotification.setImageResource(R.drawable.ic_notification_red);
+            }
         }
     };
 
@@ -217,7 +202,12 @@ public class MainActivity extends FragmentActivity
         ImageViewMoment.setImageResource(R.drawable.ic_moment_gray);
         ImageViewInbox.setImageResource(R.drawable.ic_inbox_gray);
         ImageViewCategory.setImageResource(R.drawable.ic_category_gray);
-        ImageViewNotification.setImageResource(R.drawable.ic_notification_gray);
+
+        if (IsNotification)
+            ImageViewNotification.setImageResource(R.drawable.ic_notification_red);
+        else
+            ImageViewNotification.setImageResource(R.drawable.ic_notification_gray);
+
         ImageViewProfile.setImageResource(R.drawable.ic_profile_gray);
 
         switch (Tab)
@@ -225,7 +215,7 @@ public class MainActivity extends FragmentActivity
             case 1: ImageViewMoment.setImageResource(R.drawable.ic_moment_black);             break;
             case 2: ImageViewInbox.setImageResource(R.drawable.ic_inbox_black);               break;
             case 3: ImageViewCategory.setImageResource(R.drawable.ic_category_black);         break;
-            case 4: ImageViewNotification.setImageResource(R.drawable.ic_notification_black); break;
+            case 4: ImageViewNotification.setImageResource(R.drawable.ic_notification_black); IsNotification = false; break;
             case 5: ImageViewProfile.setImageResource(R.drawable.ic_profile_black);           break;
         }
 
