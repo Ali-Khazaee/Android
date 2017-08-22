@@ -282,7 +282,7 @@ public class ProfileFragment extends Fragment
         ImageViewCover = new ImageView(context);
         ImageViewCover.setLayoutParams(ImageViewCoverParam);
         ImageViewCover.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewCover.setImageResource(R.color.BlueLight);
+        ImageViewCover.setImageResource(R.color.BlueLight2);
 
         CollapsingToolbarLayoutMain.addView(ImageViewCover);
 
