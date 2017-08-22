@@ -1032,7 +1032,7 @@ public class PostFragment extends Fragment
                 SendIntent.setAction(Intent.ACTION_SEND);
                 SendIntent.putExtra(Intent.EXTRA_TEXT, TextViewMessage.getText().toString() + "\n http://biogram.co/" + PostID);
                 SendIntent.setType("text/plain");
-                getActivity().startActivity(Intent.createChooser(SendIntent, getString(R.string.PostFragmentChoice)));
+                getActivity().startActivity(Intent.createChooser(SendIntent, getString(R.string.PostFragmentChoose)));
             }
         });
 

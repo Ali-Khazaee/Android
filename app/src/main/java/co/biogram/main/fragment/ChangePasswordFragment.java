@@ -42,7 +42,7 @@ public class ChangePasswordFragment extends Fragment
 
         final EditText EditTextCurrentPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
         final EditText EditTextNewPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
-        final EditText EditTextNewRepeatPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        final EditText EditTextConfirmNewPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
 
         final Button ButtonChangePassword = new Button(context, null, android.R.attr.borderlessButtonStyle);
         final LoadingView LoadingViewChangePassword = new LoadingView(context);
@@ -58,7 +58,7 @@ public class ChangePasswordFragment extends Fragment
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (EditTextCurrentPassword.length() > 5 && EditTextNewPassword.length() > 5 && EditTextNewRepeatPassword.length() > 5)
+                if (EditTextCurrentPassword.length() > 5 && EditTextNewPassword.length() > 5 && EditTextConfirmNewPassword.length() > 5)
                     ButtonChangePassword.setEnabled(true);
                 else
                     ButtonChangePassword.setEnabled(false);
@@ -188,36 +188,36 @@ public class ChangePasswordFragment extends Fragment
 
         RelativeLayoutMain2.addView(EditTextNewPassword);
 
-        RelativeLayout.LayoutParams TextViewNewRepeatPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewNewRepeatPasswordParam.addRule(RelativeLayout.BELOW, EditTextNewPassword.getId());
-        TextViewNewRepeatPasswordParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        RelativeLayout.LayoutParams TextViewConfirmNewPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewConfirmNewPasswordParam.addRule(RelativeLayout.BELOW, EditTextNewPassword.getId());
+        TextViewConfirmNewPasswordParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
-        TextView TextViewNewRepeatPassword = new TextView(context);
-        TextViewNewRepeatPassword.setLayoutParams(TextViewNewRepeatPasswordParam);
-        TextViewNewRepeatPassword.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
-        TextViewNewRepeatPassword.setText(getString(R.string.ChangePasswordFragmentNewRepeat));
-        TextViewNewRepeatPassword.setTypeface(null, Typeface.BOLD);
-        TextViewNewRepeatPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewNewRepeatPassword.setId(MiscHandler.GenerateViewID());
+        TextView TextViewConfirmNewPassword = new TextView(context);
+        TextViewConfirmNewPassword.setLayoutParams(TextViewConfirmNewPasswordParam);
+        TextViewConfirmNewPassword.setTextColor(ContextCompat.getColor(context, R.color.Gray4));
+        TextViewConfirmNewPassword.setText(getString(R.string.ChangePasswordFragmentConfirm));
+        TextViewConfirmNewPassword.setTypeface(null, Typeface.BOLD);
+        TextViewConfirmNewPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewConfirmNewPassword.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain2.addView(TextViewNewRepeatPassword);
+        RelativeLayoutMain2.addView(TextViewConfirmNewPassword);
 
-        RelativeLayout.LayoutParams EditTextNewRepeatPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextNewRepeatPasswordParam.addRule(RelativeLayout.BELOW, TextViewNewRepeatPassword.getId());
-        EditTextNewRepeatPasswordParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
+        RelativeLayout.LayoutParams EditTextConfirmNewPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextConfirmNewPasswordParam.addRule(RelativeLayout.BELOW, TextViewConfirmNewPassword.getId());
+        EditTextConfirmNewPasswordParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextNewRepeatPassword.setLayoutParams(EditTextNewRepeatPasswordParam);
-        EditTextNewRepeatPassword.setMaxLines(1);
-        EditTextNewRepeatPassword.setId(MiscHandler.GenerateViewID());
-        EditTextNewRepeatPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextNewRepeatPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
-        EditTextNewRepeatPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        EditTextNewRepeatPassword.addTextChangedListener(TextWatcherChange);
+        EditTextConfirmNewPassword.setLayoutParams(EditTextConfirmNewPasswordParam);
+        EditTextConfirmNewPassword.setMaxLines(1);
+        EditTextConfirmNewPassword.setId(MiscHandler.GenerateViewID());
+        EditTextConfirmNewPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextConfirmNewPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
+        EditTextConfirmNewPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        EditTextConfirmNewPassword.addTextChangedListener(TextWatcherChange);
 
-        RelativeLayoutMain2.addView(EditTextNewRepeatPassword);
+        RelativeLayoutMain2.addView(EditTextConfirmNewPassword);
 
         RelativeLayout.LayoutParams RelativeLayoutChangeParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 150), MiscHandler.ToDimension(context, 45));
-        RelativeLayoutChangeParam.addRule(RelativeLayout.BELOW, EditTextNewRepeatPassword.getId());
+        RelativeLayoutChangeParam.addRule(RelativeLayout.BELOW, EditTextConfirmNewPassword.getId());
         RelativeLayoutChangeParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
         RelativeLayoutChangeParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
@@ -252,7 +252,7 @@ public class ChangePasswordFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (!EditTextNewPassword.getText().toString().equals(EditTextNewRepeatPassword.getText().toString()))
+                if (!EditTextNewPassword.getText().toString().equals(EditTextConfirmNewPassword.getText().toString()))
                 {
                     MiscHandler.Toast(context, getString(R.string.ChangePasswordFragmentNewSame));
                     return;

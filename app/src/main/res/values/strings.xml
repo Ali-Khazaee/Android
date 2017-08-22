@@ -39,10 +39,10 @@
     <string name="ChangePasswordFragment">Change Password</string>
     <string name="ChangePasswordFragmentCurrent">Current Password</string>
     <string name="ChangePasswordFragmentNew">New Password</string>
-    <string name="ChangePasswordFragmentNewRepeat">Repeat Password</string>
+    <string name="ChangePasswordFragmentConfirm">Confirm Password</string>
     <string name="ChangePasswordFragmentNewSame">New password does not match the confirm password</string>
-    <string name="ChangePasswordFragmentCurrentEmpty">Current password is empty</string>
-    <string name="ChangePasswordFragmentNewEmpty">New password is empty</string>
+    <string name="ChangePasswordFragmentCurrentEmpty">Current password can\'t be blank</string>
+    <string name="ChangePasswordFragmentNewEmpty">New password can\'t be blank</string>
     <string name="ChangePasswordFragmentNewBelow">New password must be higher than 5 characters</string>
     <string name="ChangePasswordFragmentNewAbove">New password must be lower than 32 characters</string>
     <string name="ChangePasswordFragmentAccount">Account doesn\'t exist</string>
@@ -76,7 +76,7 @@
     <string name="NotificationFragmentComment">commented on your post</string>
     <string name="NotificationFragmentCommentLike">liked your comment</string>
     <string name="NotificationFragmentCommentTag">mentioned you in a comment</string>
-    <string name="NotificationFragmentUnfollow">remove following you</string>
+    <string name="NotificationFragmentUnfollow">unfollowed you</string>
     <string name="NotificationFragmentTurnOn">Turn on Notification</string>
     <string name="NotificationFragmentTurnOff">Turn off Notification</string>
 
@@ -136,7 +136,7 @@
     <string name="SignUpFragmentEmail">Email Address</string>
     <string name="SignUpFragmentEmailMessage">Your recovery email address will be used in the event you forget your BioGram password and require assistance from BioGram to reset your password</string>
     <string name="SignUpFragmentEmailFinish">Finish</string>
-    <string name="SignUpFragmentEmailError">Your email address is already used</string>
+    <string name="SignUpFragmentEmailError">Email address is already in use</string>
 
     <!-- SignIn Fragment -->
     <string name="SignInFragmentTitle">Sign In</string>
@@ -173,7 +173,7 @@
     <string name="PostFragmentBlock">Block</string>
     <string name="PostFragmentClipboard">Text has been copied to clipboard</string>
     <string name="PostFragmentCommentDisable">Commenting is Disabled</string>
-    <string name="PostFragmentChoice">Choice</string>
+    <string name="PostFragmentChoose">Choose</string>
     <string name="PostFragmentUnfollow">Unfollow</string>
     <string name="PostFragmentFollowRequest">Follow request sent</string>
     <string name="PostFragmentReportSent">Report sent</string>
@@ -291,10 +291,10 @@
     <string name="EditFragmentImageCover">Cover photo has removed</string>
     <string name="EditFragmentImageProfile">Profile photo has removed</string>
     <string name="EditFragmentEmail">Email address</string>
-    <string name="EditFragmentEmailHint">Email cannot be blank</string>
+    <string name="EditFragmentEmailHint">Email can\'t be blank</string>
     <string name="EditFragmentUpload">Please wait, uploading data &#8230;</string>
-    <string name="EditFragmentDialogCamera">Take From Camera</string>
-    <string name="EditFragmentUsernameHint">Username cannot be blank</string>
+    <string name="EditFragmentDialogCamera">Take from camera</string>
+    <string name="EditFragmentUsernameHint">Username can\'t be blank</string>
     <string name="EditFragmentUsername">Username</string>
     <string name="EditFragmentDescription">Description</string>
     <string name="EditFragmentWebsite">Website</string>
