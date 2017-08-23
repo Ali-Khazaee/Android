@@ -79,6 +79,8 @@
     <string name="NotificationFragmentUnfollow">unfollowed you</string>
     <string name="NotificationFragmentTurnOn">Turn on Notification</string>
     <string name="NotificationFragmentTurnOff">Turn off Notification</string>
+    <string name="NotificationFragmentTurnOnVibrator">Turn on Vibrator</string>
+    <string name="NotificationFragmentTurnOffVibrator">Turn off Vibrator</string>
 
     <!-- Comment Fragment -->
     <string name="CommentFragment">Comment</string>

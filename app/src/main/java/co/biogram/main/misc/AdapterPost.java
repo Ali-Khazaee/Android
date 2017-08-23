@@ -325,7 +325,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                                 }
                                 catch (Exception e)
                                 {
-                                    // Leave Me Alone
+                                    MiscHandler.Debug("AdapterPost-RequestFollow: " + e.toString());
                                 }
                             }
 
@@ -452,21 +452,25 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     @Override
                     public void onClick(View view)
                     {
-                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostBookMark"))
-                        .addBodyParameter("PostID", PostList.get(Position).PostID)
+                        AndroidNetworking.post(MiscHandler.GetRandomServer("PostBookmark"))
                         .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
-                        .setTag(Tag).build().getAsString(new StringRequestListener()
+                        .addBodyParameter("PostID", PostList.get(Position).PostID)
+                        .setTag(Tag)
+                        .build()
+                        .getAsString(new StringRequestListener()
                         {
                             @Override
                             public void onResponse(String Response)
                             {
                                 try
                                 {
-                                    if (new JSONObject(Response).getInt("Message") == 1000)
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 1000)
                                     {
                                         PostList.get(Position).BookMarkReverse();
 
-                                        if (PostList.get(Position).BookMark)
+                                        if (Result.getBoolean("Bookmark"))
                                             BookMark.setText(Activity.getString(R.string.AdapterPostUnBookMark));
                                         else
                                             BookMark.setText(Activity.getString(R.string.AdapterPostBookMark));
@@ -476,7 +480,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                                 }
                                 catch (Exception e)
                                 {
-                                    // Leave Me Alone
+                                    MiscHandler.Debug("PostFragment-RequestBookmark: " + e.toString());
                                 }
                             }
 

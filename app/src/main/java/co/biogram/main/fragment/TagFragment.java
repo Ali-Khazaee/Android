@@ -76,9 +76,14 @@ public class TagFragment extends Fragment
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
 
+        String Tag2 = Tag;
+
+        if (Tag2.length() > 15)
+            Tag2 = Tag2.substring(0, 15) + " ...";
+
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(Tag);
+        TextViewTitle.setText(Tag2);
         TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewTitle.setTypeface(null, Typeface.BOLD);
