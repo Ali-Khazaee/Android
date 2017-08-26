@@ -157,7 +157,7 @@
     <string name="ResetFragmentError">Your submitted email or username doesn\'t exist</string>
 
     <!-- Moment Fragment -->
-    <string name="MomentFragment">Moment</string>
+    <string name="MomentFragment">Moments</string>
 
     <!-- Inbox Fragment -->
     <string name="InboxFragment">Inbox</string>

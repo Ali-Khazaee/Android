@@ -38,7 +38,6 @@ android
         release
         {
             debuggable true
-            jniDebuggable false
             minifyEnabled true
             zipAlignEnabled true
             shrinkResources true
