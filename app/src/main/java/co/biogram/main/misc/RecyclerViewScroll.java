@@ -26,10 +26,10 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
 
         if (IsLoading && (TotalCount > PreviousTotalCount))
         {
-            PreviousTotalCount = TotalCount;
-
             if (PreviousRequestTime > System.currentTimeMillis())
                 return;
+
+            PreviousTotalCount = TotalCount;
 
             IsLoading = false;
         }
