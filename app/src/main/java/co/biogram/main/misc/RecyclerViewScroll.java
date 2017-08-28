@@ -34,8 +34,11 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
             IsLoading = false;
         }
 
-        if (!IsLoading && LastVisibleItemPosition > TotalCount)
+        if (!IsLoading)
         {
+            if (LastVisibleItemPosition < TotalCount)
+                return;
+
             OnLoadMore();
             IsLoading = true;
             PreviousRequestTime = System.currentTimeMillis() + 500;
