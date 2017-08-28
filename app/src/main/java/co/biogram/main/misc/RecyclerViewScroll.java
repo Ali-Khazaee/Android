@@ -5,43 +5,35 @@ import android.support.v7.widget.RecyclerView;
 
 public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
 {
-    private final LinearLayoutManager LayoutManager;
-    private int PreviousTotalCount = 0;
-    private boolean IsLoading = false;
-    private long PreviousRequestTime = 0;
+    private final LinearLayoutManager LinearLayoutManagerMain;
+    private int PreviousTotalItemCount = 0;
+    private boolean IsLoading = true;
 
     protected RecyclerViewScroll(LinearLayoutManager linearLayoutManager)
     {
-        LayoutManager = linearLayoutManager;
+        LinearLayoutManagerMain = linearLayoutManager;
     }
 
     @Override
-    public void onScrolled(RecyclerView view, int X, int Y)
+    public void onScrolled(RecyclerView View, int X, int Y)
     {
         if (X == 0 && Y == 0)
             return;
 
-        int LastVisibleItemPosition = LayoutManager.findLastVisibleItemPosition() + 5;
-        int TotalCount = LayoutManager.getItemCount();
+        final int TotalItemCount = LinearLayoutManagerMain.getItemCount();
+        final int LastVisibleItemPosition = LinearLayoutManagerMain.findLastVisibleItemPosition() + 5;
 
-        if (IsLoading && (TotalCount > PreviousTotalCount))
+        if (IsLoading && (TotalItemCount > PreviousTotalItemCount))
         {
-            if (PreviousRequestTime > System.currentTimeMillis())
-                return;
-
-            PreviousTotalCount = TotalCount;
-
             IsLoading = false;
+            PreviousTotalItemCount = TotalItemCount;
         }
 
-        if (!IsLoading)
+        if (!IsLoading && LastVisibleItemPosition > TotalItemCount)
         {
-            if (LastVisibleItemPosition < TotalCount)
-                return;
-
             OnLoadMore();
             IsLoading = true;
-            PreviousRequestTime = System.currentTimeMillis() + 500;
+            PreviousTotalItemCount++;
         }
     }
 
@@ -50,7 +42,7 @@ public abstract class RecyclerViewScroll extends RecyclerView.OnScrollListener
         IsLoading = false;
 
         if (ResetPrevious)
-            PreviousTotalCount = 0;
+            PreviousTotalItemCount = 0;
     }
 
     public abstract void OnLoadMore();

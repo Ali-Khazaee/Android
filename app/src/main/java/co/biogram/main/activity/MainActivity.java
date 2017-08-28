@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,7 +46,7 @@ public class MainActivity extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
 
-        Context context = this;
+        final Context context = this;
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -135,6 +137,38 @@ public class MainActivity extends FragmentActivity
 
         RelativeLayoutMain.addView(FrameLayoutFull);
 
+        RelativeLayout.LayoutParams RelativeLayoutUpdateParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        RelativeLayoutUpdateParam.setMargins(0, -MiscHandler.ToDimension(context, 56), 0, 0);
+
+        final RelativeLayout RelativeLayoutUpdate = new RelativeLayout(context);
+        RelativeLayoutUpdate.setLayoutParams(RelativeLayoutUpdateParam);
+        RelativeLayoutUpdate.setBackgroundResource(R.color.BlueLight2);
+        RelativeLayoutUpdate.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                TranslateAnimation animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, MiscHandler.ToDimension(context, 56));
+                animation.setDuration(500);
+                animation.setAnimationListener(new TranslateAnimation.AnimationListener()
+                {
+                    @Override public void onAnimationStart(Animation animation) { }
+                    @Override public void onAnimationRepeat(Animation animation) { }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation)
+                    {
+                        RelativeLayout.LayoutParams RelativeLayoutUpdateParam = (RelativeLayout.LayoutParams) RelativeLayoutUpdate.getLayoutParams();
+                        RelativeLayoutUpdateParam.topMargin += MiscHandler.ToDimension(context, 56);
+                        RelativeLayoutUpdate.setLayoutParams(RelativeLayoutUpdateParam);
+                    }
+                });
+                RelativeLayoutUpdate.startAnimation(animation);
+            }
+        }, 2000);
+
+        RelativeLayoutMain.addView(RelativeLayoutUpdate);
+
         setContentView(RelativeLayoutMain);
 
         ChangeTab(getIntent().getIntExtra("Tab", 1));
@@ -190,7 +224,7 @@ public class MainActivity extends FragmentActivity
                 IsNotification = true;
 
                 Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vibrator.vibrate(1);
+                vibrator.vibrate(200);
 
                 ImageViewNotification.setImageResource(R.drawable.ic_notification_red);
             }

@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.CrashHandler;
+import co.biogram.main.handler.UpdateHandler;
 import co.biogram.main.service.NotificationService;
 
 import okhttp3.OkHttpClient;
@@ -35,6 +36,7 @@ public class App extends Application
 
         CacheHandler.SetUp(context);
         CrashHandler.SetUp(context);
+        UpdateHandler.SetUp(context);
     }
 
     @Override

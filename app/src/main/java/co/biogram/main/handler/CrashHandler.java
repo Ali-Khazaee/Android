@@ -39,7 +39,7 @@ public class CrashHandler
                 {
                     PackageInfo Package = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 
-                    Report.append("\nVERSION:\t ").append(Package.versionName);
+                    Report.append("\nVERSION:\t ").append(Package.versionName).append(" - ").append(Package.versionCode);
                     Report.append("\nPACKAGE:\t ").append(Package.packageName);
                     Report.append("\nPHONE-MODEL:\t ").append(Build.MODEL);
                     Report.append("\nANDROID-VERSION:\t ").append(Build.VERSION.RELEASE);
