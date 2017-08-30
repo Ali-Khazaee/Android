@@ -163,16 +163,28 @@ public class MiscHandler
 
         protected Bitmap doInBackground(Void... Voids)
         {
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(Url, new HashMap<String, String>());
-            Bitmap bitmap = retriever.getFrameAtTime();
-            retriever.release();
+            Bitmap bitmap = null;
+
+            try
+            {
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                retriever.setDataSource(Url, new HashMap<String, String>());
+                bitmap = retriever.getFrameAtTime();
+                retriever.release();
+            }
+            catch (Exception e)
+            {
+                MiscHandler.Debug("MiscHandler-VideoThumbnail: " + e.toString());
+            }
 
             return bitmap;
         }
 
         protected void onPostExecute(Bitmap Result)
         {
+            if (Result == null || ImageViewMain == null)
+                return;
+
             ImageViewMain.setImageBitmap(Result);
             CacheHandler.BitmapStore(ImageViewMain.getContext(), Result, Url);
         }

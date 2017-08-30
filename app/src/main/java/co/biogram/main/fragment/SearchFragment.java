@@ -448,6 +448,9 @@ public class SearchFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
+                    if (PeopleList.size() <= 0)
+                        return;
+
                     if (SharedHandler.GetString(context, "Username").equals(PeopleList.get(Position).Username))
                         return;
 

@@ -1,21 +1,26 @@
 package co.biogram.main.activity;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -29,10 +34,12 @@ import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.service.NotificationService;
+
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainActivity extends FragmentActivity
 {
+    private boolean IsActive = true;
     private boolean IsNotification = false;
 
     private ImageView ImageViewMoment;
@@ -136,38 +143,105 @@ public class MainActivity extends FragmentActivity
         FrameLayoutFull.setId(R.id.MainActivityFullContainer);
 
         RelativeLayoutMain.addView(FrameLayoutFull);
-
-        RelativeLayout.LayoutParams RelativeLayoutUpdateParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
-        RelativeLayoutUpdateParam.setMargins(0, -MiscHandler.ToDimension(context, 56), 0, 0);
-
-        final RelativeLayout RelativeLayoutUpdate = new RelativeLayout(context);
-        RelativeLayoutUpdate.setLayoutParams(RelativeLayoutUpdateParam);
-        RelativeLayoutUpdate.setBackgroundResource(R.color.BlueLight2);
-        RelativeLayoutUpdate.postDelayed(new Runnable()
+        RelativeLayoutMain.postDelayed(new Runnable()
         {
             @Override
             public void run()
             {
-                TranslateAnimation animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, MiscHandler.ToDimension(context, 56));
-                animation.setDuration(500);
-                animation.setAnimationListener(new TranslateAnimation.AnimationListener()
-                {
-                    @Override public void onAnimationStart(Animation animation) { }
-                    @Override public void onAnimationRepeat(Animation animation) { }
+                if (!IsActive)
+                    return;
 
+                final Dialog DialogUpdate = new Dialog(MainActivity.this);
+                DialogUpdate.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogUpdate.setCancelable(false);
+
+                RelativeLayout LinearLayoutMain = new RelativeLayout(context);
+                LinearLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 150)));
+                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setClickable(true);
+
+                RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
+                RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+                RelativeLayoutHeader.setBackgroundResource(R.color.White5);
+                RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+
+                LinearLayoutMain.addView(RelativeLayoutHeader);
+
+                RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+                ImageViewBackParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+                ImageView ImageViewBack = new ImageView(context);
+                ImageViewBack.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
+                ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                ImageViewBack.setLayoutParams(ImageViewBackParam);
+                ImageViewBack.setImageResource(R.drawable.ic_close_blue);
+                ImageViewBack.setId(MiscHandler.GenerateViewID());
+                ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { DialogUpdate.dismiss(); } });
+
+                RelativeLayoutHeader.addView(ImageViewBack);
+
+                RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+                TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
+
+                TextView TextViewTitle = new TextView(context);
+                TextViewTitle.setLayoutParams(TextViewTitleParam);
+                TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewTitle.setText("New Update");
+                TextViewTitle.setTypeface(null, Typeface.BOLD);
+                TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+                RelativeLayoutHeader.addView(TextViewTitle);
+
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+                View ViewLine = new View(context);
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray2);
+                ViewLine.setId(MiscHandler.GenerateViewID());
+
+                LinearLayoutMain.addView(ViewLine);
+
+                RelativeLayout.LayoutParams TextViewDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewDescriptionParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 5));
+                TextViewDescriptionParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+                TextView TextViewDescription = new TextView(context);
+                TextViewDescription.setLayoutParams(TextViewDescriptionParam);
+                TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewDescription.setText("New update is available, we strongly recommends you to update your biogram now, Although there is no requires to download it");
+                TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewDescription.setId(MiscHandler.GenerateViewID());
+
+                LinearLayoutMain.addView(TextViewDescription);
+
+                RelativeLayout.LayoutParams TextViewUpdateParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+                TextViewUpdateParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
+
+                TextView TextViewUpdate = new TextView(context);
+                TextViewUpdate.setLayoutParams(TextViewUpdateParam);
+                TextViewUpdate.setBackgroundResource(R.color.BlueLight);
+                TextViewUpdate.setTextColor(ContextCompat.getColor(context, R.color.White));
+                TextViewUpdate.setText("Update Now!");
+                TextViewUpdate.setGravity(Gravity.CENTER);
+                TextViewUpdate.setTypeface(null, Typeface.BOLD);
+                TextViewUpdate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewUpdate.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
-                    public void onAnimationEnd(Animation animation)
+                    public void onClick(View v)
                     {
-                        RelativeLayout.LayoutParams RelativeLayoutUpdateParam = (RelativeLayout.LayoutParams) RelativeLayoutUpdate.getLayoutParams();
-                        RelativeLayoutUpdateParam.topMargin += MiscHandler.ToDimension(context, 56);
-                        RelativeLayoutUpdate.setLayoutParams(RelativeLayoutUpdateParam);
+                        
                     }
                 });
-                RelativeLayoutUpdate.startAnimation(animation);
-            }
-        }, 2000);
 
-        RelativeLayoutMain.addView(RelativeLayoutUpdate);
+                LinearLayoutMain.addView(TextViewUpdate);
+
+                DialogUpdate.setContentView(LinearLayoutMain);
+                DialogUpdate.show();
+            }
+        }, 3000);
 
         setContentView(RelativeLayoutMain);
 
@@ -178,6 +252,8 @@ public class MainActivity extends FragmentActivity
     public void onResume()
     {
         super.onResume();
+        IsActive = true;
+
         ShortcutBadger.removeCount(this);
         registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
 
@@ -211,6 +287,7 @@ public class MainActivity extends FragmentActivity
     public void onPause()
     {
         super.onPause();
+        IsActive = true;
         unregisterReceiver(BroadcastReceiverNotification);
     }
 

@@ -1213,7 +1213,7 @@ public class WriteFragment extends Fragment
                     Retriever.setDataSource(URL);
                     int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
 
-                    if (Time > 120)
+                    if (Time > 300)
                     {
                         MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
                         return;
