@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -697,7 +696,7 @@ public class PostFragment extends Fragment
         RelativeLayoutTripleLayout.addView(ImageViewTriple3);
 
         RelativeLayoutVideo = new RelativeLayout(context);
-        RelativeLayoutVideo.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 180)));
+        RelativeLayoutVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 180)));
         RelativeLayoutVideo.setBackgroundResource(R.color.Black);
         RelativeLayoutVideo.setVisibility(View.GONE);
 

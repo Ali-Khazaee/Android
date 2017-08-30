@@ -3,6 +3,7 @@ package co.biogram.main.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -346,6 +347,26 @@ public class SettingFragment extends Fragment
         TextViewAds.setPadding(MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         LinearLayoutMain.addView(TextViewAds);
+
+        TextView TextViewVersion = new TextView(context);
+        TextViewVersion.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        TextViewVersion.setTextColor(ContextCompat.getColor(context, R.color.Gray2));
+        TextViewVersion.setGravity(Gravity.CENTER);
+        TextViewVersion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        TextViewVersion.setPadding(MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+
+        try
+        {
+            PackageInfo Package = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            TextViewVersion.setText(("Biogram Version: " + Package.versionCode));
+        }
+        catch (Exception e)
+        {
+            TextViewVersion.setVisibility(View.GONE);
+            MiscHandler.Debug("SettingFragment-Version: " + e.toString());
+        }
+
+        LinearLayoutMain.addView(TextViewVersion);
 
         return RelativeLayoutMain;
     }

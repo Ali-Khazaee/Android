@@ -67,8 +67,8 @@ public class CrashHandler
                     long TotalMemory = (TotalBlocks * BlockSize) / (1024 * 1024);
                     long AvailableMemory = (AvailableBlocks * BlockSize) / (1024 * 1024);
 
-                    Report.append("\nTOTAL-INTERNAL-MEMORY     : ").append(TotalMemory).append("MB");
-                    Report.append("\nAVAILABLE-INTERNAL-MEMORY : ").append(AvailableMemory).append("MB");
+                    Report.append("\nTOTAL-MEMORY     : ").append(TotalMemory).append("MB");
+                    Report.append("\nAVAILABLE-MEMORY : ").append(AvailableMemory).append("MB");
                 }
                 catch (Exception e2)
                 {

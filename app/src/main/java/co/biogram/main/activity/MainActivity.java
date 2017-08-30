@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
 import co.biogram.main.R;
@@ -33,6 +36,7 @@ import co.biogram.main.fragment.InboxFragment;
 import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
+import co.biogram.main.handler.UpdateHandler;
 import co.biogram.main.service.NotificationService;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
@@ -148,7 +152,7 @@ public class MainActivity extends FragmentActivity
             @Override
             public void run()
             {
-                if (!IsActive)
+                if (!IsActive || !UpdateHandler.IsUpdateAvailable(context))
                     return;
 
                 final Dialog DialogUpdate = new Dialog(MainActivity.this);
@@ -232,7 +236,10 @@ public class MainActivity extends FragmentActivity
                     @Override
                     public void onClick(View v)
                     {
-                        
+                        File ApkFile = new File(Environment.getExternalStorageDirectory(), ("biogram.apk"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.fromFile(ApkFile), "application/vnd.android.package-archive");
+                        startActivity(intent);
                     }
                 });
 
