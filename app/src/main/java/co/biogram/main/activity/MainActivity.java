@@ -227,7 +227,7 @@ public class MainActivity extends FragmentActivity
                 TextViewUpdate.setLayoutParams(TextViewUpdateParam);
                 TextViewUpdate.setBackgroundResource(R.color.BlueLight);
                 TextViewUpdate.setTextColor(ContextCompat.getColor(context, R.color.White));
-                TextViewUpdate.setText("Update Now!");
+                TextViewUpdate.setText("Update Now!"); // TODO
                 TextViewUpdate.setGravity(Gravity.CENTER);
                 TextViewUpdate.setTypeface(null, Typeface.BOLD);
                 TextViewUpdate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
