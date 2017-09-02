@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -71,7 +70,7 @@ public class CategoryFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new BookmarkFragment()).addToBackStack("BookmarkFragment").commitAllowingStateLoss();
             }
         });
 
@@ -90,7 +89,7 @@ public class CategoryFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commitAllowingStateLoss();
             }
         });
 
@@ -112,9 +111,7 @@ public class CategoryFragment extends Fragment
         RecyclerView RecyclerViewCategory = new RecyclerView(context);
         RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
         RecyclerViewCategory.setLayoutManager(new GridLayoutManager(context, 2));
-        RecyclerViewCategory.addItemDecoration(new GridSpacingItemDecoration(2, MiscHandler.ToDimension(context, 15)));
-        RecyclerViewCategory.setItemAnimator(new DefaultItemAnimator());
-        RecyclerViewCategory.setClipToPadding(false);
+        RecyclerViewCategory.addItemDecoration(new GridSpacingItemDecoration());
         RecyclerViewCategory.setAdapter(new AdapterCategory(context));
 
         RelativeLayoutMain.addView(RecyclerViewCategory);
@@ -124,39 +121,32 @@ public class CategoryFragment extends Fragment
 
     private class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
     {
-        private final int spanCount;
-        private final int spacing;
-
-        GridSpacingItemDecoration(int spanCount, int spacing)
-        {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-        }
-
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
         {
-            int position = parent.getChildAdapterPosition(view);
-            int column = position % spanCount;
+            int SpanCount = 2;
+            int Spacing = MiscHandler.ToDimension(parent.getContext(), 15);
+            int Position = parent.getChildAdapterPosition(view);
+            int Column = Position % SpanCount;
 
-            outRect.left = spacing - column * spacing / spanCount;
-            outRect.right = (column + 1) * spacing / spanCount;
+            outRect.left = Spacing - Column * Spacing / SpanCount;
+            outRect.right = (Column + 1) * Spacing / SpanCount;
 
-            if (position < spanCount)
-                outRect.top = spacing;
+            if (Position < SpanCount)
+                outRect.top = Spacing;
 
-            outRect.bottom = spacing;
+            outRect.bottom = Spacing;
         }
     }
 
     private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderMain>
     {
         private final int ID_Main = MiscHandler.GenerateViewID();
-        private final int ID_Icon = MiscHandler.GenerateViewID();
+        private final int ID_ICON = MiscHandler.GenerateViewID();
         private final int ID_Name = MiscHandler.GenerateViewID();
 
-        private final Context context;
         private final List<Struct> CategoryList = new ArrayList<>();
+        private final Context context;
 
         AdapterCategory(Context c)
         {
@@ -191,7 +181,7 @@ public class CategoryFragment extends Fragment
             {
                 super(view);
                 LinearLayoutMain = (LinearLayout) view.findViewById(ID_Main);
-                ImageViewIcon = (ImageView) view.findViewById(ID_Icon);
+                ImageViewIcon = (ImageView) view.findViewById(ID_ICON);
                 TextViewName = (TextView) view.findViewById(ID_Name);
             }
         }
@@ -213,7 +203,7 @@ public class CategoryFragment extends Fragment
                     Fragment fragment = new SubCategoryFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("SubCategoryFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("SubCategoryFragment").commitAllowingStateLoss();
                 }
             });
             Holder.ImageViewIcon.setImageResource(CategoryList.get(Position).Icon);
@@ -248,7 +238,7 @@ public class CategoryFragment extends Fragment
 
             ImageView ImageViewIcon = new ImageView(context);
             ImageViewIcon.setLayoutParams(ImageViewIconParam);
-            ImageViewIcon.setId(ID_Icon);
+            ImageViewIcon.setId(ID_ICON);
             ImageViewIcon.setPadding(0, MiscHandler.ToDimension(context, 10), 0, 0);
 
             LinearLayoutCard.addView(ImageViewIcon);

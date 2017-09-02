@@ -221,7 +221,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Fragment fragment = new PostFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commitAllowingStateLoss();
             }
         });
 
@@ -246,7 +246,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Fragment fragment = new ProfileFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
             }
         });
 
@@ -264,7 +264,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Fragment fragment = new ProfileFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
             }
         });
 
@@ -701,7 +701,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                         Fragment fragment = new VideoPreviewFragment();
                         fragment.setArguments(bundle);
 
-                        Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
+                        Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
                     }
                 });
 
@@ -906,7 +906,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                 Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("LikeFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("LikeFragment").commitAllowingStateLoss();
             }
         });
 
@@ -925,7 +925,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commitAllowingStateLoss();
                     return;
                 }
 
@@ -992,6 +992,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         Fragment fragment = new ImagePreviewFragment();
         fragment.setArguments(bundle);
 
-        Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
+        Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commitAllowingStateLoss();
     }
 }

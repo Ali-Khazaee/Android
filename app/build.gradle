@@ -5,13 +5,18 @@ android
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
 
+    lintOptions
+    {
+        disable 'GoogleAppIndexingWarning'
+    }
+
     defaultConfig
     {
         applicationId "co.biogram.main"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.5"
+        versionCode 6
+        versionName "1.6"
         resConfigs "en"
     }
 
@@ -23,6 +28,7 @@ android
             storePassword SignPassword
             keyAlias SignAlias
             keyPassword SignAliasPassword
+            v2SigningEnabled false
         }
     }
 
@@ -31,9 +37,10 @@ android
         release
         {
             debuggable true
+            jniDebuggable true
             minifyEnabled false
             zipAlignEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -55,7 +62,7 @@ dependencies
     compile 'com.github.bumptech.glide:okhttp3-integration:1.5.0'
     compile 'com.google.android.exoplayer:exoplayer:r2.5.1'
     compile 'com.google.android.exoplayer:extension-okhttp:r2.5.1'
-    compile 'com.zhihu.android:matisse:0.5.0-alpha4'
+
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
     compile "me.leolin:ShortcutBadger:1.1.16@aar"
 }

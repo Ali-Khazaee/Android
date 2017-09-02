@@ -460,7 +460,7 @@ public class SearchFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
                 }
             });
 
@@ -479,7 +479,7 @@ public class SearchFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
                 }
             });
 
@@ -591,7 +591,7 @@ public class SearchFragment extends Fragment
                     Fragment fragment = new TagFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("TagFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("TagFragment").commitAllowingStateLoss();
                 }
             });
 
@@ -606,7 +606,7 @@ public class SearchFragment extends Fragment
                     Fragment fragment = new TagFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("TagFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("TagFragment").commitAllowingStateLoss();
                 }
             });
 

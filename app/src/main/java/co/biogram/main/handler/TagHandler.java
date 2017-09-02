@@ -116,7 +116,7 @@ public class TagHandler
                 Fragment fragment = new TagFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("TagFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("TagFragment").commitAllowingStateLoss();
             }
             else if (TagType == 2)
             {
@@ -129,7 +129,7 @@ public class TagHandler
                 Fragment fragment = new ProfileFragment();
                 fragment.setArguments(bundle);
 
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
             }
 
             MiscHandler.HideSoftKey(Activity);

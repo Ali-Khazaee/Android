@@ -125,7 +125,7 @@ public class SettingFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new ChangePasswordFragment()).addToBackStack("ChangePasswordFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new ChangePasswordFragment()).addToBackStack("ChangePasswordFragment").commitAllowingStateLoss();
             }
         });
 
@@ -143,7 +143,7 @@ public class SettingFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new EditFragment(), "EditFragment").addToBackStack("EditFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new EditFragment(), "EditFragment").addToBackStack("EditFragment").commitAllowingStateLoss();
             }
         });
 
@@ -179,7 +179,7 @@ public class SettingFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new ContactFragment()).addToBackStack("ContactFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new ContactFragment()).addToBackStack("ContactFragment").commitAllowingStateLoss();
             }
         });
 

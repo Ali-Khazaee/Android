@@ -264,6 +264,9 @@ public class MainActivity extends FragmentActivity
         ShortcutBadger.removeCount(this);
         registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
 
+        if (getIntent() == null)
+            return;
+
         if (getIntent().getIntExtra("Type", 0) == 1)
         {
             if (SharedHandler.GetString(this, "Username").equals(getIntent().getStringExtra("Data")))
@@ -275,7 +278,7 @@ public class MainActivity extends FragmentActivity
             Fragment fragment = new ProfileFragment();
             fragment.setArguments(bundle);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
         }
 
         if (getIntent().getIntExtra("Type", 0) == 2)
@@ -286,7 +289,7 @@ public class MainActivity extends FragmentActivity
             Fragment fragment = new PostFragment();
             fragment.setArguments(bundle);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commitAllowingStateLoss();
         }
     }
 
@@ -298,6 +301,12 @@ public class MainActivity extends FragmentActivity
         unregisterReceiver(BroadcastReceiverNotification);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        // No call for super() Bug on API Level > 11
+    }
+
     private final BroadcastReceiver BroadcastReceiverNotification = new BroadcastReceiver()
     {
         @Override
@@ -307,8 +316,11 @@ public class MainActivity extends FragmentActivity
             {
                 IsNotification = true;
 
-                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vibrator.vibrate(200);
+                if (SharedHandler.GetBoolean(context, "VibrateNotification"))
+                {
+                    Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(200);
+                }
 
                 ImageViewNotification.setImageResource(R.drawable.ic_notification_red);
             }
@@ -362,11 +374,11 @@ public class MainActivity extends FragmentActivity
             {
                 if (fragment != null)
                 {
-                    FragManager.beginTransaction().remove(fragment).commit();
+                    FragManager.beginTransaction().remove(fragment).commitAllowingStateLoss();
                 }
             }
         }
 
-        FragManager.beginTransaction().add(R.id.MainActivityContentContainer, SelectedFragment).commit();
+        FragManager.beginTransaction().add(R.id.MainActivityContentContainer, SelectedFragment).commitAllowingStateLoss();
     }
 }

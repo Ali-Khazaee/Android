@@ -872,7 +872,7 @@ public class EditFragment extends Fragment
                     @Override public void OnFailed() { }
                 });
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new MapFragment(), "MapFragment").addToBackStack("MapFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new MapFragment(), "MapFragment").addToBackStack("MapFragment").commitAllowingStateLoss();
             }
         });
 
@@ -1097,9 +1097,9 @@ public class EditFragment extends Fragment
     }
 
     @Override
-    public void onStop()
+    public void onPause()
     {
-        super.onStop();
+        super.onPause();
         AndroidNetworking.forceCancel("EditFragment");
     }
 
@@ -1341,7 +1341,7 @@ public class EditFragment extends Fragment
             ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
             ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
             ImageViewSearch.setId(MiscHandler.GenerateViewID());
-            ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new MapSearchFragment()).addToBackStack("MapSearchFragment").commit(); } });
+            ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new MapSearchFragment()).addToBackStack("MapSearchFragment").commitAllowingStateLoss(); } });
 
             RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -1772,7 +1772,7 @@ public class EditFragment extends Fragment
                     MapFragment mapFragment = ((MapFragment) getActivity().getSupportFragmentManager().findFragmentByTag("MapFragment"));
 
                     if (mapFragment != null)
-                        getActivity().getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(mapFragment).commitAllowingStateLoss();
 
                     EditFragment editFragment = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
 

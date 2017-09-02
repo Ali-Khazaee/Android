@@ -111,6 +111,7 @@ public class WriteFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+
         final EditText EditTextMessage = new EditText(context);
         final RelativeLayout RelativeLayoutLink = new RelativeLayout(context);
         final LoadingView LoadingViewLink = new LoadingView(context);
@@ -1039,7 +1040,7 @@ public class WriteFragment extends Fragment
                 Fragment fragment = new VideoPreviewFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
             }
         });
 
@@ -1423,7 +1424,7 @@ public class WriteFragment extends Fragment
                         ImagePreviewFragment fragment = new ImagePreviewFragment();
                         fragment.SetBitmap(SelectImage.get(Position));
 
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commitAllowingStateLoss();
                     }
                 }
             });

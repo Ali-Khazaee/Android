@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,6 +31,9 @@ public class MiscHandler
 
     public static int GenerateViewID()
     {
+        if (Build.VERSION.SDK_INT > 16)
+            return View.generateViewId();
+
         for (;;)
         {
             int Result = NextGeneratedID.get();

@@ -39,23 +39,20 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
+
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class NotificationFragment extends Fragment
 {
     private final List<Struct> NotificationList = new ArrayList<>();
-    private RecyclerViewScroll RecyclerViewScrollMain;
     private AdapterNotification Adapter;
 
     private boolean NotificationTurn = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
-
-        NotificationManager NotificationManagerMain = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationManagerMain.cancelAll();
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -70,8 +67,8 @@ public class NotificationFragment extends Fragment
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
@@ -99,14 +96,14 @@ public class NotificationFragment extends Fragment
                 PopupMenu PopMenu = new PopupMenu(context, ImageViewMore);
 
                 if (NotificationTurn)
-                    PopMenu.getMenu().add(0, 0, 0, getString(R.string.NotificationFragmentTurnOn));
-                else
                     PopMenu.getMenu().add(0, 0, 0, getString(R.string.NotificationFragmentTurnOff));
+                else
+                    PopMenu.getMenu().add(0, 0, 0, getString(R.string.NotificationFragmentTurnOn));
 
                 if (SharedHandler.GetBoolean(context, "VibrateNotification"))
-                    PopMenu.getMenu().add(0, 1, 1, getString(R.string.NotificationFragmentTurnOnVibrator));
-                else
                     PopMenu.getMenu().add(0, 1, 1, getString(R.string.NotificationFragmentTurnOffVibrator));
+                else
+                    PopMenu.getMenu().add(0, 1, 1, getString(R.string.NotificationFragmentTurnOnVibrator));
 
                 PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                 {
@@ -173,14 +170,7 @@ public class NotificationFragment extends Fragment
         ImageViewSearch.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSearch.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
         ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
-        ImageViewSearch.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commit();
-            }
-        });
+        ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new SearchFragment()).addToBackStack("SearchFragment").commitAllowingStateLoss(); } });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -199,13 +189,13 @@ public class NotificationFragment extends Fragment
 
         LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
 
-        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
+        final RecyclerViewScroll RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
             public void OnLoadMore()
             {
                 NotificationList.add(null);
-                Adapter.notifyDataSetChanged();
+                Adapter.notifyItemInserted(NotificationList.size());
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationList"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -231,20 +221,20 @@ public class NotificationFragment extends Fragment
                                 {
                                     JSONObject Comment = ResultList.getJSONObject(I);
 
-                                    Struct NotificationStruct = new Struct();
-                                    NotificationStruct.Username = Comment.getString("Username");
-                                    NotificationStruct.Avatar = Comment.getString("Avatar");
-                                    NotificationStruct.PostID = Comment.getString("PostID");
-                                    NotificationStruct.Type = Comment.getInt("Type");
-                                    NotificationStruct.Time = Comment.getInt("Time");
+                                    Struct NewNotification = new Struct();
+                                    NewNotification.Username = Comment.getString("Username");
+                                    NewNotification.Avatar = Comment.getString("Avatar");
+                                    NewNotification.PostID = Comment.getString("PostID");
+                                    NewNotification.Type = Comment.getInt("Type");
+                                    NewNotification.Time = Comment.getInt("Time");
 
-                                    NotificationList.add(NotificationStruct);
+                                    NotificationList.add(NewNotification);
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            RecyclerViewScrollMain.ResetLoading(false);
+                            ResetLoading(false);
                             MiscHandler.Debug("Notification-RequestMore: " + e.toString());
                         }
 
@@ -254,7 +244,7 @@ public class NotificationFragment extends Fragment
                     @Override
                     public void onError(ANError anError)
                     {
-                        RecyclerViewScrollMain.ResetLoading(false);
+                        ResetLoading(false);
                         NotificationList.remove(NotificationList.size() - 1);
                         Adapter.notifyItemRemoved(NotificationList.size());
                     }
@@ -270,11 +260,11 @@ public class NotificationFragment extends Fragment
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
-        RelativeLayout.LayoutParams LoadingViewNotificationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
-        LoadingViewNotificationParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         final LoadingView LoadingViewMain = new LoadingView(context);
-        LoadingViewMain.setLayoutParams(LoadingViewNotificationParam);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
 
         RelativeLayoutMain.addView(LoadingViewMain);
 
@@ -286,11 +276,11 @@ public class NotificationFragment extends Fragment
         TextViewTryAgain.setText(getString(R.string.TryAgain));
         TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray));
         TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain); } });
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain, RecyclerViewScrollMain); } });
 
         RelativeLayoutMain.addView(TextViewTryAgain);
 
-        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain);
+        RetrieveDataFromServer(context, LoadingViewMain, TextViewTryAgain, RecyclerViewScrollMain);
 
         return RelativeLayoutMain;
     }
@@ -302,7 +292,7 @@ public class NotificationFragment extends Fragment
         AndroidNetworking.forceCancel("NotificationFragment");
     }
 
-    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
+    private void RetrieveDataFromServer(final Context context, final LoadingView LoadingViewMain, final TextView TextViewTryAgain, final RecyclerViewScroll RecyclerViewScrollMain)
     {
         TextViewTryAgain.setVisibility(View.GONE);
         LoadingViewMain.Start();
@@ -318,6 +308,9 @@ public class NotificationFragment extends Fragment
             {
                 try
                 {
+                    NotificationManager NotificationManagerMain = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationManagerMain.cancelAll();
+
                     JSONObject Result = new JSONObject(Response);
 
                     if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
@@ -328,14 +321,14 @@ public class NotificationFragment extends Fragment
                         {
                             JSONObject Notification = ResultList.getJSONObject(I);
 
-                            Struct NotificationStruct = new Struct();
-                            NotificationStruct.Username = Notification.getString("Username");
-                            NotificationStruct.Avatar = Notification.getString("Avatar");
-                            NotificationStruct.PostID = Notification.getString("PostID");
-                            NotificationStruct.Type = Notification.getInt("Type");
-                            NotificationStruct.Time = Notification.getInt("Time");
+                            Struct NewNotification = new Struct();
+                            NewNotification.Username = Notification.getString("Username");
+                            NewNotification.Avatar = Notification.getString("Avatar");
+                            NewNotification.PostID = Notification.getString("PostID");
+                            NewNotification.Type = Notification.getInt("Type");
+                            NewNotification.Time = Notification.getInt("Time");
 
-                            NotificationList.add(NotificationStruct);
+                            NotificationList.add(NewNotification);
                         }
 
                         NotificationTurn = Result.getBoolean("Notification");
@@ -344,9 +337,9 @@ public class NotificationFragment extends Fragment
                             SharedHandler.SetBoolean(context, "Notification", true);
                         else
                             SharedHandler.SetBoolean(context, "Notification", false);
-                    }
 
-                    Adapter.notifyDataSetChanged();
+                        Adapter.notifyDataSetChanged();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -372,9 +365,10 @@ public class NotificationFragment extends Fragment
     private class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.ViewHolderMain>
     {
         private final int ID_MAIN = MiscHandler.GenerateViewID();
-        private final int ID_Profile = MiscHandler.GenerateViewID();
-        private final int ID_Message = MiscHandler.GenerateViewID();
-        private final int ID_Time = MiscHandler.GenerateViewID();
+        private final int ID_PROFILE = MiscHandler.GenerateViewID();
+        private final int ID_MESSAGE = MiscHandler.GenerateViewID();
+        private final int ID_TIME = MiscHandler.GenerateViewID();
+        private final int ID_LINE = MiscHandler.GenerateViewID();
 
         private final Context context;
 
@@ -389,6 +383,7 @@ public class NotificationFragment extends Fragment
             private ImageViewCircle ImageViewCircleProfile;
             private TextView TextViewMessage;
             private TextView TextViewTime;
+            private View ViewLine;
 
             ViewHolderMain(View view, boolean Content)
             {
@@ -397,15 +392,16 @@ public class NotificationFragment extends Fragment
                 if (Content)
                 {
                     RelativeLayoutMain = (RelativeLayout) view.findViewById(ID_MAIN);
-                    ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_Profile);
-                    TextViewMessage = (TextView) view.findViewById(ID_Message);
-                    TextViewTime = (TextView) view.findViewById(ID_Time);
+                    ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_PROFILE);
+                    TextViewMessage = (TextView) view.findViewById(ID_MESSAGE);
+                    TextViewTime = (TextView) view.findViewById(ID_TIME);
+                    ViewLine = view.findViewById(ID_LINE);
                 }
             }
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolderMain Holder, int position)
+        public void onBindViewHolder(ViewHolderMain Holder, int position)
         {
             if (getItemViewType(position) != 0)
                 return;
@@ -432,7 +428,7 @@ public class NotificationFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
                 }
             });
 
@@ -467,7 +463,7 @@ public class NotificationFragment extends Fragment
                         Fragment fragment = new ProfileFragment();
                         fragment.setArguments(bundle);
 
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
                     }
                     else if (NotificationList.get(Position).Type == 1 || NotificationList.get(Position).Type == 2 || NotificationList.get(Position).Type == 4 || NotificationList.get(Position).Type == 5 || NotificationList.get(Position).Type == 6)
                     {
@@ -477,7 +473,7 @@ public class NotificationFragment extends Fragment
                         Fragment fragment = new PostFragment();
                         fragment.setArguments(bundle);
 
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commitAllowingStateLoss();
                     }
                 }
             });
@@ -488,6 +484,11 @@ public class NotificationFragment extends Fragment
             Holder.TextViewMessage.setText(SpanMessage);
 
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(NotificationList.get(Position).Time));
+
+            if (Position == NotificationList.size() - 1)
+                Holder.ViewLine.setVisibility(View.GONE);
+            else
+                Holder.ViewLine.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -495,8 +496,6 @@ public class NotificationFragment extends Fragment
         {
             if (ViewType == 0)
             {
-                TextView TextViewTime = new TextView(context);
-
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                 RelativeLayoutMain.setId(ID_MAIN);
@@ -508,20 +507,20 @@ public class NotificationFragment extends Fragment
                 ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
                 ImageViewCircleProfile.setLayoutParams(ImageViewCircleProfileParam);
                 ImageViewCircleProfile.setImageResource(R.color.BlueGray);
-                ImageViewCircleProfile.setId(ID_Profile);
+                ImageViewCircleProfile.setId(ID_PROFILE);
 
                 RelativeLayoutMain.addView(ImageViewCircleProfile);
 
                 RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewMessageParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), 0, 0);
-                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_Profile);
-                TextViewMessageParam.addRule(RelativeLayout.LEFT_OF, ID_Time);
+                TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID_PROFILE);
+                TextViewMessageParam.addRule(RelativeLayout.LEFT_OF, ID_TIME);
 
                 TextView TextViewMessage = new TextView(context);
                 TextViewMessage.setLayoutParams(TextViewMessageParam);
                 TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black4));
                 TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewMessage.setId(ID_Message);
+                TextViewMessage.setId(ID_MESSAGE);
 
                 RelativeLayoutMain.addView(TextViewMessage);
 
@@ -529,18 +528,29 @@ public class NotificationFragment extends Fragment
                 TextViewTimeParam.setMargins(0, MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), 0);
                 TextViewTimeParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
+                TextView TextViewTime = new TextView(context);
                 TextViewTime.setLayoutParams(TextViewTimeParam);
                 TextViewTime.setTextColor(ContextCompat.getColor(context, R.color.Gray3));
                 TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                TextViewTime.setId(ID_Time);
+                TextViewTime.setId(ID_TIME);
 
                 RelativeLayoutMain.addView(TextViewTime);
+
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, ImageViewCircleProfile.getId());
+
+                View ViewLine = new View(context);
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray);
+                ViewLine.setId(ID_LINE);
+
+                RelativeLayoutMain.addView(ViewLine);
 
                 return new ViewHolderMain(RelativeLayoutMain, true);
             }
 
             LoadingView LoadingViewMain = new LoadingView(context);
-            LoadingViewMain.setLayoutParams(new LoadingView.LayoutParams(LoadingView.LayoutParams.MATCH_PARENT, LoadingView.LayoutParams.WRAP_CONTENT));
+            LoadingViewMain.setLayoutParams(new LoadingView.LayoutParams(LoadingView.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
             LoadingViewMain.Start();
 
             return new ViewHolderMain(LoadingViewMain, false);

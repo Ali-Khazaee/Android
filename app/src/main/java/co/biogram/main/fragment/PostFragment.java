@@ -814,7 +814,7 @@ public class PostFragment extends Fragment
                 Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("LikeFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("LikeFragment").commitAllowingStateLoss();
             }
         });
 
@@ -838,7 +838,7 @@ public class PostFragment extends Fragment
                 Fragment fragment = new LikeFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("LikeFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("LikeFragment").commitAllowingStateLoss();
             }
         });
 
@@ -864,7 +864,7 @@ public class PostFragment extends Fragment
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commitAllowingStateLoss();
                     return;
                 }
 
@@ -895,7 +895,7 @@ public class PostFragment extends Fragment
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commitAllowingStateLoss();
                     return;
                 }
 
@@ -1007,7 +1007,7 @@ public class PostFragment extends Fragment
                     Fragment fragment = new CommentFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("CommentFragment").commitAllowingStateLoss();
                     return;
                 }
 
@@ -1147,7 +1147,7 @@ public class PostFragment extends Fragment
                                 Fragment fragment = new ProfileFragment();
                                 fragment.setArguments(bundle);
 
-                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
                             }
                         });
 
@@ -1229,7 +1229,7 @@ public class PostFragment extends Fragment
                                     Fragment fragment = new VideoPreviewFragment();
                                     fragment.setArguments(bundle);
 
-                                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commit();
+                                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
                                 }
                             });
 
@@ -1360,6 +1360,6 @@ public class PostFragment extends Fragment
         Fragment fragment = new ImagePreviewFragment();
         fragment.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commitAllowingStateLoss();
     }
 }

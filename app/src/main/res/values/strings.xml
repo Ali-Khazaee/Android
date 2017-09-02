@@ -304,4 +304,8 @@
     <string name="EditFragmentLocation">Location</string>
     <string name="EditFragmentUnknownLocation">Unknown location</string>
     <string name="EditFragmentCrop">Image Crop</string>
+
+    <!-- Edit Fragment -->
+    <string name="GalleryFragment">Gallery</string>
+    <string name="GalleryFragmentMaximum">Maximum selection is </string>
 </resources>

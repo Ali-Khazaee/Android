@@ -377,7 +377,7 @@ public class ProfileFragment extends Fragment
                     return;
                 }
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new SettingFragment()).addToBackStack("SettingFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new SettingFragment()).addToBackStack("SettingFragment").commitAllowingStateLoss();
             }
         });
 
@@ -622,7 +622,7 @@ public class ProfileFragment extends Fragment
                 Fragment fragment = new FollowersFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FollowersFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FollowersFragment").commitAllowingStateLoss();
             }
         });
 
@@ -667,7 +667,7 @@ public class ProfileFragment extends Fragment
                 Fragment fragment = new FollowingFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FollowingFragment").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("FollowingFragment").commitAllowingStateLoss();
             }
         });
 
@@ -853,7 +853,7 @@ public class ProfileFragment extends Fragment
             {
                 if (IsPrivate)
                 {
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new EditFragment(), "EditFragment").addToBackStack("EditFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new EditFragment(), "EditFragment").addToBackStack("EditFragment").commitAllowingStateLoss();
                     return;
                 }
 
@@ -1424,7 +1424,7 @@ public class ProfileFragment extends Fragment
                     Fragment fragment = new PostFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("PostFragment").commitAllowingStateLoss();
                 }
             });
 
@@ -1448,7 +1448,7 @@ public class ProfileFragment extends Fragment
                     Fragment fragment = new ProfileFragment();
                     fragment.setArguments(bundle);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
                 }
             });
 
