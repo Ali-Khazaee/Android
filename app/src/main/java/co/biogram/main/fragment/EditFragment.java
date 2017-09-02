@@ -7,7 +7,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -91,7 +90,6 @@ public class EditFragment extends Fragment
     private PermissionHandler PermissionHandler;
 
     private Uri CaptureUri;
-    private final int FromFile = 1;
     private final int FromCamera = 2;
 
     private File CoverFile;
@@ -391,7 +389,7 @@ public class EditFragment extends Fragment
                             public void OnGranted()
                             {
                                 IsCover = true;
-                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, GalleryFragment.NewInstance(1)).addToBackStack("GalleryFragment").commitAllowingStateLoss();
+                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, GalleryFragment.NewInstance(1, false)).addToBackStack("GalleryFragment").commitAllowingStateLoss();
                                 DialogCover.dismiss();
                             }
 
@@ -586,16 +584,7 @@ public class EditFragment extends Fragment
                             public void OnGranted()
                             {
                                 IsCover = false;
-
-                                /* TODO Matisse.from(EditFragment.this)
-                                .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
-                                .countable(false)
-                                .gridExpectedSize(MiscHandler.ToDimension(context, 90))
-                                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                                .thumbnailScale(0.85f)
-                                .imageEngine(new GlideEngine())
-                                .forResult(FromFile);*/
-
+                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, GalleryFragment.NewInstance(1, false)).addToBackStack("GalleryFragment").commitAllowingStateLoss();
                                 DialogProfile.dismiss();
                             }
 
@@ -1123,7 +1112,7 @@ public class EditFragment extends Fragment
                             _Cursor.close();
                         }
 
-                        DoCrop();
+                        DoCrop(CaptureUri.getPath());
                     }
 
                     @Override
@@ -1134,12 +1123,6 @@ public class EditFragment extends Fragment
                 });
             break;
         }
-    }
-
-    public void Update()
-    {
-        CaptureUri = Matisse.obtainResult(Data).get(0);
-        DoCrop();
     }
 
     private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
@@ -1182,7 +1165,6 @@ public class EditFragment extends Fragment
 
                         Glide.with(context)
                         .load(Data.getString("Avatar"))
-                        .override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90))
                         .dontAnimate()
                         .into(ImageViewCircleProfile);
                     }
@@ -1203,23 +1185,11 @@ public class EditFragment extends Fragment
         });
     }
 
-    private void DoCrop()
+    public void DoCrop(String URL)
     {
         try
         {
             Context context = getActivity();
-
-            String URL = null;
-            Cursor _Cursor = context.getContentResolver().query(CaptureUri, new String[] { MediaStore.Images.Media.DATA }, null, null, null);
-
-            if (_Cursor != null && _Cursor.moveToFirst())
-            {
-                URL = _Cursor.getString(_Cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                _Cursor.close();
-            }
-
-            if (URL == null)
-                return;
 
             File ImageFile = new File(URL);
 

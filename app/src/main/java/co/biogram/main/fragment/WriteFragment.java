@@ -6,9 +6,6 @@ import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,15 +13,13 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.media.ExifInterface;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.media.ExifInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -474,15 +469,7 @@ public class WriteFragment extends Fragment
                     @Override
                     public void OnGranted()
                     {
-                        /* TODO Matisse.from(WriteFragment.this)
-                        .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
-                        .countable(true)
-                        .maxSelectable(3)
-                        .gridExpectedSize(MiscHandler.ToDimension(context, 90))
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                        .thumbnailScale(0.85f)
-                        .imageEngine(new GlideEngine())
-                        .forResult(0);*/
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, GalleryFragment.NewInstance(3, false)).addToBackStack("GalleryFragment").commitAllowingStateLoss();
                     }
 
                     @Override
@@ -511,14 +498,7 @@ public class WriteFragment extends Fragment
                     @Override
                     public void OnGranted()
                     {
-                        /* TODO Matisse.from(WriteFragment.this)
-                        .choose(MimeType.ofVideo())
-                        .countable(false)
-                        .gridExpectedSize(MiscHandler.ToDimension(context, 90))
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                        .thumbnailScale(0.85f)
-                        .imageEngine(new GlideEngine())
-                        .forResult(1);*/
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, GalleryFragment.NewInstance(1, true)).addToBackStack("GalleryFragment").commitAllowingStateLoss();
                     }
 
                     @Override
@@ -1103,112 +1083,19 @@ public class WriteFragment extends Fragment
             PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
     }
 
-    @Override
-    public void onActivityResult(final int RequestCode, int ResultCode, final Intent Data)
+    public void GetData(final String Path, boolean IsVideo)
     {
-        if (Data == null || ResultCode == 0)
-            return;
-
-        final String URL;
-        final Context context = getActivity();
-
-        Cursor cursor = null;//context.getContentResolver().query(Matisse.obtainResult(Data).get(0), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst())
+        if (IsVideo)
         {
-            URL = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-            cursor.close();
-        }
-        else
-        {
-            MiscHandler.Toast(context, getString(R.string.FileNotFound));
-            return;
-        }
+            final Context context = getActivity();
 
-        PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
-        {
-            @Override
-            public void OnGranted()
+            PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
             {
-                if (RequestCode == 0)
-                {
-                    try
-                    {
-                        /* TODO for (int I = 0; I < Matisse.obtainResult(Data).size(); I++)
-                        {
-                            String ImagePath = "";
-                            Cursor cursor = context.getContentResolver().query(Matisse.obtainResult(Data).get(I), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
-
-                            if (cursor != null && cursor.moveToFirst())
-                            {
-                                ImagePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                                cursor.close();
-                            }
-                            else
-                                continue;
-
-                            File ImageFile = new File(ImagePath);
-                            Bitmap ResizeBitmap;
-
-                            if (ImageFile.length() > 66560)
-                            {
-                                BitmapFactory.Options O = new BitmapFactory.Options();
-                                O.inJustDecodeBounds = true;
-
-                                BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
-
-                                int Scale = 1;
-                                int Height = O.outHeight;
-                                int Width = O.outWidth;
-
-                                if (Height > 500 || Width > 500)
-                                {
-                                    int HalfHeight = Height / 2;
-                                    int HalfWidth = Width / 2;
-
-                                    while ((HalfHeight / Scale) >= 500 && (HalfWidth / Scale) >= 500)
-                                    {
-                                        Scale *= 2;
-                                    }
-                                }
-
-                                O.inJustDecodeBounds = false;
-                                O.inSampleSize = Scale;
-
-                                ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
-
-                                Matrix matrix = new Matrix();
-                                int Orientation = new ExifInterface(ImagePath).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
-
-                                if (Orientation == 6)
-                                    matrix.postRotate(90);
-                                else if (Orientation == 3)
-                                    matrix.postRotate(180);
-                                else if (Orientation == 8)
-                                    matrix.postRotate(270);
-
-                                ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
-                            }
-                            else
-                                ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath());
-
-                            ChangeType(1);
-                            SelectImage.add(ResizeBitmap);
-                            ViewPagerAdapterImage.notifyDataSetChanged();
-                            ViewPagerImage.setCurrentItem(SelectImage.size());
-                            ViewPagerImage.setVisibility(View.VISIBLE);
-                        }*/
-                    }
-                    catch (Exception e)
-                    {
-                        MiscHandler.Debug("WriteFragment-ImageCompress: " + e.toString());
-                    }
-                }
-
-                if (RequestCode == 1)
+                @Override
+                public void OnGranted()
                 {
                     final MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                    Retriever.setDataSource(URL);
+                    Retriever.setDataSource(Path);
                     int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
 
                     if (Time > 300)
@@ -1217,7 +1104,7 @@ public class WriteFragment extends Fragment
                         return;
                     }
 
-                    SelectVideo = new File(URL);
+                    SelectVideo = new File(Path);
 
                     if (SelectVideo.length() < 3145728)
                     {
@@ -1266,7 +1153,7 @@ public class WriteFragment extends Fragment
                     Progress.setProgress(0);
                     Progress.show();
 
-                    MediaTransCoder.Start(URL, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
+                    MediaTransCoder.Start(Path, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
                     {
                         @Override
                         public MediaFormat CreateVideo(MediaFormat Format)
@@ -1341,14 +1228,76 @@ public class WriteFragment extends Fragment
                         }
                     });
                 }
-            }
 
-            @Override
-            public void OnFailed()
+                @Override
+                public void OnFailed()
+                {
+                    MiscHandler.Toast(context, getString(R.string.PermissionStorage));
+                }
+            });
+        }
+        else
+        {
+            SelectImage.clear();
+
+            try
             {
-                MiscHandler.Toast(context, getString(R.string.PermissionStorage));
+                File ImageFile = new File(Path);
+                Bitmap ResizeBitmap;
+
+                if (ImageFile.length() > 66560)
+                {
+                    BitmapFactory.Options O = new BitmapFactory.Options();
+                    O.inJustDecodeBounds = true;
+
+                    BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+
+                    int Scale = 1;
+                    int Height = O.outHeight;
+                    int Width = O.outWidth;
+
+                    if (Height > 500 || Width > 500)
+                    {
+                        int HalfHeight = Height / 2;
+                        int HalfWidth = Width / 2;
+
+                        while ((HalfHeight / Scale) >= 500 && (HalfWidth / Scale) >= 500)
+                        {
+                            Scale *= 2;
+                        }
+                    }
+
+                    O.inJustDecodeBounds = false;
+                    O.inSampleSize = Scale;
+
+                    ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
+
+                    Matrix matrix = new Matrix();
+                    int Orientation = new ExifInterface(Path).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+
+                    if (Orientation == 6)
+                        matrix.postRotate(90);
+                    else if (Orientation == 3)
+                        matrix.postRotate(180);
+                    else if (Orientation == 8)
+                        matrix.postRotate(270);
+
+                    ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
+                }
+                else
+                    ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath());
+
+                ChangeType(1);
+                SelectImage.add(ResizeBitmap);
+                ViewPagerAdapterImage.notifyDataSetChanged();
+                ViewPagerImage.setCurrentItem(SelectImage.size());
+                ViewPagerImage.setVisibility(View.VISIBLE);
             }
-        });
+            catch (Exception e)
+            {
+                MiscHandler.Debug("WriteFragment-ImageCompress: " + e.toString());
+            }
+        }
     }
 
     private void ChangeType(int type)

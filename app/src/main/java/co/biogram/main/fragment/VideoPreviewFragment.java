@@ -56,6 +56,7 @@ public class VideoPreviewFragment extends Fragment
 {
     private SimpleExoPlayerView SimpleExoPlayerViewMain;
     private SimpleExoPlayer SimpleExoPlayerMain;
+    private boolean IsLocal = false;
     private Runnable runnable;
 
     @Override
@@ -319,6 +320,11 @@ public class VideoPreviewFragment extends Fragment
         super.onDetach();
         SimpleExoPlayerViewMain.removeCallbacks(runnable);
         SimpleExoPlayerMain.release();
+    }
+
+    public void SetLocalVideo()
+    {
+        IsLocal = true;
     }
 
     private String StringForTime(long Time)

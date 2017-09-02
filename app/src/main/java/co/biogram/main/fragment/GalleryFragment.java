@@ -35,12 +35,14 @@ public class GalleryFragment extends Fragment
     private final List<Struct> GalleryList = new ArrayList<>();
     private final List<String> FolderList = new ArrayList<>();
 
-    private static int Count;
+    private static int Count = 1;
+    private static boolean IsVideo;
     private static String Type = "Gallery";
 
-    public static GalleryFragment NewInstance(int count)
+    public static GalleryFragment NewInstance(int count, boolean video)
     {
         Count = count;
+        IsVideo = video;
 
         return new GalleryFragment();
     }
@@ -74,13 +76,6 @@ public class GalleryFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                EditFragment editFragment = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
-
-                if (editFragment != null)
-                {
-
-                }
-
                 getActivity().onBackPressed();
             }
         });
@@ -152,6 +147,32 @@ public class GalleryFragment extends Fragment
         ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSave.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewSave.setImageResource(R.drawable.ic_send_blue2);
+        ImageViewSave.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                EditFragment editFragment = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
+
+                if (editFragment != null)
+                {
+                    for (Struct item : GalleryList)
+                        if (item.Selection)
+                            editFragment.DoCrop(item.Path);
+                }
+
+                WriteFragment writeFragment = ((WriteFragment) getActivity().getSupportFragmentManager().findFragmentByTag("WriteFragment"));
+
+                if (writeFragment != null)
+                {
+                    for (Struct item : GalleryList)
+                        if (item.Selection)
+                            writeFragment.GetData(item.Path, IsVideo);
+                }
+
+                getActivity().onBackPressed();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSave);
 
@@ -176,30 +197,77 @@ public class GalleryFragment extends Fragment
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
-        Cursor cursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, null);
-
-        if (cursor != null)
+        if (IsVideo)
         {
-            if (cursor.moveToFirst())
+            try
             {
-                String Folder;
+                Cursor cursor = getActivity().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, null);
 
-                int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-                int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-
-                do
+                if (cursor != null)
                 {
-                    Folder = cursor.getString(FolderColumn);
+                    if (cursor.moveToFirst())
+                    {
+                        String Folder;
 
-                    if (!FolderList.contains(Folder))
-                        FolderList.add(Folder);
+                        int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                        int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
 
-                    GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
+                        do
+                        {
+                            Folder = cursor.getString(FolderColumn);
+
+                            if (!FolderList.contains(Folder))
+                                FolderList.add(Folder);
+
+                            GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
+
+                            MiscHandler.Debug(Folder + " : " + cursor.getString(PathColumn));
+                        }
+                        while (cursor.moveToNext());
+                    }
+
+                    cursor.close();
                 }
-                while (cursor.moveToNext());
             }
+            catch (Exception e)
+            {
+                MiscHandler.Debug("GalleryFragment-MediaVideo: " + e.toString());
+            }
+        }
+        else
+        {
+            try
+            {
+                Cursor cursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, null);
 
-            cursor.close();
+                if (cursor != null)
+                {
+                    if (cursor.moveToFirst())
+                    {
+                        String Folder;
+
+                        int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                        int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+
+                        do
+                        {
+                            Folder = cursor.getString(FolderColumn);
+
+                            if (!FolderList.contains(Folder))
+                                FolderList.add(Folder);
+
+                            GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
+                        }
+                        while (cursor.moveToNext());
+                    }
+
+                    cursor.close();
+                }
+            }
+            catch (Exception e)
+            {
+                MiscHandler.Debug("GalleryFragment-MediaImage: " + e.toString());
+            }
         }
 
         return RelativeLayoutMain;
@@ -295,13 +363,27 @@ public class GalleryFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("URL", FileList.get(Position).Path);
+                    if (IsVideo)
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("URL", FileList.get(Position).Path);
 
-                    Fragment fragment = new ImagePreviewFragment();
-                    fragment.setArguments(bundle);
+                        VideoPreviewFragment fragment = new VideoPreviewFragment();
+                        fragment.setArguments(bundle);
+                        fragment.SetLocalVideo();
 
-                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commitAllowingStateLoss();
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
+                    }
+                    else
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("URL", FileList.get(Position).Path);
+
+                        Fragment fragment = new ImagePreviewFragment();
+                        fragment.setArguments(bundle);
+
+                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commitAllowingStateLoss();
+                    }
                 }
             });
         }
