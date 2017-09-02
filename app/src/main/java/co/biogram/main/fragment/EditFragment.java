@@ -66,10 +66,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -395,16 +391,7 @@ public class EditFragment extends Fragment
                             public void OnGranted()
                             {
                                 IsCover = true;
-
-                                Matisse.from(EditFragment.this)
-                                .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
-                                .countable(false)
-                                .gridExpectedSize(MiscHandler.ToDimension(context, 90))
-                                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                                .thumbnailScale(0.85f)
-                                .imageEngine(new GlideEngine())
-                                .forResult(FromFile);
-
+                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, GalleryFragment.NewInstance(1)).addToBackStack("GalleryFragment").commitAllowingStateLoss();
                                 DialogCover.dismiss();
                             }
 
@@ -600,14 +587,14 @@ public class EditFragment extends Fragment
                             {
                                 IsCover = false;
 
-                                Matisse.from(EditFragment.this)
+                                /* TODO Matisse.from(EditFragment.this)
                                 .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
                                 .countable(false)
                                 .gridExpectedSize(MiscHandler.ToDimension(context, 90))
                                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                                 .thumbnailScale(0.85f)
                                 .imageEngine(new GlideEngine())
-                                .forResult(FromFile);
+                                .forResult(FromFile);*/
 
                                 DialogProfile.dismiss();
                             }
@@ -1113,10 +1100,6 @@ public class EditFragment extends Fragment
 
         switch (RequestCode)
         {
-            case FromFile:
-                CaptureUri = Matisse.obtainResult(Data).get(0);
-                DoCrop();
-            break;
             case FromCamera:
                 PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, EditFragment.this, new PermissionHandler.PermissionEvent()
                 {
@@ -1151,6 +1134,12 @@ public class EditFragment extends Fragment
                 });
             break;
         }
+    }
+
+    public void Update()
+    {
+        CaptureUri = Matisse.obtainResult(Data).get(0);
+        DoCrop();
     }
 
     private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)

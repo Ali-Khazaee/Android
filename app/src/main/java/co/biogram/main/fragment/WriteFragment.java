@@ -59,9 +59,6 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
 
 import com.bumptech.glide.Glide;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import org.json.JSONObject;
 
@@ -477,7 +474,7 @@ public class WriteFragment extends Fragment
                     @Override
                     public void OnGranted()
                     {
-                        Matisse.from(WriteFragment.this)
+                        /* TODO Matisse.from(WriteFragment.this)
                         .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
                         .countable(true)
                         .maxSelectable(3)
@@ -485,7 +482,7 @@ public class WriteFragment extends Fragment
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                         .thumbnailScale(0.85f)
                         .imageEngine(new GlideEngine())
-                        .forResult(0);
+                        .forResult(0);*/
                     }
 
                     @Override
@@ -514,14 +511,14 @@ public class WriteFragment extends Fragment
                     @Override
                     public void OnGranted()
                     {
-                        Matisse.from(WriteFragment.this)
+                        /* TODO Matisse.from(WriteFragment.this)
                         .choose(MimeType.ofVideo())
                         .countable(false)
                         .gridExpectedSize(MiscHandler.ToDimension(context, 90))
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                         .thumbnailScale(0.85f)
                         .imageEngine(new GlideEngine())
-                        .forResult(1);
+                        .forResult(1);*/
                     }
 
                     @Override
@@ -1115,7 +1112,7 @@ public class WriteFragment extends Fragment
         final String URL;
         final Context context = getActivity();
 
-        Cursor cursor = context.getContentResolver().query(Matisse.obtainResult(Data).get(0), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
+        Cursor cursor = null;//context.getContentResolver().query(Matisse.obtainResult(Data).get(0), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
 
         if (cursor != null && cursor.moveToFirst())
         {
@@ -1137,7 +1134,7 @@ public class WriteFragment extends Fragment
                 {
                     try
                     {
-                        for (int I = 0; I < Matisse.obtainResult(Data).size(); I++)
+                        /* TODO for (int I = 0; I < Matisse.obtainResult(Data).size(); I++)
                         {
                             String ImagePath = "";
                             Cursor cursor = context.getContentResolver().query(Matisse.obtainResult(Data).get(I), new String[] { MediaStore.Images.Media.DATA }, null, null, null);
@@ -1200,7 +1197,7 @@ public class WriteFragment extends Fragment
                             ViewPagerAdapterImage.notifyDataSetChanged();
                             ViewPagerImage.setCurrentItem(SelectImage.size());
                             ViewPagerImage.setVisibility(View.VISIBLE);
-                        }
+                        }*/
                     }
                     catch (Exception e)
                     {
