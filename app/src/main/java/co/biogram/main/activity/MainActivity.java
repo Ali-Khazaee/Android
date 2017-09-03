@@ -152,7 +152,7 @@ public class MainActivity extends FragmentActivity
             @Override
             public void run()
             {
-                if (!IsActive || !UpdateHandler.IsUpdateAvailable(context))
+                if (!IsActive || UpdateHandler.IsUpdateAvailable(context))
                     return;
 
                 final Dialog DialogUpdate = new Dialog(MainActivity.this);
@@ -191,7 +191,7 @@ public class MainActivity extends FragmentActivity
                 TextView TextViewTitle = new TextView(context);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewTitle.setText("New Update");
+                TextViewTitle.setText(getString(R.string.MainActivityUpdate));
                 TextViewTitle.setTypeface(null, Typeface.BOLD);
                 TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -214,7 +214,7 @@ public class MainActivity extends FragmentActivity
                 TextView TextViewDescription = new TextView(context);
                 TextViewDescription.setLayoutParams(TextViewDescriptionParam);
                 TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Black));
-                TextViewDescription.setText("New update is available, we strongly recommends you to update your biogram now, Although there is no requires to download it");
+                TextViewDescription.setText(getString(R.string.MainActivityUpdateDescription));
                 TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewDescription.setId(MiscHandler.GenerateViewID());
 
@@ -227,7 +227,7 @@ public class MainActivity extends FragmentActivity
                 TextViewUpdate.setLayoutParams(TextViewUpdateParam);
                 TextViewUpdate.setBackgroundResource(R.color.BlueLight);
                 TextViewUpdate.setTextColor(ContextCompat.getColor(context, R.color.White));
-                TextViewUpdate.setText("Update Now!"); // TODO
+                TextViewUpdate.setText(getString(R.string.MainActivityUpdateNow));
                 TextViewUpdate.setGravity(Gravity.CENTER);
                 TextViewUpdate.setTypeface(null, Typeface.BOLD);
                 TextViewUpdate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);

@@ -309,7 +309,6 @@ public class ContactFragment extends Fragment
             Glide.with(context)
             .load(ContactList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
-            .override(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40))
             .dontAnimate()
             .into(Holder.ImageViewCircleProfile);
 

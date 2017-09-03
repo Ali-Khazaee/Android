@@ -301,8 +301,8 @@ public class GalleryFragment extends Fragment
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
-            private ImageView ImageViewMain;
-            private View ViewCircle;
+            private final ImageView ImageViewMain;
+            private final View ViewCircle;
 
             ViewHolderMain(View view)
             {
@@ -452,8 +452,8 @@ public class GalleryFragment extends Fragment
 
     private class Struct
     {
-        private String Path;
-        private String Album;
+        private final String Path;
+        private final String Album;
         private boolean Selection = false;
 
         Struct(String album, String path)

@@ -1127,7 +1127,6 @@ public class PostFragment extends Fragment
                             Glide.with(context)
                             .load(Result.getString("Avatar"))
                             .placeholder(R.color.BlueGray)
-                            .override(MiscHandler.ToDimension(context, 55), MiscHandler.ToDimension(context, 55))
                             .dontAnimate()
                             .into(ImageViewCircleProfile);
 

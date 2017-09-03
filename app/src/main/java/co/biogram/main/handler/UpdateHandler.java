@@ -105,7 +105,7 @@ public class UpdateHandler
             PackageInfo Package = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 
             if (Integer.parseInt(SharedHandler.GetString(context, "AppVersion")) <= Package.versionCode)
-                return false;
+                return true;
 
             File UpdateFolder = new File(context.getCacheDir(), "BioGramUpdate");
 
@@ -140,7 +140,7 @@ public class UpdateHandler
                                 OS.close();
                                 IS.close();
 
-                                return true;
+                                return false;
                             }
                         }
                     }
@@ -152,6 +152,6 @@ public class UpdateHandler
             MiscHandler.Debug("UpdateHandler-IsUpdateAvailable: " + e.toString());
         }
 
-        return false;
+        return true;
     }
 }

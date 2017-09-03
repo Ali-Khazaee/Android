@@ -194,10 +194,11 @@ public class MiscHandler
         }
     }
 
-    public static Bitmap Blurry(Bitmap sentBitmap, int radius)
+    public static Bitmap Blurry(Bitmap sentBitmap)
     {
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
+        int radius = 25;
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int[] Pixel = new int[width * height];

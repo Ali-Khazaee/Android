@@ -264,7 +264,6 @@ public class LikeFragment extends Fragment
             Glide.with(context)
             .load(LikeList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
-            .override(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40))
             .dontAnimate()
             .into(Holder.ImageViewCircleProfile);
 

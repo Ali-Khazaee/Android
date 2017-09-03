@@ -1039,7 +1039,6 @@ public class ProfileFragment extends Fragment
                             Glide.with(context)
                             .load(Data.getString("Avatar"))
                             .placeholder(R.color.BlueGray)
-                            .override(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 90))
                             .dontAnimate()
                             .into(ImageViewCircleProfile);
                         }
@@ -1057,7 +1056,7 @@ public class ProfileFragment extends Fragment
                                 public void onResourceReady(Bitmap bitmap, GlideAnimation anim)
                                 {
                                     ImageViewCover.setImageBitmap(bitmap);
-                                    ImageViewCoverLayer.setImageBitmap(MiscHandler.Blurry(bitmap, 25));
+                                    ImageViewCoverLayer.setImageBitmap(MiscHandler.Blurry(bitmap));
                                 }
                             });
                         }

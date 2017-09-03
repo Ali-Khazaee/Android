@@ -1491,7 +1491,6 @@ public class WriteFragment extends Fragment
 
             Glide.with(context)
             .load(CategoryList.get(Position).Image)
-            .override(MiscHandler.ToDimension(context, 45), MiscHandler.ToDimension(context, 45))
             .dontAnimate()
             .into(Holder.ImageViewIcon);
 

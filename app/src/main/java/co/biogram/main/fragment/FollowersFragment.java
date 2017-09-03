@@ -327,7 +327,6 @@ public class FollowersFragment extends Fragment
             Glide.with(context)
             .load(FollowersList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
-            .override(MiscHandler.ToDimension(context, 40), MiscHandler.ToDimension(context, 40))
             .dontAnimate()
             .into(Holder.ImageViewCircleProfile);
 

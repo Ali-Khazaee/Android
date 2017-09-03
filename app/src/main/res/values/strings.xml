@@ -7,7 +7,6 @@
     <string name="Soon">Coming soon</string>
     <string name="TryAgain">Try again &#8230;</string>
     <string name="NoInternet">Check your connection</string>
-    <string name="FileNotFound">File not found"</string>
 
     <!-- Permission -->
     <string name="PermissionReadContact">You should allow access to your contacts</string>
@@ -156,6 +155,11 @@
     <string name="ResetFragmentSuccess">A recovery link has been sent to your email address</string>
     <string name="ResetFragmentError">Your submitted email or username doesn\'t exist</string>
 
+    <!-- Welcome Activity -->
+    <string name="MainActivityUpdate">New Update</string>
+    <string name="MainActivityUpdateDescription">New update is available, we strongly recommends you to update your biogram now, Although there is no requires to download it</string>
+    <string name="MainActivityUpdateNow">Update Now!</string>
+
     <!-- Moment Fragment -->
     <string name="MomentFragment">Moments</string>
 
@@ -191,8 +195,6 @@
     <string name="WriteFragmentCategorySelect">None</string>
     <string name="WriteFragmentUploadFailed">Upload failed</string>
     <string name="WriteFragmentMaxImage">You have been reached maximum pictures</string>
-    <string name="WriteFragmentSelectImage">Select Image From</string>
-    <string name="WriteFragmentSelectVideo">Select Video From</string>
     <string name="WriteFragmentShareLink">Share Your Link</string>
     <string name="WriteFragmentShareLinkSub">Submit</string>
     <string name="WriteFragmentShareLinkCan">Cancel</string>
@@ -271,7 +273,6 @@
     <!-- Following Fragment -->
     <string name="FollowingFragment">Following</string>
     <string name="FollowingFragmentFollow">Follow</string>
-    <string name="FollowingFragmentNow">just now</string>
     <string name="FollowingFragmentSince">Following since: </string>
 
     <!-- Followers Fragment -->
@@ -288,7 +289,6 @@
     <string name="EditFragmentWrong">Something went wrong</string>
     <string name="EditFragmentDialogTitle">Your choices</string>
     <string name="EditFragmentDialogGallery">Select from gallery</string>
-    <string name="EditFragmentCompleteAction">Complete action using</string>
     <string name="EditFragmentDialogRemove">Remove current photo</string>
     <string name="EditFragmentImageCover">Cover photo has removed</string>
     <string name="EditFragmentImageProfile">Profile photo has removed</string>
