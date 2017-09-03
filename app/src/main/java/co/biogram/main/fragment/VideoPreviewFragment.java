@@ -26,23 +26,20 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.FileDataSource;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.CacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
@@ -76,7 +73,6 @@ public class VideoPreviewFragment extends Fragment
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20ffffff"));
-        RelativeLayoutHeader.setVisibility(View.GONE);
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -150,14 +146,12 @@ public class VideoPreviewFragment extends Fragment
         RelativeLayout.LayoutParams SimpleExoPlayerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         SimpleExoPlayerViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        BandwidthMeter BandwidthMeterMain = new DefaultBandwidthMeter();
-        TrackSelection.Factory TrackSelectionMain = new AdaptiveTrackSelection.Factory(BandwidthMeterMain);
-        TrackSelector TrackSelectorMain = new DefaultTrackSelector(TrackSelectionMain);
-        SimpleExoPlayerMain = ExoPlayerFactory.newSimpleInstance(context, TrackSelectorMain);
+        SimpleExoPlayerMain = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter())));
 
         SimpleExoPlayerViewMain = new SimpleExoPlayerView(context);
         SimpleExoPlayerViewMain.setLayoutParams(SimpleExoPlayerViewMainParam);
         SimpleExoPlayerViewMain.setUseController(false);
+        SimpleExoPlayerViewMain.setVisibility(View.GONE);
         SimpleExoPlayerViewMain.setPlayer(SimpleExoPlayerMain);
         SimpleExoPlayerViewMain.getVideoSurfaceView().setOnClickListener(new View.OnClickListener()
         {
@@ -175,6 +169,7 @@ public class VideoPreviewFragment extends Fragment
                 if (SimpleExoPlayerMain.getPlayWhenReady())
                 {
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
+                    RelativeLayoutControl.setVisibility(View.VISIBLE);
                     ImageViewPlay.setImageResource(R.drawable.ic_play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
                     SimpleExoPlayerViewMain.removeCallbacks(runnable);
@@ -182,6 +177,7 @@ public class VideoPreviewFragment extends Fragment
                 else
                 {
                     RelativeLayoutHeader.setVisibility(View.GONE);
+                    RelativeLayoutControl.setVisibility(View.GONE);
                     ImageViewPlay.setImageResource(R.drawable.ic_pause);
                     SimpleExoPlayerMain.setPlayWhenReady(true);
                     SimpleExoPlayerViewMain.post(runnable);
@@ -191,13 +187,28 @@ public class VideoPreviewFragment extends Fragment
 
         RelativeLayoutMain.addView(SimpleExoPlayerViewMain);
 
-        DataSource.Factory DataSourceMain = new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", null);
+        MediaSource MediaSourceMain = null;
 
-        ExtractorsFactory ExtractorsFactoryMain = new DefaultExtractorsFactory();
-        CacheEvictor CacheEvictorMain = new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024);
-        Cache CacheMain = new SimpleCache(new File(context.getCacheDir(), "BioGramVideo"), CacheEvictorMain);
-        DataSource.Factory DataSourceMain2 = new CacheDataSourceFactory(CacheMain, DataSourceMain, CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
-        MediaSource MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain2, ExtractorsFactoryMain, null, null);
+        try
+        {
+            if (IsLocal)
+            {
+                final FileDataSource fileDataSource = new FileDataSource();
+                fileDataSource.open(new DataSpec(Uri.parse(VideoURL)));
+                DataSource.Factory DataSourceMain = new DataSource.Factory() { @Override public DataSource createDataSource() { return fileDataSource; } };
+                MediaSourceMain = new ExtractorMediaSource(fileDataSource.getUri(), DataSourceMain, new DefaultExtractorsFactory(), null, null);
+            }
+            else
+            {
+                Cache CacheMain = new SimpleCache(new File(context.getCacheDir(), "BioGramVideo"), new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024));
+                DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
+                MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain, new DefaultExtractorsFactory(), null, null);
+            }
+        }
+        catch (Exception e)
+        {
+            MiscHandler.Debug("VideoPreviewFragment-MediaSource: " + e.toString());
+        }
 
         SimpleExoPlayerMain.prepare(MediaSourceMain);
         SimpleExoPlayerMain.setPlayWhenReady(true);
@@ -216,6 +227,7 @@ public class VideoPreviewFragment extends Fragment
                 {
                     SeekBarMain.setProgress(1000);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
+                    RelativeLayoutControl.setVisibility(View.VISIBLE);
                     ImageViewPlay.setImageResource(R.drawable.ic_play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
                     SeekBarMain.setProgress(0);
@@ -224,6 +236,9 @@ public class VideoPreviewFragment extends Fragment
                 }
                 else if (playbackState == 3)
                 {
+                    if (SimpleExoPlayerViewMain.getVisibility() == View.GONE)
+                        SimpleExoPlayerViewMain.setVisibility(View.VISIBLE);
+
                     TextViewTime.setText(StringForTime(SimpleExoPlayerMain.getCurrentPosition()) + " / " + StringForTime(SimpleExoPlayerMain.getDuration()));
                 }
             }
@@ -261,6 +276,7 @@ public class VideoPreviewFragment extends Fragment
 
                 if (SimpleExoPlayerMain.getPlayWhenReady())
                 {
+                    RelativeLayoutControl.setVisibility(View.VISIBLE);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     ImageViewPlay.setImageResource(R.drawable.ic_play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
@@ -268,6 +284,7 @@ public class VideoPreviewFragment extends Fragment
                 }
                 else
                 {
+                    RelativeLayoutControl.setVisibility(View.GONE);
                     RelativeLayoutHeader.setVisibility(View.GONE);
                     ImageViewPlay.setImageResource(R.drawable.ic_pause);
                     SimpleExoPlayerMain.setPlayWhenReady(true);
@@ -290,6 +307,7 @@ public class VideoPreviewFragment extends Fragment
                         final long Position = 1000L * Current / Duration;
 
                         SeekBarMain.setProgress((int) Position);
+                        SeekBarMain.setSecondaryProgress(SimpleExoPlayerMain.getBufferedPercentage()* 10);
                         TextViewTime.setText(StringForTime(Current) + " / " + StringForTime(Duration));
                     }
                 }
@@ -303,6 +321,9 @@ public class VideoPreviewFragment extends Fragment
         };
 
         SimpleExoPlayerViewMain.postDelayed(runnable, 500);
+
+        RelativeLayoutHeader.bringToFront();
+        RelativeLayoutControl.bringToFront();
 
         return RelativeLayoutMain;
     }
@@ -329,6 +350,9 @@ public class VideoPreviewFragment extends Fragment
 
     private String StringForTime(long Time)
     {
+        if (Time < 0)
+            Time = 0;
+
         long TotalSeconds = Time / 1000;
         long Seconds = TotalSeconds % 60;
         long Minutes = (TotalSeconds / 60) % 60;

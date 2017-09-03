@@ -450,8 +450,6 @@ public class NotificationFragment extends Fragment
                 @Override
                 public void onClick(View v)
                 {
-                    MiscHandler.Debug("A: " + NotificationList.get(Position).Type);
-
                     if (NotificationList.get(Position).Type == 3 || NotificationList.get(Position).Type == 7)
                     {
                         if (SharedHandler.GetString(context, "Username").equals(NotificationList.get(Position).Username))

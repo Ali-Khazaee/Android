@@ -238,6 +238,8 @@ public class EditFragment extends Fragment
 
                             if (Result.getInt("Message") == 1000)
                             {
+                                SharedHandler.SetString(context, "Username", EditTextUsername.getText().toString());
+
                                 MiscHandler.HideSoftKey(getActivity());
                                 getActivity().onBackPressed();
                                 return;

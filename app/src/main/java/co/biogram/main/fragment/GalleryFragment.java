@@ -220,8 +220,6 @@ public class GalleryFragment extends Fragment
                                 FolderList.add(Folder);
 
                             GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
-
-                            MiscHandler.Debug(Folder + " : " + cursor.getString(PathColumn));
                         }
                         while (cursor.moveToNext());
                     }
@@ -366,7 +364,7 @@ public class GalleryFragment extends Fragment
                     if (IsVideo)
                     {
                         Bundle bundle = new Bundle();
-                        bundle.putString("URL", FileList.get(Position).Path);
+                        bundle.putString("VideoURL", FileList.get(Position).Path);
 
                         VideoPreviewFragment fragment = new VideoPreviewFragment();
                         fragment.setArguments(bundle);
