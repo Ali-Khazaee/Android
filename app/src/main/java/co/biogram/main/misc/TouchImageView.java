@@ -1,224 +1,502 @@
 package co.biogram.main.misc;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
+import android.graphics.RectF;
+import android.support.v4.view.ScaleGestureDetectorCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.View;
+import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.widget.ImageView;
 
-public class TouchImageView extends ImageView
+public class TouchImageView extends AppCompatImageView implements OnScaleGestureListener
 {
-    private Matrix matrix;
-    private int MotionMode = 0;
+    private final float MIN_SCALE = 0.6f;
+    private final float MAX_SCALE = 8f;
+    private final int RESET_DURATION = 200;
 
-    private float MidScale = 1f;
+    private ScaleType startScaleType;
 
-    private int ViewWidth, ViewHeight;
-    private float OrigWidth, OrigHeight;
+    private Matrix matrix = new Matrix();
+    private Matrix startMatrix = new Matrix();
 
-    private final PointF End = new PointF();
-    private final PointF Start = new PointF();
+    private float[] matrixValues = new float[9];
+    private float[] startValues = null;
 
-    private int OldMeasuredHeight;
+    private float minScale = MIN_SCALE;
+    private float maxScale = MAX_SCALE;
 
-    private float[] MultiTrans;
-    private GestureDetector DoubleTabDetector;
-    private ScaleGestureDetector ScaleDetector;
+    private float calculatedMinScale = MIN_SCALE;
+    private float calculatedMaxScale = MAX_SCALE;
+
+    private final RectF bounds = new RectF();
+
+    private boolean translatable;
+    private boolean zoomable;
+    private boolean restrictBounds;
+    private boolean animateOnReset;
+    private boolean autoCenter;
+    private int autoResetMode;
+
+    private PointF last = new PointF(0, 0);
+    private float startScale = 1f;
+    private float scaleBy = 1f;
+    private int previousPointerCount = 1;
+
+    private ScaleGestureDetector scaleDetector;
 
     public TouchImageView(Context context)
     {
-        super(context);
-        SharedConstructing(context);
+        this(context, null);
     }
 
     public TouchImageView(Context context, AttributeSet attrs)
     {
-        super(context, attrs);
-        SharedConstructing(context);
+        this(context, attrs, 0);
+    }
+
+    public TouchImageView(Context context, AttributeSet attrs, int defStyle)
+    {
+        super(context, attrs, defStyle);
+        scaleDetector = new ScaleGestureDetector(context, this);
+        ScaleGestureDetectorCompat.setQuickScaleEnabled(scaleDetector, false);
+        startScaleType = getScaleType();
+        zoomable = true;
+        translatable = true;
+        animateOnReset = true;
+        autoCenter = true;
+        restrictBounds = false;
+        minScale = MIN_SCALE;
+        maxScale = MAX_SCALE;
+        autoResetMode = 0;
     }
 
     @Override
-    protected void onMeasure(int WidthMeasureSpec, int HeightMeasureSpec)
+    public void setScaleType(ScaleType scaleType)
     {
-        super.onMeasure(WidthMeasureSpec, HeightMeasureSpec);
-
-        ViewWidth = MeasureSpec.getSize(WidthMeasureSpec);
-        ViewHeight = MeasureSpec.getSize(HeightMeasureSpec);
-
-        if (OldMeasuredHeight == ViewWidth && OldMeasuredHeight == ViewHeight || ViewWidth == 0 || ViewHeight == 0)
-            return;
-
-        OldMeasuredHeight = ViewHeight;
-
-        if (MidScale == 1)
-        {
-            Drawable drawable = getDrawable();
-
-            if (drawable == null || drawable.getIntrinsicWidth() == 0 || drawable.getIntrinsicHeight() == 0)
-                return;
-
-            int Width = drawable.getIntrinsicWidth();
-            int Height = drawable.getIntrinsicHeight();
-
-            float Scale = Math.min((float) ViewWidth / (float) Width, (float) ViewHeight / (float) Height);
-            float RedundantYSpace = ((float) ViewHeight - (Scale * (float) Height)) / 2;
-            float RedundantXSpace = ((float) ViewWidth - (Scale * (float) Width)) / 2;
-
-            matrix.setScale(Scale, Scale);
-            matrix.postTranslate(RedundantXSpace, RedundantYSpace);
-
-            OrigWidth = ViewWidth - 2 * RedundantXSpace;
-            OrigHeight = ViewHeight - 2 * RedundantYSpace;
-
-            setImageMatrix(matrix);
-        }
-
-        FixTrans();
+        super.setScaleType(scaleType);
+        startScaleType = scaleType;
+        startValues = null;
     }
 
-    private void SharedConstructing(Context context)
+    @Override
+    public void setEnabled(boolean enabled)
     {
-        super.setClickable(true);
+        super.setEnabled(enabled);
 
-        matrix = new Matrix();
-        setImageMatrix(matrix);
-        MultiTrans = new float[9];
-        setScaleType(ScaleType.MATRIX);
-        ScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
-        DoubleTabDetector = new GestureDetector(context, new GestureListener());
+        if (!enabled)
+            setScaleType(startScaleType);
+    }
 
-        setOnTouchListener(new OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent e)
-            {
-                ScaleDetector.onTouchEvent(e);
-                DoubleTabDetector.onTouchEvent(e);
-                PointF CurrentPoint = new PointF(e.getX(), e.getY());
+    /**
+     * Update the bounds of the displayed image based on the current matrix.
+     *
+     * @param values the image's current matrix values.
+     */
+    private void updateBounds(final float[] values) {
+        if (getDrawable() != null) {
+            bounds.set(values[Matrix.MTRANS_X],
+                    values[Matrix.MTRANS_Y],
+                    getDrawable().getIntrinsicWidth() * values[Matrix.MSCALE_X] + values[Matrix.MTRANS_X],
+                    getDrawable().getIntrinsicHeight() * values[Matrix.MSCALE_Y] + values[Matrix.MTRANS_Y]);
+        }
+    }
 
-                switch (e.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        End.set(CurrentPoint);
-                        Start.set(End);
-                        MotionMode = 1;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (MotionMode == 1)
-                        {
-                            float FixTransX = OrigWidth * MidScale <= ViewWidth ? 0 : CurrentPoint.x - End.x;
-                            float FixTransY = OrigHeight * MidScale <= ViewHeight ? 0 : CurrentPoint.y - End.y;
+    /**
+     * Get the width of the displayed image.
+     *
+     * @return the current width of the image as displayed (not the width of the {@link ImageView} itself.
+     */
+    private float getCurrentDisplayedWidth() {
+        if (getDrawable() != null)
+            return getDrawable().getIntrinsicWidth() * matrixValues[Matrix.MSCALE_X];
+        else
+            return 0;
+    }
 
-                            matrix.postTranslate(FixTransX, FixTransY);
-                            End.set(CurrentPoint.x, CurrentPoint.y);
-                            FixTrans();
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        MotionMode = 0;
-                        int XDiff = (int) Math.abs(CurrentPoint.x - Start.x);
-                        int YDiff = (int) Math.abs(CurrentPoint.y - Start.y);
+    /**
+     * Get the height of the displayed image.
+     *
+     * @return the current height of the image as displayed (not the height of the {@link ImageView} itself.
+     */
+    private float getCurrentDisplayedHeight() {
+        if (getDrawable() != null)
+            return getDrawable().getIntrinsicHeight() * matrixValues[Matrix.MSCALE_Y];
+        else
+            return 0;
+    }
 
-                        if (XDiff < 3 && YDiff < 3)
-                            performClick();
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        MotionMode = 0;
-                        break;
+    /**
+     * Remember our starting values so we can animate our image back to its original position.
+     */
+    private void setStartValues() {
+        startValues = new float[9];
+        startMatrix = new Matrix(getImageMatrix());
+        startMatrix.getValues(startValues);
+        calculatedMinScale = minScale * startValues[Matrix.MSCALE_X];
+        calculatedMaxScale = maxScale * startValues[Matrix.MSCALE_X];
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (isEnabled() && (zoomable || translatable)) {
+            if (getScaleType() != ScaleType.MATRIX) {
+                super.setScaleType(ScaleType.MATRIX);
+            }
+
+            if (startValues == null) {
+                setStartValues();
+            }
+
+            //get the current state of the image matrix, its values, and the bounds of the drawn bitmap
+            matrix.set(getImageMatrix());
+            matrix.getValues(matrixValues);
+            updateBounds(matrixValues);
+
+            scaleDetector.onTouchEvent(event);
+
+            /* if the event is a down touch, or if the number of touch points changed,
+            * we should reset our start point, as event origins have likely shifted to a
+            * different part of the screen*/
+            if (event.getActionMasked() == MotionEvent.ACTION_DOWN ||
+                    event.getPointerCount() != previousPointerCount) {
+                last.set(scaleDetector.getFocusX(), scaleDetector.getFocusY());
+            }
+            else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
+
+                final float focusx = scaleDetector.getFocusX();
+                final float focusy = scaleDetector.getFocusY();
+
+                if (translatable) {
+                    //calculate the distance for translation
+                    float xdistance = getXDistance(focusx, last.x);
+                    float ydistance = getYDistance(focusy, last.y);
+                    matrix.postTranslate(xdistance, ydistance);
+                }
+
+                if (zoomable) {
+                    matrix.postScale(scaleBy, scaleBy, focusx, focusy);
                 }
 
                 setImageMatrix(matrix);
-                invalidate();
-                return true;
+
+                last.set(focusx, focusy);
+            }
+
+            if (event.getActionMasked() == MotionEvent.ACTION_UP) {
+                scaleBy = 1f;
+                resetImage();
+            }
+
+            //this tracks whether they have changed the number of fingers down
+            previousPointerCount = event.getPointerCount();
+
+            return true;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+
+    private void resetImage() {
+        switch (autoResetMode) {
+            case 0:
+                if (matrixValues[Matrix.MSCALE_X] <= startValues[Matrix.MSCALE_X]) {
+                    reset();
+                } else {
+                    center();
+                }
+                break;
+            case 1:
+                if (matrixValues[Matrix.MSCALE_X] >= startValues[Matrix.MSCALE_X]) {
+                    reset();
+                } else {
+                    center();
+                }
+                break;
+            case 2:
+                reset();
+                break;
+            case 3:
+                center();
+        }
+    }
+
+    /**
+     * This helps to keep the image on-screen by animating the translation to the nearest
+     * edge, both vertically and horizontally.
+     */
+    private void center() {
+        if (autoCenter) {
+            animateTranslationX();
+            animateTranslationY();
+        }
+    }
+
+
+    public void reset() {
+        reset(animateOnReset);
+    }
+
+    /**
+     * Reset image back to its starting size. If {@code animate} is false, image
+     * will snap back to its original size.
+     * @param animate animate the image back to its starting size
+     */
+    public void reset(final boolean animate) {
+        if (animate) {
+            animateToStartMatrix();
+        }
+        else {
+            setImageMatrix(startMatrix);
+        }
+    }
+
+    /**
+     * Animate the matrix back to its original position after the user stopped interacting with it.
+     */
+    private void animateToStartMatrix() {
+
+        final Matrix beginMatrix = new Matrix(getImageMatrix());
+        beginMatrix.getValues(matrixValues);
+
+        //difference in current and original values
+        final float xsdiff = startValues[Matrix.MSCALE_X] - matrixValues[Matrix.MSCALE_X];
+        final float ysdiff = startValues[Matrix.MSCALE_Y] - matrixValues[Matrix.MSCALE_Y];
+        final float xtdiff = startValues[Matrix.MTRANS_X] - matrixValues[Matrix.MTRANS_X];
+        final float ytdiff = startValues[Matrix.MTRANS_Y] - matrixValues[Matrix.MTRANS_Y];
+
+        ValueAnimator anim = ValueAnimator.ofFloat(0, 1f);
+        anim.addUpdateListener(new AnimatorUpdateListener() {
+
+            final Matrix activeMatrix = new Matrix(getImageMatrix());
+            final float[] values = new float[9];
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float val = (Float) animation.getAnimatedValue();
+                activeMatrix.set(beginMatrix);
+                activeMatrix.getValues(values);
+                values[Matrix.MTRANS_X] = values[Matrix.MTRANS_X] + xtdiff * val;
+                values[Matrix.MTRANS_Y] = values[Matrix.MTRANS_Y] + ytdiff * val;
+                values[Matrix.MSCALE_X] = values[Matrix.MSCALE_X] + xsdiff * val;
+                values[Matrix.MSCALE_Y] = values[Matrix.MSCALE_Y] + ysdiff * val;
+                activeMatrix.setValues(values);
+                setImageMatrix(activeMatrix);
             }
         });
+        anim.setDuration(RESET_DURATION);
+        anim.start();
     }
 
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener
-    {
-        @Override
-        public boolean onDown(MotionEvent e)
-        {
-            return true;
-        }
-
-        /*@Override
-        public boolean onDoubleTap(MotionEvent e)
-        {
-            // TODO Zoom In Zoom Out
-
-            return super.onDoubleTap(e);
-        }*/
-    }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
-    {
-        @Override
-        public boolean onScale(ScaleGestureDetector detector)
-        {
-            float ScaleFactor = detector.getScaleFactor();
-            float OrigScale = MidScale;
-
-            MidScale *= ScaleFactor;
-
-            if (MidScale > MidScale)
-            {
-                MidScale = 3f;
-                ScaleFactor = 3f / OrigScale;
+    private void animateTranslationX() {
+        if (getCurrentDisplayedWidth() > getWidth()) {
+            //the left edge is too far to the interior
+            if (bounds.left > 0) {
+                animateMatrixIndex(Matrix.MTRANS_X, 0);
             }
-            else if (MidScale < 1f)
-            {
-                MidScale = 1f;
-                ScaleFactor = 1f / OrigScale;
+            //the right edge is too far to the interior
+            else if (bounds.right < getWidth()) {
+                animateMatrixIndex(Matrix.MTRANS_X, bounds.left + getWidth() - bounds.right);
             }
-
-            if (OrigWidth * MidScale <= ViewWidth || OrigHeight * MidScale <= ViewHeight)
-                matrix.postScale(ScaleFactor, ScaleFactor, ViewWidth / 2, ViewHeight / 2);
-            else
-                matrix.postScale(ScaleFactor, ScaleFactor, detector.getFocusX(), detector.getFocusY());
-
-            FixTrans();
-            return true;
+        } else {
+            //left edge needs to be pulled in, and should be considered before the right edge
+            if (bounds.left < 0) {
+                animateMatrixIndex(Matrix.MTRANS_X, 0);
+            }
+            //right edge needs to be pulled in
+            else if (bounds.right > getWidth()) {
+                animateMatrixIndex(Matrix.MTRANS_X, bounds.left + getWidth() - bounds.right);
+            }
         }
     }
 
-    private void FixTrans()
-    {
-        matrix.getValues(MultiTrans);
-
-        float FixTransX = CalculateTrans(MultiTrans[Matrix.MTRANS_X], ViewWidth, OrigWidth * MidScale);
-        float FixTransY = CalculateTrans(MultiTrans[Matrix.MTRANS_Y], ViewHeight, OrigHeight * MidScale);
-
-        if (FixTransX != 0 || FixTransY != 0)
-            matrix.postTranslate(FixTransX, FixTransY);
+    private void animateTranslationY() {
+        if (getCurrentDisplayedHeight() > getHeight()) {
+            //the top edge is too far to the interior
+            if (bounds.top > 0) {
+                animateMatrixIndex(Matrix.MTRANS_Y, 0);
+            }
+            //the bottom edge is too far to the interior
+            else if (bounds.bottom < getHeight()) {
+                animateMatrixIndex(Matrix.MTRANS_Y, bounds.top + getHeight() - bounds.bottom);
+            }
+        } else {
+            //top needs to be pulled in, and needs to be considered before the bottom edge
+            if (bounds.top < 0) {
+                animateMatrixIndex(Matrix.MTRANS_Y, 0);
+            }
+            //bottom edge needs to be pulled in
+            else if (bounds.bottom > getHeight()) {
+                animateMatrixIndex(Matrix.MTRANS_Y, bounds.top + getHeight() - bounds.bottom);
+            }
+        }
     }
 
-    private float CalculateTrans(float Trans, float ViewSize, float ContentSize)
+    private void animateMatrixIndex(final int index, final float to) {
+        ValueAnimator animator = ValueAnimator.ofFloat(matrixValues[index], to);
+        animator.addUpdateListener(new AnimatorUpdateListener() {
+
+            final float[] values = new float[9];
+            Matrix current = new Matrix();
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                current.set(getImageMatrix());
+                current.getValues(values);
+                values[index] = (Float) animation.getAnimatedValue();
+                current.setValues(values);
+                setImageMatrix(current);
+            }
+        });
+        animator.setDuration(RESET_DURATION);
+        animator.start();
+    }
+
+    /**
+     * Get the x distance to translate the current image.
+     *
+     * @param toX   the current x location of touch focus
+     * @param fromX the last x location of touch focus
+     * @return the distance to move the image,
+     * will restrict the translation to keep the image on screen.
+     */
+    private float getXDistance(final float toX, final float fromX) {
+        float xdistance = toX - fromX;
+
+        if (restrictBounds) {
+            xdistance = getRestrictedXDistance(xdistance);
+        }
+
+        //prevents image from translating an infinite distance offscreen
+        if (bounds.right + xdistance < 0) {
+            xdistance = -bounds.right;
+        }
+        else if (bounds.left + xdistance > getWidth()) {
+            xdistance = getWidth() - bounds.left;
+        }
+
+        return xdistance;
+    }
+
+    /**
+     * Get the horizontal distance to translate the current image, but restrict
+     * it to the outer bounds of the {@link ImageView}. If the current
+     * image is smaller than the bounds, keep it within the current bounds.
+     * If it is larger, prevent its edges from translating farther inward
+     * from the outer edge.
+     * @param xdistance the current desired horizontal distance to translate
+     * @return the actual horizontal distance to translate with bounds restrictions
+     */
+    private float getRestrictedXDistance(final float xdistance) {
+        float restrictedXDistance = xdistance;
+
+        if (getCurrentDisplayedWidth() >= getWidth()) {
+            if (bounds.left <= 0 && bounds.left + xdistance > 0 && !scaleDetector.isInProgress()) {
+                restrictedXDistance = -bounds.left;
+            } else if (bounds.right >= getWidth() && bounds.right + xdistance < getWidth() && !scaleDetector.isInProgress()) {
+                restrictedXDistance = getWidth() - bounds.right;
+            }
+        } else if (!scaleDetector.isInProgress()) {
+            if (bounds.left >= 0 && bounds.left + xdistance < 0) {
+                restrictedXDistance = -bounds.left;
+            } else if (bounds.right <= getWidth() && bounds.right + xdistance > getWidth()) {
+                restrictedXDistance = getWidth() - bounds.right;
+            }
+        }
+
+        return restrictedXDistance;
+    }
+
+    /**
+     * Get the y distance to translate the current image.
+     *
+     * @param toY   the current y location of touch focus
+     * @param fromY the last y location of touch focus
+     * @return the distance to move the image,
+     * will restrict the translation to keep the image on screen.
+     */
+    private float getYDistance(final float toY, final float fromY) {
+        float ydistance = toY - fromY;
+
+        if (restrictBounds) {
+            ydistance = getRestrictedYDistance(ydistance);
+        }
+
+        //prevents image from translating an infinite distance offscreen
+        if (bounds.bottom + ydistance < 0) {
+            ydistance = -bounds.bottom;
+        }
+        else if (bounds.top + ydistance > getHeight()) {
+            ydistance = getHeight() - bounds.top;
+        }
+
+        return ydistance;
+    }
+
+    /**
+     * Get the vertical distance to translate the current image, but restrict
+     * it to the outer bounds of the {@link ImageView}. If the current
+     * image is smaller than the bounds, keep it within the current bounds.
+     * If it is larger, prevent its edges from translating farther inward
+     * from the outer edge.
+     * @param ydistance the current desired vertical distance to translate
+     * @return the actual vertical distance to translate with bounds restrictions
+     */
+    private float getRestrictedYDistance(final float ydistance) {
+        float restrictedYDistance = ydistance;
+
+        if (getCurrentDisplayedHeight() >= getHeight()) {
+            if (bounds.top <= 0 && bounds.top + ydistance > 0 && !scaleDetector.isInProgress()) {
+                restrictedYDistance = -bounds.top;
+            } else if (bounds.bottom >= getHeight() && bounds.bottom + ydistance < getHeight() && !scaleDetector.isInProgress()) {
+                restrictedYDistance = getHeight() - bounds.bottom;
+            }
+        } else if (!scaleDetector.isInProgress()) {
+            if (bounds.top >= 0 && bounds.top + ydistance < 0) {
+                restrictedYDistance = -bounds.top;
+            } else if (bounds.bottom <= getHeight() && bounds.bottom + ydistance > getHeight()) {
+                restrictedYDistance = getHeight() - bounds.bottom;
+            }
+        }
+
+        return restrictedYDistance;
+    }
+
+    @Override
+    public boolean onScale(ScaleGestureDetector detector)
     {
-        float MinTrans, MaxTrans;
+        //calculate value we should scale by, ultimately the scale will be startScale*scaleFactor
+        scaleBy = (startScale * detector.getScaleFactor()) / matrixValues[Matrix.MSCALE_X];
 
-        if (ContentSize <= ViewSize)
-        {
-            MinTrans = 0;
-            MaxTrans = ViewSize - ContentSize;
-        }
-        else
-        {
-            MinTrans = ViewSize - ContentSize;
-            MaxTrans = 0;
-        }
+        //what the scaling should end up at after the transformation
+        final float projectedScale = scaleBy * matrixValues[Matrix.MSCALE_X];
 
-        if (Trans < MinTrans)
-            return -Trans + MinTrans;
+        //clamp to the min/max if it's going over
+        if (projectedScale < calculatedMinScale)
+            scaleBy = calculatedMinScale / matrixValues[Matrix.MSCALE_X];
+        else if (projectedScale > calculatedMaxScale)
+            scaleBy = calculatedMaxScale / matrixValues[Matrix.MSCALE_X];
 
-        if (Trans > MaxTrans)
-            return -Trans + MaxTrans;
+        return false;
+    }
 
-        return 0;
+    @Override
+    public boolean onScaleBegin(ScaleGestureDetector detector)
+    {
+        startScale = matrixValues[Matrix.MSCALE_X];
+        return true;
+    }
+
+    @Override
+    public void onScaleEnd(ScaleGestureDetector detector)
+    {
+        scaleBy = 1f;
     }
 }

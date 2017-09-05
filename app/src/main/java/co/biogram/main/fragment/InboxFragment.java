@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
+import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
@@ -119,7 +119,7 @@ public class InboxFragment extends Fragment
         RelativeLayout.LayoutParams RecyclerViewInboxParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewInboxParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        LinearLayoutManager LinearLayoutManagerNotification = new LinearLayoutManager(context);
+        LinearLayoutManager2 LinearLayoutManagerNotification = new LinearLayoutManager2(context);
 
         RecyclerView RecyclerViewInbox = new RecyclerView(context);
         RecyclerViewInbox.setLayoutParams(RecyclerViewInboxParam);
@@ -131,7 +131,7 @@ public class InboxFragment extends Fragment
             public void OnLoadMore()
             {
                 PostList.add(null);
-                Adapter.notifyItemInserted(PostList.size());
+                Adapter.notifyDataSetChanged();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostListInbox"))
                 .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))

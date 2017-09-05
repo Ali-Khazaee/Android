@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
+import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
@@ -138,7 +138,7 @@ public class SubCategoryFragment extends Fragment
         RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        LinearLayoutManager LinearLayoutManagerNotification = new LinearLayoutManager(context);
+        LinearLayoutManager2 LinearLayoutManagerNotification = new LinearLayoutManager2(context);
 
         RecyclerView RecyclerViewMain = new RecyclerView(context);
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);

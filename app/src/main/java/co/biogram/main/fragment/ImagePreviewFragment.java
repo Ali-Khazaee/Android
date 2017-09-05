@@ -32,10 +32,9 @@ import co.biogram.main.misc.TouchImageView;
 
 public class ImagePreviewFragment extends Fragment
 {
-    private final List<String> ImageList = new ArrayList<>();
-    private RelativeLayout RelativeLayoutHeader;
-    private LoadingView LoadingViewMain;
+    private final List<String> ListMain = new ArrayList<>();
 
+    private RelativeLayout RelativeLayoutHeader;
     private Bitmap ImageCache = null;
 
     @Override
@@ -44,13 +43,13 @@ public class ImagePreviewFragment extends Fragment
         if (getArguments() != null)
         {
             if (!getArguments().getString("URL", "").equals(""))
-                ImageList.add(getArguments().getString("URL"));
+                ListMain.add(getArguments().getString("URL"));
 
             if (!getArguments().getString("URL2", "").equals(""))
-                ImageList.add(getArguments().getString("URL2"));
+                ListMain.add(getArguments().getString("URL2"));
 
             if (!getArguments().getString("URL3", "").equals(""))
-                ImageList.add(getArguments().getString("URL3"));
+                ListMain.add(getArguments().getString("URL3"));
         }
 
         Context context = getActivity();
@@ -59,11 +58,6 @@ public class ImagePreviewFragment extends Fragment
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.Black);
         RelativeLayoutMain.setClickable(true);
-
-        ViewPager ViewPagerPreview = new ViewPager(context);
-        ViewPagerPreview.setAdapter(new ViewPagerAdapter(context));
-
-        RelativeLayoutMain.addView(ViewPagerPreview);
 
         RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
@@ -101,73 +95,12 @@ public class ImagePreviewFragment extends Fragment
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams LoadingViewDataParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
-        LoadingViewDataParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        LoadingViewMain = new LoadingView(context);
-        LoadingViewMain.setLayoutParams(LoadingViewDataParam);
-        LoadingViewMain.SetColor(R.color.White);
-
-        RelativeLayoutMain.addView(LoadingViewMain);
-
-        ViewPagerPreview.bringToFront();
-        RelativeLayoutHeader.bringToFront();
-        ImageViewBack.bringToFront();
-
-        return RelativeLayoutMain;
-    }
-
-    public void SetBitmap(Bitmap bitmap)
-    {
-        ImageCache = bitmap;
-    }
-
-    private class ViewPagerAdapter extends PagerAdapter
-    {
-        private final Context context;
-
-        ViewPagerAdapter(Context c)
+        if (ImageCache != null)
         {
-            context = c;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup Container, int Position)
-        {
-            LoadingViewMain.Start();
-
-            TouchImageView ImagePreview = new TouchImageView(context);
-            ImagePreview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-
-            if (ImageCache != null)
-            {
-                ImagePreview.setImageBitmap(ImageCache);
-                LoadingViewMain.Stop();
-            }
-            else
-            {
-                Glide.with(context)
-                .load(ImageList.get(Position))
-                .listener(new RequestListener<String, GlideDrawable>()
-                {
-                    @Override
-                    public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b)
-                    {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1)
-                    {
-                        LoadingViewMain.Stop();
-                        return false;
-                    }
-                }).into(ImagePreview);
-            }
-
-            Container.addView(ImagePreview);
-
-            ImagePreview.setOnClickListener(new View.OnClickListener()
+            TouchImageView TouchImageViewMain = new TouchImageView(context);
+            TouchImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            TouchImageViewMain.setImageBitmap(ImageCache);
+            TouchImageViewMain.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
@@ -179,7 +112,91 @@ public class ImagePreviewFragment extends Fragment
                 }
             });
 
-            return ImagePreview;
+            RelativeLayoutMain.addView(TouchImageViewMain);
+        }
+        else
+        {
+            ViewPager ViewPagerMain = new ViewPager(context);
+            ViewPagerMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            ViewPagerMain.setAdapter(new PreviewAdapter(context));
+
+            RelativeLayoutMain.addView(ViewPagerMain);
+        }
+
+        RelativeLayoutHeader.bringToFront();
+
+        return RelativeLayoutMain;
+    }
+
+    public void SetBitmap(Bitmap bitmap)
+    {
+        ImageCache = bitmap;
+    }
+
+    private class PreviewAdapter extends PagerAdapter
+    {
+        private final Context context;
+
+        PreviewAdapter(Context c)
+        {
+            context = c;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup Container, int Position)
+        {
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+
+            TouchImageView TouchImageViewMain = new TouchImageView(context);
+            TouchImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            TouchImageViewMain.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (RelativeLayoutHeader.getVisibility() == View.GONE)
+                        RelativeLayoutHeader.setVisibility(View.VISIBLE);
+                    else
+                        RelativeLayoutHeader.setVisibility(View.GONE);
+                }
+            });
+
+            RelativeLayoutMain.addView(TouchImageViewMain);
+
+            RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56));
+            LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+            final LoadingView LoadingViewMain = new LoadingView(context);
+            LoadingViewMain.setLayoutParams(LoadingViewMainParam);
+            LoadingViewMain.SetColor(R.color.White);
+            LoadingViewMain.Start();
+
+            RelativeLayoutMain.addView(LoadingViewMain);
+
+            Glide.with(context)
+            .load(ListMain.get(Position))
+            .listener(new RequestListener<String, GlideDrawable>()
+            {
+                @Override
+                public boolean onException(Exception e, String s, Target<GlideDrawable> target, boolean b)
+                {
+                    LoadingViewMain.Stop();
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1)
+                {
+                    LoadingViewMain.Stop();
+                    return false;
+                }
+            })
+            .into(TouchImageViewMain);
+
+            Container.addView(RelativeLayoutMain);
+
+            return RelativeLayoutMain;
         }
 
         @Override
@@ -206,7 +223,7 @@ public class ImagePreviewFragment extends Fragment
             if (ImageCache != null)
                 return 1;
 
-            return ImageList.size();
+            return ListMain.size();
         }
     }
 }

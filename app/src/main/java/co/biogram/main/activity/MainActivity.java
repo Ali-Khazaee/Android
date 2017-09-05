@@ -322,7 +322,7 @@ public class MainActivity extends FragmentActivity
                     vibrator.vibrate(200);
                 }
 
-                ImageViewNotification.setImageResource(R.drawable.ic_notification_red);
+                ImageViewNotification.setImageResource(R.drawable.ic_notification_blue);
             }
         }
     };
@@ -334,7 +334,7 @@ public class MainActivity extends FragmentActivity
         ImageViewCategory.setImageResource(R.drawable.ic_category_gray);
 
         if (IsNotification)
-            ImageViewNotification.setImageResource(R.drawable.ic_notification_red);
+            ImageViewNotification.setImageResource(R.drawable.ic_notification_blue);
         else
             ImageViewNotification.setImageResource(R.drawable.ic_notification_gray);
 

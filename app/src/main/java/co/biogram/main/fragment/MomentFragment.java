@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -36,6 +35,7 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
+import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
@@ -218,14 +218,15 @@ public class MomentFragment extends Fragment
 
         RelativeLayoutMain.addView(SwipeRefreshLayoutMain);
 
-        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(context);
+        LinearLayoutManager2 LinearLayoutManagerMain = new LinearLayoutManager2(context);
+
         RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
             public void OnLoadMore()
             {
                 PostList.add(null);
-                Adapter.notifyItemInserted(PostList.size());
+                Adapter.notifyDataSetChanged();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
                 .addBodyParameter("Skip", String.valueOf(PostList.size() - 1))

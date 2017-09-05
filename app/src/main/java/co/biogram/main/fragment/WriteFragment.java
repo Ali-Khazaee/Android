@@ -34,8 +34,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -70,6 +68,7 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
+import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewOnClick;
 import co.biogram.main.misc.TextCrawler;
@@ -829,7 +828,7 @@ public class WriteFragment extends Fragment
                 RecyclerViewCategoryParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
                 RecyclerView RecyclerViewCategory = new RecyclerView(context);
-                RecyclerViewCategory.setLayoutManager(new LinearLayoutManager(context));
+                RecyclerViewCategory.setLayoutManager(new LinearLayoutManager2(context));
                 RecyclerViewCategory.setAdapter(new AdapterCategory(context));
                 RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
                 RecyclerViewCategory.addOnItemTouchListener(new RecyclerViewOnClick(context, RecyclerViewCategory, new RecyclerViewOnClick.OnItemClickListener()

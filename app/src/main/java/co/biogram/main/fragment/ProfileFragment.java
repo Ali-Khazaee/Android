@@ -15,7 +15,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -58,6 +57,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.ImageViewCircle;
+import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.ScrollViewSticky;
 
@@ -812,7 +812,7 @@ public class ProfileFragment extends Fragment
 
         RecyclerViewMain = new RecyclerView(context);
         RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RecyclerViewMain.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerViewMain.setLayoutManager(new LinearLayoutManager2(context));
         RecyclerViewMain.setNestedScrollingEnabled(false);
 
         LinearLayoutMain.addView(RecyclerViewMain);

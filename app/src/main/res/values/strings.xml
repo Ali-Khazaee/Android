@@ -84,8 +84,8 @@
     <!-- Comment Fragment -->
     <string name="CommentFragment">Comment</string>
     <string name="CommentFragmentLike">LIKES</string>
-    <string name="CommentFragmentHint">Write Your Comment</string>
-    <string name="CommentFragmentAreYouSure">Are you sure?</string>
+    <string name="CommentFragmentHint">Write your comment</string>
+    <string name="CommentFragmentAreYouSure">Are you sure ?</string>
     <string name="CommentFragmentYes">Yes</string>
     <string name="CommentFragmentNo">No</string>
 
