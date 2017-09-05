@@ -194,6 +194,7 @@
     <string name="WriteFragmentCategory2">Category</string>
     <string name="WriteFragmentCategorySelect">None</string>
     <string name="WriteFragmentUploadFailed">Upload failed</string>
+    <string name="WriteFragmentUploadSuccess">Post sent</string>
     <string name="WriteFragmentMaxImage">You have been reached maximum pictures</string>
     <string name="WriteFragmentShareLink">Share Your Link</string>
     <string name="WriteFragmentShareLinkSub">Submit</string>

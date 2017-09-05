@@ -39,7 +39,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -162,7 +162,7 @@ public class WriteFragment extends Fragment
         ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
         ImageViewBack.setImageResource(R.drawable.ic_back_blue);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { MiscHandler.HideSoftKey(getActivity()); getActivity().onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -279,7 +279,12 @@ public class WriteFragment extends Fragment
 
                             if (Result.getInt("Message") == 1000)
                             {
-                                MiscHandler.HideSoftKey(getActivity());
+                                MomentFragment momentFragment = (MomentFragment) getActivity().getSupportFragmentManager().findFragmentByTag("MomentFragment");
+
+                                if (momentFragment != null)
+                                    momentFragment.Update(new JSONObject(Result.getString("Result")));
+
+                                MiscHandler.Toast(context, getString(R.string.WriteFragmentUploadSuccess));
                                 getActivity().onBackPressed();
                                 return;
                             }
@@ -620,8 +625,8 @@ public class WriteFragment extends Fragment
                     @Override public void afterTextChanged(Editable e) { }
                 });
 
-                if (DialogLink.getWindow() != null)
-                    DialogLink.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
                 TextViewCancel.setOnClickListener(new View.OnClickListener()
                 {
@@ -1068,6 +1073,12 @@ public class WriteFragment extends Fragment
     public void onPause()
     {
         super.onPause();
+
+        View current = getActivity().getCurrentFocus();
+
+        if (current != null)
+            current.clearFocus();
+
         AndroidNetworking.forceCancel("WriteFragment");
         MiscHandler.HideSoftKey(getActivity());
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);

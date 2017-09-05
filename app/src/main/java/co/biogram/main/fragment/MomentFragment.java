@@ -392,6 +392,36 @@ public class MomentFragment extends Fragment
         AndroidNetworking.forceCancel("MomentFragment");
     }
 
+    public void Update(JSONObject Post)
+    {
+        try
+        {
+            AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+            PostStruct.PostID = Post.getString("PostID");
+            PostStruct.OwnerID = Post.getString("OwnerID");
+            PostStruct.Type = Post.getInt("Type");
+            PostStruct.Category = Post.getInt("Category");
+            PostStruct.Time = Post.getInt("Time");
+            PostStruct.Comment = Post.getBoolean("Comment");
+            PostStruct.Message = Post.getString("Message");
+            PostStruct.Data = Post.getString("Data");
+            PostStruct.Username = Post.getString("Username");
+            PostStruct.Avatar = Post.getString("Avatar");
+            PostStruct.Like = Post.getBoolean("Like");
+            PostStruct.LikeCount = Post.getInt("LikeCount");
+            PostStruct.CommentCount = Post.getInt("CommentCount");
+            PostStruct.BookMark = Post.getBoolean("BookMark");
+            PostStruct.Follow = Post.getBoolean("Follow");
+
+            PostList.add(0, PostStruct);
+            Adapter.notifyDataSetChanged();
+        }
+        catch (Exception e)
+        {
+            MiscHandler.Debug("MomentFragment-InsertPost: " + e.toString());
+        }
+    }
+
     private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);

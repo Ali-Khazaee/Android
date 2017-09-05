@@ -342,26 +342,41 @@ public class MainActivity extends FragmentActivity
 
         switch (Tab)
         {
-            case 1: ImageViewMoment.setImageResource(R.drawable.ic_moment_black);             break;
-            case 2: ImageViewInbox.setImageResource(R.drawable.ic_inbox_black);               break;
-            case 3: ImageViewCategory.setImageResource(R.drawable.ic_category_black);         break;
-            case 4: ImageViewNotification.setImageResource(R.drawable.ic_notification_black); IsNotification = false; break;
-            case 5: ImageViewProfile.setImageResource(R.drawable.ic_profile_black);           break;
+            case 1: ImageViewMoment.setImageResource(R.drawable.ic_moment_black);     break;
+            case 2: ImageViewInbox.setImageResource(R.drawable.ic_inbox_black);       break;
+            case 3: ImageViewCategory.setImageResource(R.drawable.ic_category_black); break;
+            case 4:
+                ImageViewNotification.setImageResource(R.drawable.ic_notification_black);
+                IsNotification = false;
+            break;
+            case 5: ImageViewProfile.setImageResource(R.drawable.ic_profile_black);   break;
         }
 
+        String Tag = "MomentFragment";
         Fragment SelectedFragment = new MomentFragment();
 
         switch (Tab)
         {
-            case 2: SelectedFragment = new InboxFragment();        break;
-            case 3: SelectedFragment = new CategoryFragment();     break;
-            case 4: SelectedFragment = new NotificationFragment(); break;
+            case 2:
+                SelectedFragment = new InboxFragment();
+                Tag = "InboxFragment";
+            break;
+            case 3:
+                SelectedFragment = new CategoryFragment();
+                Tag = "CategoryFragment";
+            break;
+            case 4:
+                SelectedFragment = new NotificationFragment();
+                Tag = "NotificationFragment";
+            break;
             case 5:
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("HideBack", true);
 
                 SelectedFragment = new ProfileFragment();
                 SelectedFragment.setArguments(bundle);
+
+                Tag = "ProfileFragment";
             break;
         }
 
@@ -379,6 +394,6 @@ public class MainActivity extends FragmentActivity
             }
         }
 
-        FragManager.beginTransaction().add(R.id.MainActivityContentContainer, SelectedFragment).commitAllowingStateLoss();
+        FragManager.beginTransaction().add(R.id.MainActivityContentContainer, SelectedFragment, Tag).commitAllowingStateLoss();
     }
 }

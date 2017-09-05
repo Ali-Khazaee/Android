@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,8 +25,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
@@ -201,7 +207,7 @@ public class GalleryFragment extends Fragment
         {
             try
             {
-                Cursor cursor = getActivity().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, null);
+                Cursor cursor = getActivity().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media.DATE_MODIFIED }, null, null, null);
 
                 if (cursor != null)
                 {
@@ -211,6 +217,7 @@ public class GalleryFragment extends Fragment
 
                         int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
                         int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+                        int DateColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED);
 
                         do
                         {
@@ -219,7 +226,9 @@ public class GalleryFragment extends Fragment
                             if (!FolderList.contains(Folder))
                                 FolderList.add(Folder);
 
-                            GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
+                            Date date = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).parse(String.valueOf(cursor.getInt(DateColumn)));
+
+                            GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), date));
                         }
                         while (cursor.moveToNext());
                     }
@@ -236,7 +245,7 @@ public class GalleryFragment extends Fragment
         {
             try
             {
-                Cursor cursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, null);
+                Cursor cursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media.DATE_MODIFIED }, null, null, null);
 
                 if (cursor != null)
                 {
@@ -246,6 +255,7 @@ public class GalleryFragment extends Fragment
 
                         int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                         int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+                        int DateColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED);
 
                         do
                         {
@@ -254,7 +264,9 @@ public class GalleryFragment extends Fragment
                             if (!FolderList.contains(Folder))
                                 FolderList.add(Folder);
 
-                            GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
+                            Date date = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).parse(String.valueOf(cursor.getInt(DateColumn)));
+
+                            GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), date));
                         }
                         while (cursor.moveToNext());
                     }
@@ -266,6 +278,17 @@ public class GalleryFragment extends Fragment
             {
                 MiscHandler.Debug("GalleryFragment-MediaImage: " + e.toString());
             }
+
+            Collections.sort(GalleryList, new Comparator<Struct>()
+            {
+                public int compare(Struct o1, Struct o2)
+                {
+                    if (o1.Time == null || o2.Time == null)
+                        return 0;
+
+                    return o1.Time.compareTo(o2.Time);
+                }
+            });
         }
 
         return RelativeLayoutMain;
@@ -450,16 +473,24 @@ public class GalleryFragment extends Fragment
         }
     }
 
-    private class Struct
+    private class Struct implements Comparable<Struct>
     {
         private final String Path;
         private final String Album;
         private boolean Selection = false;
+        private Date Time;
 
-        Struct(String album, String path)
+        Struct(String album, String path, Date time)
         {
             Album = album;
             Path = path;
+            Time = time;
+        }
+
+        @Override
+        public int compareTo(@NonNull Struct o)
+        {
+            return Time.compareTo(o.Time);
         }
     }
 }
