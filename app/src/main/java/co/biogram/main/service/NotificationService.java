@@ -21,8 +21,6 @@ import co.biogram.main.activity.MainActivity;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 
-import me.leolin.shortcutbadger.ShortcutBadger;
-
 public class NotificationService extends Service
 {
     public static final String BROADCAST_ACTION_NEW = "co.biogram.NotificationService.New";
@@ -41,12 +39,6 @@ public class NotificationService extends Service
             @Override
             public void run()
             {
-                if (SharedHandler.GetBoolean(context, "Notification"))
-                {
-                    handler.postDelayed(runnable, 5000);
-                    return;
-                }
-
                 AndroidNetworking.post(MiscHandler.GetRandomServer("NotificationService"))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .build()
@@ -57,6 +49,13 @@ public class NotificationService extends Service
                     {
                         try
                         {
+                            handler.postDelayed(runnable, 5000);
+
+                            MiscHandler.Debug("Check-Shavad : " + Response);
+
+                            if (!SharedHandler.GetBoolean(context, "Notification"))
+                                return;
+
                             JSONObject Result = new JSONObject(Response);
 
                             if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
@@ -92,18 +91,13 @@ public class NotificationService extends Service
                                 }
 
                                 if (Count > 0)
-                                {
-                                    ShortcutBadger.applyCount(context, Count);
                                     sendBroadcast(new Intent(BROADCAST_ACTION_NEW));
-                                }
                             }
                         }
                         catch (Exception e)
                         {
                             MiscHandler.Debug("NotificationService-RequestNotification: " + e.toString());
                         }
-
-                        handler.postDelayed(runnable, 5000);
                     }
 
                     @Override

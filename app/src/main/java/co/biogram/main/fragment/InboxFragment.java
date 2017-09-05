@@ -1,7 +1,11 @@
 package co.biogram.main.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +14,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,6 +47,7 @@ public class InboxFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final ImageView ImageViewWrite = new ImageView(context);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -121,11 +128,11 @@ public class InboxFragment extends Fragment
 
         LinearLayoutManager2 LinearLayoutManagerNotification = new LinearLayoutManager2(context);
 
-        RecyclerView RecyclerViewInbox = new RecyclerView(context);
-        RecyclerViewInbox.setLayoutParams(RecyclerViewInboxParam);
-        RecyclerViewInbox.setLayoutManager(LinearLayoutManagerNotification);
-        RecyclerViewInbox.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "InboxFragment"));
-        RecyclerViewInbox.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewInboxParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerNotification);
+        RecyclerViewMain.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "InboxFragment"));
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerNotification)
         {
             @Override
             public void OnLoadMore()
@@ -197,8 +204,56 @@ public class InboxFragment extends Fragment
                 });
             }
         });
+        RecyclerViewMain.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            private boolean IsRunning = false;
 
-        RelativeLayoutMain.addView(RecyclerViewInbox);
+            @Override
+            public void onScrolled(RecyclerView View, int DX, int DY)
+            {
+                if (!IsRunning)
+                {
+                    IsRunning = true;
+
+                    if (DY > 0)
+                        ImageViewWrite.animate().setDuration(400).translationY(ImageViewWrite.getHeight() + 150).withEndAction(new Runnable() { @Override public void run() { IsRunning = false; } }).setInterpolator(new AccelerateInterpolator(2)).start();
+                    else
+                        ImageViewWrite.animate().setDuration(400).translationY(0).withEndAction(new Runnable() { @Override public void run() { IsRunning = false; } }).setInterpolator(new DecelerateInterpolator(2)).start();
+                }
+            }
+        });
+
+        RelativeLayoutMain.addView(RecyclerViewMain);
+
+        RelativeLayout.LayoutParams ImageViewWriteParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 60), MiscHandler.ToDimension(context, 60));
+        ImageViewWriteParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        ImageViewWriteParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        ImageViewWriteParam.setMargins(MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20));
+
+        GradientDrawable ShapeBorder = new GradientDrawable();
+        ShapeBorder.setShape(GradientDrawable.OVAL);
+        ShapeBorder.setColor(Color.parseColor("#1f000000"));
+
+        GradientDrawable ShapeContent = new GradientDrawable();
+        ShapeContent.setShape(GradientDrawable.OVAL);
+        ShapeContent.setColor(ContextCompat.getColor(context, R.color.BlueLight));
+        ShapeContent.setStroke(MiscHandler.ToDimension(context, 4), Color.TRANSPARENT);
+
+        ImageViewWrite.setLayoutParams(ImageViewWriteParam);
+        ImageViewWrite.setScaleType(ImageView.ScaleType.FIT_XY);
+        ImageViewWrite.setBackground(new LayerDrawable(new Drawable[] { ShapeBorder, ShapeContent }));
+        ImageViewWrite.setImageResource(R.drawable.ic_write);
+        ImageViewWrite.setPadding(MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18), MiscHandler.ToDimension(context, 18));
+        ImageViewWrite.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new WriteFragment(), "WriteFragment").addToBackStack("WriteFragment").commitAllowingStateLoss();
+            }
+        });
+
+        RelativeLayoutMain.addView(ImageViewWrite);
 
         RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());

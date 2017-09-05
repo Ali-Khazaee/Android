@@ -40,8 +40,6 @@ import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
-import me.leolin.shortcutbadger.ShortcutBadger;
-
 public class NotificationFragment extends Fragment
 {
     private final List<Struct> NotificationList = new ArrayList<>();
@@ -349,7 +347,6 @@ public class NotificationFragment extends Fragment
 
                 LoadingViewMain.setVisibility(View.GONE);
                 TextViewTryAgain.setVisibility(View.GONE);
-                ShortcutBadger.removeCount(context);
             }
 
             @Override

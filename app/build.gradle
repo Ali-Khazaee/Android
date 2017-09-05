@@ -64,7 +64,6 @@ dependencies
     compile 'com.google.android.exoplayer:extension-okhttp:r2.5.1'
 
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
-    compile "me.leolin:ShortcutBadger:1.1.16@aar"
 }
 
 apply plugin: 'com.google.gms.google-services'

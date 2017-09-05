@@ -39,8 +39,6 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.UpdateHandler;
 import co.biogram.main.service.NotificationService;
 
-import me.leolin.shortcutbadger.ShortcutBadger;
-
 public class MainActivity extends FragmentActivity
 {
     private boolean IsActive = true;
@@ -261,7 +259,6 @@ public class MainActivity extends FragmentActivity
         super.onResume();
         IsActive = true;
 
-        ShortcutBadger.removeCount(this);
         registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
 
         if (getIntent() == null)

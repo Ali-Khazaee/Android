@@ -110,7 +110,7 @@ public class CategoryFragment extends Fragment
 
         RecyclerView RecyclerViewCategory = new RecyclerView(context);
         RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
-        RecyclerViewCategory.setLayoutManager(new GridLayoutManager(context, 2));
+        RecyclerViewCategory.setLayoutManager(new GridLayoutManager(context, 3));
         RecyclerViewCategory.addItemDecoration(new GridSpacingItemDecoration());
         RecyclerViewCategory.setAdapter(new AdapterCategory(context));
 
@@ -124,7 +124,7 @@ public class CategoryFragment extends Fragment
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
         {
-            int SpanCount = 2;
+            int SpanCount = 3;
             int Spacing = MiscHandler.ToDimension(parent.getContext(), 15);
             int Position = parent.getChildAdapterPosition(view);
             int Column = Position % SpanCount;
