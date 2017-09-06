@@ -64,6 +64,8 @@
             android:id="@+id/TextViewMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:textColorLink="@color/BlueLight"
             android:textSize="@dimen/FontMedium"
             android:textColor="@color/Black3" />
 

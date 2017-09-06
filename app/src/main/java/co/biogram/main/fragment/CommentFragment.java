@@ -13,6 +13,8 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -855,6 +857,8 @@ public class CommentFragment extends Fragment
                 TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black3));
                 TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewMessage.setId(ID_Message);
+                TextViewMessage.setLinkTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+                TextViewMessage.setAutoLinkMask(Linkify.ALL);
 
                 RelativeLayoutMain.addView(TextViewMessage);
 

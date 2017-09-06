@@ -66,4 +66,9 @@ dependencies
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
 }
 
+configurations
+{
+    all*.exclude group: 'com.google.firebase'
+}
+
 apply plugin: 'com.google.gms.google-services'
