@@ -20,7 +20,7 @@ android
         resConfigs "en"
     }
 
-    signingConfigs
+    /*signingConfigs
     {
         release
         {
@@ -30,7 +30,7 @@ android
             keyPassword SignAliasPassword
             v2SigningEnabled false
         }
-    }
+    }*
 
     buildTypes
     {
@@ -42,7 +42,16 @@ android
             zipAlignEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
+        }
+
+        debug
+        {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
         }
     }
 }
