@@ -1,18 +1,6 @@
+
+Travis | Codecov
+:------------: | :------------:
+[![Build Status](https://travis-ci.org/BioGram/Android.svg?branch=master)](https://travis-ci.org/BioGram/Android.svg?branch=master) | [![Build Status](https://travis-ci.org/BioGram/Android.svg?branch=master)](https://travis-ci.org/BioGram/Android.svg?branch=master)
+
 # BioGram Client For Android
-
-# Features
-
- - **Write Public Post**
- 
- - **Post Categorization**
- 
- - **Upload Image - Video - Message - Link**
- 
- - **Search By Tag - Username - ID**
- 
- - **HashTag And Tag**
- 
- - **Public Profile**
- 
- - **And Many More ...**
-
