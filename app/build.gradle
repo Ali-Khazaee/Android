@@ -30,7 +30,7 @@ android
             keyPassword SignAliasPassword
             v2SigningEnabled false
         }
-    }*
+    }*/
 
     buildTypes
     {
