@@ -173,7 +173,7 @@ public class MainActivity extends FragmentActivity
                 ImageViewBackParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
                 ImageView ImageViewBack = new ImageView(context);
-                ImageViewBack.setPadding(MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13), MiscHandler.ToDimension(context, 13));
+                ImageViewBack.setPadding(MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14));
                 ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 ImageViewBack.setLayoutParams(ImageViewBackParam);
                 ImageViewBack.setImageResource(R.drawable.ic_close_blue);
@@ -211,7 +211,7 @@ public class MainActivity extends FragmentActivity
 
                 TextView TextViewDescription = new TextView(context);
                 TextViewDescription.setLayoutParams(TextViewDescriptionParam);
-                TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Black));
+                TextViewDescription.setTextColor(ContextCompat.getColor(context, R.color.Gray7));
                 TextViewDescription.setText(getString(R.string.MainActivityUpdateDescription));
                 TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewDescription.setId(MiscHandler.GenerateViewID());
