@@ -236,21 +236,54 @@ public class EditFragment extends Fragment
                         {
                             JSONObject Result = new JSONObject(Response);
 
-                            if (Result.getInt("Message") == 1000)
+                            switch (Result.getInt("Message"))
                             {
-                                SharedHandler.SetString(context, "Username", EditTextUsername.getText().toString());
+                                case 1:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentUsernameEmpty));
+                                    break;
+                                case 2:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentUsernameToLow));
+                                    break;
+                                case 3:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentUsernameToHigh));
+                                    break;
+                                case 4:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentUsernameIsUnavailable));
+                                    break;
+                                case 5:
+                                case 6:
+                                case 7:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentEmailIsUnavailable));
+                                    break;
+                                case 8:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentDescriptionToHigh));
+                                    break;
+                                case 9:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentLocationIsWrong));
+                                    break;
+                                case 10:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentUploadFailed));
+                                    break;
+                                case 1000:
+                                    ProfileFragment profileFragment = (ProfileFragment) getActivity().getSupportFragmentManager().findFragmentByTag("ProfileFragment");
 
-                                MiscHandler.HideSoftKey(getActivity());
-                                getActivity().onBackPressed();
-                                return;
+                                    if (profileFragment != null)
+                                        profileFragment.Update(context, EditTextUsername.getText().toString());
+
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentSuccess));
+                                    SharedHandler.SetString(context, "Username", EditTextUsername.getText().toString());
+                                    MiscHandler.HideSoftKey(getActivity());
+                                    getActivity().onBackPressed();
+                                    break;
+                                default:
+                                    MiscHandler.Toast(context, getString(R.string.EditFragmentWrong));
+                                    break;
                             }
                         }
                         catch (Exception e)
                         {
                             MiscHandler.Debug("EditFragment-Save: " + e.toString());
                         }
-
-                        MiscHandler.Toast(context, getString(R.string.EditFragmentWrong));
                     }
 
                     @Override

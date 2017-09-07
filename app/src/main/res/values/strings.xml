@@ -305,6 +305,15 @@
     <string name="EditFragmentLocation">Location</string>
     <string name="EditFragmentUnknownLocation">Unknown location</string>
     <string name="EditFragmentCrop">Image Crop</string>
+    <string name="EditFragmentUsernameEmpty">Username is empty</string>
+    <string name="EditFragmentUsernameToLow">Username is to low</string>
+    <string name="EditFragmentUsernameToHigh">Username is to high</string>
+    <string name="EditFragmentUsernameIsUnavailable">Username is unavailable</string>
+    <string name="EditFragmentEmailIsUnavailable">Email is unavailable</string>
+    <string name="EditFragmentDescriptionToHigh">Description shall be below 150 characters</string>
+    <string name="EditFragmentLocationIsWrong">Wrong location</string>
+    <string name="EditFragmentUploadFailed">Upload fails</string>
+    <string name="EditFragmentSuccess">Profile updated</string>
 
     <!-- Edit Fragment -->
     <string name="GalleryFragment">Gallery</string>
@@ -313,6 +322,6 @@
     <!-- RecyclerView With Pull -->
     <string name="RecyclerViewWithPull">Pull to refresh</string>
     <string name="RecyclerViewWithPullRelease">Release to refresh</string>
-    <string name="RecyclerViewWithPullRefreshing">Refreshing</string>
+    <string name="RecyclerViewWithPullLoading">Loading</string>
     <string name="RecyclerViewWithPullSuccess">Success</string>
 </resources>

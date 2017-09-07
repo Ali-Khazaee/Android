@@ -17,17 +17,17 @@ import co.biogram.main.handler.MiscHandler;
 
 public class PullToRefreshView extends LinearLayout
 {
-    public static final int STATE_NORMAL = 0;
-    public static final int STATE_RELEASE_TO_REFRESH = 1;
+    private static final int STATE_NORMAL = 0;
+    private static final int STATE_RELEASE_TO_REFRESH = 1;
     public static final int STATE_REFRESHING = 2;
-    public static final int STATE_DONE = 3;
+    private static final int STATE_DONE = 3;
 
-    private RelativeLayout RelativeLayoutMain;
-    private LoadingView LoadingViewMain;
-    private ImageView ImageViewArrow;
-    private TextView TextViewTip;
+    private final RelativeLayout RelativeLayoutMain;
+    private final LoadingView LoadingViewMain;
+    private final ImageView ImageViewArrow;
+    private final TextView TextViewTip;
 
-    private int RefreshHeight;
+    private final int RefreshHeight;
     private int RefreshState = 0;
 
     private PullToRefreshListener pullToRefreshListener;
@@ -103,7 +103,7 @@ public class PullToRefreshView extends LinearLayout
         SetVisibleHeight(GetVisibleHeight() + Y);
     }
 
-    public void SetVisibleHeight(int Height)
+    private void SetVisibleHeight(int Height)
     {
         if (Height < 0)
             Height = 0;
@@ -124,7 +124,7 @@ public class PullToRefreshView extends LinearLayout
         SetState(STATE_DONE);
     }
 
-    public void SetState(int State)
+    private void SetState(int State)
     {
         if (RefreshState == State)
             return;
@@ -135,7 +135,7 @@ public class PullToRefreshView extends LinearLayout
             ImageViewArrow.setVisibility(GONE);
             LoadingViewMain.setVisibility(VISIBLE);
             LoadingViewMain.Start();
-            TextViewTip.setText(getContext().getString(R.string.RecyclerViewWithPullRefreshing));
+            TextViewTip.setText(getContext().getString(R.string.RecyclerViewWithPullLoading));
             SmoothScrollTo(GetScreenHeight() / 9);
 
             if (pullToRefreshListener != null)

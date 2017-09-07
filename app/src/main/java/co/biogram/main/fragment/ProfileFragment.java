@@ -979,6 +979,124 @@ public class ProfileFragment extends Fragment
         AndroidNetworking.forceCancel("ProfileFragment");
     }
 
+    public void Update(final Context context, final String Username)
+    {
+        AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileGet"))
+        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+        .addBodyParameter("Username", Username)
+        .setTag("ProfileFragment")
+        .build()
+        .getAsString(new StringRequestListener()
+        {
+            @Override
+            public void onResponse(String Response)
+            {
+                try
+                {
+                    JSONObject Result = new JSONObject(Response);
+
+                    if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                    {
+                        JSONObject Data = new JSONObject(Result.getString("Result"));
+
+                        TextViewUsernameTool.setText(Data.getString("Username"));
+
+                        if (Data.getBoolean("Self"))
+                        {
+                            IsPrivate = true;
+                            SharedHandler.SetString(context, "Avatar", Data.getString("Avatar"));
+                            SharedHandler.SetString(context, "Username", Data.getString("Username"));
+
+                            RelativeLayout.LayoutParams TextViewUsernameToolParam = (RelativeLayout.LayoutParams) TextViewUsernameTool.getLayoutParams();
+                            TextViewUsernameToolParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 5), 0, 0);
+
+                            RelativeLayout.LayoutParams TextViewDetailToolParam = (RelativeLayout.LayoutParams) TextViewDetailTool.getLayoutParams();
+                            TextViewDetailToolParam.setMargins(MiscHandler.ToDimension(context, 15), 0, 0, 0);
+                        }
+                        else
+                        {
+                            ImageViewEdit.setVisibility(View.GONE);
+                            LoadingViewFollow.setVisibility(View.VISIBLE);
+                            ImageViewFollow.setVisibility(View.VISIBLE);
+
+                            if (Data.getBoolean("Follow"))
+                            {
+                                ImageViewFollow.setImageResource(R.drawable.ic_follow_block);
+                                ImageViewFollow.setBackground(ShapeFollowWhite);
+                            }
+                            else
+                            {
+                                ImageViewFollow.setImageResource(R.drawable.ic_follow);
+                                ImageViewFollow.setBackground(ShapeFollowBlue);
+                            }
+                        }
+
+                        if (!Data.getString("Avatar").equals(""))
+                        {
+                            Glide.with(context)
+                            .load(Data.getString("Avatar"))
+                            .placeholder(R.color.BlueGray)
+                            .dontAnimate()
+                            .into(ImageViewCircleProfile);
+                        }
+
+                        if (!Data.getString("Cover").equals(""))
+                        {
+                            Glide.with(context)
+                            .load(Data.getString("Cover"))
+                            .asBitmap()
+                            .placeholder(R.color.BlueLight)
+                            .dontAnimate()
+                            .into(new SimpleTarget<Bitmap>()
+                            {
+                                @Override
+                                public void onResourceReady(Bitmap bitmap, GlideAnimation anim)
+                                {
+                                    ImageViewCover.setImageBitmap(bitmap);
+                                    ImageViewCoverLayer.setImageBitmap(MiscHandler.Blurry(bitmap));
+                                }
+                            });
+                        }
+
+                        TextViewUsername.setText(Data.getString("Username"));
+
+                        if (!Data.getString("Description").equals(""))
+                        {
+                            TextViewDescription.setText(Data.getString("Description"));
+                            TextViewDescription.setVisibility(View.VISIBLE);
+                        }
+
+                        if (!Data.getString("Link").equals(""))
+                        {
+                            TextViewUrl.setText(Data.getString("Link"));
+                            LinearLayoutUrl.setVisibility(View.VISIBLE);
+                        }
+
+                        if (!Data.getString("Location").equals(""))
+                        {
+                            TextViewLocation.setText(Data.getString("Location"));
+                            LinearLayoutLocation.setVisibility(View.VISIBLE);
+                        }
+
+                        TextViewPostCount.setText(Data.getString("Post"));
+                        TextViewFollowingCount.setText(Data.getString("Following"));
+                        TextViewFollowerCount.setText(Data.getString("Follower"));
+
+                        PostCount = Data.getString("Post");
+                        CommentCount = Data.getString("Comment");
+                        LikeCount = Data.getString("Like");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Debug("ProfileFragment-RequestNew: " + e.toString());
+                }
+            }
+
+            @Override public void onError(ANError anError) { }
+        });
+    }
+
     private void RetrieveDataFromServer(final Context context, final String Username, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
         TextViewTryAgain.setVisibility(View.GONE);

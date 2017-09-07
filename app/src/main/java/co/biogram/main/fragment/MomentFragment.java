@@ -218,60 +218,8 @@ public class MomentFragment extends Fragment
             @Override
             public void OnRefresh()
             {
-                MiscHandler.Debug("OnRefresh");
-                Adapter.SetRefreshComplete();
-            }
-        });
-
-        final RecyclerView RecyclerViewMain = new RecyclerView(context)
-        {
-            private float LastY = -1;
-
-            @Override
-            public boolean onTouchEvent(MotionEvent e)
-            {
-                PullToRefreshView HeaderView = Adapter.GetHeaderView();
-
-                if (LastY == -1)
-                    LastY = e.getRawY();
-
-                switch (e.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        LastY = e.getRawY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        float MoveY = e.getRawY() - LastY;
-                        LastY = e.getRawY();
-
-                        if (HeaderView.GetVisibleHeight() == 0 && MoveY < 0)
-                            return super.onTouchEvent(e);
-
-                        if (HeaderView.getParent() != null && HeaderView.GetRefreshState() != PullToRefreshView.STATE_REFRESHING)
-                        {
-                            HeaderView.OnScroll((int) (MoveY / 2));
-                            return false;
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        HeaderView.CheckRefresh();
-                        break;
-                }
-
-                return super.onTouchEvent(e);
-            }
-        };
-        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
-        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.setAdapter(Adapter);
-        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
-        /*RecyclerViewMain.SetPullToRefreshListener(new RecyclerViewWithPull.PullToRefreshListener()
-        {
-            @Override
-            public void OnRefresh()
-            {
                 AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
-                .addBodyParameter("Time", String.valueOf(PostList.get(0).Time))
+                .addBodyParameter("Time", String.valueOf(PostList.get(1).Time))
                 .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
                 .setTag("MomentFragment")
                 .build()
@@ -320,17 +268,60 @@ public class MomentFragment extends Fragment
                             MiscHandler.Debug("FragmentMoment-RequestNew: " + e.toString());
                         }
 
-                        RecyclerViewMain.SetRefreshComplete();
+                        Adapter.SetRefreshComplete();
                     }
 
                     @Override
                     public void onError(ANError anError)
                     {
-                        RecyclerViewMain.SetRefreshComplete();
+                        Adapter.SetRefreshComplete();
                     }
                 });
             }
-        });*/
+        });
+
+        final RecyclerView RecyclerViewMain = new RecyclerView(context)
+        {
+            private float LastY = -1;
+
+            @Override
+            public boolean onTouchEvent(MotionEvent e)
+            {
+                PullToRefreshView HeaderView = Adapter.GetHeaderView();
+
+                if (LastY == -1)
+                    LastY = e.getRawY();
+
+                switch (e.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        LastY = e.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float MoveY = e.getRawY() - LastY;
+                        LastY = e.getRawY();
+
+                        if (HeaderView.GetVisibleHeight() == 0 && MoveY < 0)
+                            return super.onTouchEvent(e);
+
+                        if (HeaderView.getParent() != null && HeaderView.GetRefreshState() != PullToRefreshView.STATE_REFRESHING)
+                        {
+                            HeaderView.OnScroll((int) (MoveY / 2));
+                            return false;
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        HeaderView.CheckRefresh();
+                        break;
+                }
+
+                return super.onTouchEvent(e);
+            }
+        };
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.setAdapter(Adapter);
+        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
         RecyclerViewMain.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             private boolean IsRunning = false;

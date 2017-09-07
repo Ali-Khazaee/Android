@@ -17,7 +17,7 @@ android
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 7
-        versionName "1.7"
+        versionName "1.7.2"
         resConfigs "en"
     }
 
