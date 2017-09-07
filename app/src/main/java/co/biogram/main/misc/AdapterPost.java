@@ -49,11 +49,13 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 
-public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost>
+public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderMain>
 {
     private List<Struct> PostList = new ArrayList<>();
     private final FragmentActivity Activity;
     private final String Tag;
+
+    private PullToRefreshView RefreshViewMain;
 
     public AdapterPost(FragmentActivity activity, List<Struct> list, String tag)
     {
@@ -62,7 +64,27 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         Tag = tag;
     }
 
-    class ViewHolderPost extends RecyclerView.ViewHolder
+    public void EnablePullToRefresh()
+    {
+        RefreshViewMain = new PullToRefreshView(Activity);
+    }
+
+    public PullToRefreshView GetHeaderView()
+    {
+        return RefreshViewMain;
+    }
+
+    public void SetPullToRefreshListener(PullToRefreshView.PullToRefreshListener pullToRefreshListener)
+    {
+        GetHeaderView().SetPullToRefreshListener(pullToRefreshListener);
+    }
+
+    public void SetRefreshComplete()
+    {
+        GetHeaderView().SetRefreshComplete();
+    }
+
+    class ViewHolderMain extends RecyclerView.ViewHolder
     {
         RelativeLayout RelativeLayoutRoot;
         ImageViewCircle ImageViewCircleProfile;
@@ -95,7 +117,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         ImageView ImageViewShare;
         View ViewLine;
 
-        ViewHolderPost(View view, boolean Content)
+        ViewHolderMain(View view, boolean Content)
         {
             super(view);
 
@@ -136,7 +158,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     }
 
     @Override
-    public ViewHolderPost onCreateViewHolder(ViewGroup Parent, int ViewType)
+    public ViewHolderMain onCreateViewHolder(ViewGroup Parent, int ViewType)
     {
         Context context = Activity;
 
@@ -168,20 +190,23 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
 
             RelativeLayoutMain.addView(TextViewMessage);
 
-            return new ViewHolderPost(RelativeLayoutMain, false);
+            return new ViewHolderMain(RelativeLayoutMain, false);
         }
+
+        if (ViewType == 3)
+            return new ViewHolderMain(GetHeaderView(), false);
 
         if (ViewType == 0)
         {
             View ItemView = LayoutInflater.from(context).inflate(R.layout.general_adapter_post_row, Parent, false);
-            return new ViewHolderPost(ItemView, true);
+            return new ViewHolderMain(ItemView, true);
         }
 
         LoadingView LoadingViewMain = new LoadingView(context);
         LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
         LoadingViewMain.Start();
 
-        return new ViewHolderPost(LoadingViewMain, false);
+        return new ViewHolderMain(LoadingViewMain, false);
     }
 
     @Override
@@ -194,16 +219,19 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
     }
 
     @Override
-    public int getItemViewType(int position)
+    public int getItemViewType(int Position)
     {
         if (PostList.size() == 0)
             return 2;
 
-        return PostList.get(position) != null ? 0 : 1;
+        if (PostList.get(Position) == null)
+            return 1;
+
+        return PostList.get(Position).IsHeader ? 3 : 0;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolderPost Holder, int position)
+    public void onBindViewHolder(final ViewHolderMain Holder, int position)
     {
         if (getItemViewType(position) != 0)
             return;
@@ -968,6 +996,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderPost
         public int CommentCount;
         public boolean BookMark;
         public boolean Follow;
+        public boolean IsHeader = false;
 
         void LikeIncrease() { LikeCount = LikeCount + 1; }
         void LikeDecrease() { LikeCount = LikeCount - 1; }

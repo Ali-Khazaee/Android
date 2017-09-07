@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -37,7 +38,7 @@ import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
-import co.biogram.main.misc.RecyclerViewWithPull;
+import co.biogram.main.misc.PullToRefreshView;
 
 public class MomentFragment extends Fragment
 {
@@ -205,12 +206,66 @@ public class MomentFragment extends Fragment
             }
         };
 
-        final RecyclerViewWithPull RecyclerViewMain = new RecyclerViewWithPull(context);
+        AdapterPost.Struct HeaderStruct = new AdapterPost.Struct();
+        HeaderStruct.IsHeader = true;
+
+        PostList.add(HeaderStruct);
+
+        Adapter = new AdapterPost(getActivity(), PostList, "MomentFragment");
+        Adapter.EnablePullToRefresh();
+        Adapter.SetPullToRefreshListener(new PullToRefreshView.PullToRefreshListener()
+        {
+            @Override
+            public void OnRefresh()
+            {
+                MiscHandler.Debug("OnRefresh");
+                Adapter.SetRefreshComplete();
+            }
+        });
+
+        final RecyclerView RecyclerViewMain = new RecyclerView(context)
+        {
+            private float LastY = -1;
+
+            @Override
+            public boolean onTouchEvent(MotionEvent e)
+            {
+                PullToRefreshView HeaderView = Adapter.GetHeaderView();
+
+                if (LastY == -1)
+                    LastY = e.getRawY();
+
+                switch (e.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        LastY = e.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float MoveY = e.getRawY() - LastY;
+                        LastY = e.getRawY();
+
+                        if (HeaderView.GetVisibleHeight() == 0 && MoveY < 0)
+                            return super.onTouchEvent(e);
+
+                        if (HeaderView.getParent() != null && HeaderView.GetRefreshState() != PullToRefreshView.STATE_REFRESHING)
+                        {
+                            HeaderView.OnScroll((int) (MoveY / 2));
+                            return false;
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        HeaderView.CheckRefresh();
+                        break;
+                }
+
+                return super.onTouchEvent(e);
+            }
+        };
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "MomentFragment"));
+        RecyclerViewMain.setAdapter(Adapter);
         RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
-        RecyclerViewMain.SetPullToRefreshListener(new RecyclerViewWithPull.PullToRefreshListener()
+        /*RecyclerViewMain.SetPullToRefreshListener(new RecyclerViewWithPull.PullToRefreshListener()
         {
             @Override
             public void OnRefresh()
@@ -275,7 +330,7 @@ public class MomentFragment extends Fragment
                     }
                 });
             }
-        });
+        });*/
         RecyclerViewMain.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             private boolean IsRunning = false;
