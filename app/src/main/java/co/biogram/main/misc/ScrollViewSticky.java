@@ -71,7 +71,7 @@ public class ScrollViewSticky extends NestedScrollView
     }
 
     @Override
-    public void addView(View child, int index, android.view.ViewGroup.LayoutParams params) {
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
         super.addView(child, index, params);
         findStickyViews(child);
     }
@@ -83,7 +83,7 @@ public class ScrollViewSticky extends NestedScrollView
     }
 
     @Override
-    public void addView(View child, android.view.ViewGroup.LayoutParams params) {
+    public void addView(View child, ViewGroup.LayoutParams params) {
         super.addView(child, params);
         findStickyViews(child);
     }

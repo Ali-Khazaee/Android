@@ -9,7 +9,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -38,6 +37,7 @@ import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
+import co.biogram.main.misc.RecyclerViewWithPull;
 
 public class MomentFragment extends Fragment
 {
@@ -80,13 +80,13 @@ public class MomentFragment extends Fragment
         RelativeLayout.LayoutParams ImageViewBookbarkParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
         ImageViewBookbarkParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-        ImageView ImageViewBookbark = new ImageView(context);
-        ImageViewBookbark.setLayoutParams(ImageViewBookbarkParam);
-        ImageViewBookbark.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewBookbark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
-        ImageViewBookbark.setImageResource(R.drawable.ic_bookmark_blue);
-        ImageViewBookbark.setId(MiscHandler.GenerateViewID());
-        ImageViewBookbark.setOnClickListener(new View.OnClickListener()
+        ImageView ImageViewBookmark = new ImageView(context);
+        ImageViewBookmark.setLayoutParams(ImageViewBookbarkParam);
+        ImageViewBookmark.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewBookmark.setPadding(MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16), MiscHandler.ToDimension(context, 16));
+        ImageViewBookmark.setImageResource(R.drawable.ic_bookmark_blue);
+        ImageViewBookmark.setId(MiscHandler.GenerateViewID());
+        ImageViewBookmark.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -95,10 +95,10 @@ public class MomentFragment extends Fragment
             }
         });
 
-        RelativeLayoutHeader.addView(ImageViewBookbark);
+        RelativeLayoutHeader.addView(ImageViewBookmark);
 
         RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
-        ImageViewSearchParam.addRule(RelativeLayout.LEFT_OF, ImageViewBookbark.getId());
+        ImageViewSearchParam.addRule(RelativeLayout.LEFT_OF, ImageViewBookmark.getId());
 
         ImageView ImageViewSearch = new ImageView(context);
         ImageViewSearch.setLayoutParams(ImageViewSearchParam);
@@ -126,97 +126,8 @@ public class MomentFragment extends Fragment
 
         RelativeLayoutMain.addView(ViewLine);
 
-        RelativeLayout.LayoutParams SwipeRefreshLayoutMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        SwipeRefreshLayoutMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
-
-        final SwipeRefreshLayout SwipeRefreshLayoutMain = new SwipeRefreshLayout(context);
-        SwipeRefreshLayoutMain.setLayoutParams(SwipeRefreshLayoutMainParam);
-        SwipeRefreshLayoutMain.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-            private boolean LoadingTop = false;
-
-            @Override
-            public void onRefresh()
-            {
-                if (LoadingTop)
-                    return;
-
-                LoadingTop = true;
-                SwipeRefreshLayoutMain.setRefreshing(false);
-                SwipeRefreshLayoutMain.setEnabled(false);
-
-                if (PostList.size() == 0)
-                {
-                    LoadingTop = false;
-                    SwipeRefreshLayoutMain.setEnabled(true);
-                    return;
-                }
-
-                AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
-                .addBodyParameter("Time", String.valueOf(PostList.get(0).Time))
-                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                .setTag("MomentFragment")
-                .build()
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingTop = false;
-                        SwipeRefreshLayoutMain.setEnabled(true);
-
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
-                            {
-                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
-
-                                for (int K = 0; K < ResultList.length(); K++)
-                                {
-                                    JSONObject Post = ResultList.getJSONObject(K);
-
-                                    AdapterPost.Struct PostStruct = new AdapterPost.Struct();
-                                    PostStruct.PostID = Post.getString("PostID");
-                                    PostStruct.OwnerID = Post.getString("OwnerID");
-                                    PostStruct.Type = Post.getInt("Type");
-                                    PostStruct.Category = Post.getInt("Category");
-                                    PostStruct.Time = Post.getInt("Time");
-                                    PostStruct.Comment = Post.getBoolean("Comment");
-                                    PostStruct.Message = Post.getString("Message");
-                                    PostStruct.Data = Post.getString("Data");
-                                    PostStruct.Username = Post.getString("Username");
-                                    PostStruct.Avatar = Post.getString("Avatar");
-                                    PostStruct.Like = Post.getBoolean("Like");
-                                    PostStruct.LikeCount = Post.getInt("LikeCount");
-                                    PostStruct.CommentCount = Post.getInt("CommentCount");
-                                    PostStruct.BookMark = Post.getBoolean("BookMark");
-                                    PostStruct.Follow = Post.getBoolean("Follow");
-
-                                    PostList.add(0, PostStruct);
-                                }
-
-                                Adapter.notifyDataSetChanged();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            MiscHandler.Debug("FragmentMoment-RequestNew: " + e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError)
-                    {
-                        LoadingTop = false;
-                        SwipeRefreshLayoutMain.setEnabled(true);
-                    }
-                });
-            }
-        });
-
-        RelativeLayoutMain.addView(SwipeRefreshLayoutMain);
+        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
         LinearLayoutManager2 LinearLayoutManagerMain = new LinearLayoutManager2(context);
 
@@ -294,11 +205,77 @@ public class MomentFragment extends Fragment
             }
         };
 
-        RecyclerView RecyclerViewMain = new RecyclerView(context);
-        RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        final RecyclerViewWithPull RecyclerViewMain = new RecyclerViewWithPull(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
         RecyclerViewMain.setAdapter(Adapter = new AdapterPost(getActivity(), PostList, "MomentFragment"));
         RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
+        RecyclerViewMain.SetPullToRefreshListener(new RecyclerViewWithPull.PullToRefreshListener()
+        {
+            @Override
+            public void OnRefresh()
+            {
+                AndroidNetworking.post(MiscHandler.GetRandomServer("PostList"))
+                .addBodyParameter("Time", String.valueOf(PostList.get(0).Time))
+                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                .setTag("MomentFragment")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            if (Result.getInt("Message") == 1000 && !Result.getString("Result").equals(""))
+                            {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                                for (int K = 0; K < ResultList.length(); K++)
+                                {
+                                    JSONObject Post = ResultList.getJSONObject(K);
+
+                                    AdapterPost.Struct PostStruct = new AdapterPost.Struct();
+                                    PostStruct.PostID = Post.getString("PostID");
+                                    PostStruct.OwnerID = Post.getString("OwnerID");
+                                    PostStruct.Type = Post.getInt("Type");
+                                    PostStruct.Category = Post.getInt("Category");
+                                    PostStruct.Time = Post.getInt("Time");
+                                    PostStruct.Comment = Post.getBoolean("Comment");
+                                    PostStruct.Message = Post.getString("Message");
+                                    PostStruct.Data = Post.getString("Data");
+                                    PostStruct.Username = Post.getString("Username");
+                                    PostStruct.Avatar = Post.getString("Avatar");
+                                    PostStruct.Like = Post.getBoolean("Like");
+                                    PostStruct.LikeCount = Post.getInt("LikeCount");
+                                    PostStruct.CommentCount = Post.getInt("CommentCount");
+                                    PostStruct.BookMark = Post.getBoolean("BookMark");
+                                    PostStruct.Follow = Post.getBoolean("Follow");
+
+                                    PostList.add(0, PostStruct);
+                                }
+
+                                Adapter.notifyDataSetChanged();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            MiscHandler.Debug("FragmentMoment-RequestNew: " + e.toString());
+                        }
+
+                        RecyclerViewMain.SetRefreshComplete();
+                    }
+
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        RecyclerViewMain.SetRefreshComplete();
+                    }
+                });
+            }
+        });
         RecyclerViewMain.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             private boolean IsRunning = false;
@@ -318,7 +295,7 @@ public class MomentFragment extends Fragment
             }
         });
 
-        SwipeRefreshLayoutMain.addView(RecyclerViewMain);
+        RelativeLayoutMain.addView(RecyclerViewMain);
 
         RelativeLayout.LayoutParams ImageViewWriteParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 60), MiscHandler.ToDimension(context, 60));
         ImageViewWriteParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);

@@ -119,7 +119,6 @@ public class FollowingFragment extends Fragment
                     @Override
                     public void onResponse(String Response)
                     {
-                        int Count = 0;
                         ListMain.remove(ListMain.size() - 1);
 
                         try
@@ -141,7 +140,6 @@ public class FollowingFragment extends Fragment
                                     struct.Since = FollowingObject.getInt("Time");
 
                                     ListMain.add(struct);
-                                    Count++;
                                 }
                             }
                         }
