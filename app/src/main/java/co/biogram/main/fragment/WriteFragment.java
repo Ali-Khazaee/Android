@@ -1248,7 +1248,8 @@ public class WriteFragment extends Fragment
         }
         else
         {
-            SelectImage.clear();
+            if (SelectImage.size() > 2)
+                return;
 
             try
             {

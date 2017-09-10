@@ -846,7 +846,7 @@ public class CommentFragment extends Fragment
 
                 RelativeLayoutMain.addView(TextViewTime);
 
-                RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 TextViewMessageParam.setMargins(0, MiscHandler.ToDimension(context, 1), MiscHandler.ToDimension(context, 10), 0);
                 TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ImageViewCircleProfile.getId());
                 TextViewMessageParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());

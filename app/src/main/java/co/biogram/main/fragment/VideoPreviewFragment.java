@@ -320,8 +320,6 @@ public class VideoPreviewFragment extends Fragment
             }
         };
 
-        SimpleExoPlayerViewMain.postDelayed(runnable, 500);
-
         RelativeLayoutHeader.bringToFront();
         RelativeLayoutControl.bringToFront();
 
@@ -329,17 +327,24 @@ public class VideoPreviewFragment extends Fragment
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        SimpleExoPlayerViewMain.postDelayed(runnable, 500);
+    }
+
+    @Override
     public void onPause()
     {
         super.onPause();
+        SimpleExoPlayerViewMain.removeCallbacks(runnable);
         SimpleExoPlayerMain.setPlayWhenReady(false);
     }
 
     @Override
-    public void onDetach()
+    public void onDestroyView()
     {
-        super.onDetach();
-        SimpleExoPlayerViewMain.removeCallbacks(runnable);
+        super.onDestroyView();
         SimpleExoPlayerMain.release();
     }
 

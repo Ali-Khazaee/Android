@@ -64,10 +64,20 @@ public class MomentFragment extends Fragment
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
+        ImageView ImageViewWrite2 = new ImageView(context);
+        ImageViewWrite2.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
+        ImageViewWrite2.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewWrite2.setPadding(MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14), MiscHandler.ToDimension(context, 14));
+        ImageViewWrite2.setImageResource(R.drawable.ic_write_plus);
+        ImageViewWrite2.setId(MiscHandler.GenerateViewID());
+        ImageViewWrite2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new WriteFragment(), "WriteFragment").addToBackStack("WriteFragment").commitAllowingStateLoss(); } });
+
+        RelativeLayoutHeader.addView(ImageViewWrite2);
+
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewTitleParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewWrite2.getId());
+        TextViewTitleParam.setMargins(MiscHandler.ToDimension(context, 5), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         TextView TextViewTitle = new TextView(context);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
@@ -257,7 +267,7 @@ public class MomentFragment extends Fragment
                                     PostStruct.BookMark = Post.getBoolean("BookMark");
                                     PostStruct.Follow = Post.getBoolean("Follow");
 
-                                    PostList.add(0, PostStruct);
+                                    PostList.add(1, PostStruct);
                                 }
 
                                 Adapter.notifyDataSetChanged();
