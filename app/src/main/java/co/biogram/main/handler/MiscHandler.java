@@ -23,8 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,8 +32,6 @@ import co.biogram.main.R;
 public class MiscHandler
 {
     private static final AtomicInteger NextGeneratedID = new AtomicInteger(1);
-
-    private static String AvailbleHost = "";
 
     public static int GenerateViewID()
     {
@@ -164,39 +160,16 @@ public class MiscHandler
 
     public static String GetRandomServer(String URL)
     {
-        if (!AvailbleHost.equals(""))
-            return AvailbleHost;
-
-        final String Host;
+        String Server;
 
         switch (new Random().nextInt(2) + 1)
         {
-            case 1:  Host = "http://5.160.219.220/" + URL; break;
-            case 2:  Host = "http://5.160.219.220/" + URL; break;
-            default: Host = "http://5.160.219.220/" + URL; break;
+            case 1:  Server = "http://5.160.219.220/"; break;
+            case 2:  Server = "http://5.160.219.220/"; break;
+            default: Server = "http://5.160.219.220/"; break;
         }
 
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(Host, 80), 5000);
-                    socket.close();
-
-                    AvailbleHost = Host;
-                }
-                catch (Exception e)
-                {
-                    Debug("MiscHandler-PingRequest: " + e.toString());
-                }
-            }
-        }).start();
-
-        return Host;
+        return Server + URL;
     }
 
     public static void Debug(String Message)

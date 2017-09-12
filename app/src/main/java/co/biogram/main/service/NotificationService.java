@@ -23,7 +23,7 @@ import co.biogram.main.handler.SharedHandler;
 
 public class NotificationService extends Service
 {
-    public static final String BROADCAST_ACTION_NEW = "co.biogram.NotificationService.New";
+    public static final String BROADCAST_ACTION_NEW = "co.biogram.NotificationService.BroadCast";
 
     private Runnable runnable;
     private Handler handler;
@@ -50,8 +50,6 @@ public class NotificationService extends Service
                         try
                         {
                             handler.postDelayed(runnable, 5000);
-
-                            MiscHandler.Debug("Check-Shavad : " + Response);
 
                             if (!SharedHandler.GetBoolean(context, "Notification"))
                                 return;
@@ -97,6 +95,7 @@ public class NotificationService extends Service
                         catch (Exception e)
                         {
                             MiscHandler.Debug("NotificationService-RequestNotification: " + e.toString());
+                            MiscHandler.Debug("NotificationService-RequestNotification-Respone: " + Response);
                         }
                     }
 

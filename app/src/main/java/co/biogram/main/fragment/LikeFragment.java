@@ -37,13 +37,14 @@ import co.biogram.main.misc.RecyclerViewScroll;
 
 public class LikeFragment extends Fragment
 {
-    private final List<StructLike> LikeList = new ArrayList<>();
-    private RecyclerViewScroll RecyclerViewScrollMain;
+    private final List<Struct> LikeList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final Context context = getActivity();
+        final String PostID = getArguments().getString("PostID", "");
+        final AdapterMain Adapter = new AdapterMain(context);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -95,10 +96,11 @@ public class LikeFragment extends Fragment
 
         LinearLayoutManager2 LinearLayoutManagerMain = new LinearLayoutManager2(context);
 
-        final String PostID = getArguments().getString("PostID", "");
-        final AdapterMain Adapter = new AdapterMain(context);
-
-        RecyclerViewScrollMain = new RecyclerViewScroll(LinearLayoutManagerMain)
+        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.setAdapter(Adapter);
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewScroll(LinearLayoutManagerMain)
         {
             @Override
             public void OnLoadMore()
@@ -130,14 +132,14 @@ public class LikeFragment extends Fragment
                                 for (int K = 0; K < ResultList.length(); K++)
                                 {
                                     JSONObject Like = ResultList.getJSONObject(K);
-                                    LikeList.add(new StructLike(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
+                                    LikeList.add(new Struct(Like.getString("Username"), Like.getString("Avatar"), Like.getLong("Time"), Like.getBoolean("Follow")));
                                 }
                             }
                         }
                         catch (Exception e)
                         {
                             MiscHandler.Debug("LikeFragment-RequestMain: " + e.toString());
-                            RecyclerViewScrollMain.ResetLoading(false);
+                            ResetLoading(false);
                         }
 
                         Adapter.notifyDataSetChanged();
@@ -148,21 +150,45 @@ public class LikeFragment extends Fragment
                     {
                         LikeList.remove(LikeList.size() - 1);
                         Adapter.notifyDataSetChanged();
-                        RecyclerViewScrollMain.ResetLoading(false);
+                        ResetLoading(false);
                     }
                 });
             }
-        };
-
-        RecyclerView RecyclerViewMain = new RecyclerView(context);
-        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
-        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.setAdapter(Adapter);
-        RecyclerViewMain.addOnScrollListener(RecyclerViewScrollMain);
+        });
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
-        RetrieveDataFromServer(context, PostID, Adapter);
+        RelativeLayout.LayoutParams RelativeLayoutLoadingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutLoadingParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        final RelativeLayout RelativeLayoutLoading = new RelativeLayout(context);
+        RelativeLayoutLoading.setLayoutParams(RelativeLayoutLoadingParam);
+        RelativeLayoutLoading.setBackgroundResource(R.color.White);
+        RelativeLayoutLoading.setClickable(true);
+
+        RelativeLayoutMain.addView(RelativeLayoutLoading);
+
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        final LoadingView LoadingViewMain = new LoadingView(context);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
+
+        RelativeLayoutLoading.addView(LoadingViewMain);
+
+        final RelativeLayout.LayoutParams TextViewTryAgainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTryAgainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        final TextView TextViewTryAgain = new TextView(context);
+        TextViewTryAgain.setLayoutParams(TextViewTryAgainParam);
+        TextViewTryAgain.setTextColor(ContextCompat.getColor(context, R.color.BlueGray2));
+        TextViewTryAgain.setText(getString(R.string.TryAgain));
+        TextViewTryAgain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTryAgain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { RetrieveDataFromServer(context, PostID, Adapter, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain); } });
+
+        RelativeLayoutLoading.addView(TextViewTryAgain);
+
+        RetrieveDataFromServer(context, PostID, Adapter, RelativeLayoutLoading, LoadingViewMain, TextViewTryAgain);
 
         return RelativeLayoutMain;
     }
@@ -174,8 +200,11 @@ public class LikeFragment extends Fragment
         AndroidNetworking.forceCancel("LikeFragment");
     }
 
-    private void RetrieveDataFromServer(Context context, String PostID, final AdapterMain Adapter)
+    private void RetrieveDataFromServer(final Context context, String PostID, final AdapterMain Adapter, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
+        TextViewTryAgain.setVisibility(View.GONE);
+        LoadingViewMain.Start();
+
         AndroidNetworking.post(MiscHandler.GetRandomServer("PostLikeList"))
         .addBodyParameter("PostID", PostID)
         .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
@@ -197,7 +226,7 @@ public class LikeFragment extends Fragment
                         for (int K = 0; K < ResultList.length(); K++)
                         {
                             JSONObject Like = ResultList.getJSONObject(K);
-                            LikeList.add(new StructLike(Like.getString("Username"), Like.getLong("Time"), Like.getString("Avatar")));
+                            LikeList.add(new Struct(Like.getString("Username"), Like.getString("Avatar"), Like.getLong("Time"), Like.getBoolean("Follow")));
                         }
 
                         Adapter.notifyDataSetChanged();
@@ -206,23 +235,30 @@ public class LikeFragment extends Fragment
                 catch (Exception e)
                 {
                     MiscHandler.Debug("LikeFragment-RequestMain: " + e.toString());
-                    RecyclerViewScrollMain.ResetLoading(false);
                 }
+
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.GONE);
+                RelativeLayoutLoading.setVisibility(View.GONE);
             }
 
-            @Override
-            public void onError(ANError anError)
+            @Override public void onError(ANError anError)
             {
-                RecyclerViewScrollMain.ResetLoading(false);
+                LoadingViewMain.Stop();
+                TextViewTryAgain.setVisibility(View.VISIBLE);
+                MiscHandler.Toast(context, getString(R.string.NoInternet));
             }
         });
     }
 
-    class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolderLike>
+    private class AdapterMain extends RecyclerView.Adapter<AdapterMain.ViewHolderMain>
     {
         private final int ID_ICON = MiscHandler.GenerateViewID();
         private final int ID_NAME = MiscHandler.GenerateViewID();
         private final int ID_TIME = MiscHandler.GenerateViewID();
+        private final int ID_LAYOUT = MiscHandler.GenerateViewID();
+        private final int ID_FOLLOW = MiscHandler.GenerateViewID();
+        private final int ID_LOADIN = MiscHandler.GenerateViewID();
         private final int ID_LINE = MiscHandler.GenerateViewID();
 
         private final Context context;
@@ -232,14 +268,17 @@ public class LikeFragment extends Fragment
             context = c;
         }
 
-        class ViewHolderLike extends RecyclerView.ViewHolder
+        class ViewHolderMain extends RecyclerView.ViewHolder
         {
             ImageViewCircle ImageViewCircleProfile;
             TextView TextViewUsername;
             TextView TextViewTime;
+            RelativeLayout RelativeLayoutFollow;
+            TextView TextViewFollow;
+            LoadingView LoadingViewFollow;
             View ViewLine;
 
-            ViewHolderLike(View view, boolean Content)
+            ViewHolderMain(View view, boolean Content)
             {
                 super(view);
 
@@ -248,13 +287,16 @@ public class LikeFragment extends Fragment
                     ImageViewCircleProfile = (ImageViewCircle) view.findViewById(ID_ICON);
                     TextViewUsername = (TextView) view.findViewById(ID_NAME);
                     TextViewTime = (TextView) view.findViewById(ID_TIME);
+                    RelativeLayoutFollow = (RelativeLayout) view.findViewById(ID_LAYOUT);
+                    TextViewFollow = (TextView) view.findViewById(ID_FOLLOW);
+                    LoadingViewFollow = (LoadingView) view.findViewById(ID_LOADIN);
                     ViewLine = view.findViewById(ID_LINE);
                 }
             }
         }
 
         @Override
-        public void onBindViewHolder(ViewHolderLike Holder, int position)
+        public void onBindViewHolder(final ViewHolderMain Holder, int position)
         {
             if (getItemViewType(position) == 1)
                 return;
@@ -306,6 +348,79 @@ public class LikeFragment extends Fragment
 
             Holder.TextViewTime.setText(MiscHandler.GetTimeName(LikeList.get(Position).Time));
 
+            if (LikeList.get(Position).Follow)
+            {
+                Holder.TextViewFollow.setText(getString(R.string.FollowingFragment));
+                Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray6));
+            }
+            else
+            {
+                Holder.TextViewFollow.setText(getString(R.string.FollowingFragmentFollow));
+                Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+            }
+
+            if (SharedHandler.GetString(context, "Username").equals(LikeList.get(Position).Username))
+                Holder.RelativeLayoutFollow.setVisibility(View.GONE);
+            else
+                Holder.RelativeLayoutFollow.setVisibility(View.VISIBLE);
+
+            Holder.RelativeLayoutFollow.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Holder.TextViewFollow.setVisibility(View.GONE);
+                    Holder.LoadingViewFollow.Start();
+
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("Follow"))
+                    .addBodyParameter("Username", LikeList.get(Position).Username)
+                    .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
+                    .setTag("FollowingFragment")
+                    .build()
+                    .getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            Holder.LoadingViewFollow.Stop();
+                            Holder.TextViewFollow.setVisibility(View.VISIBLE);
+
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                if (Result.getInt("Message") == 1000)
+                                {
+                                    if (Result.getBoolean("Follow"))
+                                    {
+                                        LikeList.get(Position).Follow = true;
+                                        Holder.TextViewFollow.setText(getString(R.string.FollowingFragment));
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.Gray6));
+                                    }
+                                    else
+                                    {
+                                        LikeList.get(Position).Follow = false;
+                                        Holder.TextViewFollow.setText(getString(R.string.FollowingFragmentFollow));
+                                        Holder.TextViewFollow.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                MiscHandler.Debug("FollowingFragment-RequestFollow: " + e.toString());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError)
+                        {
+                            Holder.LoadingViewFollow.Stop();
+                            Holder.TextViewFollow.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            });
+
             if (Position == LikeList.size() - 1)
                 Holder.ViewLine.setVisibility(View.GONE);
             else
@@ -313,7 +428,7 @@ public class LikeFragment extends Fragment
         }
 
         @Override
-        public ViewHolderLike onCreateViewHolder(ViewGroup parent, int ViewType)
+        public ViewHolderMain onCreateViewHolder(ViewGroup parent, int ViewType)
         {
             if (ViewType == 0)
             {
@@ -356,6 +471,39 @@ public class LikeFragment extends Fragment
 
                 LinearLayoutRow.addView(TextViewTime);
 
+                RelativeLayout.LayoutParams RelativeLayoutFollowParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 90), MiscHandler.ToDimension(context, 35));
+                RelativeLayoutFollowParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                RelativeLayoutFollowParam.addRule(RelativeLayout.CENTER_VERTICAL);
+                RelativeLayoutFollowParam.setMargins(0, 0, MiscHandler.ToDimension(context, 10), 0);
+
+                RelativeLayout RelativeLayoutFollow = new RelativeLayout(context);
+                RelativeLayoutFollow.setLayoutParams(RelativeLayoutFollowParam);
+                RelativeLayoutFollow.setId(ID_LAYOUT);
+
+                RelativeLayoutMain.addView(RelativeLayoutFollow);
+
+                RelativeLayout.LayoutParams TextViewFollowParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewFollowParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+                TextView TextViewFollow = new TextView(context);
+                TextViewFollow.setLayoutParams(TextViewFollowParam);
+                TextViewFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                TextViewFollow.setTypeface(null, Typeface.BOLD);
+                TextViewFollow.setId(ID_FOLLOW);
+
+                RelativeLayoutFollow.addView(TextViewFollow);
+
+                RelativeLayout.LayoutParams LoadingViewFollowParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 60), RelativeLayout.LayoutParams.WRAP_CONTENT);
+                LoadingViewFollowParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+                LoadingView LoadingViewFollow = new LoadingView(context);
+                LoadingViewFollow.setLayoutParams(LoadingViewFollowParam);
+                LoadingViewFollow.SetScale(1.7f);
+                LoadingViewFollow.SetColor(R.color.BlueLight);
+                LoadingViewFollow.setId(ID_LOADIN);
+
+                RelativeLayoutFollow.addView(LoadingViewFollow);
+
                 RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
                 ViewLineParam.addRule(RelativeLayout.BELOW, ImageViewCircleProfile.getId());
 
@@ -366,14 +514,14 @@ public class LikeFragment extends Fragment
 
                 RelativeLayoutMain.addView(ViewLine);
 
-                return new ViewHolderLike(RelativeLayoutMain, true);
+                return new ViewHolderMain(RelativeLayoutMain, true);
             }
 
             LoadingView LoadingViewMain = new LoadingView(context);
             LoadingViewMain.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(context, 56), MiscHandler.ToDimension(context, 56)));
             LoadingViewMain.Start();
 
-            return new ViewHolderLike(LoadingViewMain, false);
+            return new ViewHolderMain(LoadingViewMain, false);
         }
 
         @Override
@@ -389,17 +537,19 @@ public class LikeFragment extends Fragment
         }
     }
 
-    private class StructLike
+    private class Struct
     {
         final String Username;
-        final long Time;
         final String Avatar;
+        final long Time;
+        boolean Follow;
 
-        StructLike(String username, long time, String avatar)
+        Struct(String username, String avatar, long time, boolean follow)
         {
             Username = username;
-            Time = time;
             Avatar = avatar;
+            Time = time;
+            Follow = follow;
         }
     }
 }
