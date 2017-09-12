@@ -1,5 +1,6 @@
 package co.biogram.main.handler;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +9,9 @@ import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.TextPaint;
+import android.text.style.URLSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -109,6 +113,36 @@ public class MiscHandler
             return SEC + "s";
 
         return "";
+    }
+
+    public static void StripUnderlines(Spannable Span)
+    {
+        for (URLSpan span : Span.getSpans(0, Span.length(), URLSpan.class))
+        {
+            int Start = Span.getSpanStart(span);
+            int End = Span.getSpanEnd(span);
+
+            Span.removeSpan(span);
+
+            span = new URLSpanNoUnderline(span.getURL());
+            Span.setSpan(span, Start, End, 0);
+        }
+    }
+
+    @SuppressLint("all")
+    private static class URLSpanNoUnderline extends URLSpan
+    {
+        URLSpanNoUnderline(String Span)
+        {
+            super(Span);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint textPaint)
+        {
+            super.updateDrawState(textPaint);
+            textPaint.setUnderlineText(false);
+        }
     }
 
     public static void HideSoftKey(Activity activity)

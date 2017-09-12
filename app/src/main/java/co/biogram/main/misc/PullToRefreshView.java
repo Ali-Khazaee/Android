@@ -85,6 +85,7 @@ public class PullToRefreshView extends LinearLayout
             if (ImageViewArrow.getVisibility() != VISIBLE)
                 ImageViewArrow.setVisibility(VISIBLE);
 
+            TextViewTip.setVisibility(VISIBLE);
             TextViewTip.setText(getContext().getString(R.string.RecyclerViewWithPullRelease));
             RotationAnimator(180f);
             RefreshState = STATE_RELEASE_TO_REFRESH;
@@ -95,6 +96,7 @@ public class PullToRefreshView extends LinearLayout
             if (ImageViewArrow.getVisibility() != VISIBLE)
                 ImageViewArrow.setVisibility(VISIBLE);
 
+            TextViewTip.setVisibility(VISIBLE);
             TextViewTip.setText(getContext().getString(R.string.RecyclerViewWithPull));
             RotationAnimator(0);
             RefreshState = STATE_NORMAL;
@@ -135,6 +137,7 @@ public class PullToRefreshView extends LinearLayout
             ImageViewArrow.setVisibility(GONE);
             LoadingViewMain.setVisibility(VISIBLE);
             LoadingViewMain.Start();
+            TextViewTip.setVisibility(VISIBLE);
             TextViewTip.setText(getContext().getString(R.string.RecyclerViewWithPullLoading));
             SmoothScrollTo(GetScreenHeight() / 9);
 
@@ -148,7 +151,7 @@ public class PullToRefreshView extends LinearLayout
                 RefreshState = State;
                 LoadingViewMain.Stop();
                 LoadingViewMain.setVisibility(GONE);
-                TextViewTip.setText(getContext().getString(R.string.RecyclerViewWithPullSuccess));
+                TextViewTip.setVisibility(GONE);
                 SmoothScrollTo(0);
             }
         }

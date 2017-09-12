@@ -544,7 +544,8 @@ public class ProfileFragment extends Fragment
         TextViewUrl.setLinkTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewUrl.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewUrl.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 1), 0, 0);
-        Linkify.addLinks(TextViewUrl, Linkify.ALL);
+        TextViewUrl.setLinkTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+        TextViewUrl.setAutoLinkMask(Linkify.ALL);
 
         LinearLayoutUrl.addView(TextViewUrl);
 
@@ -1069,6 +1070,7 @@ public class ProfileFragment extends Fragment
                         if (!Data.getString("Link").equals(""))
                         {
                             TextViewUrl.setText(Data.getString("Link"));
+                            MiscHandler.StripUnderlines((Spannable) TextViewUrl.getText());
                             LinearLayoutUrl.setVisibility(View.VISIBLE);
                         }
 
@@ -1190,6 +1192,7 @@ public class ProfileFragment extends Fragment
                         if (!Data.getString("Link").equals(""))
                         {
                             TextViewUrl.setText(Data.getString("Link"));
+                            MiscHandler.StripUnderlines((Spannable) TextViewUrl.getText());
                             LinearLayoutUrl.setVisibility(View.VISIBLE);
                         }
 

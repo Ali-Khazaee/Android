@@ -323,5 +323,4 @@
     <string name="RecyclerViewWithPull">Pull to refresh</string>
     <string name="RecyclerViewWithPullRelease">Release to refresh</string>
     <string name="RecyclerViewWithPullLoading">Loading</string>
-    <string name="RecyclerViewWithPullSuccess">Success</string>
 </resources>

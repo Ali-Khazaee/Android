@@ -446,7 +446,7 @@ public class MomentFragment extends Fragment
             PostStruct.BookMark = Post.getBoolean("BookMark");
             PostStruct.Follow = Post.getBoolean("Follow");
 
-            PostList.add(0, PostStruct);
+            PostList.add(1, PostStruct);
             Adapter.notifyDataSetChanged();
         }
         catch (Exception e)
