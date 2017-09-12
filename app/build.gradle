@@ -16,8 +16,8 @@ android
         applicationId "co.biogram.main"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 8
-        versionName "1.8.0"
+        versionCode 7
+        versionName "1.7.5"
         resConfigs "en"
     }
 
@@ -38,21 +38,12 @@ android
         release
         {
             debuggable true
-            jniDebuggable true
+            jniDebuggable false
             minifyEnabled false
             zipAlignEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //signingConfig signingConfigs.release
-        }
-
-        debug
-        {
-            debuggable true
-            jniDebuggable true
-            minifyEnabled false
-            zipAlignEnabled false
-            shrinkResources false
         }
     }
 }

@@ -767,7 +767,6 @@ public class WriteFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                EditTextMessage.clearFocus();
                 MiscHandler.HideSoftKey(getActivity());
 
                 final Dialog DialogCategory = new Dialog(getActivity());
@@ -836,10 +835,10 @@ public class WriteFragment extends Fragment
                 RecyclerViewCategory.setLayoutManager(new LinearLayoutManager2(context));
                 RecyclerViewCategory.setAdapter(new AdapterCategory(context));
                 RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
-                RecyclerViewCategory.addOnItemTouchListener(new RecyclerViewOnClick(context, RecyclerViewCategory, new RecyclerViewOnClick.OnItemClickListener()
+                RecyclerViewCategory.addOnItemTouchListener(new RecyclerViewOnClick(context, new RecyclerViewOnClick.OnItemClickListener()
                 {
                     @Override
-                    public void OnClick(View view, int Position)
+                    public void OnClick(int Position)
                     {
                         switch (Position)
                         {
@@ -866,7 +865,6 @@ public class WriteFragment extends Fragment
                         DialogCategory.dismiss();
                     }
 
-                    @Override public void OnLongClick(View view, int position) { }
                 }));
 
                 LinearLayoutMain.addView(RecyclerViewCategory);
@@ -1073,12 +1071,6 @@ public class WriteFragment extends Fragment
     public void onPause()
     {
         super.onPause();
-
-        View current = getActivity().getCurrentFocus();
-
-        if (current != null)
-            current.clearFocus();
-
         AndroidNetworking.forceCancel("WriteFragment");
         MiscHandler.HideSoftKey(getActivity());
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);

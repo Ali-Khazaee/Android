@@ -77,7 +77,7 @@ class TextureRender
 
     void surfaceCreated()
     {
-        mProgram = createProgram(VERTEX_SHADER, FRAGMENT_SHADER);
+        mProgram = createProgram();
 
         if (mProgram == 0)
             throw new RuntimeException("failed creating program");
@@ -136,14 +136,14 @@ class TextureRender
         return shader;
     }
 
-    private int createProgram(String vertexSource, String fragmentSource)
+    private int createProgram()
     {
-        int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexSource);
+        int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, TextureRender.VERTEX_SHADER);
 
         if (vertexShader == 0)
             return 0;
 
-        int pixelShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentSource);
+        int pixelShader = loadShader(GLES20.GL_FRAGMENT_SHADER, TextureRender.FRAGMENT_SHADER);
 
         if (pixelShader == 0)
             return 0;

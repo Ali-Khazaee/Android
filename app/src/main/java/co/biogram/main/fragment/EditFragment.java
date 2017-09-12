@@ -684,7 +684,7 @@ public class EditFragment extends Fragment
 
         ImageViewCircleProfile = new ImageViewCircle(context);
         ImageViewCircleProfile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        ImageViewCircleProfile.SetBorderColor(R.color.White);
+        ImageViewCircleProfile.SetBorderColor();
         ImageViewCircleProfile.SetBorderWidth(MiscHandler.ToDimension(context, 3));
         ImageViewCircleProfile.setImageResource(R.color.BlueLight);
 
@@ -872,10 +872,9 @@ public class EditFragment extends Fragment
         EditTextLocation.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
-                if (getActivity().getCurrentFocus() != null)
-                    getActivity().getCurrentFocus().clearFocus();
+                view.clearFocus();
 
                 PermissionHandler = new PermissionHandler(Manifest.permission.ACCESS_FINE_LOCATION, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
                 {

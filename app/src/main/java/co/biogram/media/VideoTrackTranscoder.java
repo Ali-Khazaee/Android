@@ -90,18 +90,18 @@ class VideoTrackTranscoder implements TrackTranscoder
         boolean busy = false;
         int status;
 
-        while (drainEncoder(0) != DRAIN_STATE_NONE)
+        while (drainEncoder() != DRAIN_STATE_NONE)
             busy = true;
 
         do
         {
-            status = drainDecoder(0);
+            status = drainDecoder();
             if (status != DRAIN_STATE_NONE)
                 busy = true;
         }
         while (status == DRAIN_STATE_SHOULD_RETRY_IMMEDIATELY);
 
-        while (drainExtractor(0) != DRAIN_STATE_NONE)
+        while (drainExtractor() != DRAIN_STATE_NONE)
             busy = true;
 
         return busy;
@@ -153,7 +153,7 @@ class VideoTrackTranscoder implements TrackTranscoder
         }
     }
 
-    private int drainExtractor(long timeoutUs)
+    private int drainExtractor()
     {
         if (mIsExtractorEOS)
             return DRAIN_STATE_NONE;
@@ -163,7 +163,7 @@ class VideoTrackTranscoder implements TrackTranscoder
         if (trackIndex >= 0 && trackIndex != mTrackIndex)
             return DRAIN_STATE_NONE;
 
-        int result = mDecoder.dequeueInputBuffer(timeoutUs);
+        int result = mDecoder.dequeueInputBuffer((long) 0);
 
         if (result < 0)
             return DRAIN_STATE_NONE;
@@ -182,12 +182,12 @@ class VideoTrackTranscoder implements TrackTranscoder
         return DRAIN_STATE_CONSUMED;
     }
 
-    private int drainDecoder(long timeoutUs)
+    private int drainDecoder()
     {
         if (mIsDecoderEOS)
             return DRAIN_STATE_NONE;
 
-        int result = mDecoder.dequeueOutputBuffer(mBufferInfo, timeoutUs);
+        int result = mDecoder.dequeueOutputBuffer(mBufferInfo, (long) 0);
 
         switch (result)
         {
@@ -219,12 +219,12 @@ class VideoTrackTranscoder implements TrackTranscoder
         return DRAIN_STATE_CONSUMED;
     }
 
-    private int drainEncoder(long timeoutUs)
+    private int drainEncoder()
     {
         if (mIsEncoderEOS)
             return DRAIN_STATE_NONE;
 
-        int result = mEncoder.dequeueOutputBuffer(mBufferInfo, timeoutUs);
+        int result = mEncoder.dequeueOutputBuffer(mBufferInfo, (long) 0);
 
         switch (result)
         {

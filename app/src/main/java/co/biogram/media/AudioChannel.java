@@ -104,14 +104,14 @@ class AudioChannel
         mFilledBuffers.add(buffer);
     }
 
-    boolean feedEncoder(long timeoutUs)
+    boolean feedEncoder()
     {
         final boolean hasOverflow = mOverflowBuffer.data != null && mOverflowBuffer.data.hasRemaining();
 
         if (mFilledBuffers.isEmpty() && !hasOverflow)
             return false;
 
-        final int encoderInBuffIndex = mEncoder.dequeueInputBuffer(timeoutUs);
+        final int encoderInBuffIndex = mEncoder.dequeueInputBuffer((long) 0);
         if (encoderInBuffIndex < 0)
             return false;
 

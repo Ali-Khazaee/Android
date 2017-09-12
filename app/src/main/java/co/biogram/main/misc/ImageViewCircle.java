@@ -71,9 +71,9 @@ public class ImageViewCircle extends ImageView
         BorderWidth = Width;
     }
 
-    public void SetBorderColor(int Color)
+    public void SetBorderColor()
     {
-        BorderColor = ContextCompat.getColor(getContext(), Color);
+        BorderColor = ContextCompat.getColor(getContext(), R.color.White);
     }
 
     private void Initializing()

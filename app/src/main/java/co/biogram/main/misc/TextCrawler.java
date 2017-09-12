@@ -123,7 +123,7 @@ public class TextCrawler
         MetaTags.put("description", "");
         MetaTags.put("image", "");
 
-        List<String> MatchList = PregMatchAll(Content, "<meta(.*?)>", 1);
+        List<String> MatchList = PregMatchAll(Content);
 
         for (String Match : MatchList)
         {
@@ -155,17 +155,17 @@ public class TextCrawler
                 Match.toLowerCase().contains("name='twitter:title'") ||
                 Match.toLowerCase().contains("name=twitter:title"))
             {
-                String Result = PregMatch(Match, "content=\"(.*?)\"", 1);
+                String Result = PregMatch(Match, "content=\"(.*?)\"");
 
                 if (Result.equals(""))
-                    Result = PregMatch(Match, "content='(.*?)'", 1);
+                    Result = PregMatch(Match, "content='(.*?)'");
 
                 MetaTags.put("description", Result);
                 break;
             }
         }
 
-        List<String> MatchList2 = PregMatchAll(Content, "<meta(.*?)>", 1);
+        List<String> MatchList2 = PregMatchAll(Content);
 
         for (String Match : MatchList2)
         {
@@ -199,10 +199,10 @@ public class TextCrawler
                 Match.toLowerCase().contains("rel=\"shortcut icon\" sizes=\"160x160\"") ||
                 Match.toLowerCase().contains("rel='shortcut icon' sizes='160x160'"))
             {
-                String Result = PregMatch(Match, "content=\"(.*?)\"", 1);
+                String Result = PregMatch(Match, "content=\"(.*?)\"");
 
                 if (Result.equals(""))
-                    Result = PregMatch(Match, "content='(.*?)'", 1);
+                    Result = PregMatch(Match, "content='(.*?)'");
 
                 MetaTags.put("image", Result);
                 break;
@@ -212,25 +212,25 @@ public class TextCrawler
         return MetaTags;
     }
 
-    private String PregMatch(String Content, String pattern, int Index)
+    private String PregMatch(String Content, String pattern)
     {
         String Match = "";
         Matcher matcher = Pattern.compile(pattern).matcher(Content);
 
         if (matcher.find())
-            Match = matcher.group(Index);
+            Match = matcher.group(1);
 
         return ExtendedTrim(Match);
     }
 
-    private List<String> PregMatchAll(String Content, String pattern, int Index)
+    private List<String> PregMatchAll(String Content)
     {
         List<String> MatchList = new ArrayList<>();
-        Matcher matcher = Pattern.compile(pattern).matcher(Content);
+        Matcher matcher = Pattern.compile("<meta(.*?)>").matcher(Content);
 
         while (matcher.find())
         {
-            MatchList.add(ExtendedTrim(matcher.group(Index)));
+            MatchList.add(ExtendedTrim(matcher.group(1)));
         }
 
         return MatchList;

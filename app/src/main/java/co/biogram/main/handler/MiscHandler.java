@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,6 +34,8 @@ import co.biogram.main.R;
 public class MiscHandler
 {
     private static final AtomicInteger NextGeneratedID = new AtomicInteger(1);
+
+    private static String AvailbleHost = "";
 
     public static int GenerateViewID()
     {
@@ -153,22 +157,46 @@ public class MiscHandler
         {
             InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             IMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+            view.clearFocus();
         }
     }
 
     public static String GetRandomServer(String URL)
     {
-        Random random = new Random();
+        if (!AvailbleHost.equals(""))
+            return AvailbleHost;
 
-        switch (random.nextInt(5) + 1)
+        final String Host;
+
+        switch (new Random().nextInt(2) + 1)
         {
-            case 1:  return "http://5.160.219.220/" + URL;
-            case 2:  return "http://5.160.219.220/" + URL;
-            case 3:  return "http://5.160.219.220/" + URL;
-            case 4:  return "http://5.160.219.220/" + URL;
-            case 5:  return "http://5.160.219.220/" + URL;
-            default: return "http://5.160.219.220/" + URL;
+            case 1:  Host = "http://5.160.219.220/" + URL; break;
+            case 2:  Host = "http://5.160.219.220/" + URL; break;
+            default: Host = "http://5.160.219.220/" + URL; break;
         }
+
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Socket socket = new Socket();
+                    socket.connect(new InetSocketAddress(Host, 80), 5000);
+                    socket.close();
+
+                    AvailbleHost = Host;
+                }
+                catch (Exception e)
+                {
+                    Debug("MiscHandler-PingRequest: " + e.toString());
+                }
+            }
+        }).start();
+
+        return Host;
     }
 
     public static void Debug(String Message)

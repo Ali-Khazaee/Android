@@ -248,16 +248,10 @@ public class SearchFragment extends Fragment
 
         ChangeTab(context, 1, RecyclerViewMain);
 
-        return RelativeLayoutMain;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
         InputMethodManager IMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        return RelativeLayoutMain;
     }
 
     @Override

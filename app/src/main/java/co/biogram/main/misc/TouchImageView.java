@@ -22,10 +22,10 @@ public class TouchImageView extends AppCompatImageView implements OnScaleGesture
 
     private ScaleType startScaleType;
 
-    private Matrix matrix = new Matrix();
+    private final Matrix matrix = new Matrix();
     private Matrix startMatrix = new Matrix();
 
-    private float[] matrixValues = new float[9];
+    private final float[] matrixValues = new float[9];
     private float[] startValues = null;
 
     private float minScale = MIN_SCALE;
@@ -36,19 +36,19 @@ public class TouchImageView extends AppCompatImageView implements OnScaleGesture
 
     private final RectF bounds = new RectF();
 
-    private boolean translatable;
-    private boolean zoomable;
-    private boolean restrictBounds;
-    private boolean animateOnReset;
-    private boolean autoCenter;
-    private int autoResetMode;
+    private final boolean translatable;
+    private final boolean zoomable;
+    private final boolean restrictBounds;
+    private final boolean animateOnReset;
+    private final boolean autoCenter;
+    private final int autoResetMode;
 
-    private PointF last = new PointF(0, 0);
+    private final PointF last = new PointF(0, 0);
     private float startScale = 1f;
     private float scaleBy = 1f;
     private int previousPointerCount = 1;
 
-    private ScaleGestureDetector scaleDetector;
+    private final ScaleGestureDetector scaleDetector;
 
     public TouchImageView(Context context)
     {
@@ -240,7 +240,7 @@ public class TouchImageView extends AppCompatImageView implements OnScaleGesture
     }
 
 
-    public void reset() {
+    private void reset() {
         reset(animateOnReset);
     }
 
@@ -249,7 +249,7 @@ public class TouchImageView extends AppCompatImageView implements OnScaleGesture
      * will snap back to its original size.
      * @param animate animate the image back to its starting size
      */
-    public void reset(final boolean animate) {
+    private void reset(final boolean animate) {
         if (animate) {
             animateToStartMatrix();
         }
@@ -344,7 +344,7 @@ public class TouchImageView extends AppCompatImageView implements OnScaleGesture
         animator.addUpdateListener(new AnimatorUpdateListener() {
 
             final float[] values = new float[9];
-            Matrix current = new Matrix();
+            final Matrix current = new Matrix();
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
