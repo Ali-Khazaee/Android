@@ -19,6 +19,12 @@ public class SharedHandler
         return Shared.getString(Key, "");
     }
 
+    public static String GetString(Context context, String Key, String Default)
+    {
+        SharedPreferences Shared = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
+        return Shared.getString(Key, Default);
+    }
+
     public static void SetBoolean(Context context, String Key, boolean Value)
     {
         SharedPreferences Shared = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE);

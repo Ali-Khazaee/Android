@@ -36,23 +36,14 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAEzDCzmm_0IoHUeOeaNdAE13hWvPFXdbw" />
         <meta-data android:name="co.biogram.main.misc.GlideConfig" android:value="GlideModule" />
 
-        <service android:name=".service.NotificationService" />
+        <service android:name=".service.SocketService" />
 
-        <receiver
-            android:name="co.biogram.main.service.OnBootService"
-            android:exported="false">
+        <receiver android:name="co.biogram.main.service.OnBootService" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data android:scheme="package" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <data android:scheme="package" />
-            </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

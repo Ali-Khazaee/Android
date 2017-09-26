@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -318,16 +319,6 @@ public class SettingFragment extends Fragment
 
         LinearLayoutMain.addView(TextViewPrivacy);
 
-        TextView TextViewHelpCenter = new TextView(context);
-        TextViewHelpCenter.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewHelpCenter.setTextColor(ContextCompat.getColor(context, R.color.Black4));
-        TextViewHelpCenter.setText(getString(R.string.SettingFragmentHelpCenter));
-        TextViewHelpCenter.setTypeface(null, Typeface.BOLD);
-        TextViewHelpCenter.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewHelpCenter.setPadding(MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-
-        LinearLayoutMain.addView(TextViewHelpCenter);
-
         TextView TextViewBlog = new TextView(context);
         TextViewBlog.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewBlog.setTextColor(ContextCompat.getColor(context, R.color.Black4));
@@ -335,6 +326,16 @@ public class SettingFragment extends Fragment
         TextViewBlog.setTypeface(null, Typeface.BOLD);
         TextViewBlog.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewBlog.setPadding(MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewBlog.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("http://biogram.co"));
+                startActivity(i);
+            }
+        });
 
         LinearLayoutMain.addView(TextViewBlog);
 

@@ -10,9 +10,6 @@ public class OnBootService extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
         if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED))
-        {
-            Intent i = new Intent(context, NotificationService.class);
-            context.startService(i);
-        }
+            context.startService(new Intent(context, SocketService.class));
     }
 }

@@ -37,7 +37,7 @@ import co.biogram.main.fragment.NotificationFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.UpdateHandler;
-import co.biogram.main.service.NotificationService;
+import co.biogram.main.service.SocketService;
 
 public class MainActivity extends FragmentActivity
 {
@@ -259,7 +259,7 @@ public class MainActivity extends FragmentActivity
         super.onResume();
         IsActive = true;
 
-        registerReceiver(BroadcastReceiverNotification, new IntentFilter(NotificationService.BROADCAST_ACTION_NEW));
+        registerReceiver(BroadcastReceiverNotification, new IntentFilter(SocketService.BROADCAST_NOTIFICATION));
 
         if (getIntent() == null)
             return;
@@ -309,7 +309,7 @@ public class MainActivity extends FragmentActivity
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            if (intent.getAction().equalsIgnoreCase(NotificationService.BROADCAST_ACTION_NEW))
+            if (intent.getAction().equalsIgnoreCase(SocketService.BROADCAST_NOTIFICATION))
             {
                 IsNotification = true;
 

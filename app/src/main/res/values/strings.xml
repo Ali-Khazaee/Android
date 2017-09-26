@@ -3,6 +3,38 @@
     <!-- Application -->
     <string name="ApplicationName">Biogram</string>
 
+    <!-- Welcome UI -->
+    <string name="WelcomeLanguage">English</string>
+    <string name="WelcomeLanguageSelect">Select Your Language</string>
+    <string name="WelcomeLanguageEnglish">English</string>
+    <string name="WelcomeLanguagePersian">فارسی</string>
+    <string name="WelcomeHeader">Sign Up to share events and</string>
+    <string name="WelcomeHeader2">See the recently moments</string>
+    <string name="WelcomeSignUp">Sign Up</string>
+    <string name="WelcomeOR">OR</string>
+    <string name="WelcomeSignInGoogle">Sign in with Google</string>
+    <string name="WelcomeSignIn">Already have an account ?</string>
+    <string name="WelcomeSignIn2">Sign In</string>
+    <string name="WelcomeTerm">By Signing Up you agree to our</string>
+    <string name="WelcomeTerm2">Terms &amp; Privacy and Policy</string>
+
+    <string name="WelcomeActivityGeneralTerm">Term &amp; Privacy</string>
+    <string name="WelcomeActivityGeneralNext">Next</string>
+
+
+
+
+
+
+    <string name="WelcomeActivityGoogleError">Something went wrong, Please try again</string>
+
+
+
+
+
+
+
+
     <!-- General -->
     <string name="Soon">Coming soon</string>
     <string name="TryAgain">Try again &#8230;</string>
@@ -109,19 +141,7 @@
     <string name="CategoryFragmentReligious">Religious</string>
     <string name="CategoryFragmentOther">Other</string>
 
-    <!-- Welcome Activity -->
-    <string name="WelcomeActivityGeneralTerm">Term &amp; Privacy</string>
-    <string name="WelcomeActivityGeneralNext">Next</string>
-    <string name="WelcomeActivityHeader">Sign Up to share events and</string>
-    <string name="WelcomeActivityHeader2">See the recently moments</string>
-    <string name="WelcomeActivitySignUp">Sign Up</string>
-    <string name="WelcomeActivityOR">OR</string>
-    <string name="WelcomeActivitySignInGoogle">Sign in with Google</string>
-    <string name="WelcomeActivityTerm">By Signing Up you agree to our</string>
-    <string name="WelcomeActivityTerm2">Terms &amp; Privacy and Policy</string>
-    <string name="WelcomeActivitySignIn">Already have an account ?</string>
-    <string name="WelcomeActivitySignIn2">Sign In</string>
-    <string name="WelcomeActivityGoogleError">Something went wrong, Please try again</string>
+
 
     <!-- SignUp Fragment Username -->
     <string name="SignUpFragmentUsername">Username</string>

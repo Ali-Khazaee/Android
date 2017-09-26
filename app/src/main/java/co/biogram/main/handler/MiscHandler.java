@@ -1,17 +1,18 @@
 package co.biogram.main.handler;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.text.Spannable;
-import android.text.TextPaint;
-import android.text.style.URLSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,10 +25,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import co.biogram.main.R;
+import co.biogram.main.activity.WelcomeActivity;
 
 public class MiscHandler
 {
@@ -50,6 +53,76 @@ public class MiscHandler
             if (NextGeneratedID.compareAndSet(Result, Value))
                 return Result;
         }
+    }
+
+    private static boolean IsRTL = false;
+    private static boolean IsRTLInit = true;
+
+    private static boolean IsRTL()
+    {
+        if (IsRTLInit)
+        {
+            Locale locale = Locale.getDefault();
+            String Language = locale.getLanguage();
+
+            if (Language == null)
+                Language = "en";
+
+            IsRTLInit = false;
+            IsRTL = Language.toLowerCase().equals("fa");
+        }
+
+        return IsRTL;
+    }
+
+    private static boolean IsFA = false;
+    private static boolean IsFAInit = true;
+
+    public static boolean IsFA()
+    {
+        if (IsFAInit)
+        {
+            Locale locale = Locale.getDefault();
+            String Language = locale.getLanguage();
+
+            if (Language == null)
+                Language = "en";
+
+            IsFAInit = false;
+            IsFA = Language.toLowerCase().equals("fa");
+        }
+
+        return IsFA;
+    }
+
+    public static int Align(String Direction)
+    {
+        if (Direction.equals("R"))
+            return IsRTL() ? RelativeLayout.ALIGN_PARENT_RIGHT : RelativeLayout.ALIGN_PARENT_LEFT;
+        else
+            return IsRTL() ? RelativeLayout.ALIGN_PARENT_LEFT : RelativeLayout.ALIGN_PARENT_RIGHT;
+    }
+
+    public static int AlignTo(String Direction)
+    {
+        if (Direction.equals("R"))
+            return IsRTL() ? RelativeLayout.LEFT_OF : RelativeLayout.RIGHT_OF;
+        else
+            return IsRTL() ? RelativeLayout.RIGHT_OF : RelativeLayout.LEFT_OF;
+    }
+
+    public static void ChangeLanguage(Activity activity, String Language)
+    {
+        SharedPreferences Shared = activity.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
+        SharedPreferences.Editor Editor = Shared.edit();
+        Editor.putString("Language", Language);
+        // noinspection all
+        Editor.commit();
+
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+
+        System.exit(0);
     }
 
     public static void Toast(Context context, String Message)
@@ -113,36 +186,6 @@ public class MiscHandler
             return SEC + "s";
 
         return "";
-    }
-
-    public static void StripUnderlines(Spannable Span)
-    {
-        for (URLSpan span : Span.getSpans(0, Span.length(), URLSpan.class))
-        {
-            int Start = Span.getSpanStart(span);
-            int End = Span.getSpanEnd(span);
-
-            Span.removeSpan(span);
-
-            span = new URLSpanNoUnderline(span.getURL());
-            Span.setSpan(span, Start, End, 0);
-        }
-    }
-
-    @SuppressLint("all")
-    private static class URLSpanNoUnderline extends URLSpan
-    {
-        URLSpanNoUnderline(String Span)
-        {
-            super(Span);
-        }
-
-        @Override
-        public void updateDrawState(TextPaint textPaint)
-        {
-            super.updateDrawState(textPaint);
-            textPaint.setUnderlineText(false);
-        }
     }
 
     public static void HideSoftKey(Activity activity)

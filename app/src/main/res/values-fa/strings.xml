@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application -->
+    <string name="ApplicationName">بیوگرام</string>
+
+    <!-- Welcome UI -->
+    <string name="WelcomeLanguage">فارسی</string>
+    <string name="WelcomeLanguageSelect">انتخاب زبان</string>
+    <!-- UNUSED -->
+    <!-- UNUSED -->
+    <string name="WelcomeHeader">برای اشتراک گذاری رویدادهای خود ثبت نام کنید</string>
+    <string name="WelcomeHeader2">و آخرین لحظات را مشاهده کنید</string>
+    <string name="WelcomeSignUp">ثبت نام</string>
+    <string name="WelcomeOR">یا</string>
+    <string name="WelcomeSignInGoogle">ورود از طريق گوگل</string>
+    <string name="WelcomeSignIn">در حال حاضر يک حساب کاربري داريد ؟</string>
+    <string name="WelcomeSignIn2">ورود</string>
+    <string name="WelcomeTerm">با ثبت نام، شما با ما موافقت مي کنيد</string>
+    <string name="WelcomeTerm2">شرايط و حريم خصوصي</string>
+
+
+    <!-- Welcome Activity -->
+    <string name="WelcomeActivityGeneralTerm">شرايط و حريم خصوصي</string>
+    <string name="WelcomeActivityGeneralNext">بعدي</string>
+
+
+
+    <string name="WelcomeActivityGoogleError"> اشتباهي رخ داده است، لطفا دوباره امتحان کنيد </string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="Soon">بزودي</string>
+    <string name="TryAgain">دوباره تلاش کنيد ...</string>
+    <string name="NoInternet">اتصال اينترنت خود را چک کنيد </string>
+    <!-- Permission -->
+    <string name="PermissionReadContact"> شما بايد اجازه دسترسي به مخاطبين خود را بدهيد</string>
+    <string name="PermissionCamera"> شما بايد اجازه دسترسي به دوربين خود را بدهيد </string>
+    <string name="PermissionStorage"> شما بايد اجازه دسترسي به حافظه تلفن خود را بدهيد</string>
+    <!--  Setting Fragment -->
+    <string name="SettingFragment">تنظيمات</string>
+    <string name="SettingFragmentAds">تبليغات و بازاريابي</string>
+    <string name="SettingFragmentBlog">بلاگ</string>
+    <string name="SettingFragmentAbout">درباره ما</string>
+    <string name="SettingFragmentLogout">خروج</string>
+    <string name="SettingFragmentAccount">صفحه کاربري</string>
+    <string name="SettingFragmentContact">مخاطبين</string>
+    <string name="SettingFragmentPolicy">قوانين</string>
+    <string name="SettingFragmentTerms">آموزش ها و خدمات</string>
+    <string name="SettingFragmentLanguage">زبان </string>
+    <string name="SettingFragmentEditProfile">تنظيمات کاربري</string>
+    <string name="SettingFragmentHelpCenter">آموزش جامع</string>
+    <string name="SettingFragmentReportProblem">گزارش مشکل</string>
+    <string name="SettingFragmentChangePassword">تغيير گذرواژه</string>
+    <!-- Setting Fragment & Logout -->
+    <string name="SettingFragmentLogoutMessage"> آيا از خروج خود مطمئن هستيد ؟</string>
+    <string name="SettingFragmentLogoutYes">بله</string>
+    <string name="SettingFragmentLogoutNo">خير</string>
+    <!-- Change Password Fragment -->
+    <string name="ChangePasswordFragment">تغيير گذرواژه</string>
+    <string name="ChangePasswordFragmentCurrent">گذرواژه فعلي</string>
+    <string name="ChangePasswordFragmentNew">گذرواژه جديد</string>
+    <string name="ChangePasswordFragmentConfirm">تاييد گذرواژه</string>
+    <string name="ChangePasswordFragmentNewSame">عبارات وارد شده با هم مغايرت دارند</string>
+    <string name="ChangePasswordFragmentCurrentEmpty">گذرواژه فعلي خالي است</string>
+    <string name="ChangePasswordFragmentNewEmpty"> گذرواژه جديد نميتواند خالي باشد </string>
+    <string name="ChangePasswordFragmentNewBelow"> گذرواژه جديد بايد بيش از 5 حرف باشد </string>
+    <string name="ChangePasswordFragmentNewAbove"> گذرواژه جديد بايد کمتر از 32 حرف باشد </string>
+    <string name="ChangePasswordFragmentAccount"> حساب وجود ندارد </string>
+    <string name="ChangePasswordFragmentWrong"> گذروازه فعلي اشتباه است </string>
+    <string name="ChangePasswordFragmentDone">گذرواژه با موفقيت تغيير پيدا کرد</string>
+    <!-- Contact Fragment -->
+    <string name="ContactFragment">مخاطبين</string>
+    <string name="ContactFragmentFollow">دنبال کردن </string>
+    <string name="ContactFragmentFollowing">پيرو</string>
+    <!-- Bookmark Fragment -->
+    <string name="BookmarkFragment">نشانه</string>
+    <!-- Like Fragment -->
+    <string name="LikeFragment">پسندها</string>
+    <!--  Search Fragment -->
+    <string name="SearchFragmentEditTextSearchHint">جستجو</string>
+    <string name="SearchFragmentTabPeople">افراد</string>
+    <string name="SearchFragmentTabTag">برچسب ها </string>
+    <string name="SearchFragmentNo">خير</string>
+    <string name="SearchFragmentPosts">پست ها </string>
+    <string name="SearchFragmentFollowers">پيروان</string>
+    <!-- Notification Fragment -->
+    <string name="NotificationFragment">اعلانات</string>
+    <string name="NotificationFragmentPostTag">شما را در يک پست ذکر کرده است </string>
+    <string name="NotificationFragmentPostLike">پست شما را پسنديد</string>
+    <string name="NotificationFragmentFollow">پيرو شما شد</string>
+    <string name="NotificationFragmentComment">براي پست شما نظر فرستاد</string>
+    <string name="NotificationFragmentCommentLike">نظر شما را پسنديد</string>
+    <string name="NotificationFragmentCommentTag">شما را در يک نظر ذکر کرده است</string>
+    <string name="NotificationFragmentUnfollow">ديگر پيرو شما نيست</string>
+    <string name="NotificationFragmentTurnOn">روشن کردن اعلانات</string>
+    <string name="NotificationFragmentTurnOff">خاموش کردن اعلانات</string>
+    <string name="NotificationFragmentTurnOnVibrator">روشن کردن ويبره</string>
+    <string name="NotificationFragmentTurnOffVibrator">خاموش کردن ويبره</string>
+    <!-- Comment Fragment -->
+    <string name="CommentFragment">نظر</string>
+    <string name="CommentFragmentLike">پسندها</string>
+    <string name="CommentFragmentHint">نظرتان را بنويسيد</string>
+    <string name="CommentFragmentAreYouSure">آيا مطمئن هستيد ؟</string>
+    <string name="CommentFragmentYes">بله</string>
+    <string name="CommentFragmentNo">خير</string>
+    <!-- Category Fragment -->
+    <string name="CategoryFragmentNews">خبرها</string>
+    <string name="CategoryFragmentFun">سرگرمي</string>
+    <string name="CategoryFragmentMusic">موسيقي</string>
+    <string name="CategoryFragmentSport">ورزش</string>
+    <string name="CategoryFragmentFashion">مد</string>
+    <string name="CategoryFragmentFood">غذا</string>
+    <string name="CategoryFragmentTechnology">فناوري</string>
+    <string name="CategoryFragmentArt">هنر</string>
+    <string name="CategoryFragmentArtist">هنرمندان</string>
+    <string name="CategoryFragmentMedia">رسانه ها</string>
+    <string name="CategoryFragmentBusiness">تجارت</string>
+    <string name="CategoryFragmentEconomy">اقتصاد</string>
+    <string name="CategoryFragmentLiterature">ادبيات</string>
+    <string name="CategoryFragmentTravel">سفر</string>
+    <string name="CategoryFragmentPolitics">سياست</string>
+    <string name="CategoryFragmentHealth">سلامت</string>
+    <string name="CategoryFragmentReligious">مذهبي</string>
+    <string name="CategoryFragmentOther">ديگر</string>
+
+    <!-- SignUp Fragment Username -->
+<string name="SignUpFragmentUsername">نام کاربري</string>
+<string name="SignUpFragmentUsernameMessage"> نام کاربري شما منحصر به فرد است و براي شخصي سازي گوشي و حساب بيوگرام مورد استفاده قرار مي گيرد. شما هميشه مي توانيد آن را بعدا تغيير دهيد.</string>
+<string name="SignUpFragmentUsernameError">نام کاربري در دسترس نيست </string>
+    - <!--
+ SignUp Fragment Password
+  -->
+<string name="SignUpFragmentPassword">گذروازه</string>
+<string name="SignUpFragmentPasswordMessage"> لطفا مطمئن شويد رمز عبور شما به اندازه کافي قوي است. گذرواژه شما بايد بيش از 5 حرف باشد </string>
+    - <!--
+ SignUp Fragment Email
+  -->
+<string name="SignUpFragmentEmailTitle">رايانامه</string>
+<string name="SignUpFragmentEmail">آدرس رايانامه</string>
+<string name="SignUpFragmentEmailMessage">
+آدرس رايانامه بازيابي شما در صورتي که رمز عبور بيوگرام خود را فراموش کرده ايد و از بيوگرام براي بازنشاني رمز عبور خود استفاده مي کنيد استفاده مي شود </string>
+<string name="SignUpFragmentEmailFinish">پايان</string>
+<string name="SignUpFragmentEmailError">آدرس رايانامه در حال استفاده است </string>
+    - <!--
+ SignIn Fragment
+  -->
+<string name="SignInFragmentTitle">ورود</string>
+<string name="SignInFragmentEmailOrUsername">رايانامه يا نام کاربري</string>
+<string name="SignInFragmentPassword">رمز عبور</string>
+<string name="SignInFragmentMessage"> ورود به سيستم براي اشتراک گذاري رويدادها و تماشاي رويدادهاي جهان و يا به اشتراک گذاري نظرات خود به ديگر افراد </string>
+<string name="SignInFragmentForgot">گذرواژه خود را فراموش کرده ايد ؟</string>
+<string name="SignInFragmentError"> نام کاربري يا گذرواژه شما مطابقت ندارد </string>
+    - <!--
+ Reset Fragment
+  -->
+<string name="ResetFragmentTitle">بازنشاني گذروازه</string>
+<string name="ResetFragmentEmailOrUsername">رايانامه يا نام کاربري</string>
+<string name="ResetFragmentMessage"> ما مي توانيم با استفاده از نام کاربري بيوگرام يا آدرس رايانامه مرتبط با حساب کاربري شما، گذروازه شما را بازنشاني کنيم </string>
+<string name="ResetFragmentSubmit">ارسال</string>
+<string name="ResetFragmentSuccess"> يک لينک بازيابي به آدرس ايميل شما ارسال شده است </string>
+<string name="ResetFragmentError"> رايانامه  يا نام کاربري ارسالي شما موجود نيست </string>
+    - <!--
+ Welcome Activity
+  -->
+<string name="MainActivityUpdate">به روز رساني جديد </string>
+<string name="MainActivityUpdateDescription">بيوگرام شما به روز شده است . ما توصيه ميکنيم که بيوگرام خود را به روز کنيد . اين کار نياز به دانلود ندارد </string>
+<string name="MainActivityUpdateNow"> به روز رساني کن!</string>
+    - <!--
+ Moment Fragment
+  -->
+<string name="MomentFragment">لحظه ها</string>
+    - <!--
+ Inbox Fragment
+  -->
+<string name="InboxFragment">صندوق ورودي</string>
+    - <!--
+ Post Fragment
+  -->
+<string name="PostFragment">جزئيات پست</string>
+<string name="PostFragmentLike">پسند ها</string>
+<string name="PostFragmentComment">نظرها</string>
+<string name="PostFragmentFollow">پيرو</string>
+<string name="PostFragmentTurnOn">روشن کردن اظهار نظر</string>
+<string name="PostFragmentTurnOff">خاموش کردن اظهار نظر</string>
+<string name="PostFragmentCopy">رونوشت</string>
+<string name="PostFragmentDelete">پاک کردن</string>
+<string name="PostFragmentReport">گزارش</string>
+<string name="PostFragmentBlock">Block</string>
+<string name="PostFragmentClipboard">متن به کليپبورد کپي شده است</string>
+<string name="PostFragmentCommentDisable">اظهار نظر غير فعال است </string>
+<string name="PostFragmentChoose"> انتخاب کنيد </string>
+<string name="PostFragmentUnfollow"> لغو کردن پيروي  </string>
+<string name="PostFragmentFollowRequest">درخواست پيروي ارسال شد </string>
+<string name="PostFragmentReportSent">گذارش ارسال شد </string>
+    - <!--
+ Write Fragment
+  -->
+<string name="WriteFragment">نوشتن</string>
+<string name="WriteFragmentChoiceCategory">لطفا دسته بنديمورد نظر خود را انتخاب کنيد </string>
+<string name="WriteFragmentMoreContent">لطفا چند کلمه اي بنويسيد </string>
+<string name="WriteFragmentMessage">پيام شما </string>
+<string name="WriteFragmentMessageCount">150</string>
+<string name="WriteFragmentCategory">دسته بندي:</string>
+<string name="WriteFragmentCategory2">دسته بندي</string>
+<string name="WriteFragmentCategorySelect">خالي</string>
+<string name="WriteFragmentUploadFailed">آپلود ناموفق</string>
+<string name="WriteFragmentUploadSuccess">پست ارسال شد</string>
+<string name="WriteFragmentMaxImage"> شما به حداکثر تصاوير رسيده ايد </string>
+<string name="WriteFragmentShareLink">اشتراک گذاري لينک</string>
+<string name="WriteFragmentShareLinkSub">ارسال</string>
+<string name="WriteFragmentShareLinkCan">لغو</string>
+<string name="WriteFragmentUpload"> آپلود به سرور، لطفا صبور باشيد </string>
+<string name="WriteFragmentVideoLength"> مدت زمان فيلم بيش از حد طول مي کشد، حداکثر مدت 4 دقيقه است </string>
+<string name="WriteFragmentVideoSize">اندازه ويدئو بيش از حد بالاست . حداکثر اندازه 30 مگابايت است </string>
+<string name="WriteFragmentVideoSupport"> دستگاه شما فشرده سازي را پشتيباني نمي کند، حداکثر اندازه ويديو 3 مگابايت است </string>
+<string name="WriteFragmentVideoCompress"> فشرده سازي ويديو، لطفا صبور باشيد </string>
+<string name="WriteFragmentDialogPaste">چسباندن</string>
+<string name="WriteFragmentDialogCopy">رونوشت</string>
+<string name="WriteFragmentDialogClipboard"> متن به کليپبورد کپي شده است </string>
+<string name="WriteFragmentWrong">اشتباهي رخ داده است</string>
+    - <!--
+ Category List
+  -->
+<string name="CategoryNews">خبرها</string>
+<string name="CategoryFun">سرگرمي</string>
+<string name="CategoryMusic">موسيقي</string>
+<string name="CategorySport">ورزش</string>
+<string name="CategoryFashion">مُد</string>
+<string name="CategoryFood">غذا</string>
+<string name="CategoryTechnology">فناوري</string>
+<string name="CategoryArt">هنر</string>
+<string name="CategoryArtist">هنرمندان</string>
+<string name="CategoryMedia">رسانه ها</string>
+<string name="CategoryBusiness">تجارت</string>
+<string name="CategoryEconomy">اقتصاد</string>
+<string name="CategoryLiterature">ادبيات</string>
+<string name="CategoryTravel">سفر</string>
+<string name="CategoryPolitics">سياست</string>
+<string name="CategoryHealth">سلامت</string>
+<string name="CategoryReligious">مذهب</string>
+<string name="CategoryOther">ديگر</string>
+    - <!--
+ Image Preview Fragment
+  -->
+<string name="ImagePreviewFragment">پيش نمايش تصوير </string>
+    - <!--
+ Video Fragment
+  -->
+<string name="VideoPreviewFragment">پيش نمايش ويدئو</string>
+    - <!--
+ Profile Fragment
+  -->
+<string name="ProfileFragmentPostCount">پست ها</string>
+<string name="ProfileFragmentCommentCount">نظرات</string>
+<string name="ProfileFragmentLikeCount">پسندها</string>
+<string name="ProfileFragmentPost">پست</string>
+<string name="ProfileFragmentFollow">کاربر پيوست </string>
+<string name="ProfileFragmentUnFollow">کاربر از پيروي خارج شد</string>
+<string name="ProfileFragmentFollowers">پيرو ها</string>
+<string name="ProfileFragmentFollowing">پيگيري ها </string>
+<string name="ProfileFragmentReport">گزارش</string>
+<string name="ProfileFragmentPost2">پست</string>
+<string name="ProfileFragmentLike">پسنديدن</string>
+<string name="ProfileFragmentComment">نظر</string>
+<string name="ProfileFragmentCommentEmpty">هيچ نظري اينجا نيست</string>
+<string name="ProfileFragmentCommentMessage">نظري در پست نوشته شده است </string>
+<string name="ProfileFragmentCommentReport">گزارش</string>
+    - <!--
+ Post Adapter
+  -->
+<string name="AdapterPostFollow">دنبال کردن </string>
+<string name="AdapterPostUnFollow">دنبال نکردن </string>
+<string name="AdapterPostFollowSent">درخواست پيروي ارسال شد </string>
+<string name="AdapterPostTurnOn">فعال کردن اظهار نظر</string>
+<string name="AdapterPostTurnOff">غير فعال کردن اظهار نظر</string>
+<string name="AdapterPostCopy">رونوشت</string>
+<string name="AdapterPostDelete">پاک کردن</string>
+<string name="AdapterPostReportSent">گزارش ارسال شد</string>
+<string name="AdapterPostReport">گزارش</string>
+<string name="AdapterPostClipboard"> متن به کليپبورد کپي شده است </string>
+<string name="AdapterPostBookMark">نشانه گذاري</string>
+<string name="AdapterPostUnBookMark">حذف نشانه گذاري</string>
+<string name="AdapterPostBookMarkSent">درخواست نشانه گذاري ارسال شد </string>
+<string name="AdapterPostComment">اظهار نظر غير فعال شده است</string>
+<string name="AdapterPostCommentSent"> درخواست نظر ارسال شد </string>
+<string name="AdapterPostChoice">انتخاب</string>
+<string name="AdapterPostNoContent">هيچ پستي اينجا نيست</string>
+    - <!--
+ Following Fragment
+  -->
+<string name="FollowingFragment">دنبال کردن</string>
+<string name="FollowingFragmentFollow">دنبال</string>
+<string name="FollowingFragmentSince"> زمان درخواست:</string>
+    - <!--
+ Followers Fragment
+  -->
+<string name="FollowersFragment">پيرو ها</string>
+<string name="FollowersFragmentSince">زمان درخواست:</string>
+<string name="FollowersFragmentFollow">دنبال </string>
+    - <!--
+ Category Fragment
+  -->
+<string name="CategoryFragment">دسته بندي</string>
+    - <!--
+ Edit Fragment
+  -->
+<string name="EditFragment">ويرايش حساب کاربري</string>
+<string name="EditFragmentSave">ذخيره</string>
+<string name="EditFragmentWrong">اشتباهي رخ داده است </string>
+<string name="EditFragmentDialogTitle">گذينه ها</string>
+<string name="EditFragmentDialogGallery">انتخاب از گالري </string>
+<string name="EditFragmentDialogRemove">حذف عکس فعلي </string>
+<string name="EditFragmentImageCover">عکس جلد حذف شده است </string>
+<string name="EditFragmentImageProfile">عکس پروفايل حذف شده است</string>
+<string name="EditFragmentEmail">رايانامه</string>
+<string name="EditFragmentEmailHint">جاي رايانامه نميتواند خالي باشد</string>
+<string name="EditFragmentUpload">اپلود اطلاعات ، لطفا صبر کنيد</string>
+<string name="EditFragmentDialogCamera">از طريق دوربين </string>
+<string name="EditFragmentUsernameHint">جاي نام کاربري نميتواند خالي باشد </string>
+<string name="EditFragmentUsername">نام کاربري</string>
+<string name="EditFragmentDescription">توضيحات</string>
+<string name="EditFragmentWebsite">وبسايت</string>
+<string name="EditFragmentPhone">تلفن</string>
+<string name="EditFragmentLocation">موقعيت</string>
+<string name="EditFragmentUnknownLocation">موقعيت نامشخص</string>
+<string name="EditFragmentCrop">بريدن تصوير</string>
+<string name="EditFragmentUsernameEmpty">جاي نام کاربري خالي است </string>
+<string name="EditFragmentUsernameToLow">نام کاربري ضعيف است</string>
+<string name="EditFragmentUsernameToHigh">نام کاربري زياد است </string>
+<string name="EditFragmentUsernameIsUnavailable">نام کاربري در دسترس نيست</string>
+<string name="EditFragmentEmailIsUnavailable">رايانامه در دسترس نيست</string>
+<string name="EditFragmentDescriptionToHigh">توضيحات بايد کمتر از 150 حرف باشد</string>
+<string name="EditFragmentLocationIsWrong">موقعيت اشتباه</string>
+<string name="EditFragmentUploadFailed">آپلود با مشکل مواجه شد</string>
+<string name="EditFragmentSuccess">صفحه کاربري بروزرساني شد</string>
+    - <!--
+ Edit Fragment
+  -->
+<string name="GalleryFragment">گالري</string>
+<string name="GalleryFragmentMaximum">حداکثر انتخاب است </string>
+    - <!--
+ RecyclerView With Pull
+  -->
+<string name="RecyclerViewWithPull"> براي بروز کردن بکشيد </string>
+<string name="RecyclerViewWithPullRelease">رها کنيد</string>
+<string name="RecyclerViewWithPullLoading">در حال بارگذاري</string>
+</resources>

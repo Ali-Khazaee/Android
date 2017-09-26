@@ -2,11 +2,13 @@ package co.biogram.main.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -21,7 +23,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -541,11 +542,18 @@ public class ProfileFragment extends Fragment
         TextViewUrl = new TextView(getActivity());
         TextViewUrl.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewUrl.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-        TextViewUrl.setLinkTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewUrl.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewUrl.setPadding(MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 1), 0, 0);
-        TextViewUrl.setLinkTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-        TextViewUrl.setAutoLinkMask(Linkify.ALL);
+        TextViewUrl.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(TextViewUrl.getText().toString()));
+                startActivity(i);
+            }
+        });
 
         LinearLayoutUrl.addView(TextViewUrl);
 
@@ -1070,7 +1078,6 @@ public class ProfileFragment extends Fragment
                         if (!Data.getString("Link").equals(""))
                         {
                             TextViewUrl.setText(Data.getString("Link"));
-                            MiscHandler.StripUnderlines((Spannable) TextViewUrl.getText());
                             LinearLayoutUrl.setVisibility(View.VISIBLE);
                         }
 
@@ -1113,7 +1120,7 @@ public class ProfileFragment extends Fragment
         {
             @Override
             public void onResponse(String Response)
-            {
+            {MiscHandler.Debug("QQ: " + Response);
                 try
                 {
                     JSONObject Result = new JSONObject(Response);
@@ -1192,7 +1199,6 @@ public class ProfileFragment extends Fragment
                         if (!Data.getString("Link").equals(""))
                         {
                             TextViewUrl.setText(Data.getString("Link"));
-                            MiscHandler.StripUnderlines((Spannable) TextViewUrl.getText());
                             LinearLayoutUrl.setVisibility(View.VISIBLE);
                         }
 
