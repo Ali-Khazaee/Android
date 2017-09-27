@@ -1,12 +1,14 @@
 package co.biogram.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
+import android.view.ViewGroup;
+
+import co.biogram.main.handler.MiscHandler;
 
 public class FragmentBase
 {
-    private Activity activity;
+    private FragmentActivity activity;
     private View ViewMain;
 
     protected void SetRootView(View view)
@@ -19,27 +21,43 @@ public class FragmentBase
         return ViewMain;
     }
 
-    void SetActivity(Activity a)
+    void SetActivity(FragmentActivity a)
     {
         activity = a;
     }
 
-    protected Activity GetActivity()
+    protected FragmentActivity GetActivity()
     {
         return activity;
     }
 
     public void OnCreate() { }
 
-    public void OnDestroy() { }
-
-    public void OnHide() { }
-
     public void OnResume() { }
 
     public void OnPause() { }
 
-    public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) { }
+    void OnDestroy()
+    {
+        if (ViewMain != null)
+        {
+            ViewGroup Parent = (ViewGroup) ViewMain.getParent();
 
-    public void OnBackPressed() { }
+            if (Parent != null)
+            {
+                try
+                {
+                    Parent.removeView(ViewMain);
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Debug("FragmentBase-OnDestroy: " + e.toString());
+                }
+            }
+        }
+
+        ViewMain = null;
+    }
+
+    public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) { }
 }

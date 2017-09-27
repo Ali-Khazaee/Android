@@ -3,6 +3,7 @@ package co.biogram.main.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.RelativeLayout;
 
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.main.handler.SharedHandler;
@@ -23,6 +24,11 @@ public class WelcomeActivity extends FragmentActivity
             finish();
             return;
         }
+
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+
+        SetContentView(RelativeLayoutMain);
 
         GetManager().Create(new Welcome());
     }

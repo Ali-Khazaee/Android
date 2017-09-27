@@ -4,23 +4,20 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 
 import com.androidnetworking.AndroidNetworking;
 
 import com.bumptech.glide.Glide;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import co.biogram.main.handler.CacheHandler;
-import co.biogram.main.handler.CrashHandler;
-import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.handler.UpdateHandler;
-
 import co.biogram.main.service.SocketService;
+
 import okhttp3.OkHttpClient;
 
 public class App extends Application
@@ -31,6 +28,11 @@ public class App extends Application
     public void onCreate()
     {
         super.onCreate();
+
+        if (LeakCanary.isInAnalyzerProcess(this))
+            return;
+
+        LeakCanary.install(this);
 
         Context context = getApplicationContext();
 
@@ -88,11 +90,11 @@ public class App extends Application
         if (OKClient == null)
         {
             OKClient = new OkHttpClient()
-                    .newBuilder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .build();
+            .newBuilder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .build();
         }
 
         return OKClient;
@@ -101,9 +103,9 @@ public class App extends Application
 
 /*
     Shared Data:
-        TOKEN     - For Authentication
-        IsLogin   - For Logged
-        ID        - For Account ID
-        Username  - For Username
-        Avatar    - For Profile Image
+    TOKEN     - For Authentication
+    IsLogin   - For Logged
+    ID        - For Account ID
+    Username  - For Username
+    Avatar    - For Profile Image
 */

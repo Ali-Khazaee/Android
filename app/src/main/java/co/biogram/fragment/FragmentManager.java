@@ -1,18 +1,18 @@
 package co.biogram.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentManager
 {
-    final private Stack<FragmentBase> FragmentBaseList = new Stack<>();
-    final private Activity activity;
+    final private List<FragmentBase> FragmentBaseList = new ArrayList<>();
+    final private FragmentActivity activity;
 
     private FragmentBase FragmentBaseActive;
 
-    FragmentManager(Activity a)
+    FragmentManager(FragmentActivity a)
     {
         activity = a;
     }
@@ -23,7 +23,15 @@ public class FragmentManager
         FragmentBaseActive.SetActivity(activity);
         FragmentBaseActive.OnCreate();
 
-        activity.setContentView(fragmentBase.GetView());
+        activity.GetContentView().addView(FragmentBaseActive.GetView());
+
+        FragmentBaseList.add(FragmentBaseActive);
+
+        if (FragmentBaseList.size() >= 4)
+        {
+            FragmentBaseList.get(1).OnDestroy();
+            FragmentBaseList.remove(1);
+        }
     }
 
     void OnResume()
@@ -38,12 +46,6 @@ public class FragmentManager
             FragmentBaseActive.OnPause();
     }
 
-    void OnBackPressed()
-    {
-        if (FragmentBaseActive != null)
-            FragmentBaseActive.OnBackPressed();
-    }
-
     void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
     {
         if (FragmentBaseActive != null)
@@ -52,12 +54,26 @@ public class FragmentManager
 
     boolean HandleBack()
     {
-        if (FragmentBaseActive != null)
-            FragmentBaseActive.OnDestroy();
+        if (FragmentBaseList.size() > 1)
+        {
+            FragmentBaseList.get(FragmentBaseList.size() - 1).OnDestroy();
+            FragmentBaseList.remove(FragmentBaseList.size() - 1);
 
-        if (FragmentBaseActive != null)
-            FragmentBaseActive.OnHide();
+            FragmentBaseActive = FragmentBaseList.get(FragmentBaseList.size() - 1);
+            FragmentBaseActive.OnResume();
+
+            return false;
+        }
 
         return true;
+    }
+
+    void OnLowMemory()
+    {
+        if (FragmentBaseList.size() <= 2)
+            return;
+
+        FragmentBaseList.get(1).OnDestroy();
+        FragmentBaseList.remove(1);
     }
 }

@@ -36,10 +36,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONObject;
 
+import co.biogram.fragment.FragmentActivity;
+import co.biogram.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.activity.MainActivity;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.fragment.FragmentBase;
 import co.biogram.main.handler.SharedHandler;
 
 public class Welcome extends FragmentBase
@@ -50,7 +51,7 @@ public class Welcome extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final Activity activity = GetActivity();
+        final FragmentActivity activity = GetActivity();
 
         if (Build.VERSION.SDK_INT > 20)
             activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.BlueLight));
@@ -253,6 +254,7 @@ public class Welcome extends FragmentBase
         ButtonSignUp.setId(MiscHandler.GenerateViewID());
         ButtonSignUp.setBackground(ShapeSignUp);
         ButtonSignUp.setAllCaps(false);
+        ButtonSignUp.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhone()); } });
 
         if (MiscHandler.IsFA())
         {
@@ -260,15 +262,6 @@ public class Welcome extends FragmentBase
             ButtonSignUp.setTypeface(null, Typeface.BOLD);
             ButtonSignUp.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
         }
-
-        ButtonSignUp.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // TODO getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new SignUpFragmentUsername()).addToBackStack("SignUpFragmentUsername").commitAllowingStateLoss();
-            }
-        });
 
         RelativeLayoutMain2.addView(ButtonSignUp);
 
@@ -360,14 +353,7 @@ public class Welcome extends FragmentBase
         RelativeLayoutSignIn.setBackgroundResource(R.color.White5);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
         RelativeLayoutSignIn.setId(MiscHandler.GenerateViewID());
-        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // TODO getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new SignInFragment()).addToBackStack("SignInFragment").commitAllowingStateLoss();
-            }
-        });
+        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhone()); } });
 
         RelativeLayoutMain2.addView(RelativeLayoutSignIn);
 

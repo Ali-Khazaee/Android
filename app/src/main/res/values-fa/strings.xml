@@ -9,8 +9,8 @@
     <!-- Welcome UI -->
     <string name="WelcomeLanguage">فارسی</string>
     <string name="WelcomeLanguageSelect">انتخاب زبان</string>
-    <!-- UNUSED -->
-    <!-- UNUSED -->
+    <string name="WelcomeLanguageEnglish">English</string>
+    <string name="WelcomeLanguagePersian">فارسی</string>
     <string name="WelcomeHeader">برای اشتراک گذاری رویدادهای خود ثبت نام کنید</string>
     <string name="WelcomeHeader2">و آخرین لحظات را مشاهده کنید</string>
     <string name="WelcomeSignUp">ثبت نام</string>
@@ -64,6 +64,7 @@
 
     <string name="Soon">بزودي</string>
     <string name="TryAgain">دوباره تلاش کنيد ...</string>
+    <string name="NoInternet">Check your connection</string>
 
     <!-- Permission -->
     <string name="PermissionReadContact"> شما بايد اجازه دسترسي به مخاطبين خود را بدهيد</string>
