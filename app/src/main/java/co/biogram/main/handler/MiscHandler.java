@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
@@ -29,6 +28,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.activity.WelcomeActivity;
 
@@ -125,6 +125,11 @@ public class MiscHandler
         System.exit(0);
     }
 
+    public static String GenerateSession()
+    {
+        return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
+    }
+
     public static void Toast(Context context, String Message)
     {
         GradientDrawable Shape = new GradientDrawable();
@@ -207,9 +212,9 @@ public class MiscHandler
 
         switch (new Random().nextInt(2) + 1)
         {
-            case 1:  Server = "http://5.160.219.220/"; break;
-            case 2:  Server = "http://5.160.219.220/"; break;
-            default: Server = "http://5.160.219.220/"; break;
+            case 1:  Server = "http://5.160.219.218:5000/"; break;
+            case 2:  Server = "http://5.160.219.218:5000/"; break;
+            default: Server = "http://5.160.219.218:5000/"; break;
         }
 
         return Server + URL;

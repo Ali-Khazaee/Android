@@ -3,6 +3,9 @@
     <!-- Application -->
     <string name="ApplicationName">بیوگرام</string>
 
+    <!-- General -->
+    <string name="GeneralNoInternet">اتصال اينترنت خود را چک کنيد</string>
+
     <!-- Welcome UI -->
     <string name="WelcomeLanguage">فارسی</string>
     <string name="WelcomeLanguageSelect">انتخاب زبان</string>
@@ -17,6 +20,7 @@
     <string name="WelcomeSignIn2">ورود</string>
     <string name="WelcomeTerm">با ثبت نام، شما با ما موافقت مي کنيد</string>
     <string name="WelcomeTerm2">شرايط و حريم خصوصي</string>
+    <string name="WelcomeGoogleError">اشتباهي رخ داده است، لطفا دوباره امتحان کنيد</string>
 
 
     <!-- Welcome Activity -->
@@ -25,7 +29,7 @@
 
 
 
-    <string name="WelcomeActivityGoogleError"> اشتباهي رخ داده است، لطفا دوباره امتحان کنيد </string>
+
 
 
 
@@ -60,7 +64,7 @@
 
     <string name="Soon">بزودي</string>
     <string name="TryAgain">دوباره تلاش کنيد ...</string>
-    <string name="NoInternet">اتصال اينترنت خود را چک کنيد </string>
+
     <!-- Permission -->
     <string name="PermissionReadContact"> شما بايد اجازه دسترسي به مخاطبين خود را بدهيد</string>
     <string name="PermissionCamera"> شما بايد اجازه دسترسي به دوربين خود را بدهيد </string>

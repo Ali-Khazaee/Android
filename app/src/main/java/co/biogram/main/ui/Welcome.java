@@ -22,23 +22,36 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import co.biogram.main.R;
-import co.biogram.main.handler.MiscHandler;
-import co.biogram.view.ViewBase;
+import org.json.JSONObject;
 
-public class Welcome extends ViewBase
+import co.biogram.main.R;
+import co.biogram.main.activity.MainActivity;
+import co.biogram.main.handler.MiscHandler;
+import co.biogram.fragment.FragmentBase;
+import co.biogram.main.handler.SharedHandler;
+
+public class Welcome extends FragmentBase
 {
     private GoogleApiClient GoogleClientApi;
     private boolean GoogleIsAvailable = false;
 
-    public Welcome(final Activity activity)
+    @Override
+    public void OnCreate()
     {
+        final Activity activity = GetActivity();
+
         if (Build.VERSION.SDK_INT > 20)
             activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.BlueLight));
 
@@ -314,14 +327,7 @@ public class Welcome extends ViewBase
         LinearLayoutGoogle.setLayoutParams(LinearLayoutGoogleParam);
         LinearLayoutGoogle.setGravity(Gravity.CENTER);
         LinearLayoutGoogle.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutGoogle.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(GoogleClientApi), 100);
-            }
-        });
+        LinearLayoutGoogle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(GoogleClientApi), 100); } });
 
         RelativeLayoutMain2.addView(LinearLayoutGoogle);
 
@@ -461,28 +467,8 @@ public class Welcome extends ViewBase
         {
             GoogleClientApi = new GoogleApiClient.Builder(activity)
             .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com").build())
-            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks()
-            {
-                @Override
-                public void onConnected(Bundle bundle)
-                {
-                    MiscHandler.Debug("onConnected: " + bundle);
-                }
-
-                @Override
-                public void onConnectionSuspended(int i)
-                {
-                    MiscHandler.Debug("onConnectionSuspended: " + i);
-                }
-            })
-            .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener()
-            {
-                @Override
-                public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-                {
-                    MiscHandler.Debug("onConnectionFailed: " + connectionResult);
-                }
-            })
+            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() { @Override public void onConnected(Bundle bundle) { } @Override public void onConnectionSuspended(int i) { } })
+            .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener(){ @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { } })
             .build();
         }
     }
@@ -498,12 +484,75 @@ public class Welcome extends ViewBase
     public void OnPause()
     {
         if (GoogleIsAvailable)
+        {
+            if (GoogleClientApi.isConnected())
+                Auth.GoogleSignInApi.signOut(GoogleClientApi);
+
             GoogleClientApi.disconnect();
+        }
+
+        AndroidNetworking.forceCancel("Welcome");
     }
 
     @Override
     public void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
     {
+        if (RequestCode == 100)
+        {
+            GoogleSignInResult SignResult = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
 
+            if (SignResult.isSuccess())
+            {
+                GoogleSignInAccount AccountResult = SignResult.getSignInAccount();
+
+                if (AccountResult != null)
+                {
+                    final Activity activity = GetActivity();
+
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("SignInGoogle"))
+                    .addBodyParameter("Token", AccountResult.getIdToken())
+                    .addBodyParameter("Session", MiscHandler.GenerateSession())
+                    .setTag("Welcome")
+                    .build()
+                    .getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                if (Result.getInt("Message") == 0)
+                                {
+                                    SharedHandler.SetBoolean(activity, "IsLogin", true);
+                                    SharedHandler.SetString(activity, "TOKEN", Result.getString("TOKEN"));
+                                    SharedHandler.SetString(activity, "ID", Result.getString("ID"));
+                                    SharedHandler.SetString(activity, "Username", Result.getString("Username"));
+                                    SharedHandler.SetString(activity, "Avatar", Result.getString("Avatar"));
+                                    SharedHandler.SetBoolean(activity, "IsGoogle", true);
+
+                                    activity.startActivity(new Intent(activity, MainActivity.class));
+                                    activity.finish();
+                                    return;
+                                }
+
+                                MiscHandler.Toast(activity, activity.getString(R.string.WelcomeGoogleError));
+                            }
+                            catch (Exception e)
+                            {
+                                MiscHandler.Debug("Welcome-SignInGoogle: " + e.toString());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
+                        }
+                    });
+                }
+            }
+        }
     }
 }

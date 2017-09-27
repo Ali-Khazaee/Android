@@ -1,15 +1,17 @@
-package co.biogram.view;
+package co.biogram.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.ViewGroup;
 
-public class ViewActivity extends Activity
+public class FragmentActivity extends Activity
 {
-    private ViewManager Manager = new ViewManager(this);
+    private FragmentManager Manager;
 
-    public ViewManager GetManager()
+    public FragmentManager GetManager()
     {
+        if (Manager == null)
+            Manager = new FragmentManager(this);
+
         return Manager;
     }
 

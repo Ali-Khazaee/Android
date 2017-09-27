@@ -3,6 +3,9 @@
     <!-- Application -->
     <string name="ApplicationName">Biogram</string>
 
+    <!-- General -->
+    <string name="GeneralNoInternet">Check your connection</string>
+
     <!-- Welcome UI -->
     <string name="WelcomeLanguage">English</string>
     <string name="WelcomeLanguageSelect">Select Your Language</string>
@@ -17,6 +20,7 @@
     <string name="WelcomeSignIn2">Sign In</string>
     <string name="WelcomeTerm">By Signing Up you agree to our</string>
     <string name="WelcomeTerm2">Terms &amp; Privacy and Policy</string>
+    <string name="WelcomeGoogleError">Something went wrong, Please try again</string>
 
     <string name="WelcomeActivityGeneralTerm">Term &amp; Privacy</string>
     <string name="WelcomeActivityGeneralNext">Next</string>
@@ -26,7 +30,7 @@
 
 
 
-    <string name="WelcomeActivityGoogleError">Something went wrong, Please try again</string>
+
 
 
 

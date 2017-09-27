@@ -1,72 +1,14 @@
 package co.biogram.main.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.util.Patterns;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-
-import org.json.JSONObject;
-
-import java.util.Locale;
-
-import co.biogram.main.BuildConfig;
-import co.biogram.main.R;
-import co.biogram.main.handler.BaseView;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.fragment.FragmentActivity;
 import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.misc.LoadingView;
 import co.biogram.main.ui.Welcome;
-import co.biogram.view.ViewActivity;
-import co.biogram.view.ViewBase;
 
-public class WelcomeActivity extends ViewActivity
+public class WelcomeActivity extends FragmentActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -77,94 +19,15 @@ public class WelcomeActivity extends ViewActivity
 
         if (SharedHandler.GetBoolean(context, "IsLogin"))
         {
-            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+            startActivity(new Intent(context, MainActivity.class));
             finish();
             return;
         }
 
-        GetManager().Open(new Welcome(this));
+        GetManager().Create(new Welcome());
     }
 
-    /*@Override
-    public void onActivityResult(int RequestCode, int ResultCode, Intent intent)
-    {
-        if (RequestCode == 100)
-        {
-            GoogleSignInResult Result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
-
-            if (Result.isSuccess())
-            {
-                GoogleSignInAccount Acc = Result.getSignInAccount();
-
-                if (Acc != null)
-                {
-                    final Context context = WelcomeActivity.this;
-
-                    AndroidNetworking.post(MiscHandler.GetRandomServer("SignInGoogle"))
-                    .addBodyParameter("Token", Acc.getIdToken())
-                    .addBodyParameter("Session", GenerateSession())
-                    .setTag("WelcomeActivity")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
-
-                                if (Result.getInt("Message") == 1000)
-                                {
-                                    SharedHandler.SetBoolean(context, "IsLogin", true);
-                                    SharedHandler.SetString(context, "TOKEN", Result.getString("TOKEN"));
-                                    SharedHandler.SetString(context, "ID", Result.getString("ID"));
-                                    SharedHandler.SetString(context, "Username", Result.getString("Username"));
-                                    SharedHandler.SetString(context, "Avatar", Result.getString("Avatar"));
-                                    SharedHandler.SetBoolean(context, "Password", Result.getBoolean("Password"));
-                                    SharedHandler.SetBoolean(context, "IsGoogle", true);
-
-                                    startActivity(new Intent(context, MainActivity.class));
-                                    finish();
-                                    return;
-                                }
-
-                                MiscHandler.Toast(context, getString(R.string.WelcomeActivityGoogleError));
-                            }
-                            catch (Exception e)
-                            {
-                                MiscHandler.Debug("WelcomeActivity-RequestGoogle: " + e.toString());
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError anError)
-                        {
-                            MiscHandler.Toast(context, getString(R.string.NoInternet));
-                        }
-                    });
-                }
-
-                if (GoogleClientApi.isConnected())
-                    Auth.GoogleSignInApi.signOut(GoogleClientApi);
-            }
-        }
-    }
-
-    /*@Override
-    public void onPause()
-    {
-        super.onPause();
-
-
-        if (GoogleClientApi.isConnected())
-            Auth.GoogleSignInApi.signOut(GoogleClientApi);
-
-        GoogleClientApi.disconnect();
-        MiscHandler.HideSoftKey(this);
-        AndroidNetworking.forceCancel("WelcomeActivity");
-    }
-
+    /*
     public static class SignUpFragmentUsername extends Fragment
     {
         private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
@@ -1711,8 +1574,5 @@ public class WelcomeActivity extends ViewActivity
         }
     }
 
-    private static String GenerateSession()
-    {
-        return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
-    }*/
+    */
 }
