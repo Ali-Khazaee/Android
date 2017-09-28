@@ -1,6 +1,7 @@
 package co.biogram.main.misc;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import co.biogram.main.App;
 import okhttp3.OkHttpClient;
 
+@Keep
 public class GlideConfig implements GlideModule
 {
     @Override

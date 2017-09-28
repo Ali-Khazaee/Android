@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -89,6 +86,8 @@ public class Welcome extends FragmentBase
         TextViewLanguage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewLanguage.setText(activity.getString(R.string.WelcomeLanguage));
         TextViewLanguage.setTextColor(ContextCompat.getColor(activity, R.color.White));
+        TextViewLanguage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+        TextViewLanguage.setId(MiscHandler.GenerateViewID());
         TextViewLanguage.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -106,7 +105,7 @@ public class Welcome extends FragmentBase
 
                 TextView TextViewTitleLanguage = new TextView(activity);
                 TextViewTitleLanguage.setLayoutParams(TextViewTitleLanguageParam);
-                TextViewTitleLanguage.setTextColor(ContextCompat.getColor(activity, R.color.Black2));
+                TextViewTitleLanguage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
                 TextViewTitleLanguage.setText(activity.getString(R.string.WelcomeLanguageSelect));
                 TextViewTitleLanguage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewTitleLanguage.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
@@ -121,7 +120,7 @@ public class Welcome extends FragmentBase
                 ImageView ImageViewCloseLanguage = new ImageView(activity);
                 ImageViewCloseLanguage.setLayoutParams(ImageViewCloseLanguageParam);
                 ImageViewCloseLanguage.setImageResource(R.drawable.ic_close_blue);
-                ImageViewCloseLanguage.setPadding(MiscHandler.ToDimension(activity, 13), MiscHandler.ToDimension(activity, 13), MiscHandler.ToDimension(activity, 13), MiscHandler.ToDimension(activity, 13));
+                ImageViewCloseLanguage.setPadding(MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14));
                 ImageViewCloseLanguage.setId(MiscHandler.GenerateViewID());
                 ImageViewCloseLanguage.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); } });
 
@@ -143,7 +142,7 @@ public class Welcome extends FragmentBase
 
                 TextView TextViewEnglishLanguage = new TextView(activity);
                 TextViewEnglishLanguage.setLayoutParams(TextViewEnglishLanguageParam);
-                TextViewEnglishLanguage.setTextColor(ContextCompat.getColor(activity, R.color.Black2));
+                TextViewEnglishLanguage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
                 TextViewEnglishLanguage.setText(activity.getString(R.string.WelcomeLanguageEnglish));
                 TextViewEnglishLanguage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewEnglishLanguage.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
@@ -169,7 +168,7 @@ public class Welcome extends FragmentBase
 
                 TextView TextViewPersianLanguage = new TextView(activity);
                 TextViewPersianLanguage.setLayoutParams(TextViewPersianLanguageParam);
-                TextViewPersianLanguage.setTextColor(ContextCompat.getColor(activity, R.color.Black2));
+                TextViewPersianLanguage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
                 TextViewPersianLanguage.setText(activity.getString(R.string.WelcomeLanguagePersian));
                 TextViewPersianLanguage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewPersianLanguage.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
@@ -183,12 +182,10 @@ public class Welcome extends FragmentBase
                 DialogLanguage.show();
             }
         });
-        TextViewLanguage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        TextViewLanguage.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutLanguage.addView(TextViewLanguage);
 
-        RelativeLayout.LayoutParams ImageViewLanguageParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 35), MiscHandler.ToDimension(activity, 35));
+        RelativeLayout.LayoutParams ImageViewLanguageParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 30), MiscHandler.ToDimension(activity, 30));
         ImageViewLanguageParam.addRule(MiscHandler.AlignTo("R"), TextViewLanguage.getId());
 
         ImageView ImageViewLanguage = new ImageView(activity);
@@ -203,11 +200,7 @@ public class Welcome extends FragmentBase
 
         ImageView ImageViewHeader = new ImageView(activity);
         ImageViewHeader.setLayoutParams(ImageViewHeaderParam);
-
-        if (MiscHandler.IsFA())
-            ImageViewHeader.setImageResource(R.drawable.ic_logo_fa);
-        else
-            ImageViewHeader.setImageResource(R.drawable.ic_logo);
+        ImageViewHeader.setImageResource(MiscHandler.IsFA() ? R.drawable.ic_logo_fa : R.drawable.ic_logo);
 
         LinearLayoutHeader.addView(ImageViewHeader);
 
@@ -237,9 +230,9 @@ public class Welcome extends FragmentBase
         RelativeLayoutSignUpParam.addRule(RelativeLayout.BELOW, LinearLayoutHeader.getId());
         RelativeLayoutSignUpParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        GradientDrawable ShapeSignUp = new GradientDrawable();
-        ShapeSignUp.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        ShapeSignUp.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+        GradientDrawable GradientDrawableSignUp = new GradientDrawable();
+        GradientDrawableSignUp.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
+        GradientDrawableSignUp.setCornerRadius(MiscHandler.ToDimension(activity, 7));
 
         Button ButtonSignUp = new Button(activity, null, android.R.attr.borderlessButtonStyle);
         ButtonSignUp.setLayoutParams(RelativeLayoutSignUpParam);
@@ -247,14 +240,14 @@ public class Welcome extends FragmentBase
         ButtonSignUp.setTextColor(ContextCompat.getColor(activity, R.color.White));
         ButtonSignUp.setText(activity.getString(R.string.WelcomeSignUp));
         ButtonSignUp.setId(MiscHandler.GenerateViewID());
-        ButtonSignUp.setBackground(ShapeSignUp);
+        ButtonSignUp.setBackground(GradientDrawableSignUp);
         ButtonSignUp.setAllCaps(false);
         ButtonSignUp.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhone()); } });
 
         if (MiscHandler.IsFA())
         {
-            ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(activity, 3), 0, 0);
             ButtonSignUp.setTypeface(null, Typeface.BOLD);
+            ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(activity, 2), 0, 0);
             ButtonSignUp.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
         }
 
@@ -407,14 +400,13 @@ public class Welcome extends FragmentBase
         TextViewTerm2.setTypeface(null, Typeface.BOLD);
         TextViewTerm2.setId(MiscHandler.GenerateViewID());
         TextViewTerm2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         if (MiscHandler.IsFA())
         {
             TextViewTerm2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             TextViewTerm2.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
         }
-
-        TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutScroll.addView(TextViewTerm2);
 
@@ -436,20 +428,12 @@ public class Welcome extends FragmentBase
 
         RelativeLayoutScroll.addView(TextViewTerm);
 
-        FrameLayout FrameLayoutContainer = new FrameLayout(activity);
-        FrameLayoutContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        FrameLayoutContainer.setId(R.id.WelcomeActivityContainer);
-
-        RelativeLayoutMain.addView(FrameLayoutContainer);
-
         SetRootView(RelativeLayoutMain);
 
         if (GoogleIsAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity) == ConnectionResult.SUCCESS)
         {
             GoogleClientApi = new GoogleApiClient.Builder(activity)
             .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com").build())
-            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() { @Override public void onConnected(Bundle bundle) { } @Override public void onConnectionSuspended(int i) { } })
-            .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener(){ @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { } })
             .build();
         }
     }

@@ -34,9 +34,9 @@ import org.json.JSONObject;
 
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
-import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.misc.LoadingView;
+import co.biogram.main.R;
 
 class SignUpPhone extends FragmentBase
 {
@@ -146,10 +146,10 @@ class SignUpPhone extends FragmentBase
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
-        RelativeLayout RelativeLayoutMain2 = new RelativeLayout(activity);
-        RelativeLayoutMain2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        RelativeLayout RelativeLayoutScroll = new RelativeLayout(activity);
+        RelativeLayoutScroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-        ScrollViewMain.addView(RelativeLayoutMain2);
+        ScrollViewMain.addView(RelativeLayoutScroll);
 
         RelativeLayout.LayoutParams TextViewPhoneParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPhoneParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
@@ -166,7 +166,7 @@ class SignUpPhone extends FragmentBase
         if (MiscHandler.IsFA())
             TextViewPhone.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
-        RelativeLayoutMain2.addView(TextViewPhone);
+        RelativeLayoutScroll.addView(TextViewPhone);
 
         RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewPhone.getId());
@@ -221,7 +221,7 @@ class SignUpPhone extends FragmentBase
             }
         });
 
-        RelativeLayoutMain2.addView(EditTextUsername);
+        RelativeLayoutScroll.addView(EditTextUsername);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
@@ -234,7 +234,7 @@ class SignUpPhone extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
 
-        RelativeLayoutMain2.addView(TextViewMessage);
+        RelativeLayoutScroll.addView(TextViewMessage);
 
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutBottomParam.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
@@ -242,7 +242,7 @@ class SignUpPhone extends FragmentBase
         RelativeLayout RelativeLayoutBottom = new RelativeLayout(activity);
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
 
-        RelativeLayoutMain2.addView(RelativeLayoutBottom);
+        RelativeLayoutScroll.addView(RelativeLayoutBottom);
 
         RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);

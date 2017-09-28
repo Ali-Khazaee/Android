@@ -113,6 +113,9 @@ public class MiscHandler
 
     public static void ChangeLanguage(Activity activity, String Language)
     {
+        if (SharedHandler.GetString(activity, "Language").equals(Language))
+            return;
+
         SharedPreferences Shared = activity.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
         SharedPreferences.Editor Editor = Shared.edit();
         Editor.putString("Language", Language);
