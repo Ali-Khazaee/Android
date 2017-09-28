@@ -22,10 +22,73 @@
     <string name="WelcomeTerm2">شرايط و حريم خصوصي</string>
     <string name="WelcomeGoogleError">اشتباهي رخ داده است، لطفا دوباره امتحان کنيد</string>
 
+    <!-- Sign Up Phone UI -->
+    <string name="SignUpPhone">ثبت نام</string>
+    <string name="SignUpPhoneNumber">شماره تلفن</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Welcome Activity -->
     <string name="WelcomeActivityGeneralTerm">شرايط و حريم خصوصي</string>
     <string name="WelcomeActivityGeneralNext">بعدي</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

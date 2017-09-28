@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -53,9 +52,6 @@ public class Welcome extends FragmentBase
     {
         final FragmentActivity activity = GetActivity();
 
-        if (Build.VERSION.SDK_INT > 20)
-            activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.BlueLight));
-
         RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
@@ -66,10 +62,10 @@ public class Welcome extends FragmentBase
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
-        RelativeLayout RelativeLayoutMain2 = new RelativeLayout(activity);
-        RelativeLayoutMain2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        RelativeLayout RelativeLayoutScroll = new RelativeLayout(activity);
+        RelativeLayoutScroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-        ScrollViewMain.addView(RelativeLayoutMain2);
+        ScrollViewMain.addView(RelativeLayoutScroll);
 
         LinearLayout LinearLayoutHeader = new LinearLayout(activity);
         LinearLayoutHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 200)));
@@ -78,7 +74,7 @@ public class Welcome extends FragmentBase
         LinearLayoutHeader.setId(MiscHandler.GenerateViewID());
         LinearLayoutHeader.setBackgroundResource(R.color.BlueLight);
 
-        RelativeLayoutMain2.addView(LinearLayoutHeader);
+        RelativeLayoutScroll.addView(LinearLayoutHeader);
 
         RelativeLayout RelativeLayoutLanguage = new RelativeLayout(activity);
         RelativeLayoutLanguage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 35)));
@@ -142,8 +138,8 @@ public class Welcome extends FragmentBase
                 RelativeLayoutLanguage.addView(ViewLineLanguage);
 
                 RelativeLayout.LayoutParams TextViewEnglishLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(activity, 56));
-                TextViewEnglishLanguageParam.addRule(MiscHandler.Align("R"));
                 TextViewEnglishLanguageParam.addRule(RelativeLayout.BELOW, ViewLineLanguage.getId());
+                TextViewEnglishLanguageParam.addRule(MiscHandler.Align("R"));
 
                 TextView TextViewEnglishLanguage = new TextView(activity);
                 TextViewEnglishLanguage.setLayoutParams(TextViewEnglishLanguageParam);
@@ -177,7 +173,6 @@ public class Welcome extends FragmentBase
                 TextViewPersianLanguage.setText(activity.getString(R.string.WelcomeLanguagePersian));
                 TextViewPersianLanguage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewPersianLanguage.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
-                TextViewPersianLanguage.setId(MiscHandler.GenerateViewID());
                 TextViewPersianLanguage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
                 TextViewPersianLanguage.setGravity(Gravity.CENTER_VERTICAL);
                 TextViewPersianLanguage.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); MiscHandler.ChangeLanguage(activity, "fa"); } });
@@ -263,7 +258,7 @@ public class Welcome extends FragmentBase
             ButtonSignUp.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
         }
 
-        RelativeLayoutMain2.addView(ButtonSignUp);
+        RelativeLayoutScroll.addView(ButtonSignUp);
 
         RelativeLayout.LayoutParams RelativeLayoutORParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 45));
         RelativeLayoutORParam.setMargins(0, MiscHandler.ToDimension(activity, 20), 0, MiscHandler.ToDimension(activity, 5));
@@ -273,7 +268,7 @@ public class Welcome extends FragmentBase
         RelativeLayoutOR.setLayoutParams(RelativeLayoutORParam);
         RelativeLayoutOR.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain2.addView(RelativeLayoutOR);
+        RelativeLayoutScroll.addView(RelativeLayoutOR);
 
         RelativeLayout.LayoutParams TextViewORParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 40), RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewORParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -322,7 +317,7 @@ public class Welcome extends FragmentBase
         LinearLayoutGoogle.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutGoogle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(GoogleClientApi), 100); } });
 
-        RelativeLayoutMain2.addView(LinearLayoutGoogle);
+        RelativeLayoutScroll.addView(LinearLayoutGoogle);
 
         LinearLayout.LayoutParams ImageViewGoogleParam = new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 30), MiscHandler.ToDimension(activity, 30));
         ImageViewGoogleParam.setMargins(MiscHandler.ToDimension(activity, 5), 0, MiscHandler.ToDimension(activity, 5), 0);
@@ -355,7 +350,7 @@ public class Welcome extends FragmentBase
         RelativeLayoutSignIn.setId(MiscHandler.GenerateViewID());
         RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhone()); } });
 
-        RelativeLayoutMain2.addView(RelativeLayoutSignIn);
+        RelativeLayoutScroll.addView(RelativeLayoutSignIn);
 
         TextView TextViewSignIn = new TextView(activity);
         TextViewSignIn.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -398,7 +393,7 @@ public class Welcome extends FragmentBase
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain2.addView(ViewLine);
+        RelativeLayoutScroll.addView(ViewLine);
 
         RelativeLayout.LayoutParams TextViewTerm2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTerm2Param.addRule(RelativeLayout.ABOVE, ViewLine.getId());
@@ -421,7 +416,7 @@ public class Welcome extends FragmentBase
 
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
-        RelativeLayoutMain2.addView(TextViewTerm2);
+        RelativeLayoutScroll.addView(TextViewTerm2);
 
         RelativeLayout.LayoutParams TextViewTermParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTermParam.addRule(RelativeLayout.ABOVE, TextViewTerm2.getId());
@@ -439,7 +434,7 @@ public class Welcome extends FragmentBase
             TextViewTerm2.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
         }
 
-        RelativeLayoutMain2.addView(TextViewTerm);
+        RelativeLayoutScroll.addView(TextViewTerm);
 
         FrameLayout FrameLayoutContainer = new FrameLayout(activity);
         FrameLayoutContainer.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));

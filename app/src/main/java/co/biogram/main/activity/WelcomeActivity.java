@@ -2,10 +2,13 @@ package co.biogram.main.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.widget.RelativeLayout;
 
 import co.biogram.fragment.FragmentActivity;
+import co.biogram.main.R;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.Welcome;
 
@@ -24,6 +27,9 @@ public class WelcomeActivity extends FragmentActivity
             finish();
             return;
         }
+
+        if (Build.VERSION.SDK_INT > 20)
+            getWindow().setStatusBarColor(ContextCompat.getColor(context, R.color.BlueLight));
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));

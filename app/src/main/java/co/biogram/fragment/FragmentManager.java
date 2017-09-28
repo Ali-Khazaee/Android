@@ -5,6 +5,8 @@ import android.content.Intent;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.biogram.main.handler.MiscHandler;
+
 public class FragmentManager
 {
     final private List<FragmentBase> FragmentBaseList = new ArrayList<>();
@@ -22,6 +24,7 @@ public class FragmentManager
         FragmentBaseActive = fragmentBase;
         FragmentBaseActive.SetActivity(activity);
         FragmentBaseActive.OnCreate();
+        FragmentBaseActive.OnResume();
 
         activity.GetContentView().addView(FragmentBaseActive.GetView());
 
@@ -54,6 +57,8 @@ public class FragmentManager
 
     boolean HandleBack()
     {
+        MiscHandler.HideSoftKey(activity);
+
         if (FragmentBaseList.size() > 1)
         {
             FragmentBaseList.get(FragmentBaseList.size() - 1).OnDestroy();

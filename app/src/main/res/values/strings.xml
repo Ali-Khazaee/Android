@@ -22,8 +22,109 @@
     <string name="WelcomeTerm2">Terms &amp; Privacy and Policy</string>
     <string name="WelcomeGoogleError">Something went wrong, Please try again</string>
 
+    <!-- Sign Up Phone UI -->
+    <string name="SignUpPhone">Sign Up</string>
+    <string name="SignUpPhoneNumber">Phone Number</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="WelcomeActivityGeneralTerm">Term &amp; Privacy</string>
     <string name="WelcomeActivityGeneralNext">Next</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
