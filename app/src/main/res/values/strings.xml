@@ -24,6 +24,7 @@
 
     <!-- Sign Up Phone UI -->
     <string name="SignUpPhone">Sign Up</string>
+    <string name="SignUpPhoneCode">Code</string>
     <string name="SignUpPhoneNumber">Phone Number</string>
 
 
