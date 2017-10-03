@@ -26,6 +26,9 @@
     <string name="SignUpPhone">ثبت نام</string>
     <string name="SignUpPhoneCode">کد</string>
     <string name="SignUpPhoneNumber">شماره تلفن</string>
+    <string name="SignUpPhoneMessage">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
+    <string name="SignUpPhoneMessageEmail">از طریق ایمیل خود نیز ثبت نام کنید</string>
+    <string name="SignUpPhoneTerm">شرايط و حريم خصوصي</string>
 
 
 
@@ -61,7 +64,7 @@
 
 
     <!-- Welcome Activity -->
-    <string name="WelcomeActivityGeneralTerm">شرايط و حريم خصوصي</string>
+    <string name="WelcomeActivityGeneralTerm">s</string>
     <string name="WelcomeActivityGeneralNext">بعدي</string>
 
 

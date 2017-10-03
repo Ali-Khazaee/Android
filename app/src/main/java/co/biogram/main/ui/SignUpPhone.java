@@ -12,8 +12,13 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -266,19 +271,40 @@ class SignUpPhone extends FragmentBase
 
         LinearLayoutPhone.addView(EditTextPhone);
 
-        /*
-
-
-        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
+        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutCode.getId());
+        TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
         TextView TextViewMessage = new TextView(activity);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-        TextViewMessage.setText(activity.getString(R.string.SignUpFragmentUsernameMessage));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
+        TextViewMessage.setText(activity.getString(R.string.SignUpPhoneMessage) + " " + activity.getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
+
+        if (MiscHandler.IsFA())
+            TextViewMessage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+        Spannable Span = (Spannable) TextViewMessage.getText();
+        ClickableSpan ClickableSpanMessage = new ClickableSpan()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                GetActivity().GetManager().Create(new SignUpPhone());
+            }
+
+            @Override
+            public void updateDrawState(TextPaint t)
+            {
+                super.updateDrawState(t);
+                t.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
+                t.setUnderlineText(false);
+            }
+        };
+        Span.setSpan(ClickableSpanMessage, activity.getString(R.string.SignUpPhoneMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -292,39 +318,42 @@ class SignUpPhone extends FragmentBase
 
         RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
         TextView TextViewPrivacy = new TextView(activity);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        TextViewPrivacy.setText(activity.getString(R.string.WelcomeActivityGeneralTerm));
+        TextViewPrivacy.setText(activity.getString(R.string.SignUpPhoneTerm));
         TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
-        RelativeLayoutNextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        if (MiscHandler.IsFA())
+            TextViewPrivacy.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
-        GradientDrawable ShapeEnable = new GradientDrawable();
-        ShapeEnable.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        ShapeEnable.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+        GradientDrawable GradientDrawableNext = new GradientDrawable();
+        GradientDrawableNext.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
+        GradientDrawableNext.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+
+        GradientDrawable GradientDrawableNextDisable = new GradientDrawable();
+        GradientDrawableNextDisable.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+        GradientDrawableNextDisable.setColor(ContextCompat.getColor(activity, R.color.Gray2));
+
+        StateListDrawable StateSignUp = new StateListDrawable();
+        StateSignUp.addState(new int[] { android.R.attr.state_enabled }, GradientDrawableNext);
+        StateSignUp.addState(new int[] { -android.R.attr.state_enabled }, GradientDrawableNextDisable);
+
+        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
+        RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        RelativeLayoutNextParam.addRule(MiscHandler.Align("L"));
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(activity);
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
-        RelativeLayoutNext.setBackground(ShapeEnable);
+        RelativeLayoutNext.setBackground(GradientDrawableNext);
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
-
-        GradientDrawable ShapeDisable = new GradientDrawable();
-        ShapeDisable.setCornerRadius(MiscHandler.ToDimension(activity, 7));
-        ShapeDisable.setColor(ContextCompat.getColor(activity, R.color.Gray2));
-
-        StateListDrawable StateSignUp = new StateListDrawable();
-        StateSignUp.addState(new int[] { android.R.attr.state_enabled }, ShapeEnable);
-        StateSignUp.addState(new int[] { -android.R.attr.state_enabled }, ShapeDisable);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35)));
         ButtonNext.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -334,6 +363,17 @@ class SignUpPhone extends FragmentBase
         ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
         ButtonNext.setAllCaps(false);
+
+        /*
+
+
+
+
+
+
+
+
+
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override
