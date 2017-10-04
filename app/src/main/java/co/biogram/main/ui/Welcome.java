@@ -341,7 +341,7 @@ public class Welcome extends FragmentBase
         RelativeLayoutSignIn.setBackgroundResource(R.color.White5);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
         RelativeLayoutSignIn.setId(MiscHandler.GenerateViewID());
-        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhone()); } });
+        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhoneVerification()); } });
 
         RelativeLayoutScroll.addView(RelativeLayoutSignIn);
 

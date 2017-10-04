@@ -5,6 +5,11 @@
 
     <!-- General -->
     <string name="GeneralNoInternet">اتصال اينترنت خود را چک کنيد</string>
+    <string name="GeneralError1">لطفا مجددا تلاش کنید</string>
+    <string name="GeneralError2">لطفا زمانی دیگر مراجعه کنید</string>
+    <string name="GeneralError3">لطفا مجددا تلاش کنید</string>
+    <string name="GeneralError4">مشکلی در هنگام ورود شما به وجود آمده است</string>
+    <string name="GeneralError6">اشکالی به وجود آمده است, لطفا زمانی دیگر مراجعه کنید</string>
 
     <!-- Welcome UI -->
     <string name="WelcomeLanguage">فارسی</string>
@@ -29,8 +34,14 @@
     <string name="SignUpPhoneMessage">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
     <string name="SignUpPhoneMessageEmail">از طریق ایمیل خود نیز ثبت نام کنید</string>
     <string name="SignUpPhoneTerm">شرايط و حريم خصوصي</string>
+    <string name="SignUpPhoneNext">بعدی</string>
+    <string name="SignUpPhoneCodeError">اشکال در شناسایی کد کشور</string>
+    <string name="SignUpPhoneError">اشکال در شناسایی ساختار شماره</string>
+    <string name="SignUpPhoneAlready">این شماره قبلا استفاده شده است</string>
 
-
+    <!-- Sign Up Phone Verification UI -->
+    <string name="SignUpPhoneVerification">تاییدیه تلفن</string>
+    <string name="SignUpPhoneVerificationCode">کد تاییدیه</string>
 
 
 

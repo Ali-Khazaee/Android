@@ -5,6 +5,11 @@
 
     <!-- General -->
     <string name="GeneralNoInternet">Check your connection</string>
+    <string name="GeneralError1">Please, Try again</string>
+    <string name="GeneralError2">Please, Try again later</string>
+    <string name="GeneralError3">Please, Try again</string>
+    <string name="GeneralError4">Something went wrong, Try to login again</string>
+    <string name="GeneralError6">Something went wrong, Try to login again</string>
 
     <!-- Welcome UI -->
     <string name="WelcomeLanguage">English</string>
@@ -29,6 +34,16 @@
     <string name="SignUpPhoneMessage">Please enter your phone number to receive a verification code, Also you can Sign Up via</string>
     <string name="SignUpPhoneMessageEmail">Email Address</string>
     <string name="SignUpPhoneTerm">Term &amp; Privacy</string>
+    <string name="SignUpPhoneNext">Next</string>
+    <string name="SignUpPhoneCodeError">Country code is wrong</string>
+    <string name="SignUpPhoneError">Phone number is wrong</string>
+    <string name="SignUpPhoneAlready">This phone number is already used</string>
+
+    <!-- Sign Up Phone Verification UI -->
+    <string name="SignUpPhoneVerification">Verify Phone</string>
+    <string name="SignUpPhoneVerificationCode">Verification Code</string>
+
+
 
 
 

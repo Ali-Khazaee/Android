@@ -9,13 +9,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.text.Spannable;
-import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.TypedValue;
@@ -45,7 +40,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.misc.LoadingView;
 import co.biogram.main.R;
 
-class SignUpPhone extends FragmentBase
+class SignUpPhoneVerification extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private int RelativeLayoutMainHeightDifference = 0;
@@ -154,122 +149,39 @@ class SignUpPhone extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        LinearLayout LinearLayoutCode = new LinearLayout(activity);
-        LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), LinearLayout.LayoutParams.WRAP_CONTENT));
-        LinearLayoutCode.setOrientation(LinearLayout.VERTICAL);
-        LinearLayoutCode.setGravity(Gravity.CENTER_HORIZONTAL);
-        LinearLayoutCode.setId(MiscHandler.GenerateViewID());
+        LinearLayout LinearLayoutVerificationCode = new LinearLayout(activity);
+        LinearLayoutVerificationCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayoutVerificationCode.setOrientation(LinearLayout.VERTICAL);
+        LinearLayoutVerificationCode.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayoutVerificationCode.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutScroll.addView(LinearLayoutCode);
+        RelativeLayoutScroll.addView(LinearLayoutVerificationCode);
 
-        TextView TextViewPhoneCode = new TextView(activity);
-        TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewPhoneCode.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
-        TextViewPhoneCode.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewPhoneCode.setText(activity.getString(R.string.SignUpPhoneCode));
-        TextViewPhoneCode.setTypeface(null, Typeface.BOLD);
-        TextViewPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewPhoneCode.setId(MiscHandler.GenerateViewID());
-
-        if (MiscHandler.IsFA())
-            TextViewPhoneCode.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-        LinearLayoutCode.addView(TextViewPhoneCode);
-
-        final EditText EditTextPhoneCode = new EditText(activity);
-        EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 70), LinearLayout.LayoutParams.WRAP_CONTENT));
-        EditTextPhoneCode.setId(MiscHandler.GenerateViewID());
-        EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextPhoneCode.setFocusable(false);
-        EditTextPhoneCode.setText(MiscHandler.IsFA() ? "+98" : "+1");
-        EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextPhoneCode.setOnClickListener(new View.OnClickListener()
-        {
-            @Override public void onClick(View view)
-            {
-                view.clearFocus();
-            }
-        });
-
-        LinearLayoutCode.addView(EditTextPhoneCode);
-
-        RelativeLayout.LayoutParams LinearLayoutPhoneParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayoutPhoneParam.addRule(RelativeLayout.RIGHT_OF, LinearLayoutCode.getId());
-
-        LinearLayout LinearLayoutPhone = new LinearLayout(activity);
-        LinearLayoutPhone.setLayoutParams(LinearLayoutPhoneParam);
-        LinearLayoutPhone.setOrientation(LinearLayout.VERTICAL);
-
-        RelativeLayoutScroll.addView(LinearLayoutPhone);
-
-        TextView TextViewPhone = new TextView(activity);
-        TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewPhone.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
-        TextViewPhone.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewPhone.setText(activity.getString(R.string.SignUpPhoneNumber));
-        TextViewPhone.setTypeface(null, Typeface.BOLD);
-        TextViewPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewPhone.setId(MiscHandler.GenerateViewID());
+        TextView TextViewVerificationCode = new TextView(activity);
+        TextViewVerificationCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        TextViewVerificationCode.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
+        TextViewVerificationCode.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
+        TextViewVerificationCode.setText(activity.getString(R.string.SignUpPhoneCode));
+        TextViewVerificationCode.setTypeface(null, Typeface.BOLD);
+        TextViewVerificationCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewVerificationCode.setId(MiscHandler.GenerateViewID());
 
         if (MiscHandler.IsFA())
-            TextViewPhone.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+            TextViewVerificationCode.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
-        LinearLayoutPhone.addView(TextViewPhone);
+        LinearLayoutVerificationCode.addView(TextViewVerificationCode);
 
-        final EditText EditTextPhone = new EditText(activity);
-        EditTextPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        EditTextPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextPhone.requestFocus();
-        EditTextPhone.setFilters(new InputFilter[]
-        {
-            new InputFilter.LengthFilter(16),
-            new InputFilter()
-            {
-                @Override
-                public CharSequence filter(CharSequence Source, int Start, int End, Spanned Dest, int DestStart, int DestEnd)
-                {
-                    if (End > Start)
-                    {
-                        char[] Allowed = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        EditText EditTextVerificationCode = new EditText(activity);
+        EditTextVerificationCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 70), LinearLayout.LayoutParams.WRAP_CONTENT));
+        EditTextVerificationCode.setId(MiscHandler.GenerateViewID());
+        EditTextVerificationCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextVerificationCode.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextVerificationCode.setGravity(Gravity.CENTER_HORIZONTAL);
 
-                        for (int I = Start; I < End; I++)
-                        {
-                            if (!new String(Allowed).contains(String.valueOf(Source.charAt(I))))
-                            {
-                                return "";
-                            }
-                        }
-                    }
-
-                    return null;
-                }
-            }
-        });
-        EditTextPhone.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                if (s.length() > 7)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
-            }
-        });
-
-        LinearLayoutPhone.addView(EditTextPhone);
+        LinearLayoutVerificationCode.addView(EditTextVerificationCode);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutCode.getId());
+        TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutVerificationCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
         TextView TextViewMessage = new TextView(activity);
@@ -369,65 +281,65 @@ class SignUpPhone extends FragmentBase
                 LoadingViewNext.Start();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
-                .addBodyParameter("Code", EditTextPhoneCode.getText().toString())
-                .addBodyParameter("Phone", EditTextPhone.getText().toString())
-                .setTag("SignUpPhone")
-                .build()
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
-
-                        try
+                        //.addBodyParameter("Code", EditTextPhoneCode.getText().toString())
+                        //.addBodyParameter("Phone", EditTextPhone.getText().toString())
+                        .setTag("SignUpPhoneVerification")
+                        .build()
+                        .getAsString(new StringRequestListener()
                         {
-                            JSONObject Result = new JSONObject(Response);
-
-                            switch (Result.getInt("Message"))
+                            @Override
+                            public void onResponse(String Response)
                             {
-                                case -6:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError6));
-                                    break;
-                                case -2:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
-                                    break;
-                                case -1:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
-                                    break;
-                                case 0:
-                                    GetActivity().GetManager().Create(new SignUpPhoneVerification());
-                                    break;
-                                case 1:
-                                case 2:
-                                case 3:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneCodeError));
-                                    break;
-                                case 4:
-                                case 5:
-                                case 6:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneError));
-                                    break;
-                                case 7:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneAlready));
-                                    break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            MiscHandler.Debug("SignUpPhone-RequestSignUpPhone: " + e.toString());
-                        }
-                    }
+                                LoadingViewNext.Stop();
+                                ButtonNext.setVisibility(View.VISIBLE);
 
-                    @Override
-                    public void onError(ANError anError)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
-                        MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
-                    }
-                });
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    switch (Result.getInt("Message"))
+                                    {
+                                        case -6:
+                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError6));
+                                            break;
+                                        case -2:
+                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
+                                            break;
+                                        case -1:
+                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
+                                            break;
+                                        case 0:
+                                            GetActivity().GetManager().Create(new SignUpPhoneVerification());
+                                            break;
+                                        case 1:
+                                        case 2:
+                                        case 3:
+                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneCodeError));
+                                            break;
+                                        case 4:
+                                        case 5:
+                                        case 6:
+                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneError));
+                                            break;
+                                        case 7:
+                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneAlready));
+                                            break;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    MiscHandler.Debug("SignUpPhone-RequestSignUpPhoneVerification: " + e.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError)
+                            {
+                                LoadingViewNext.Stop();
+                                ButtonNext.setVisibility(View.VISIBLE);
+                                MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
+                            }
+                        });
             }
         });
 
@@ -474,6 +386,6 @@ class SignUpPhone extends FragmentBase
     public void OnPause()
     {
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
-        AndroidNetworking.forceCancel("SignUpPhone");
+        AndroidNetworking.forceCancel("SignUpPhoneVerification");
     }
 }
