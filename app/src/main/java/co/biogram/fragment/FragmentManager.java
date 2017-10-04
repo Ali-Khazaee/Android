@@ -29,6 +29,7 @@ public class FragmentManager
         activity.GetContentView().addView(FragmentBaseActive.GetView());
 
         FragmentBaseList.add(FragmentBaseActive);
+        FragmentBaseList.get(FragmentBaseList.size() - 1).OnAnim();
 
         if (FragmentBaseList.size() >= 4)
         {

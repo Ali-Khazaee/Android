@@ -9,8 +9,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.TextPaint;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.TypedValue;
@@ -116,7 +120,7 @@ class SignUpPhoneVerification extends FragmentBase
         TextView TextViewTitle = new TextView(activity);
         TextViewTitle.setLayoutParams(TextViewHeaderParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        TextViewTitle.setText(activity.getString(R.string.SignUpPhone));
+        TextViewTitle.setText(activity.getString(R.string.SignUpPhoneVerification));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -149,19 +153,14 @@ class SignUpPhoneVerification extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        LinearLayout LinearLayoutVerificationCode = new LinearLayout(activity);
-        LinearLayoutVerificationCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        LinearLayoutVerificationCode.setOrientation(LinearLayout.VERTICAL);
-        LinearLayoutVerificationCode.setGravity(Gravity.CENTER_HORIZONTAL);
-        LinearLayoutVerificationCode.setId(MiscHandler.GenerateViewID());
-
-        RelativeLayoutScroll.addView(LinearLayoutVerificationCode);
+        RelativeLayout.LayoutParams TextViewVerificationCodeParam = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewVerificationCodeParam.addRule(MiscHandler.Align("R"));
 
         TextView TextViewVerificationCode = new TextView(activity);
-        TextViewVerificationCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewVerificationCode.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
+        TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
+        TextViewVerificationCode.setPadding(MiscHandler.ToDimension(activity, 20), MiscHandler.ToDimension(activity, 20), MiscHandler.ToDimension(activity, 20), 0);
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewVerificationCode.setText(activity.getString(R.string.SignUpPhoneCode));
+        TextViewVerificationCode.setText(activity.getString(R.string.SignUpPhoneVerificationCode));
         TextViewVerificationCode.setTypeface(null, Typeface.BOLD);
         TextViewVerificationCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewVerificationCode.setId(MiscHandler.GenerateViewID());
@@ -169,16 +168,167 @@ class SignUpPhoneVerification extends FragmentBase
         if (MiscHandler.IsFA())
             TextViewVerificationCode.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
-        LinearLayoutVerificationCode.addView(TextViewVerificationCode);
+        RelativeLayoutScroll.addView(TextViewVerificationCode);
 
-        EditText EditTextVerificationCode = new EditText(activity);
-        EditTextVerificationCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 70), LinearLayout.LayoutParams.WRAP_CONTENT));
-        EditTextVerificationCode.setId(MiscHandler.GenerateViewID());
-        EditTextVerificationCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextVerificationCode.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextVerificationCode.setGravity(Gravity.CENTER_HORIZONTAL);
+        RelativeLayout.LayoutParams LinearLayoutVerificationCodeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayoutVerificationCodeParam.addRule(RelativeLayout.BELOW, TextViewVerificationCode.getId());
 
-        LinearLayoutVerificationCode.addView(EditTextVerificationCode);
+        LinearLayout LinearLayoutVerificationCode = new LinearLayout(activity);
+        LinearLayoutVerificationCode.setLayoutParams(LinearLayoutVerificationCodeParam);
+        LinearLayoutVerificationCode.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayoutVerificationCode.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutScroll.addView(LinearLayoutVerificationCode);
+
+        LinearLayout.LayoutParams EditTextVerificationCode1Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        EditTextVerificationCode1Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+
+        EditText EditTextVerificationCode1 = new EditText(activity);
+        EditTextVerificationCode1.setLayoutParams(EditTextVerificationCode1Param);
+        EditTextVerificationCode1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextVerificationCode1.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextVerificationCode1.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextVerificationCode1.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextVerificationCode1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode1.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 7)
+                    ButtonNext.setEnabled(true);
+                else
+                    ButtonNext.setEnabled(false);
+            }
+        });
+
+        LinearLayoutVerificationCode.addView(EditTextVerificationCode1);
+
+        LinearLayout.LayoutParams EditTextVerificationCode2Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        EditTextVerificationCode2Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+
+        EditText EditTextVerificationCode2 = new EditText(activity);
+        EditTextVerificationCode2.setLayoutParams(EditTextVerificationCode2Param);
+        EditTextVerificationCode2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextVerificationCode2.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextVerificationCode2.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextVerificationCode2.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextVerificationCode2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode2.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 7)
+                    ButtonNext.setEnabled(true);
+                else
+                    ButtonNext.setEnabled(false);
+            }
+        });
+
+        LinearLayoutVerificationCode.addView(EditTextVerificationCode2);
+
+        LinearLayout.LayoutParams EditTextVerificationCode3Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        EditTextVerificationCode3Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+
+        EditText EditTextVerificationCode3 = new EditText(activity);
+        EditTextVerificationCode3.setLayoutParams(EditTextVerificationCode3Param);
+        EditTextVerificationCode3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextVerificationCode3.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextVerificationCode3.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextVerificationCode3.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextVerificationCode3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode3.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 7)
+                    ButtonNext.setEnabled(true);
+                else
+                    ButtonNext.setEnabled(false);
+            }
+        });
+
+        LinearLayoutVerificationCode.addView(EditTextVerificationCode3);
+
+        LinearLayout.LayoutParams EditTextVerificationCode4Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        EditTextVerificationCode4Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+
+        EditText EditTextVerificationCode4 = new EditText(activity);
+        EditTextVerificationCode4.setLayoutParams(EditTextVerificationCode4Param);
+        EditTextVerificationCode4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextVerificationCode4.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextVerificationCode4.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextVerificationCode4.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextVerificationCode4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode4.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 7)
+                    ButtonNext.setEnabled(true);
+                else
+                    ButtonNext.setEnabled(false);
+            }
+        });
+
+        LinearLayoutVerificationCode.addView(EditTextVerificationCode4);
+
+        LinearLayout.LayoutParams EditTextVerificationCode5Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        EditTextVerificationCode5Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+
+        EditText EditTextVerificationCode5 = new EditText(activity);
+        EditTextVerificationCode5.setLayoutParams(EditTextVerificationCode5Param);
+        EditTextVerificationCode5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextVerificationCode5.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextVerificationCode5.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextVerificationCode5.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextVerificationCode5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode5.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 7)
+                    ButtonNext.setEnabled(true);
+                else
+                    ButtonNext.setEnabled(false);
+            }
+        });
+
+        LinearLayoutVerificationCode.addView(EditTextVerificationCode5);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutVerificationCode.getId());
@@ -357,19 +507,7 @@ class SignUpPhoneVerification extends FragmentBase
         RelativeLayoutNext.addView(LoadingViewNext);
 
         TranslateAnimation Anim = MiscHandler.IsFA() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(300);
-        Anim.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override public void onAnimationRepeat(Animation animation) { }
-
-            @Override
-            public void onAnimationEnd(Animation animation)
-            {
-                InputMethodManager IMM = (InputMethodManager) GetActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                IMM.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
-        });
+        Anim.setDuration(150);
 
         RelativeLayoutMain.startAnimation(Anim);
 

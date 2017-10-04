@@ -37,6 +37,8 @@ public class FragmentBase
 
     public void OnPause() { }
 
+    public void OnAnim() { }
+
     void OnDestroy()
     {
         if (ViewMain != null)

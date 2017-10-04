@@ -13,7 +13,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spannable;
-import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
@@ -223,31 +222,7 @@ class SignUpPhone extends FragmentBase
         EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextPhone.requestFocus();
-        EditTextPhone.setFilters(new InputFilter[]
-        {
-            new InputFilter.LengthFilter(16),
-            new InputFilter()
-            {
-                @Override
-                public CharSequence filter(CharSequence Source, int Start, int End, Spanned Dest, int DestStart, int DestEnd)
-                {
-                    if (End > Start)
-                    {
-                        char[] Allowed = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-
-                        for (int I = Start; I < End; I++)
-                        {
-                            if (!new String(Allowed).contains(String.valueOf(Source.charAt(I))))
-                            {
-                                return "";
-                            }
-                        }
-                    }
-
-                    return null;
-                }
-            }
-        });
+        EditTextPhone.setFilters(new InputFilter[] { new InputFilter.LengthFilter(16) });
         EditTextPhone.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -445,7 +420,7 @@ class SignUpPhone extends FragmentBase
         RelativeLayoutNext.addView(LoadingViewNext);
 
         TranslateAnimation Anim = MiscHandler.IsFA() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(300);
+        Anim.setDuration(150);
         Anim.setAnimationListener(new Animation.AnimationListener()
         {
             @Override public void onAnimationStart(Animation animation) { }
