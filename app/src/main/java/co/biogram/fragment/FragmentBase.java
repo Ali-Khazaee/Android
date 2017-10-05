@@ -4,31 +4,28 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import co.biogram.main.handler.MiscHandler;
-
 public class FragmentBase
 {
-    private FragmentActivity activity;
-    private View ViewMain;
-
-    protected void SetRootView(View view)
-    {
-        ViewMain = view;
-    }
-
-    View GetView()
-    {
-        return ViewMain;
-    }
-
-    void SetActivity(FragmentActivity a)
-    {
-        activity = a;
-    }
+    protected FragmentActivity Activity;
+    protected View ViewMain;
+    protected String Tag;
 
     protected FragmentActivity GetActivity()
     {
-        return activity;
+        return Activity;
+    }
+
+    public void OnDestroy()
+    {
+        if (ViewMain != null)
+        {
+            ViewGroup Parent = (ViewGroup) ViewMain.getParent();
+
+            if (Parent != null)
+                Parent.removeView(ViewMain);
+
+            ViewMain = null;
+        }
     }
 
     public void OnCreate() { }
@@ -36,30 +33,6 @@ public class FragmentBase
     public void OnResume() { }
 
     public void OnPause() { }
-
-    public void OnAnim() { }
-
-    void OnDestroy()
-    {
-        if (ViewMain != null)
-        {
-            ViewGroup Parent = (ViewGroup) ViewMain.getParent();
-
-            if (Parent != null)
-            {
-                try
-                {
-                    Parent.removeView(ViewMain);
-                }
-                catch (Exception e)
-                {
-                    MiscHandler.Debug("FragmentBase-OnDestroy: " + e.toString());
-                }
-            }
-        }
-
-        ViewMain = null;
-    }
 
     public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) { }
 }

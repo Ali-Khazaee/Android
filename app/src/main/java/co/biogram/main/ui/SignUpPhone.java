@@ -265,7 +265,7 @@ class SignUpPhone extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                GetActivity().GetManager().Create(new SignUpPhone());
+                GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone");
             }
 
             @Override
@@ -372,7 +372,7 @@ class SignUpPhone extends FragmentBase
                                     MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
                                     break;
                                 case 0:
-                                    GetActivity().GetManager().Create(new SignUpPhoneVerification());
+                                    GetActivity().GetManager().OpenView(new SignUpPhoneVerification(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");
                                     break;
                                 case 1:
                                 case 2:
@@ -436,7 +436,7 @@ class SignUpPhone extends FragmentBase
 
         RelativeLayoutMain.startAnimation(Anim);
 
-        SetRootView(RelativeLayoutMain);
+        ViewMain = RelativeLayoutMain;
     }
 
     @Override

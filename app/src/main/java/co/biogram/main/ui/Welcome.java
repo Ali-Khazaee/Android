@@ -11,6 +11,10 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,7 +53,7 @@ public class Welcome extends FragmentBase
     {
         final FragmentActivity activity = GetActivity();
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
+        final RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         ScrollView ScrollViewMain = new ScrollView(activity);
@@ -242,7 +246,26 @@ public class Welcome extends FragmentBase
         ButtonSignUp.setId(MiscHandler.GenerateViewID());
         ButtonSignUp.setBackground(GradientDrawableSignUp);
         ButtonSignUp.setAllCaps(false);
-        ButtonSignUp.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhone()); } });
+        ButtonSignUp.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Animation AnimationAlpha = new AlphaAnimation(1.0f, 0.0f);
+                AnimationAlpha.setDuration(150);
+
+                Animation AnimationScale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                AnimationScale.setDuration(150);
+
+                AnimationSet Anim = new AnimationSet(true);
+                Anim.addAnimation(AnimationAlpha);
+                Anim.addAnimation(AnimationScale);
+
+                RelativeLayoutMain.setAnimation(Anim);
+
+                GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone");
+            }
+        });
 
         if (MiscHandler.IsFA())
         {
@@ -341,7 +364,7 @@ public class Welcome extends FragmentBase
         RelativeLayoutSignIn.setBackgroundResource(R.color.White5);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
         RelativeLayoutSignIn.setId(MiscHandler.GenerateViewID());
-        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().Create(new SignUpPhoneVerification()); } });
+        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new SignUpPhoneVerification(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification"); } });
 
         RelativeLayoutScroll.addView(RelativeLayoutSignIn);
 
@@ -428,11 +451,13 @@ public class Welcome extends FragmentBase
 
         RelativeLayoutScroll.addView(TextViewTerm);
 
-        SetRootView(RelativeLayoutMain);
+        ViewMain = RelativeLayoutMain;
 
-        if (GoogleIsAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity) == ConnectionResult.SUCCESS)
+        GoogleIsAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity) == ConnectionResult.SUCCESS;
+
+        if (GoogleIsAvailable)
         {
-            GoogleClientApi = new GoogleApiClient.Builder(activity)
+            GoogleClientApi = new GoogleApiClient.Builder(activity.getApplicationContext())
             .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com").build())
             .build();
         }
@@ -448,6 +473,8 @@ public class Welcome extends FragmentBase
     @Override
     public void OnPause()
     {
+        AndroidNetworking.forceCancel("Welcome");
+
         if (GoogleIsAvailable)
         {
             if (GoogleClientApi.isConnected())
@@ -455,8 +482,6 @@ public class Welcome extends FragmentBase
 
             GoogleClientApi.disconnect();
         }
-
-        AndroidNetworking.forceCancel("Welcome");
     }
 
     @Override

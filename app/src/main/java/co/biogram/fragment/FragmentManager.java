@@ -1,85 +1,57 @@
 package co.biogram.fragment;
 
 import android.content.Intent;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.handler.MiscHandler;
-
 public class FragmentManager
 {
     final private List<FragmentBase> FragmentBaseList = new ArrayList<>();
-    final private FragmentActivity activity;
+    final private FragmentActivity Activity;
 
-    private FragmentBase FragmentBaseActive;
+    private FragmentBase ActiveFragment;
 
     FragmentManager(FragmentActivity a)
     {
-        activity = a;
+        Activity = a;
     }
 
-    public void Create(FragmentBase fragmentBase)
+    public void OpenView(FragmentBase Fragment, int ID, String Tag)
     {
-        FragmentBaseActive = fragmentBase;
-        FragmentBaseActive.SetActivity(activity);
-        FragmentBaseActive.OnCreate();
-        FragmentBaseActive.OnResume();
+        ActiveFragment = Fragment;
+        ActiveFragment.Tag = Tag;
+        ActiveFragment.Activity = Activity;
+        ActiveFragment.OnCreate();
+        ActiveFragment.OnResume();
 
-        activity.GetContentView().addView(FragmentBaseActive.GetView());
+        FrameLayout FrameLayoutMain = (FrameLayout) Activity.findViewById(ID);
+        FrameLayoutMain.addView(ActiveFragment.ViewMain);
 
-        FragmentBaseList.add(FragmentBaseActive);
-        FragmentBaseList.get(FragmentBaseList.size() - 1).OnAnim();
-
-        if (FragmentBaseList.size() >= 4)
-        {
-            FragmentBaseList.get(1).OnDestroy();
-            FragmentBaseList.remove(1);
-        }
-    }
-
-    void OnResume()
-    {
-        if (FragmentBaseActive != null)
-            FragmentBaseActive.OnResume();
-    }
-
-    void OnPause()
-    {
-        if (FragmentBaseActive != null)
-            FragmentBaseActive.OnPause();
-    }
-
-    void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
-    {
-        if (FragmentBaseActive != null)
-            FragmentBaseActive.OnActivityResult(RequestCode, ResultCode, intent);
+        FragmentBaseList.add(ActiveFragment);
     }
 
     boolean HandleBack()
     {
-        MiscHandler.HideSoftKey(activity);
-
-        if (FragmentBaseList.size() > 1)
-        {
-            FragmentBaseList.get(FragmentBaseList.size() - 1).OnDestroy();
-            FragmentBaseList.remove(FragmentBaseList.size() - 1);
-
-            FragmentBaseActive = FragmentBaseList.get(FragmentBaseList.size() - 1);
-            FragmentBaseActive.OnResume();
-
-            return false;
-        }
-
         return true;
     }
 
-    void OnLowMemory()
+    void OnResume()
     {
-        if (FragmentBaseList.size() <= 2)
-            return;
+        if (ActiveFragment != null)
+            ActiveFragment.OnResume();
+    }
 
-        FragmentBaseList.get(1).OnDestroy();
-        FragmentBaseList.remove(1);
+    void OnPause()
+    {
+        if (ActiveFragment != null)
+            ActiveFragment.OnPause();
+    }
+
+    void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
+    {
+        if (ActiveFragment != null)
+            ActiveFragment.OnActivityResult(RequestCode, ResultCode, intent);
     }
 }

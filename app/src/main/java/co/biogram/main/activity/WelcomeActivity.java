@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.main.R;
@@ -31,12 +31,13 @@ public class WelcomeActivity extends FragmentActivity
         if (Build.VERSION.SDK_INT > 20)
             getWindow().setStatusBarColor(ContextCompat.getColor(context, R.color.BlueLight));
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        FrameLayout FrameLayoutMain = new FrameLayout(context);
+        FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        FrameLayoutMain.setId(R.id.WelcomeActivityContainer);
 
-        SetContentView(RelativeLayoutMain);
+        setContentView(FrameLayoutMain);
 
-        GetManager().Create(new Welcome());
+        GetManager().OpenView(new Welcome(), R.id.WelcomeActivityContainer, "Welcome");
     }
 
     /*
