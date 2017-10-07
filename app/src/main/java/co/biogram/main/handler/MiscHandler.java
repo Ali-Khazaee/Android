@@ -76,6 +76,26 @@ public class MiscHandler
         return IsRTL;
     }
 
+    private static boolean IsFa = false;
+    private static boolean IsFaInit = true;
+
+    public static boolean IsFa()
+    {
+        if (IsFaInit)
+        {
+            Locale locale = Locale.getDefault();
+            String Language = locale.getLanguage();
+
+            if (Language == null)
+                Language = "en";
+
+            IsFaInit = false;
+            IsFa = Language.toLowerCase().equals("fa");
+        }
+
+        return IsFa;
+    }
+
     public static int Align(String Direction)
     {
         if (Direction.equals("R"))
@@ -159,7 +179,7 @@ public class MiscHandler
 
     public static boolean HasPermission(Context context, String Permission)
     {
-        return context.checkCallingOrSelfPermission(Permission) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(context, Permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     public static void RunOnUIThread(Context context, Runnable runnable, long Delay)

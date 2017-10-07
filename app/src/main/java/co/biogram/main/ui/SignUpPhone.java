@@ -332,7 +332,14 @@ class SignUpPhone extends FragmentBase
                 }
 
                 DialogPermission DialogPermissionSMS = new DialogPermission(activity);
-                DialogPermissionSMS.SetContentView(R.drawable.ic_permission_sms, "دسترسی به خوانده شدن پیامک را فعال کنید");
+                DialogPermissionSMS.SetContentView(R.drawable.ic_permission_sms, activity.getString(R.string.SignUpPhonePermission), new DialogPermission.OnSelectedListener()
+                {
+                    @Override
+                    public void OnSelected(boolean Accept)
+                    {
+                        MiscHandler.Debug("AA: w " + Accept);
+                    }
+                });
             }
         });
 

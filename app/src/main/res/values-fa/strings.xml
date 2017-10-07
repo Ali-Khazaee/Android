@@ -11,6 +11,10 @@
     <string name="GeneralError4">مشکلی در هنگام ورود شما به وجود آمده است</string>
     <string name="GeneralError6">اشکالی به وجود آمده است, لطفا زمانی دیگر مراجعه کنید</string>
 
+    <!-- Dialog Permission -->
+    <string name="DialogPermissionAccept">اجازه دادن</string>
+    <string name="DialogPermissionDecline">نه فعلا</string>
+
     <!-- Welcome UI -->
     <string name="WelcomeLanguage">فارسی</string>
     <string name="WelcomeLanguageSelect">انتخاب زبان</string>
@@ -38,6 +42,7 @@
     <string name="SignUpPhoneCodeError">اشکال در شناسایی کد کشور</string>
     <string name="SignUpPhoneError">اشکال در شناسایی ساختار شماره</string>
     <string name="SignUpPhoneAlready">این شماره قبلا استفاده شده است</string>
+    <string name="SignUpPhonePermission">لطفا برای سهولت در روند ثبت نام، دسترسی به خوانده شدن پیامک را فعال کنید</string>
 
     <!-- Sign Up Phone Verification UI -->
     <string name="SignUpPhoneVerification">تاییدیه تلفن</string>

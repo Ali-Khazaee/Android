@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,7 +25,7 @@ class DialogPermission extends Dialog
         requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
-    void SetContentView(int Icon, String Message)
+    void SetContentView(int Icon, String Message, final OnSelectedListener Listener)
     {
         Context context = getContext();
 
@@ -67,7 +68,7 @@ class DialogPermission extends Dialog
         LinearLayout LinearLayoutChoice = new LinearLayout(context);
         LinearLayoutChoice.setLayoutParams(LinearLayoutChoiceParam);
         LinearLayoutChoice.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutChoice.setGravity(MiscHandler.Gravity("L"));
+        LinearLayoutChoice.setGravity(Gravity.END);
 
         RelativeLayoutMain.addView(LinearLayoutChoice);
 
@@ -75,32 +76,38 @@ class DialogPermission extends Dialog
         TextViewContinue.setLayoutParams(TextViewMessageParam);
         TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewContinue.setTypeface(null, Typeface.BOLD);
         TextViewContinue.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        TextViewContinue.setText("اجازه دادن");
+        TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
+        TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
 
         TextView TextViewDecline = new TextView(context);
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
         TextViewDecline.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewDecline.setTypeface(null, Typeface.BOLD);
         TextViewDecline.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        TextViewDecline.setText("نه فعلا");
+        TextViewDecline.setText(context.getString(R.string.DialogPermissionDecline));
+        TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
 
         if (MiscHandler.IsRTL())
         {
             TextViewMessage.setTypeface(Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf"));
             TextViewContinue.setTypeface(Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf"));
+            TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             TextViewDecline.setTypeface(Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf"));
+            TextViewDecline.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        }
 
-            LinearLayoutChoice.addView(TextViewDecline);
-            LinearLayoutChoice.addView(TextViewContinue);
-        }
-        else
-        {
-            LinearLayoutChoice.addView(TextViewContinue);
-            LinearLayoutChoice.addView(TextViewDecline);
-        }
+        LinearLayoutChoice.addView(TextViewDecline);
+        LinearLayoutChoice.addView(TextViewContinue);
 
         setContentView(RelativeLayoutMain);
         show();
+    }
+
+    interface OnSelectedListener
+    {
+        void OnSelected(boolean Allow);
     }
 }

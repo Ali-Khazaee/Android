@@ -11,6 +11,10 @@
     <string name="GeneralError4">Something went wrong, Try to login again</string>
     <string name="GeneralError6">Something went wrong, Try to login again</string>
 
+    <!-- Dialog Permission -->
+    <string name="DialogPermissionAccept">ALLOW</string>
+    <string name="DialogPermissionDecline">NOT NOW</string>
+
     <!-- Welcome UI -->
     <string name="WelcomeLanguage">English</string>
     <string name="WelcomeLanguageSelect">Select Your Language</string>
@@ -42,6 +46,7 @@
     <!-- Sign Up Phone Verification UI -->
     <string name="SignUpPhoneVerification">Verify Phone</string>
     <string name="SignUpPhoneVerificationCode">Verification Code</string>
+    <string name="SignUpPhoneVerificationMessage">کد تاییدیه</string>
 
 
 

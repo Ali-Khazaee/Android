@@ -202,15 +202,6 @@ public class Welcome extends FragmentBase
         ImageView ImageViewHeader = new ImageView(activity);
         ImageViewHeader.setLayoutParams(ImageViewHeaderParam);
         ImageViewHeader.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_logo_fa : R.drawable.ic_logo);
-        ImageViewHeader.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                DialogPermission DialogPermissionSMS = new DialogPermission(activity);
-                DialogPermissionSMS.SetContentView(R.drawable.ic_permission_sms, "دسترسی به خوانده شدن پیامک را فعال کنید");
-            }
-        });
 
         LinearLayoutHeader.addView(ImageViewHeader);
 

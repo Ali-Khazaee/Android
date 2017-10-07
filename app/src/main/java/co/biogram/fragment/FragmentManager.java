@@ -69,4 +69,10 @@ public class FragmentManager
         if (ActiveFragment != null)
             ActiveFragment.OnActivityResult(RequestCode, ResultCode, intent);
     }
+
+    void OnPermissionResult(int RequestCode, String[] Permissions, int[] GrantResults)
+    {
+        if (ActiveFragment != null)
+            ActiveFragment.OnPermissionResult(RequestCode, Permissions, GrantResults);
+    }
 }

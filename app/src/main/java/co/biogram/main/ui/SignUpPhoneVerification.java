@@ -455,69 +455,69 @@ class SignUpPhoneVerification extends FragmentBase
                 LoadingViewNext.Start();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
-                        //.addBodyParameter("Code", EditTextPhoneCode.getText().toString())
-                        //.addBodyParameter("Phone", EditTextPhone.getText().toString())
-                        .setTag("SignUpPhoneVerification")
-                        .build()
-                        .getAsString(new StringRequestListener()
+                //.addBodyParameter("Code", EditTextPhoneCode.getText().toString())
+                //.addBodyParameter("Phone", EditTextPhone.getText().toString())
+                .setTag("SignUpPhoneVerification")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        LoadingViewNext.Stop();
+                        ButtonNext.setVisibility(View.VISIBLE);
+
+                        try
                         {
-                            @Override
-                            public void onResponse(String Response)
+                            JSONObject Result = new JSONObject(Response);
+
+                            switch (Result.getInt("Message"))
                             {
-                                LoadingViewNext.Stop();
-                                ButtonNext.setVisibility(View.VISIBLE);
+                                case -6:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError6));
+                                    break;
+                                case -2:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
+                                    break;
+                                case -1:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
+                                    break;
+                                case 0:
 
-                                try
-                                {
-                                    JSONObject Result = new JSONObject(Response);
-
-                                    switch (Result.getInt("Message"))
-                                    {
-                                        case -6:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError6));
-                                            break;
-                                        case -2:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
-                                            break;
-                                        case -1:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
-                                            break;
-                                        case 0:
-
-                                            break;
-                                        case 1:
-                                        case 2:
-                                        case 3:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneCodeError));
-                                            break;
-                                        case 4:
-                                        case 5:
-                                        case 6:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneError));
-                                            break;
-                                        case 7:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneAlready));
-                                            break;
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    MiscHandler.Debug("SignUpPhone-RequestSignUpPhoneVerification: " + e.toString());
-                                }
+                                    break;
+                                case 1:
+                                case 2:
+                                case 3:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneCodeError));
+                                    break;
+                                case 4:
+                                case 5:
+                                case 6:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneError));
+                                    break;
+                                case 7:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneAlready));
+                                    break;
                             }
+                        }
+                        catch (Exception e)
+                        {
+                            MiscHandler.Debug("SignUpPhone-RequestSignUpPhoneVerification: " + e.toString());
+                        }
+                    }
 
-                            @Override
-                            public void onError(ANError anError)
-                            {
-                                LoadingViewNext.Stop();
-                                ButtonNext.setVisibility(View.VISIBLE);
-                                MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
-                            }
-                        });
+                    @Override
+                    public void onError(ANError anError)
+                    {
+                        LoadingViewNext.Stop();
+                        ButtonNext.setVisibility(View.VISIBLE);
+                        MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
+                    }
+                });
             }
         });
 
-        if (MiscHandler.IsPersian())
+        if (MiscHandler.IsFa())
         {
             TextViewTitle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 

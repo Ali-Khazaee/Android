@@ -35,4 +35,6 @@ public class FragmentBase
     public void OnPause() { }
 
     public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) { }
+
+    public void OnPermissionResult(int RequestCode, String[] Permissions, int[] GrantResults) { }
 }
