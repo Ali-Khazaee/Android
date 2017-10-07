@@ -11,10 +11,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -251,15 +248,8 @@ public class Welcome extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                Animation AnimationAlpha = new AlphaAnimation(1.0f, 0.0f);
-                AnimationAlpha.setDuration(150);
-
-                Animation AnimationScale = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                AnimationScale.setDuration(150);
-
-                AnimationSet Anim = new AnimationSet(true);
-                Anim.addAnimation(AnimationAlpha);
-                Anim.addAnimation(AnimationScale);
+                TranslateAnimation Anim = MiscHandler.IsFA() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
+                Anim.setDuration(500);
 
                 RelativeLayoutMain.setAnimation(Anim);
 

@@ -420,7 +420,7 @@ class SignUpPhone extends FragmentBase
         RelativeLayoutNext.addView(LoadingViewNext);
 
         TranslateAnimation Anim = MiscHandler.IsFA() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(150);
+        Anim.setDuration(500);
         Anim.setAnimationListener(new Animation.AnimationListener()
         {
             @Override public void onAnimationStart(Animation animation) { }
@@ -450,5 +450,6 @@ class SignUpPhone extends FragmentBase
     {
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
         AndroidNetworking.forceCancel("SignUpPhone");
+        MiscHandler.HideSoftKey(GetActivity());
     }
 }

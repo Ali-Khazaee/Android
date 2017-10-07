@@ -42,6 +42,7 @@
     <!-- Sign Up Phone Verification UI -->
     <string name="SignUpPhoneVerification">تاییدیه تلفن</string>
     <string name="SignUpPhoneVerificationCode">کد تاییدیه</string>
+    <string name="SignUpPhoneVerificationMessage">کد تاییدیه</string>
 
 
 

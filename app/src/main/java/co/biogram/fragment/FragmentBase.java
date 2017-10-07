@@ -15,7 +15,7 @@ public class FragmentBase
         return Activity;
     }
 
-    public void OnDestroy()
+    void OnDestroy()
     {
         if (ViewMain != null)
         {

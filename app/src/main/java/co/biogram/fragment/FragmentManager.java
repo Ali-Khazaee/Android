@@ -20,6 +20,9 @@ public class FragmentManager
 
     public void OpenView(FragmentBase Fragment, int ID, String Tag)
     {
+        if (FragmentBaseList.size() > 1)
+            FragmentBaseList.get(FragmentBaseList.size() - 1).OnPause();
+
         ActiveFragment = Fragment;
         ActiveFragment.Tag = Tag;
         ActiveFragment.Activity = Activity;
@@ -34,6 +37,18 @@ public class FragmentManager
 
     boolean HandleBack()
     {
+        if (FragmentBaseList.size() > 1)
+        {
+            FragmentBaseList.get(FragmentBaseList.size() - 1).OnPause();
+            FragmentBaseList.get(FragmentBaseList.size() - 1).OnDestroy();
+            FragmentBaseList.remove(FragmentBaseList.size() - 1);
+
+            ActiveFragment = FragmentBaseList.get(FragmentBaseList.size() - 1);
+            ActiveFragment.OnResume();
+
+            return false;
+        }
+
         return true;
     }
 
