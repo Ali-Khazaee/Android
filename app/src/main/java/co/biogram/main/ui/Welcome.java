@@ -201,7 +201,16 @@ public class Welcome extends FragmentBase
 
         ImageView ImageViewHeader = new ImageView(activity);
         ImageViewHeader.setLayoutParams(ImageViewHeaderParam);
-        ImageViewHeader.setImageResource(MiscHandler.IsFA() ? R.drawable.ic_logo_fa : R.drawable.ic_logo);
+        ImageViewHeader.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_logo_fa : R.drawable.ic_logo);
+        ImageViewHeader.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DialogPermission DialogPermissionSMS = new DialogPermission(activity);
+                DialogPermissionSMS.SetContentView(R.drawable.ic_permission_sms, "دسترسی به خوانده شدن پیامک را فعال کنید");
+            }
+        });
 
         LinearLayoutHeader.addView(ImageViewHeader);
 
@@ -248,21 +257,14 @@ public class Welcome extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                TranslateAnimation Anim = MiscHandler.IsFA() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
-                Anim.setDuration(500);
+                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
+                Anim.setDuration(300);
 
                 RelativeLayoutMain.setAnimation(Anim);
 
                 GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone");
             }
         });
-
-        if (MiscHandler.IsFA())
-        {
-            ButtonSignUp.setTypeface(null, Typeface.BOLD);
-            ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(activity, 2), 0, 0);
-            ButtonSignUp.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        }
 
         RelativeLayoutScroll.addView(ButtonSignUp);
 
@@ -287,9 +289,6 @@ public class Welcome extends FragmentBase
         TextViewOR.setId(MiscHandler.GenerateViewID());
         TextViewOR.setGravity(Gravity.CENTER);
         TextViewOR.setTextColor(ContextCompat.getColor(activity, R.color.BlueGray));
-
-        if (MiscHandler.IsFA())
-            TextViewOR.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
         RelativeLayoutOR.addView(TextViewOR);
 
@@ -341,9 +340,6 @@ public class Welcome extends FragmentBase
         TextViewGoogle.setText(activity.getString(R.string.WelcomeSignInGoogle));
         TextViewGoogle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
-        if (MiscHandler.IsFA())
-            TextViewGoogle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
         LinearLayoutGoogle.addView(TextViewGoogle);
 
         RelativeLayout.LayoutParams RelativeLayoutSignInParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 56));
@@ -365,12 +361,6 @@ public class Welcome extends FragmentBase
         TextViewSignIn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewSignIn.setId(MiscHandler.GenerateViewID());
 
-        if (MiscHandler.IsFA())
-        {
-            TextViewSignIn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            TextViewSignIn.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        }
-
         RelativeLayoutSignIn.addView(TextViewSignIn);
 
         RelativeLayout.LayoutParams TextViewSignIn2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -382,12 +372,6 @@ public class Welcome extends FragmentBase
         TextViewSignIn2.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
         TextViewSignIn2.setText(activity.getString(R.string.WelcomeSignIn2));
         TextViewSignIn2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-
-        if (MiscHandler.IsFA())
-        {
-            TextViewSignIn2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            TextViewSignIn2.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        }
 
         RelativeLayoutSignIn.addView(TextViewSignIn2);
 
@@ -415,12 +399,6 @@ public class Welcome extends FragmentBase
         TextViewTerm2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
-        if (MiscHandler.IsFA())
-        {
-            TextViewTerm2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            TextViewTerm2.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        }
-
         RelativeLayoutScroll.addView(TextViewTerm2);
 
         RelativeLayout.LayoutParams TextViewTermParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -433,10 +411,27 @@ public class Welcome extends FragmentBase
         TextViewTerm.setText(activity.getString(R.string.WelcomeTerm));
         TextViewTerm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
-        if (MiscHandler.IsFA())
+        if (MiscHandler.IsFa())
         {
+            ButtonSignUp.setTypeface(null, Typeface.BOLD);
+            ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(activity, 2), 0, 0);
+            ButtonSignUp.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewOR.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewGoogle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewSignIn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewSignIn.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewSignIn2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewSignIn2.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
             TextViewTerm2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             TextViewTerm2.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewTerm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            TextViewTerm.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
         }
 
         RelativeLayoutScroll.addView(TextViewTerm);

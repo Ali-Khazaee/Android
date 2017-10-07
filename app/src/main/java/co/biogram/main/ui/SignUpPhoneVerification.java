@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +47,12 @@ class SignUpPhoneVerification extends FragmentBase
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private int RelativeLayoutMainHeightDifference = 0;
     private RelativeLayout RelativeLayoutMain;
+
+    private boolean Field1 = false;
+    private boolean Field2 = false;
+    private boolean Field3 = false;
+    private boolean Field4 = false;
+    private boolean Field5 = false;
 
     @Override
     public void OnCreate()
@@ -106,7 +113,7 @@ class SignUpPhoneVerification extends FragmentBase
         ImageViewBack.setId(MiscHandler.GenerateViewID());
         ImageViewBack.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
-        ImageViewBack.setImageResource(MiscHandler.IsFA() ? R.drawable.ic_back_white_fa : R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_back_white_fa : R.drawable.ic_back_white);
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -120,9 +127,6 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewTitle.setText(activity.getString(R.string.SignUpPhoneVerification));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-
-        if (MiscHandler.IsFA())
-            TextViewTitle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -162,9 +166,6 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewVerificationCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewVerificationCode.setId(MiscHandler.GenerateViewID());
 
-        if (MiscHandler.IsFA())
-            TextViewVerificationCode.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
         RelativeLayoutScroll.addView(TextViewVerificationCode);
 
         RelativeLayout.LayoutParams LinearLayoutVerificationCodeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -180,28 +181,34 @@ class SignUpPhoneVerification extends FragmentBase
         LinearLayout.LayoutParams EditTextVerificationCode1Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode1Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
 
-        EditText EditTextVerificationCode1 = new EditText(activity);
+        final EditText EditTextVerificationCode1 = new EditText(activity);
         EditTextVerificationCode1.setLayoutParams(EditTextVerificationCode1Param);
         EditTextVerificationCode1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextVerificationCode1.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextVerificationCode1.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextVerificationCode1.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextVerificationCode1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode1.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         EditTextVerificationCode1.addTextChangedListener(new TextWatcher()
         {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void afterTextChanged(Editable s) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 7)
+                Field1 = (s.length() != 0);
+
+                if (Field1 && Field2 && Field3 && Field4 && Field5)
                     ButtonNext.setEnabled(true);
                 else
                     ButtonNext.setEnabled(false);
+
+                if (s.length() == 0)
+                    return;
+
+                EditText NextField = (EditText) EditTextVerificationCode1.focusSearch(View.FOCUS_RIGHT);
+                NextField.requestFocus();
             }
         });
 
@@ -210,28 +217,35 @@ class SignUpPhoneVerification extends FragmentBase
         LinearLayout.LayoutParams EditTextVerificationCode2Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode2Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
 
-        EditText EditTextVerificationCode2 = new EditText(activity);
+        final EditText EditTextVerificationCode2 = new EditText(activity);
         EditTextVerificationCode2.setLayoutParams(EditTextVerificationCode2Param);
         EditTextVerificationCode2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextVerificationCode2.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextVerificationCode2.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextVerificationCode2.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextVerificationCode2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode2.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         EditTextVerificationCode2.addTextChangedListener(new TextWatcher()
         {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void afterTextChanged(Editable s) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 7)
+                Field2 = (s.length() != 0);
+
+                if (Field1 && Field2 && Field3 && Field4 && Field5)
                     ButtonNext.setEnabled(true);
                 else
                     ButtonNext.setEnabled(false);
+
+                EditText NextField = (EditText) EditTextVerificationCode2.focusSearch(View.FOCUS_RIGHT);
+
+                if (s.length() == 0)
+                    NextField = (EditText) EditTextVerificationCode2.focusSearch(View.FOCUS_LEFT);
+
+                NextField.requestFocus();
             }
         });
 
@@ -240,28 +254,35 @@ class SignUpPhoneVerification extends FragmentBase
         LinearLayout.LayoutParams EditTextVerificationCode3Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode3Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
 
-        EditText EditTextVerificationCode3 = new EditText(activity);
+        final EditText EditTextVerificationCode3 = new EditText(activity);
         EditTextVerificationCode3.setLayoutParams(EditTextVerificationCode3Param);
         EditTextVerificationCode3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextVerificationCode3.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextVerificationCode3.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextVerificationCode3.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextVerificationCode3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode3.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         EditTextVerificationCode3.addTextChangedListener(new TextWatcher()
         {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void afterTextChanged(Editable s) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 7)
+                Field3 = (s.length() != 0);
+
+                if (Field1 && Field2 && Field3 && Field4 && Field5)
                     ButtonNext.setEnabled(true);
                 else
                     ButtonNext.setEnabled(false);
+
+                EditText NextField = (EditText) EditTextVerificationCode3.focusSearch(View.FOCUS_RIGHT);
+
+                if (s.length() == 0)
+                    NextField = (EditText) EditTextVerificationCode3.focusSearch(View.FOCUS_LEFT);
+
+                NextField.requestFocus();
             }
         });
 
@@ -270,28 +291,35 @@ class SignUpPhoneVerification extends FragmentBase
         LinearLayout.LayoutParams EditTextVerificationCode4Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode4Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
 
-        EditText EditTextVerificationCode4 = new EditText(activity);
+        final EditText EditTextVerificationCode4 = new EditText(activity);
         EditTextVerificationCode4.setLayoutParams(EditTextVerificationCode4Param);
         EditTextVerificationCode4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextVerificationCode4.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextVerificationCode4.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextVerificationCode4.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextVerificationCode4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextVerificationCode4.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         EditTextVerificationCode4.addTextChangedListener(new TextWatcher()
         {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void afterTextChanged(Editable s) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 7)
+                Field4 = (s.length() != 0);
+
+                if (Field1 && Field2 && Field3 && Field4 && Field5)
                     ButtonNext.setEnabled(true);
                 else
                     ButtonNext.setEnabled(false);
+
+                EditText NextField = (EditText) EditTextVerificationCode4.focusSearch(View.FOCUS_RIGHT);
+
+                if (s.length() == 0)
+                    NextField = (EditText) EditTextVerificationCode4.focusSearch(View.FOCUS_LEFT);
+
+                NextField.requestFocus();
             }
         });
 
@@ -300,7 +328,7 @@ class SignUpPhoneVerification extends FragmentBase
         LinearLayout.LayoutParams EditTextVerificationCode5Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode5Param.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
 
-        EditText EditTextVerificationCode5 = new EditText(activity);
+        final EditText EditTextVerificationCode5 = new EditText(activity);
         EditTextVerificationCode5.setLayoutParams(EditTextVerificationCode5Param);
         EditTextVerificationCode5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextVerificationCode5.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
@@ -309,19 +337,24 @@ class SignUpPhoneVerification extends FragmentBase
         EditTextVerificationCode5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
         EditTextVerificationCode5.addTextChangedListener(new TextWatcher()
         {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void afterTextChanged(Editable s) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 7)
+                Field5 = (s.length() != 0);
+
+                if (Field1 && Field2 && Field3 && Field4 && Field5)
                     ButtonNext.setEnabled(true);
                 else
                     ButtonNext.setEnabled(false);
+
+                if (s.length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextVerificationCode5.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
             }
         });
 
@@ -339,9 +372,6 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewMessage.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
         TextViewMessage.setText(activity.getString(R.string.SignUpPhoneMessage) + " " + activity.getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
-
-        if (MiscHandler.IsFA())
-            TextViewMessage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         ClickableSpan ClickableSpanMessage = new ClickableSpan()
@@ -385,9 +415,6 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
-
-        if (MiscHandler.IsFA())
-            TextViewPrivacy.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
         GradientDrawable GradientDrawableNext = new GradientDrawable();
         GradientDrawableNext.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
@@ -490,8 +517,18 @@ class SignUpPhoneVerification extends FragmentBase
             }
         });
 
-        if (MiscHandler.IsFA())
+        if (MiscHandler.IsPersian())
+        {
+            TextViewTitle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewVerificationCode.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewMessage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
+            TextViewPrivacy.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+
             ButtonNext.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+        }
 
         RelativeLayoutNext.addView(ButtonNext);
 
@@ -503,7 +540,7 @@ class SignUpPhoneVerification extends FragmentBase
 
         RelativeLayoutNext.addView(LoadingViewNext);
 
-        TranslateAnimation Anim = MiscHandler.IsFA() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
+        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(150);
 
         RelativeLayoutMain.startAnimation(Anim);

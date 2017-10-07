@@ -6,13 +6,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -58,7 +59,7 @@ public class MiscHandler
     private static boolean IsRTL = false;
     private static boolean IsRTLInit = true;
 
-    private static boolean IsRTL()
+    public static boolean IsRTL()
     {
         if (IsRTLInit)
         {
@@ -68,31 +69,11 @@ public class MiscHandler
             if (Language == null)
                 Language = "en";
 
-            IsRTLInit = false;
             IsRTL = Language.toLowerCase().equals("fa");
+            IsRTLInit = false;
         }
 
         return IsRTL;
-    }
-
-    private static boolean IsFA = false;
-    private static boolean IsFAInit = true;
-
-    public static boolean IsFA()
-    {
-        if (IsFAInit)
-        {
-            Locale locale = Locale.getDefault();
-            String Language = locale.getLanguage();
-
-            if (Language == null)
-                Language = "en";
-
-            IsFAInit = false;
-            IsFA = Language.toLowerCase().equals("fa");
-        }
-
-        return IsFA;
     }
 
     public static int Align(String Direction)
@@ -111,6 +92,115 @@ public class MiscHandler
             return IsRTL() ? RelativeLayout.RIGHT_OF : RelativeLayout.LEFT_OF;
     }
 
+    public static int Gravity(String Direction)
+    {
+        if (Direction.equals("R"))
+            return IsRTL() ? Gravity.START : Gravity.END;
+        else
+            return IsRTL() ? Gravity.END : Gravity.START;
+    }
+
+    public static int ToDimension(Context context, float Value)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
+    }
+
+    public static void Toast(Context context, String Message)
+    {
+        GradientDrawable GradientDrawableToast = new GradientDrawable();
+        GradientDrawableToast.setColor(ContextCompat.getColor(context, R.color.Toast));
+        GradientDrawableToast.setCornerRadius(50.0f);
+
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackground(GradientDrawableToast);
+
+        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        TextView TextViewMessage = new TextView(context);
+        TextViewMessage.setLayoutParams(TextViewMessageParam);
+        TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewMessage.setText(Message);
+        TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10));
+        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+
+        RelativeLayoutMain.addView(TextViewMessage);
+
+        Toast ToastMain = new Toast(context);
+        ToastMain.setGravity(Gravity.BOTTOM, 0, MiscHandler.ToDimension(context, 65));
+        ToastMain.setDuration(Toast.LENGTH_SHORT);
+        ToastMain.setView(RelativeLayoutMain);
+        ToastMain.show();
+    }
+
+    public static void ShowSoftKey(View view)
+    {
+        InputMethodManager IMM = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        IMM.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static void HideSoftKey(Activity activity)
+    {
+        View view = activity.getCurrentFocus();
+
+        if (view != null)
+        {
+            InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (!IMM.isActive())
+                return;
+
+            IMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+            view.clearFocus();
+        }
+    }
+
+    public static boolean HasPermission(Context context, String Permission)
+    {
+        return context.checkCallingOrSelfPermission(Permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static void RunOnUIThread(Context context, Runnable runnable, long Delay)
+    {
+        Handler handler = new Handler(context.getApplicationContext().getMainLooper());
+
+        if (Delay == 0)
+            handler.post(runnable);
+        else
+            handler.postDelayed(runnable, Delay);
+    }
+
+    public static String GenerateSession()
+    {
+        return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
+    }
+
+    public static void Debug(String Message)
+    {
+        Log.e("Debug", Message);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void ChangeLanguage(Activity activity, String Language)
     {
         if (SharedHandler.GetString(activity, "Language").equals(Language))
@@ -126,46 +216,6 @@ public class MiscHandler
         alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
 
         System.exit(0);
-    }
-
-    public static String GenerateSession()
-    {
-        return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
-    }
-
-    public static void Toast(Context context, String Message)
-    {
-        GradientDrawable Shape = new GradientDrawable();
-        Shape.setColor(ContextCompat.getColor(context, R.color.Toast));
-        Shape.setCornerRadius(50.0f);
-
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackground(Shape);
-
-        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        TextView TextViewMessage = new TextView(context);
-        TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewMessage.setText(Message);
-        TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-
-        RelativeLayoutMain.addView(TextViewMessage);
-
-        Toast toast = new Toast(context);
-        toast.setGravity(Gravity.BOTTOM, 0, MiscHandler.ToDimension(context, 65));
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(RelativeLayoutMain);
-        toast.show();
-    }
-
-    public static int ToDimension(Context context, float Value)
-    {
-        DisplayMetrics Metrics = context.getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, Metrics);
     }
 
     public static String GetTimeName(long T)
@@ -196,19 +246,6 @@ public class MiscHandler
         return "";
     }
 
-    public static void HideSoftKey(Activity activity)
-    {
-        View view = activity.getCurrentFocus();
-
-        if (view != null)
-        {
-            InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            IMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-            view.clearFocus();
-        }
-    }
-
     public static String GetRandomServer(String URL)
     {
         String Server;
@@ -223,10 +260,7 @@ public class MiscHandler
         return Server + URL;
     }
 
-    public static void Debug(String Message)
-    {
-        Log.e("Debug", Message);
-    }
+
 
     public static void CreateVideoThumbnail(String Url, Context context, ImageView View)
     {
