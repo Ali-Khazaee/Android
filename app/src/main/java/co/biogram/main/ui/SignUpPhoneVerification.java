@@ -15,6 +15,7 @@ import android.text.Spannable;
 import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -371,26 +372,19 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText(activity.getString(R.string.SignUpPhoneMessage) + " " + activity.getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText(activity.getString(R.string.SignUpPhoneVerificationMessage) + " " + activity.getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
-        ClickableSpan ClickableSpanMessage = new ClickableSpan()
+        CharacterStyle CharacterStyleMessage = new CharacterStyle()
         {
-            @Override
-            public void onClick(View v)
-            {
-                GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone");
-            }
-
             @Override
             public void updateDrawState(TextPaint t)
             {
-                super.updateDrawState(t);
                 t.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
-                t.setUnderlineText(false);
+                //t.setUnderlineText(false);
             }
         };
-        Span.setSpan(ClickableSpanMessage, activity.getString(R.string.SignUpPhoneMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Span.setSpan(CharacterStyleMessage, activity.getString(R.string.SignUpPhoneVerificationMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
 

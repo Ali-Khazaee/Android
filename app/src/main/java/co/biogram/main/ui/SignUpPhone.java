@@ -451,6 +451,7 @@ class SignUpPhone extends FragmentBase
                             Anim.setDuration(300);
 
                             RelativeLayoutMain.setAnimation(Anim);
+
                             GetActivity().GetManager().OpenView(new SignUpPhoneVerification(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");
                             break;
                         case 1:
