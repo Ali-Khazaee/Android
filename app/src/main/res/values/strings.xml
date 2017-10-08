@@ -42,6 +42,7 @@
     <string name="SignUpPhoneCodeError">Country code is wrong</string>
     <string name="SignUpPhoneError">Phone number is wrong</string>
     <string name="SignUpPhoneAlready">This phone number is already used</string>
+    <string name="SignUpPhonePermission">To make Registration process easier, Allow biogram to have access to your next SMS that your recieve</string>
 
     <!-- Sign Up Phone Verification UI -->
     <string name="SignUpPhoneVerification">Verify Phone</string>

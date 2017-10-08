@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+
+import co.biogram.main.handler.MiscHandler;
 
 public class FragmentActivity extends Activity
 {
+    private OnPermissionListener PermissionListener;
     private FragmentManager Manager;
+    private String Permission;
 
     public FragmentManager GetManager()
     {
@@ -51,33 +54,39 @@ public class FragmentActivity extends Activity
     public void onRequestPermissionsResult(int RequestCode, @NonNull String[] Permissions, @NonNull int[] GrantResults)
     {
         super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
-        Manager.OnPermissionResult(RequestCode, Permissions, GrantResults);
 
-        if (GrantResults.length > 0 && GrantResults[0] == PackageManager.PERMISSION_GRANTED)
+        if (PermissionListener == null)
+            return;
+
+        for (int I = 0; I < Permissions.length; I++)
         {
-
-            // permission was granted, yay! Do the
-            // contacts-related task you need to do.
-        } else {
-
-            // permission denied, boo! Disable the
-            // functionality that depends on this permission.
-            Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+            if (Permissions[I].equals(Permission))
+            {
+                if (GrantResults[I] == PackageManager.PERMISSION_GRANTED)
+                    PermissionListener.OnGranted();
+                else
+                    PermissionListener.OnDenied();
+            }
         }
-        return;
-    }
     }
 
-    public void RequestPermission(String[] Permissions, int RequestCode)
+    public void RequestPermission(String permission, OnPermissionListener Listener)
     {
-        int PermissionCheck = ContextCompat.checkSelfPermission(this, _Permission);
+        Permission = permission;
+        PermissionListener = Listener;
 
-        if (PermissionCheck == PackageManager.PERMISSION_GRANTED)
+        if (MiscHandler.HasPermission(this, Permission))
         {
-            _PermissionEvent.OnGranted();
+            PermissionListener.OnGranted();
             return;
         }
 
-        ActivityCompat.requestPermissions(this, Permissions, RequestCode);
+        ActivityCompat.requestPermissions(this, new String[] { Permission }, 555);
+    }
+
+    public interface OnPermissionListener
+    {
+        void OnGranted();
+        void OnDenied();
     }
 }

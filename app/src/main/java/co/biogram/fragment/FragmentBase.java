@@ -8,7 +8,7 @@ public class FragmentBase
 {
     protected FragmentActivity Activity;
     protected View ViewMain;
-    protected String Tag;
+    String Tag;
 
     protected FragmentActivity GetActivity()
     {
@@ -35,6 +35,4 @@ public class FragmentBase
     public void OnPause() { }
 
     public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) { }
-
-    public void OnPermissionResult(int RequestCode, String[] Permissions, int[] GrantResults) { }
 }

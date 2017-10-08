@@ -18,6 +18,15 @@ public class FragmentManager
         Activity = a;
     }
 
+    public FragmentBase FindByTag(String Tag)
+    {
+        for (FragmentBase Fragment : FragmentBaseList)
+            if (Fragment.Tag.equals(Tag))
+                return Fragment;
+
+        return null;
+    }
+
     public void OpenView(FragmentBase Fragment, int ID, String Tag)
     {
         if (FragmentBaseList.size() > 1)
@@ -68,11 +77,5 @@ public class FragmentManager
     {
         if (ActiveFragment != null)
             ActiveFragment.OnActivityResult(RequestCode, ResultCode, intent);
-    }
-
-    void OnPermissionResult(int RequestCode, String[] Permissions, int[] GrantResults)
-    {
-        if (ActiveFragment != null)
-            ActiveFragment.OnPermissionResult(RequestCode, Permissions, GrantResults);
     }
 }

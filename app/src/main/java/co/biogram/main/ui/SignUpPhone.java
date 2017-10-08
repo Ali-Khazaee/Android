@@ -1,7 +1,6 @@
 package co.biogram.main.ui;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -175,15 +174,9 @@ class SignUpPhone extends FragmentBase
         EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhoneCode.setFocusable(false);
-        EditTextPhoneCode.setText(MiscHandler.IsFa() ? "+98" : "+1"); // TODO Add More Country
+        EditTextPhoneCode.setText(MiscHandler.IsFa() ? "+98" : "+98"); // TODO Add More Country
         EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextPhoneCode.setOnClickListener(new View.OnClickListener()
-        {
-            @Override public void onClick(View view)
-            {
-                view.clearFocus();
-            }
-        });
+        EditTextPhoneCode.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { view.clearFocus(); } });
 
         LinearLayoutCode.addView(EditTextPhoneCode);
 
@@ -217,15 +210,15 @@ class SignUpPhone extends FragmentBase
         EditTextPhone.addTextChangedListener(new TextWatcher()
         {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence a, int b, int c, int d) { }
 
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable a) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
+            public void onTextChanged(CharSequence a, int b, int c, int d)
             {
-                if (s.length() > 7)
+                if (a.length() > 7)
                     ButtonNext.setEnabled(true);
                 else
                     ButtonNext.setEnabled(false);
@@ -253,7 +246,12 @@ class SignUpPhone extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone");
+                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
+                Anim.setDuration(300);
+
+                RelativeLayoutMain.setAnimation(Anim);
+
+                GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone"); // TODO SignUpWithEmail
             }
 
             @Override
@@ -335,9 +333,28 @@ class SignUpPhone extends FragmentBase
                 DialogPermissionSMS.SetContentView(R.drawable.ic_permission_sms, activity.getString(R.string.SignUpPhonePermission), new DialogPermission.OnSelectedListener()
                 {
                     @Override
-                    public void OnSelected(boolean Accept)
+                    public void OnSelected(boolean Allow)
                     {
-                        MiscHandler.Debug("AA: w " + Accept);
+                        if (!Allow)
+                        {
+                            SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                            return;
+                        }
+
+                        GetActivity().RequestPermission(Manifest.permission.RECEIVE_SMS, new FragmentActivity.OnPermissionListener()
+                        {
+                            @Override
+                            public void OnGranted()
+                            {
+                                SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                            }
+
+                            @Override
+                            public void OnDenied()
+                            {
+                                SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                            }
+                        });
                     }
                 });
             }
@@ -458,7 +475,7 @@ class SignUpPhone extends FragmentBase
             }
 
             @Override
-            public void onError(ANError anError)
+            public void onError(ANError e)
             {
                 LoadingViewNext.Stop();
                 ButtonNext.setVisibility(View.VISIBLE);
