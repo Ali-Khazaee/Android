@@ -55,6 +55,15 @@ class SignUpPhoneVerification extends FragmentBase
     private boolean Field4 = false;
     private boolean Field5 = false;
 
+    private final String Code;
+    private final String Phone;
+
+    SignUpPhoneVerification(String code, String phone)
+    {
+        Code = code;
+        Phone = phone;
+    }
+
     @Override
     public void OnCreate()
     {
@@ -365,6 +374,8 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutVerificationCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
+        String PhoneNumber = Code + Phone;
+
         TextView TextViewMessage = new TextView(activity);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
@@ -372,7 +383,7 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText(activity.getString(R.string.SignUpPhoneVerificationMessage) + " " + activity.getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText(activity.getString(R.string.SignUpPhoneMessage) + " " + PhoneNumber, TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         CharacterStyle CharacterStyleMessage = new CharacterStyle()
@@ -400,15 +411,15 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewPrivacy = new TextView(activity);
-        TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        TextViewPrivacy.setText(activity.getString(R.string.SignUpPhoneTerm));
-        TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewPrivacy.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
+        TextView TextViewResend = new TextView(activity);
+        TextViewResend.setLayoutParams(TextViewPrivacyParam);
+        TextViewResend.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
+        TextViewResend.setText(activity.getString(R.string.SignUpPhoneTerm));
+        TextViewResend.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewResend.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        TextViewResend.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) {  } });
 
-        RelativeLayoutBottom.addView(TextViewPrivacy);
+        RelativeLayoutBottom.addView(TextViewResend);
 
         GradientDrawable GradientDrawableNext = new GradientDrawable();
         GradientDrawableNext.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
