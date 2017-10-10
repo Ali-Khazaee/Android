@@ -27,7 +27,7 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.misc.LoadingView;
+import co.biogram.main.ui.LoadingView;
 import co.biogram.main.misc.TouchImageView;
 
 public class ImagePreviewFragment extends Fragment

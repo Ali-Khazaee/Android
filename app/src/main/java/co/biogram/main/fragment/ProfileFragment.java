@@ -59,7 +59,7 @@ import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LinearLayoutManager2;
-import co.biogram.main.misc.LoadingView;
+import co.biogram.main.ui.LoadingView;
 import co.biogram.main.misc.ScrollViewSticky;
 
 public class ProfileFragment extends Fragment

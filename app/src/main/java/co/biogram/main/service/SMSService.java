@@ -20,6 +20,9 @@ public class SMSService extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        if (intent.getAction().equalsIgnoreCase("co.biogram.main.service.SMSService"))
+            IsWaiting = intent.getExtras().getBoolean("SetWaiting", false);
+
         if (!IsWaiting)
             return;
 
@@ -62,7 +65,10 @@ public class SMSService extends BroadcastReceiver
 
                     if (matcher.find())
                     {
-                        MiscHandler.Debug(matcher.group(0));
+                        Intent i = new Intent("co.biogram.main.ui.SignUpPhoneVerification");
+                        i.putExtra("Code", matcher.group(0));
+
+                        context.sendBroadcast(i);
                     }
                 }
                 catch (Exception e)
@@ -71,10 +77,5 @@ public class SMSService extends BroadcastReceiver
                 }
             }
         }
-    }
-
-    public void SetWaiting(boolean Value)
-    {
-        IsWaiting = Value;
     }
 }

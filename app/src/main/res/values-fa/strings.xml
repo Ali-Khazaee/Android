@@ -49,6 +49,10 @@
     <string name="SignUpPhoneVerificationCode">کد تاییدیه</string>
     <string name="SignUpPhoneVerificationMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
     <string name="SignUpPhoneVerificationResend">ارسال مجدد</string>
+    <string name="SignUpPhoneVerificationResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
+    <string name="SignUpPhoneVerificationCodeEmpty">کد تاییدیه وارد نشده است</string>
+    <string name="SignUpPhoneVerificationCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
+    <string name="SignUpPhoneVerificationCodeWrong">اطلاعات وارد شده اشتباه است</string>
 
 
 

@@ -183,7 +183,7 @@
             android:layout_height="wrap_content"
             android:padding="1dp">
 
-            <co.biogram.main.misc.LoadingView
+            <co.biogram.main.ui.LoadingView
                 android:id="@+id/LoadingViewLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

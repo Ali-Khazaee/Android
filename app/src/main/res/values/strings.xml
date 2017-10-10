@@ -49,6 +49,10 @@
     <string name="SignUpPhoneVerificationCode">Verification Code</string>
     <string name="SignUpPhoneVerificationMessage">Please enter the verification code sent to</string>
     <string name="SignUpPhoneVerificationResend">Resend Code</string>
+    <string name="SignUpPhoneVerificationResendDone">The verification code has been sent to you again</string>
+    <string name="SignUpPhoneVerificationCodeEmpty">The verification code has not been entered</string>
+    <string name="SignUpPhoneVerificationCodeCount">Verification is should be 5 charecters</string>
+    <string name="SignUpPhoneVerificationCodeWrong">The information entered is incorrect</string>
 
 
 

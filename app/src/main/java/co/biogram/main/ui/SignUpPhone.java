@@ -40,7 +40,6 @@ import org.json.JSONObject;
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.misc.LoadingView;
 import co.biogram.main.R;
 
 class SignUpPhone extends FragmentBase
@@ -112,12 +111,12 @@ class SignUpPhone extends FragmentBase
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
-        RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewHeaderParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
-        TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         TextView TextViewTitle = new TextView(activity);
-        TextViewTitle.setLayoutParams(TextViewHeaderParam);
+        TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
         TextViewTitle.setText(activity.getString(R.string.SignUpPhone));
         TextViewTitle.setTypeface(null, Typeface.BOLD);
@@ -174,7 +173,7 @@ class SignUpPhone extends FragmentBase
         EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhoneCode.setFocusable(false);
-        EditTextPhoneCode.setText(MiscHandler.IsFa() ? "+98" : "+98"); // TODO Add More Country
+        EditTextPhoneCode.setText(MiscHandler.IsFa() ? "+98" : "+98"); //  TODO Add More Country
         EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextPhoneCode.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { view.clearFocus(); } });
 
@@ -251,7 +250,7 @@ class SignUpPhone extends FragmentBase
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone"); // TODO SignUpWithEmail
+                //GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone"); // TODO SignUpWithEmail
             }
 
             @Override
@@ -386,7 +385,7 @@ class SignUpPhone extends FragmentBase
         }
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(300);
+        Anim.setDuration(150);
         Anim.setAnimationListener(new Animation.AnimationListener()
         {
             @Override public void onAnimationStart(Animation animation) { }
@@ -413,7 +412,7 @@ class SignUpPhone extends FragmentBase
         MiscHandler.HideSoftKey(GetActivity());
     }
 
-    private void SendRequest(final FragmentActivity activity, final Button ButtonNext, final LoadingView LoadingViewNext, EditText EditTextPhone, EditText EditTextPhoneCode)
+    private void SendRequest(final FragmentActivity activity, final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode)
     {
         ButtonNext.setVisibility(View.GONE);
         LoadingViewNext.Start();
@@ -448,11 +447,16 @@ class SignUpPhone extends FragmentBase
                             break;
                         case 0:
                             TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
-                            Anim.setDuration(300);
+                            Anim.setDuration(150);
 
                             RelativeLayoutMain.setAnimation(Anim);
 
-                            GetActivity().GetManager().OpenView(new SignUpPhoneVerification(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");
+                            String Phone = EditTextPhone.getText().toString();
+
+                            while (Phone.charAt(0) == '0')
+                                Phone = Phone.substring(1);
+
+                            GetActivity().GetManager().OpenView(new SignUpPhoneVerification(EditTextPhoneCode.getText().toString(), Phone), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");
                             break;
                         case 1:
                         case 2:

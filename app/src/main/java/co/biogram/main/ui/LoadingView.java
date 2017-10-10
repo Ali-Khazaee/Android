@@ -1,4 +1,4 @@
-package co.biogram.main.misc;
+package co.biogram.main.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,7 +19,6 @@ import java.util.List;
 
 import co.biogram.main.handler.MiscHandler;
 
-@SuppressWarnings("unused")
 public class LoadingView extends LinearLayout
 {
     private final List<ValueAnimator> AnimatorList = new ArrayList<>();
@@ -27,8 +26,9 @@ public class LoadingView extends LinearLayout
 
     private int BounceColor = Color.parseColor("#a9bac4");
     private float BounceScale = 2.0f;
-    private int BounceSpeed = 300;
     private int BounceSize;
+
+    private boolean ShouldStart = false;
 
     public LoadingView(Context context)
     {
@@ -50,22 +50,38 @@ public class LoadingView extends LinearLayout
         setGravity(Gravity.CENTER);
     }
 
+    @Override
+    public void onDetachedFromWindow()
+    {
+        super.onDetachedFromWindow();
+        LocalStop();
+    }
+
+    @Override
+    public void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+
+        if (ShouldStart)
+            Start();
+    }
+
     public void Start()
     {
-        Stop();
+        LocalStop();
 
         Context context = getContext();
         LayoutParams BounceParam = new LayoutParams(BounceSize, BounceSize);
         LayoutParams SpaceParam = new LayoutParams(MiscHandler.ToDimension(context, 5), BounceSize * 3);
 
-        GradientDrawable Shape = new GradientDrawable();
-        Shape.setShape(GradientDrawable.OVAL);
-        Shape.setColor(BounceColor);
+        GradientDrawable GradientDrawableBounce = new GradientDrawable();
+        GradientDrawableBounce.setShape(GradientDrawable.OVAL);
+        GradientDrawableBounce.setColor(BounceColor);
 
         for (int I = 0; I < 3; I++)
         {
             Bounce bounce = new Bounce(context);
-            bounce.setBackground(Shape);
+            bounce.setBackground(GradientDrawableBounce);
 
             addView(bounce, BounceParam);
             BounceList.add(bounce);
@@ -79,15 +95,16 @@ public class LoadingView extends LinearLayout
 
         for (int I = 0; I < 3; I++)
         {
+            int BounceSpeed = 300;
             Bounce bounce = BounceList.get(I);
             long StartDelay = I * (int) (0.4 * BounceSpeed);
 
-            ValueAnimator GrowAnimator = ObjectAnimator.ofFloat(bounce, "scale", 1.0f, BounceScale, 1.0f);
-            GrowAnimator.setDuration(BounceSpeed);
+            ValueAnimator BounceGrowAnimator = ObjectAnimator.ofFloat(bounce, "scale", 1.0f, BounceScale, 1.0f);
+            BounceGrowAnimator.setDuration(BounceSpeed);
 
             if (I == 2)
             {
-                AnimatorListenerAdapter animatorListenerAdapter = new AnimatorListenerAdapter()
+                BounceGrowAnimator.addListener(new AnimatorListenerAdapter()
                 {
                     @Override
                     public void onAnimationEnd(Animator animation)
@@ -96,37 +113,48 @@ public class LoadingView extends LinearLayout
                             if (animator != null)
                                 animator.start();
                     }
-                };
-
-                GrowAnimator.addListener(animatorListenerAdapter);
+                });
             }
 
-            GrowAnimator.setStartDelay(StartDelay);
-            GrowAnimator.start();
-            AnimatorList.add(GrowAnimator);
+            BounceGrowAnimator.setStartDelay(StartDelay);
+            BounceGrowAnimator.start();
+            AnimatorList.add(BounceGrowAnimator);
         }
+
+        ShouldStart = true;
     }
 
     public void Stop()
     {
+        LocalStop();
+        ShouldStart = false;
+    }
+
+    private void LocalStop()
+    {
+        for (Bounce bounce : BounceList)
+        {
+            if (bounce == null)
+                continue;
+
+            bounce.clearAnimation();
+        }
+
         for (ValueAnimator animator : AnimatorList)
         {
             if (animator == null)
                 continue;
 
-            animator.removeAllListeners();
             animator.end();
+            animator.cancel();
+            animator.removeAllUpdateListeners();
+            animator.removeAllListeners();
         }
 
         AnimatorList.clear();
         BounceList.clear();
 
         removeAllViews();
-    }
-
-    public void SetSpeed(int Speed)
-    {
-        BounceSpeed = Speed;
     }
 
     public void SetSize(int Size)
@@ -152,6 +180,7 @@ public class LoadingView extends LinearLayout
         }
 
         @Keep
+        @SuppressWarnings("unused")
         void setScale(float Scale)
         {
             setScaleX(Scale);

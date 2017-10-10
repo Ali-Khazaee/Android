@@ -137,7 +137,7 @@ public class Welcome extends FragmentBase
 
                 RelativeLayoutLanguage.addView(ViewLineLanguage);
 
-                RelativeLayout.LayoutParams TextViewEnglishLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(activity, 56));
+                RelativeLayout.LayoutParams TextViewEnglishLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 56));
                 TextViewEnglishLanguageParam.addRule(RelativeLayout.BELOW, ViewLineLanguage.getId());
                 TextViewEnglishLanguageParam.addRule(MiscHandler.Align("R"));
 
@@ -148,7 +148,7 @@ public class Welcome extends FragmentBase
                 TextViewEnglishLanguage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewEnglishLanguage.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
                 TextViewEnglishLanguage.setId(MiscHandler.GenerateViewID());
-                TextViewEnglishLanguage.setGravity(Gravity.CENTER_VERTICAL);
+                TextViewEnglishLanguage.setGravity(MiscHandler.Gravity("L") | Gravity.CENTER_VERTICAL);
                 TextViewEnglishLanguage.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); MiscHandler.ChangeLanguage(activity, "en"); } });
 
                 RelativeLayoutLanguage.addView(TextViewEnglishLanguage);
@@ -163,9 +163,9 @@ public class Welcome extends FragmentBase
 
                 RelativeLayoutLanguage.addView(ViewLine2Language);
 
-                RelativeLayout.LayoutParams TextViewPersianLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(activity, 56));
-                TextViewPersianLanguageParam.addRule(MiscHandler.Align("R"));
+                RelativeLayout.LayoutParams TextViewPersianLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 56));
                 TextViewPersianLanguageParam.addRule(RelativeLayout.BELOW, ViewLine2Language.getId());
+                TextViewPersianLanguageParam.addRule(MiscHandler.Align("R"));
 
                 TextView TextViewPersianLanguage = new TextView(activity);
                 TextViewPersianLanguage.setLayoutParams(TextViewPersianLanguageParam);
@@ -174,7 +174,7 @@ public class Welcome extends FragmentBase
                 TextViewPersianLanguage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 TextViewPersianLanguage.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
                 TextViewPersianLanguage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-                TextViewPersianLanguage.setGravity(Gravity.CENTER_VERTICAL);
+                TextViewPersianLanguage.setGravity(MiscHandler.Gravity("R") | Gravity.CENTER_VERTICAL);
                 TextViewPersianLanguage.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); MiscHandler.ChangeLanguage(activity, "fa"); } });
 
                 RelativeLayoutLanguage.addView(TextViewPersianLanguage);
@@ -249,7 +249,7 @@ public class Welcome extends FragmentBase
             public void onClick(View v)
             {
                 TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
-                Anim.setDuration(300);
+                Anim.setDuration(150);
 
                 RelativeLayoutMain.setAnimation(Anim);
 
@@ -341,7 +341,7 @@ public class Welcome extends FragmentBase
         RelativeLayoutSignIn.setBackgroundResource(R.color.White5);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
         RelativeLayoutSignIn.setId(MiscHandler.GenerateViewID());
-        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new SignUpPhoneVerification(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification"); } });
+        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {/* GetActivity().GetManager().OpenView(new SignUpPhoneVerification(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");*/ } });
 
         RelativeLayoutScroll.addView(RelativeLayoutSignIn);
 

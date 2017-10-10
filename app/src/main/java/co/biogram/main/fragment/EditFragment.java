@@ -81,7 +81,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
-import co.biogram.main.misc.LoadingView;
+import co.biogram.main.ui.LoadingView;
 
 import static android.content.Context.LOCATION_SERVICE;
 

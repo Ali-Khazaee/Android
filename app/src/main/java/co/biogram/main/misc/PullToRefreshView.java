@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.ui.LoadingView;
 
 public class PullToRefreshView extends LinearLayout
 {

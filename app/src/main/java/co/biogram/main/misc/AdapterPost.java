@@ -48,6 +48,7 @@ import co.biogram.main.fragment.VideoPreviewFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
+import co.biogram.main.ui.LoadingView;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderMain>
 {
