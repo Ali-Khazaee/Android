@@ -402,7 +402,7 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutVerificationCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        String PhoneNumber = Code + Phone;
+        final String PhoneNumber = Code + Phone;
 
         TextView TextViewMessage = new TextView(activity);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
@@ -602,7 +602,7 @@ class SignUpPhoneVerification extends FragmentBase
                 ButtonNext.setVisibility(View.GONE);
                 LoadingViewNext.Start();
 
-                String VerifyCode = EditTextVerificationCode1.getText().toString() + EditTextVerificationCode2.getText().toString() + EditTextVerificationCode3.getText().toString() + EditTextVerificationCode4.getText().toString() + EditTextVerificationCode5.getText().toString();
+                final String VerifyCode = EditTextVerificationCode1.getText().toString() + EditTextVerificationCode2.getText().toString() + EditTextVerificationCode3.getText().toString() + EditTextVerificationCode4.getText().toString() + EditTextVerificationCode5.getText().toString();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhoneVerify"))
                 .addBodyParameter("Code", Code)
@@ -634,12 +634,12 @@ class SignUpPhoneVerification extends FragmentBase
                                     MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
                                     break;
                                 case 0:
-                                    TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
-                                    Anim.setDuration(300);
+                                    TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                    Anim.setDuration(200);
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    // TODO Next Page GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");
+                                    GetActivity().GetManager().OpenView(new SignUpUsername(VerifyCode), R.id.WelcomeActivityContainer, "SignUpUsername");
                                     break;
                                 case 1:
                                 case 2:
@@ -694,16 +694,16 @@ class SignUpPhoneVerification extends FragmentBase
 
         RelativeLayoutNext.addView(ButtonNext);
 
-        RelativeLayout.LayoutParams LoadingViewUsernameParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
-        LoadingViewUsernameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
+        LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewNext.setLayoutParams(LoadingViewUsernameParam);
+        LoadingViewNext.setLayoutParams(LoadingViewNextParam);
         LoadingViewNext.SetColor(R.color.White);
 
         RelativeLayoutNext.addView(LoadingViewNext);
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(150);
+        Anim.setDuration(200);
 
         RelativeLayoutMain.startAnimation(Anim);
 

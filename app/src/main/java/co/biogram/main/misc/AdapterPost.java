@@ -254,11 +254,11 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderMain
             }
         });
 
-        Glide.with(Activity)
+        /*Glide.with(Activity)
         .load(PostList.get(Position).Avatar)
         .placeholder(R.color.BlueGray)
         .dontAnimate()
-        .into(Holder.ImageViewCircleProfile);
+        .into(Holder.ImageViewCircleProfile);*/
 
         Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
         {
@@ -684,23 +684,23 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderMain
                     case 1:
                         Holder.LinearLayoutImageContent1.setVisibility(View.VISIBLE);
                         Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), null, null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewSingle);
+                        //Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewSingle);
                         break;
                     case 2:
                         Holder.LinearLayoutImageContent2.setVisibility(View.VISIBLE);
                         Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(0).toString(), null); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewDouble1);
-                        Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewDouble2);
+                        //Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewDouble1);
+                        //Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewDouble2);
                         break;
                     case 3:
                         Holder.LinearLayoutImageContent3.setVisibility(View.VISIBLE);
                         Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(0).toString(), URL.get(1).toString(), URL.get(2).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(1).toString(), URL.get(2).toString(), URL.get(0).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
                         Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { try { OpenPreviewImage(URL.get(2).toString(), URL.get(0).toString(), URL.get(1).toString()); } catch (Exception e) { /* Leave Me Alone */ } } });
-                        Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple1);
-                        Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple2);
-                        Glide.with(Activity).load(URL.get(2).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple3);
+                        //Glide.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple1);
+                        //Glide.with(Activity).load(URL.get(1).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple2);
+                        //Glide.with(Activity).load(URL.get(2).toString()).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewTriple3);
                         break;
                 }
             }
@@ -814,7 +814,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderMain
                         if (Content.Image.endsWith(".jpg") || Content.Image.endsWith(".png"))
                         {
                             Holder.ImageViewFav.setVisibility(View.VISIBLE);
-                            Glide.with(Activity).load(Content.Image).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewFav);
+                            //Glide.with(Activity).load(Content.Image).placeholder(R.color.BlueGray).dontAnimate().into(Holder.ImageViewFav);
                         }
                     }
 

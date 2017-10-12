@@ -1492,10 +1492,10 @@ public class WriteFragment extends Fragment
         {
             final int Position = Holder.getAdapterPosition();
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(CategoryList.get(Position).Image)
             .dontAnimate()
-            .into(Holder.ImageViewIcon);
+            .into(Holder.ImageViewIcon);*/
 
             Holder.TextViewName.setText(CategoryList.get(Position).Name);
 

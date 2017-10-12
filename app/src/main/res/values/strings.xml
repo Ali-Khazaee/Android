@@ -54,7 +54,29 @@
     <string name="SignUpPhoneVerificationCodeCount">Verification is should be 5 charecters</string>
     <string name="SignUpPhoneVerificationCodeWrong">The information entered is incorrect</string>
 
+    <!-- Sign Up Username UI -->
+    <string name="SignUpUsername">Username</string>
+    <string name="SignUpUsernameMessage">Your username is unique and used to personalize your phone and Biogram account. You can always change it later.</string>
+    <string name="SignUpUsernameError">Username is unavailable</string>
+    <string name="SignUpUsernameHint">Username must be english</string>
+    <string name="SignUpUsernameTerm">Term &amp; Privacy</string>
+    <string name="SignUpUsernameError1">Username is empty</string>
+    <string name="SignUpUsernameError2">Username must be higher than 5 characters</string>
+    <string name="SignUpUsernameError3">Username must be lower than 32 characters</string>
+    <string name="SignUpUsernameError4">Username is unavailable</string>
+    <string name="SignUpUsernameError5">Username is already in use</string>
 
+    <!-- Sign Up Description UI -->
+    <string name="SignUpDescription">Profile info</string>
+    <string name="SignUpDescriptionMessage">نام کاربري شما منحصر به فرد است و براي شخصي سازي گوشي و حساب بيوگرام مورد استفاده قرار مي گيرد. شما هميشه مي توانيد آن را بعدا تغيير دهيد.</string>
+    <string name="SignUpDescriptionError">نام کاربري در دسترس نيست</string>
+    <string name="SignUpDescriptionHint">نام کاربری باید لاتین باشد</string>
+    <string name="SignUpDescriptionTerm">شرايط و حريم خصوصي</string>
+    <string name="SignUpDescriptionError1">نام کاربری خالی است</string>
+    <string name="SignUpDescriptionError2">نام کاربری باید بیشتر از 2 حرف باشد</string>
+    <string name="SignUpDescriptionError3">نام کاربری باید کمتر از 32 حرف باشد</string>
+    <string name="SignUpDescriptionError4">نام کاربری معتبر نمیباشد</string>
+    <string name="SignUpDescriptionError5">نام کاربری قبلا استفاده شده است</string>
 
 
 
@@ -278,10 +300,7 @@
 
 
 
-    <!-- SignUp Fragment Username -->
-    <string name="SignUpFragmentUsername">Username</string>
-    <string name="SignUpFragmentUsernameMessage">Your username is unique and used to personalize your phone and BioGram account. You can always change it later.</string>
-    <string name="SignUpFragmentUsernameError">Username is unavailable</string>
+
 
     <!-- SignUp Fragment Password -->
     <string name="SignUpFragmentPassword">Password</string>

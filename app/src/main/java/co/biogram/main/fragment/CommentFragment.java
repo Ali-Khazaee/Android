@@ -508,11 +508,11 @@ public class CommentFragment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(ListMain.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
             .dontAnimate()
-            .into(Holder.ImageViewProfile);
+            .into(Holder.ImageViewProfile);*/
 
             Holder.ImageViewProfile.setOnClickListener(new View.OnClickListener()
             {

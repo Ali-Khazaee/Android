@@ -5,16 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.support.annotation.Keep;
 
 import com.androidnetworking.AndroidNetworking;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.leakcanary.LeakCanary;
 
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.service.SocketService;
 
@@ -77,12 +88,29 @@ public class App extends Application
         super.attachBaseContext(base);
     }
 
-    @Override
-    public void onTrimMemory(int level)
+    @GlideModule
+    private class CustomGlideModule extends AppGlideModule
     {
-        Glide.with(this).onTrimMemory(level);
+        @Override
+        public void applyOptions(Context context, GlideBuilder builder)
+        {
+            MiscHandler.Debug("Load Shod Glide3");
+            builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888).disallowHardwareConfig());
+        }
 
-        super.onTrimMemory(level);
+        @Override
+        public void registerComponents(Context context, Glide glide, Registry registry)
+        {
+            MiscHandler.Debug("Load Shod Glide1");
+            glide.getRegistry().replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(GetOKClient()));
+        }
+
+        @Override
+        public boolean isManifestParsingEnabled()
+        {
+            MiscHandler.Debug("Load Shod Glide2");
+            return false;
+        }
     }
 
     public static OkHttpClient GetOKClient()

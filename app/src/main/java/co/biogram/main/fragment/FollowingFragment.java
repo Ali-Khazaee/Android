@@ -318,11 +318,11 @@ public class FollowingFragment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(ListMain.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
             .dontAnimate()
-            .into(Holder.ImageViewCircleProfile);
+            .into(Holder.ImageViewCircleProfile);*/
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
             {

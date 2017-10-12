@@ -245,8 +245,8 @@ class SignUpPhone extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
-                Anim.setDuration(300);
+                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                Anim.setDuration(200);
 
                 RelativeLayoutMain.setAnimation(Anim);
 
@@ -328,8 +328,8 @@ class SignUpPhone extends FragmentBase
                     return;
                 }
 
-                DialogPermission DialogPermissionSMS = new DialogPermission(activity);
-                DialogPermissionSMS.SetContentView(R.drawable.ic_permission_sms, activity.getString(R.string.SignUpPhonePermission), new DialogPermission.OnSelectedListener()
+                PermissionDialog PermissionDialogSMS = new PermissionDialog(activity);
+                PermissionDialogSMS.SetContentView(R.drawable.ic_permission_sms, activity.getString(R.string.SignUpPhonePermission), new PermissionDialog.OnSelectedListener()
                 {
                     @Override
                     public void OnSelected(boolean Allow)
@@ -361,10 +361,10 @@ class SignUpPhone extends FragmentBase
 
         RelativeLayoutNext.addView(ButtonNext);
 
-        RelativeLayout.LayoutParams LoadingViewUsernameParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
-        LoadingViewUsernameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
+        LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewNext.setLayoutParams(LoadingViewUsernameParam);
+        LoadingViewNext.setLayoutParams(LoadingViewNextParam);
         LoadingViewNext.SetColor(R.color.White);
 
         RelativeLayoutNext.addView(LoadingViewNext);
@@ -385,7 +385,7 @@ class SignUpPhone extends FragmentBase
         }
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(150);
+        Anim.setDuration(200);
         Anim.setAnimationListener(new Animation.AnimationListener()
         {
             @Override public void onAnimationStart(Animation animation) { }
@@ -446,8 +446,8 @@ class SignUpPhone extends FragmentBase
                             MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
                             break;
                         case 0:
-                            TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
-                            Anim.setDuration(150);
+                            TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                            Anim.setDuration(200);
 
                             RelativeLayoutMain.setAnimation(Anim);
 

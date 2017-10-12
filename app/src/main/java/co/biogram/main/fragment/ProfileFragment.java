@@ -44,7 +44,6 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.json.JSONArray;
@@ -1042,16 +1041,16 @@ public class ProfileFragment extends Fragment
 
                         if (!Data.getString("Avatar").equals(""))
                         {
-                            Glide.with(context)
+                            /*Glide.with(context)
                             .load(Data.getString("Avatar"))
                             .placeholder(R.color.BlueGray)
                             .dontAnimate()
-                            .into(ImageViewCircleProfile);
+                            .into(ImageViewCircleProfile);*/
                         }
 
                         if (!Data.getString("Cover").equals(""))
                         {
-                            Glide.with(context)
+                            /*Glide.with(context)
                             .load(Data.getString("Cover"))
                             .asBitmap()
                             .placeholder(R.color.BlueLight)
@@ -1064,7 +1063,7 @@ public class ProfileFragment extends Fragment
                                     ImageViewCover.setImageBitmap(bitmap);
                                     ImageViewCoverLayer.setImageBitmap(MiscHandler.Blurry(bitmap));
                                 }
-                            });
+                            });*/
                         }
 
                         TextViewUsername.setText(Data.getString("Username"));
@@ -1163,16 +1162,16 @@ public class ProfileFragment extends Fragment
 
                         if (!Data.getString("Avatar").equals(""))
                         {
-                            Glide.with(context)
+                            /*Glide.with(context)
                             .load(Data.getString("Avatar"))
                             .placeholder(R.color.BlueGray)
                             .dontAnimate()
-                            .into(ImageViewCircleProfile);
+                            .into(ImageViewCircleProfile);*/
                         }
 
                         if (!Data.getString("Cover").equals(""))
                         {
-                            Glide.with(context)
+                           /* Glide.with(context)
                             .load(Data.getString("Cover"))
                             .asBitmap()
                             .placeholder(R.color.BlueLight)
@@ -1185,7 +1184,7 @@ public class ProfileFragment extends Fragment
                                     ImageViewCover.setImageBitmap(bitmap);
                                     ImageViewCoverLayer.setImageBitmap(MiscHandler.Blurry(bitmap));
                                 }
-                            });
+                            });*/
                         }
 
                         TextViewUsername.setText(Data.getString("Username"));
@@ -1554,11 +1553,11 @@ public class ProfileFragment extends Fragment
                 }
             });
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(CommentList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
             .dontAnimate()
-            .into(Holder.ImageViewCircleProfile);
+            .into(Holder.ImageViewCircleProfile);*/
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
             {

@@ -248,8 +248,8 @@ public class Welcome extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(-100f, 0f, 0f, 0f);
-                Anim.setDuration(150);
+                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                Anim.setDuration(200);
 
                 RelativeLayoutMain.setAnimation(Anim);
 
@@ -341,7 +341,19 @@ public class Welcome extends FragmentBase
         RelativeLayoutSignIn.setBackgroundResource(R.color.White5);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
         RelativeLayoutSignIn.setId(MiscHandler.GenerateViewID());
-        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {/* GetActivity().GetManager().OpenView(new SignUpPhoneVerification(), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");*/ } });
+        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                Anim.setDuration(200);
+
+                RelativeLayoutMain.setAnimation(Anim);
+
+                GetActivity().GetManager().OpenView(new SignUpUsername("ww"), R.id.WelcomeActivityContainer, "SignUpUsername");
+            }
+        });
 
         RelativeLayoutScroll.addView(RelativeLayoutSignIn);
 
@@ -402,7 +414,7 @@ public class Welcome extends FragmentBase
         TextViewTerm.setText(activity.getString(R.string.WelcomeTerm));
         TextViewTerm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
-        if (MiscHandler.IsFa())
+        if (MiscHandler.IsRTL())
         {
             ButtonSignUp.setTypeface(null, Typeface.BOLD);
             ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(activity, 2), 0, 0);

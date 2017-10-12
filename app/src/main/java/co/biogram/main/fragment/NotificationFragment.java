@@ -405,11 +405,11 @@ public class NotificationFragment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(NotificationList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
             .dontAnimate()
-            .into(Holder.ImageViewCircleProfile);
+            .into(Holder.ImageViewCircleProfile);*/
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
             {

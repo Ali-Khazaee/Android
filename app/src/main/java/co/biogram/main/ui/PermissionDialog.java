@@ -16,9 +16,9 @@ import android.widget.TextView;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 
-class DialogPermission extends Dialog
+class PermissionDialog extends Dialog
 {
-    DialogPermission(Context context)
+    PermissionDialog(Context context)
     {
         super(context);
         setCancelable(false);

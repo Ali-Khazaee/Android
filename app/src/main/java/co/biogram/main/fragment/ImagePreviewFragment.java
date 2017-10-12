@@ -18,9 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +171,7 @@ public class ImagePreviewFragment extends Fragment
 
             RelativeLayoutMain.addView(LoadingViewMain);
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(ListMain.get(Position))
             .listener(new RequestListener<String, GlideDrawable>()
             {
@@ -192,7 +189,7 @@ public class ImagePreviewFragment extends Fragment
                     return false;
                 }
             })
-            .into(TouchImageViewMain);
+            .into(TouchImageViewMain);*/
 
             Container.addView(RelativeLayoutMain);
 

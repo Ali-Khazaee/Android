@@ -1192,7 +1192,7 @@ public class EditFragment extends Fragment
                         EditTextEmail.setText(Data.getString("Email"));
                         Position = Data.getString("Position");
 
-                        Glide.with(context)
+                        /*Glide.with(context)
                         .load(Data.getString("Cover"))
                         .dontAnimate()
                         .into(ImageViewCover);
@@ -1200,7 +1200,7 @@ public class EditFragment extends Fragment
                         Glide.with(context)
                         .load(Data.getString("Avatar"))
                         .dontAnimate()
-                        .into(ImageViewCircleProfile);
+                        .into(ImageViewCircleProfile);*/
                     }
                 }
                 catch (Exception e)

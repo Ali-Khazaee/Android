@@ -306,11 +306,11 @@ public class ContactFragment extends Fragment
 
             final int Position = Holder.getAdapterPosition();
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(ContactList.get(Position).Avatar)
             .placeholder(R.color.BlueGray)
             .dontAnimate()
-            .into(Holder.ImageViewCircleProfile);
+            .into(Holder.ImageViewCircleProfile);*/
 
             Holder.ImageViewCircleProfile.setOnClickListener(new View.OnClickListener()
             {

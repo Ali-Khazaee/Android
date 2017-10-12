@@ -353,13 +353,13 @@ public class GalleryFragment extends Fragment
             else
                 Holder.ViewCircle.setBackground(Select);
 
-            Glide.with(context)
+            /*Glide.with(context)
             .load(FileList.get(Position).Path)
             .thumbnail(0.1f)
             .placeholder(R.color.BlueGray2)
             .centerCrop()
             .dontAnimate()
-            .into(Holder.ImageViewMain);
+            .into(Holder.ImageViewMain);*/
 
             Holder.ImageViewMain.setOnClickListener(new View.OnClickListener()
             {

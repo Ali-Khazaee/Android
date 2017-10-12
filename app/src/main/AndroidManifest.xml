@@ -35,7 +35,6 @@
         <activity android:name=".activity.MainActivity" android:screenOrientation="portrait" />
 
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAEzDCzmm_0IoHUeOeaNdAE13hWvPFXdbw" />
-        <meta-data android:name="co.biogram.main.misc.GlideConfig" android:value="GlideModule" />
 
         <service android:name=".service.SocketService" />
 
