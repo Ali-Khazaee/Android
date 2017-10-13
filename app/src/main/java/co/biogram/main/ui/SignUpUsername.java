@@ -220,7 +220,7 @@ class SignUpUsername extends FragmentBase
             @Override
             public void draw(@NonNull Canvas canvas)
             {
-                canvas.drawText("@", 0, 0, paint);
+                canvas.drawText("@", 0, 10, paint);
             }
 
             @Override

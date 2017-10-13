@@ -68,15 +68,11 @@
 
     <!-- Sign Up Description UI -->
     <string name="SignUpDescription">Profile info</string>
-    <string name="SignUpDescriptionMessage">نام کاربري شما منحصر به فرد است و براي شخصي سازي گوشي و حساب بيوگرام مورد استفاده قرار مي گيرد. شما هميشه مي توانيد آن را بعدا تغيير دهيد.</string>
-    <string name="SignUpDescriptionError">نام کاربري در دسترس نيست</string>
-    <string name="SignUpDescriptionHint">نام کاربری باید لاتین باشد</string>
-    <string name="SignUpDescriptionTerm">شرايط و حريم خصوصي</string>
-    <string name="SignUpDescriptionError1">نام کاربری خالی است</string>
-    <string name="SignUpDescriptionError2">نام کاربری باید بیشتر از 2 حرف باشد</string>
-    <string name="SignUpDescriptionError3">نام کاربری باید کمتر از 32 حرف باشد</string>
-    <string name="SignUpDescriptionError4">نام کاربری معتبر نمیباشد</string>
-    <string name="SignUpDescriptionError5">نام کاربری قبلا استفاده شده است</string>
+    <string name="SignUpDescriptionName">Name</string>
+    <string name="SignUpDescriptionInfo">Description</string>
+    <string name="SignUpDescriptionTerm">Term &amp; Privacy</string>
+    <string name="SignUpDescriptionFinish">Finish</string>
+
 
 
 

@@ -34,10 +34,6 @@
 
         <activity android:name=".activity.MainActivity" android:screenOrientation="portrait" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAEzDCzmm_0IoHUeOeaNdAE13hWvPFXdbw" />
-
-        <service android:name=".service.SocketService" />
-
         <receiver android:name="co.biogram.main.service.OnBootService">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -50,6 +46,10 @@
                 <action android:name="co.biogram.main.service.SMSService" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.SocketService" />
+
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAEzDCzmm_0IoHUeOeaNdAE13hWvPFXdbw" />
 
     </application>
 

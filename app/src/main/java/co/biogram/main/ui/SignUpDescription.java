@@ -1,19 +1,12 @@
 package co.biogram.main.ui;
 
-
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -21,6 +14,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
@@ -28,15 +22,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-
-import org.json.JSONObject;
 
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
@@ -58,8 +49,8 @@ class SignUpDescription extends FragmentBase
     public void OnCreate()
     {
         final FragmentActivity activity = GetActivity();
-        final Button ButtonNext = new Button(activity, null, android.R.attr.borderlessButtonStyle);
-        final LoadingView LoadingViewNext = new LoadingView(activity);
+        final Button ButtonFinish = new Button(activity, null, android.R.attr.borderlessButtonStyle);
+        final LoadingView LoadingViewFinish = new LoadingView(activity);
 
         RelativeLayoutMain = new RelativeLayout(activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -154,94 +145,75 @@ class SignUpDescription extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewUsernameParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
-        TextViewUsernameParam.addRule(MiscHandler.Align("R"));
+        RelativeLayout.LayoutParams CircleImageViewProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 75), MiscHandler.ToDimension(activity, 75));
+        CircleImageViewProfileParam.setMargins(MiscHandler.ToDimension(activity, 25), MiscHandler.ToDimension(activity, 25), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 25));
+        CircleImageViewProfileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        TextView TextViewUsername = new TextView(activity);
-        TextViewUsername.setLayoutParams(TextViewUsernameParam);
-        TextViewUsername.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewUsername.setText(activity.getString(R.string.SignUpUsername));
-        TextViewUsername.setTypeface(null, Typeface.BOLD);
-        TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewUsername.setId(MiscHandler.GenerateViewID());
-
-        RelativeLayoutScroll.addView(TextViewUsername);
-
-        RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
-        EditTextUsernameParam.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
-
-        final EditText EditTextUsername = new EditText(activity);
-        EditTextUsername.setLayoutParams(EditTextUsernameParam);
-        EditTextUsername.setId(MiscHandler.GenerateViewID());
-        EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextUsername.setFilters(new InputFilter[]
-                {
-                        new InputFilter.LengthFilter(32), new InputFilter()
-                {
-                    @Override
-                    public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
-                    {
-                        if (End > Start)
-                        {
-                            char[] AllowChar = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-
-                            for (int I = Start; I < End; I++)
-                            {
-                                if (!new String(AllowChar).contains(String.valueOf(s.charAt(I))))
-                                {
-                                    return "";
-                                }
-                            }
-                        }
-
-                        return null;
-                    }
-                }
-                });
-        EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextUsername.requestFocus();
-        EditTextUsername.setHint(activity.getString(R.string.SignUpUsernameHint));
-        EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
+        CircleImageView CircleImageViewProfile = new CircleImageView(activity);
+        CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
+        CircleImageViewProfile.setId(MiscHandler.GenerateViewID());
+        CircleImageViewProfile.setCircleBackgroundColor(R.color.BlueLight);
+        CircleImageViewProfile.setImageResource(R.drawable.ic_person_white);
+        CircleImageViewProfile.setBorderColor(R.color.Gray);
+        CircleImageViewProfile.setBorderWidth(2);
+        CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
         {
-            private final Paint paint;
-
-            {
-                paint = new Paint();
-                paint.setColor(ContextCompat.getColor(activity, R.color.Gray4));
-                paint.setTextSize(50f);
-                paint.setAntiAlias(true);
-                paint.setTextAlign(Paint.Align.LEFT);
-            }
-
             @Override
-            public void draw(@NonNull Canvas canvas)
+            public void onClick(View v)
             {
-                canvas.drawText("@", 0, 0, paint);
+                
             }
+        });
 
-            @Override
-            public void setAlpha(int alpha)
-            {
-                paint.setAlpha(alpha);
-            }
+        RelativeLayoutScroll.addView(CircleImageViewProfile);
 
-            @Override
-            public void setColorFilter(ColorFilter cf)
-            {
-                paint.setColorFilter(cf);
-            }
+        RelativeLayout.LayoutParams LinearLayoutNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayoutNameParam.setMargins(0, MiscHandler.ToDimension(activity, 30), MiscHandler.ToDimension(activity, 15), 0);
+        LinearLayoutNameParam.addRule(RelativeLayout.RIGHT_OF, CircleImageViewProfile.getId());
 
-            @Override
-            public int getOpacity()
+        LinearLayout LinearLayoutName = new LinearLayout(activity);
+        LinearLayoutName.setLayoutParams(LinearLayoutNameParam);
+        LinearLayoutName.setOrientation(LinearLayout.VERTICAL);
+        LinearLayoutName.setId(MiscHandler.GenerateViewID());
+
+        RelativeLayoutScroll.addView(LinearLayoutName);
+
+        TextView TextViewName = new TextView(activity);
+        TextViewName.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        TextViewName.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
+        TextViewName.setText(activity.getString(R.string.SignUpDescriptionName));
+        TextViewName.setTypeface(null, Typeface.BOLD);
+        TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewName.setGravity(Gravity.START);
+
+        LinearLayoutName.addView(TextViewName);
+
+        final EditText EditTextName = new EditText(activity);
+        EditTextName.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        EditTextName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextName.setFilters(new InputFilter[]
+        {
+            new InputFilter.LengthFilter(32), new InputFilter()
             {
-                return PixelFormat.TRANSLUCENT;
+                @Override
+                public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
+                {
+                    for (int I = Start; I < End; I++)
+                    {
+                        int type = Character.getType(s.charAt(I));
+
+                        if (type == Character.SURROGATE || type == Character.OTHER_SYMBOL)
+                            return "";
+                    }
+
+                    return null;
+                }
             }
-        }, null, null, null);
-        EditTextUsername.setCompoundDrawablePadding(MiscHandler.ToDimension(activity, 20));
-        EditTextUsername.addTextChangedListener(new TextWatcher()
+        });
+        EditTextName.setInputType(InputType.TYPE_CLASS_TEXT);
+        EditTextName.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextName.requestFocus();
+        EditTextName.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -252,30 +224,48 @@ class SignUpDescription extends FragmentBase
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 2)
-                    ButtonNext.setEnabled(true);
+                if (s.length() > 1)
+                    ButtonFinish.setEnabled(true);
                 else
-                    ButtonNext.setEnabled(false);
+                    ButtonFinish.setEnabled(false);
             }
         });
 
-        RelativeLayoutScroll.addView(EditTextUsername);
+        LinearLayoutName.addView(EditTextName);
 
-        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
+        RelativeLayout.LayoutParams TextViewDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewDescriptionParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), 0);
+        TextViewDescriptionParam.addRule(RelativeLayout.BELOW, LinearLayoutName.getId());
+        TextViewDescriptionParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(activity);
-        TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-        TextViewMessage.setText(activity.getString(R.string.SignUpUsernameMessage));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewMessage.setId(MiscHandler.GenerateViewID());
-        TextViewMessage.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        TextView TextViewDescription = new TextView(activity);
+        TextViewDescription.setLayoutParams(TextViewDescriptionParam);
+        TextViewDescription.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
+        TextViewDescription.setText(activity.getString(R.string.SignUpDescriptionInfo));
+        TextViewDescription.setTypeface(null, Typeface.BOLD);
+        TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewDescription.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutScroll.addView(TextViewMessage);
+        RelativeLayoutScroll.addView(TextViewDescription);
+
+        RelativeLayout.LayoutParams EditTextDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(activity, 15), 0, MiscHandler.ToDimension(activity, 15), 0);
+        EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
+
+        EditText EditTextDescription = new EditText(activity);
+        EditTextDescription.setLayoutParams(EditTextDescriptionParam);
+        EditTextDescription.setId(MiscHandler.GenerateViewID());
+        EditTextDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
+        EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT);
+        EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextDescription.setMaxLines(5);
+        EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+        RelativeLayoutScroll.addView(EditTextDescription);
 
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayoutBottomParam.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
+        RelativeLayoutBottomParam.addRule(RelativeLayout.BELOW, EditTextDescription.getId());
 
         RelativeLayout RelativeLayoutBottom = new RelativeLayout(activity);
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
@@ -289,140 +279,71 @@ class SignUpDescription extends FragmentBase
         TextView TextViewPrivacy = new TextView(activity);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        TextViewPrivacy.setText(activity.getString(R.string.SignUpUsernameTerm));
+        TextViewPrivacy.setText(activity.getString(R.string.SignUpDescriptionTerm));
         TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
-        RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
-        RelativeLayoutNextParam.addRule(MiscHandler.Align("L"));
+        RelativeLayout.LayoutParams RelativeLayoutFinishParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
+        RelativeLayoutFinishParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        RelativeLayoutFinishParam.addRule(MiscHandler.Align("L"));
 
-        GradientDrawable GradientDrawableNext = new GradientDrawable();
-        GradientDrawableNext.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        GradientDrawableNext.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+        GradientDrawable GradientDrawableFinish = new GradientDrawable();
+        GradientDrawableFinish.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
+        GradientDrawableFinish.setCornerRadius(MiscHandler.ToDimension(activity, 7));
 
-        GradientDrawable GradientDrawableNextDisable = new GradientDrawable();
-        GradientDrawableNextDisable.setCornerRadius(MiscHandler.ToDimension(activity, 7));
-        GradientDrawableNextDisable.setColor(ContextCompat.getColor(activity, R.color.Gray2));
+        GradientDrawable GradientDrawableFinishDisable = new GradientDrawable();
+        GradientDrawableFinishDisable.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+        GradientDrawableFinishDisable.setColor(ContextCompat.getColor(activity, R.color.Gray2));
 
         StateListDrawable StateListDrawableNext = new StateListDrawable();
-        StateListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, GradientDrawableNext);
-        StateListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, GradientDrawableNextDisable);
+        StateListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, GradientDrawableFinish);
+        StateListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, GradientDrawableFinishDisable);
 
-        RelativeLayout RelativeLayoutNext = new RelativeLayout(activity);
-        RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
-        RelativeLayoutNext.setBackground(GradientDrawableNext);
+        RelativeLayout RelativeLayoutFinish = new RelativeLayout(activity);
+        RelativeLayoutFinish.setLayoutParams(RelativeLayoutFinishParam);
+        RelativeLayoutFinish.setBackground(GradientDrawableFinish);
 
-        RelativeLayoutBottom.addView(RelativeLayoutNext);
+        RelativeLayoutBottom.addView(RelativeLayoutFinish);
 
-        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35)));
-        ButtonNext.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        ButtonNext.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        ButtonNext.setText(activity.getString(R.string.WelcomeActivityGeneralNext));
-        ButtonNext.setBackground(StateListDrawableNext);
-        ButtonNext.setPadding(0, 0, 0, 0);
-        ButtonNext.setEnabled(false);
-        ButtonNext.setAllCaps(false);
-        ButtonNext.setOnClickListener(new View.OnClickListener()
+        ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35)));
+        ButtonFinish.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        ButtonFinish.setTextColor(ContextCompat.getColor(activity, R.color.White));
+        ButtonFinish.setText(activity.getString(R.string.SignUpDescriptionFinish));
+        ButtonFinish.setBackground(StateListDrawableNext);
+        ButtonFinish.setPadding(0, 0, 0, 0);
+        ButtonFinish.setEnabled(false);
+        ButtonFinish.setAllCaps(false);
+        ButtonFinish.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                ButtonNext.setVisibility(View.GONE);
-                LoadingViewNext.Start();
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("UsernameIsAvailable"))
-                        .addBodyParameter("Username", EditTextUsername.getText().toString())
-                        .setTag("SignUpUsername")
-                        .build()
-                        .getAsString(new StringRequestListener()
-                        {
-                            @Override
-                            public void onResponse(String Response)
-                            {
-                                LoadingViewNext.Stop();
-                                ButtonNext.setVisibility(View.VISIBLE);
-
-                                try
-                                {
-                                    JSONObject Result = new JSONObject(Response);
-
-                                    switch (Result.getInt("Message"))
-                                    {
-                                        case -2:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
-                                            break;
-                                        case -1:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
-                                            break;
-                                        case 0:
-                                            TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                            Anim.setDuration(200);
-
-                                            RelativeLayoutMain.setAnimation(Anim);
-
-                                            GetActivity().GetManager().OpenView(new SignUpUsername(""), R.id.WelcomeActivityContainer, "SignUpUsername");
-                                            break;
-                                        case 1:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError1));
-                                            break;
-                                        case 2:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError3));
-                                            break;
-                                        case 3:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError4));
-                                            break;
-                                        case 4:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError4));
-                                            break;
-                                        case 5:
-                                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError5));
-                                            break;
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    MiscHandler.Debug("SignUpUsername-UsernameIsAvailable: " + e.toString());
-                                }
-                            }
-
-                            @Override
-                            public void onError(ANError e)
-                            {
-                                LoadingViewNext.Stop();
-                                ButtonNext.setVisibility(View.VISIBLE);
-                                MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
-                            }
-                        });
             }
         });
 
-        RelativeLayoutNext.addView(ButtonNext);
+        RelativeLayoutFinish.addView(ButtonFinish);
 
-        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
-        LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams LoadingViewFinishParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
+        LoadingViewFinishParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewNext.setLayoutParams(LoadingViewNextParam);
-        LoadingViewNext.SetColor(R.color.White);
+        LoadingViewFinish.setLayoutParams(LoadingViewFinishParam);
+        LoadingViewFinish.SetColor(R.color.White);
 
-        RelativeLayoutNext.addView(LoadingViewNext);
+        RelativeLayoutFinish.addView(LoadingViewFinish);
 
         if (MiscHandler.IsRTL())
         {
             TextViewTitle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
-            TextViewUsername.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            EditTextUsername.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewMessage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+            TextViewName.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
             TextViewPrivacy.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
 
-            ButtonNext.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
+            ButtonFinish.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
         }
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
@@ -431,7 +352,7 @@ class SignUpDescription extends FragmentBase
         {
             @Override public void onAnimationStart(Animation animation) { }
             @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextUsername); }
+            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextName); }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -449,7 +370,7 @@ class SignUpDescription extends FragmentBase
     public void OnPause()
     {
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
-        AndroidNetworking.forceCancel("SignUpUsername");
+        AndroidNetworking.forceCancel("SignUpDescription");
         MiscHandler.HideSoftKey(GetActivity());
     }
 }
