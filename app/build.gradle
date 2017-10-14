@@ -21,7 +21,7 @@ android
         resConfigs "en", "fa"
     }
 
-    /*signingConfigs
+    signingConfigs
     {
         release
         {
@@ -31,7 +31,7 @@ android
             keyPassword SignAliasPassword
             v2SigningEnabled false
         }
-    }*/
+    }
 
     buildTypes
     {
@@ -43,7 +43,7 @@ android
             zipAlignEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -65,7 +65,7 @@ dependencies
     compile 'com.amitshekhar.android:android-networking:1.0.0'
 
     compile 'com.google.android.exoplayer:exoplayer:r2.5.3'
-    compile 'com.google.android.exoplayer:extension-okhttp:r2.5.1'
+    compile 'com.google.android.exoplayer:extension-okhttp:r2.5.3'
 
     compile ('io.socket:socket.io-client:1.0.0') { exclude group: 'org.json', module: 'json' }
 

@@ -2,7 +2,6 @@ package co.biogram.main.ui;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -11,7 +10,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
@@ -25,7 +23,7 @@ class PermissionDialog extends Dialog
         requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
-    void SetContentView(int Icon, String Message, final OnSelectedListener Listener)
+    void SetContentView(int IconID, String Message, final OnSelectedListener Listener)
     {
         Context context = getContext();
 
@@ -44,7 +42,7 @@ class PermissionDialog extends Dialog
 
         ImageView ImageViewMain = new ImageView(context);
         ImageViewMain.setLayoutParams(ImageViewMainParam);
-        ImageViewMain.setImageResource(Icon);
+        ImageViewMain.setImageResource(IconID);
 
         RelativeLayoutHeader.addView(ImageViewMain);
 
@@ -52,7 +50,7 @@ class PermissionDialog extends Dialog
         TextViewMessageParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(context);
+        TextView TextViewMessage = new TextView(context, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -72,32 +70,21 @@ class PermissionDialog extends Dialog
 
         RelativeLayoutMain.addView(LinearLayoutChoice);
 
-        TextView TextViewContinue = new TextView(context);
+        TextView TextViewContinue = new TextView(context, true);
         TextViewContinue.setLayoutParams(TextViewMessageParam);
         TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewContinue.setTypeface(null, Typeface.BOLD);
         TextViewContinue.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
         TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
 
-        TextView TextViewDecline = new TextView(context);
+        TextView TextViewDecline = new TextView(context, true);
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
         TextViewDecline.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewDecline.setTypeface(null, Typeface.BOLD);
         TextViewDecline.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         TextViewDecline.setText(context.getString(R.string.DialogPermissionDecline));
         TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
-
-        if (MiscHandler.IsRTL())
-        {
-            TextViewMessage.setTypeface(Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf"));
-            TextViewContinue.setTypeface(Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf"));
-            TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            TextViewDecline.setTypeface(Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf"));
-            TextViewDecline.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        }
 
         LinearLayoutChoice.addView(TextViewDecline);
         LinearLayoutChoice.addView(TextViewContinue);

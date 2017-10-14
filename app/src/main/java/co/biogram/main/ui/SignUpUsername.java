@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -24,12 +23,10 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -59,7 +56,7 @@ class SignUpUsername extends FragmentBase
     public void OnCreate()
     {
         final FragmentActivity activity = GetActivity();
-        final Button ButtonNext = new Button(activity, null, android.R.attr.borderlessButtonStyle);
+        final Button ButtonNext = new Button(activity, false);
         final LoadingView LoadingViewNext = new LoadingView(activity);
 
         RelativeLayoutMain = new RelativeLayout(activity);
@@ -122,11 +119,10 @@ class SignUpUsername extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(activity);
+        TextView TextViewTitle = new TextView(activity, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
         TextViewTitle.setText(activity.getString(R.string.SignUpUsername));
-        TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -159,11 +155,10 @@ class SignUpUsername extends FragmentBase
         TextViewUsernameParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
         TextViewUsernameParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewUsername = new TextView(activity);
+        TextView TextViewUsername = new TextView(activity, true);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
         TextViewUsername.setText(activity.getString(R.string.SignUpUsername));
-        TextViewUsername.setTypeface(null, Typeface.BOLD);
         TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewUsername.setId(MiscHandler.GenerateViewID());
 
@@ -265,7 +260,7 @@ class SignUpUsername extends FragmentBase
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
 
-        TextView TextViewMessage = new TextView(activity);
+        TextView TextViewMessage = new TextView(activity, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
         TextViewMessage.setText(activity.getString(R.string.SignUpUsernameMessage));
@@ -287,7 +282,7 @@ class SignUpUsername extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewPrivacy = new TextView(activity);
+        TextView TextViewPrivacy = new TextView(activity, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
         TextViewPrivacy.setText(activity.getString(R.string.SignUpUsernameTerm));
@@ -410,21 +405,6 @@ class SignUpUsername extends FragmentBase
         LoadingViewNext.SetColor(R.color.White);
 
         RelativeLayoutNext.addView(LoadingViewNext);
-
-        if (MiscHandler.IsRTL())
-        {
-            TextViewTitle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewUsername.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            EditTextUsername.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewMessage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewPrivacy.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            ButtonNext.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        }
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);

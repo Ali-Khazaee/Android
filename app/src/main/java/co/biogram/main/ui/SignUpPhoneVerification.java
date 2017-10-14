@@ -25,13 +25,11 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -77,7 +75,7 @@ class SignUpPhoneVerification extends FragmentBase
     public void OnCreate()
     {
         final FragmentActivity activity = GetActivity();
-        final Button ButtonNext = new Button(activity, null, android.R.attr.borderlessButtonStyle);
+        final Button ButtonNext = new Button(activity, false);
         final LoadingView LoadingViewNext = new LoadingView(activity);
 
         RelativeLayoutMain = new RelativeLayout(activity);
@@ -142,11 +140,10 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(activity);
+        TextView TextViewTitle = new TextView(activity, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
         TextViewTitle.setText(activity.getString(R.string.SignUpPhoneVerification));
-        TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -155,7 +152,7 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewTimeParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTimeParam.addRule(MiscHandler.Align("L"));
 
-        final TextView TextViewTime = new TextView(activity);
+        final TextView TextViewTime = new TextView(activity, false);
         TextViewTime.setLayoutParams(TextViewTimeParam);
         TextViewTime.setTextColor(ContextCompat.getColor(activity, R.color.White));
         TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -190,12 +187,11 @@ class SignUpPhoneVerification extends FragmentBase
         RelativeLayout.LayoutParams TextViewVerificationCodeParam = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewVerificationCodeParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewVerificationCode = new TextView(activity);
+        TextView TextViewVerificationCode = new TextView(activity, true);
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(MiscHandler.ToDimension(activity, 20), MiscHandler.ToDimension(activity, 40), MiscHandler.ToDimension(activity, 20), MiscHandler.ToDimension(activity, 15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
         TextViewVerificationCode.setText(activity.getString(R.string.SignUpPhoneVerificationCode));
-        TextViewVerificationCode.setTypeface(null, Typeface.BOLD);
         TextViewVerificationCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewVerificationCode.setId(MiscHandler.GenerateViewID());
 
@@ -404,7 +400,7 @@ class SignUpPhoneVerification extends FragmentBase
 
         final String PhoneNumber = Code + Phone;
 
-        TextView TextViewMessage = new TextView(activity);
+        TextView TextViewMessage = new TextView(activity, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -447,7 +443,7 @@ class SignUpPhoneVerification extends FragmentBase
         TextViewResendParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewResendParam.addRule(MiscHandler.Align("R"));
 
-        final TextView TextViewResend = new TextView(activity);
+        final TextView TextViewResend = new TextView(activity, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.setTextColor(ContextCompat.getColor(activity, R.color.Gray7));
         TextViewResend.setText(activity.getString(R.string.SignUpPhoneVerificationResend));
@@ -678,19 +674,6 @@ class SignUpPhoneVerification extends FragmentBase
                 });
             }
         });
-
-        if (MiscHandler.IsFa())
-        {
-            TextViewTitle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewVerificationCode.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewMessage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewResend.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            ButtonNext.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        }
 
         RelativeLayoutNext.addView(ButtonNext);
 

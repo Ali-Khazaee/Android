@@ -72,8 +72,12 @@
     <string name="SignUpDescriptionInfo">Description</string>
     <string name="SignUpDescriptionTerm">Term &amp; Privacy</string>
     <string name="SignUpDescriptionFinish">Finish</string>
-
-
+    <string name="SignUpDescriptionMessage">Please provide your name, photo and description. These will show you better to other users</string>
+    <string name="SignUpDescriptionProfile">Your choices</string>
+    <string name="SignUpDescriptionProfileGallery">Select from gallery</string>
+    <string name="SignUpDescriptionProfileCamera">Take from camera</string>
+    <string name="SignUpDescriptionProfileRemove">Remove current photo</string>
+    <string name="SignUpDescriptionProfileRemoved">Profile photo has removed</string>
 
 
 

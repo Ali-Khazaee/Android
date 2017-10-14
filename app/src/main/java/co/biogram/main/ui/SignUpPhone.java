@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
@@ -23,13 +22,11 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -52,7 +49,7 @@ class SignUpPhone extends FragmentBase
     public void OnCreate()
     {
         final FragmentActivity activity = GetActivity();
-        final Button ButtonNext = new Button(activity, null, android.R.attr.borderlessButtonStyle);
+        final Button ButtonNext = new Button(activity, false);
         final LoadingView LoadingViewNext = new LoadingView(activity);
 
         RelativeLayoutMain = new RelativeLayout(activity);
@@ -115,11 +112,10 @@ class SignUpPhone extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(activity);
+        TextView TextViewTitle = new TextView(activity, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
         TextViewTitle.setText(activity.getString(R.string.SignUpPhone));
-        TextViewTitle.setTypeface(null, Typeface.BOLD);
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -156,12 +152,11 @@ class SignUpPhone extends FragmentBase
 
         RelativeLayoutScroll.addView(LinearLayoutCode);
 
-        TextView TextViewPhoneCode = new TextView(activity);
+        TextView TextViewPhoneCode = new TextView(activity, true);
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhoneCode.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
         TextViewPhoneCode.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
         TextViewPhoneCode.setText(activity.getString(R.string.SignUpPhoneCode));
-        TextViewPhoneCode.setTypeface(null, Typeface.BOLD);
         TextViewPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewPhoneCode.setId(MiscHandler.GenerateViewID());
 
@@ -188,12 +183,11 @@ class SignUpPhone extends FragmentBase
 
         RelativeLayoutScroll.addView(LinearLayoutPhone);
 
-        TextView TextViewPhone = new TextView(activity);
+        TextView TextViewPhone = new TextView(activity, true);
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhone.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
         TextViewPhone.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
         TextViewPhone.setText(activity.getString(R.string.SignUpPhoneNumber));
-        TextViewPhone.setTypeface(null, Typeface.BOLD);
         TextViewPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewPhone.setId(MiscHandler.GenerateViewID());
 
@@ -230,7 +224,7 @@ class SignUpPhone extends FragmentBase
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(activity);
+        TextView TextViewMessage = new TextView(activity, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -277,7 +271,7 @@ class SignUpPhone extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewPrivacy = new TextView(activity);
+        TextView TextViewPrivacy = new TextView(activity, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
         TextViewPrivacy.setText(activity.getString(R.string.SignUpPhoneTerm));
@@ -368,21 +362,6 @@ class SignUpPhone extends FragmentBase
         LoadingViewNext.SetColor(R.color.White);
 
         RelativeLayoutNext.addView(LoadingViewNext);
-
-        if (MiscHandler.IsRTL())
-        {
-            TextViewTitle.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewPhoneCode.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewPhone.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewMessage.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            TextViewPrivacy.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-
-            ButtonNext.setTypeface(Typeface.createFromAsset(activity.getAssets(), "iran-sans.ttf"));
-        }
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
