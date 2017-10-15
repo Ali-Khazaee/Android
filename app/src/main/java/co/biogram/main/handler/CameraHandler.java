@@ -1,15 +1,15 @@
 package co.biogram.main.handler;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.TextureView;
 
 import co.biogram.fragment.FragmentActivity;
 
-public class CameraHandler extends SurfaceView
+@SuppressWarnings("deprecation")
+public class CameraHandler extends TextureView
 {
     private int CameraFlash = 0;
     private int CameraID = 0;
@@ -22,24 +22,50 @@ public class CameraHandler extends SurfaceView
         camera = Camera.open(CameraID);
         camera.setDisplayOrientation(90);
 
-        getHolder().addCallback(new SurfaceHolder.Callback()
+        Camera.Parameters parameters = camera.getParameters();
+        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+
+        camera.setParameters(parameters);
+
+        setSurfaceTextureListener(new SurfaceTextureListener()
         {
             @Override
-            public void surfaceCreated(SurfaceHolder holder)
+            public void onSurfaceTextureAvailable(SurfaceTexture s, int w, int h)
             {
                 try
                 {
-                    camera.setPreviewDisplay(holder);
+                    camera.setPreviewTexture(s);
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("CameraHandler-SurfaceCreated: " + e.toString());
+                    MiscHandler.Debug("CameraHandler-OnSurfaceTextureAvailable" + e.toString());
                 }
             }
 
-            @Override public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
-            @Override public void surfaceDestroyed(SurfaceHolder holder) { }
+            @Override public void onSurfaceTextureSizeChanged(SurfaceTexture s, int w, int h) { }
+            @Override public boolean onSurfaceTextureDestroyed(SurfaceTexture s) { return false; }
+            @Override public void onSurfaceTextureUpdated(SurfaceTexture s) { }
         });
+    }
+
+    public void TakePicture(final CameraListener Listener)
+    {
+        try
+        {
+            camera.takePicture(null, null, new Camera.PictureCallback()
+            {
+                @Override
+                public void onPictureTaken(byte[] Data, Camera camera)
+                {
+                    Listener.OnCapture(Data);
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Listener.OnFailed();
+            MiscHandler.Debug("CameraHandler-TakePicture: " + e.toString());
+        }
     }
 
     public int SwitchFlash()
@@ -105,7 +131,7 @@ public class CameraHandler extends SurfaceView
 
         try
         {
-            camera.setPreviewDisplay(getHolder());
+            camera.setPreviewTexture(getSurfaceTexture());
         }
         catch (Exception e)
         {
@@ -134,5 +160,11 @@ public class CameraHandler extends SurfaceView
             camera.release();
             camera = null;
         }
+    }
+
+    public interface CameraListener
+    {
+        void OnCapture(byte[] Data);
+        void OnFailed();
     }
 }

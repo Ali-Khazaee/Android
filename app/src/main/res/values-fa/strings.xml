@@ -60,6 +60,7 @@
     <string name="SignUpUsernameError">نام کاربري در دسترس نيست</string>
     <string name="SignUpUsernameHint">نام کاربری باید لاتین باشد</string>
     <string name="SignUpUsernameTerm">شرايط و حريم خصوصي</string>
+    <string name="SignUpUsernameNext">بعدی</string>
     <string name="SignUpUsernameError1">نام کاربری خالی است</string>
     <string name="SignUpUsernameError2">نام کاربری باید بیشتر از 2 حرف باشد</string>
     <string name="SignUpUsernameError3">نام کاربری باید کمتر از 32 حرف باشد</string>
@@ -78,5 +79,8 @@
     <string name="SignUpDescriptionProfileCamera">گرفتن عکس از طریق دوربین</string>
     <string name="SignUpDescriptionProfileRemove">حذف عکس فعلی</string>
     <string name="SignUpDescriptionProfileRemoved">عکس فعلی شما حذف شد</string>
+
+    <!-- Image Preview UI -->
+    <string name="ImagePreview">نمایش عکس</string>
 
 </resources>

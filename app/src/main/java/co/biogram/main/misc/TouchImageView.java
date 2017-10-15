@@ -7,15 +7,134 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.support.v4.view.ScaleGestureDetectorCompat;
-import android.support.v7.widget.AppCompatImageView;
-import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.widget.ImageView;
 
-public class TouchImageView extends AppCompatImageView implements OnScaleGestureListener
+public class TouchImageView extends ImageView implements OnScaleGestureListener
 {
+    private GestureDetector gestureDetector;
+
+    public TouchImageView(Context context)
+    {
+        super(context);
+
+        scaleDetector = new ScaleGestureDetector(context, this);
+        ScaleGestureDetectorCompat.setQuickScaleEnabled(scaleDetector, false);
+        startScaleType = getScaleType();
+        zoomable = true;
+        translatable = true;
+        animateOnReset = true;
+        autoCenter = true;
+        restrictBounds = false;
+        minScale = MIN_SCALE;
+        maxScale = MAX_SCALE;
+        autoResetMode = 0;
+
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
+        {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e)
+            {
+                return performClick();
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e)
+            {
+                /*float targetZoom = (normalizedScale == minScale) ? maxScale : minScale;
+                DoubleTapZoom doubleTap = new DoubleTapZoom(targetZoom, e.getX(), e.getY(), false);
+                compatPostOnAnimation(doubleTap);
+                consumed = true;*/
+
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        gestureDetector.onTouchEvent(event);
+
+        if (isEnabled() && (zoomable || translatable))
+        {
+            if (getScaleType() != ScaleType.MATRIX)
+            {
+                super.setScaleType(ScaleType.MATRIX);
+            }
+
+            if (startValues == null) {
+                setStartValues();
+            }
+
+            //get the current state of the image matrix, its values, and the bounds of the drawn bitmap
+            matrix.set(getImageMatrix());
+            matrix.getValues(matrixValues);
+            updateBounds(matrixValues);
+
+            scaleDetector.onTouchEvent(event);
+
+            /* if the event is a down touch, or if the number of touch points changed,
+            * we should reset our start point, as event origins have likely shifted to a
+            * different part of the screen*/
+            if (event.getActionMasked() == MotionEvent.ACTION_DOWN ||
+                    event.getPointerCount() != previousPointerCount) {
+                last.set(scaleDetector.getFocusX(), scaleDetector.getFocusY());
+            }
+            else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
+
+                final float focusx = scaleDetector.getFocusX();
+                final float focusy = scaleDetector.getFocusY();
+
+                if (translatable) {
+                    //calculate the distance for translation
+                    float xdistance = getXDistance(focusx, last.x);
+                    float ydistance = getYDistance(focusy, last.y);
+                    matrix.postTranslate(xdistance, ydistance);
+                }
+
+                if (zoomable) {
+                    matrix.postScale(scaleBy, scaleBy, focusx, focusy);
+                }
+
+                setImageMatrix(matrix);
+
+                last.set(focusx, focusy);
+            }
+
+            if (event.getActionMasked() == MotionEvent.ACTION_UP) {
+                scaleBy = 1f;
+                resetImage();
+            }
+
+            //this tracks whether they have changed the number of fingers down
+            previousPointerCount = event.getPointerCount();
+
+            return true;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private final float MIN_SCALE = 0.6f;
     private final float MAX_SCALE = 8f;
     private final int RESET_DURATION = 200;
@@ -50,31 +169,19 @@ public class TouchImageView extends AppCompatImageView implements OnScaleGesture
 
     private final ScaleGestureDetector scaleDetector;
 
-    public TouchImageView(Context context)
-    {
-        this(context, null);
-    }
 
-    public TouchImageView(Context context, AttributeSet attrs)
-    {
-        this(context, attrs, 0);
-    }
 
-    public TouchImageView(Context context, AttributeSet attrs, int defStyle)
-    {
-        super(context, attrs, defStyle);
-        scaleDetector = new ScaleGestureDetector(context, this);
-        ScaleGestureDetectorCompat.setQuickScaleEnabled(scaleDetector, false);
-        startScaleType = getScaleType();
-        zoomable = true;
-        translatable = true;
-        animateOnReset = true;
-        autoCenter = true;
-        restrictBounds = false;
-        minScale = MIN_SCALE;
-        maxScale = MAX_SCALE;
-        autoResetMode = 0;
-    }
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void setScaleType(ScaleType scaleType)
@@ -142,66 +249,7 @@ public class TouchImageView extends AppCompatImageView implements OnScaleGesture
         calculatedMaxScale = maxScale * startValues[Matrix.MSCALE_X];
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
 
-        if (isEnabled() && (zoomable || translatable)) {
-            if (getScaleType() != ScaleType.MATRIX) {
-                super.setScaleType(ScaleType.MATRIX);
-            }
-
-            if (startValues == null) {
-                setStartValues();
-            }
-
-            //get the current state of the image matrix, its values, and the bounds of the drawn bitmap
-            matrix.set(getImageMatrix());
-            matrix.getValues(matrixValues);
-            updateBounds(matrixValues);
-
-            scaleDetector.onTouchEvent(event);
-
-            /* if the event is a down touch, or if the number of touch points changed,
-            * we should reset our start point, as event origins have likely shifted to a
-            * different part of the screen*/
-            if (event.getActionMasked() == MotionEvent.ACTION_DOWN ||
-                    event.getPointerCount() != previousPointerCount) {
-                last.set(scaleDetector.getFocusX(), scaleDetector.getFocusY());
-            }
-            else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
-
-                final float focusx = scaleDetector.getFocusX();
-                final float focusy = scaleDetector.getFocusY();
-
-                if (translatable) {
-                    //calculate the distance for translation
-                    float xdistance = getXDistance(focusx, last.x);
-                    float ydistance = getYDistance(focusy, last.y);
-                    matrix.postTranslate(xdistance, ydistance);
-                }
-
-                if (zoomable) {
-                    matrix.postScale(scaleBy, scaleBy, focusx, focusy);
-                }
-
-                setImageMatrix(matrix);
-
-                last.set(focusx, focusy);
-            }
-
-            if (event.getActionMasked() == MotionEvent.ACTION_UP) {
-                scaleBy = 1f;
-                resetImage();
-            }
-
-            //this tracks whether they have changed the number of fingers down
-            previousPointerCount = event.getPointerCount();
-
-            return true;
-        }
-
-        return super.onTouchEvent(event);
-    }
 
 
     private void resetImage() {

@@ -60,6 +60,7 @@
     <string name="SignUpUsernameError">Username is unavailable</string>
     <string name="SignUpUsernameHint">Username must be english</string>
     <string name="SignUpUsernameTerm">Term &amp; Privacy</string>
+    <string name="SignUpUsernameNext">Next</string>
     <string name="SignUpUsernameError1">Username is empty</string>
     <string name="SignUpUsernameError2">Username must be higher than 5 characters</string>
     <string name="SignUpUsernameError3">Username must be lower than 32 characters</string>
@@ -79,6 +80,8 @@
     <string name="SignUpDescriptionProfileRemove">Remove current photo</string>
     <string name="SignUpDescriptionProfileRemoved">Profile photo has removed</string>
 
+    <!-- Image Preview UI -->
+    <string name="ImagePreview">Image Preview</string>
 
 
 
@@ -138,13 +141,6 @@
 
 
 
-
-
-
-
-
-    <string name="WelcomeActivityGeneralTerm">Term &amp; Privacy</string>
-    <string name="WelcomeActivityGeneralNext">Next</string>
 
 
 

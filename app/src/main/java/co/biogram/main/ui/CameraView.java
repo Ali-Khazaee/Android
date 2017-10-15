@@ -1,5 +1,7 @@
 package co.biogram.main.ui;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -19,10 +21,11 @@ class CameraView extends FragmentBase
     @Override
     public void OnCreate()
     {
-        FragmentActivity activity = GetActivity();
+        final FragmentActivity activity = GetActivity();
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(R.color.Black);
 
         FrameLayout FrameLayoutMain = new FrameLayout(activity);
         FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
@@ -39,14 +42,63 @@ class CameraView extends FragmentBase
         RelativeLayout RelativeLayoutBottom = new RelativeLayout(activity);
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
 
+        RelativeLayoutMain.addView(RelativeLayoutBottom);
+
         RelativeLayout.LayoutParams ImageViewPickParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 50), MiscHandler.ToDimension(activity, 50));
         ImageViewPickParam.setMargins(MiscHandler.ToDimension(activity, 50), 0, MiscHandler.ToDimension(activity, 50), 0);
         ImageViewPickParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        ImageView ImageViewPick = new ImageView(activity);
+        final ImageView ImageViewPick = new ImageView(activity);
         ImageViewPick.setLayoutParams(ImageViewPickParam);
         ImageViewPick.setImageResource(R.drawable.ic_camera_pick);
         ImageViewPick.setId(MiscHandler.GenerateViewID());
+        ImageViewPick.setOnClickListener(new View.OnClickListener()
+        {
+            private boolean IsClicked = false;
+
+            @Override
+            public void onClick(View v)
+            {
+                if (IsClicked)
+                    return;
+
+                IsClicked = true;
+
+                ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewPick, "scaleX", 1.35f);
+                SizeX.setDuration(200);
+
+                ObjectAnimator SizeY = ObjectAnimator.ofFloat(ImageViewPick, "scaleY", 1.35f);
+                SizeY.setDuration(200);
+
+                ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(ImageViewPick, "scaleX", 1f);
+                SizeX2.setDuration(200);
+                SizeX2.setStartDelay(200);
+
+                ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(ImageViewPick, "scaleY", 1f);
+                SizeY2.setDuration(200);
+                SizeY2.setStartDelay(200);
+
+                AnimatorSet AnimationSet = new AnimatorSet();
+                AnimationSet.playTogether(SizeX, SizeY, SizeX2, SizeY2);
+                AnimationSet.start();
+
+                Camera.TakePicture(new CameraHandler.CameraListener()
+                {
+                    @Override
+                    public void OnCapture(byte[] Data)
+                    {
+                        IsClicked = false;
+                        GetActivity().GetManager().OpenView(new ImagePreview(activity, Data), R.id.WelcomeActivityContainer, "ImagePreview");
+                    }
+
+                    @Override
+                    public void OnFailed()
+                    {
+                        IsClicked = false;
+                    }
+                });
+            }
+        });
 
         RelativeLayoutBottom.addView(ImageViewPick);
 
@@ -85,8 +137,6 @@ class CameraView extends FragmentBase
         ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Camera.SwitchCamera(); } });
 
         RelativeLayoutBottom.addView(ImageViewSwitch);
-
-        RelativeLayoutMain.addView(RelativeLayoutBottom);
 
         ViewMain = RelativeLayoutMain;
     }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
@@ -190,6 +191,28 @@ public class MiscHandler
             handler.post(runnable);
         else
             handler.postDelayed(runnable, Delay);
+    }
+
+    public static int SampleSize(BitmapFactory.Options o, int RW, int RH)
+    {
+        int H = o.outHeight;
+        int W = o.outWidth;
+
+        int S = 1;
+
+        if (H > RH || W > RW)
+        {
+
+            int HH = H / 2;
+            int HW = W / 2;
+
+            while ((HH / S) >= RH && (HW / S) >= RW)
+            {
+                S *= 2;
+            }
+        }
+
+        return S;
     }
 
     public static String GenerateSession()

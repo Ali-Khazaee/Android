@@ -16,6 +16,16 @@ import java.io.RandomAccessFile;
 
 public class CacheHandler
 {
+    public static File CacheDir(Context context)
+    {
+        File CacheFolder = new File(context.getCacheDir(), "Temp");
+
+        if (!CacheFolder.exists())
+            CacheFolder.mkdir();
+
+        return CacheFolder;
+    }
+
     public static void SetUp(Context context)
     {
         try

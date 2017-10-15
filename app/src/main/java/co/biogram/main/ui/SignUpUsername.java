@@ -317,7 +317,7 @@ class SignUpUsername extends FragmentBase
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35)));
         ButtonNext.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         ButtonNext.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        ButtonNext.setText(activity.getString(R.string.WelcomeActivityGeneralNext));
+        ButtonNext.setText(activity.getString(R.string.SignUpUsernameNext));
         ButtonNext.setBackground(StateListDrawableNext);
         ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
