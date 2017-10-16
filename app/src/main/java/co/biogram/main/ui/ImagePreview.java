@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
-import android.support.media.ExifInterface;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -41,11 +40,14 @@ class ImagePreview extends FragmentBase
 
     private RelativeLayout RelativeLayoutHeader;
     private Bitmap bitmap = null;
+    private int Type = 0;
 
     ImagePreview(Context context, byte[] data)
     {
         try
         {
+            Type = 1;
+
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
 
@@ -124,7 +126,6 @@ class ImagePreview extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
-                    MiscHandler.Debug("Clicked");
                     if (RelativeLayoutHeader.getVisibility() == View.GONE)
                         RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     else
@@ -173,6 +174,49 @@ class ImagePreview extends FragmentBase
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutHeader.addView(TextViewTitle);
+
+        if (Type == 1)
+        {
+            RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), MiscHandler.ToDimension(activity, 56));
+            ImageViewDoneParam.addRule(MiscHandler.Align("L"));
+
+            ImageView ImageViewDone = new ImageView(activity);
+            ImageViewDone.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+            ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewDone.setLayoutParams(ImageViewDoneParam);
+            ImageViewDone.setImageResource(R.drawable.ic_done_white);
+            ImageViewDone.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                }
+            });
+
+            RelativeLayoutHeader.addView(ImageViewDone);
+        }
+        else
+        {
+            RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), MiscHandler.ToDimension(activity, 56));
+            ImageViewOptionParam.addRule(MiscHandler.Align("L"));
+
+            ImageView ImageViewOption = new ImageView(activity);
+            ImageViewOption.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+            ImageViewOption.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewOption.setLayoutParams(ImageViewOptionParam);
+            ImageViewOption.setImageResource(R.drawable.ic_more_white);
+            ImageViewOption.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                }
+            });
+
+            RelativeLayoutHeader.addView(ImageViewOption);
+        }
 
         ViewMain = RelativeLayoutMain;
     }
