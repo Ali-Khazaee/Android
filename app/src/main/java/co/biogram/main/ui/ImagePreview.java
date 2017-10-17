@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,6 +22,8 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -109,7 +113,7 @@ class ImagePreview extends FragmentBase
     @Override
     public void OnCreate()
     {
-        FragmentActivity activity = GetActivity();
+        final FragmentActivity activity = GetActivity();
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -177,6 +181,8 @@ class ImagePreview extends FragmentBase
 
         if (Type == 1)
         {
+            final CropImageView CropImageViewMain = new CropImageView(activity);
+
             RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), MiscHandler.ToDimension(activity, 56));
             ImageViewDoneParam.addRule(MiscHandler.Align("L"));
 
@@ -190,11 +196,64 @@ class ImagePreview extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
-
+                    CropImageViewMain.setVisibility(View.VISIBLE);
+                    String ResizeBitmapPath = MediaStore.Images.Media.insertImage(activity.getContentResolver(), bitmap, "BioGram Crop Image", null);
+                    CropImageViewMain.setImageUriAsync(Uri.parse(ResizeBitmapPath));
                 }
             });
 
             RelativeLayoutHeader.addView(ImageViewDone);
+
+            CropImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            CropImageViewMain.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
+            CropImageViewMain.setFixedAspectRatio(true);
+            CropImageViewMain.setAutoZoomEnabled(true);
+            CropImageViewMain.setAspectRatio(1, 1);
+            CropImageViewMain.setVisibility(View.GONE);
+
+            RelativeLayoutMain.addView(CropImageViewMain);
+
+            RelativeLayout.LayoutParams ImageViewDone2Param = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), MiscHandler.ToDimension(activity, 56));
+            ImageViewDone2Param.addRule(MiscHandler.Align("L"));
+
+            ImageView ImageViewDone2 = new ImageView(activity);
+            ImageViewDone2.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+            ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewDone2.setLayoutParams(ImageViewDone2Param);
+            ImageViewDone2.setImageResource(R.drawable.ic_done_white);
+            ImageViewDone2.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    try
+                    {
+                        CropImageViewMain.setVisibility(View.GONE);
+
+                        ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
+                        CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
+
+                        File ProfileFile = new File(CacheHandler.CacheDir(activity), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
+
+                        FileOutputStream FOS = new FileOutputStream(ProfileFile);
+                        FOS.write(BAOS.toByteArray());
+                        FOS.flush();
+                        FOS.close();
+
+                        SignUpDescription SignUpDescription = (SignUpDescription) activity.GetManager().FindByTag("SignUpDescription");
+                        SignUpDescription.Update(ProfileFile);
+
+                        GetActivity().onBackPressed();
+                        GetActivity().onBackPressed();
+                    }
+                    catch (Exception e)
+                    {
+                        MiscHandler.Debug("ImagePreview-Crop: " + e.toString());
+                    }
+                }
+            });
+
+            CropImageViewMain.addView(ImageViewDone2);
         }
         else
         {

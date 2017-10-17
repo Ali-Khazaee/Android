@@ -30,22 +30,18 @@ public class CacheHandler
     {
         try
         {
-            File TempFolder = new File(context.getCacheDir(), "BioGram");
+            File TempFolder = CacheDir(context);
 
             if (TempFolder.exists() && TempFolder.isDirectory())
             {
                 File[] TempFiles = TempFolder.listFiles();
 
                 if (TempFiles != null)
-                {
                     for (File file : TempFiles)
-                    {
                         file.delete();
-                    }
-                }
             }
 
-            File CacheFolder = new File(context.getCacheDir(), "BioGramCache");
+            /*File CacheFolder = new File(context.getCacheDir(), "BioGramCache");
 
             if (!CacheFolder.exists())
                 CacheFolder.mkdir();
@@ -85,7 +81,7 @@ public class CacheHandler
             Reader.close();
 
             if (CacheFile.delete())
-                CacheTemp.renameTo(CacheFile);
+                CacheTemp.renameTo(CacheFile);*/
         }
         catch (Exception e)
         {

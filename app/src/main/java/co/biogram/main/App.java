@@ -13,6 +13,7 @@ import com.squareup.leakcanary.LeakCanary;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.service.SocketService;
 
@@ -40,7 +41,7 @@ public class App extends Application
 
         AndroidNetworking.initialize(context, OKClient);
 
-        //CacheHandler.SetUp(context);
+        CacheHandler.SetUp(context);
         //CrashHandler.SetUp(context);
         //UpdateHandler.SetUp(context);
 

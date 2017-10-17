@@ -29,6 +29,8 @@ import android.widget.ScrollView;
 
 import com.androidnetworking.AndroidNetworking;
 
+import java.io.File;
+
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.R;
@@ -38,7 +40,9 @@ class SignUpDescription extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private int RelativeLayoutMainHeightDifference = 0;
+    private CircleImageView CircleImageViewProfile;
     private RelativeLayout RelativeLayoutMain;
+    private File ProfileFile;
 
     SignUpDescription(String code, String Username)
     {
@@ -148,7 +152,7 @@ class SignUpDescription extends FragmentBase
         CircleImageViewProfileParam.setMargins(MiscHandler.ToDimension(activity, 25), MiscHandler.ToDimension(activity, 25), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 25));
         CircleImageViewProfileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        CircleImageView CircleImageViewProfile = new CircleImageView(activity);
+        CircleImageViewProfile = new CircleImageView(activity);
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.setId(MiscHandler.GenerateViewID());
         CircleImageViewProfile.setCircleBackgroundColor(R.color.BlueLight);
@@ -531,5 +535,11 @@ class SignUpDescription extends FragmentBase
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
         AndroidNetworking.forceCancel("SignUpDescription");
         MiscHandler.HideSoftKey(GetActivity());
+    }
+
+    void Update(File file)
+    {
+        CircleImageViewProfile.setImageURI(Uri.parse(file.getAbsolutePath()));
+        ProfileFile = file;
     }
 }
