@@ -5,7 +5,7 @@
 
     <!-- General -->
     <string name="GeneralNoInternet">Check your connection</string>
-    <string name="GeneralError1">Please, Try again</string>
+    <string name="GeneralError1">Please Try again</string>
     <string name="GeneralError2">Please, Try again later</string>
     <string name="GeneralError3">Please, Try again</string>
     <string name="GeneralError4">Something went wrong, Try to login again</string>
@@ -79,15 +79,19 @@
     <string name="SignUpDescriptionProfileCamera">Take from camera</string>
     <string name="SignUpDescriptionProfileRemove">Remove current photo</string>
     <string name="SignUpDescriptionProfileRemoved">Profile photo has removed</string>
+    <string name="SignUpDescriptionEditName">Enter your name</string>
+    <string name="SignUpDescriptionEditDescription">Write about yourself</string>
+    <string name="SignUpDescriptionPermissionCamera">Please allow biogram to use the camera. This will help to complete your profile</string>
+    <string name="SignUpDescriptionPermissionStorage">Please allow biogram to acces your Storage This will help to complete your profile</string>
+    <string name="SignUpDescriptionUpload"></string>
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">Image Preview</string>
 
-
-
-
-
-
+    <!-- Gallery View UI -->
+    <string name="GalleryView">Gallery</string>
+    <string name="GalleryViewGallery">Gallery</string>
+    <string name="GalleryViewMaximum">Maximum selection is </string>
 
 
 
@@ -485,12 +489,15 @@
     <string name="EditFragmentUploadFailed">Upload fails</string>
     <string name="EditFragmentSuccess">Profile updated</string>
 
-    <!-- Edit Fragment -->
-    <string name="GalleryFragment">Gallery</string>
-    <string name="GalleryFragmentMaximum">Maximum selection is </string>
+
 
     <!-- RecyclerView With Pull -->
     <string name="RecyclerViewWithPull">Pull to refresh</string>
     <string name="RecyclerViewWithPullRelease">Release to refresh</string>
     <string name="RecyclerViewWithPullLoading">Loading</string>
+
+
+
+
+
 </resources>

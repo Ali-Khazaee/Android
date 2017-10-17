@@ -1,106 +1,97 @@
-package co.biogram.main.fragment;
+package co.biogram.main.ui;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.biogram.fragment.FragmentActivity;
+import co.biogram.fragment.FragmentBase;
 import co.biogram.main.R;
+import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.MiscHandler;
 
-public class GalleryFragment extends Fragment
+class GalleryView extends FragmentBase
 {
     private final List<Struct> GalleryList = new ArrayList<>();
     private final List<String> FolderList = new ArrayList<>();
 
-    private static int Count = 1;
-    private static boolean IsVideo;
-    private static String Type = "Gallery";
+    private String SelectionPath = "";
 
-    public static GalleryFragment NewInstance(int count, boolean video)
+    private int Count = 1;
+    private boolean IsVideo;
+    private String Type = "Gallery";
+
+    GalleryView(int count, boolean video)
     {
         Count = count;
         IsVideo = video;
-
-        return new GalleryFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public void OnCreate()
     {
-        final Context context = getActivity();
-        final AdapterGallery Adapter = new AdapterGallery(context);
+        final FragmentActivity activity = GetActivity();
+        final AdapterGallery Adapter = new AdapterGallery();
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 56)));
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(activity);
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        ImageView ImageViewBack = new ImageView(context);
-        ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewBackParam.addRule(MiscHandler.Align("R"));
+
+        ImageView ImageViewBack = new ImageView(activity);
+        ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewBack.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
-        ImageViewBack.setImageResource(R.drawable.ic_back_blue);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+        ImageViewBack.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_back_blue_fa : R.drawable.ic_back_blue);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                getActivity().onBackPressed();
-            }
-        });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        final TextView TextViewTitle = new TextView(context);
+        final TextView TextViewTitle = new TextView(activity, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewTitle.setText(getString(R.string.GalleryView));
-        TextViewTitle.setTypeface(null, Typeface.BOLD);
-        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+        TextViewTitle.setText(activity.getString(R.string.GalleryView));
+        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewTitle.setId(MiscHandler.GenerateViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                PopupMenu PopMenu = new PopupMenu(context, TextViewTitle);
-                PopMenu.getMenu().add(0, 0, 0, getString(R.string.GalleryView));
+                PopupMenu PopMenu = new PopupMenu(activity, TextViewTitle);
+                PopMenu.getMenu().add(0, 0, 0, activity.getString(R.string.GalleryViewGallery));
 
                 int FolderCount = 1;
 
@@ -128,32 +119,40 @@ public class GalleryFragment extends Fragment
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ImageViewListParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 24), MiscHandler.ToDimension(context, 24));
-        ImageViewListParam.addRule(RelativeLayout.RIGHT_OF, TextViewTitle.getId());
+        RelativeLayout.LayoutParams ImageViewListParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 24), MiscHandler.ToDimension(activity, 24));
+        ImageViewListParam.addRule(MiscHandler.AlignTo("R"), TextViewTitle.getId());
         ImageViewListParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        ImageView ImageViewList = new ImageView(context);
+        ImageView ImageViewList = new ImageView(activity);
         ImageViewList.setLayoutParams(ImageViewListParam);
         ImageViewList.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewList.setPadding(MiscHandler.ToDimension(context, 3), MiscHandler.ToDimension(context, 3), MiscHandler.ToDimension(context, 3), MiscHandler.ToDimension(context, 3));
+        ImageViewList.setPadding(MiscHandler.ToDimension(activity, 3), MiscHandler.ToDimension(activity, 3), MiscHandler.ToDimension(activity, 3), MiscHandler.ToDimension(activity, 3));
         ImageViewList.setImageResource(R.drawable.ic_arrow_down_blue);
 
         RelativeLayoutHeader.addView(ImageViewList);
 
-        RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
-        ImageViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        ImageViewSaveParam.addRule(MiscHandler.Align("L"));
 
-        ImageView ImageViewSave = new ImageView(context);
+        ImageView ImageViewSave = new ImageView(activity);
         ImageViewSave.setLayoutParams(ImageViewSaveParam);
         ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewSave.setPadding(MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12), MiscHandler.ToDimension(context, 12));
+        ImageViewSave.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
         ImageViewSave.setImageResource(R.drawable.ic_send_blue2);
         ImageViewSave.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                EditFragment editFragment = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
+                SignUpDescription SignUpDescription = (SignUpDescription) activity.GetManager().FindByTag("SignUpDescription");
+
+                if (SignUpDescription != null && !SelectionPath.equals(""))
+                    SignUpDescription.Update(new File(SelectionPath));
+
+                GetActivity().onBackPressed();
+
+
+                /*EditFragment editFragment = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
 
                 if (editFragment != null)
                 {
@@ -171,16 +170,16 @@ public class GalleryFragment extends Fragment
                             writeFragment.GetData(item.Path, IsVideo);
                 }
 
-                getActivity().onBackPressed();
+                getActivity().onBackPressed();*/
             }
         });
 
         RelativeLayoutHeader.addView(ImageViewSave);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-        View ViewLine = new View(context);
+        View ViewLine = new View(activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
@@ -190,22 +189,22 @@ public class GalleryFragment extends Fragment
         RelativeLayout.LayoutParams RecyclerViewFollowersParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewFollowersParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RecyclerView RecyclerViewMain = new RecyclerView(context);
+        RecyclerView RecyclerViewMain = new RecyclerView(activity);
         RecyclerViewMain.setLayoutParams(RecyclerViewFollowersParam);
-        RecyclerViewMain.setLayoutManager(new GridLayoutManager(context, 3));
+        RecyclerViewMain.setLayoutManager(new GridLayoutManager(activity, 3));
         RecyclerViewMain.setAdapter(Adapter);
         RecyclerViewMain.addItemDecoration(new GridSpacingItemDecoration());
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
-        if (IsVideo)
+        try
         {
-            try
+            if (IsVideo)
             {
                 Cursor[] cursors = new Cursor[2];
 
-                cursors[0] = getActivity().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-                cursors[1] = getActivity().getContentResolver().query(MediaStore.Video.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[0] = activity.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[1] = activity.getContentResolver().query(MediaStore.Video.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
 
                 Cursor cursor = new MergeCursor(cursors);
 
@@ -230,19 +229,12 @@ public class GalleryFragment extends Fragment
 
                 cursor.close();
             }
-            catch (Exception e)
-            {
-                MiscHandler.Debug("GalleryFragment-MediaVideo: " + e.toString());
-            }
-        }
-        else
-        {
-            try
+            else
             {
                 Cursor[] cursors = new Cursor[2];
 
-                cursors[0] = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-                cursors[1] = getActivity().getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[0] = activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[1] = activity.getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
 
                 Cursor cursor = new MergeCursor(cursors);
 
@@ -267,13 +259,13 @@ public class GalleryFragment extends Fragment
 
                 cursor.close();
             }
-            catch (Exception e)
-            {
-                MiscHandler.Debug("GalleryFragment-MediaImage: " + e.toString());
-            }
+        }
+        catch (Exception e)
+        {
+            MiscHandler.Debug("GalleryFragment-MediaList: " + e.toString());
         }
 
-        return RelativeLayoutMain;
+        ViewMain = RelativeLayoutMain;
     }
 
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
@@ -283,25 +275,23 @@ public class GalleryFragment extends Fragment
         private final int ID_MAIN = MiscHandler.GenerateViewID();
         private final int ID_CIRCLE = MiscHandler.GenerateViewID();
 
-        private final Context context;
+        private final FragmentActivity activity = GetActivity();
 
         private final GradientDrawable Select;
         private final GradientDrawable Selected;
 
         private int Selection = 0;
 
-        AdapterGallery(Context c)
+        AdapterGallery()
         {
-            context = c;
-
             Select = new GradientDrawable();
             Select.setShape(GradientDrawable.OVAL);
-            Select.setStroke(MiscHandler.ToDimension(context, 2), Color.WHITE);
+            Select.setStroke(MiscHandler.ToDimension(activity, 2), Color.WHITE);
 
             Selected = new GradientDrawable();
             Selected.setShape(GradientDrawable.OVAL);
-            Selected.setColor(ContextCompat.getColor(context, R.color.BlueLight));
-            Selected.setStroke(MiscHandler.ToDimension(context, 2), Color.WHITE);
+            Selected.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
+            Selected.setStroke(MiscHandler.ToDimension(activity, 2), Color.WHITE);
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder
@@ -330,6 +320,7 @@ public class GalleryFragment extends Fragment
                     if (FileList.get(Position).Selection)
                     {
                         Selection--;
+                        SelectionPath = "";
                         Holder.ViewCircle.setBackground(Select);
                         FileList.get(Position).Selection = false;
                     }
@@ -337,11 +328,12 @@ public class GalleryFragment extends Fragment
                     {
                         if (Count <= Selection)
                         {
-                            MiscHandler.Toast(context, getString(R.string.GalleryViewMaximum) + " " + Count);
+                            MiscHandler.Toast(activity, activity.getString(R.string.GalleryViewMaximum) + " " + Count);
                             return;
                         }
 
                         Selection++;
+                        SelectionPath = FileList.get(Position).Path;
                         Holder.ViewCircle.setBackground(Selected);
                         FileList.get(Position).Selection = true;
                     }
@@ -353,21 +345,22 @@ public class GalleryFragment extends Fragment
             else
                 Holder.ViewCircle.setBackground(Select);
 
-            /*Glide.with(context)
+            GlideApp.with(activity)
             .load(FileList.get(Position).Path)
             .thumbnail(0.1f)
             .placeholder(R.color.BlueGray2)
             .centerCrop()
             .dontAnimate()
-            .into(Holder.ImageViewMain);*/
+            .into(Holder.ImageViewMain);
 
             Holder.ImageViewMain.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    if (IsVideo)
+                    /*if (IsVideo)
                     {
+                        /* TODO Fix Video View
                         Bundle bundle = new Bundle();
                         bundle.putString("VideoURL", FileList.get(Position).Path);
 
@@ -376,16 +369,40 @@ public class GalleryFragment extends Fragment
                         fragment.SetLocalVideo();
 
                         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
+
                     }
-                    else
+                    else*/
                     {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("URL", FileList.get(Position).Path);
+                        ImagePreview imagePreview = new ImagePreview(FileList.get(Position).Path);
+                        imagePreview.SetType(FileList.get(Position).Selection, new ImagePreview.OnSelectListener()
+                        {
+                            @Override
+                            public void OnSelect()
+                            {
+                                if (FileList.get(Position).Selection)
+                                {
+                                    Selection--;
+                                    SelectionPath = "";
+                                    Holder.ViewCircle.setBackground(Select);
+                                    FileList.get(Position).Selection = false;
+                                }
+                                else
+                                {
+                                    if (Count <= Selection)
+                                    {
+                                        MiscHandler.Toast(activity, activity.getString(R.string.GalleryViewMaximum) + " " + Count);
+                                        return;
+                                    }
 
-                        Fragment fragment = new ImagePreviewFragment();
-                        fragment.setArguments(bundle);
+                                    Selection++;
+                                    SelectionPath = FileList.get(Position).Path;
+                                    Holder.ViewCircle.setBackground(Selected);
+                                    FileList.get(Position).Selection = true;
+                                }
+                            }
+                        });
 
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commitAllowingStateLoss();
+                        GetActivity().GetManager().OpenView(imagePreview, R.id.WelcomeActivityContainer, "ImagePreview");
                     }
                 }
             });
@@ -394,20 +411,20 @@ public class GalleryFragment extends Fragment
         @Override
         public ViewHolderMain onCreateViewHolder(ViewGroup parent, int ViewType)
         {
-            RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-            RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 90)));
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
+            RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 90)));
 
-            ImageView ImageViewMain = new ImageView(context);
+            ImageView ImageViewMain = new ImageView(activity);
             ImageViewMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
             ImageViewMain.setId(ID_MAIN);
 
             RelativeLayoutMain.addView(ImageViewMain);
 
-            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 20), MiscHandler.ToDimension(context, 20));
-            ViewCircleParam.setMargins(0, MiscHandler.ToDimension(context, 8), MiscHandler.ToDimension(context, 8), 0);
-            ViewCircleParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 24), MiscHandler.ToDimension(activity, 24));
+            ViewCircleParam.setMargins(MiscHandler.ToDimension(activity, 10), MiscHandler.ToDimension(activity, 10), MiscHandler.ToDimension(activity, 10), 0);
+            ViewCircleParam.addRule(MiscHandler.Align("R"));
 
-            View ViewCircle = new View(context);
+            View ViewCircle = new View(activity);
             ViewCircle.setLayoutParams(ViewCircleParam);
             ViewCircle.setId(ID_CIRCLE);
 

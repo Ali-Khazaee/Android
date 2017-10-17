@@ -351,7 +351,7 @@ public class Welcome extends FragmentBase
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new SignUpDescription("ww", ""), R.id.WelcomeActivityContainer, "SignUpDescription");
+                // TODO SIgn in GetActivity().GetManager().OpenView(new SignUpDescription("ww", ""), R.id.WelcomeActivityContainer, "SignUpDescription");
             }
         });
 

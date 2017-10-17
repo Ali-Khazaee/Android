@@ -73,14 +73,23 @@
     <string name="SignUpDescriptionInfo">توضیحات</string>
     <string name="SignUpDescriptionTerm">شرايط و حريم خصوصي</string>
     <string name="SignUpDescriptionFinish">پایان</string>
-    <string name="SignUpDescriptionMessage">لطفا نام ، عکس و توضیحات کاربری خود را ارائه دهید . این موارد شما را به دیگر کاربران بهتر نشان خواهد داد</string>
+    <string name="SignUpDescriptionMessage">لطفا نام، عکس و توضیحات کاربری خود را ارائه دهید. این موارد شما را به دیگر کاربران بهتر نشان خواهد داد</string>
     <string name="SignUpDescriptionProfile">گزینه های شما</string>
     <string name="SignUpDescriptionProfileGallery">انتخاب از گالری</string>
     <string name="SignUpDescriptionProfileCamera">گرفتن عکس از طریق دوربین</string>
     <string name="SignUpDescriptionProfileRemove">حذف عکس فعلی</string>
     <string name="SignUpDescriptionProfileRemoved">عکس فعلی شما حذف شد</string>
+    <string name="SignUpDescriptionEditName">نام خود را وارد کنید</string>
+    <string name="SignUpDescriptionEditDescription">توضیحاتی درباره خود بنوسید</string>
+    <string name="SignUpDescriptionPermissionCamera">لطفا برای استفاده دوربین، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
+    <string name="SignUpDescriptionPermissionStorage">لطفا برای استفاده از محتویات حافظه خود، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
+    <string name="SignUpDescriptionUpload"></string>
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">نمایش عکس</string>
+
+    <!-- Gallery View UI -->
+    <string name="GalleryView">گالری</string>
+    <string name="GalleryViewMaximum">حداکثر تعداد انتخاب عکس ها </string>
 
 </resources>

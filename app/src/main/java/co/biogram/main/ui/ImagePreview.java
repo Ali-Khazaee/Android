@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -41,6 +43,9 @@ import co.biogram.main.misc.TouchImageView;
 class ImagePreview extends FragmentBase
 {
     private final List<String> UrlList = new ArrayList<>();
+
+    private boolean Selected = false;
+    private OnSelectListener SelectListener;
 
     private RelativeLayout RelativeLayoutHeader;
     private Bitmap bitmap = null;
@@ -255,6 +260,51 @@ class ImagePreview extends FragmentBase
 
             CropImageViewMain.addView(ImageViewDone2);
         }
+        else if (Type == 2)
+        {
+            final GradientDrawable GradientDrawableSelect = new GradientDrawable();
+            GradientDrawableSelect.setShape(GradientDrawable.OVAL);
+            GradientDrawableSelect.setStroke(MiscHandler.ToDimension(activity, 2), Color.WHITE);
+
+            final GradientDrawable GradientDrawableSelected = new GradientDrawable();
+            GradientDrawableSelected.setShape(GradientDrawable.OVAL);
+            GradientDrawableSelected.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
+            GradientDrawableSelected.setStroke(MiscHandler.ToDimension(activity, 2), Color.WHITE);
+
+            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 24), MiscHandler.ToDimension(activity, 24));
+            ViewCircleParam.setMargins(MiscHandler.ToDimension(activity, 15), 0, MiscHandler.ToDimension(activity, 15), 0);
+            ViewCircleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+            ViewCircleParam.addRule(MiscHandler.Align("L"));
+
+            View ViewCircle = new View(activity);
+            ViewCircle.setLayoutParams(ViewCircleParam);
+            ViewCircle.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (Selected)
+                    {
+                        v.setBackground(GradientDrawableSelect);
+                        Selected = false;
+                    }
+                    else
+                    {
+                        Selected = true;
+                        v.setBackground(GradientDrawableSelected);
+                    }
+
+                    SelectListener.OnSelect();
+                }
+            });
+
+            if (Selected)
+                ViewCircle.setBackground(GradientDrawableSelected);
+            else
+                ViewCircle.setBackground(GradientDrawableSelect);
+
+            RelativeLayoutHeader.addView(ViewCircle);
+        }
         else
         {
             RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), MiscHandler.ToDimension(activity, 56));
@@ -278,6 +328,27 @@ class ImagePreview extends FragmentBase
         }
 
         ViewMain = RelativeLayoutMain;
+    }
+
+    @Override
+    public void OnResume()
+    {
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+    }
+
+    @Override
+    public void OnPause()
+    {
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+    }
+
+    void SetType(boolean select, OnSelectListener l)
+    {
+        Type = 2;
+        Selected = select;
+        SelectListener = l;
     }
 
     private class PreviewAdapter extends PagerAdapter
@@ -364,5 +435,10 @@ class ImagePreview extends FragmentBase
         {
             return UrlList.size();
         }
+    }
+
+    interface OnSelectListener
+    {
+        void OnSelect();
     }
 }

@@ -2,6 +2,7 @@ package co.biogram.main.ui;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -28,8 +29,15 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
+
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
@@ -42,11 +50,15 @@ class SignUpDescription extends FragmentBase
     private int RelativeLayoutMainHeightDifference = 0;
     private CircleImageView CircleImageViewProfile;
     private RelativeLayout RelativeLayoutMain;
+
+    private String Code;
+    private String Username;
     private File ProfileFile;
 
-    SignUpDescription(String code, String Username)
+    SignUpDescription(String code, String username)
     {
-
+        Code = code;
+        Username = username;
     }
 
     @Override
@@ -208,7 +220,7 @@ class SignUpDescription extends FragmentBase
                         }
 
                         PermissionDialog PermissionDialogCamera = new PermissionDialog(activity);
-                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_sms, activity.getString(R.string.SignUpPhonePermission), new PermissionDialog.OnSelectedListener()
+                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_camera, activity.getString(R.string.SignUpDescriptionPermissionCamera), new PermissionDialog.OnSelectedListener()
                         {
                             @Override
                             public void OnSelected(boolean Allow)
@@ -216,7 +228,7 @@ class SignUpDescription extends FragmentBase
                                 if (!Allow)
                                 {
                                     DialogProfile.dismiss();
-                                    //SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionCamera));
                                     return;
                                 }
 
@@ -233,7 +245,7 @@ class SignUpDescription extends FragmentBase
                                     public void OnDenied()
                                     {
                                         DialogProfile.dismiss();
-                                        //SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                                        MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionCamera));
                                     }
                                 });
                             }
@@ -260,23 +272,44 @@ class SignUpDescription extends FragmentBase
                     @Override
                     public void onClick(View v)
                     {
-                        /*PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
+                        if (MiscHandler.HasPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE))
+                        {
+                            DialogProfile.dismiss();
+                            GetActivity().GetManager().OpenView(new GalleryView(1, false), R.id.WelcomeActivityContainer, "GalleryView");
+                            return;
+                        }
+
+                        PermissionDialog PermissionDialogCamera = new PermissionDialog(activity);
+                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_storage, activity.getString(R.string.SignUpDescriptionPermissionStorage), new PermissionDialog.OnSelectedListener()
                         {
                             @Override
-                            public void OnGranted()
+                            public void OnSelected(boolean Allow)
                             {
-                                IsCover = false;
-                                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, GalleryFragment.NewInstance(1, false)).addToBackStack("GalleryFragment").commitAllowingStateLoss();
-                                DialogProfile.dismiss();
-                            }
+                                if (!Allow)
+                                {
+                                    DialogProfile.dismiss();
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionStorage));
+                                    return;
+                                }
 
-                            @Override
-                            public void OnFailed()
-                            {
-                                MiscHandler.Toast(context, getString(R.string.PermissionStorage));
-                                DialogProfile.dismiss();
+                                GetActivity().RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
+                                {
+                                    @Override
+                                    public void OnGranted()
+                                    {
+                                        DialogProfile.dismiss();
+                                        GetActivity().GetManager().OpenView(new GalleryView(1, false), R.id.WelcomeActivityContainer, "GalleryView");
+                                    }
+
+                                    @Override
+                                    public void OnDenied()
+                                    {
+                                        DialogProfile.dismiss();
+                                        MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionStorage));
+                                    }
+                                });
                             }
-                        });*/
+                        });
                     }
                 });
 
@@ -299,24 +332,9 @@ class SignUpDescription extends FragmentBase
                     @Override
                     public void onClick(View v)
                     {
-                        /*AndroidNetworking.post(MiscHandler.GetRandomServer("ProfileAvatarDelete"))
-                                .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                                .setTag("EditFragment")
-                                .build()
-                                .getAsString(new StringRequestListener()
-                                {
-                                    @Override
-                                    public void onResponse(String response)
-                                    {
-                                        ImageViewCircleProfile.setImageResource(R.color.BlueLight);
-                                        MiscHandler.Toast(context, getString(R.string.EditFragmentImageProfile));
-                                    }
-
-                                    @Override
-                                    public void onError(ANError anError) { }
-                                });*/
-
+                        CircleImageViewProfile.setImageResource(R.drawable.ic_person_blue);
                         DialogProfile.dismiss();
+                        ProfileFile = null;
                     }
                 });
 
@@ -374,6 +392,8 @@ class SignUpDescription extends FragmentBase
         EditTextName.setInputType(InputType.TYPE_CLASS_TEXT);
         EditTextName.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextName.requestFocus();
+        EditTextName.setHintTextColor(ContextCompat.getColor(activity, R.color.Gray3));
+        EditTextName.setHint(activity.getString(R.string.SignUpDescriptionEditName));
         EditTextName.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -409,7 +429,7 @@ class SignUpDescription extends FragmentBase
         RelativeLayoutScroll.addView(TextViewDescription);
 
         RelativeLayout.LayoutParams EditTextDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(activity, 15), 0, MiscHandler.ToDimension(activity, 15), 0);
+        EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
         EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
 
         EditText EditTextDescription = new EditText(activity);
@@ -419,7 +439,9 @@ class SignUpDescription extends FragmentBase
         EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT);
         EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextDescription.setHint(activity.getString(R.string.SignUpDescriptionEditDescription));
         EditTextDescription.setMaxLines(5);
+        EditTextDescription.setHintTextColor(ContextCompat.getColor(activity, R.color.Gray3));
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
         RelativeLayoutScroll.addView(EditTextDescription);
@@ -431,9 +453,9 @@ class SignUpDescription extends FragmentBase
 
         TextView TextViewMessage = new TextView(activity, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewMessage.setText(activity.getString(R.string.SignUpDescriptionInfo));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+        TextViewMessage.setText(activity.getString(R.string.SignUpDescriptionMessage));
+        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewMessage);
@@ -495,7 +517,94 @@ class SignUpDescription extends FragmentBase
             @Override
             public void onClick(View v)
             {
+                ButtonFinish.setVisibility(View.GONE);
+                LoadingViewFinish.Start();
 
+                final ProgressDialog Progress = new ProgressDialog(activity);
+                Progress.setMessage(activity.getString(R.string.SignUpDescriptionUpload));
+                Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                Progress.setIndeterminate(false);
+                Progress.setCancelable(false);
+                Progress.setMax(100);
+                Progress.setProgress(0);
+                Progress.show();
+
+                AndroidNetworking.upload(MiscHandler.GetRandomServer("RegisterPhone"))
+                .addMultipartParameter("Code", Code)
+                .addMultipartParameter("Username", Username)
+                .addMultipartFile("Avatar", ProfileFile)
+                .setTag("SignUpDescription")
+                .build()
+                .setUploadProgressListener(new UploadProgressListener()
+                {
+                    @Override
+                    public void onProgress(long bytesUploaded, long totalBytes)
+                    {
+                        Progress.setProgress((int) (100 * bytesUploaded / totalBytes));
+                    }
+                })
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        LoadingViewFinish.Stop();
+                        ButtonFinish.setVisibility(View.VISIBLE);
+
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            switch (Result.getInt("Message"))
+                            {
+                                case -2:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
+                                    break;
+                                case -1:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
+                                    break;
+                                case 0:
+                                    TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                    Anim.setDuration(200);
+
+                                    RelativeLayoutMain.setAnimation(Anim);
+
+                                    //GetActivity().GetManager().OpenView(new SignUpDescription(Code, EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpDescription");
+                                    break;
+                                case 1:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError1));
+                                    break;
+                                case 2:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError3));
+                                    break;
+                                case 3:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError4));
+                                    break;
+                                case 4:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError4));
+                                    break;
+                                case 5:
+                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError5));
+                                    break;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            MiscHandler.Debug("SignUpDescription-Register: " + e.toString());
+                        }
+
+                        Progress.dismiss();
+                    }
+
+                    @Override
+                    public void onError(ANError e)
+                    {
+                        Progress.dismiss();
+                        LoadingViewFinish.Stop();
+                        ButtonFinish.setVisibility(View.VISIBLE);
+                        MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
+                    }
+                });
             }
         });
 
