@@ -1,6 +1,8 @@
 package co.biogram.main.ui;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -8,6 +10,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -20,6 +23,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
@@ -116,7 +120,7 @@ class SignUpPhone extends FragmentBase
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
         TextViewTitle.setText(activity.getString(R.string.SignUpPhone));
-        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -144,7 +148,7 @@ class SignUpPhone extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        LinearLayout LinearLayoutCode = new LinearLayout(activity);
+        final LinearLayout LinearLayoutCode = new LinearLayout(activity);
         LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayoutCode.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutCode.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -162,15 +166,93 @@ class SignUpPhone extends FragmentBase
 
         LinearLayoutCode.addView(TextViewPhoneCode);
 
+        TelephonyManager Telephony = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        String CountryCode = Telephony.getNetworkCountryIso();
+
+        if (CountryCode == null || CountryCode.equals(""))
+            CountryCode = Telephony.getSimCountryIso();
+
+        switch (CountryCode)
+        {
+            case "ir":
+                CountryCode = "+98";
+                break;
+            default:
+                CountryCode = "+98";
+                break;
+        }
+
         final EditText EditTextPhoneCode = new EditText(activity);
         EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 70), LinearLayout.LayoutParams.WRAP_CONTENT));
         EditTextPhoneCode.setId(MiscHandler.GenerateViewID());
         EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhoneCode.setFocusable(false);
-        EditTextPhoneCode.setText(MiscHandler.IsFa() ? "+98" : "+98"); //  TODO Add More Country
+        EditTextPhoneCode.setText(CountryCode);
         EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextPhoneCode.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { view.clearFocus(); } });
+        EditTextPhoneCode.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                v.clearFocus();
+
+                final Dialog DialogCode = new Dialog(activity);
+                DialogCode.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogCode.setCancelable(false);
+
+                ScrollView ScrollViewCode = new ScrollView(activity);
+
+                RelativeLayout RelativeLayoutCode = new RelativeLayout(activity);
+                RelativeLayoutCode.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+                ScrollViewCode.addView(RelativeLayoutCode);
+
+                RelativeLayout.LayoutParams TextViewTitleCodeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(activity, 56));
+                TextViewTitleCodeParam.addRule(MiscHandler.Align("R"));
+
+                TextView TextViewTitleCode = new TextView(activity, false);
+                TextViewTitleCode.setLayoutParams(TextViewTitleCodeParam);
+                TextViewTitleCode.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+                TextViewTitleCode.setText("kkkkkkkkkkkk");
+                TextViewTitleCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewTitleCode.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+                TextViewTitleCode.setGravity(Gravity.CENTER);
+
+                RelativeLayoutCode.addView(TextViewTitleCode);
+
+                RelativeLayout.LayoutParams ImageViewCloseCodeParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), MiscHandler.ToDimension(activity, 56));
+                ImageViewCloseCodeParam.addRule(MiscHandler.Align("L"));
+
+                ImageView ImageViewCloseCode = new ImageView(activity);
+                ImageViewCloseCode.setLayoutParams(ImageViewCloseCodeParam);
+                ImageViewCloseCode.setImageResource(R.drawable.ic_close_blue);
+                ImageViewCloseCode.setPadding(MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14));
+                ImageViewCloseCode.setId(MiscHandler.GenerateViewID());
+                ImageViewCloseCode.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
+
+                RelativeLayoutCode.addView(ImageViewCloseCode);
+
+                RelativeLayout.LayoutParams ViewLineCodeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1));
+                ViewLineCodeParam.addRule(RelativeLayout.BELOW, ImageViewCloseCode.getId());
+
+                View ViewLineCode = new View(activity);
+                ViewLineCode.setLayoutParams(ViewLineCodeParam);
+                ViewLineCode.setId(MiscHandler.GenerateViewID());
+                ViewLineCode.setBackgroundResource(R.color.Gray2);
+
+                RelativeLayoutCode.addView(ViewLineCode);
+
+                RelativeLayout.LayoutParams ViewLineLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1));
+                ViewLineLanguageParam.addRule(RelativeLayout.BELOW, ImageViewCloseCode.getId());
+
+                LinearLayout LinearLayoutIran = new LinearLayout(activity);
+                LinearLayoutIran
+
+                DialogCode.setContentView(ScrollViewCode);
+                DialogCode.show();
+            }
+        });
 
         LinearLayoutCode.addView(EditTextPhoneCode);
 

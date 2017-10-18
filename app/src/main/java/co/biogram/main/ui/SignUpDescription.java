@@ -36,8 +36,6 @@ import com.androidnetworking.interfaces.UploadProgressListener;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
@@ -551,6 +549,8 @@ class SignUpDescription extends FragmentBase
                         LoadingViewFinish.Stop();
                         ButtonFinish.setVisibility(View.VISIBLE);
 
+                        MiscHandler.Debug(Response);
+
                         try
                         {
                             JSONObject Result = new JSONObject(Response);
@@ -569,6 +569,7 @@ class SignUpDescription extends FragmentBase
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
+                                    MiscHandler.Toast(activity, "Done switch me to ");
                                     //GetActivity().GetManager().OpenView(new SignUpDescription(Code, EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpDescription");
                                     break;
                                 case 1:
