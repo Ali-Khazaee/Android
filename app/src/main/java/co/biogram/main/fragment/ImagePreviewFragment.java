@@ -17,14 +17,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.ui.LoadingView;
+import co.biogram.main.view.LoadingView;
 import co.biogram.main.misc.TouchImageView;
 
 public class ImagePreviewFragment extends Fragment

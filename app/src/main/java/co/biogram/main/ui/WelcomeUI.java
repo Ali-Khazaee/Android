@@ -34,6 +34,8 @@ import co.biogram.main.activity.MainActivity;
 import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
+import co.biogram.main.view.Button;
+import co.biogram.main.view.TextView;
 
 public class WelcomeUI extends FragmentBase
 {
@@ -243,6 +245,9 @@ public class WelcomeUI extends FragmentBase
             }
         });
 
+        if (MiscHandler.IsFa())
+            ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(GetActivity(), 2), 0, 0);
+
         RelativeLayoutMain.addView(ButtonSignUp);
 
         RelativeLayout.LayoutParams RelativeLayoutORParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 45));
@@ -397,8 +402,6 @@ public class WelcomeUI extends FragmentBase
         TextViewTerm.setText(GetActivity().getString(R.string.WelcomeTerm));
         TextViewTerm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
-
-
         RelativeLayoutMain.addView(TextViewTerm);
 
         ViewMain = ScrollViewMain;
@@ -469,6 +472,12 @@ public class WelcomeUI extends FragmentBase
 
                                 switch (Result.getInt("Message"))
                                 {
+                                    case -2:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
+                                        break;
+                                    case -1:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
+                                        break;
                                     case 0:
                                         if (Result.getBoolean("Registered"))
                                         {
@@ -484,6 +493,13 @@ public class WelcomeUI extends FragmentBase
                                         }
 
                                         GetActivity().GetManager().OpenView(new SignUpDescription(AccountResult.getIdToken()), R.id.WelcomeActivityContainer, "SignUpDescription");
+                                        break;
+                                    case 1:
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.WelcomeGoogleError));
                                         break;
                                 }
                             }

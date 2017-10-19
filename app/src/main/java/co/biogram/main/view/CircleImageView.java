@@ -1,4 +1,4 @@
-package co.biogram.main.ui;
+package co.biogram.main.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,9 +27,6 @@ import co.biogram.main.handler.MiscHandler;
 
 public class CircleImageView extends ImageView
 {
-    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
-    private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
-
     private final RectF BorderRect = new RectF();
     private final RectF DrawableRect = new RectF();
 
@@ -45,17 +42,15 @@ public class CircleImageView extends ImageView
 
     private final Paint BitmapPaint = new Paint();
     private final Paint BorderPaint = new Paint();
-    private final Matrix ShaderMatrix = new Matrix();
-    private final Paint CircleBackgroundPaint = new Paint();
+    private final Paint BackgroundPaint = new Paint();
 
     private Bitmap bitmap;
-
     private ColorFilter colorFilter;
 
     public CircleImageView(Context context)
     {
         super(context);
-        super.setScaleType(SCALE_TYPE);
+        super.setScaleType(ScaleType.CENTER_CROP);
 
         IsReady = true;
 
@@ -72,7 +67,7 @@ public class CircleImageView extends ImageView
     @Override
     public ScaleType getScaleType()
     {
-        return SCALE_TYPE;
+        return ScaleType.CENTER_CROP;
     }
 
     @Override
@@ -82,7 +77,7 @@ public class CircleImageView extends ImageView
             return;
 
         if (BackgroundColor != Color.TRANSPARENT)
-            canvas.drawCircle(DrawableRect.centerX(), DrawableRect.centerY(), DrawableRadius, CircleBackgroundPaint);
+            canvas.drawCircle(DrawableRect.centerX(), DrawableRect.centerY(), DrawableRadius, BackgroundPaint);
 
         canvas.drawCircle(DrawableRect.centerX(), DrawableRect.centerY(), DrawableRadius, BitmapPaint);
 
@@ -172,7 +167,7 @@ public class CircleImageView extends ImageView
     public void setCircleBackgroundColor(int ID)
     {
         BackgroundColor = ContextCompat.getColor(getContext(), ID);
-        CircleBackgroundPaint.setColor(BackgroundColor);
+        BackgroundPaint.setColor(BackgroundColor);
         invalidate();
     }
 
@@ -191,25 +186,18 @@ public class CircleImageView extends ImageView
             bitmap = ((BitmapDrawable) drawable).getBitmap();
         else if (drawable != null)
         {
-            try
-            {
-                Bitmap bitmap2;
+            Bitmap bitmap2;
 
-                if (drawable instanceof ColorDrawable)
-                    bitmap2 = Bitmap.createBitmap(2, 2, BITMAP_CONFIG);
-                else
-                    bitmap2 = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
+            if (drawable instanceof ColorDrawable)
+                bitmap2 = Bitmap.createBitmap(2, 2, Bitmap.Config.ARGB_8888);
+            else
+                bitmap2 = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
 
-                Canvas canvas = new Canvas(bitmap2);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);
+            Canvas canvas = new Canvas(bitmap2);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
 
-                bitmap = bitmap2;
-            }
-            catch (Exception e)
-            {
-                MiscHandler.Debug("CircleImageView-getBitmapFromDrawable: " + e.toString());
-            }
+            bitmap = bitmap2;
         }
 
         Setup();
@@ -242,24 +230,22 @@ public class CircleImageView extends ImageView
         BorderPaint.setColor(BorderColor);
         BorderPaint.setStrokeWidth(BorderWidth);
 
-        CircleBackgroundPaint.setStyle(Paint.Style.FILL);
-        CircleBackgroundPaint.setAntiAlias(true);
-        CircleBackgroundPaint.setColor(BackgroundColor);
+        BackgroundPaint.setStyle(Paint.Style.FILL);
+        BackgroundPaint.setAntiAlias(true);
+        BackgroundPaint.setColor(BackgroundColor);
 
         int BitmapHeight = bitmap.getHeight();
         int BitmapWidth = bitmap.getWidth();
 
-        int availableWidth  = getWidth() - getPaddingLeft() - getPaddingRight();
-        int availableHeight = getHeight() - getPaddingTop() - getPaddingBottom();
+        int AvailableWidth  = getWidth() - getPaddingLeft() - getPaddingRight();
+        int AvailableHeight = getHeight() - getPaddingTop() - getPaddingBottom();
 
-        int sideLength = Math.min(availableWidth, availableHeight);
+        int SideLength = Math.min(AvailableWidth, AvailableHeight);
 
-        float left = getPaddingLeft() + (availableWidth - sideLength) / 2f;
-        float top = getPaddingTop() + (availableHeight - sideLength) / 2f;
+        float Left = getPaddingLeft() + (AvailableWidth - SideLength) / 2f;
+        float Top = getPaddingTop() + (AvailableHeight - SideLength) / 2f;
 
-        RectF a =  new RectF(left, top, left + sideLength, top + sideLength);
-
-        BorderRect.set(a);
+        BorderRect.set(new RectF(Left, Top, Left + SideLength, Top + SideLength));
         BorderRadius = Math.min((BorderRect.height() - BorderWidth) / 2.0f, (BorderRect.width() - BorderWidth) / 2.0f);
 
         DrawableRect.set(BorderRect);
@@ -275,8 +261,6 @@ public class CircleImageView extends ImageView
         float X = 0;
         float Y = 0;
 
-        ShaderMatrix.set(null);
-
         if (BitmapWidth * DrawableRect.height() > DrawableRect.width() * BitmapHeight)
         {
             Scale = DrawableRect.height() / (float) BitmapHeight;
@@ -288,6 +272,7 @@ public class CircleImageView extends ImageView
             Y = (DrawableRect.height() - BitmapHeight * Scale) * 0.5f;
         }
 
+        Matrix ShaderMatrix = new Matrix();
         ShaderMatrix.setScale(Scale, Scale);
         ShaderMatrix.postTranslate((int) (X + 0.5f) + DrawableRect.left, (int) (Y + 0.5f) + DrawableRect.top);
 
@@ -296,15 +281,16 @@ public class CircleImageView extends ImageView
         invalidate();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private class OutlineProvider extends ViewOutlineProvider
     {
         @Override
         public void getOutline(View view, Outline outline)
         {
-            Rect bounds = new Rect();
-            BorderRect.roundOut(bounds);
-            outline.setRoundRect(bounds, bounds.width() / 2.0f);
+            Rect Bounds = new Rect();
+
+            BorderRect.roundOut(Bounds);
+            outline.setRoundRect(Bounds, Bounds.width() / 2.0f);
         }
     }
 }

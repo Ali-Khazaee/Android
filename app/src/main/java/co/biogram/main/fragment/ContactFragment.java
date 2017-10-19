@@ -1,11 +1,8 @@
 package co.biogram.main.fragment;
 
-import android.Manifest;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -22,9 +19,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 
-import com.bumptech.glide.Glide;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -35,7 +29,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LinearLayoutManager2;
-import co.biogram.main.ui.LoadingView;
+import co.biogram.main.view.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
 public class ContactFragment extends Fragment

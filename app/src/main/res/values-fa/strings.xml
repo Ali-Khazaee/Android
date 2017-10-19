@@ -15,7 +15,7 @@
     <string name="DialogPermissionAccept">اجازه دادن</string>
     <string name="DialogPermissionDecline">نه فعلا</string>
 
-    <!-- WelcomeUI UI -->
+    <!-- Welcome UI -->
     <string name="WelcomeLanguage">فارسی</string>
     <string name="WelcomeLanguageSelect">انتخاب زبان</string>
     <string name="WelcomeLanguageEnglish">English</string>
@@ -34,6 +34,7 @@
     <!-- Sign Up Phone UI -->
     <string name="SignUpPhone">ثبت نام</string>
     <string name="SignUpPhoneCode">کد</string>
+    <string name="SignUpPhoneTitleCode">انتخاب پیش شماره</string>
     <string name="SignUpPhoneNumber">شماره تلفن</string>
     <string name="SignUpPhoneMessage">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
     <string name="SignUpPhoneMessageEmail">از طریق ایمیل خود نیز ثبت نام کنید</string>

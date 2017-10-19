@@ -1,15 +1,13 @@
-package co.biogram.main.ui;
+package co.biogram.main.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Keep;
 import android.support.v4.content.ContextCompat;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,6 +15,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 
 public class LoadingView extends LinearLayout
@@ -24,27 +23,18 @@ public class LoadingView extends LinearLayout
     private final List<ValueAnimator> AnimatorList = new ArrayList<>();
     private final List<Bounce> BounceList = new ArrayList<>();
 
-    private int BounceColor = Color.parseColor("#a9bac4");
-    private float BounceScale = 2.0f;
+    private boolean ShouldPlay = false;
+    private float BounceScale;
+    private int BounceColor;
     private int BounceSize;
-
-    private boolean ShouldStart = false;
 
     public LoadingView(Context context)
     {
-        this(context, null, 0);
-    }
+        super(context);
 
-    public LoadingView(Context context, AttributeSet attrs)
-    {
-        this(context, attrs, 0);
-    }
-
-    public LoadingView(Context context, AttributeSet attrs, int style)
-    {
-        super(context, attrs, style);
-
+        BounceScale = 2.0f;
         BounceSize = MiscHandler.ToDimension(context, 6);
+        BounceColor = ContextCompat.getColor(context, R.color.BlueGray2);
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
@@ -62,7 +52,7 @@ public class LoadingView extends LinearLayout
     {
         super.onAttachedToWindow();
 
-        if (ShouldStart)
+        if (ShouldPlay)
             Start();
     }
 
@@ -83,28 +73,24 @@ public class LoadingView extends LinearLayout
             Bounce bounce = new Bounce(context);
             bounce.setBackground(GradientDrawableBounce);
 
-            addView(bounce, BounceParam);
             BounceList.add(bounce);
+            addView(bounce, BounceParam);
 
             if (I < 2)
-            {
-                View view = new View(context);
-                addView(view, SpaceParam);
-            }
+                addView(new View(context), SpaceParam);
         }
 
         for (int I = 0; I < 3; I++)
         {
             int BounceSpeed = 300;
             Bounce bounce = BounceList.get(I);
-            long StartDelay = I * (int) (0.4 * BounceSpeed);
 
-            ValueAnimator BounceGrowAnimator = ObjectAnimator.ofFloat(bounce, "scale", 1.0f, BounceScale, 1.0f);
-            BounceGrowAnimator.setDuration(BounceSpeed);
+            ValueAnimator ValueAnimatorGrow = ObjectAnimator.ofFloat(bounce, "scale", 1.0f, BounceScale, 1.0f);
+            ValueAnimatorGrow.setDuration(BounceSpeed);
 
             if (I == 2)
             {
-                BounceGrowAnimator.addListener(new AnimatorListenerAdapter()
+                ValueAnimatorGrow.addListener(new AnimatorListenerAdapter()
                 {
                     @Override
                     public void onAnimationEnd(Animator animation)
@@ -116,18 +102,18 @@ public class LoadingView extends LinearLayout
                 });
             }
 
-            BounceGrowAnimator.setStartDelay(StartDelay);
-            BounceGrowAnimator.start();
-            AnimatorList.add(BounceGrowAnimator);
+            ValueAnimatorGrow.setStartDelay(I * (int) (0.4 * BounceSpeed));
+            ValueAnimatorGrow.start();
+            AnimatorList.add(ValueAnimatorGrow);
         }
 
-        ShouldStart = true;
+        ShouldPlay = true;
     }
 
     public void Stop()
     {
         LocalStop();
-        ShouldStart = false;
+        ShouldPlay = false;
     }
 
     private void LocalStop()

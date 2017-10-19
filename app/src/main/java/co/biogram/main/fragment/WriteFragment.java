@@ -1,6 +1,5 @@
 package co.biogram.main.fragment;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -13,10 +12,6 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.media.MediaCodecInfo;
-import android.media.MediaFormat;
-import android.media.MediaMetadataRetriever;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.media.ExifInterface;
@@ -68,10 +63,9 @@ import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.LinearLayoutManager2;
-import co.biogram.main.ui.LoadingView;
+import co.biogram.main.view.LoadingView;
 import co.biogram.main.misc.RecyclerViewOnClick;
 import co.biogram.main.misc.TextCrawler;
-import co.biogram.media.MediaTransCoder;
 
 public class WriteFragment extends Fragment
 {

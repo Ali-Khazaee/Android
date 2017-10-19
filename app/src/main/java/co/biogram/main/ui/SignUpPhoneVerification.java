@@ -41,6 +41,9 @@ import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.R;
+import co.biogram.main.view.Button;
+import co.biogram.main.view.LoadingView;
+import co.biogram.main.view.TextView;
 
 class SignUpPhoneVerification extends FragmentBase
 {

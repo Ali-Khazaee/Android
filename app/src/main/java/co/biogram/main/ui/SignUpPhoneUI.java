@@ -42,6 +42,10 @@ import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.R;
+import co.biogram.main.view.Button;
+import co.biogram.main.view.LoadingView;
+import co.biogram.main.view.PermissionDialog;
+import co.biogram.main.view.TextView;
 
 class SignUpPhoneUI extends FragmentBase
 {
@@ -52,11 +56,10 @@ class SignUpPhoneUI extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final FragmentActivity activity = GetActivity();
-        final Button ButtonNext = new Button(activity, false);
-        final LoadingView LoadingViewNext = new LoadingView(activity);
+        final Button ButtonNext = new Button(GetActivity(), false);
+        final LoadingView LoadingViewNext = new LoadingView(GetActivity());
 
-        RelativeLayoutMain = new RelativeLayout(activity);
+        RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
@@ -92,23 +95,23 @@ class SignUpPhoneUI extends FragmentBase
             }
         };
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(activity);
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 56)));
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, RelativeLayout.LayoutParams.MATCH_PARENT);
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
-        ImageView ImageViewBack = new ImageView(activity);
+        ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+        ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
-        ImageViewBack.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_back_white_fa : R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(MiscHandler.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -116,18 +119,18 @@ class SignUpPhoneUI extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(activity, true);
+        TextView TextViewTitle = new TextView(GetActivity(), true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        TextViewTitle.setText(activity.getString(R.string.SignUpPhone));
+        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
+        TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhone));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-        View ViewLine = new View(activity);
+        View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
@@ -137,36 +140,35 @@ class SignUpPhoneUI extends FragmentBase
         RelativeLayout.LayoutParams ScrollViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         ScrollViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        ScrollView ScrollViewMain = new ScrollView(activity);
+        ScrollView ScrollViewMain = new ScrollView(GetActivity());
         ScrollViewMain.setLayoutParams(ScrollViewMainParam);
         ScrollViewMain.setFillViewport(true);
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
-        RelativeLayout RelativeLayoutScroll = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutScroll = new RelativeLayout(GetActivity());
         RelativeLayoutScroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        final LinearLayout LinearLayoutCode = new LinearLayout(activity);
-        LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), LinearLayout.LayoutParams.WRAP_CONTENT));
+        final LinearLayout LinearLayoutCode = new LinearLayout(GetActivity());
+        LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayoutCode.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutCode.setGravity(Gravity.CENTER_HORIZONTAL);
         LinearLayoutCode.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(LinearLayoutCode);
 
-        TextView TextViewPhoneCode = new TextView(activity, true);
+        TextView TextViewPhoneCode = new TextView(GetActivity(), true);
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewPhoneCode.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
-        TextViewPhoneCode.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewPhoneCode.setText(activity.getString(R.string.SignUpPhoneCode));
+        TextViewPhoneCode.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
+        TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewPhoneCode.setText(GetActivity().getString(R.string.SignUpPhoneCode));
         TextViewPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewPhoneCode.setId(MiscHandler.GenerateViewID());
 
         LinearLayoutCode.addView(TextViewPhoneCode);
 
-        TelephonyManager Telephony = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager Telephony = (TelephonyManager) GetActivity().getSystemService(Context.TELEPHONY_SERVICE);
         String CountryCode = Telephony.getNetworkCountryIso();
 
         if (CountryCode == null || CountryCode.equals(""))
@@ -182,11 +184,10 @@ class SignUpPhoneUI extends FragmentBase
                 break;
         }
 
-        final EditText EditTextPhoneCode = new EditText(activity);
-        EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(activity, 70), LinearLayout.LayoutParams.WRAP_CONTENT));
-        EditTextPhoneCode.setId(MiscHandler.GenerateViewID());
+        final EditText EditTextPhoneCode = new EditText(GetActivity());
+        EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 70), LinearLayout.LayoutParams.WRAP_CONTENT));
         EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhoneCode.setFocusable(false);
         EditTextPhoneCode.setText(CountryCode);
         EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -197,66 +198,68 @@ class SignUpPhoneUI extends FragmentBase
             {
                 v.clearFocus();
 
-                final Dialog DialogCode = new Dialog(activity);
+                final Dialog DialogCode = new Dialog(GetActivity());
                 DialogCode.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogCode.setCancelable(false);
 
-                ScrollView ScrollViewCode = new ScrollView(activity);
+                ScrollView ScrollViewCode = new ScrollView(GetActivity());
+                ScrollViewCode.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
+                ScrollViewCode.setFillViewport(true);
 
-                RelativeLayout RelativeLayoutCode = new RelativeLayout(activity);
+                RelativeLayout RelativeLayoutCode = new RelativeLayout(GetActivity());
                 RelativeLayoutCode.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
                 ScrollViewCode.addView(RelativeLayoutCode);
 
-                RelativeLayout.LayoutParams TextViewTitleCodeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(activity, 56));
-                TextViewTitleCodeParam.addRule(MiscHandler.Align("R"));
+                RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, D56);
+                TextViewTitleParam.addRule(MiscHandler.Align("R"));
 
-                TextView TextViewTitleCode = new TextView(activity, false);
-                TextViewTitleCode.setLayoutParams(TextViewTitleCodeParam);
-                TextViewTitleCode.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-                TextViewTitleCode.setText("kkkkkkkkkkkk");
-                TextViewTitleCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewTitleCode.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
-                TextViewTitleCode.setGravity(Gravity.CENTER);
+                TextView TextViewTitle = new TextView(GetActivity(), false);
+                TextViewTitle.setLayoutParams(TextViewTitleParam);
+                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhoneTitleCode));
+                TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewTitle.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
+                TextViewTitle.setGravity(Gravity.CENTER);
 
-                RelativeLayoutCode.addView(TextViewTitleCode);
+                RelativeLayoutCode.addView(TextViewTitle);
 
-                RelativeLayout.LayoutParams ImageViewCloseCodeParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), MiscHandler.ToDimension(activity, 56));
-                ImageViewCloseCodeParam.addRule(MiscHandler.Align("L"));
+                RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(D56, D56);
+                ImageViewCloseParam.addRule(MiscHandler.Align("L"));
 
-                ImageView ImageViewCloseCode = new ImageView(activity);
-                ImageViewCloseCode.setLayoutParams(ImageViewCloseCodeParam);
-                ImageViewCloseCode.setImageResource(R.drawable.ic_close_blue);
-                ImageViewCloseCode.setPadding(MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14), MiscHandler.ToDimension(activity, 14));
-                ImageViewCloseCode.setId(MiscHandler.GenerateViewID());
-                ImageViewCloseCode.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
+                ImageView ImageViewClose = new ImageView(GetActivity());
+                ImageViewClose.setLayoutParams(ImageViewCloseParam);
+                ImageViewClose.setImageResource(R.drawable.ic_close_blue);
+                ImageViewClose.setPadding(MiscHandler.ToDimension(GetActivity(), 14), MiscHandler.ToDimension(GetActivity(), 14), MiscHandler.ToDimension(GetActivity(), 14), MiscHandler.ToDimension(GetActivity(), 14));
+                ImageViewClose.setId(MiscHandler.GenerateViewID());
+                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
 
-                RelativeLayoutCode.addView(ImageViewCloseCode);
+                RelativeLayoutCode.addView(ImageViewClose);
 
-                RelativeLayout.LayoutParams ViewLineCodeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1));
-                ViewLineCodeParam.addRule(RelativeLayout.BELOW, ImageViewCloseCode.getId());
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, ImageViewClose.getId());
 
-                View ViewLineCode = new View(activity);
-                ViewLineCode.setLayoutParams(ViewLineCodeParam);
-                ViewLineCode.setId(MiscHandler.GenerateViewID());
-                ViewLineCode.setBackgroundResource(R.color.Gray2);
+                View ViewLine = new View(GetActivity());
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setId(MiscHandler.GenerateViewID());
+                ViewLine.setBackgroundResource(R.color.Gray2);
 
-                RelativeLayoutCode.addView(ViewLineCode);
+                RelativeLayoutCode.addView(ViewLine);
 
                 RelativeLayout.LayoutParams LinearLayoutListParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                LinearLayoutListParam.addRule(RelativeLayout.BELOW, ViewLineCode.getId());
+                LinearLayoutListParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-                LinearLayout LinearLayoutList = new LinearLayout(activity);
+                LinearLayout LinearLayoutList = new LinearLayout(GetActivity());
                 LinearLayoutList.setLayoutParams(LinearLayoutListParam);
                 LinearLayoutList.setOrientation(LinearLayout.VERTICAL);
 
                 RelativeLayoutCode.addView(LinearLayoutList);
 
-                TextView TextViewIran = new TextView(activity, false);
-                TextViewIran.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+                TextView TextViewIran = new TextView(GetActivity(), false);
+                TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
                 TextViewIran.setText("Iran ( +98 )");
                 TextViewIran.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                TextViewIran.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+                TextViewIran.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
                 TextViewIran.setGravity(Gravity.CENTER);
 
                 LinearLayoutList.addView(TextViewIran);
@@ -271,26 +274,25 @@ class SignUpPhoneUI extends FragmentBase
         RelativeLayout.LayoutParams LinearLayoutPhoneParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         LinearLayoutPhoneParam.addRule(RelativeLayout.RIGHT_OF, LinearLayoutCode.getId());
 
-        LinearLayout LinearLayoutPhone = new LinearLayout(activity);
+        LinearLayout LinearLayoutPhone = new LinearLayout(GetActivity());
         LinearLayoutPhone.setLayoutParams(LinearLayoutPhoneParam);
         LinearLayoutPhone.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayoutScroll.addView(LinearLayoutPhone);
 
-        TextView TextViewPhone = new TextView(activity, true);
+        TextView TextViewPhone = new TextView(GetActivity(), true);
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewPhone.setPadding(0, MiscHandler.ToDimension(activity, 20), 0, 0);
-        TextViewPhone.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewPhone.setText(activity.getString(R.string.SignUpPhoneNumber));
+        TextViewPhone.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
+        TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewPhone.setText(GetActivity().getString(R.string.SignUpPhoneNumber));
         TextViewPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        TextViewPhone.setId(MiscHandler.GenerateViewID());
 
         LinearLayoutPhone.addView(TextViewPhone);
 
-        final EditText EditTextPhone = new EditText(activity);
+        final EditText EditTextPhone = new EditText(GetActivity());
         EditTextPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         EditTextPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextPhone.requestFocus();
         EditTextPhone.setFilters(new InputFilter[] { new InputFilter.LengthFilter(16) });
@@ -318,14 +320,13 @@ class SignUpPhoneUI extends FragmentBase
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(activity, false);
+        TextView TextViewMessage = new TextView(GetActivity(), false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
-        TextViewMessage.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
-        TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText(activity.getString(R.string.SignUpPhoneMessage) + " " + activity.getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+        TextViewMessage.setText(GetActivity().getString(R.string.SignUpPhoneMessage) + " " + GetActivity().getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         ClickableSpan ClickableSpanMessage = new ClickableSpan()
@@ -338,25 +339,25 @@ class SignUpPhoneUI extends FragmentBase
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                //GetActivity().GetManager().OpenView(new SignUpPhoneUI(), R.id.WelcomeActivityContainer, "SignUpPhoneUI"); // TODO SignUpWithEmail
+                GetActivity().GetManager().OpenView(new SignUpWithEmailUI(), R.id.WelcomeActivityContainer, "SignUpWithEmailUI");
             }
 
             @Override
             public void updateDrawState(TextPaint t)
             {
                 super.updateDrawState(t);
-                t.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
+                t.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
                 t.setUnderlineText(false);
             }
         };
-        Span.setSpan(ClickableSpanMessage, activity.getString(R.string.SignUpPhoneMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Span.setSpan(ClickableSpanMessage, GetActivity().getString(R.string.SignUpPhoneMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutBottomParam.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
 
-        RelativeLayout RelativeLayoutBottom = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutBottom = new RelativeLayout(GetActivity());
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
 
         RelativeLayoutScroll.addView(RelativeLayoutBottom);
@@ -365,42 +366,42 @@ class SignUpPhoneUI extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewPrivacy = new TextView(activity, false);
+        TextView TextViewPrivacy = new TextView(GetActivity(), false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        TextViewPrivacy.setText(activity.getString(R.string.SignUpPhoneTerm));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpPhoneTerm));
         TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewPrivacy.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
+        TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        GradientDrawable GradientDrawableNext = new GradientDrawable();
-        GradientDrawableNext.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        GradientDrawableNext.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+        GradientDrawable DrawableNext = new GradientDrawable();
+        DrawableNext.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableNext.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
 
-        GradientDrawable GradientDrawableNextDisable = new GradientDrawable();
-        GradientDrawableNextDisable.setCornerRadius(MiscHandler.ToDimension(activity, 7));
-        GradientDrawableNextDisable.setColor(ContextCompat.getColor(activity, R.color.Gray2));
+        GradientDrawable DrawableNext2 = new GradientDrawable();
+        DrawableNext2.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        DrawableNext2.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable StateSignUp = new StateListDrawable();
-        StateSignUp.addState(new int[] { android.R.attr.state_enabled }, GradientDrawableNext);
-        StateSignUp.addState(new int[] { -android.R.attr.state_enabled }, GradientDrawableNextDisable);
+        StateSignUp.addState(new int[] { android.R.attr.state_enabled }, DrawableNext);
+        StateSignUp.addState(new int[] { -android.R.attr.state_enabled }, DrawableNext2);
 
-        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
-        RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
+        RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         RelativeLayoutNextParam.addRule(MiscHandler.Align("L"));
 
-        RelativeLayout RelativeLayoutNext = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutNext = new RelativeLayout(GetActivity());
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
-        RelativeLayoutNext.setBackground(GradientDrawableNext);
+        RelativeLayoutNext.setBackground(DrawableNext);
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
-        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35)));
+        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
         ButtonNext.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        ButtonNext.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        ButtonNext.setText(activity.getString(R.string.SignUpPhoneNext));
+        ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
+        ButtonNext.setText(GetActivity().getString(R.string.SignUpPhoneNext));
         ButtonNext.setBackground(StateSignUp);
         ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
@@ -410,21 +411,21 @@ class SignUpPhoneUI extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                if (MiscHandler.HasPermission(activity, Manifest.permission.RECEIVE_SMS))
+                if (MiscHandler.HasPermission(GetActivity(), Manifest.permission.RECEIVE_SMS))
                 {
-                    SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                    SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                     return;
                 }
 
-                PermissionDialog PermissionDialogSMS = new PermissionDialog(activity);
-                PermissionDialogSMS.SetContentView(R.drawable.ic_permission_sms, activity.getString(R.string.SignUpPhonePermission), new PermissionDialog.OnSelectedListener()
+                PermissionDialog PermissionDialogSMS = new PermissionDialog(GetActivity());
+                PermissionDialogSMS.SetContentView(R.drawable.ic_permission_sms, GetActivity().getString(R.string.SignUpPhonePermission), new PermissionDialog.OnSelectedListener()
                 {
                     @Override
                     public void OnSelected(boolean Allow)
                     {
                         if (!Allow)
                         {
-                            SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                            SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                             return;
                         }
 
@@ -433,13 +434,13 @@ class SignUpPhoneUI extends FragmentBase
                             @Override
                             public void OnGranted()
                             {
-                                SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                                SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                             }
 
                             @Override
                             public void OnDenied()
                             {
-                                SendRequest(activity, ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                                SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                             }
                         });
                     }
@@ -449,7 +450,7 @@ class SignUpPhoneUI extends FragmentBase
 
         RelativeLayoutNext.addView(ButtonNext);
 
-        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
+        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);
@@ -485,12 +486,12 @@ class SignUpPhoneUI extends FragmentBase
         MiscHandler.HideSoftKey(GetActivity());
     }
 
-    private void SendRequest(final FragmentActivity activity, final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode)
+    private void SendRequest(final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode)
     {
         ButtonNext.setVisibility(View.GONE);
         LoadingViewNext.Start();
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhoneUI"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
         .addBodyParameter("Code", EditTextPhoneCode.getText().toString())
         .addBodyParameter("Phone", EditTextPhone.getText().toString())
         .setTag("SignUpPhoneUI")
@@ -510,13 +511,13 @@ class SignUpPhoneUI extends FragmentBase
                     switch (Result.getInt("Message"))
                     {
                         case -6:
-                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError6));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
                             break;
                         case -2:
-                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
                             break;
                         case -1:
-                            MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
                             break;
                         case 0:
                             TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
@@ -534,15 +535,15 @@ class SignUpPhoneUI extends FragmentBase
                         case 1:
                         case 2:
                         case 3:
-                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneCodeError));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneCodeError));
                             break;
                         case 4:
                         case 5:
                         case 6:
-                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneError));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneError));
                             break;
                         case 7:
-                            MiscHandler.Toast(activity, activity.getString(R.string.SignUpPhoneAlready));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneAlready));
                             break;
                     }
                 }
@@ -557,7 +558,7 @@ class SignUpPhoneUI extends FragmentBase
             {
                 LoadingViewNext.Stop();
                 ButtonNext.setVisibility(View.VISIBLE);
-                MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
+                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
             }
         });
     }

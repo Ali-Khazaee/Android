@@ -39,6 +39,8 @@ import co.biogram.main.R;
 import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.misc.TouchImageView;
+import co.biogram.main.view.LoadingView;
+import co.biogram.main.view.TextView;
 
 class ImagePreview extends FragmentBase
 {

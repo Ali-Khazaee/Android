@@ -41,6 +41,11 @@ import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.view.Button;
+import co.biogram.main.view.CircleImageView;
+import co.biogram.main.view.LoadingView;
+import co.biogram.main.view.PermissionDialog;
+import co.biogram.main.view.TextView;
 
 class SignUpDescription extends FragmentBase
 {
@@ -51,8 +56,15 @@ class SignUpDescription extends FragmentBase
 
     private String Code;
     private String Token;
+    private String Email;
     private String Username;
+    private String Password;
     private File ProfileFile;
+
+    SignUpDescription(String token)
+    {
+        Token = token;
+    }
 
     SignUpDescription(String code, String username)
     {
@@ -60,9 +72,11 @@ class SignUpDescription extends FragmentBase
         Username = username;
     }
 
-    SignUpDescription(String token)
+    SignUpDescription(String username, String password, String email)
     {
-        Token = token;
+        Username = username;
+        Password = password;
+        Email = email;
     }
 
     @Override
@@ -532,6 +546,19 @@ class SignUpDescription extends FragmentBase
                 Progress.setMax(100);
                 Progress.setProgress(0);
                 Progress.show();
+
+                if (!Code.equals(""))
+                {
+
+                }
+                else if (!Email.equals(""))
+                {
+
+                }
+                else if (!Token.equals(""))
+                {
+
+                }
 
                 AndroidNetworking.upload(MiscHandler.GetRandomServer("RegisterPhone"))
                 .addMultipartParameter("Code", Code)

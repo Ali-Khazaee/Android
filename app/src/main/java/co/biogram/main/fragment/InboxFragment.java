@@ -35,7 +35,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.AdapterPost;
 import co.biogram.main.misc.LinearLayoutManager2;
-import co.biogram.main.ui.LoadingView;
+import co.biogram.main.view.LoadingView;
 import co.biogram.main.misc.RecyclerViewScroll;
 
 public class InboxFragment extends Fragment

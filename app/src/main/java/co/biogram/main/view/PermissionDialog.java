@@ -1,4 +1,4 @@
-package co.biogram.main.ui;
+package co.biogram.main.view;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,16 +14,16 @@ import android.widget.RelativeLayout;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 
-class PermissionDialog extends Dialog
+public class PermissionDialog extends Dialog
 {
-    PermissionDialog(Context context)
+    public PermissionDialog(Context context)
     {
         super(context);
         setCancelable(false);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
-    void SetContentView(int IconID, String Message, final OnSelectedListener Listener)
+    public void SetContentView(int IconID, String Message, final OnSelectedListener Listener)
     {
         Context context = getContext();
 
@@ -70,14 +70,6 @@ class PermissionDialog extends Dialog
 
         RelativeLayoutMain.addView(LinearLayoutChoice);
 
-        TextView TextViewContinue = new TextView(context, true);
-        TextViewContinue.setLayoutParams(TextViewMessageParam);
-        TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-        TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewContinue.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
-        TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
-        TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
-
         TextView TextViewDecline = new TextView(context, true);
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
@@ -87,13 +79,22 @@ class PermissionDialog extends Dialog
         TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
 
         LinearLayoutChoice.addView(TextViewDecline);
+
+        TextView TextViewContinue = new TextView(context, true);
+        TextViewContinue.setLayoutParams(TextViewMessageParam);
+        TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
+        TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewContinue.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
+        TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
+
         LinearLayoutChoice.addView(TextViewContinue);
 
         setContentView(RelativeLayoutMain);
         show();
     }
 
-    interface OnSelectedListener
+    public interface OnSelectedListener
     {
         void OnSelected(boolean Allow);
     }

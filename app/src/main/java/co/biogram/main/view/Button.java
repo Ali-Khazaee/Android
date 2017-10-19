@@ -1,4 +1,4 @@
-package co.biogram.main.ui;
+package co.biogram.main.view;
 
 import android.content.Context;
 import android.graphics.Typeface;

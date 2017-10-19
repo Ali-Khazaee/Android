@@ -29,8 +29,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 
-import com.bumptech.glide.Glide;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -48,7 +46,7 @@ import co.biogram.main.fragment.VideoPreviewFragment;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
-import co.biogram.main.ui.LoadingView;
+import co.biogram.main.view.LoadingView;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.ViewHolderMain>
 {
