@@ -6,11 +6,12 @@ import android.view.ViewGroup;
 
 public class FragmentBase
 {
-    protected FragmentActivity Activity;
+    FragmentActivity Activity;
     protected View ViewMain;
+    protected int D56;
     String Tag;
 
-    protected FragmentActivity GetActivity()
+    public FragmentActivity GetActivity()
     {
         return Activity;
     }

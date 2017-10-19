@@ -66,7 +66,6 @@ import java.util.Map;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.LinearLayoutManager2;
 import co.biogram.main.ui.LoadingView;
@@ -76,7 +75,7 @@ import co.biogram.media.MediaTransCoder;
 
 public class WriteFragment extends Fragment
 {
-    private PermissionHandler PermissionHandler;
+    /*private PermissionHandler PermissionHandler;*/
 
     private ImageView ImageViewImage;
     private ImageView ImageViewVideo;
@@ -468,7 +467,7 @@ public class WriteFragment extends Fragment
                     return;
                 }
 
-                PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, WriteFragment.this, new PermissionHandler.PermissionEvent()
+                /*PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, WriteFragment.this, new PermissionHandler.PermissionEvent()
                 {
                     @Override
                     public void OnGranted()
@@ -481,7 +480,7 @@ public class WriteFragment extends Fragment
                     {
                         MiscHandler.Toast(context, getString(R.string.PermissionStorage));
                     }
-                });
+                });*/
             }
         });
 
@@ -497,7 +496,7 @@ public class WriteFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, WriteFragment.this, new PermissionHandler.PermissionEvent()
+                /*PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, WriteFragment.this, new PermissionHandler.PermissionEvent()
                 {
                     @Override
                     public void OnGranted()
@@ -510,7 +509,7 @@ public class WriteFragment extends Fragment
                     {
                         MiscHandler.Toast(context, getString(R.string.PermissionStorage));
                     }
-                });
+                });*/
             }
         });
 
@@ -1081,8 +1080,8 @@ public class WriteFragment extends Fragment
     {
         super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
-        if (PermissionHandler != null)
-            PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
+        /*if (PermissionHandler != null)
+            PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);*/
     }
 
     public void GetData(final String Path, boolean IsVideo)
@@ -1091,7 +1090,7 @@ public class WriteFragment extends Fragment
         {
             final Context context = getActivity();
 
-            PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
+            /*PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
             {
                 @Override
                 public void OnGranted()
@@ -1171,7 +1170,7 @@ public class WriteFragment extends Fragment
                                 Height = Height / 2;
                             }
 
-                            try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) { /* */ }
+                            try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) {  }
 
                             MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
                             format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
@@ -1187,8 +1186,8 @@ public class WriteFragment extends Fragment
                             int Sample = 44100;
                             int Channel = 1;
 
-                            try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { /* */ }
-                            try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) { /* */ }
+                            try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { }
+                            try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) {  }
 
                             int Bitrate = Sample * Channel;
 
@@ -1236,7 +1235,7 @@ public class WriteFragment extends Fragment
                 {
                     MiscHandler.Toast(context, getString(R.string.PermissionStorage));
                 }
-            });
+            });*/
         }
         else
         {

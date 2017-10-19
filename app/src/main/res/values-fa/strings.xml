@@ -15,7 +15,7 @@
     <string name="DialogPermissionAccept">اجازه دادن</string>
     <string name="DialogPermissionDecline">نه فعلا</string>
 
-    <!-- Welcome UI -->
+    <!-- WelcomeUI UI -->
     <string name="WelcomeLanguage">فارسی</string>
     <string name="WelcomeLanguageSelect">انتخاب زبان</string>
     <string name="WelcomeLanguageEnglish">English</string>

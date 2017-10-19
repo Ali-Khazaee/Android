@@ -15,7 +15,7 @@
     <string name="DialogPermissionAccept">ALLOW</string>
     <string name="DialogPermissionDecline">NOT NOW</string>
 
-    <!-- Welcome UI -->
+    <!-- WelcomeUI UI -->
     <string name="WelcomeLanguage">English</string>
     <string name="WelcomeLanguageSelect">Select Your Language</string>
     <string name="WelcomeLanguageEnglish">English</string>
@@ -329,7 +329,7 @@
     <string name="ResetFragmentSuccess">A recovery link has been sent to your email address</string>
     <string name="ResetFragmentError">Your submitted email or username doesn\'t exist</string>
 
-    <!-- Welcome Activity -->
+    <!-- WelcomeUI Activity -->
     <string name="MainActivityUpdate">New Update</string>
     <string name="MainActivityUpdateDescription">New update is available, we strongly recommends you to update your biogram now, Although there is no requires to download it</string>
     <string name="MainActivityUpdateNow">Update Now!</string>

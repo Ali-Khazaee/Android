@@ -6,54 +6,50 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.biogram.main.handler.MiscHandler;
+
 public class FragmentManager
 {
-    final private List<FragmentBase> FragmentBaseList = new ArrayList<>();
+    final private List<FragmentBase> FragmentList = new ArrayList<>();
     final private FragmentActivity Activity;
 
-    private FragmentBase ActiveFragment;
+    private FragmentBase Fragment;
 
     FragmentManager(FragmentActivity a)
     {
         Activity = a;
     }
 
-    public FragmentBase FindByTag(String Tag)
+    public void OpenView(FragmentBase fragment, int ID, String Tag)
     {
-        for (FragmentBase Fragment : FragmentBaseList)
-            if (Fragment.Tag.equals(Tag))
-                return Fragment;
+        if (FragmentList.size() > 1)
+            FragmentList.get(FragmentList.size() - 1).OnPause();
 
-        return null;
-    }
-
-    public void OpenView(FragmentBase Fragment, int ID, String Tag)
-    {
-        if (FragmentBaseList.size() > 1)
-            FragmentBaseList.get(FragmentBaseList.size() - 1).OnPause();
-
-        ActiveFragment = Fragment;
-        ActiveFragment.Tag = Tag;
-        ActiveFragment.Activity = Activity;
-        ActiveFragment.OnCreate();
-        ActiveFragment.OnResume();
+        Fragment = fragment;
+        Fragment.Tag = Tag;
+        Fragment.D56 = MiscHandler.ToDimension(Activity, 56);
+        Fragment.Activity = Activity;
+        Fragment.OnCreate();
+        Fragment.OnResume();
 
         FrameLayout FrameLayoutMain = (FrameLayout) Activity.findViewById(ID);
-        FrameLayoutMain.addView(ActiveFragment.ViewMain);
+        FrameLayoutMain.addView(Fragment.ViewMain);
 
-        FragmentBaseList.add(ActiveFragment);
+        FragmentList.add(Fragment);
     }
 
     boolean HandleBack()
     {
-        if (FragmentBaseList.size() > 1)
+        if (FragmentList.size() > 1)
         {
-            FragmentBaseList.get(FragmentBaseList.size() - 1).OnPause();
-            FragmentBaseList.get(FragmentBaseList.size() - 1).OnDestroy();
-            FragmentBaseList.remove(FragmentBaseList.size() - 1);
+            int I = FragmentList.size() - 1;
 
-            ActiveFragment = FragmentBaseList.get(FragmentBaseList.size() - 1);
-            ActiveFragment.OnResume();
+            FragmentList.get(I).OnPause();
+            FragmentList.get(I).OnDestroy();
+            FragmentList.remove(I);
+
+            Fragment = FragmentList.get(FragmentList.size() - 1);
+            Fragment.OnResume();
 
             return false;
         }
@@ -61,21 +57,30 @@ public class FragmentManager
         return true;
     }
 
+    public FragmentBase FindByTag(String Tag)
+    {
+        for (FragmentBase Fragment : FragmentList)
+            if (Fragment.Tag.equals(Tag))
+                return Fragment;
+
+        return null;
+    }
+
     void OnResume()
     {
-        if (ActiveFragment != null)
-            ActiveFragment.OnResume();
+        if (Fragment != null)
+            Fragment.OnResume();
     }
 
     void OnPause()
     {
-        if (ActiveFragment != null)
-            ActiveFragment.OnPause();
+        if (Fragment != null)
+            Fragment.OnPause();
     }
 
     void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
     {
-        if (ActiveFragment != null)
-            ActiveFragment.OnActivityResult(RequestCode, ResultCode, intent);
+        if (Fragment != null)
+            Fragment.OnActivityResult(RequestCode, ResultCode, intent);
     }
 }

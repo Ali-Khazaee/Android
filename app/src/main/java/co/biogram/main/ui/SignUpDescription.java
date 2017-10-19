@@ -50,6 +50,7 @@ class SignUpDescription extends FragmentBase
     private RelativeLayout RelativeLayoutMain;
 
     private String Code;
+    private String Token;
     private String Username;
     private File ProfileFile;
 
@@ -57,6 +58,11 @@ class SignUpDescription extends FragmentBase
     {
         Code = code;
         Username = username;
+    }
+
+    SignUpDescription(String token)
+    {
+        Token = token;
     }
 
     @Override

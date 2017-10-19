@@ -78,7 +78,6 @@ import java.util.Map;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.ui.LoadingView;
@@ -87,7 +86,7 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class EditFragment extends Fragment
 {
-    private PermissionHandler PermissionHandler;
+    //private PermissionHandler PermissionHandler;
 
     private Uri CaptureUri;
     private final int FromCamera = 2;
@@ -369,7 +368,7 @@ public class EditFragment extends Fragment
                     @Override
                     public void onClick(View v)
                     {
-                        PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
+                        /*PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
                         {
                             @Override
                             public void OnGranted()
@@ -393,7 +392,7 @@ public class EditFragment extends Fragment
                             {
                                 MiscHandler.Toast(context, getString(R.string.PermissionCamera));
                             }
-                        });
+                        });*/
 
                         DialogCover.dismiss();
                     }
@@ -418,7 +417,7 @@ public class EditFragment extends Fragment
                     @Override
                     public void onClick(View v)
                     {
-                        PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
+                        /*PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
                         {
                             @Override
                             public void OnGranted()
@@ -434,7 +433,7 @@ public class EditFragment extends Fragment
                                 MiscHandler.Toast(context, getString(R.string.PermissionStorage));
                                 DialogCover.dismiss();
                             }
-                        });
+                        });*/
                     }
                 });
 
@@ -564,7 +563,7 @@ public class EditFragment extends Fragment
                     @Override
                     public void onClick(View v)
                     {
-                        PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
+                        /*PermissionHandler = new PermissionHandler(Manifest.permission.CAMERA, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
                         {
                             @Override
                             public void OnGranted()
@@ -588,7 +587,7 @@ public class EditFragment extends Fragment
                             {
                                 MiscHandler.Toast(context, getString(R.string.PermissionCamera));
                             }
-                        });
+                        });*/
 
                         DialogProfile.dismiss();
                     }
@@ -613,7 +612,7 @@ public class EditFragment extends Fragment
                     @Override
                     public void onClick(View v)
                     {
-                        PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
+                        /*PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
                         {
                             @Override
                             public void OnGranted()
@@ -629,7 +628,7 @@ public class EditFragment extends Fragment
                                 MiscHandler.Toast(context, getString(R.string.PermissionStorage));
                                 DialogProfile.dismiss();
                             }
-                        });
+                        });*/
                     }
                 });
 
@@ -876,11 +875,11 @@ public class EditFragment extends Fragment
             {
                 view.clearFocus();
 
-                PermissionHandler = new PermissionHandler(Manifest.permission.ACCESS_FINE_LOCATION, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
+                /*PermissionHandler = new PermissionHandler(Manifest.permission.ACCESS_FINE_LOCATION, 100, EditFragment.this, new PermissionHandler.PermissionEvent()
                 {
                     @Override public void OnGranted() { }
                     @Override public void OnFailed() { }
-                });
+                });*/
 
                 getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, new MapFragment(), "MapFragment").addToBackStack("MapFragment").commitAllowingStateLoss();
             }
@@ -1090,8 +1089,8 @@ public class EditFragment extends Fragment
     {
         super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
-        if (PermissionHandler != null)
-            PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);
+        /*if (PermissionHandler != null)
+            PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);*/
     }
 
     @Override
@@ -1124,7 +1123,7 @@ public class EditFragment extends Fragment
         switch (RequestCode)
         {
             case FromCamera:
-                PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, EditFragment.this, new PermissionHandler.PermissionEvent()
+                /*PermissionHandler = new PermissionHandler(Manifest.permission.WRITE_EXTERNAL_STORAGE, 101, EditFragment.this, new PermissionHandler.PermissionEvent()
                 {
                     @Override
                     public void OnGranted()
@@ -1154,7 +1153,7 @@ public class EditFragment extends Fragment
                     {
                         MiscHandler.Toast(context, getString(R.string.PermissionStorage));
                     }
-                });
+                });*/
             break;
         }
     }

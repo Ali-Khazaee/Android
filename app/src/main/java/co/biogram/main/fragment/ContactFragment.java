@@ -32,7 +32,6 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.PermissionHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.misc.ImageViewCircle;
 import co.biogram.main.misc.LinearLayoutManager2;
@@ -44,7 +43,7 @@ public class ContactFragment extends Fragment
     private final List<Struct> ContactList = new ArrayList<>();
     private AdapterContact ContactAdapter;
 
-    private PermissionHandler _PermissionHandler;
+    //private PermissionHandler _PermissionHandler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -169,13 +168,13 @@ public class ContactFragment extends Fragment
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (_PermissionHandler != null)
-            _PermissionHandler.GetRequestPermissionResult(requestCode, permissions, grantResults);
+        /*if (_PermissionHandler != null)
+            _PermissionHandler.GetRequestPermissionResult(requestCode, permissions, grantResults);*/
     }
 
     private void RetrieveDataFromServer(final Context context, final RelativeLayout RelativeLayoutLoading, final LoadingView LoadingViewMain, final TextView TextViewTryAgain)
     {
-        _PermissionHandler = new PermissionHandler(Manifest.permission.READ_CONTACTS, 100, this, new PermissionHandler.PermissionEvent()
+        /*_PermissionHandler = new PermissionHandler(Manifest.permission.READ_CONTACTS, 100, this, new PermissionHandler.PermissionEvent()
         {
             @Override
             public void OnGranted()
@@ -254,7 +253,7 @@ public class ContactFragment extends Fragment
             {
                 MiscHandler.Toast(context, getString(R.string.PermissionReadContact));
             }
-        });
+        });*/
     }
 
     private class AdapterContact extends RecyclerView.Adapter<AdapterContact.ViewHolderFollowing>

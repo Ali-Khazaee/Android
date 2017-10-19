@@ -43,7 +43,7 @@ import co.biogram.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.R;
 
-class SignUpPhone extends FragmentBase
+class SignUpPhoneUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private int RelativeLayoutMainHeightDifference = 0;
@@ -243,11 +243,23 @@ class SignUpPhone extends FragmentBase
 
                 RelativeLayoutCode.addView(ViewLineCode);
 
-                RelativeLayout.LayoutParams ViewLineLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1));
-                ViewLineLanguageParam.addRule(RelativeLayout.BELOW, ImageViewCloseCode.getId());
+                RelativeLayout.LayoutParams LinearLayoutListParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayoutListParam.addRule(RelativeLayout.BELOW, ViewLineCode.getId());
 
-                LinearLayout LinearLayoutIran = new LinearLayout(activity);
-                LinearLayoutIran
+                LinearLayout LinearLayoutList = new LinearLayout(activity);
+                LinearLayoutList.setLayoutParams(LinearLayoutListParam);
+                LinearLayoutList.setOrientation(LinearLayout.VERTICAL);
+
+                RelativeLayoutCode.addView(LinearLayoutList);
+
+                TextView TextViewIran = new TextView(activity, false);
+                TextViewIran.setTextColor(ContextCompat.getColor(activity, R.color.Black));
+                TextViewIran.setText("Iran ( +98 )");
+                TextViewIran.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                TextViewIran.setPadding(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+                TextViewIran.setGravity(Gravity.CENTER);
+
+                LinearLayoutList.addView(TextViewIran);
 
                 DialogCode.setContentView(ScrollViewCode);
                 DialogCode.show();
@@ -326,7 +338,7 @@ class SignUpPhone extends FragmentBase
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                //GetActivity().GetManager().OpenView(new SignUpPhone(), R.id.WelcomeActivityContainer, "SignUpPhone"); // TODO SignUpWithEmail
+                //GetActivity().GetManager().OpenView(new SignUpPhoneUI(), R.id.WelcomeActivityContainer, "SignUpPhoneUI"); // TODO SignUpWithEmail
             }
 
             @Override
@@ -469,7 +481,7 @@ class SignUpPhone extends FragmentBase
     public void OnPause()
     {
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
-        AndroidNetworking.forceCancel("SignUpPhone");
+        AndroidNetworking.forceCancel("SignUpPhoneUI");
         MiscHandler.HideSoftKey(GetActivity());
     }
 
@@ -478,10 +490,10 @@ class SignUpPhone extends FragmentBase
         ButtonNext.setVisibility(View.GONE);
         LoadingViewNext.Start();
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
+        AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhoneUI"))
         .addBodyParameter("Code", EditTextPhoneCode.getText().toString())
         .addBodyParameter("Phone", EditTextPhone.getText().toString())
-        .setTag("SignUpPhone")
+        .setTag("SignUpPhoneUI")
         .build()
         .getAsString(new StringRequestListener()
         {
@@ -536,7 +548,7 @@ class SignUpPhone extends FragmentBase
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("SignUpPhone-RequestSignUpPhone: " + e.toString());
+                    MiscHandler.Debug("SignUpPhoneUI-RequestSignUpPhone: " + e.toString());
                 }
             }
 

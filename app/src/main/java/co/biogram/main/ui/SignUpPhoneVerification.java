@@ -460,7 +460,7 @@ class SignUpPhoneVerification extends FragmentBase
                 TextViewResend.setVisibility(View.GONE);
                 LoadingViewResend.Start();
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhoneUI"))
                 .addBodyParameter("Code", Code)
                 .addBodyParameter("Phone", Phone)
                 .setTag("SignUpPhoneVerification")

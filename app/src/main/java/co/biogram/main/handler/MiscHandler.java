@@ -25,11 +25,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import co.biogram.fragment.FragmentActivity;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.activity.WelcomeActivity;
@@ -215,6 +220,82 @@ public class MiscHandler
         return S;
     }
 
+    public static void ChangeLanguage(FragmentActivity activity, String Language)
+    {
+        if (SharedHandler.GetString(activity, "Language").equals(Language))
+            return;
+
+        SharedPreferences Shared = activity.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
+        SharedPreferences.Editor Editor = Shared.edit();
+        Editor.putString("Language", Language);
+        // noinspection all
+        Editor.commit();
+
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+
+        System.exit(0);
+    }
+
+    private static String CurrentServer = "";
+    private static boolean IsReachable = false;
+
+    public static String GetRandomServer(String URL)
+    {
+        if (IsReachable)
+            return CurrentServer;
+
+        String Server1 = "http://5.160.219.218:5000/";
+        String Server2 = "http://5.160.219.218:5000/";
+
+        if (CurrentServer.equals(Server1))
+            CurrentServer = Server2;
+        else
+            CurrentServer = Server1;
+
+        AndroidNetworking.post(CurrentServer)
+        .setPriority(Priority.IMMEDIATE)
+        .build()
+        .getAsString(new NetworkResponse(new ResponseListener()
+        {
+            @Override
+            public void OnRespone(String r, ANError e)
+            {
+                IsReachable = e == null;
+            }
+        }));
+
+        return CurrentServer + URL;
+    }
+
+    public static class NetworkResponse implements StringRequestListener
+    {
+        private ResponseListener Listener;
+
+        public NetworkResponse(ResponseListener l)
+        {
+            Listener = l;
+        }
+
+        @Override
+        public void onResponse(String r)
+        {
+            Listener.OnRespone(r, null);
+        }
+
+        @Override
+        public void onError(ANError e)
+        {
+            IsReachable = false;
+            Listener.OnRespone(null, e);
+        }
+    }
+
+    public interface ResponseListener
+    {
+        void OnRespone(String Response, ANError Error);
+    }
+
     public static String GenerateSession()
     {
         return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
@@ -244,22 +325,7 @@ public class MiscHandler
 
 
 
-    public static void ChangeLanguage(Activity activity, String Language)
-    {
-        if (SharedHandler.GetString(activity, "Language").equals(Language))
-            return;
 
-        SharedPreferences Shared = activity.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
-        SharedPreferences.Editor Editor = Shared.edit();
-        Editor.putString("Language", Language);
-        // noinspection all
-        Editor.commit();
-
-        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
-
-        System.exit(0);
-    }
 
     public static String GetTimeName(long T)
     {
@@ -289,19 +355,7 @@ public class MiscHandler
         return "";
     }
 
-    public static String GetRandomServer(String URL)
-    {
-        String Server;
 
-        switch (new Random().nextInt(2) + 1)
-        {
-            case 1:  Server = "http://5.160.219.218:5000/"; break;
-            case 2:  Server = "http://5.160.219.218:5000/"; break;
-            default: Server = "http://5.160.219.218:5000/"; break;
-        }
-
-        return Server + URL;
-    }
 
 
 
