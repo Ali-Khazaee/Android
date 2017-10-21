@@ -34,6 +34,7 @@
     <!-- Sign Up Phone UI -->
     <string name="SignUpPhone">Sign Up</string>
     <string name="SignUpPhoneCode">Code</string>
+    <string name="SignUpPhoneTitleCode">Pre code number</string>
     <string name="SignUpPhoneNumber">Phone Number</string>
     <string name="SignUpPhoneMessage">Please enter your phone number to receive a verification code, Also you can Sign Up via</string>
     <string name="SignUpPhoneMessageEmail">Email Address</string>

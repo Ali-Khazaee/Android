@@ -47,7 +47,7 @@ import co.biogram.main.view.LoadingView;
 import co.biogram.main.view.PermissionDialog;
 import co.biogram.main.view.TextView;
 
-class SignUpDescription extends FragmentBase
+class SignUpDescriptionUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private int RelativeLayoutMainHeightDifference = 0;
@@ -61,18 +61,18 @@ class SignUpDescription extends FragmentBase
     private String Password;
     private File ProfileFile;
 
-    SignUpDescription(String token)
+    SignUpDescriptionUI(String token)
     {
         Token = token;
     }
 
-    SignUpDescription(String code, String username)
+    SignUpDescriptionUI(String code, String username)
     {
         Code = code;
         Username = username;
     }
 
-    SignUpDescription(String username, String password, String email)
+    SignUpDescriptionUI(String username, String password, String email)
     {
         Username = username;
         Password = password;
@@ -82,11 +82,10 @@ class SignUpDescription extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final FragmentActivity activity = GetActivity();
-        final Button ButtonFinish = new Button(activity, false);
-        final LoadingView LoadingViewFinish = new LoadingView(activity);
+        final Button ButtonFinish = new Button(GetActivity(), false);
+        final LoadingView LoadingViewFinish = new LoadingView(GetActivity());
 
-        RelativeLayoutMain = new RelativeLayout(activity);
+        RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
@@ -122,22 +121,22 @@ class SignUpDescription extends FragmentBase
             }
         };
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(activity);
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 56)));
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 56), RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, D56);
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
-        ImageView ImageViewBack = new ImageView(activity);
+        ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_back_white_fa : R.drawable.ic_back_white);
-        ImageViewBack.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+        ImageViewBack.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -146,18 +145,18 @@ class SignUpDescription extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(activity, true);
+        TextView TextViewTitle = new TextView(GetActivity(), true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        TextViewTitle.setText(activity.getString(R.string.SignUpDescription));
+        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
+        TextViewTitle.setText(GetActivity().getString(R.string.SignUpDescription));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-        View ViewLine = new View(activity);
+        View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
@@ -167,78 +166,78 @@ class SignUpDescription extends FragmentBase
         RelativeLayout.LayoutParams ScrollViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         ScrollViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        ScrollView ScrollViewMain = new ScrollView(activity);
+        ScrollView ScrollViewMain = new ScrollView(GetActivity());
         ScrollViewMain.setLayoutParams(ScrollViewMainParam);
         ScrollViewMain.setFillViewport(true);
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
-        RelativeLayout RelativeLayoutScroll = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutScroll = new RelativeLayout(GetActivity());
         RelativeLayoutScroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        RelativeLayout.LayoutParams CircleImageViewProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 75), MiscHandler.ToDimension(activity, 75));
-        CircleImageViewProfileParam.setMargins(MiscHandler.ToDimension(activity, 25), MiscHandler.ToDimension(activity, 25), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 25));
+        RelativeLayout.LayoutParams CircleImageViewProfileParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 75), MiscHandler.ToDimension(GetActivity(), 75));
+        CircleImageViewProfileParam.setMargins(MiscHandler.ToDimension(GetActivity(), 25), MiscHandler.ToDimension(GetActivity(), 25), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 25));
         CircleImageViewProfileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        CircleImageViewProfile = new CircleImageView(activity);
+        CircleImageViewProfile = new CircleImageView(GetActivity());
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.setId(MiscHandler.GenerateViewID());
         CircleImageViewProfile.setCircleBackgroundColor(R.color.BlueLight);
         CircleImageViewProfile.setImageResource(R.drawable.ic_person_blue);
         CircleImageViewProfile.setBorderColor(R.color.Gray);
         CircleImageViewProfile.setBorderWidth(2);
-        CircleImageViewProfile.setPadding(MiscHandler.ToDimension(activity, 2), MiscHandler.ToDimension(activity, 2), MiscHandler.ToDimension(activity, 2), MiscHandler.ToDimension(activity, 2));
+        CircleImageViewProfile.setPadding(MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 2));
         CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                final Dialog DialogProfile = new Dialog(activity);
+                final Dialog DialogProfile = new Dialog(GetActivity());
                 DialogProfile.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogProfile.setCancelable(true);
 
-                LinearLayout LinearLayoutMain = new LinearLayout(activity);
+                LinearLayout LinearLayoutMain = new LinearLayout(GetActivity());
                 LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                 LinearLayoutMain.setBackgroundResource(R.color.White);
                 LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
-                TextView TextViewTitle = new TextView(activity, true);
+                TextView TextViewTitle = new TextView(GetActivity(), true);
                 TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewTitle.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-                TextViewTitle.setText(activity.getString(R.string.SignUpDescriptionProfile));
-                TextViewTitle.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewTitle.setText(GetActivity().getString(R.string.SignUpDescriptionProfile));
+                TextViewTitle.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
                 TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
                 LinearLayoutMain.addView(TextViewTitle);
 
-                View ViewLine = new View(activity);
-                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1)));
+                View ViewLine = new View(GetActivity());
+                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1)));
                 ViewLine.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(ViewLine);
 
-                TextView TextViewCamera = new TextView(activity, false);
+                TextView TextViewCamera = new TextView(GetActivity(), false);
                 TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewCamera.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-                TextViewCamera.setText(activity.getString(R.string.SignUpDescriptionProfileCamera));
-                TextViewCamera.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+                TextViewCamera.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewCamera.setText(GetActivity().getString(R.string.SignUpDescriptionProfileCamera));
+                TextViewCamera.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
                 TextViewCamera.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewCamera.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        if (MiscHandler.HasPermission(activity, Manifest.permission.CAMERA))
+                        if (MiscHandler.HasPermission(GetActivity(), Manifest.permission.CAMERA))
                         {
                             DialogProfile.dismiss();
-                            GetActivity().GetManager().OpenView(new CameraView(), R.id.WelcomeActivityContainer, "CameraView");
+                            GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.WelcomeActivityContainer, "CameraViewUI");
                             return;
                         }
 
-                        PermissionDialog PermissionDialogCamera = new PermissionDialog(activity);
-                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_camera, activity.getString(R.string.SignUpDescriptionPermissionCamera), new PermissionDialog.OnSelectedListener()
+                        PermissionDialog PermissionDialogCamera = new PermissionDialog(GetActivity());
+                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_camera, GetActivity().getString(R.string.SignUpDescriptionPermissionCamera), new PermissionDialog.OnSelectedListener()
                         {
                             @Override
                             public void OnSelected(boolean Allow)
@@ -246,7 +245,7 @@ class SignUpDescription extends FragmentBase
                                 if (!Allow)
                                 {
                                     DialogProfile.dismiss();
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionCamera));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpDescriptionPermissionCamera));
                                     return;
                                 }
 
@@ -256,14 +255,14 @@ class SignUpDescription extends FragmentBase
                                     public void OnGranted()
                                     {
                                         DialogProfile.dismiss();
-                                        GetActivity().GetManager().OpenView(new CameraView(), R.id.WelcomeActivityContainer, "CameraView");
+                                        GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.WelcomeActivityContainer, "CameraViewUI");
                                     }
 
                                     @Override
                                     public void OnDenied()
                                     {
                                         DialogProfile.dismiss();
-                                        MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionCamera));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpDescriptionPermissionCamera));
                                     }
                                 });
                             }
@@ -273,32 +272,32 @@ class SignUpDescription extends FragmentBase
 
                 LinearLayoutMain.addView(TextViewCamera);
 
-                View ViewLine2 = new View(activity);
-                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1)));
+                View ViewLine2 = new View(GetActivity());
+                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1)));
                 ViewLine2.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(ViewLine2);
 
-                TextView TextViewGallery = new TextView(activity, false);
+                TextView TextViewGallery = new TextView(GetActivity(), false);
                 TextViewGallery.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewGallery.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-                TextViewGallery.setText(activity.getString(R.string.SignUpDescriptionProfileGallery));
-                TextViewGallery.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+                TextViewGallery.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewGallery.setText(GetActivity().getString(R.string.SignUpDescriptionProfileGallery));
+                TextViewGallery.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
                 TextViewGallery.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewGallery.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        if (MiscHandler.HasPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE))
+                        if (MiscHandler.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                         {
                             DialogProfile.dismiss();
-                            GetActivity().GetManager().OpenView(new GalleryView(1, false), R.id.WelcomeActivityContainer, "GalleryView");
+                            GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.WelcomeActivityContainer, "GalleryViewUI");
                             return;
                         }
 
-                        PermissionDialog PermissionDialogCamera = new PermissionDialog(activity);
-                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_storage, activity.getString(R.string.SignUpDescriptionPermissionStorage), new PermissionDialog.OnSelectedListener()
+                        PermissionDialog PermissionDialogCamera = new PermissionDialog(GetActivity());
+                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.SignUpDescriptionPermissionStorage), new PermissionDialog.OnSelectedListener()
                         {
                             @Override
                             public void OnSelected(boolean Allow)
@@ -306,7 +305,7 @@ class SignUpDescription extends FragmentBase
                                 if (!Allow)
                                 {
                                     DialogProfile.dismiss();
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionStorage));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpDescriptionPermissionStorage));
                                     return;
                                 }
 
@@ -316,14 +315,14 @@ class SignUpDescription extends FragmentBase
                                     public void OnGranted()
                                     {
                                         DialogProfile.dismiss();
-                                        GetActivity().GetManager().OpenView(new GalleryView(1, false), R.id.WelcomeActivityContainer, "GalleryView");
+                                        GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.WelcomeActivityContainer, "GalleryViewUI");
                                     }
 
                                     @Override
                                     public void OnDenied()
                                     {
                                         DialogProfile.dismiss();
-                                        MiscHandler.Toast(activity, activity.getString(R.string.SignUpDescriptionPermissionStorage));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpDescriptionPermissionStorage));
                                     }
                                 });
                             }
@@ -333,17 +332,17 @@ class SignUpDescription extends FragmentBase
 
                 LinearLayoutMain.addView(TextViewGallery);
 
-                View ViewLine3 = new View(activity);
-                ViewLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 1)));
+                View ViewLine3 = new View(GetActivity());
+                ViewLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1)));
                 ViewLine3.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(ViewLine3);
 
-                TextView TextViewRemove = new TextView(activity, false);
+                TextView TextViewRemove = new TextView(GetActivity(), false);
                 TextViewRemove.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewRemove.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-                TextViewRemove.setText(activity.getString(R.string.SignUpDescriptionProfileRemove));
-                TextViewRemove.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+                TextViewRemove.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewRemove.setText(GetActivity().getString(R.string.SignUpDescriptionProfileRemove));
+                TextViewRemove.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
                 TextViewRemove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewRemove.setOnClickListener(new View.OnClickListener()
                 {
@@ -366,26 +365,26 @@ class SignUpDescription extends FragmentBase
         RelativeLayoutScroll.addView(CircleImageViewProfile);
 
         RelativeLayout.LayoutParams LinearLayoutNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayoutNameParam.setMargins(0, MiscHandler.ToDimension(activity, 30), MiscHandler.ToDimension(activity, 15), 0);
+        LinearLayoutNameParam.setMargins(0, MiscHandler.ToDimension(GetActivity(), 30), MiscHandler.ToDimension(GetActivity(), 15), 0);
         LinearLayoutNameParam.addRule(RelativeLayout.RIGHT_OF, CircleImageViewProfile.getId());
 
-        LinearLayout LinearLayoutName = new LinearLayout(activity);
+        LinearLayout LinearLayoutName = new LinearLayout(GetActivity());
         LinearLayoutName.setLayoutParams(LinearLayoutNameParam);
         LinearLayoutName.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutName.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(LinearLayoutName);
 
-        TextView TextViewName = new TextView(activity, true);
+        TextView TextViewName = new TextView(GetActivity(), true);
         TextViewName.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        TextViewName.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewName.setText(activity.getString(R.string.SignUpDescriptionName));
+        TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewName.setText(GetActivity().getString(R.string.SignUpDescriptionName));
         TextViewName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewName.setGravity(Gravity.START);
 
         LinearLayoutName.addView(TextViewName);
 
-        final EditText EditTextName = new EditText(activity);
+        final EditText EditTextName = new EditText(GetActivity());
         EditTextName.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         EditTextName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextName.setFilters(new InputFilter[]
@@ -408,10 +407,10 @@ class SignUpDescription extends FragmentBase
             }
         });
         EditTextName.setInputType(InputType.TYPE_CLASS_TEXT);
-        EditTextName.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextName.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextName.requestFocus();
-        EditTextName.setHintTextColor(ContextCompat.getColor(activity, R.color.Gray3));
-        EditTextName.setHint(activity.getString(R.string.SignUpDescriptionEditName));
+        EditTextName.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray3));
+        EditTextName.setHint(GetActivity().getString(R.string.SignUpDescriptionEditName));
         EditTextName.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -433,46 +432,46 @@ class SignUpDescription extends FragmentBase
         LinearLayoutName.addView(EditTextName);
 
         RelativeLayout.LayoutParams TextViewDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewDescriptionParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), 0);
+        TextViewDescriptionParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), 0);
         TextViewDescriptionParam.addRule(RelativeLayout.BELOW, LinearLayoutName.getId());
         TextViewDescriptionParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewDescription = new TextView(activity, true);
+        TextView TextViewDescription = new TextView(GetActivity(), true);
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
-        TextViewDescription.setTextColor(ContextCompat.getColor(activity, R.color.Gray4));
-        TextViewDescription.setText(activity.getString(R.string.SignUpDescriptionInfo));
+        TextViewDescription.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewDescription.setText(GetActivity().getString(R.string.SignUpDescriptionInfo));
         TextViewDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewDescription.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewDescription);
 
         RelativeLayout.LayoutParams EditTextDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(activity, 10), 0, MiscHandler.ToDimension(activity, 10), 0);
+        EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
         EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
 
-        EditText EditTextDescription = new EditText(activity);
+        EditText EditTextDescription = new EditText(GetActivity());
         EditTextDescription.setLayoutParams(EditTextDescriptionParam);
         EditTextDescription.setId(MiscHandler.GenerateViewID());
         EditTextDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT);
-        EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextDescription.setHint(activity.getString(R.string.SignUpDescriptionEditDescription));
+        EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextDescription.setHint(GetActivity().getString(R.string.SignUpDescriptionEditDescription));
         EditTextDescription.setMaxLines(5);
-        EditTextDescription.setHintTextColor(ContextCompat.getColor(activity, R.color.Gray3));
+        EditTextDescription.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray3));
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
         RelativeLayoutScroll.addView(EditTextDescription);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), 0);
+        TextViewMessageParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), 0);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextDescription.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(activity, false);
+        TextView TextViewMessage = new TextView(GetActivity(), false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(activity, R.color.Black));
-        TextViewMessage.setText(activity.getString(R.string.SignUpDescriptionMessage));
+        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewMessage.setText(GetActivity().getString(R.string.SignUpDescriptionMessage));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
 
@@ -481,7 +480,7 @@ class SignUpDescription extends FragmentBase
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutBottomParam.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
 
-        RelativeLayout RelativeLayoutBottom = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutBottom = new RelativeLayout(GetActivity());
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
 
         RelativeLayoutScroll.addView(RelativeLayoutBottom);
@@ -490,42 +489,42 @@ class SignUpDescription extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewPrivacy = new TextView(activity, false);
+        TextView TextViewPrivacy = new TextView(GetActivity(), false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        TextViewPrivacy.setText(activity.getString(R.string.SignUpDescriptionTerm));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpDescriptionTerm));
         TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewPrivacy.setPadding(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
+        TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        RelativeLayout.LayoutParams RelativeLayoutFinishParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
-        RelativeLayoutFinishParam.setMargins(MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15), MiscHandler.ToDimension(activity, 15));
+        RelativeLayout.LayoutParams RelativeLayoutFinishParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
+        RelativeLayoutFinishParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         RelativeLayoutFinishParam.addRule(MiscHandler.Align("L"));
 
         GradientDrawable GradientDrawableFinish = new GradientDrawable();
-        GradientDrawableFinish.setColor(ContextCompat.getColor(activity, R.color.BlueLight));
-        GradientDrawableFinish.setCornerRadius(MiscHandler.ToDimension(activity, 7));
+        GradientDrawableFinish.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        GradientDrawableFinish.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
 
         GradientDrawable GradientDrawableFinishDisable = new GradientDrawable();
-        GradientDrawableFinishDisable.setCornerRadius(MiscHandler.ToDimension(activity, 7));
-        GradientDrawableFinishDisable.setColor(ContextCompat.getColor(activity, R.color.Gray2));
+        GradientDrawableFinishDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        GradientDrawableFinishDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable StateListDrawableNext = new StateListDrawable();
         StateListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, GradientDrawableFinish);
         StateListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, GradientDrawableFinishDisable);
 
-        RelativeLayout RelativeLayoutFinish = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutFinish = new RelativeLayout(GetActivity());
         RelativeLayoutFinish.setLayoutParams(RelativeLayoutFinishParam);
         RelativeLayoutFinish.setBackground(GradientDrawableFinish);
 
         RelativeLayoutBottom.addView(RelativeLayoutFinish);
 
-        ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35)));
+        ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
         ButtonFinish.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        ButtonFinish.setTextColor(ContextCompat.getColor(activity, R.color.White));
-        ButtonFinish.setText(activity.getString(R.string.SignUpDescriptionFinish));
+        ButtonFinish.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
+        ButtonFinish.setText(GetActivity().getString(R.string.SignUpDescriptionFinish));
         ButtonFinish.setBackground(StateListDrawableNext);
         ButtonFinish.setPadding(0, 0, 0, 0);
         ButtonFinish.setEnabled(false);
@@ -538,8 +537,8 @@ class SignUpDescription extends FragmentBase
                 ButtonFinish.setVisibility(View.GONE);
                 LoadingViewFinish.Start();
 
-                final ProgressDialog Progress = new ProgressDialog(activity);
-                Progress.setMessage(activity.getString(R.string.SignUpDescriptionUpload));
+                final ProgressDialog Progress = new ProgressDialog(GetActivity());
+                Progress.setMessage(GetActivity().getString(R.string.SignUpDescriptionUpload));
                 Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 Progress.setIndeterminate(false);
                 Progress.setCancelable(false);
@@ -564,7 +563,7 @@ class SignUpDescription extends FragmentBase
                 .addMultipartParameter("Code", Code)
                 .addMultipartParameter("Username", Username)
                 .addMultipartFile("Avatar", ProfileFile)
-                .setTag("SignUpDescription")
+                .setTag("SignUpDescriptionUI")
                 .build()
                 .setUploadProgressListener(new UploadProgressListener()
                 {
@@ -591,10 +590,10 @@ class SignUpDescription extends FragmentBase
                             switch (Result.getInt("Message"))
                             {
                                 case -2:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError2));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
                                     break;
                                 case -1:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.GeneralError1));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
                                     break;
                                 case 0:
                                     TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
@@ -602,29 +601,29 @@ class SignUpDescription extends FragmentBase
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    MiscHandler.Toast(activity, "Done switch me to ");
-                                    //GetActivity().GetManager().OpenView(new SignUpDescription(Code, EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpDescription");
+                                    MiscHandler.Toast(GetActivity(), "Done switch me to ");
+                                    //GetActivity().GetManager().OpenView(new SignUpDescriptionUI(Code, EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
                                     break;
                                 case 1:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError1));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));
                                     break;
                                 case 2:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError3));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError3));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError4));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
                                     break;
                                 case 4:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError4));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
                                     break;
                                 case 5:
-                                    MiscHandler.Toast(activity, activity.getString(R.string.SignUpUsernameError5));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError5));
                                     break;
                             }
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignUpDescription-Register: " + e.toString());
+                            MiscHandler.Debug("SignUpDescriptionUI-Register: " + e.toString());
                         }
 
                         Progress.dismiss();
@@ -636,7 +635,7 @@ class SignUpDescription extends FragmentBase
                         Progress.dismiss();
                         LoadingViewFinish.Stop();
                         ButtonFinish.setVisibility(View.VISIBLE);
-                        MiscHandler.Toast(activity, activity.getString(R.string.GeneralNoInternet));
+                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                     }
                 });
             }
@@ -644,7 +643,7 @@ class SignUpDescription extends FragmentBase
 
         RelativeLayoutFinish.addView(ButtonFinish);
 
-        RelativeLayout.LayoutParams LoadingViewFinishParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 90), MiscHandler.ToDimension(activity, 35));
+        RelativeLayout.LayoutParams LoadingViewFinishParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
         LoadingViewFinishParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewFinish.setLayoutParams(LoadingViewFinishParam);
@@ -676,7 +675,7 @@ class SignUpDescription extends FragmentBase
     public void OnPause()
     {
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
-        AndroidNetworking.forceCancel("SignUpDescription");
+        AndroidNetworking.forceCancel("SignUpDescriptionUI");
         MiscHandler.HideSoftKey(GetActivity());
     }
 

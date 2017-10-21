@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -241,7 +242,7 @@ public class WelcomeUI extends FragmentBase
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new SignUpPhoneUI(), R.id.WelcomeActivityContainer, "SignUpPhoneUI");
+                GetActivity().GetManager().OpenView(new SignUpPhoneUI(true), R.id.WelcomeActivityContainer, "SignUpPhoneUI");
             }
         });
 
@@ -340,7 +341,7 @@ public class WelcomeUI extends FragmentBase
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new SignInUI(), R.id.WelcomeActivityContainer, "SignInUI");
+                GetActivity().GetManager().OpenView(new SignUpPhoneUI(false), R.id.WelcomeActivityContainer, "SignInUI");
             }
         });
 
@@ -455,17 +456,11 @@ public class WelcomeUI extends FragmentBase
                     .addBodyParameter("Session", MiscHandler.GenerateSession())
                     .setTag("WelcomeUI")
                     .build()
-                    .getAsString(new MiscHandler.NetworkResponse(new MiscHandler.ResponseListener()
+                    .getAsString(new StringRequestListener()
                     {
                         @Override
-                        public void OnRespone(String Response, ANError Error)
+                        public void onResponse(String Response)
                         {
-                            if (Error != null)
-                            {
-                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                return;
-                            }
-
                             try
                             {
                                 JSONObject Result = new JSONObject(Response);
@@ -492,7 +487,7 @@ public class WelcomeUI extends FragmentBase
                                             return;
                                         }
 
-                                        GetActivity().GetManager().OpenView(new SignUpDescription(AccountResult.getIdToken()), R.id.WelcomeActivityContainer, "SignUpDescription");
+                                        GetActivity().GetManager().OpenView(new SignUpDescriptionUI(AccountResult.getIdToken()), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
                                         break;
                                     case 1:
                                     case 2:
@@ -508,7 +503,13 @@ public class WelcomeUI extends FragmentBase
                                 MiscHandler.Debug("WelcomeUI-SignInGoogle: " + e.toString());
                             }
                         }
-                    }));
+
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        }
+                    });
                 }
             }
         }

@@ -8,47 +8,46 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.CameraHandler;
 import co.biogram.main.handler.MiscHandler;
 
-class CameraView extends FragmentBase
+class CameraViewUI extends FragmentBase
 {
     private CameraHandler Camera;
 
     @Override
     public void OnCreate()
     {
-        final FragmentActivity activity = GetActivity();
+        int D50 = MiscHandler.ToDimension(GetActivity(), 50);
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.Black);
 
-        FrameLayout FrameLayoutMain = new FrameLayout(activity);
+        FrameLayout FrameLayoutMain = new FrameLayout(GetActivity());
         FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
         RelativeLayoutMain.addView(FrameLayoutMain);
 
-        Camera = new CameraHandler(activity);
+        Camera = new CameraHandler(GetActivity());
 
         FrameLayoutMain.addView(Camera);
 
-        RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(activity, 75));
+        RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 75));
         RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-        RelativeLayout RelativeLayoutBottom = new RelativeLayout(activity);
+        RelativeLayout RelativeLayoutBottom = new RelativeLayout(GetActivity());
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
 
         RelativeLayoutMain.addView(RelativeLayoutBottom);
 
-        RelativeLayout.LayoutParams ImageViewPickParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 50), MiscHandler.ToDimension(activity, 50));
-        ImageViewPickParam.setMargins(MiscHandler.ToDimension(activity, 50), 0, MiscHandler.ToDimension(activity, 50), 0);
+        RelativeLayout.LayoutParams ImageViewPickParam = new RelativeLayout.LayoutParams(D50, D50);
+        ImageViewPickParam.setMargins(D50, 0, D50, 0);
         ImageViewPickParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        final ImageView ImageViewPick = new ImageView(activity);
+        final ImageView ImageViewPick = new ImageView(GetActivity());
         ImageViewPick.setLayoutParams(ImageViewPickParam);
         ImageViewPick.setImageResource(R.drawable.ic_camera_pick);
         ImageViewPick.setId(MiscHandler.GenerateViewID());
@@ -88,7 +87,7 @@ class CameraView extends FragmentBase
                     public void OnCapture(byte[] Data)
                     {
                         IsClicked = false;
-                        GetActivity().GetManager().OpenView(new ImagePreview(activity, Data), R.id.WelcomeActivityContainer, "ImagePreview");
+                        GetActivity().GetManager().OpenView(new ImagePreviewUI(GetActivity(), Data), R.id.WelcomeActivityContainer, "ImagePreviewUI");
                     }
 
                     @Override
@@ -102,14 +101,14 @@ class CameraView extends FragmentBase
 
         RelativeLayoutBottom.addView(ImageViewPick);
 
-        RelativeLayout.LayoutParams ImageViewFlashParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 50), MiscHandler.ToDimension(activity, 50));
+        RelativeLayout.LayoutParams ImageViewFlashParam = new RelativeLayout.LayoutParams(D50, D50);
         ImageViewFlashParam.addRule(RelativeLayout.LEFT_OF, ImageViewPick.getId());
         ImageViewFlashParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        final ImageView ImageViewFlash = new ImageView(activity);
+        final ImageView ImageViewFlash = new ImageView(GetActivity());
         ImageViewFlash.setLayoutParams(ImageViewFlashParam);
         ImageViewFlash.setImageResource(R.drawable.ic_camera_flash_auto);
-        ImageViewFlash.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+        ImageViewFlash.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
         ImageViewFlash.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -126,14 +125,14 @@ class CameraView extends FragmentBase
 
         RelativeLayoutBottom.addView(ImageViewFlash);
 
-        RelativeLayout.LayoutParams ImageViewSwitchParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(activity, 50), MiscHandler.ToDimension(activity, 50));
+        RelativeLayout.LayoutParams ImageViewSwitchParam = new RelativeLayout.LayoutParams(D50, D50);
         ImageViewSwitchParam.addRule(RelativeLayout.RIGHT_OF, ImageViewPick.getId());
         ImageViewSwitchParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        ImageView ImageViewSwitch = new ImageView(activity);
+        ImageView ImageViewSwitch = new ImageView(GetActivity());
         ImageViewSwitch.setLayoutParams(ImageViewSwitchParam);
         ImageViewSwitch.setImageResource(R.drawable.ic_camera_switch);
-        ImageViewSwitch.setPadding(MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12), MiscHandler.ToDimension(activity, 12));
+        ImageViewSwitch.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
         ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Camera.SwitchCamera(); } });
 
         RelativeLayoutBottom.addView(ImageViewSwitch);
@@ -151,13 +150,13 @@ class CameraView extends FragmentBase
     @Override
     public void OnPause()
     {
+        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Camera.Stop();
     }
 
     @Override
     public void OnDestroy()
     {
-        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Camera.Release();
         super.OnDestroy();
     }

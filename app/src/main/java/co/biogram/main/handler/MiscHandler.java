@@ -25,11 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -237,63 +232,9 @@ public class MiscHandler
         System.exit(0);
     }
 
-    private static String CurrentServer = "";
-    private static boolean IsReachable = false;
-
     public static String GetRandomServer(String URL)
     {
-        if (IsReachable)
-            return CurrentServer;
-
-        String Server1 = "http://5.160.219.218:5000/";
-        String Server2 = "http://5.160.219.218:5000/";
-
-        if (CurrentServer.equals(Server1))
-            CurrentServer = Server2;
-        else
-            CurrentServer = Server1;
-
-        AndroidNetworking.post(CurrentServer)
-        .setPriority(Priority.IMMEDIATE)
-        .build()
-        .getAsString(new NetworkResponse(new ResponseListener()
-        {
-            @Override
-            public void OnRespone(String r, ANError e)
-            {
-                IsReachable = e == null;
-            }
-        }));
-
-        return CurrentServer + URL;
-    }
-
-    public static class NetworkResponse implements StringRequestListener
-    {
-        private ResponseListener Listener;
-
-        public NetworkResponse(ResponseListener l)
-        {
-            Listener = l;
-        }
-
-        @Override
-        public void onResponse(String r)
-        {
-            Listener.OnRespone(r, null);
-        }
-
-        @Override
-        public void onError(ANError e)
-        {
-            IsReachable = false;
-            Listener.OnRespone(null, e);
-        }
-    }
-
-    public interface ResponseListener
-    {
-        void OnRespone(String Response, ANError Error);
+        return "http://5.160.219.218:5000/" + URL;
     }
 
     public static String GenerateSession()

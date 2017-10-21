@@ -50,8 +50,15 @@ import co.biogram.main.view.TextView;
 class SignUpPhoneUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
-    private int RelativeLayoutMainHeightDifference = 0;
     private RelativeLayout RelativeLayoutMain;
+    private int HeightDifference = 0;
+
+    private final boolean IsSignUp;
+
+    SignUpPhoneUI(boolean isSignUp)
+    {
+        IsSignUp = isSignUp;
+    }
 
     @Override
     public void OnCreate()
@@ -75,20 +82,20 @@ class SignUpPhoneUI extends FragmentBase
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != RelativeLayoutMainHeightDifference)
+                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference)
                 {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
-                    RelativeLayoutMainHeightDifference = DifferenceHeight;
+                    HeightDifference = DifferenceHeight;
                 }
-                else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
+                else if (DifferenceHeight != HeightDifference)
                 {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
-                    RelativeLayoutMainHeightDifference = DifferenceHeight;
+                    HeightDifference = DifferenceHeight;
                 }
-                else if (RelativeLayoutMainHeightDifference != 0)
+                else if (HeightDifference != 0)
                 {
-                    RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
-                    RelativeLayoutMainHeightDifference = 0;
+                    RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
+                    HeightDifference = 0;
                 }
 
                 RelativeLayoutMain.requestLayout();
@@ -102,7 +109,7 @@ class SignUpPhoneUI extends FragmentBase
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, D56);
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -255,12 +262,15 @@ class SignUpPhoneUI extends FragmentBase
 
                 RelativeLayoutCode.addView(LinearLayoutList);
 
+                String Iran = "ایران ( +98 )";
+
                 TextView TextViewIran = new TextView(GetActivity(), false);
+                TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, D56));
                 TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-                TextViewIran.setText("Iran ( +98 )");
+                TextViewIran.setText(Iran);
                 TextViewIran.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewIran.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
-                TextViewIran.setGravity(Gravity.CENTER);
+                TextViewIran.setGravity(Gravity.END);
 
                 LinearLayoutList.addView(TextViewIran);
 
@@ -289,8 +299,11 @@ class SignUpPhoneUI extends FragmentBase
 
         LinearLayoutPhone.addView(TextViewPhone);
 
+        LinearLayout.LayoutParams EditTextPhoneParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        EditTextPhoneParam.setMargins(0, 0 , MiscHandler.ToDimension(GetActivity(), 15), 0);
+
         final EditText EditTextPhone = new EditText(GetActivity());
-        EditTextPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        EditTextPhone.setLayoutParams(EditTextPhoneParam);
         EditTextPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -325,6 +338,7 @@ class SignUpPhoneUI extends FragmentBase
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
+        TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewMessage.setText(GetActivity().getString(R.string.SignUpPhoneMessage) + " " + GetActivity().getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
 
@@ -530,7 +544,7 @@ class SignUpPhoneUI extends FragmentBase
                             while (Phone.charAt(0) == '0')
                                 Phone = Phone.substring(1);
 
-                            GetActivity().GetManager().OpenView(new SignUpPhoneVerification(EditTextPhoneCode.getText().toString(), Phone), R.id.WelcomeActivityContainer, "SignUpPhoneVerification");
+                            GetActivity().GetManager().OpenView(new SignUpPhoneVerificationUI(EditTextPhoneCode.getText().toString(), Phone), R.id.WelcomeActivityContainer, "SignUpPhoneVerificationUI");
                             break;
                         case 1:
                         case 2:
