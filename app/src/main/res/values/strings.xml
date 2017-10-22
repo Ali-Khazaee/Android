@@ -15,7 +15,7 @@
     <string name="DialogPermissionAccept">ALLOW</string>
     <string name="DialogPermissionDecline">NOT NOW</string>
 
-    <!-- WelcomeUI UI -->
+    <!-- Welcome UI -->
     <string name="WelcomeLanguage">English</string>
     <string name="WelcomeLanguageSelect">Select Your Language</string>
     <string name="WelcomeLanguageEnglish">English</string>
@@ -33,11 +33,14 @@
 
     <!-- Sign Up Phone UI -->
     <string name="SignUpPhone">Sign Up</string>
+    <string name="SignUpPhoneIn">Sign In</string>
     <string name="SignUpPhoneCode">Code</string>
     <string name="SignUpPhoneTitleCode">Pre code number</string>
     <string name="SignUpPhoneNumber">Phone Number</string>
     <string name="SignUpPhoneMessage">Please enter your phone number to receive a verification code, Also you can Sign Up via</string>
+    <string name="SignUpPhoneMessageIn">Please enter your phone number to receive a verification code, Also you can Sign In via</string>
     <string name="SignUpPhoneMessageEmail">Email Address</string>
+    <string name="SignUpPhoneMessageIn2">Email Address</string>
     <string name="SignUpPhoneTerm">Term &amp; Privacy</string>
     <string name="SignUpPhoneNext">Next</string>
     <string name="SignUpPhoneCodeError">Country code is wrong</string>
@@ -84,7 +87,7 @@
     <string name="SignUpDescriptionEditDescription">Write about yourself</string>
     <string name="SignUpDescriptionPermissionCamera">Please allow biogram to use the camera. This will help to complete your profile</string>
     <string name="SignUpDescriptionPermissionStorage">Please allow biogram to acces your Storage This will help to complete your profile</string>
-    <string name="SignUpDescriptionUpload"></string>
+    <string name="SignUpDescriptionUpload">Please wait, Uploading data to server &amp;</string>
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">Image Preview</string>
@@ -94,6 +97,13 @@
     <string name="GalleryViewGallery">Gallery</string>
     <string name="GalleryViewMaximum">Maximum selection is </string>
 
+    <!-- Sign In Email UI -->
+    <string name="SignInEmail">Sign In</string>
+    <string name="SignInEmailOrUsername">Email or Username</string>
+    <string name="SignInEmailPassword">Password</string>
+    <string name="SignInEmailMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
+    <string name="SignInEmailForgot">Forgot Password ?</string>
+    <string name="SignInEmailError">Your username password doesn\'t match</string>
 
 
 
@@ -314,13 +324,7 @@
     <string name="SignUpFragmentEmailFinish">Finish</string>
     <string name="SignUpFragmentEmailError">Email address is already in use</string>
 
-    <!-- SignIn Fragment -->
-    <string name="SignInFragmentTitle">Sign In</string>
-    <string name="SignInFragmentEmailOrUsername">Email or Username</string>
-    <string name="SignInFragmentPassword">Password</string>
-    <string name="SignInFragmentMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
-    <string name="SignInFragmentForgot">Forgot Password ?</string>
-    <string name="SignInFragmentError">Your username password doesn\'t match</string>
+
 
     <!-- Reset Fragment -->
     <string name="ResetFragmentTitle">Reset Password</string>

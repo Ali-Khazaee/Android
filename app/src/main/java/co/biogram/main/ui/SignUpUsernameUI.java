@@ -30,6 +30,7 @@ import android.widget.ScrollView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
@@ -46,11 +47,17 @@ class SignUpUsernameUI extends FragmentBase
     private int RelativeLayoutMainHeightDifference = 0;
     private RelativeLayout RelativeLayoutMain;
 
-    private final String Code;
+    private String Code;
+    private boolean IsEmail = false;
 
     SignUpUsernameUI(String code)
     {
         Code = code;
+    }
+
+    SignUpUsernameUI(boolean isEmail)
+    {
+        IsEmail = isEmail;
     }
 
     @Override
@@ -327,23 +334,85 @@ class SignUpUsernameUI extends FragmentBase
                 ButtonNext.setVisibility(View.GONE);
                 LoadingViewNext.Start();
 
+                if (IsEmail)
+                {
+                    AndroidNetworking.post(MiscHandler.GetRandomServer("UsernameIsAvailable"))
+                    .addBodyParameter("Username", EditTextUsername.getText().toString())
+                    .setTag("SignUpUsernameUI")
+                    .build()
+                    .getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            LoadingViewNext.Stop();
+                            ButtonNext.setVisibility(View.VISIBLE);
+
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                switch (Result.getInt("Message"))
+                                {
+                                    case -2:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
+                                        break;
+                                    case -1:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
+                                        break;
+                                    case 0:
+                                        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                        Anim.setDuration(200);
+
+                                        RelativeLayoutMain.setAnimation(Anim);
+
+                                        GetActivity().GetManager().OpenView(new SignUpPasswordUI(EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpPasswordUI");
+                                        break;
+                                    case 1:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));
+                                        break;
+                                    case 2:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError3));
+                                        break;
+                                    case 3:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
+                                        break;
+                                    case 4:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
+                                        break;
+                                    case 5:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError5));
+                                        break;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                MiscHandler.Debug("SignUpUsernameUI-UsernameIsAvailable: " + e.toString());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            LoadingViewNext.Stop();
+                            ButtonNext.setVisibility(View.VISIBLE);
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        }
+                    });
+                    return;
+                }
+
                 AndroidNetworking.post(MiscHandler.GetRandomServer("UsernameIsAvailable"))
                 .addBodyParameter("Username", EditTextUsername.getText().toString())
                 .setTag("SignUpUsernameUI")
                 .build()
-                .getAsString(new MiscHandler.NetworkResponse(new MiscHandler.ResponseListener()
+                .getAsString(new StringRequestListener()
                 {
                     @Override
-                    public void OnRespone(String Response, ANError Error)
+                    public void onResponse(String Response)
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-
-                        if (Error != null)
-                        {
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                            return;
-                        }
 
                         try
                         {
@@ -387,7 +456,15 @@ class SignUpUsernameUI extends FragmentBase
                             MiscHandler.Debug("SignUpUsernameUI-UsernameIsAvailable: " + e.toString());
                         }
                     }
-                }));
+
+                    @Override
+                    public void onError(ANError e)
+                    {
+                        LoadingViewNext.Stop();
+                        ButtonNext.setVisibility(View.VISIBLE);
+                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                    }
+                });
             }
         });
 

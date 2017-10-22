@@ -129,7 +129,7 @@ class SignUpPhoneUI extends FragmentBase
         TextView TextViewTitle = new TextView(GetActivity(), true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhone));
+        TextViewTitle.setText(GetActivity().getString(IsSignUp ? R.string.SignUpPhone : R.string.SignUpPhoneIn));
         TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -262,7 +262,7 @@ class SignUpPhoneUI extends FragmentBase
 
                 RelativeLayoutCode.addView(LinearLayoutList);
 
-                String Iran = "ایران ( +98 )";
+                String Iran = "( 98+ ) ایران";
 
                 TextView TextViewIran = new TextView(GetActivity(), false);
                 TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, D56));
@@ -270,7 +270,8 @@ class SignUpPhoneUI extends FragmentBase
                 TextViewIran.setText(Iran);
                 TextViewIran.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewIran.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
-                TextViewIran.setGravity(Gravity.END);
+                TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+                TextViewIran.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
 
                 LinearLayoutList.addView(TextViewIran);
 
@@ -340,7 +341,7 @@ class SignUpPhoneUI extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpPhoneMessage) + " " + GetActivity().getString(R.string.SignUpPhoneMessageEmail), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText(GetActivity().getString(IsSignUp ? R.string.SignUpPhoneMessage : R.string.SignUpPhoneMessageIn) + " " + GetActivity().getString(IsSignUp ? R.string.SignUpPhoneMessageEmail : R.string.SignUpPhoneMessageIn2), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         ClickableSpan ClickableSpanMessage = new ClickableSpan()
@@ -353,7 +354,10 @@ class SignUpPhoneUI extends FragmentBase
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new SignUpWithEmailUI(), R.id.WelcomeActivityContainer, "SignUpWithEmailUI");
+                if (IsSignUp)
+                    GetActivity().GetManager().OpenView(new SignUpUsernameUI(true), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
+                else
+                    GetActivity().GetManager().OpenView(new SignInEmailUI(), R.id.WelcomeActivityContainer, "SignInEmailUI");
             }
 
             @Override
@@ -505,7 +509,83 @@ class SignUpPhoneUI extends FragmentBase
         ButtonNext.setVisibility(View.GONE);
         LoadingViewNext.Start();
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
+        if (IsSignUp)
+        {
+            AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
+            .addBodyParameter("Code", EditTextPhoneCode.getText().toString())
+            .addBodyParameter("Phone", EditTextPhone.getText().toString())
+            .setTag("SignUpPhoneUI")
+            .build()
+            .getAsString(new StringRequestListener()
+            {
+                @Override
+                public void onResponse(String Response)
+                {
+                    LoadingViewNext.Stop();
+                    ButtonNext.setVisibility(View.VISIBLE);
+
+                    try
+                    {
+                        JSONObject Result = new JSONObject(Response);
+
+                        switch (Result.getInt("Message"))
+                        {
+                            case -6:
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
+                                break;
+                            case -2:
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
+                                break;
+                            case -1:
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
+                                break;
+                            case 0:
+                                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                Anim.setDuration(200);
+
+                                RelativeLayoutMain.setAnimation(Anim);
+
+                                String Phone = EditTextPhone.getText().toString();
+
+                                while (Phone.charAt(0) == '0')
+                                    Phone = Phone.substring(1);
+
+                                GetActivity().GetManager().OpenView(new SignUpPhoneVerificationUI(EditTextPhoneCode.getText().toString(), Phone), R.id.WelcomeActivityContainer, "SignUpPhoneVerificationUI");
+                                break;
+                            case 1:
+                            case 2:
+                            case 3:
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneCodeError));
+                                break;
+                            case 4:
+                            case 5:
+                            case 6:
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneError));
+                                break;
+                            case 7:
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneAlready));
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MiscHandler.Debug("SignUpPhoneUI-RequestSignUpPhone: " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onError(ANError e)
+                {
+                    LoadingViewNext.Stop();
+                    ButtonNext.setVisibility(View.VISIBLE);
+                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                }
+            });
+
+            return;
+        }
+
+        AndroidNetworking.post(MiscHandler.GetRandomServer("SignInPhone"))
         .addBodyParameter("Code", EditTextPhoneCode.getText().toString())
         .addBodyParameter("Phone", EditTextPhone.getText().toString())
         .setTag("SignUpPhoneUI")
