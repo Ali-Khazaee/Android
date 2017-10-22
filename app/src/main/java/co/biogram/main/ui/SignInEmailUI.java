@@ -48,7 +48,7 @@ class SignInEmailUI extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final Button ButtonSignIn = new Button(GetActivity(), false);
+        final Button ButtonSignIn = new Button(GetActivity(), 16, false);
         final LoadingView LoadingViewSignIn = new LoadingView(GetActivity());
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
@@ -111,7 +111,7 @@ class SignInEmailUI extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(GetActivity(), true);
+        TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTitle.setText(GetActivity().getString(R.string.SignInEmail));
@@ -147,7 +147,7 @@ class SignInEmailUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewEmailOrUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewEmailOrUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
-        TextView TextViewEmailOrUsername = new TextView(GetActivity(), true);
+        TextView TextViewEmailOrUsername = new TextView(GetActivity(), 16, true);
         TextViewEmailOrUsername.setLayoutParams(TextViewEmailOrUsernameParam);
         TextViewEmailOrUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewEmailOrUsername.setText(GetActivity().getString(R.string.SignInEmailOrUsername));
@@ -195,7 +195,7 @@ class SignInEmailUI extends FragmentBase
         TextViewPasswordParam.addRule(RelativeLayout.BELOW, EditTextEmailOrUsername.getId());
         TextViewPasswordParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
-        TextView TextViewPassword = new TextView(GetActivity(), true);
+        TextView TextViewPassword = new TextView(GetActivity(), 16, true);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewPassword.setText(GetActivity().getString(R.string.SignInEmailPassword));
@@ -241,7 +241,7 @@ class SignInEmailUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextPassword.getId());
 
-        TextView TextViewMessage = new TextView(GetActivity(), false);
+        TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setText(GetActivity().getString(R.string.SignInEmailMessage));
@@ -263,7 +263,7 @@ class SignInEmailUI extends FragmentBase
         TextViewResetParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewResetParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewReset = new TextView(GetActivity(), false);
+        TextView TextViewReset = new TextView(GetActivity(), 14, false);
         TextViewReset.setLayoutParams(TextViewResetParam);
         TextViewReset.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewReset.setText(GetActivity().getString(R.string.SignInEmailForgot));

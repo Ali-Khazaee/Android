@@ -18,12 +18,12 @@ public class WelcomeActivity extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (SharedHandler.GetBoolean(this, "IsLogin"))
+        /*if (SharedHandler.GetBoolean(this, "IsLogin"))
         {
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
-        }
+        }*/
 
         if (Build.VERSION.SDK_INT > 20)
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.BlueLight));

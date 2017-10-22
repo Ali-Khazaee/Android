@@ -10,6 +10,7 @@
     <string name="GeneralError3">لطفا مجددا تلاش کنید</string>
     <string name="GeneralError4">مشکلی در هنگام ورود شما به وجود آمده است</string>
     <string name="GeneralError6">اشکالی به وجود آمده است, لطفا زمانی دیگر مراجعه کنید</string>
+    <string name="GeneralError7">لطفا مجددا تلاش کنید</string>
 
     <!-- Dialog Permission -->
     <string name="DialogPermissionAccept">اجازه دادن</string>
@@ -30,33 +31,6 @@
     <string name="WelcomeTerm">با ثبت نام، شما با ما موافقت مي کنيد</string>
     <string name="WelcomeTerm2">شرايط و حريم خصوصي</string>
     <string name="WelcomeGoogleError">اشتباهي رخ داده است، لطفا دوباره امتحان کنيد</string>
-
-    <!-- Sign Up Phone UI -->
-    <string name="SignUpPhone">ثبت نام</string>
-    <string name="SignUpPhoneIn">ورود</string>
-    <string name="SignUpPhoneCode">کد</string>
-    <string name="SignUpPhoneTitleCode">انتخاب پیش شماره</string>
-    <string name="SignUpPhoneNumber">شماره تلفن</string>
-    <string name="SignUpPhoneMessage">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
-    <string name="SignUpPhoneMessageIn">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
-    <string name="SignUpPhoneMessageEmail">از طریق ایمیل خود نیز ثبت نام کنید</string>
-    <string name="SignUpPhoneMessageIn2">از طریق ایمیل خود نیز وارد شوید</string>
-    <string name="SignUpPhoneTerm">شرايط و حريم خصوصي</string>
-    <string name="SignUpPhoneNext">بعدی</string>
-    <string name="SignUpPhoneCodeError">اشکال در شناسایی کد کشور</string>
-    <string name="SignUpPhoneError">اشکال در شناسایی ساختار شماره</string>
-    <string name="SignUpPhoneAlready">این شماره قبلا استفاده شده است</string>
-    <string name="SignUpPhonePermission">لطفا برای سهولت در روند ثبت نام، دسترسی به خوانده شدن پیامک را فعال کنید</string>
-
-    <!-- Sign Up Phone Verification UI -->
-    <string name="SignUpPhoneVerification">تاییدیه تلفن</string>
-    <string name="SignUpPhoneVerificationCode">کد تاییدیه</string>
-    <string name="SignUpPhoneVerificationMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
-    <string name="SignUpPhoneVerificationResend">ارسال مجدد</string>
-    <string name="SignUpPhoneVerificationResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
-    <string name="SignUpPhoneVerificationCodeEmpty">کد تاییدیه وارد نشده است</string>
-    <string name="SignUpPhoneVerificationCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
-    <string name="SignUpPhoneVerificationCodeWrong">اطلاعات وارد شده اشتباه است</string>
 
     <!-- Sign Up Username UI -->
     <string name="SignUpUsername">نام کاربری</string>
@@ -87,7 +61,38 @@
     <string name="SignUpDescriptionEditDescription">توضیحاتی درباره خود بنوسید</string>
     <string name="SignUpDescriptionPermissionCamera">لطفا برای استفاده دوربین، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
     <string name="SignUpDescriptionPermissionStorage">لطفا برای استفاده از محتویات حافظه خود، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
-    <string name="SignUpDescriptionUpload">در حال ارسال اطلاعات, لطفا صبر کنید</string>
+    <string name="SignUpDescriptionUpload">&#8230;در حال ارسال اطلاعات, لطفا صبر کنید </string>
+
+    <!-- Sign Up Phone UI -->
+    <string name="SignUpPhone">ثبت نام</string>
+    <string name="SignUpPhoneIn">ورود</string>
+    <string name="SignUpPhoneCode">کد</string>
+    <string name="SignUpPhoneTitleCode">انتخاب پیش شماره</string>
+    <string name="SignUpPhoneNumber">شماره تلفن</string>
+    <string name="SignUpPhoneMessage">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
+    <string name="SignUpPhoneMessageIn">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
+    <string name="SignUpPhoneMessageEmail">از طریق ایمیل خود نیز ثبت نام کنید</string>
+    <string name="SignUpPhoneMessageIn2">از طریق ایمیل خود نیز وارد شوید</string>
+    <string name="SignUpPhoneTerm">شرايط و حريم خصوصي</string>
+    <string name="SignUpPhoneNext">بعدی</string>
+    <string name="SignUpPhoneCodeError">اشکال در شناسایی کد کشور</string>
+    <string name="SignUpPhoneError">اشکال در شناسایی ساختار شماره</string>
+    <string name="SignUpPhoneAlready">این شماره قبلا استفاده شده است</string>
+    <string name="SignUpPhonePermission">لطفا برای سهولت در روند ثبت نام، دسترسی به خوانده شدن پیامک را فعال کنید</string>
+
+    <!-- Sign Up Phone Verification UI -->
+    <string name="SignUpPhoneVerification">تاییدیه تلفن</string>
+    <string name="SignUpPhoneVerificationCode">کد تاییدیه</string>
+    <string name="SignUpPhoneVerificationMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
+    <string name="SignUpPhoneVerificationResend">ارسال مجدد</string>
+    <string name="SignUpPhoneVerificationResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
+    <string name="SignUpPhoneVerificationCodeEmpty">کد تاییدیه وارد نشده است</string>
+    <string name="SignUpPhoneVerificationCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
+    <string name="SignUpPhoneVerificationCodeWrong">اطلاعات وارد شده اشتباه است</string>
+
+
+
+
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">نمایش عکس</string>

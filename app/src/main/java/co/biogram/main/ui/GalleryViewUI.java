@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +67,7 @@ class GalleryViewUI extends FragmentBase
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
-        ImageViewBack.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_back_blue_rtl : R.drawable.ic_back_blue);
+        ImageViewBack.setImageResource(MiscHandler.IsRTL() ? R.drawable.ic_back_blue_rtl : R.drawable.ic_back_blue);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
@@ -78,11 +77,10 @@ class GalleryViewUI extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        final TextView TextViewTitle = new TextView(GetActivity(), true);
+        final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewTitle.setText(GetActivity().getString(R.string.GalleryView));
-        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewTitle.setId(MiscHandler.GenerateViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
         {

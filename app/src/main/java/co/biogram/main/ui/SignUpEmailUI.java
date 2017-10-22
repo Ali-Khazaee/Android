@@ -38,7 +38,7 @@ class SignUpEmailUI extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final Button ButtonSignUp = new Button(GetActivity(), false);
+        final Button ButtonSignUp = new Button(GetActivity(), 16, false);
         final LoadingView LoadingViewSignUp = new LoadingView(GetActivity());
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
@@ -98,7 +98,7 @@ class SignUpEmailUI extends FragmentBase
         TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewHeader = new TextView(GetActivity(), true);
+        TextView TextViewHeader = new TextView(GetActivity(), 18, true);
         TextViewHeader.setLayoutParams(TextViewHeaderParam);
         TextViewHeader.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewHeader.setText(GetActivity().getString(R.string.SignUpFragmentEmailTitle));
@@ -134,7 +134,7 @@ class SignUpEmailUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
-        TextView TextViewUsername = new TextView(GetActivity(), true);
+        TextView TextViewUsername = new TextView(GetActivity(), 16, true);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewUsername.setText(GetActivity().getString(R.string.SignUpFragmentEmail));
@@ -178,7 +178,7 @@ class SignUpEmailUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextEmail.getId());
 
-        TextView TextViewMessage = new TextView(GetActivity(), false);
+        TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentEmailMessage));
@@ -200,7 +200,7 @@ class SignUpEmailUI extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        TextView TextViewPrivacy = new TextView(GetActivity(), false);
+        TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.SearchFragmentFollowers));

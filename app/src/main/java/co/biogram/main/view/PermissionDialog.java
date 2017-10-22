@@ -50,7 +50,7 @@ public class PermissionDialog extends Dialog
         TextViewMessageParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(context, false);
+        TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -70,7 +70,7 @@ public class PermissionDialog extends Dialog
 
         RelativeLayoutMain.addView(LinearLayoutChoice);
 
-        TextView TextViewDecline = new TextView(context, true);
+        TextView TextViewDecline = new TextView(context, 14, true);
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
         TextViewDecline.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -80,7 +80,7 @@ public class PermissionDialog extends Dialog
 
         LinearLayoutChoice.addView(TextViewDecline);
 
-        TextView TextViewContinue = new TextView(context, true);
+        TextView TextViewContinue = new TextView(context, 14, true);
         TextViewContinue.setLayoutParams(TextViewMessageParam);
         TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
         TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);

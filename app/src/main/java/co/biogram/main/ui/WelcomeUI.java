@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -32,7 +31,6 @@ import org.json.JSONObject;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.activity.MainActivity;
-import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.view.Button;
@@ -40,13 +38,14 @@ import co.biogram.main.view.TextView;
 
 public class WelcomeUI extends FragmentBase
 {
+    private ScrollView ScrollViewMain;
     private GoogleApiClient googleApiClient;
-    private boolean GoogleIsAvailable = false;
+    private boolean IsGoogleAvailable = false;
 
     @Override
     public void OnCreate()
     {
-        final ScrollView ScrollViewMain = new ScrollView(GetActivity());
+        ScrollViewMain = new ScrollView(GetActivity());
         ScrollViewMain.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
         ScrollViewMain.setBackgroundResource(R.color.White);
         ScrollViewMain.setFillViewport(true);
@@ -170,7 +169,6 @@ public class WelcomeUI extends FragmentBase
         ImageViewLanguage.setImageResource(R.drawable.ic_option_white);
         ImageViewLanguage.setPadding(MiscHandler.ToDimension(GetActivity(), 7), MiscHandler.ToDimension(GetActivity(), 7), MiscHandler.ToDimension(GetActivity(), 7), MiscHandler.ToDimension(GetActivity(), 7));
 
-        // TODO Check this part
         if (MiscHandler.IsRTL())
         {
             LinearLayoutLanguage.addView(ImageViewLanguage);
@@ -237,7 +235,7 @@ public class WelcomeUI extends FragmentBase
         });
 
         if (MiscHandler.IsFa())
-            ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(GetActivity(), 2), 0, 0);
+            ButtonSignUp.setPadding(0, -MiscHandler.ToDimension(GetActivity(), 1), 0, 0);
 
         RelativeLayoutMain.addView(ButtonSignUp);
 
@@ -369,12 +367,11 @@ public class WelcomeUI extends FragmentBase
         TextViewTerm2Param.addRule(RelativeLayout.CENTER_HORIZONTAL);
         TextViewTerm2Param.setMargins(0, 0, 0, MiscHandler.ToDimension(GetActivity(), 20));
 
-        TextView TextViewTerm2 = new TextView(GetActivity(), true);
+        TextView TextViewTerm2 = new TextView(GetActivity(), 16, true);
         TextViewTerm2.setLayoutParams(TextViewTerm2Param);
         TextViewTerm2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray));
         TextViewTerm2.setText(GetActivity().getString(R.string.WelcomeTerm2));
         TextViewTerm2.setId(MiscHandler.GenerateViewID());
-        TextViewTerm2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutMain.addView(TextViewTerm2);
@@ -383,22 +380,24 @@ public class WelcomeUI extends FragmentBase
         TextViewTermParam.addRule(RelativeLayout.ABOVE, TextViewTerm2.getId());
         TextViewTermParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewTerm = new TextView(GetActivity(), false);
+        TextView TextViewTerm = new TextView(GetActivity(), 16, false);
         TextViewTerm.setLayoutParams(TextViewTermParam);
         TextViewTerm.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray));
         TextViewTerm.setText(GetActivity().getString(R.string.WelcomeTerm));
-        TextViewTerm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutMain.addView(TextViewTerm);
 
         ViewMain = ScrollViewMain;
 
-        GoogleIsAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(GetActivity()) == ConnectionResult.SUCCESS;
+        IsGoogleAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(GetActivity()) == ConnectionResult.SUCCESS;
 
-        if (GoogleIsAvailable)
+        if (IsGoogleAvailable)
         {
-            GoogleClientApi = new GoogleApiClient.Builder(GetActivity().getApplicationContext())
-            .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com").build())
+            googleApiClient = new GoogleApiClient.Builder(GetActivity().getApplicationContext())
+            .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com")
+            .build())
             .build();
         }
     }
@@ -406,8 +405,8 @@ public class WelcomeUI extends FragmentBase
     @Override
     public void OnResume()
     {
-        if (GoogleIsAvailable)
-            GoogleClientApi.connect();
+        if (IsGoogleAvailable)
+            googleApiClient.connect();
     }
 
     @Override
@@ -415,12 +414,12 @@ public class WelcomeUI extends FragmentBase
     {
         AndroidNetworking.forceCancel("WelcomeUI");
 
-        if (GoogleIsAvailable)
+        if (IsGoogleAvailable)
         {
-            if (GoogleClientApi.isConnected())
-                Auth.GoogleSignInApi.signOut(GoogleClientApi);
+            if (googleApiClient.isConnected())
+                Auth.GoogleSignInApi.signOut(googleApiClient);
 
-            GoogleClientApi.disconnect();
+            googleApiClient.disconnect();
         }
     }
 
@@ -429,16 +428,16 @@ public class WelcomeUI extends FragmentBase
     {
         if (RequestCode == 100)
         {
-            GoogleSignInResult SignResult = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
+            GoogleSignInResult Result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
 
-            if (SignResult.isSuccess())
+            if (Result.isSuccess())
             {
-                final GoogleSignInAccount AccountResult = SignResult.getSignInAccount();
+                final GoogleSignInAccount Result2 = Result.getSignInAccount();
 
-                if (AccountResult != null)
+                if (Result2 != null)
                 {
                     AndroidNetworking.post(MiscHandler.GetRandomServer("SignInGoogle"))
-                    .addBodyParameter("Token", AccountResult.getIdToken())
+                    .addBodyParameter("Token", Result2.getIdToken())
                     .addBodyParameter("Session", MiscHandler.GenerateSession())
                     .setTag("WelcomeUI")
                     .build()
@@ -446,12 +445,12 @@ public class WelcomeUI extends FragmentBase
                     {
                         @Override
                         public void onResponse(String Response)
-                        {
+                        {MiscHandler.Debug("A: " + Response);
                             try
                             {
-                                JSONObject Result = new JSONObject(Response);
+                                JSONObject Result3 = new JSONObject(Response);
 
-                                switch (Result.getInt("Message"))
+                                switch (Result3.getInt("Message"))
                                 {
                                     case -2:
                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
@@ -460,20 +459,26 @@ public class WelcomeUI extends FragmentBase
                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
                                         break;
                                     case 0:
-                                        if (Result.getBoolean("Registered"))
+                                        if (Result3.getBoolean("Registered"))
                                         {
                                             SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
-                                            SharedHandler.SetString(GetActivity(), "TOKEN", Result.getString("TOKEN"));
-                                            SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
-                                            SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
-                                            SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
                                             SharedHandler.SetBoolean(GetActivity(), "IsGoogle", true);
+                                            SharedHandler.SetString(GetActivity(), "Token", Result3.getString("Token"));
+                                            SharedHandler.SetString(GetActivity(), "ID", Result3.getString("ID"));
+                                            SharedHandler.SetString(GetActivity(), "Username", Result3.getString("Username"));
+                                            SharedHandler.SetString(GetActivity(), "Avatar", Result3.getString("Avatar"));
+
                                             GetActivity().startActivity(new Intent(GetActivity(), MainActivity.class));
                                             GetActivity().finish();
                                             return;
                                         }
 
-                                        GetActivity().GetManager().OpenView(new SignUpDescriptionUI(AccountResult.getIdToken()), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
+                                        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                        Anim.setDuration(200);
+
+                                        ScrollViewMain.setAnimation(Anim);
+
+                                        GetActivity().GetManager().OpenView(new SignUpUsernameUI(Result2.getIdToken(), 0), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
                                         break;
                                     case 1:
                                     case 2:

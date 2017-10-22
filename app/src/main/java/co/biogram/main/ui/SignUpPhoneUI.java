@@ -63,7 +63,7 @@ class SignUpPhoneUI extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final Button ButtonNext = new Button(GetActivity(), false);
+        final Button ButtonNext = new Button(GetActivity(), 16, false);
         final LoadingView LoadingViewNext = new LoadingView(GetActivity());
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
@@ -126,7 +126,7 @@ class SignUpPhoneUI extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(GetActivity(), true);
+        TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTitle.setText(GetActivity().getString(IsSignUp ? R.string.SignUpPhone : R.string.SignUpPhoneIn));
@@ -166,7 +166,7 @@ class SignUpPhoneUI extends FragmentBase
 
         RelativeLayoutScroll.addView(LinearLayoutCode);
 
-        TextView TextViewPhoneCode = new TextView(GetActivity(), true);
+        TextView TextViewPhoneCode = new TextView(GetActivity(), 16, true);
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhoneCode.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
         TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -221,7 +221,7 @@ class SignUpPhoneUI extends FragmentBase
                 RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, D56);
                 TextViewTitleParam.addRule(MiscHandler.Align("R"));
 
-                TextView TextViewTitle = new TextView(GetActivity(), false);
+                TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
                 TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhoneTitleCode));
@@ -264,7 +264,7 @@ class SignUpPhoneUI extends FragmentBase
 
                 String Iran = "( 98+ ) ایران";
 
-                TextView TextViewIran = new TextView(GetActivity(), false);
+                TextView TextViewIran = new TextView(GetActivity(), 16, false);
                 TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, D56));
                 TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
                 TextViewIran.setText(Iran);
@@ -291,7 +291,7 @@ class SignUpPhoneUI extends FragmentBase
 
         RelativeLayoutScroll.addView(LinearLayoutPhone);
 
-        TextView TextViewPhone = new TextView(GetActivity(), true);
+        TextView TextViewPhone = new TextView(GetActivity(), 16, true);
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhone.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
         TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -334,7 +334,7 @@ class SignUpPhoneUI extends FragmentBase
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(GetActivity(), false);
+        TextView TextViewMessage = new TextView(GetActivity(), 16, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -384,7 +384,7 @@ class SignUpPhoneUI extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewPrivacy = new TextView(GetActivity(), false);
+        TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpPhoneTerm));

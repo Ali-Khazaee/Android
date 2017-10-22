@@ -76,7 +76,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final Button ButtonNext = new Button(GetActivity(), false);
+        final Button ButtonNext = new Button(GetActivity(), 16, false);
         final LoadingView LoadingViewNext = new LoadingView(GetActivity());
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
@@ -133,7 +133,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
         ImageViewBack.setId(MiscHandler.GenerateViewID());
         ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
-        ImageViewBack.setImageResource(MiscHandler.IsFa() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(MiscHandler.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -141,7 +141,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
         TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(GetActivity(), true);
+        TextView TextViewTitle = new TextView(GetActivity(), 18, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhoneVerification));
@@ -153,7 +153,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
         TextViewTimeParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTimeParam.addRule(MiscHandler.Align("L"));
 
-        final TextView TextViewTime = new TextView(GetActivity(), false);
+        final TextView TextViewTime = new TextView(GetActivity(), 16, false);
         TextViewTime.setLayoutParams(TextViewTimeParam);
         TextViewTime.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -188,7 +188,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewVerificationCodeParam = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewVerificationCodeParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewVerificationCode = new TextView(GetActivity(), true);
+        TextView TextViewVerificationCode = new TextView(GetActivity(), 18, true);
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 40), MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -399,7 +399,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutVerificationCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(GetActivity(), false);
+        TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -442,7 +442,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
         TextViewResendParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewResendParam.addRule(MiscHandler.Align("R"));
 
-        final TextView TextViewResend = new TextView(GetActivity(), false);
+        final TextView TextViewResend = new TextView(GetActivity(), 14, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
         TextViewResend.setText(GetActivity().getString(R.string.SignUpPhoneVerificationResend));

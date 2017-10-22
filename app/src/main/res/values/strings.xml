@@ -6,10 +6,11 @@
     <!-- General -->
     <string name="GeneralNoInternet">Check your connection</string>
     <string name="GeneralError1">Please Try again</string>
-    <string name="GeneralError2">Please, Try again later</string>
-    <string name="GeneralError3">Please, Try again</string>
-    <string name="GeneralError4">Something went wrong, Try to login again</string>
-    <string name="GeneralError6">Something went wrong, Try to login again</string>
+    <string name="GeneralError2">Please Try again later</string>
+    <string name="GeneralError3">Please Try again</string>
+    <string name="GeneralError4">Something went wrong, Please Try to login again</string>
+    <string name="GeneralError6">Something went wrong, Please Try to login again</string>
+    <string name="GeneralError7">Something went wrong, Please Try again</string>
 
     <!-- Dialog Permission -->
     <string name="DialogPermissionAccept">ALLOW</string>
@@ -30,33 +31,6 @@
     <string name="WelcomeTerm">By Signing Up you agree to our</string>
     <string name="WelcomeTerm2">Terms &amp; Privacy and Policy</string>
     <string name="WelcomeGoogleError">Something went wrong, Please try again</string>
-
-    <!-- Sign Up Phone UI -->
-    <string name="SignUpPhone">Sign Up</string>
-    <string name="SignUpPhoneIn">Sign In</string>
-    <string name="SignUpPhoneCode">Code</string>
-    <string name="SignUpPhoneTitleCode">Pre code number</string>
-    <string name="SignUpPhoneNumber">Phone Number</string>
-    <string name="SignUpPhoneMessage">Please enter your phone number to receive a verification code, Also you can Sign Up via</string>
-    <string name="SignUpPhoneMessageIn">Please enter your phone number to receive a verification code, Also you can Sign In via</string>
-    <string name="SignUpPhoneMessageEmail">Email Address</string>
-    <string name="SignUpPhoneMessageIn2">Email Address</string>
-    <string name="SignUpPhoneTerm">Term &amp; Privacy</string>
-    <string name="SignUpPhoneNext">Next</string>
-    <string name="SignUpPhoneCodeError">Country code is wrong</string>
-    <string name="SignUpPhoneError">Phone number is wrong</string>
-    <string name="SignUpPhoneAlready">This phone number is already used</string>
-    <string name="SignUpPhonePermission">To make Registration process easier, Allow biogram to have access to your next SMS that your receive</string>
-
-    <!-- Sign Up Phone Verification UI -->
-    <string name="SignUpPhoneVerification">Verify Phone</string>
-    <string name="SignUpPhoneVerificationCode">Verification Code</string>
-    <string name="SignUpPhoneVerificationMessage">Please enter the verification code sent to</string>
-    <string name="SignUpPhoneVerificationResend">Resend Code</string>
-    <string name="SignUpPhoneVerificationResendDone">The verification code has been sent to you again</string>
-    <string name="SignUpPhoneVerificationCodeEmpty">The verification code has not been entered</string>
-    <string name="SignUpPhoneVerificationCodeCount">Verification is should be 5 charecters</string>
-    <string name="SignUpPhoneVerificationCodeWrong">The information entered is incorrect</string>
 
     <!-- Sign Up Username UI -->
     <string name="SignUpUsername">Username</string>
@@ -87,7 +61,38 @@
     <string name="SignUpDescriptionEditDescription">Write about yourself</string>
     <string name="SignUpDescriptionPermissionCamera">Please allow biogram to use the camera. This will help to complete your profile</string>
     <string name="SignUpDescriptionPermissionStorage">Please allow biogram to acces your Storage This will help to complete your profile</string>
-    <string name="SignUpDescriptionUpload">Please wait, Uploading data to server &amp;</string>
+    <string name="SignUpDescriptionUpload">Please wait, Uploading data to server &#8230;</string>
+
+    <!-- Sign Up Phone UI -->
+    <string name="SignUpPhone">Sign Up</string>
+    <string name="SignUpPhoneIn">Sign In</string>
+    <string name="SignUpPhoneCode">Code</string>
+    <string name="SignUpPhoneTitleCode">Pre code number</string>
+    <string name="SignUpPhoneNumber">Phone Number</string>
+    <string name="SignUpPhoneMessage">Please enter your phone number to receive a verification code, Also you can Sign Up via</string>
+    <string name="SignUpPhoneMessageIn">Please enter your phone number to receive a verification code, Also you can Sign In via</string>
+    <string name="SignUpPhoneMessageEmail">Email Address</string>
+    <string name="SignUpPhoneMessageIn2">Email Address</string>
+    <string name="SignUpPhoneTerm">Term &amp; Privacy</string>
+    <string name="SignUpPhoneNext">Next</string>
+    <string name="SignUpPhoneCodeError">Country code is wrong</string>
+    <string name="SignUpPhoneError">Phone number is wrong</string>
+    <string name="SignUpPhoneAlready">This phone number is already used</string>
+    <string name="SignUpPhonePermission">To make Registration process easier, Allow biogram to have access to your next SMS that your receive</string>
+
+    <!-- Sign Up Phone Verification UI -->
+    <string name="SignUpPhoneVerification">Verify Phone</string>
+    <string name="SignUpPhoneVerificationCode">Verification Code</string>
+    <string name="SignUpPhoneVerificationMessage">Please enter the verification code sent to</string>
+    <string name="SignUpPhoneVerificationResend">Resend Code</string>
+    <string name="SignUpPhoneVerificationResendDone">The verification code has been sent to you again</string>
+    <string name="SignUpPhoneVerificationCodeEmpty">The verification code has not been entered</string>
+    <string name="SignUpPhoneVerificationCodeCount">Verification is should be 5 charecters</string>
+    <string name="SignUpPhoneVerificationCodeWrong">The information entered is incorrect</string>
+
+
+
+
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">Image Preview</string>

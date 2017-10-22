@@ -40,7 +40,7 @@ class SignUpPasswordUI extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final Button ButtonSignUp = new Button(GetActivity(), false);
+        final Button ButtonSignUp = new Button(GetActivity(), 16, false);
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -99,7 +99,7 @@ class SignUpPasswordUI extends FragmentBase
         TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
         TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewHeader = new TextView(GetActivity(), true);
+        TextView TextViewHeader = new TextView(GetActivity(), 18, true);
         TextViewHeader.setLayoutParams(TextViewHeaderParam);
         TextViewHeader.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewHeader.setText(GetActivity().getString(R.string.SignUpFragmentPassword));
@@ -135,7 +135,7 @@ class SignUpPasswordUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPasswordParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
-        TextView TextViewPassword = new TextView(GetActivity(), true);
+        TextView TextViewPassword = new TextView(GetActivity(), 16, true);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewPassword.setText(GetActivity().getString(R.string.SignUpFragmentPassword));
@@ -179,7 +179,7 @@ class SignUpPasswordUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextPassword.getId());
 
-        TextView TextViewMessage = new TextView(GetActivity(), false);
+        TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentPasswordMessage));
@@ -201,7 +201,7 @@ class SignUpPasswordUI extends FragmentBase
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        TextView TextViewPrivacy = new TextView(GetActivity(), false);
+        TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpDescriptionEditName));
