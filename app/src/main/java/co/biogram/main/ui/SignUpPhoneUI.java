@@ -128,9 +128,7 @@ class SignUpPhoneUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTitle.setText(GetActivity().getString(IsSignUp ? R.string.SignUpPhone : R.string.SignUpPhoneIn));
-        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -171,7 +169,6 @@ class SignUpPhoneUI extends FragmentBase
         TextViewPhoneCode.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
         TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewPhoneCode.setText(GetActivity().getString(R.string.SignUpPhoneCode));
-        TextViewPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         LinearLayoutCode.addView(TextViewPhoneCode);
 
@@ -225,7 +222,6 @@ class SignUpPhoneUI extends FragmentBase
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
                 TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhoneTitleCode));
-                TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewTitle.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
                 TextViewTitle.setGravity(Gravity.CENTER);
 
@@ -268,7 +264,6 @@ class SignUpPhoneUI extends FragmentBase
                 TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, D56));
                 TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
                 TextViewIran.setText(Iran);
-                TextViewIran.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 TextViewIran.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
                 TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
                 TextViewIran.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
@@ -296,7 +291,6 @@ class SignUpPhoneUI extends FragmentBase
         TextViewPhone.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
         TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewPhone.setText(GetActivity().getString(R.string.SignUpPhoneNumber));
-        TextViewPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         LinearLayoutPhone.addView(TextViewPhone);
 
@@ -312,11 +306,8 @@ class SignUpPhoneUI extends FragmentBase
         EditTextPhone.setFilters(new InputFilter[] { new InputFilter.LengthFilter(16) });
         EditTextPhone.addTextChangedListener(new TextWatcher()
         {
-            @Override
-            public void beforeTextChanged(CharSequence a, int b, int c, int d) { }
-
-            @Override
-            public void afterTextChanged(Editable a) { }
+            @Override public void beforeTextChanged(CharSequence a, int b, int c, int d) { }
+            @Override public void afterTextChanged(Editable a) { }
 
             @Override
             public void onTextChanged(CharSequence a, int b, int c, int d)
@@ -334,10 +325,9 @@ class SignUpPhoneUI extends FragmentBase
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutCode.getId());
         TextViewMessageParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewMessage = new TextView(GetActivity(), 16, false);
+        TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
@@ -355,7 +345,7 @@ class SignUpPhoneUI extends FragmentBase
                 RelativeLayoutMain.setAnimation(Anim);
 
                 if (IsSignUp)
-                    GetActivity().GetManager().OpenView(new SignUpUsernameUI(true), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
+                    GetActivity().GetManager().OpenView(new SignUpUsernameUI("", 1), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
                 else
                     GetActivity().GetManager().OpenView(new SignInEmailUI(), R.id.WelcomeActivityContainer, "SignInEmailUI");
             }
@@ -388,7 +378,6 @@ class SignUpPhoneUI extends FragmentBase
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpPhoneTerm));
-        TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
 
@@ -417,13 +406,11 @@ class SignUpPhoneUI extends FragmentBase
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         ButtonNext.setText(GetActivity().getString(R.string.SignUpPhoneNext));
         ButtonNext.setBackground(StateSignUp);
         ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
-        ButtonNext.setAllCaps(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override

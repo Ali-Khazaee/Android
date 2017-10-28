@@ -354,9 +354,7 @@ class SignUpUsernameUI extends FragmentBase
                                     RelativeLayoutMain.setAnimation(Anim);
 
                                     if (Type == 0)
-                                    {
-                                        GetActivity().GetManager().OpenView(new SignUpDescriptionUI(EditTextUsername.getText().toString(), Code, 0), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
-                                    }
+                                        GetActivity().GetManager().OpenView(new SignUpDescriptionUI(Code, EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
                                     break;
                                 case 1:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));

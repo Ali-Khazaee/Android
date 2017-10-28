@@ -445,7 +445,7 @@ public class WelcomeUI extends FragmentBase
                     {
                         @Override
                         public void onResponse(String Response)
-                        {MiscHandler.Debug("A: " + Response);
+                        {
                             try
                             {
                                 JSONObject Result3 = new JSONObject(Response);

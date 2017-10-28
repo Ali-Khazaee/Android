@@ -47,7 +47,6 @@ import co.biogram.main.view.TextView;
 class SignUpPhoneVerificationUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
-    private int RelativeLayoutMainHeightDifference = 0;
     private RelativeLayout RelativeLayoutMain;
 
     private EditText EditTextVerificationCode1;
@@ -55,6 +54,8 @@ class SignUpPhoneVerificationUI extends FragmentBase
     private EditText EditTextVerificationCode3;
     private EditText EditTextVerificationCode4;
     private EditText EditTextVerificationCode5;
+
+    private int HeightDifference = 0;
 
     private boolean Field1 = false;
     private boolean Field2 = false;
@@ -97,20 +98,20 @@ class SignUpPhoneVerificationUI extends FragmentBase
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != RelativeLayoutMainHeightDifference)
+                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference)
                 {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
-                    RelativeLayoutMainHeightDifference = DifferenceHeight;
+                    HeightDifference = DifferenceHeight;
                 }
-                else if (DifferenceHeight != RelativeLayoutMainHeightDifference)
+                else if (DifferenceHeight != HeightDifference)
                 {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
-                    RelativeLayoutMainHeightDifference = DifferenceHeight;
+                    HeightDifference = DifferenceHeight;
                 }
-                else if (RelativeLayoutMainHeightDifference != 0)
+                else if (HeightDifference != 0)
                 {
-                    RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(RelativeLayoutMainHeightDifference)));
-                    RelativeLayoutMainHeightDifference = 0;
+                    RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
+                    HeightDifference = 0;
                 }
 
                 RelativeLayoutMain.requestLayout();
@@ -143,9 +144,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 18, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhoneVerification));
-        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -155,8 +154,6 @@ class SignUpPhoneVerificationUI extends FragmentBase
 
         final TextView TextViewTime = new TextView(GetActivity(), 16, false);
         TextViewTime.setLayoutParams(TextViewTimeParam);
-        TextViewTime.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        TextViewTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewTime.setPadding(MiscHandler.ToDimension(GetActivity(), 15), 0, MiscHandler.ToDimension(GetActivity(), 15), 0);
 
         RelativeLayoutHeader.addView(TextViewTime);
@@ -193,7 +190,6 @@ class SignUpPhoneVerificationUI extends FragmentBase
         TextViewVerificationCode.setPadding(MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 40), MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewVerificationCode.setText(GetActivity().getString(R.string.SignUpPhoneVerificationCode));
-        TextViewVerificationCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         TextViewVerificationCode.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewVerificationCode);
@@ -402,7 +398,6 @@ class SignUpPhoneVerificationUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
@@ -446,7 +441,6 @@ class SignUpPhoneVerificationUI extends FragmentBase
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
         TextViewResend.setText(GetActivity().getString(R.string.SignUpPhoneVerificationResend));
-        TextViewResend.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewResend.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
         {
@@ -582,13 +576,10 @@ class SignUpPhoneVerificationUI extends FragmentBase
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         ButtonNext.setText(GetActivity().getString(R.string.SignUpPhoneNext));
         ButtonNext.setBackground(StateListNext);
         ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
-        ButtonNext.setAllCaps(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -634,7 +625,7 @@ class SignUpPhoneVerificationUI extends FragmentBase
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    GetActivity().GetManager().OpenView(new SignUpUsernameUI(VerifyCode), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
+                                    GetActivity().GetManager().OpenView(new SignUpUsernameUI(VerifyCode, 1), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
                                     break;
                                 case 1:
                                 case 2:

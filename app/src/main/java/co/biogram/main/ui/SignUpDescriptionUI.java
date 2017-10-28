@@ -61,11 +61,9 @@ class SignUpDescriptionUI extends FragmentBase
     private String Email;
     private String Token;
     private String Code;
-    private int Type;
 
-    SignUpDescriptionUI(String token, String username, int type)
+    SignUpDescriptionUI(String token, String username)
     {
-        Type = type;
         Token = token;
         Username = username;
     }
@@ -578,17 +576,14 @@ class SignUpDescriptionUI extends FragmentBase
 
                                          RelativeLayoutMain.setAnimation(Anim);
 
-                                         if (Type == 0)
-                                         {
-                                             SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
-                                             SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
-                                             SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
-                                             SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
-                                             SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
+                                         SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
+                                         SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
+                                         SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
+                                         SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
+                                         SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
 
-                                             GetActivity().startActivity(new Intent(GetActivity(), MainActivity.class));
-                                             GetActivity().finish();
-                                         }
+                                         GetActivity().startActivity(new Intent(GetActivity(), MainActivity.class));
+                                         GetActivity().finish();
                                          break;
                                      case 1:
                                          MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));
