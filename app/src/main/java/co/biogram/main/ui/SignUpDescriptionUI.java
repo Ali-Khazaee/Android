@@ -60,10 +60,12 @@ class SignUpDescriptionUI extends FragmentBase
     private String Password;
     private String Email;
     private String Token;
+    private int Type;
     private String Code;
 
-    SignUpDescriptionUI(String token, String username)
+    SignUpDescriptionUI(String token, String username, int type)
     {
+        Type = type;
         Token = token;
         Username = username;
     }
@@ -111,13 +113,13 @@ class SignUpDescriptionUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, D56);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -522,7 +524,7 @@ class SignUpDescriptionUI extends FragmentBase
                 Progress.setProgress(0);
                 Progress.show();
 
-                 if (!Token.equals(""))
+                 if (Type == 0)
                  {
                      AndroidNetworking.upload(MiscHandler.GetRandomServer("SignInGoogleVerify"))
                      .addMultipartParameter("Token", Token)
@@ -618,6 +620,102 @@ class SignUpDescriptionUI extends FragmentBase
                          }
                      });
                  }
+                else if (Type == 1)
+                {
+                    AndroidNetworking.upload(MiscHandler.GetRandomServer("SignInGoogleVerify"))
+                    .addMultipartParameter("Token", Token)
+                    .addMultipartParameter("Name", EditTextName.getText().toString())
+                    .addMultipartParameter("Username", Username)
+                    .addMultipartParameter("Description", EditTextDescription.getText().toString())
+                    .addMultipartParameter("Session", MiscHandler.GenerateSession())
+                    .addMultipartFile("Avatar", ProfileFile)
+                    .setTag("SignUpDescriptionUI")
+                    .build()
+                    .setUploadProgressListener(new UploadProgressListener()
+                    {
+                        @Override
+                        public void onProgress(long u, long t)
+                        {
+                            Progress.setProgress((int) (100 * u / t));
+                        }
+                    })
+                    .getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setVisibility(View.VISIBLE);
+
+                            MiscHandler.Debug(Response);
+
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                switch (Result.getInt("Message"))
+                                {
+                                    case -7:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError7));
+                                        break;
+                                    case -6:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
+                                        break;
+                                    case -2:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
+                                        break;
+                                    case -1:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
+                                        break;
+                                    case 0:
+                                        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                        Anim.setDuration(200);
+
+                                        RelativeLayoutMain.setAnimation(Anim);
+
+                                        SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
+                                        SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
+                                        SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
+                                        SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
+                                        SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
+
+                                        GetActivity().startActivity(new Intent(GetActivity(), MainActivity.class));
+                                        GetActivity().finish();
+                                        break;
+                                    case 1:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));
+                                        break;
+                                    case 2:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError3));
+                                        break;
+                                    case 3:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
+                                        break;
+                                    case 4:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
+                                        break;
+                                    case 5:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError5));
+                                        break;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                MiscHandler.Debug("SignUpDescriptionUI-SignInGoogleVerify: " + e.toString());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setVisibility(View.VISIBLE);
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        }
+                    });
+                }
             }
         });
 

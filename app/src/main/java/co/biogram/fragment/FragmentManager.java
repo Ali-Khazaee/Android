@@ -6,8 +6,6 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.handler.MiscHandler;
-
 public class FragmentManager
 {
     final private List<FragmentBase> FragmentList = new ArrayList<>();
@@ -27,7 +25,6 @@ public class FragmentManager
 
         Fragment = fragment;
         Fragment.Tag = Tag;
-        Fragment.D56 = MiscHandler.ToDimension(Activity, 56);
         Fragment.Activity = Activity;
         Fragment.OnCreate();
         Fragment.OnResume();

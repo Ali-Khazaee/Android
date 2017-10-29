@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#000</color>
-    <color name="ColorPrimaryDark">#000</color>
-    <color name="ColorAccent">#000</color>
+    <color name="ColorPrimary">#1da1f2</color>
 
     <color name="Black">#000</color>
+    <color name="White">#fff</color>
+
+
+
+
+
     <color name="Black2">#222</color>
     <color name="Black3">#333</color>
     <color name="Black4">#444</color>
@@ -18,7 +22,7 @@
     <color name="Gray1">#ddd</color>
     <color name="Gray">#eee</color>
 
-    <color name="White">#fff</color>
+
     <color name="White5">#fafafa</color>
 
     <color name="Toast">#d3eaf9</color>

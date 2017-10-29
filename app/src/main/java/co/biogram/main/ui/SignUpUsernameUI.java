@@ -99,13 +99,13 @@ class SignUpUsernameUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, D56);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -181,7 +181,7 @@ class SignUpUsernameUI extends FragmentBase
                 {
                     if (End > Start)
                     {
-                        char[] AllowChar = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+                        char[] AllowChar = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
                         for (int I = Start; I < End; I++)
                         {
@@ -354,7 +354,9 @@ class SignUpUsernameUI extends FragmentBase
                                     RelativeLayoutMain.setAnimation(Anim);
 
                                     if (Type == 0)
-                                        GetActivity().GetManager().OpenView(new SignUpDescriptionUI(Code, EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
+                                        GetActivity().GetManager().OpenView(new SignUpDescriptionUI(Code, EditTextUsername.getText().toString(), 0), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
+                                    else if (Type == 1)
+                                        GetActivity().GetManager().OpenView(new SignUpDescriptionUI(Code, EditTextUsername.getText().toString(), 1), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
                                     break;
                                 case 1:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));

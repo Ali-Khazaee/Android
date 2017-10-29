@@ -43,7 +43,7 @@
         <receiver android:name="co.biogram.main.service.SMSService" android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <action android:name="co.biogram.main.service.SMSService" />
+                <action android:name="Biogram.SMS.Request" />
             </intent-filter>
         </receiver>
 

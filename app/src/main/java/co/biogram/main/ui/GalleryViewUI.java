@@ -54,13 +54,13 @@ class GalleryViewUI extends FragmentBase
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.White5);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, D56);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -128,7 +128,7 @@ class GalleryViewUI extends FragmentBase
 
         RelativeLayoutHeader.addView(ImageViewList);
 
-        RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(D56, D56);
+        RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
         ImageViewSaveParam.addRule(MiscHandler.Align("L"));
 
         ImageView ImageViewSave = new ImageView(GetActivity());

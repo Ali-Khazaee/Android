@@ -88,13 +88,13 @@ class SignInEmailUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, D56);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -113,9 +113,7 @@ class SignInEmailUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTitle.setText(GetActivity().getString(R.string.SignInEmail));
-        TextViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -151,7 +149,6 @@ class SignInEmailUI extends FragmentBase
         TextViewEmailOrUsername.setLayoutParams(TextViewEmailOrUsernameParam);
         TextViewEmailOrUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewEmailOrUsername.setText(GetActivity().getString(R.string.SignInEmailOrUsername));
-        TextViewEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewEmailOrUsername.setId(MiscHandler.GenerateViewID());
         TextViewEmailOrUsername.setGravity(MiscHandler.IsRTL() ? Gravity.START : Gravity.END);
 
@@ -199,7 +196,6 @@ class SignInEmailUI extends FragmentBase
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewPassword.setText(GetActivity().getString(R.string.SignInEmailPassword));
-        TextViewPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewPassword.setId(MiscHandler.GenerateViewID());
         TextViewPassword.setGravity(MiscHandler.IsRTL() ? Gravity.START : Gravity.END);
 
@@ -245,7 +241,6 @@ class SignInEmailUI extends FragmentBase
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setText(GetActivity().getString(R.string.SignInEmailMessage));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -267,7 +262,6 @@ class SignInEmailUI extends FragmentBase
         TextViewReset.setLayoutParams(TextViewResetParam);
         TextViewReset.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewReset.setText(GetActivity().getString(R.string.SignInEmailForgot));
-        TextViewReset.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewReset.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewReset.setOnClickListener(new View.OnClickListener()
         {
@@ -303,13 +297,11 @@ class SignInEmailUI extends FragmentBase
         StateSignUp.addState(new int[] { -android.R.attr.state_enabled }, ShapeDisable);
 
         ButtonSignIn.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonSignIn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         ButtonSignIn.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         ButtonSignIn.setText(GetActivity().getString(R.string.SignInEmail));
         ButtonSignIn.setBackground(StateSignUp);
         ButtonSignIn.setPadding(0, 0, 0, 0);
         ButtonSignIn.setEnabled(false);
-        ButtonSignIn.setAllCaps(false);
         ButtonSignIn.setOnClickListener(new View.OnClickListener()
         {
             @Override

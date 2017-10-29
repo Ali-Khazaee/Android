@@ -153,12 +153,12 @@ class ImagePreviewUI extends FragmentBase
         }
 
         RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#3f000000"));
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(D56, D56);
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
         ImageViewBackParam.addRule(MiscHandler.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -186,7 +186,7 @@ class ImagePreviewUI extends FragmentBase
         {
             final CropImageView CropImageViewMain = new CropImageView(GetActivity());
 
-            RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(D56, D56);
+            RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
             ImageViewDoneParam.addRule(MiscHandler.Align("L"));
 
             ImageView ImageViewDone = new ImageView(GetActivity());
@@ -216,7 +216,7 @@ class ImagePreviewUI extends FragmentBase
 
             RelativeLayoutMain.addView(CropImageViewMain);
 
-            RelativeLayout.LayoutParams ImageViewDone2Param = new RelativeLayout.LayoutParams(D56, D56);
+            RelativeLayout.LayoutParams ImageViewDone2Param = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
             ImageViewDone2Param.addRule(MiscHandler.Align("L"));
 
             ImageView ImageViewDone2 = new ImageView(GetActivity());
@@ -305,7 +305,7 @@ class ImagePreviewUI extends FragmentBase
         }
         else
         {
-            RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(D56, D56);
+            RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
             ImageViewOptionParam.addRule(MiscHandler.Align("L"));
 
             ImageView ImageViewOption = new ImageView(GetActivity());
@@ -373,7 +373,7 @@ class ImagePreviewUI extends FragmentBase
 
             RelativeLayoutMain.addView(TouchImageViewMain);
 
-            RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, D56);
+            RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56));
             LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
             final LoadingView LoadingViewMain = new LoadingView(GetActivity());

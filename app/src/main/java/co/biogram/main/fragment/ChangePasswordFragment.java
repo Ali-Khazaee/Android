@@ -41,9 +41,9 @@ public class ChangePasswordFragment extends Fragment
     {
         final Context context = getActivity();
 
-        final EditText EditTextCurrentPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
-        final EditText EditTextNewPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
-        final EditText EditTextConfirmNewPassword = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        final EditText EditTextCurrentPassword = new EditText(context);
+        final EditText EditTextNewPassword = new EditText(context);
+        final EditText EditTextConfirmNewPassword = new EditText(context);
 
         final Button ButtonChangePassword = new Button(context, null, android.R.attr.borderlessButtonStyle);
         final LoadingView LoadingViewChangePassword = new LoadingView(context);

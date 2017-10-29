@@ -20,7 +20,7 @@ public class SMSService extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        if (intent.getAction().equalsIgnoreCase("co.biogram.main.service.SMSService"))
+        if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Request"))
             IsWaiting = intent.getExtras().getBoolean("SetWaiting", false);
 
         if (!IsWaiting)
@@ -65,7 +65,7 @@ public class SMSService extends BroadcastReceiver
 
                     if (matcher.find())
                     {
-                        Intent i = new Intent("co.biogram.main.ui.SignUpPhoneVerification");
+                        Intent i = new Intent("Biogram.SMS.Verify");
                         i.putExtra("Code", matcher.group(0));
 
                         context.sendBroadcast(i);

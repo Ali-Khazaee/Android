@@ -30,7 +30,4 @@ public class Button extends android.widget.Button
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
         setTextColor(ContextCompat.getColor(context, R.color.White));
     }
-
-    private void setAllCaps(boolean allCaps) { }
-    private void setTextSize(int unit, float size) { }
 }

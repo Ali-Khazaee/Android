@@ -27,6 +27,4 @@ public class TextView extends android.widget.TextView
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
         setTextColor(ContextCompat.getColor(context, R.color.White));
     }
-
-    private void setTextSize(int unit, float size) { }
 }

@@ -725,7 +725,7 @@ public class EditFragment extends Fragment
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
         EditTextUsernameParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextUsername = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        EditTextUsername = new EditText(context);
         EditTextUsername.setLayoutParams(EditTextUsernameParam);
         EditTextUsername.setMaxLines(1);
         EditTextUsername.setId(MiscHandler.GenerateViewID());
@@ -776,7 +776,7 @@ public class EditFragment extends Fragment
         EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
         EditTextDescriptionParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextDescription = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        EditTextDescription = new EditText(context);
         EditTextDescription.setLayoutParams(EditTextDescriptionParam);
         EditTextDescription.setMaxLines(5);
         EditTextDescription.setId(MiscHandler.GenerateViewID());
@@ -803,7 +803,7 @@ public class EditFragment extends Fragment
         EditTextLinkParam.addRule(RelativeLayout.BELOW, TextViewLink.getId());
         EditTextLinkParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextLink = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        EditTextLink = new EditText(context);
         EditTextLink.setLayoutParams(EditTextLinkParam);
         EditTextLink.setMaxLines(1);
         EditTextLink.setId(MiscHandler.GenerateViewID());
@@ -830,7 +830,7 @@ public class EditFragment extends Fragment
         EditTextPhoneParam.addRule(RelativeLayout.BELOW, TextViewPhone.getId());
         EditTextPhoneParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextPhone = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        EditTextPhone = new EditText(context);
         EditTextPhone.setLayoutParams(EditTextPhoneParam);
         EditTextPhone.setMaxLines(1);
         EditTextPhone.setId(MiscHandler.GenerateViewID());
@@ -857,7 +857,7 @@ public class EditFragment extends Fragment
         EditTextLocationParam.addRule(RelativeLayout.BELOW, TextViewLocation.getId());
         EditTextLocationParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextLocation = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        EditTextLocation = new EditText(context);
         EditTextLocation.setLayoutParams(EditTextLocationParam);
         EditTextLocation.setMaxLines(1);
         EditTextLocation.setId(MiscHandler.GenerateViewID());
@@ -899,7 +899,7 @@ public class EditFragment extends Fragment
         EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
         EditTextEmailParam.setMargins(MiscHandler.ToDimension(context, 10), 0, MiscHandler.ToDimension(context, 10), 0);
 
-        EditTextEmail = new EditText(new ContextThemeWrapper(context, R.style.GeneralEditTextTheme));
+        EditTextEmail = new EditText(context);
         EditTextEmail.setLayoutParams(EditTextEmailParam);
         EditTextEmail.setMaxLines(1);
         EditTextEmail.setHint(R.string.EditFragmentEmailHint);

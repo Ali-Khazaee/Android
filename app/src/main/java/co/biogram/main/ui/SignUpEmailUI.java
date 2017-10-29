@@ -100,9 +100,7 @@ class SignUpEmailUI extends FragmentBase
 
         TextView TextViewHeader = new TextView(GetActivity(), 18, true);
         TextViewHeader.setLayoutParams(TextViewHeaderParam);
-        TextViewHeader.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewHeader.setText(GetActivity().getString(R.string.SignUpFragmentEmailTitle));
-        TextViewHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         RelativeLayoutHeader.addView(TextViewHeader);
 
@@ -138,7 +136,6 @@ class SignUpEmailUI extends FragmentBase
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewUsername.setText(GetActivity().getString(R.string.SignUpFragmentEmail));
-        TextViewUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         TextViewUsername.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain2.addView(TextViewUsername);
@@ -182,7 +179,6 @@ class SignUpEmailUI extends FragmentBase
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentEmailMessage));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -204,7 +200,6 @@ class SignUpEmailUI extends FragmentBase
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.SearchFragmentFollowers));
-        TextViewPrivacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -233,13 +228,11 @@ class SignUpEmailUI extends FragmentBase
         StateSignUp.addState(new int[] { -android.R.attr.state_enabled }, ShapeDisable);
 
         ButtonSignUp.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonSignUp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         ButtonSignUp.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         ButtonSignUp.setText(GetActivity().getString(R.string.SignUpFragmentEmailFinish));
         ButtonSignUp.setBackground(StateSignUp);
         ButtonSignUp.setPadding(0, 0, 0, 0);
         ButtonSignUp.setEnabled(false);
-        ButtonSignUp.setAllCaps(false);
         ButtonSignUp.setOnClickListener(new View.OnClickListener()
         {
             @Override

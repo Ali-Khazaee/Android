@@ -53,7 +53,6 @@ public class PermissionDialog extends Dialog
         TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 25));
         TextViewMessage.setText(Message);
@@ -73,7 +72,6 @@ public class PermissionDialog extends Dialog
         TextView TextViewDecline = new TextView(context, 14, true);
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
-        TextViewDecline.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewDecline.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         TextViewDecline.setText(context.getString(R.string.DialogPermissionDecline));
         TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
@@ -83,7 +81,6 @@ public class PermissionDialog extends Dialog
         TextView TextViewContinue = new TextView(context, 14, true);
         TextViewContinue.setLayoutParams(TextViewMessageParam);
         TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-        TextViewContinue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         TextViewContinue.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
         TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
         TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
