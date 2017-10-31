@@ -1,6 +1,5 @@
 package co.biogram.main.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -8,8 +7,7 @@ import android.widget.FrameLayout;
 
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.main.R;
-import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.ui.WelcomeUI;
+import co.biogram.main.ui.welcome.WelcomeUI;
 
 public class WelcomeActivity extends FragmentActivity
 {

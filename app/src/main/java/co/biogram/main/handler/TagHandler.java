@@ -16,8 +16,6 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 
 import co.biogram.main.R;
-import co.biogram.main.fragment.ProfileFragment;
-import co.biogram.main.fragment.TagFragment;
 
 public class TagHandler
 {
@@ -108,7 +106,7 @@ public class TagHandler
             int End = Span.getSpanEnd(this);
             String Message = Text.subSequence(Start + 1, End).toString();
 
-            if (TagType == 1)
+            /*if (TagType == 1)
             {
                 Bundle bundle = new Bundle();
                 bundle.putString("Tag", Message);
@@ -130,7 +128,7 @@ public class TagHandler
                 fragment.setArguments(bundle);
 
                 Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
-            }
+            }*/
 
             MiscHandler.HideSoftKey(Activity);
         }

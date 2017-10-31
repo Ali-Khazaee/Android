@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#1da1f2</color>
+    <color name="TextWhite">#000</color>
+    <color name="LineWhite">#ccc</color>
+    <color name="GroundWhite">#fff</color>
+    <color name="ActionBarWhite">#fafafa</color>
 
+    <color name="TextDark">#fff</color>
+    <color name="LineDark">#1e2bcb</color>
+    <color name="GroundDark">#1b2936</color>
+    <color name="ActionBarDark">#233446</color>
+
+    <color name="Toast">#144766</color>
+    <color name="ToastLine">#0a3148</color>
+
+    <color name="ImagePlace">#a9bac4</color>
+    <color name="RedLike">#de1e5a</color>
+    <color name="BlueLight">#1da1f2</color>
+    <color name="BlueLight2">#187bb9</color>
+    <color name="BlueGray">#cbd6dc</color>
+    <color name="BlueGray2">#a9bac4</color>
     <color name="Black">#000</color>
     <color name="White">#fff</color>
-
-
-
-
 
     <color name="Black2">#222</color>
     <color name="Black3">#333</color>
@@ -21,16 +34,4 @@
     <color name="Gray2">#ccc</color>
     <color name="Gray1">#ddd</color>
     <color name="Gray">#eee</color>
-
-
-    <color name="White5">#fafafa</color>
-
-    <color name="Toast">#d3eaf9</color>
-    <color name="RedLike">#de1e5a</color>
-
-    <color name="BlueLight">#1da1f2</color>
-    <color name="BlueLight2">#187bb9</color>
-    <color name="BlueGray">#cbd6dc</color>
-    <color name="BlueGray2">#a9bac4</color>
-
 </resources>

@@ -2,6 +2,6 @@
 <resources>
     <item name="WelcomeActivityContainer" type="id" />
 
-    <item name="MainActivityFullContainer" type="id" />
-    <item name="MainActivityContentContainer" type="id" />
+    <item name="SocialActivityContainer" type="id" />
+    <item name="SocialActivityContainerFull" type="id" />
 </resources>

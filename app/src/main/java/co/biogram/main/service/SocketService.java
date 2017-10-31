@@ -11,7 +11,6 @@ import android.support.v4.app.NotificationCompat;
 import org.json.JSONObject;
 
 import co.biogram.main.R;
-import co.biogram.main.activity.MainActivity;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 
@@ -123,11 +122,11 @@ public class SocketService extends Service
         .setContentTitle("Biogram")
         .setContentText(Message);
 
-        Intent intent = new Intent(context, MainActivity.class);
+        /*Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("Data", Data);
-        intent.putExtra("Type", Type);
+        intent.putExtra("Type", Type);*/
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, null, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);

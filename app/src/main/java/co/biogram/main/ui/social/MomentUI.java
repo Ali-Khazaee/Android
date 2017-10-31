@@ -1,0 +1,9 @@
+package co.biogram.main.ui.social;
+
+import co.biogram.fragment.FragmentBase;
+
+public class MomentUI extends FragmentBase
+{
+
+
+}

@@ -232,6 +232,11 @@ public class MiscHandler
         System.exit(0);
     }
 
+    public static boolean IsDark(FragmentActivity activity)
+    {
+        return SharedHandler.GetBoolean(activity, "IsDark");
+    }
+
     public static String GetRandomServer(String URL)
     {
         return "http://5.160.219.218:5000/" + URL;
