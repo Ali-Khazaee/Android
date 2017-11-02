@@ -90,6 +90,22 @@
     <string name="SignUpPhoneVerificationCodeCount">Verification is should be 5 charecters</string>
     <string name="SignUpPhoneVerificationCodeWrong">The information entered is incorrect</string>
 
+    <!-- Sign In Email UI -->
+    <string name="SignInEmail">Sign In</string>
+    <string name="SignInEmailOrUsername">Email or Username</string>
+    <string name="SignInEmailPassword">Password</string>
+    <string name="SignInEmailMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
+    <string name="SignInEmailForgot">Forgot Password ?</string>
+    <string name="SignInEmailError1">Username or email must not be empty</string>
+    <string name="SignInEmailError2">Username or email should not be less than 3 charecter</string>
+    <string name="SignInEmailError3">Username or email must be less than 64 characters</string>
+    <string name="SignInEmailError4">Password must not be empty</string>
+    <string name="SignInEmailError5">The password must be greater than 3 characters</string>
+    <string name="SignInEmailError6">Password must be less than 32 characters</string>
+    <string name="SignInEmailError7">There is no such username or email</string>
+    <string name="SignInEmailError8">The information is not correct</string>
+
+
 
 
 
@@ -101,18 +117,6 @@
     <string name="GalleryView">Gallery</string>
     <string name="GalleryViewGallery">Gallery</string>
     <string name="GalleryViewMaximum">Maximum selection is </string>
-
-    <!-- Sign In Email UI -->
-    <string name="SignInEmail">Sign In</string>
-    <string name="SignInEmailOrUsername">Email or Username</string>
-    <string name="SignInEmailPassword">Password</string>
-    <string name="SignInEmailMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
-    <string name="SignInEmailForgot">Forgot Password ?</string>
-    <string name="SignInEmailError">Your username password doesn\'t match</string>
-
-
-
-
 
 
 

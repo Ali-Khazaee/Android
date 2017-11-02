@@ -90,6 +90,20 @@
     <string name="SignUpPhoneVerificationCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
     <string name="SignUpPhoneVerificationCodeWrong">اطلاعات وارد شده اشتباه است</string>
 
+    <!-- Sign In Email UI -->
+    <string name="SignInEmail">ورود</string>
+    <string name="SignInEmailOrUsername">ایمیل یا نام کاربری</string>
+    <string name="SignInEmailPassword">گذرواژه</string>
+    <string name="SignInEmailMessage">برای به اشتراک گذاشتن رویدادها و تماشای رویدادهای جهانی وارد شوید و یا نظر خود را با دیگران به اشتراک بگذارید</string>
+    <string name="SignInEmailForgot">گذرواژه را فراموش کردید ؟</string>
+    <string name="SignInEmailError1">نام کاربری یا ایمیل نباید خالی باشد</string>
+    <string name="SignInEmailError2">نام کاربری یا ایمیل نباید کمتر از 3 حرف باشد</string>
+    <string name="SignInEmailError3">نام کاربری یا ایمیل نباید بزرگتر از 64 حرف باشد</string>
+    <string name="SignInEmailError4">گذرواژه نباید خالی باشد</string>
+    <string name="SignInEmailError5">گذرواژه باید بیشتر از 3 حرف باشد</string>
+    <string name="SignInEmailError6">گذرواژه باید کمتر از 32 حرف باشد</string>
+    <string name="SignInEmailError7">نام کاربری یا ایمیل وجود ندارد</string>
+    <string name="SignInEmailError8">اطلاعات وارد شده صحیح نمی باشد</string>
 
 
 
@@ -100,13 +114,5 @@
     <!-- Gallery View UI -->
     <string name="GalleryView">گالری</string>
     <string name="GalleryViewMaximum">حداکثر تعداد انتخاب عکس ها </string>
-
-    <!-- Sign In Email Ui -->
-    <string name="SignInEmail">ورود</string>
-    <string name="SignInEmailOrUsername">ایمیل یا نام کاربری</string>
-    <string name="SignInEmailPassword">گذرواژه</string>
-    <string name="SignInEmailMessage">برای به اشتراک گذاشتن رویدادها و تماشای رویدادهای جهانی وارد شوید و یا نظر خود را با دیگران به اشتراک بگذارید</string>
-    <string name="SignInEmailForgot">گذرواژه را فراموش کردید ؟</string>
-    <string name="SignInEmailError">نام کاربری کلمه عبور شما مطابقت ندارد</string>
 
 </resources>

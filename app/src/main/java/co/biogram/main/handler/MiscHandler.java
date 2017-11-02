@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -33,6 +32,7 @@ import co.biogram.fragment.FragmentActivity;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.activity.WelcomeActivity;
+import co.biogram.main.ui.view.TextView;
 
 public class MiscHandler
 {
@@ -140,12 +140,10 @@ public class MiscHandler
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextView TextViewMessage = new TextView(context);
+        TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
         TextViewMessage.setText(Message);
-        TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 10));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
 
         RelativeLayoutMain.addView(TextViewMessage);
 
