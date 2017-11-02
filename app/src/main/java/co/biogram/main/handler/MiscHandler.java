@@ -128,13 +128,14 @@ public class MiscHandler
 
     public static void Toast(Context context, String Message)
     {
-        GradientDrawable GradientDrawableToast = new GradientDrawable();
-        GradientDrawableToast.setColor(ContextCompat.getColor(context, R.color.Toast));
-        GradientDrawableToast.setCornerRadius(50.0f);
+        GradientDrawable DrawableToast = new GradientDrawable();
+        DrawableToast.setColor(ContextCompat.getColor(context, R.color.Toast));
+        DrawableToast.setCornerRadius(10.0f);
+        DrawableToast.setStroke(ToDimension(context, 1), ContextCompat.getColor(context, R.color.ToastLine));
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackground(GradientDrawableToast);
+        RelativeLayoutMain.setBackground(DrawableToast);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -230,6 +231,19 @@ public class MiscHandler
         alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
 
         System.exit(0);
+    }
+
+    public static void GeneralError(FragmentActivity activity, int Error)
+    {
+        switch (Error)
+        {
+            case -1: Toast(activity, activity.getString(R.string.GeneralError1)); break;
+            case -2: Toast(activity, activity.getString(R.string.GeneralError2)); break;
+            case -3: Toast(activity, activity.getString(R.string.GeneralError3)); break;
+            case -4: Toast(activity, activity.getString(R.string.GeneralError4)); break;
+            case -6: Toast(activity, activity.getString(R.string.GeneralError6)); break;
+            case -7: Toast(activity, activity.getString(R.string.GeneralError7)); break;
+        }
     }
 
     public static boolean IsDark(FragmentActivity activity)

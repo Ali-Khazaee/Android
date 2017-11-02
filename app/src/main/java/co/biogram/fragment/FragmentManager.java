@@ -29,8 +29,11 @@ public class FragmentManager
         Fragment.OnCreate();
         Fragment.OnResume();
 
-        FrameLayout FrameLayoutMain = (FrameLayout) Activity.findViewById(ID);
-        FrameLayoutMain.addView(Fragment.ViewMain);
+        if (Fragment.ViewMain != null)
+        {
+            FrameLayout FrameLayoutMain = (FrameLayout) Activity.findViewById(ID);
+            FrameLayoutMain.addView(Fragment.ViewMain);
+        }
 
         FragmentList.add(Fragment);
     }

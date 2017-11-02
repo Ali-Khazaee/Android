@@ -92,12 +92,3 @@ public class App extends Application
         return OKClient;
     }
 }
-
-/*
-    Shared Data:
-    TOKEN     - For Authentication
-    IsLogin   - For Logged
-    ID        - For Account ID
-    Username  - For Username
-    Avatar    - For Profile Image
-*/

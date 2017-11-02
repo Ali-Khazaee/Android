@@ -5,12 +5,12 @@
 
     <!-- General -->
     <string name="GeneralNoInternet">Check your connection</string>
-    <string name="GeneralError1">Please Try again</string>
-    <string name="GeneralError2">Please Try again later</string>
-    <string name="GeneralError3">Please Try again</string>
-    <string name="GeneralError4">Something went wrong, Please Try to login again</string>
-    <string name="GeneralError6">Something went wrong, Please Try to login again</string>
-    <string name="GeneralError7">Something went wrong, Please Try again</string>
+    <string name="GeneralError1">Please Try again</string> <!-- DataBase -->
+    <string name="GeneralError2">Please Try again later</string> <!-- Exceed -->
+    <string name="GeneralError3">Please Try again</string> <!-- Bcrypt -->
+    <string name="GeneralError4">Something went wrong, Please Try to login again</string> <!-- Auth -->
+    <string name="GeneralError6">Please Try again</string> <!-- Request -->
+    <string name="GeneralError7">Please Try again</string> <!-- Formidable -->
 
     <!-- Dialog Permission -->
     <string name="DialogPermissionAccept">ALLOW</string>
