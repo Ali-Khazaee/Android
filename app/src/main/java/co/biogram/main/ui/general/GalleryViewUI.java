@@ -136,7 +136,7 @@ public class GalleryViewUI extends FragmentBase
         ImageViewSave.setLayoutParams(ImageViewSaveParam);
         ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSave.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
-        ImageViewSave.setImageResource(R.drawable.ic_send_blue2);
+        ImageViewSave.setImageResource(R.drawable.ic_done_blue);
         ImageViewSave.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -25,7 +25,7 @@ public class FragmentActivity extends Activity
     @Override
     public void onBackPressed()
     {
-        if (Manager.HandleBack())
+        if (GetManager().HandleBack())
             super.onBackPressed();
     }
 
@@ -33,21 +33,21 @@ public class FragmentActivity extends Activity
     public void onPause()
     {
         super.onPause();
-        Manager.OnPause();
+        GetManager().OnPause();
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        Manager.OnResume();
+        GetManager().OnResume();
     }
 
     @Override
     public void onActivityResult(int RequestCode, int ResultCode, Intent intent)
     {
         super.onActivityResult(RequestCode, ResultCode, intent);
-        Manager.OnActivityResult(RequestCode, ResultCode, intent);
+        GetManager().OnActivityResult(RequestCode, ResultCode, intent);
     }
 
     @Override

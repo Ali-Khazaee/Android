@@ -33,13 +33,14 @@ public class SocialActivity extends FragmentActivity
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(this);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackgroundResource(MiscHandler.IsDark(this) ? R.color.GroundDark : R.color.GroundWhite);
 
         RelativeLayout.LayoutParams LinearLayoutMenuParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(this, 56));
         LinearLayoutMenuParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         LinearLayout LinearLayoutMenu = new LinearLayout(this);
         LinearLayoutMenu.setLayoutParams(LinearLayoutMenuParam);
-        LinearLayoutMenu.setBackgroundResource(MiscHandler.IsDark(this) ? R.color.LineDark : R.color.LineWhite);
+        LinearLayoutMenu.setBackgroundResource(MiscHandler.IsDark(this) ? R.color.ActionBarDark : R.color.ActionBarWhite);
         LinearLayoutMenu.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutMenu.setId(MiscHandler.GenerateViewID());
 
@@ -64,9 +65,9 @@ public class SocialActivity extends FragmentActivity
         ImageView ImageViewChat = new ImageView(this);
         ImageViewChat.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewChat.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewChat.setImageResource(R.drawable.ic_category_gray);
+        ImageViewChat.setImageResource(R.drawable.ic_chat_gray);
         ImageViewChat.setPadding(MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15));
-        ImageViewChat.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(3); } });
+        ImageViewChat.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { /* TODO Change Activity To Chat */ } });
 
         LinearLayoutMenu.addView(ImageViewChat);
 
@@ -145,7 +146,7 @@ public class SocialActivity extends FragmentActivity
     {
         ImageViewMoment.setImageResource(R.drawable.ic_moment_gray);
         ImageViewInbox.setImageResource(R.drawable.ic_inbox_gray);
-        ImageViewNotification.setImageResource(NotificationEnable ? R.drawable.ic_notification_blue : R.drawable.ic_notification_gray);
+        ImageViewNotification.setImageResource(NotificationEnable ? R.drawable.ic_notification_gray2 : R.drawable.ic_notification_gray);
         ImageViewProfile.setImageResource(R.drawable.ic_profile_gray);
 
         String Tag;
@@ -156,26 +157,23 @@ public class SocialActivity extends FragmentActivity
             default:
                 Tag = "MomentUI";
                 Fragment = new MomentUI();
-                ImageViewMoment.setImageResource(R.drawable.ic_moment_black);
+                ImageViewMoment.setImageResource(R.drawable.ic_moment_blue);
                 break;
             case 2:
                 Tag = "InboxUI";
                 Fragment = new InboxUI();
-                ImageViewInbox.setImageResource(R.drawable.ic_inbox_black);
+                ImageViewInbox.setImageResource(R.drawable.ic_inbox_blue);
                 break;
-            case 3:
-                // TODO Open Chat Activity
-                return;
             case 4:
                 Tag = "NotificationUI";
                 Fragment = new NotificationUI();
                 NotificationEnable = false;
-                ImageViewNotification.setImageResource(R.drawable.ic_notification_black);
+                ImageViewNotification.setImageResource(R.drawable.ic_notification_blue);
                 break;
             case 5:
                 Tag = "ProfileUI";
                 Fragment = new ProfileUI();
-                ImageViewProfile.setImageResource(R.drawable.ic_profile_black);
+                ImageViewProfile.setImageResource(R.drawable.ic_profile_blue);
                 break;
         }
 
