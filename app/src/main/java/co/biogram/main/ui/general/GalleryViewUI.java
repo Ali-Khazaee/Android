@@ -35,7 +35,7 @@ public class GalleryViewUI extends FragmentBase
     private String SelectionPath = "";
 
     private int Count = 1;
-    private boolean IsVideo;
+    private final boolean IsVideo;
     private String Type = "Gallery";
 
     public GalleryViewUI(int count, boolean video)

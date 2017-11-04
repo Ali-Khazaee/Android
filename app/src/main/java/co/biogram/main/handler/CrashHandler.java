@@ -22,7 +22,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
 
-public class CrashHandler
+class CrashHandler
 {
     public static void SetUp(final Context context)
     {

@@ -8,7 +8,7 @@ import android.support.v4.app.ActivityCompat;
 
 import co.biogram.main.handler.MiscHandler;
 
-public class FragmentActivity extends Activity
+public abstract class FragmentActivity extends Activity
 {
     private OnPermissionListener PermissionListener;
     private FragmentManager Manager;

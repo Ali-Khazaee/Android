@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 public class TouchImageView extends ImageView implements OnScaleGestureListener
 {
-    private GestureDetector gestureDetector;
+    private final GestureDetector gestureDetector;
 
     public TouchImageView(Context context)
     {

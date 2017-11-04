@@ -35,12 +35,10 @@
     <!-- Sign Up Username UI -->
     <string name="SignUpUsername">نام کاربری</string>
     <string name="SignUpUsernameMessage">نام کاربري شما منحصر به فرد است و براي شخصي سازي گوشي و حساب بيوگرام مورد استفاده قرار مي گيرد. شما هميشه مي توانيد آن را بعدا تغيير دهيد.</string>
-    <string name="SignUpUsernameError">نام کاربري در دسترس نيست</string>
     <string name="SignUpUsernameHint">نام کاربری باید لاتین باشد</string>
     <string name="SignUpUsernameTerm">شرايط و حريم خصوصي</string>
     <string name="SignUpUsernameNext">بعدی</string>
     <string name="SignUpUsernameError1">نام کاربری خالی است</string>
-    <string name="SignUpUsernameError2">نام کاربری باید بیشتر از 2 حرف باشد</string>
     <string name="SignUpUsernameError3">نام کاربری باید کمتر از 32 حرف باشد</string>
     <string name="SignUpUsernameError4">نام کاربری معتبر نمیباشد</string>
     <string name="SignUpUsernameError5">نام کاربری قبلا استفاده شده است</string>
@@ -56,7 +54,6 @@
     <string name="SignUpDescriptionProfileGallery">انتخاب از گالری</string>
     <string name="SignUpDescriptionProfileCamera">گرفتن عکس از طریق دوربین</string>
     <string name="SignUpDescriptionProfileRemove">حذف عکس فعلی</string>
-    <string name="SignUpDescriptionProfileRemoved">عکس فعلی شما حذف شد</string>
     <string name="SignUpDescriptionEditName">نام خود را وارد کنید</string>
     <string name="SignUpDescriptionEditDescription">توضیحاتی درباره خود بنوسید</string>
     <string name="SignUpDescriptionPermissionCamera">لطفا برای استفاده دوربین، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>

@@ -44,15 +44,15 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class SignPhoneVerificationUI extends FragmentBase
+class SignPhoneVerificationUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private RelativeLayout RelativeLayoutMain;
-    private EditText EditTextVerificationCode1;
-    private EditText EditTextVerificationCode2;
-    private EditText EditTextVerificationCode3;
-    private EditText EditTextVerificationCode4;
-    private EditText EditTextVerificationCode5;
+    private EditText EditTextCode1;
+    private EditText EditTextCode2;
+    private EditText EditTextCode3;
+    private EditText EditTextCode4;
+    private EditText EditTextCode5;
     private CountDownTimer CountDownTimerResend;
     private int HeightDifference = 0;
     private boolean Field1 = false;
@@ -182,7 +182,7 @@ public class SignPhoneVerificationUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewVerificationCodeParam = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewVerificationCodeParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewVerificationCode = new TextView(GetActivity(), 16, true);
+        TextView TextViewVerificationCode = new TextView(GetActivity(), 16, false);
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 40), MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -204,16 +204,16 @@ public class SignPhoneVerificationUI extends FragmentBase
         LinearLayout.LayoutParams EditTextVerificationCode1Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode1Param.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
 
-        EditTextVerificationCode1 = new EditText(GetActivity());
-        EditTextVerificationCode1.setLayoutParams(EditTextVerificationCode1Param);
-        EditTextVerificationCode1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        EditTextVerificationCode1.setTypeface(null, Typeface.BOLD);
-        EditTextVerificationCode1.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextVerificationCode1.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextVerificationCode1.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextVerificationCode1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
-        EditTextVerificationCode1.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextVerificationCode1.addTextChangedListener(new TextWatcher()
+        EditTextCode1 = new EditText(GetActivity());
+        EditTextCode1.setLayoutParams(EditTextVerificationCode1Param);
+        EditTextCode1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        EditTextCode1.setTypeface(null, Typeface.BOLD);
+        EditTextCode1.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode1.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextCode1.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextCode1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode1.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        EditTextCode1.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void afterTextChanged(Editable s) { }
@@ -231,26 +231,26 @@ public class SignPhoneVerificationUI extends FragmentBase
                 if (s.length() == 0)
                     return;
 
-                EditText NextField = (EditText) EditTextVerificationCode1.focusSearch(View.FOCUS_RIGHT);
+                EditText NextField = (EditText) EditTextCode1.focusSearch(View.FOCUS_RIGHT);
                 NextField.requestFocus();
             }
         });
 
-        LinearLayoutVerificationCode.addView(EditTextVerificationCode1);
+        LinearLayoutVerificationCode.addView(EditTextCode1);
 
         LinearLayout.LayoutParams EditTextVerificationCode2Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode2Param.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
 
-        EditTextVerificationCode2 = new EditText(GetActivity());
-        EditTextVerificationCode2.setLayoutParams(EditTextVerificationCode2Param);
-        EditTextVerificationCode2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        EditTextVerificationCode2.setTypeface(null, Typeface.BOLD);
-        EditTextVerificationCode2.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextVerificationCode2.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextVerificationCode2.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextVerificationCode2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
-        EditTextVerificationCode2.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextVerificationCode2.addTextChangedListener(new TextWatcher()
+        EditTextCode2 = new EditText(GetActivity());
+        EditTextCode2.setLayoutParams(EditTextVerificationCode2Param);
+        EditTextCode2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        EditTextCode2.setTypeface(null, Typeface.BOLD);
+        EditTextCode2.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode2.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextCode2.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextCode2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode2.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        EditTextCode2.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void afterTextChanged(Editable s) { }
@@ -265,30 +265,30 @@ public class SignPhoneVerificationUI extends FragmentBase
                 else
                     ButtonNext.setEnabled(false);
 
-                EditText NextField = (EditText) EditTextVerificationCode2.focusSearch(View.FOCUS_RIGHT);
+                EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_RIGHT);
 
                 if (s.length() == 0)
-                    NextField = (EditText) EditTextVerificationCode2.focusSearch(View.FOCUS_LEFT);
+                    NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
             }
         });
 
-        LinearLayoutVerificationCode.addView(EditTextVerificationCode2);
+        LinearLayoutVerificationCode.addView(EditTextCode2);
 
         LinearLayout.LayoutParams EditTextVerificationCode3Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode3Param.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
 
-        EditTextVerificationCode3 = new EditText(GetActivity());
-        EditTextVerificationCode3.setLayoutParams(EditTextVerificationCode3Param);
-        EditTextVerificationCode3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        EditTextVerificationCode3.setTypeface(null, Typeface.BOLD);
-        EditTextVerificationCode3.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextVerificationCode3.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextVerificationCode3.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextVerificationCode3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
-        EditTextVerificationCode3.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextVerificationCode3.addTextChangedListener(new TextWatcher()
+        EditTextCode3 = new EditText(GetActivity());
+        EditTextCode3.setLayoutParams(EditTextVerificationCode3Param);
+        EditTextCode3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        EditTextCode3.setTypeface(null, Typeface.BOLD);
+        EditTextCode3.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode3.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextCode3.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextCode3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode3.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        EditTextCode3.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void afterTextChanged(Editable s) { }
@@ -303,30 +303,30 @@ public class SignPhoneVerificationUI extends FragmentBase
                 else
                     ButtonNext.setEnabled(false);
 
-                EditText NextField = (EditText) EditTextVerificationCode3.focusSearch(View.FOCUS_RIGHT);
+                EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_RIGHT);
 
                 if (s.length() == 0)
-                    NextField = (EditText) EditTextVerificationCode3.focusSearch(View.FOCUS_LEFT);
+                    NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
             }
         });
 
-        LinearLayoutVerificationCode.addView(EditTextVerificationCode3);
+        LinearLayoutVerificationCode.addView(EditTextCode3);
 
         LinearLayout.LayoutParams EditTextVerificationCode4Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode4Param.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
 
-        EditTextVerificationCode4 = new EditText(GetActivity());
-        EditTextVerificationCode4.setLayoutParams(EditTextVerificationCode4Param);
-        EditTextVerificationCode4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        EditTextVerificationCode4.setTypeface(null, Typeface.BOLD);
-        EditTextVerificationCode4.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextVerificationCode4.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextVerificationCode4.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextVerificationCode4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
-        EditTextVerificationCode4.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextVerificationCode4.addTextChangedListener(new TextWatcher()
+        EditTextCode4 = new EditText(GetActivity());
+        EditTextCode4.setLayoutParams(EditTextVerificationCode4Param);
+        EditTextCode4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        EditTextCode4.setTypeface(null, Typeface.BOLD);
+        EditTextCode4.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode4.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextCode4.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextCode4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode4.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        EditTextCode4.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void afterTextChanged(Editable s) { }
@@ -341,29 +341,29 @@ public class SignPhoneVerificationUI extends FragmentBase
                 else
                     ButtonNext.setEnabled(false);
 
-                EditText NextField = (EditText) EditTextVerificationCode4.focusSearch(View.FOCUS_RIGHT);
+                EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_RIGHT);
 
                 if (s.length() == 0)
-                    NextField = (EditText) EditTextVerificationCode4.focusSearch(View.FOCUS_LEFT);
+                    NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
             }
         });
 
-        LinearLayoutVerificationCode.addView(EditTextVerificationCode4);
+        LinearLayoutVerificationCode.addView(EditTextCode4);
 
         LinearLayout.LayoutParams EditTextVerificationCode5Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         EditTextVerificationCode5Param.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
 
-        EditTextVerificationCode5 = new EditText(GetActivity());
-        EditTextVerificationCode5.setLayoutParams(EditTextVerificationCode5Param);
-        EditTextVerificationCode5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        EditTextVerificationCode5.setTypeface(null, Typeface.BOLD);
-        EditTextVerificationCode5.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextVerificationCode5.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextVerificationCode5.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextVerificationCode5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
-        EditTextVerificationCode5.addTextChangedListener(new TextWatcher()
+        EditTextCode5 = new EditText(GetActivity());
+        EditTextCode5.setLayoutParams(EditTextVerificationCode5Param);
+        EditTextCode5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        EditTextCode5.setTypeface(null, Typeface.BOLD);
+        EditTextCode5.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode5.setGravity(Gravity.CENTER_HORIZONTAL);
+        EditTextCode5.setInputType(InputType.TYPE_CLASS_PHONE);
+        EditTextCode5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode5.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void afterTextChanged(Editable s) { }
@@ -380,13 +380,13 @@ public class SignPhoneVerificationUI extends FragmentBase
 
                 if (s.length() == 0)
                 {
-                    EditText NextField = (EditText) EditTextVerificationCode5.focusSearch(View.FOCUS_LEFT);
+                    EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
             }
         });
 
-        LinearLayoutVerificationCode.addView(EditTextVerificationCode5);
+        LinearLayoutVerificationCode.addView(EditTextCode5);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, LinearLayoutVerificationCode.getId());
@@ -471,15 +471,6 @@ public class SignPhoneVerificationUI extends FragmentBase
 
                                 switch (Result.getInt("Message"))
                                 {
-                                    case -6:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
-                                        break;
-                                    case -2:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
-                                        break;
-                                    case -1:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
-                                        break;
                                     case 0:
                                         CountDownTimerResend.start();
                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerificationResendDone));
@@ -487,21 +478,24 @@ public class SignPhoneVerificationUI extends FragmentBase
                                     case 1:
                                     case 2:
                                     case 3:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneCodeError));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneError));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
                                         break;
                                     case 7:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneAlready));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorAlready));
+                                        break;
+                                    default:
+                                        MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
                                         break;
                                 }
                             }
                             catch (Exception e)
                             {
-                                MiscHandler.Debug("SignPhoneVerificationUI-RequestSignUpPhone: " + e.toString());
+                                MiscHandler.Debug("SignPhoneVerificationUI-SignUpPhone: " + e.toString());
                             }
                         }
 
@@ -513,7 +507,65 @@ public class SignPhoneVerificationUI extends FragmentBase
                             MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                         }
                     });
+
+                    return;
                 }
+
+                AndroidNetworking.post(MiscHandler.GetRandomServer("SignInPhone"))
+                .addBodyParameter("Code", Code)
+                .addBodyParameter("Phone", Phone)
+                .setTag("SignPhoneVerificationUI")
+                .build()
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        LoadingViewResend.Stop();
+                        TextViewResend.setVisibility(View.VISIBLE);
+
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            switch (Result.getInt("Message"))
+                            {
+                                case 0:
+                                    CountDownTimerResend.start();
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerificationResendDone));
+                                    break;
+                                case 1:
+                                case 2:
+                                case 3:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
+                                    break;
+                                case 4:
+                                case 5:
+                                case 6:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
+                                    break;
+                                case 7:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorNotFound));
+                                    break;
+                                default:
+                                    MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
+                                    break;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            MiscHandler.Debug("SignPhoneVerificationUI-SignInPhone: " + e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError e)
+                    {
+                        LoadingViewResend.Stop();
+                        TextViewResend.setVisibility(View.VISIBLE);
+                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                    }
+                });
             }
         });
 
@@ -588,7 +640,7 @@ public class SignPhoneVerificationUI extends FragmentBase
                 ButtonNext.setVisibility(View.GONE);
                 LoadingViewNext.Start();
 
-                final String VerifyCode = EditTextVerificationCode1.getText().toString() + EditTextVerificationCode2.getText().toString() + EditTextVerificationCode3.getText().toString() + EditTextVerificationCode4.getText().toString() + EditTextVerificationCode5.getText().toString();
+                final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
 
                 if (IsSignUp)
                 {
@@ -612,15 +664,6 @@ public class SignPhoneVerificationUI extends FragmentBase
 
                                 switch (Result.getInt("Message"))
                                 {
-                                    case -6:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
-                                        break;
-                                    case -2:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
-                                        break;
-                                    case -1:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
-                                        break;
                                     case 0:
                                         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                                         Anim.setDuration(200);
@@ -632,12 +675,12 @@ public class SignPhoneVerificationUI extends FragmentBase
                                     case 1:
                                     case 2:
                                     case 3:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneCodeError));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneError));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
                                         break;
                                     case 7:
                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerificationCodeEmpty));
@@ -648,11 +691,14 @@ public class SignPhoneVerificationUI extends FragmentBase
                                     case 9:
                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerificationCodeWrong));
                                         break;
+                                    default:
+                                        MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
+                                        break;
                                 }
                             }
                             catch (Exception e)
                             {
-                                MiscHandler.Debug("SignPhoneVerificationUI-RequestSignUpPhoneVerify: " + e.toString());
+                                MiscHandler.Debug("SignPhoneVerificationUI-SignUpPhoneVerify: " + e.toString());
                             }
                         }
 
@@ -664,9 +710,11 @@ public class SignPhoneVerificationUI extends FragmentBase
                             MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                         }
                     });
+
+                    return;
                 }
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhoneVerify"))
+                AndroidNetworking.post(MiscHandler.GetRandomServer("SignInPhoneVerify"))
                 .addBodyParameter("Code", Code)
                 .addBodyParameter("Phone", Phone)
                 .addBodyParameter("VerifyCode", VerifyCode)
@@ -686,15 +734,6 @@ public class SignPhoneVerificationUI extends FragmentBase
 
                             switch (Result.getInt("Message"))
                             {
-                                case -6:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
-                                    break;
-                                case -2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
-                                    break;
-                                case -1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
-                                    break;
                                 case 0:
                                     TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                                     Anim.setDuration(200);
@@ -706,12 +745,12 @@ public class SignPhoneVerificationUI extends FragmentBase
                                 case 1:
                                 case 2:
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneCodeError));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                                     break;
                                 case 4:
                                 case 5:
                                 case 6:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneError));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
                                     break;
                                 case 7:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerificationCodeEmpty));
@@ -722,11 +761,14 @@ public class SignPhoneVerificationUI extends FragmentBase
                                 case 9:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerificationCodeWrong));
                                     break;
+                                default:
+                                    MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
+                                    break;
                             }
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignPhoneVerificationUI-RequestSignUpPhoneVerify: " + e.toString());
+                            MiscHandler.Debug("SignPhoneVerificationUI-SignInPhoneVerify: " + e.toString());
                         }
                     }
 
@@ -791,7 +833,7 @@ public class SignPhoneVerificationUI extends FragmentBase
         super.OnDestroy();
     }
 
-    private BroadcastReceiver VerifyReceiver = new BroadcastReceiver()
+    private final BroadcastReceiver VerifyReceiver = new BroadcastReceiver()
     {
         @Override
         public void onReceive(Context context, Intent intent)
@@ -810,11 +852,11 @@ public class SignPhoneVerificationUI extends FragmentBase
                     @Override
                     public void run()
                     {
-                        EditTextVerificationCode1.setText(Separated[0]);
-                        EditTextVerificationCode2.setText(Separated[1]);
-                        EditTextVerificationCode3.setText(Separated[2]);
-                        EditTextVerificationCode4.setText(Separated[3]);
-                        EditTextVerificationCode5.setText(Separated[4]);
+                        EditTextCode1.setText(Separated[0]);
+                        EditTextCode2.setText(Separated[1]);
+                        EditTextCode3.setText(Separated[2]);
+                        EditTextCode4.setText(Separated[3]);
+                        EditTextCode5.setText(Separated[4]);
                     }
                 }, 0);
             }

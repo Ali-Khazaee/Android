@@ -47,8 +47,8 @@ public class SignUpUsernameUI extends FragmentBase
     private RelativeLayout RelativeLayoutMain;
 
     private int HeightDifference = 0;
-    private String Code;
-    private int Type;
+    private final String Code;
+    private final int Type;
 
     SignUpUsernameUI(String code, int type)
     {

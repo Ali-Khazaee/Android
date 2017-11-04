@@ -20,7 +20,7 @@ import io.socket.emitter.Emitter;
 
 public class SocketService extends Service
 {
-    public static final String BROADCAST_NOTIFICATION = "BIOGRAM_NOTIFICATION";
+    private static final String BROADCAST_NOTIFICATION = "BIOGRAM_NOTIFICATION";
 
     private Socket socket;
 

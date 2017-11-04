@@ -10,7 +10,7 @@ public class FragmentBase
     public View ViewMain;
     String Tag;
 
-    public FragmentActivity GetActivity()
+    protected FragmentActivity GetActivity()
     {
         return Activity;
     }

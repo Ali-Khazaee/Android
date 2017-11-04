@@ -1,8 +1,6 @@
 package co.biogram.main.handler;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
@@ -17,7 +15,7 @@ import android.view.View;
 
 import co.biogram.main.R;
 
-public class TagHandler
+class TagHandler
 {
     public TagHandler(TextView textView, FragmentActivity activity)
     {

@@ -19,7 +19,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class UpdateHandler
+class UpdateHandler
 {
     public static void SetUp(final Context context)
     {

@@ -58,11 +58,11 @@ public class SignUpDescriptionUI extends FragmentBase
 
     private int HeightDifference = 0;
     private File ProfileFile;
-    private String Username;
+    private final String Username;
     private String Password;
     private String Email;
-    private String Token;
-    private int Type;
+    private final String Token;
+    private final int Type;
     private String Code;
 
     SignUpDescriptionUI(String token, String username, int type)

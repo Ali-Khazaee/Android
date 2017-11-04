@@ -34,7 +34,7 @@ public class CircleImageView extends ImageView
     private int BorderColor = Color.WHITE;
     private int BackgroundColor = Color.TRANSPARENT;
 
-    private boolean IsReady;
+    private final boolean IsReady;
     private boolean IsSetupPending;
 
     private float BorderRadius;
