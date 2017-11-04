@@ -35,7 +35,7 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class SignInEmailUI extends FragmentBase
+class SignInEmailUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private RelativeLayout RelativeLayoutMain;
@@ -175,11 +175,7 @@ public class SignInEmailUI extends FragmentBase
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
                 RequestUsername = s.length() > 2;
-
-                if (RequestUsername && RequestPassword)
-                    ButtonSignIn.setEnabled(true);
-                else
-                    ButtonSignIn.setEnabled(false);
+                ButtonSignIn.setEnabled(RequestUsername && RequestPassword);
             }
         });
 
@@ -221,11 +217,7 @@ public class SignInEmailUI extends FragmentBase
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
                 RequestPassword = s.length() > 5;
-
-                if (RequestUsername && RequestPassword)
-                    ButtonSignIn.setEnabled(true);
-                else
-                    ButtonSignIn.setEnabled(false);
+                ButtonSignIn.setEnabled(RequestUsername && RequestPassword);
             }
         });
 

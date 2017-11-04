@@ -75,10 +75,11 @@
     <string name="SignUpPhoneMessageIn2">Email Address</string>
     <string name="SignUpPhoneTerm">Term &amp; Privacy</string>
     <string name="SignUpPhoneNext">Next</string>
-    <string name="SignUpPhoneCodeError">Country code is wrong</string>
-    <string name="SignUpPhoneError">Phone number is wrong</string>
-    <string name="SignUpPhoneAlready">This phone number is already used</string>
     <string name="SignUpPhonePermission">To make Registration process easier, Allow biogram to have access to your next SMS that your receive</string>
+    <string name="SignUpPhoneErrorCountry">Country code is wrong</string>
+    <string name="SignUpPhoneErrorPhone">Phone number is wrong</string>
+    <string name="SignUpPhoneErrorAlready">This phone number is already used</string>
+    <string name="SignUpPhoneErrorNotFound">This phone number is already used</string>
 
     <!-- Sign Up Phone Verification UI -->
     <string name="SignUpPhoneVerification">Verify Phone</string>

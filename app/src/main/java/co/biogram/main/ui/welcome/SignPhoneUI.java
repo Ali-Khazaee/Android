@@ -39,8 +39,6 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
-
 import co.biogram.fragment.FragmentActivity;
 import co.biogram.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
@@ -50,7 +48,7 @@ import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.TextView;
 
-public class SignPhoneUI extends FragmentBase
+class SignPhoneUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private RelativeLayout RelativeLayoutMain;
@@ -158,7 +156,7 @@ public class SignPhoneUI extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        final LinearLayout LinearLayoutCode = new LinearLayout(GetActivity());
+        LinearLayout LinearLayoutCode = new LinearLayout(GetActivity());
         LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayoutCode.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutCode.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -166,7 +164,7 @@ public class SignPhoneUI extends FragmentBase
 
         RelativeLayoutScroll.addView(LinearLayoutCode);
 
-        TextView TextViewPhoneCode = new TextView(GetActivity(), 16, true);
+        TextView TextViewPhoneCode = new TextView(GetActivity(), 14, true);
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhoneCode.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
         TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -208,14 +206,8 @@ public class SignPhoneUI extends FragmentBase
                 DialogCode.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogCode.setCancelable(false);
 
-                ScrollView ScrollViewCode = new ScrollView(GetActivity());
-                ScrollViewCode.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
-                ScrollViewCode.setFillViewport(true);
-
                 RelativeLayout RelativeLayoutCode = new RelativeLayout(GetActivity());
-                RelativeLayoutCode.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-
-                ScrollViewCode.addView(RelativeLayoutCode);
+                RelativeLayoutCode.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
 
                 RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, MiscHandler.ToDimension(GetActivity(), 56));
                 TextViewTitleParam.addRule(MiscHandler.Align("R"));
@@ -235,7 +227,7 @@ public class SignPhoneUI extends FragmentBase
                 ImageView ImageViewClose = new ImageView(GetActivity());
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                 ImageViewClose.setImageResource(R.drawable.ic_close_blue);
-                ImageViewClose.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+                ImageViewClose.setPadding(MiscHandler.ToDimension(GetActivity(), 9), MiscHandler.ToDimension(GetActivity(), 9), MiscHandler.ToDimension(GetActivity(), 9), MiscHandler.ToDimension(GetActivity(), 9));
                 ImageViewClose.setId(MiscHandler.GenerateViewID());
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
 
@@ -251,6 +243,20 @@ public class SignPhoneUI extends FragmentBase
 
                 RelativeLayoutCode.addView(ViewLine);
 
+                RelativeLayout.LayoutParams ScrollViewCodeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                ScrollViewCodeParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+                ScrollView ScrollViewCode = new ScrollView(GetActivity());
+                ScrollViewCode.setLayoutParams(ScrollViewCodeParam);
+                ScrollViewCode.setFillViewport(true);
+
+                RelativeLayoutCode.addView(ScrollViewCode);
+
+                RelativeLayout RelativeLayoutScroll = new RelativeLayout(GetActivity());
+                RelativeLayoutScroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+                ScrollViewCode.addView(RelativeLayoutScroll);
+
                 RelativeLayout.LayoutParams LinearLayoutListParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 LinearLayoutListParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
@@ -258,7 +264,7 @@ public class SignPhoneUI extends FragmentBase
                 LinearLayoutList.setLayoutParams(LinearLayoutListParam);
                 LinearLayoutList.setOrientation(LinearLayout.VERTICAL);
 
-                RelativeLayoutCode.addView(LinearLayoutList);
+                RelativeLayoutScroll.addView(LinearLayoutList);
 
                 String Iran = "( 98+ ) ایران";
 
@@ -272,7 +278,7 @@ public class SignPhoneUI extends FragmentBase
 
                 LinearLayoutList.addView(TextViewIran);
 
-                DialogCode.setContentView(ScrollViewCode);
+                DialogCode.setContentView(RelativeLayoutCode);
                 DialogCode.show();
             }
         });
@@ -288,7 +294,7 @@ public class SignPhoneUI extends FragmentBase
 
         RelativeLayoutScroll.addView(LinearLayoutPhone);
 
-        TextView TextViewPhone = new TextView(GetActivity(), 16, true);
+        TextView TextViewPhone = new TextView(GetActivity(), 14, true);
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhone.setPadding(0, MiscHandler.ToDimension(GetActivity(), 20), 0, 0);
         TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -337,23 +343,9 @@ public class SignPhoneUI extends FragmentBase
             @Override
             public void onTextChanged(CharSequence a, int b, int c, int d)
             {
-                if (a.length() > 7)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
+                ButtonNext.setEnabled(a.length() > 7);
             }
         });
-
-        try
-        {
-            Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
-            f.setAccessible(true);
-            f.set(EditTextPhone, R.color.BlueLight);
-        }
-        catch (Exception e)
-        {
-            MiscHandler.Debug("A: " + e);
-        }
 
         LinearLayoutPhone.addView(EditTextPhone);
 
@@ -419,17 +411,17 @@ public class SignPhoneUI extends FragmentBase
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        GradientDrawable DrawableNext = new GradientDrawable();
-        DrawableNext.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableNext.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        GradientDrawable DrawableEnable = new GradientDrawable();
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
 
-        GradientDrawable DrawableNext2 = new GradientDrawable();
-        DrawableNext2.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
-        DrawableNext2.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        GradientDrawable DrawableDisable = new GradientDrawable();
+        DrawableDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
-        StateListDrawable StateNext = new StateListDrawable();
-        StateNext.addState(new int[] { android.R.attr.state_enabled }, DrawableNext);
-        StateNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableNext2);
+        StateListDrawable DrawableStateNext = new StateListDrawable();
+        DrawableStateNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
+        DrawableStateNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
 
         RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
         RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
@@ -437,14 +429,13 @@ public class SignPhoneUI extends FragmentBase
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(GetActivity());
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
-        RelativeLayoutNext.setBackground(DrawableNext);
+        RelativeLayoutNext.setBackground(DrawableStateNext);
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         ButtonNext.setText(GetActivity().getString(R.string.SignUpPhoneNext));
-        ButtonNext.setBackground(StateNext);
+        ButtonNext.setBackground(DrawableStateNext);
         ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
@@ -522,9 +513,9 @@ public class SignPhoneUI extends FragmentBase
     @Override
     public void OnPause()
     {
-        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
-        AndroidNetworking.forceCancel("SignPhoneUI");
         MiscHandler.HideSoftKey(GetActivity());
+        AndroidNetworking.forceCancel("SignPhoneUI");
+        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
     }
 
     private void SendRequest(final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode)
@@ -553,15 +544,6 @@ public class SignPhoneUI extends FragmentBase
 
                         switch (Result.getInt("Message"))
                         {
-                            case -6:
-                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
-                                break;
-                            case -2:
-                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
-                                break;
-                            case -1:
-                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
-                                break;
                             case 0:
                                 TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                                 Anim.setDuration(200);
@@ -573,26 +555,29 @@ public class SignPhoneUI extends FragmentBase
                                 while (Phone.charAt(0) == '0')
                                     Phone = Phone.substring(1);
 
-                                GetActivity().GetManager().OpenView(new co.biogram.main.ui.welcome.SignPhoneVerificationUI(EditTextPhoneCode.getText().toString(), Phone, true), R.id.WelcomeActivityContainer, "SignPhoneVerificationUI");
+                                GetActivity().GetManager().OpenView(new SignPhoneVerificationUI(EditTextPhoneCode.getText().toString(), Phone, true), R.id.WelcomeActivityContainer, "SignPhoneVerificationUI");
                                 break;
                             case 1:
                             case 2:
                             case 3:
-                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneCodeError));
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                                 break;
                             case 4:
                             case 5:
                             case 6:
-                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneError));
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
                                 break;
                             case 7:
-                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneAlready));
+                                MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorAlready));
+                                break;
+                            default:
+                                MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
                                 break;
                         }
                     }
                     catch (Exception e)
                     {
-                        MiscHandler.Debug("SignPhoneUI-RequestSignUpPhone: " + e.toString());
+                        MiscHandler.Debug("SignPhoneUI-SignUpPhone: " + e.toString());
                     }
                 }
 
@@ -627,15 +612,6 @@ public class SignPhoneUI extends FragmentBase
 
                     switch (Result.getInt("Message"))
                     {
-                        case -6:
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
-                            break;
-                        case -2:
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
-                            break;
-                        case -1:
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
-                            break;
                         case 0:
                             TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                             Anim.setDuration(200);
@@ -652,21 +628,24 @@ public class SignPhoneUI extends FragmentBase
                         case 1:
                         case 2:
                         case 3:
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneCodeError));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                             break;
                         case 4:
                         case 5:
                         case 6:
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneError));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
                             break;
                         case 7:
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneAlready));
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorNotFound));
+                            break;
+                        default:
+                            MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
                             break;
                     }
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("SignPhoneUI-RequestSignInPhone: " + e.toString());
+                    MiscHandler.Debug("SignPhoneUI-SignInPhone: " + e.toString());
                 }
             }
 

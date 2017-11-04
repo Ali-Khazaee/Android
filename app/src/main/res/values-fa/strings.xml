@@ -75,10 +75,11 @@
     <string name="SignUpPhoneMessageIn2">از طریق ایمیل خود نیز وارد شوید</string>
     <string name="SignUpPhoneTerm">شرايط و حريم خصوصي</string>
     <string name="SignUpPhoneNext">بعدی</string>
-    <string name="SignUpPhoneCodeError">اشکال در شناسایی کد کشور</string>
-    <string name="SignUpPhoneError">اشکال در شناسایی ساختار شماره</string>
-    <string name="SignUpPhoneAlready">این شماره قبلا استفاده شده است</string>
     <string name="SignUpPhonePermission">لطفا برای سهولت در روند ثبت نام، دسترسی به خوانده شدن پیامک را فعال کنید</string>
+    <string name="SignUpPhoneErrorCountry">اشکال در شناسایی کد کشور</string>
+    <string name="SignUpPhoneErrorPhone">اشکال در شناسایی ساختار شماره</string>
+    <string name="SignUpPhoneErrorAlready">این شماره قبلا استفاده شده است</string>
+    <string name="SignUpPhoneErrorNotFound">شماره مورد وارد شده معتبر نمی باشد</string>
 
     <!-- Sign Up Phone Verification UI -->
     <string name="SignUpPhoneVerification">تاییدیه تلفن</string>
