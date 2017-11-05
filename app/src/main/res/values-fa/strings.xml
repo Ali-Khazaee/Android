@@ -43,6 +43,33 @@
     <string name="SignUpUsernameError4">نام کاربری معتبر نمیباشد</string>
     <string name="SignUpUsernameError5">نام کاربری قبلا استفاده شده است</string>
 
+    <!-- Sign Up Password UI -->
+    <string name="SignUpPassword">گذرواژه</string>
+    <string name="SignUpPasswordNext">بعدی</string>
+    <string name="SignUpPasswordTerm">شرايط و حريم خصوصي</string>
+    <string name="SignUpPasswordMessage">لطفا مطمئن شوید رمز عبور شما به اندازه کافی قوی است. گذرواژه شما باید بیش از 5 حرف باشد</string>
+
+    <!-- Sign Up Email UI -->
+    <string name="SignUpEmail">ایمیل</string>
+    <string name="SignUpEmailAddress">ایمیل آدرس</string>
+    <string name="SignUpEmailNext">بعدی</string>
+    <string name="SignUpEmailTerm">شرايط و حريم خصوصي</string>
+    <string name="SignUpEmailError1">کد تائیدیه خالی است</string>
+    <string name="SignUpEmailError2">کد تائیدیه باید 5 حرف باشد</string>
+    <string name="SignUpEmailError3">کد تائیدیه اشتباه است</string>
+    <string name="SignUpEmailMessage">آدرس ایمیل زمانی که گذرواژه خود را فراموش کرده اید و میخواهید آن را بازیابی کنید به کار برده میشود . همچنین آدرس ایمیلتان باید تایید شود</string>
+
+    <!-- Sign Up Email Verify UI -->
+    <string name="SignUpEmailVerify">تاییدیه تلفن</string>
+    <string name="SignUpEmailVerifyCode">کد تاییدیه</string>
+    <string name="SignUpEmailVerifyMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
+    <string name="SignUpEmailVerifyResend">ارسال مجدد</string>
+    <string name="SignUpEmailVerifyResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
+    <string name="SignUpEmailVerifyCodeEmpty">کد تاییدیه وارد نشده است</string>
+    <string name="SignUpEmailVerifyCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
+    <string name="SignUpEmailVerifyCodeWrong">اطلاعات وارد شده اشتباه است</string>
+    <string name="SignUpEmailVerifyCodeNotFound">حساب کابری مورد نظر یافت نشد</string>
+
     <!-- Sign Up Description UI -->
     <string name="SignUpDescription">سایر مشخصات</string>
     <string name="SignUpDescriptionName">نام</string>
@@ -78,15 +105,16 @@
     <string name="SignUpPhoneErrorAlready">این شماره قبلا استفاده شده است</string>
     <string name="SignUpPhoneErrorNotFound">شماره مورد وارد شده معتبر نمی باشد</string>
 
-    <!-- Sign Up Phone Verification UI -->
-    <string name="SignUpPhoneVerification">تاییدیه تلفن</string>
-    <string name="SignUpPhoneVerificationCode">کد تاییدیه</string>
-    <string name="SignUpPhoneVerificationMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
-    <string name="SignUpPhoneVerificationResend">ارسال مجدد</string>
-    <string name="SignUpPhoneVerificationResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
-    <string name="SignUpPhoneVerificationCodeEmpty">کد تاییدیه وارد نشده است</string>
-    <string name="SignUpPhoneVerificationCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
-    <string name="SignUpPhoneVerificationCodeWrong">اطلاعات وارد شده اشتباه است</string>
+    <!-- Sign Up Phone Verify UI -->
+    <string name="SignUpPhoneVerify">تاییدیه تلفن</string>
+    <string name="SignUpPhoneVerifyCode">کد تاییدیه</string>
+    <string name="SignUpPhoneVerifyMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
+    <string name="SignUpPhoneVerifyResend">ارسال مجدد</string>
+    <string name="SignUpPhoneVerifyResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
+    <string name="SignUpPhoneVerifyCodeEmpty">کد تاییدیه وارد نشده است</string>
+    <string name="SignUpPhoneVerifyCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
+    <string name="SignUpPhoneVerifyCodeWrong">اطلاعات وارد شده اشتباه است</string>
+    <string name="SignUpPhoneVerifyCodeNotFound">حساب کابری مورد نظر یافت نشد</string>
 
     <!-- Sign In Email UI -->
     <string name="SignInEmail">ورود</string>

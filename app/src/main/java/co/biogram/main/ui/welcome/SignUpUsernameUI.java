@@ -41,14 +41,18 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class SignUpUsernameUI extends FragmentBase
+class SignUpUsernameUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private RelativeLayout RelativeLayoutMain;
-
     private int HeightDifference = 0;
-    private final String Code;
-    private final int Type;
+    private String Code;
+    private int Type;
+
+    SignUpUsernameUI()
+    {
+
+    }
 
     SignUpUsernameUI(String code, int type)
     {
@@ -165,8 +169,8 @@ public class SignUpUsernameUI extends FragmentBase
         RelativeLayoutScroll.addView(TextViewUsername);
 
         RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
         EditTextUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
+        EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
 
         final EditText EditTextUsername = new EditText(GetActivity());
         EditTextUsername.setLayoutParams(EditTextUsernameParam);
@@ -245,10 +249,7 @@ public class SignUpUsernameUI extends FragmentBase
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 2)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
+                ButtonNext.setEnabled(s.length() > 2);
             }
         });
 
@@ -291,17 +292,17 @@ public class SignUpUsernameUI extends FragmentBase
         RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         RelativeLayoutNextParam.addRule(MiscHandler.Align("L"));
 
-        GradientDrawable DrawableNext = new GradientDrawable();
-        DrawableNext.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableNext.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        GradientDrawable DrawableEnable = new GradientDrawable();
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
 
-        GradientDrawable DrawableNext2 = new GradientDrawable();
-        DrawableNext2.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
-        DrawableNext2.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        GradientDrawable DrawableDisable = new GradientDrawable();
+        DrawableDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
-        ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableNext);
-        ListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableNext2);
+        ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
+        ListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(GetActivity());
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
@@ -341,12 +342,6 @@ public class SignUpUsernameUI extends FragmentBase
 
                             switch (Result.getInt("Message"))
                             {
-                                case -2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
-                                    break;
-                                case -1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
-                                    break;
                                 case 0:
                                     TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                                     Anim.setDuration(200);
@@ -357,6 +352,8 @@ public class SignUpUsernameUI extends FragmentBase
                                         GetActivity().GetManager().OpenView(new SignUpDescriptionUI(Code, EditTextUsername.getText().toString(), 0), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
                                     else if (Type == 1)
                                         GetActivity().GetManager().OpenView(new SignUpDescriptionUI(Code, EditTextUsername.getText().toString(), 1), R.id.WelcomeActivityContainer, "SignUpDescriptionUI");
+                                    else
+                                        GetActivity().GetManager().OpenView(new SignUpPasswordUI(EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "SignUpPasswordUI");
                                     break;
                                 case 1:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));
@@ -373,6 +370,8 @@ public class SignUpUsernameUI extends FragmentBase
                                 case 5:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError5));
                                     break;
+                                default:
+                                    MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
                             }
                         }
                         catch (Exception e)

@@ -43,6 +43,33 @@
     <string name="SignUpUsernameError4">Username is unavailable</string>
     <string name="SignUpUsernameError5">Username is already in use</string>
 
+    <!-- Sign Up Password UI -->
+    <string name="SignUpPassword">Password</string>
+    <string name="SignUpPasswordNext">Next</string>
+    <string name="SignUpPasswordTerm">Term &amp; Privacy</string>
+    <string name="SignUpPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
+
+    <!-- Sign Up Email UI -->
+    <string name="SignUpEmail">Email</string>
+    <string name="SignUpEmailAddress">Email Address</string>
+    <string name="SignUpEmailNext">Next</string>
+    <string name="SignUpEmailTerm">Term &amp; Privacy</string>
+    <string name="SignUpEmailError1">The verification code is empty</string>
+    <string name="SignUpEmailError2">The verification code must be 5 characters</string>
+    <string name="SignUpEmailError3">The verification code is wrong</string>
+    <string name="SignUpEmailMessage">Your recovery email address will be used in the event you forget your Biogram password and require assistance from BioGram to reset your password, also you must verify your email</string>
+
+    <!-- Sign Up Email Verify UI -->
+    <string name="SignUpEmailVerify">Verify Phone</string>
+    <string name="SignUpEmailVerifyCode">Verification Code</string>
+    <string name="SignUpEmailVerifyMessage">Please enter the verification code sent to</string>
+    <string name="SignUpEmailVerifyResend">Resend Code</string>
+    <string name="SignUpEmailVerifyResendDone">The verification code has been sent to you again</string>
+    <string name="SignUpEmailVerifyCodeEmpty">The verification code has not been entered</string>
+    <string name="SignUpEmailVerifyCodeCount">Verification is should be 5 charecters</string>
+    <string name="SignUpEmailVerifyCodeWrong">The code entered is incorrect</string>
+    <string name="SignUpEmailVerifyCodeNotFound">The account does not exist</string>
+
     <!-- Sign Up Description UI -->
     <string name="SignUpDescription">Profile info</string>
     <string name="SignUpDescriptionName">Name</string>
@@ -78,15 +105,16 @@
     <string name="SignUpPhoneErrorAlready">This phone number is already used</string>
     <string name="SignUpPhoneErrorNotFound">This phone number is already used</string>
 
-    <!-- Sign Up Phone Verification UI -->
-    <string name="SignUpPhoneVerification">Verify Phone</string>
-    <string name="SignUpPhoneVerificationCode">Verification Code</string>
-    <string name="SignUpPhoneVerificationMessage">Please enter the verification code sent to</string>
-    <string name="SignUpPhoneVerificationResend">Resend Code</string>
-    <string name="SignUpPhoneVerificationResendDone">The verification code has been sent to you again</string>
-    <string name="SignUpPhoneVerificationCodeEmpty">The verification code has not been entered</string>
-    <string name="SignUpPhoneVerificationCodeCount">Verification is should be 5 charecters</string>
-    <string name="SignUpPhoneVerificationCodeWrong">The code entered is incorrect</string>
+    <!-- Sign Up Phone Verify UI -->
+    <string name="SignUpPhoneVerify">Verify Phone</string>
+    <string name="SignUpPhoneVerifyCode">Verification Code</string>
+    <string name="SignUpPhoneVerifyMessage">Please enter the verification code sent to</string>
+    <string name="SignUpPhoneVerifyResend">Resend Code</string>
+    <string name="SignUpPhoneVerifyResendDone">The verification code has been sent to you again</string>
+    <string name="SignUpPhoneVerifyCodeEmpty">The verification code has not been entered</string>
+    <string name="SignUpPhoneVerifyCodeCount">Verification is should be 5 charecters</string>
+    <string name="SignUpPhoneVerifyCodeWrong">The code entered is incorrect</string>
+    <string name="SignUpPhoneVerifyCodeNotFound">The account does not exist</string>
 
     <!-- Sign In Email UI -->
     <string name="SignInEmail">Sign In</string>

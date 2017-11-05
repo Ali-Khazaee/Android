@@ -14,6 +14,8 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,7 +27,7 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.TextView;
 
-public class SignUpPasswordUI extends FragmentBase
+class SignUpPasswordUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private RelativeLayout RelativeLayoutMain;
@@ -40,7 +42,7 @@ public class SignUpPasswordUI extends FragmentBase
     @Override
     public void OnCreate()
     {
-        final Button ButtonSignUp = new Button(GetActivity(), 16, false);
+        final Button ButtonNext = new Button(GetActivity(), 16, false);
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -89,28 +91,28 @@ public class SignUpPasswordUI extends FragmentBase
         ImageViewBack.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setImageResource(R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(MiscHandler.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
         ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
-        RelativeLayout.LayoutParams TextViewHeaderParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewHeaderParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
-        TextViewHeaderParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewTitleParam.addRule(RelativeLayout.RIGHT_OF, ImageViewBack.getId());
+        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewHeader = new TextView(GetActivity(), 18, true);
-        TextViewHeader.setLayoutParams(TextViewHeaderParam);
-        // TODO TextViewHeader.setText(GetActivity().getString(R.string.SignUpPassword));
+        TextView TextViewTitle = new TextView(GetActivity(), 16, true);
+        TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setText(GetActivity().getString(R.string.SignUpPassword));
 
-        RelativeLayoutHeader.addView(TextViewHeader);
+        RelativeLayoutHeader.addView(TextViewTitle);
 
         RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.LineWhite);
+        ViewLine.setBackgroundResource(R.color.Gray2);
         ViewLine.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -125,10 +127,10 @@ public class SignUpPasswordUI extends FragmentBase
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
-        RelativeLayout RelativeLayoutMain2 = new RelativeLayout(GetActivity());
-        RelativeLayoutMain2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        RelativeLayout RelativeLayoutScroll = new RelativeLayout(GetActivity());
+        RelativeLayoutScroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-        ScrollViewMain.addView(RelativeLayoutMain2);
+        ScrollViewMain.addView(RelativeLayoutScroll);
 
         RelativeLayout.LayoutParams TextViewPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPasswordParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
@@ -136,10 +138,10 @@ public class SignUpPasswordUI extends FragmentBase
         TextView TextViewPassword = new TextView(GetActivity(), 16, true);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
-        // TODO TextViewPassword.setText(GetActivity().getString(R.string.SignUpFragmentPassword));
+        TextViewPassword.setText(GetActivity().getString(R.string.SignUpPassword));
         TextViewPassword.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutMain2.addView(TextViewPassword);
+        RelativeLayoutScroll.addView(TextViewPassword);
 
         RelativeLayout.LayoutParams EditTextPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextPasswordParam.addRule(RelativeLayout.BELOW, TextViewPassword.getId());
@@ -164,14 +166,11 @@ public class SignUpPasswordUI extends FragmentBase
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                if (s.length() > 5)
-                    ButtonSignUp.setEnabled(true);
-                else
-                    ButtonSignUp.setEnabled(false);
+                ButtonNext.setEnabled(s.length() > 5);
             }
         });
 
-        RelativeLayoutMain2.addView(EditTextPassword);
+        RelativeLayoutScroll.addView(EditTextPassword);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextPassword.getId());
@@ -179,11 +178,11 @@ public class SignUpPasswordUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        // TODO TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentPasswordMessage));
+        TextViewMessage.setText(GetActivity().getString(R.string.SignUpPasswordMessage));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
-        RelativeLayoutMain2.addView(TextViewMessage);
+        RelativeLayoutScroll.addView(TextViewMessage);
 
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutBottomParam.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
@@ -191,61 +190,75 @@ public class SignUpPasswordUI extends FragmentBase
         RelativeLayout RelativeLayoutBottom = new RelativeLayout(GetActivity());
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
 
-        RelativeLayoutMain2.addView(RelativeLayoutBottom);
+        RelativeLayoutScroll.addView(RelativeLayoutBottom);
 
         RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewPrivacyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpDescriptionEditName));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpUsernameTerm));
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
         RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
-        RelativeLayoutNextParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+        RelativeLayoutNextParam.addRule(MiscHandler.Align("L"));
 
-        GradientDrawable ShapeEnable = new GradientDrawable();
-        ShapeEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        ShapeEnable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        GradientDrawable DrawableEnable = new GradientDrawable();
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+
+        GradientDrawable DrawableDisable = new GradientDrawable();
+        DrawableDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+
+        StateListDrawable ListDrawableNext = new StateListDrawable();
+        ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
+        ListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(GetActivity());
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
-        RelativeLayoutNext.setBackground(ShapeEnable);
+        RelativeLayoutNext.setBackground(ListDrawableNext);
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
-        GradientDrawable ShapeDisable = new GradientDrawable();
-        ShapeDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
-        ShapeDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.LineWhite));
-
-        StateListDrawable StateSignUp = new StateListDrawable();
-        StateSignUp.addState(new int[] { android.R.attr.state_enabled }, ShapeEnable);
-        StateSignUp.addState(new int[] { -android.R.attr.state_enabled }, ShapeDisable);
-
-        ButtonSignUp.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonSignUp.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        ButtonSignUp.setText(GetActivity().getString(R.string.SignUpDescriptionEditName));
-        ButtonSignUp.setBackground(StateSignUp);
-        ButtonSignUp.setPadding(0, 0, 0, 0);
-        ButtonSignUp.setEnabled(false);
-        ButtonSignUp.setOnClickListener(new View.OnClickListener()
+        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
+        ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
+        ButtonNext.setText(GetActivity().getString(R.string.SignUpUsernameNext));
+        ButtonNext.setBackground(ListDrawableNext);
+        ButtonNext.setPadding(0, 0, 0, 0);
+        ButtonNext.setEnabled(false);
+        ButtonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                //WelcomeActivity Parent = (WelcomeActivity) getActivity();
-                //Parent.Password = EditTextPassword.getText().toString();
-                //Parent.getSupportFragmentManager().beginTransaction().add(R.id.WelcomeActivityContainer, new SignUpFragmentEmail()).addToBackStack("SignUpFragmentEmail").commitAllowingStateLoss();
+                TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                Anim.setDuration(200);
+
+                RelativeLayoutMain.setAnimation(Anim);
+
+                GetActivity().GetManager().OpenView(new SignUpEmailUI(Username, EditTextPassword.getText().toString()), R.id.WelcomeActivityContainer, "SignUpEmailUI");
             }
         });
 
-        RelativeLayoutNext.addView(ButtonSignUp);
+        RelativeLayoutNext.addView(ButtonNext);
+
+        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
+        Anim.setDuration(200);
+        Anim.setAnimationListener(new Animation.AnimationListener()
+        {
+            @Override public void onAnimationStart(Animation animation) { }
+            @Override public void onAnimationRepeat(Animation animation) { }
+            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextPassword); }
+        });
+
+        RelativeLayoutMain.startAnimation(Anim);
 
         ViewMain = RelativeLayoutMain;
     }

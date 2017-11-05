@@ -1,9 +1,6 @@
 package co.biogram.main.ui.welcome;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -14,11 +11,8 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spannable;
-import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.text.style.CharacterStyle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -46,7 +40,7 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class SignPhoneVerificationUI extends FragmentBase
+class SignUpEmailVerifyUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
     private RelativeLayout RelativeLayoutMain;
@@ -62,15 +56,15 @@ class SignPhoneVerificationUI extends FragmentBase
     private boolean Field3 = false;
     private boolean Field4 = false;
     private boolean Field5 = false;
-    private final String Code;
-    private final String Phone;
-    private final boolean IsSignUp;
+    private final String Username;
+    private final String Password;
+    private final String Email;
 
-    SignPhoneVerificationUI(String code, String phone, boolean isSignUp)
+    SignUpEmailVerifyUI(String username, String password, String email)
     {
-        Code = code;
-        Phone = phone;
-        IsSignUp = isSignUp;
+        Username = username;
+        Password = password;
+        Email = email;
     }
 
     @Override
@@ -143,7 +137,7 @@ class SignPhoneVerificationUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.SignUpPhoneVerify));
+        TextViewTitle.setText(GetActivity().getString(R.string.SignUpEmailVerify));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -188,7 +182,7 @@ class SignPhoneVerificationUI extends FragmentBase
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 40), MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewVerificationCode.setText(GetActivity().getString(R.string.SignUpPhoneVerifyCode));
+        TextViewVerificationCode.setText(GetActivity().getString(R.string.SignUpEmailVerifyCode));
         TextViewVerificationCode.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewVerificationCode);
@@ -400,19 +394,7 @@ class SignPhoneVerificationUI extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpPhoneVerifyMessage) + " " + (Code + Phone), TextView.BufferType.SPANNABLE);
-
-        Spannable Span = (Spannable) TextViewMessage.getText();
-        CharacterStyle CharacterStyleMessage = new CharacterStyle()
-        {
-            @Override
-            public void updateDrawState(TextPaint t)
-            {
-                t.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
-                t.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            }
-        };
-        Span.setSpan(CharacterStyleMessage, GetActivity().getString(R.string.SignUpPhoneVerifyMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        TextViewMessage.setText(GetActivity().getString(R.string.SignUpEmailVerifyMessage));
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -439,7 +421,7 @@ class SignPhoneVerificationUI extends FragmentBase
         final TextView TextViewResend = new TextView(GetActivity(), 14, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
-        TextViewResend.setText(GetActivity().getString(R.string.SignUpPhoneVerifyResend));
+        TextViewResend.setText(GetActivity().getString(R.string.SignUpEmailVerifyResend));
         TextViewResend.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
         {
@@ -452,71 +434,11 @@ class SignPhoneVerificationUI extends FragmentBase
                 TextViewResend.setVisibility(View.GONE);
                 LoadingViewResend.Start();
 
-                if (IsSignUp)
-                {
-                    AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhone"))
-                    .addBodyParameter("Code", Code)
-                    .addBodyParameter("Phone", Phone)
-                    .setTag("SignPhoneVerificationUI")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            LoadingViewResend.Stop();
-                            TextViewResend.setVisibility(View.VISIBLE);
-
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
-
-                                switch (Result.getInt("Message"))
-                                {
-                                    case 0:
-                                        CountDownTimerResend.start();
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyResendDone));
-                                        break;
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
-                                        break;
-                                    case 4:
-                                    case 5:
-                                    case 6:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
-                                        break;
-                                    case 7:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorAlready));
-                                        break;
-                                    default:
-                                        MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
-                                        break;
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                MiscHandler.Debug("SignPhoneVerificationUI-SignUpPhone: " + e.toString());
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            LoadingViewResend.Stop();
-                            TextViewResend.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                        }
-                    });
-
-                    return;
-                }
-
-                AndroidNetworking.post(MiscHandler.GetRandomServer("SignInPhone"))
-                .addBodyParameter("Code", Code)
-                .addBodyParameter("Phone", Phone)
-                .setTag("SignPhoneVerificationUI")
+                AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpEmail"))
+                .addBodyParameter("Username", Username)
+                .addBodyParameter("Password", Password)
+                .addBodyParameter("Email", Email)
+                .setTag("SignUpEmailVerifyUI")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -534,7 +456,7 @@ class SignPhoneVerificationUI extends FragmentBase
                             {
                                 case 0:
                                     CountDownTimerResend.start();
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyResendDone));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpEmailVerifyResendDone));
                                     break;
                                 case 1:
                                 case 2:
@@ -547,7 +469,7 @@ class SignPhoneVerificationUI extends FragmentBase
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
                                     break;
                                 case 7:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorNotFound));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorAlready));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -556,7 +478,7 @@ class SignPhoneVerificationUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignPhoneVerificationUI-SignInPhone: " + e.toString());
+                            MiscHandler.Debug("SignUpEmailVerifyUI-SignUpEmail: " + e.toString());
                         }
                     }
 
@@ -644,83 +566,9 @@ class SignPhoneVerificationUI extends FragmentBase
 
                 final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
 
-                if (IsSignUp)
-                {
-                    AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpPhoneVerify"))
-                    .addBodyParameter("Code", Code)
-                    .addBodyParameter("Phone", Phone)
-                    .addBodyParameter("VerifyCode", VerifyCode)
-                    .setTag("SignPhoneVerificationUI")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            LoadingViewNext.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
-
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
-
-                                switch (Result.getInt("Message"))
-                                {
-                                    case 0:
-                                        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                        Anim.setDuration(200);
-
-                                        RelativeLayoutMain.setAnimation(Anim);
-
-                                        GetActivity().GetManager().OpenView(new SignUpUsernameUI(VerifyCode, 1), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
-                                        break;
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
-                                        break;
-                                    case 4:
-                                    case 5:
-                                    case 6:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
-                                        break;
-                                    case 7:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyCodeEmpty));
-                                        break;
-                                    case 8:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyCodeCount));
-                                        break;
-                                    case 9:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyCodeWrong));
-                                        break;
-                                    default:
-                                        MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
-                                        break;
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                MiscHandler.Debug("SignPhoneVerificationUI-SignUpPhoneVerify: " + e.toString());
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            LoadingViewNext.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                        }
-                    });
-
-                    return;
-                }
-
-                AndroidNetworking.post(MiscHandler.GetRandomServer("SignInPhoneVerify"))
-                .addBodyParameter("Code", Code)
-                .addBodyParameter("Phone", Phone)
+                AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpEmailVerify"))
                 .addBodyParameter("VerifyCode", VerifyCode)
-                .setTag("SignPhoneVerificationUI")
+                .setTag("SignUpEmailVerifyUI")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -753,26 +601,13 @@ class SignPhoneVerificationUI extends FragmentBase
                                     GetActivity().finish();
                                     break;
                                 case 1:
-                                case 2:
-                                case 3:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                                     break;
-                                case 4:
-                                case 5:
-                                case 6:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
+                                case 2:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                                     break;
-                                case 7:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyCodeEmpty));
-                                    break;
-                                case 8:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyCodeCount));
-                                    break;
-                                case 9:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyCodeWrong));
-                                    break;
-                                case 10:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneVerifyCodeNotFound));
+                                case 3:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -781,7 +616,7 @@ class SignPhoneVerificationUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignPhoneVerificationUI-SignInPhoneVerify: " + e.toString());
+                            MiscHandler.Debug("SignUpEmailVerifyUI-SignUpEmailVerify: " + e.toString());
                         }
                     }
 
@@ -818,25 +653,13 @@ class SignPhoneVerificationUI extends FragmentBase
     public void OnResume()
     {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(RelativeLayoutMainListener);
-
-        Intent i = new Intent("Biogram.SMS.Request");
-        i.putExtra("SetWaiting", true);
-
-        GetActivity().sendBroadcast(i);
-        GetActivity().registerReceiver(VerifyReceiver, new IntentFilter("Biogram.SMS.Verify"));
     }
 
     @Override
     public void OnPause()
     {
+        AndroidNetworking.forceCancel("SignUpEmailVerifyUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
-        AndroidNetworking.forceCancel("SignPhoneVerificationUI");
-
-        Intent i = new Intent("Biogram.SMS.Request");
-        i.putExtra("SetWaiting", false);
-
-        GetActivity().sendBroadcast(i);
-        GetActivity().unregisterReceiver(VerifyReceiver);
     }
 
     @Override
@@ -845,34 +668,4 @@ class SignPhoneVerificationUI extends FragmentBase
         CountDownTimerResend.cancel();
         super.OnDestroy();
     }
-
-    private final BroadcastReceiver VerifyReceiver = new BroadcastReceiver()
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Verify"))
-            {
-                String VerifyCode = intent.getExtras().getString("Code", "");
-
-                if (VerifyCode.length() < 4)
-                    return;
-
-                final String[] Separated = VerifyCode.split("(?!^)");
-
-                MiscHandler.RunOnUIThread(context, new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        EditTextCode1.setText(Separated[0]);
-                        EditTextCode2.setText(Separated[1]);
-                        EditTextCode3.setText(Separated[2]);
-                        EditTextCode4.setText(Separated[3]);
-                        EditTextCode5.setText(Separated[4]);
-                    }
-                }, 0);
-            }
-        }
-    };
 }

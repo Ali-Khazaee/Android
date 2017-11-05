@@ -373,7 +373,7 @@ class SignPhoneUI extends FragmentBase
                 RelativeLayoutMain.setAnimation(Anim);
 
                 if (IsSignUp)
-                    GetActivity().GetManager().OpenView(new SignUpEmailUI(), R.id.WelcomeActivityContainer, "SignUpEmailUI");
+                    GetActivity().GetManager().OpenView(new SignUpUsernameUI(), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
                 else
                     GetActivity().GetManager().OpenView(new SignInEmailUI(), R.id.WelcomeActivityContainer, "SignInEmailUI");
             }
