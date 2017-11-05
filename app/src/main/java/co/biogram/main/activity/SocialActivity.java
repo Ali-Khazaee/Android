@@ -7,8 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import co.biogram.fragment.FragmentActivity;
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentActivity;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.social.InboxUI;

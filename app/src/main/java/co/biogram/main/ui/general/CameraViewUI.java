@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.CameraHandler;
 import co.biogram.main.handler.MiscHandler;

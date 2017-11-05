@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.widget.FrameLayout;
 
-import co.biogram.fragment.FragmentActivity;
+import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.R;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.welcome.WelcomeUI;

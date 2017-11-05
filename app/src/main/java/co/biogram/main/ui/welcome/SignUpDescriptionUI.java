@@ -36,8 +36,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 
-import co.biogram.fragment.FragmentActivity;
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentActivity;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.handler.MiscHandler;

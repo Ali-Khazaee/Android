@@ -1,4 +1,4 @@
-package co.biogram.fragment;
+package co.biogram.main.fragment;
 
 import android.content.Intent;
 import android.view.View;

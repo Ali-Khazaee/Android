@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import co.biogram.fragment.FragmentActivity;
+import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.activity.WelcomeActivity;

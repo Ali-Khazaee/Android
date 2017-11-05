@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.view.Button;
@@ -101,7 +101,7 @@ public class SignUpPasswordUI extends FragmentBase
 
         TextView TextViewHeader = new TextView(GetActivity(), 18, true);
         TextViewHeader.setLayoutParams(TextViewHeaderParam);
-        TextViewHeader.setText(GetActivity().getString(R.string.SignUpFragmentPassword));
+        // TODO TextViewHeader.setText(GetActivity().getString(R.string.SignUpPassword));
 
         RelativeLayoutHeader.addView(TextViewHeader);
 
@@ -136,7 +136,7 @@ public class SignUpPasswordUI extends FragmentBase
         TextView TextViewPassword = new TextView(GetActivity(), 16, true);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
-        TextViewPassword.setText(GetActivity().getString(R.string.SignUpFragmentPassword));
+        // TODO TextViewPassword.setText(GetActivity().getString(R.string.SignUpFragmentPassword));
         TextViewPassword.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain2.addView(TextViewPassword);
@@ -179,7 +179,7 @@ public class SignUpPasswordUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentPasswordMessage));
+        // TODO TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentPasswordMessage));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 

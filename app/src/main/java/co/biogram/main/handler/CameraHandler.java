@@ -6,7 +6,7 @@ import android.hardware.Camera;
 import android.view.Surface;
 import android.view.TextureView;
 
-import co.biogram.fragment.FragmentActivity;
+import co.biogram.main.fragment.FragmentActivity;
 
 @SuppressWarnings("deprecation")
 public class CameraHandler extends TextureView

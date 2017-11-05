@@ -1,6 +1,6 @@
 package co.biogram.main.ui.social;
 
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentBase;
 
 public class ProfileUI extends FragmentBase
 {

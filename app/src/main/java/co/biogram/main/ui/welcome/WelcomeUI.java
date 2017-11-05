@@ -29,7 +29,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONObject;
 
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.handler.MiscHandler;

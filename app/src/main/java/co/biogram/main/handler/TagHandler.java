@@ -1,7 +1,6 @@
 package co.biogram.main.handler;
 
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
@@ -14,6 +13,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 
 import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentActivity;
 
 class TagHandler
 {

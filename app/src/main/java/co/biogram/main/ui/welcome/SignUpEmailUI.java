@@ -22,7 +22,7 @@ import android.widget.ScrollView;
 
 import com.androidnetworking.AndroidNetworking;
 
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.view.Button;
@@ -100,7 +100,7 @@ public class SignUpEmailUI extends FragmentBase
 
         TextView TextViewHeader = new TextView(GetActivity(), 18, true);
         TextViewHeader.setLayoutParams(TextViewHeaderParam);
-        TextViewHeader.setText(GetActivity().getString(R.string.SignUpFragmentEmailTitle));
+        // TODO  TextViewHeader.setText(GetActivity().getString(R.string.SignUpFragmentEmailTitle));
 
         RelativeLayoutHeader.addView(TextViewHeader);
 
@@ -135,7 +135,7 @@ public class SignUpEmailUI extends FragmentBase
         TextView TextViewUsername = new TextView(GetActivity(), 16, true);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewUsername.setText(GetActivity().getString(R.string.SignUpFragmentEmail));
+        // TODO TextViewUsername.setText(GetActivity().getString(R.string.SignUpFragmentEmail));
         TextViewUsername.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain2.addView(TextViewUsername);
@@ -178,7 +178,7 @@ public class SignUpEmailUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentEmailMessage));
+        // TODO TextViewMessage.setText(GetActivity().getString(R.string.SignUpFragmentEmailMessage));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -199,7 +199,7 @@ public class SignUpEmailUI extends FragmentBase
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewPrivacy.setText(GetActivity().getString(R.string.SearchFragmentFollowers));
+        // TODO TextViewPrivacy.setText(GetActivity().getString(R.string.SearchFragmentFollowers));
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -229,7 +229,7 @@ public class SignUpEmailUI extends FragmentBase
 
         ButtonSignUp.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
         ButtonSignUp.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        ButtonSignUp.setText(GetActivity().getString(R.string.SignUpFragmentEmailFinish));
+        // TODO ButtonSignUp.setText(GetActivity().getString(R.string.SignUpFragmentEmailFinish));
         ButtonSignUp.setBackground(StateSignUp);
         ButtonSignUp.setPadding(0, 0, 0, 0);
         ButtonSignUp.setEnabled(false);

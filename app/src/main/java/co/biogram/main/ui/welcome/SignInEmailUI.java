@@ -26,7 +26,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.handler.MiscHandler;
@@ -374,7 +374,7 @@ class SignInEmailUI extends FragmentBase
                     {
                         LoadingViewSignIn.Stop();
                         ButtonSignIn.setVisibility(View.VISIBLE);
-                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.NoInternet));
+                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                     }
                 });
             }

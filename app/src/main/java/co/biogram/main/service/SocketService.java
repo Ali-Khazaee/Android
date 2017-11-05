@@ -27,7 +27,7 @@ public class SocketService extends Service
     @Override
     public int onStartCommand(Intent intent, int Flags, int StartID)
     {
-        final Context context = SocketService.this;
+        /*final Context context = SocketService.this;
 
         try
         {
@@ -99,7 +99,7 @@ public class SocketService extends Service
         catch (Exception e)
         {
             MiscHandler.Debug("SocketService: " + e.toString());
-        }
+        }*/
 
         return START_STICKY;
     }

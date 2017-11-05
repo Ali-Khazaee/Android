@@ -39,8 +39,8 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
-import co.biogram.fragment.FragmentActivity;
-import co.biogram.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentActivity;
+import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.R;
 import co.biogram.main.ui.view.Button;

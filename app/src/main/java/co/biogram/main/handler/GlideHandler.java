@@ -17,7 +17,7 @@ import java.io.InputStream;
 import static co.biogram.main.App.GetOKClient;
 
 @GlideModule
-class GlideHandler extends AppGlideModule
+public class GlideHandler extends AppGlideModule
 {
     @Override
     public void applyOptions(Context context, GlideBuilder builder)
