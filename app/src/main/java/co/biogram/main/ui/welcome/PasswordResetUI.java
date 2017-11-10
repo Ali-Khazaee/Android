@@ -1,22 +1,17 @@
 package co.biogram.main.ui.welcome;
 
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -44,13 +39,12 @@ class PasswordResetUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
-    private int HeightDifference = 0;
 
     @Override
     public void OnCreate()
     {
-        final Button ButtonNext = new Button(GetActivity(), 16, false);
-        final LoadingView LoadingViewNext = new LoadingView(GetActivity());
+        final Button ButtonFinish = new Button(GetActivity(), 16, false);
+        final LoadingView LoadingViewFinish = new LoadingView(GetActivity());
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -59,6 +53,8 @@ class PasswordResetUI extends FragmentBase
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
+            int HeightDifference = 0;
+
             @Override
             public void onGlobalLayout()
             {
@@ -114,7 +110,7 @@ class PasswordResetUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewTitle.setText(GetActivity().getString(R.string.PasswordResetUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -146,17 +142,17 @@ class PasswordResetUI extends FragmentBase
         TextViewUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewUsernameParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewUsername = new TextView(GetActivity(), 16, true);
-        TextViewUsername.setLayoutParams(TextViewUsernameParam);
-        TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewUsername.setText(GetActivity().getString(R.string.GeneralNoInternet));
-        TextViewUsername.setId(MiscHandler.GenerateViewID());
+        TextView TextViewEmail = new TextView(GetActivity(), 16, false);
+        TextViewEmail.setLayoutParams(TextViewUsernameParam);
+        TextViewEmail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewEmail.setText(GetActivity().getString(R.string.GeneralEmailAddress));
+        TextViewEmail.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutScroll.addView(TextViewUsername);
+        RelativeLayoutScroll.addView(TextViewEmail);
 
         RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
-        EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
+        EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
 
         final EditText EditTextEmail = new EditText(GetActivity());
         EditTextEmail.setLayoutParams(EditTextUsernameParam);
@@ -166,44 +162,6 @@ class PasswordResetUI extends FragmentBase
         EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         EditTextEmail.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextEmail.requestFocus();
-        EditTextEmail.setHint(GetActivity().getString(R.string.GeneralNoInternet));
-        EditTextEmail.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
-        {
-            private final Paint paint;
-
-            {
-                paint = new Paint();
-                paint.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-                paint.setTextSize(50f);
-                paint.setAntiAlias(true);
-                paint.setTextAlign(Paint.Align.LEFT);
-            }
-
-            @Override
-            public void draw(@NonNull Canvas canvas)
-            {
-                canvas.drawText("@", 0, 10, paint);
-            }
-
-            @Override
-            public void setAlpha(int alpha)
-            {
-                paint.setAlpha(alpha);
-            }
-
-            @Override
-            public void setColorFilter(ColorFilter cf)
-            {
-                paint.setColorFilter(cf);
-            }
-
-            @Override
-            public int getOpacity()
-            {
-                return PixelFormat.TRANSLUCENT;
-            }
-        }, null, null, null);
-        EditTextEmail.setCompoundDrawablePadding(MiscHandler.ToDimension(GetActivity(), 20));
         EditTextEmail.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -212,7 +170,7 @@ class PasswordResetUI extends FragmentBase
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                ButtonNext.setEnabled(s.length() > 2);
+                ButtonFinish.setEnabled(s.length() > 6 && Patterns.EMAIL_ADDRESS.matcher(s).matches());
             }
         });
 
@@ -245,7 +203,7 @@ class PasswordResetUI extends FragmentBase
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -273,19 +231,17 @@ class PasswordResetUI extends FragmentBase
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
-        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNoInternet));
-        ButtonNext.setBackground(ListDrawableNext);
-        ButtonNext.setPadding(0, 0, 0, 0);
-        ButtonNext.setEnabled(false);
-        ButtonNext.setOnClickListener(new View.OnClickListener()
+        ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
+        ButtonFinish.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        ButtonFinish.setBackground(ListDrawableNext);
+        ButtonFinish.setEnabled(false);
+        ButtonFinish.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                ButtonNext.setVisibility(View.GONE);
-                LoadingViewNext.Start();
+                ButtonFinish.setVisibility(View.GONE);
+                LoadingViewFinish.Start();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("Username"))
                 .addBodyParameter("Username", EditTextEmail.getText().toString())
@@ -296,8 +252,8 @@ class PasswordResetUI extends FragmentBase
                     @Override
                     public void onResponse(String Response)
                     {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
+                        LoadingViewFinish.Stop();
+                        ButtonFinish.setVisibility(View.VISIBLE);
 
                         try
                         {
@@ -339,23 +295,23 @@ class PasswordResetUI extends FragmentBase
                     @Override
                     public void onError(ANError e)
                     {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
+                        LoadingViewFinish.Stop();
+                        ButtonFinish.setVisibility(View.VISIBLE);
                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                     }
                 });
             }
         });
 
-        RelativeLayoutNext.addView(ButtonNext);
+        RelativeLayoutNext.addView(ButtonFinish);
 
         RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewNext.setLayoutParams(LoadingViewNextParam);
-        LoadingViewNext.SetColor(R.color.White);
+        LoadingViewFinish.setLayoutParams(LoadingViewNextParam);
+        LoadingViewFinish.SetColor(R.color.White);
 
-        RelativeLayoutNext.addView(LoadingViewNext);
+        RelativeLayoutNext.addView(LoadingViewFinish);
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);

@@ -115,7 +115,7 @@ class EmailUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewTitle.setText(GetActivity().getString(R.string.GeneralEmail));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -135,7 +135,6 @@ class EmailUI extends FragmentBase
         ScrollView ScrollViewMain = new ScrollView(GetActivity());
         ScrollViewMain.setLayoutParams(ScrollViewMainParam);
         ScrollViewMain.setFillViewport(true);
-        ScrollViewMain.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
@@ -144,19 +143,19 @@ class EmailUI extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+        RelativeLayout.LayoutParams TextViewEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewEmailParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
-        TextView TextViewUsername = new TextView(GetActivity(), 14, true);
-        TextViewUsername.setLayoutParams(TextViewUsernameParam);
-        TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewUsername.setText(GetActivity().getString(R.string.GeneralNoInternet));
-        TextViewUsername.setId(MiscHandler.GenerateViewID());
+        TextView TextViewEmail = new TextView(GetActivity(), 14, false);
+        TextViewEmail.setLayoutParams(TextViewEmailParam);
+        TextViewEmail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewEmail.setText(GetActivity().getString(R.string.GeneralEmailAddress));
+        TextViewEmail.setId(MiscHandler.GenerateViewID());
 
-        RelativeLayoutScroll.addView(TextViewUsername);
+        RelativeLayoutScroll.addView(TextViewEmail);
 
         RelativeLayout.LayoutParams EditTextEmailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
+        EditTextEmailParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
         EditTextEmailParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
 
         final EditText EditTextEmail = new EditText(GetActivity());
@@ -190,7 +189,7 @@ class EmailUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewMessage.setText(GetActivity().getString(R.string.EmailUIMessage));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -211,7 +210,7 @@ class EmailUI extends FragmentBase
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -240,10 +239,8 @@ class EmailUI extends FragmentBase
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
-        ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
@@ -278,16 +275,28 @@ class EmailUI extends FragmentBase
                                     Anim.setDuration(200);
 
                                     RelativeLayoutMain.setAnimation(Anim);
+
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError5));
+
                                     GetActivity().GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), R.id.WelcomeActivityContainer, "EmailVerifyUI");
                                     break;
                                 case 1:
+                                case 2:
+                                case 3:
+                                case 4:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError1));
                                     break;
-                                case 2:
+                                case 5:
+                                case 6:
+                                case 7:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError2));
                                     break;
-                                case 3:
+                                case 8:
+                                case 9:
                                     MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError3));
+                                    break;
+                                case 10:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError4));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -311,7 +320,7 @@ class EmailUI extends FragmentBase
             }
         });
 
-        RelativeLayoutBottom.addView(ButtonNext);
+        RelativeLayoutNext.addView(ButtonNext);
 
         RelativeLayout.LayoutParams LoadingViewUsernameParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
         LoadingViewUsernameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -319,7 +328,7 @@ class EmailUI extends FragmentBase
         LoadingViewNext.setLayoutParams(LoadingViewUsernameParam);
         LoadingViewNext.SetColor(R.color.White);
 
-        RelativeLayoutBottom.addView(LoadingViewNext);
+        RelativeLayoutNext.addView(LoadingViewNext);
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);

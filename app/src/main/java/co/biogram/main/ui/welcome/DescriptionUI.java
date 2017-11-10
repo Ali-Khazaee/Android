@@ -514,7 +514,6 @@ public class DescriptionUI extends FragmentBase
         ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
         ButtonFinish.setText(GetActivity().getString(R.string.DescriptionUIFinish));
         ButtonFinish.setBackground(ListDrawableFinish);
-        ButtonFinish.setPadding(0, MiscHandler.IsFa() ? 0 : MiscHandler.ToDimension(GetActivity(), 3), 0, 0);
         ButtonFinish.setEnabled(false);
         ButtonFinish.setOnClickListener(new View.OnClickListener()
         {

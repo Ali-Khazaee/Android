@@ -91,24 +91,16 @@
     <string name="PhoneVerifyUICodeWrong">The code entered is incorrect</string>
     <string name="PhoneVerifyUICodeNotFound">The account does not exist</string>
 
-
-
-
-
-
-
-
-
-
-
     <!-- Password UI -->
     <string name="PasswordUIMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
 
     <!-- Email UI -->
-    <string name="EmailUIError1">The verification code is empty</string>
-    <string name="EmailUIError2">The verification code must be 5 characters</string>
-    <string name="EmailUIError3">The verification code is wrong</string>
-    <string name="EmailUIMessage">Your recovery email address will be used in the event you forget your Biogram password and require assistance from BioGram to reset your password, also you must verify your email</string>
+    <string name="EmailUIMessage">Your email address will be used in the event you forget your Biogram to reset your password, also you must verify your email</string>
+    <string name="EmailUIError1">Username is unavailable</string>
+    <string name="EmailUIError2">Password is unavailable</string>
+    <string name="EmailUIError3">Email is unavailable</string>
+    <string name="EmailUIError4">The email or username is already in use</string>
+    <string name="EmailUIError5">The verification code has sent to your email</string>
 
     <!-- Email Verify UI -->
     <string name="EmailVerifyUI">Verify Email</string>
@@ -116,16 +108,8 @@
     <string name="EmailVerifyUIMessage">Please enter the verification code sent to</string>
     <string name="EmailVerifyUIResend">Resend Code</string>
     <string name="EmailVerifyUIResendDone">The verification code has been sent to you again</string>
-    <string name="EmailVerifyUICodeEmpty">The verification code has not been entered</string>
-    <string name="EmailVerifyUICodeCount">Verification is should be 5 charecters</string>
+    <string name="EmailVerifyUICodeCount">Verification must be 5 charecters</string>
     <string name="EmailVerifyUICodeWrong">The code entered is incorrect</string>
-    <string name="EmailVerifyUICodeNotFound">The account does not exist</string>
-
-
-
-
-
-
 
     <!-- Email Sign In UI -->
     <string name="EmailSignInUIOrUsername">Email or Username</string>
@@ -140,7 +124,9 @@
     <string name="EmailSignInUIError7">There is no such username or email</string>
     <string name="EmailSignInUIError8">The information is not correct</string>
 
-
+    <!-- Email UI -->
+    <string name="PasswordResetUI">Reset Password</string>
+    <string name="PasswordResetUIMessage">We can help you reset your password using your Biogram username or the email address linked to your account</string>
 
 
 

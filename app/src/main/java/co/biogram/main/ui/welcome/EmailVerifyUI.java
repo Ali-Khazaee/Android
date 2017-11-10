@@ -1,6 +1,5 @@
 package co.biogram.main.ui.welcome;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -11,8 +10,11 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.text.style.CharacterStyle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -31,11 +33,9 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
-import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.R;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -395,7 +395,19 @@ class EmailVerifyUI extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText(GetActivity().getString(R.string.EmailVerifyUIMessage));
+        TextViewMessage.setText(GetActivity().getString(R.string.EmailVerifyUIMessage) + " " + Email, TextView.BufferType.SPANNABLE);
+
+        Spannable Span = (Spannable) TextViewMessage.getText();
+        CharacterStyle CharacterStyleMessage = new CharacterStyle()
+        {
+            @Override
+            public void updateDrawState(TextPaint t)
+            {
+                t.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
+                t.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            }
+        };
+        Span.setSpan(CharacterStyleMessage, GetActivity().getString(R.string.PhoneVerifyUIMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -462,15 +474,20 @@ class EmailVerifyUI extends FragmentBase
                                 case 1:
                                 case 2:
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                    break;
                                 case 4:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError1));
+                                    break;
                                 case 5:
                                 case 6:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                    break;
                                 case 7:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError2));
+                                    break;
+                                case 8:
+                                case 9:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError3));
+                                    break;
+                                case 10:
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError4));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -530,17 +547,17 @@ class EmailVerifyUI extends FragmentBase
 
         RelativeLayoutBottom.addView(TextViewResend);
 
-        GradientDrawable DrawableNext = new GradientDrawable();
-        DrawableNext.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableNext.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        GradientDrawable DrawableEnable = new GradientDrawable();
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
 
-        GradientDrawable DrawableNext2 = new GradientDrawable();
-        DrawableNext2.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
-        DrawableNext2.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        GradientDrawable DrawableDisable = new GradientDrawable();
+        DrawableDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable StateListNext = new StateListDrawable();
-        StateListNext.addState(new int[] { android.R.attr.state_enabled }, DrawableNext);
-        StateListNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableNext2);
+        StateListNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
+        StateListNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
 
         RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
         RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
@@ -548,14 +565,13 @@ class EmailVerifyUI extends FragmentBase
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(GetActivity());
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
-        RelativeLayoutNext.setBackground(DrawableNext);
+        RelativeLayoutNext.setBackground(DrawableEnable);
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
         ButtonNext.setBackground(StateListNext);
-        ButtonNext.setPadding(0, MiscHandler.IsFa() ? 0 : MiscHandler.ToDimension(GetActivity(), 3), 0, 0);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
@@ -594,13 +610,11 @@ class EmailVerifyUI extends FragmentBase
                                     GetActivity().GetManager().OpenView(new DescriptionUI(VerifyCode, 2), R.id.WelcomeActivityContainer, "DescriptionUI");
                                     break;
                                 case 1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                    break;
                                 case 2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailVerifyUICodeCount));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailVerifyUICodeWrong));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));

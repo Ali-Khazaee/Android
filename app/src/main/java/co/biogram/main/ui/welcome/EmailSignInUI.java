@@ -111,7 +111,7 @@ class EmailSignInUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewTitle.setText(GetActivity().getString(R.string.GeneralEmail));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -139,15 +139,14 @@ class EmailSignInUI extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        RelativeLayout.LayoutParams TextViewEmailOrUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams TextViewEmailOrUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewEmailOrUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
-        TextView TextViewEmailOrUsername = new TextView(GetActivity(), 14, true);
+        TextView TextViewEmailOrUsername = new TextView(GetActivity(), 14, false);
         TextViewEmailOrUsername.setLayoutParams(TextViewEmailOrUsernameParam);
         TextViewEmailOrUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewEmailOrUsername.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewEmailOrUsername.setText(GetActivity().getString(R.string.EmailSignInUIOrUsername));
         TextViewEmailOrUsername.setId(MiscHandler.GenerateViewID());
-        TextViewEmailOrUsername.setGravity(MiscHandler.Gravity("R"));
 
         RelativeLayoutScroll.addView(TextViewEmailOrUsername);
 
@@ -181,14 +180,14 @@ class EmailSignInUI extends FragmentBase
 
         RelativeLayoutScroll.addView(EditTextEmailOrUsername);
 
-        RelativeLayout.LayoutParams TextViewPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams TextViewPasswordParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPasswordParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPasswordParam.addRule(RelativeLayout.BELOW, EditTextEmailOrUsername.getId());
 
-        TextView TextViewPassword = new TextView(GetActivity(), 14, true);
+        TextView TextViewPassword = new TextView(GetActivity(), 14, false);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewPassword.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewPassword.setText(GetActivity().getString(R.string.GeneralPassword));
         TextViewPassword.setId(MiscHandler.GenerateViewID());
         TextViewPassword.setGravity(MiscHandler.Gravity("R"));
 
@@ -229,7 +228,7 @@ class EmailSignInUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewMessage.setText(GetActivity().getString(R.string.EmailSignInUIMessage));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -250,7 +249,7 @@ class EmailSignInUI extends FragmentBase
         TextView TextViewReset = new TextView(GetActivity(), 14, false);
         TextViewReset.setLayoutParams(TextViewResetParam);
         TextViewReset.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewReset.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewReset.setText(GetActivity().getString(R.string.EmailSignInUIForgot));
         TextViewReset.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewReset.setOnClickListener(new View.OnClickListener()
         {
@@ -276,9 +275,9 @@ class EmailSignInUI extends FragmentBase
         DrawableDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
         DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
-        StateListDrawable DrawableSignIn = new StateListDrawable();
-        DrawableSignIn.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
-        DrawableSignIn.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
+        StateListDrawable ListDrawableSignIn = new StateListDrawable();
+        ListDrawableSignIn.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
+        ListDrawableSignIn.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
 
         RelativeLayout.LayoutParams RelativeLayoutSignInParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
         RelativeLayoutSignInParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
@@ -291,9 +290,8 @@ class EmailSignInUI extends FragmentBase
         RelativeLayoutBottom.addView(RelativeLayoutSignIn);
 
         ButtonSignIn.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonSignIn.setText(GetActivity().getString(R.string.GeneralNoInternet));
-        ButtonSignIn.setBackground(DrawableSignIn);
-        ButtonSignIn.setPadding(0, 0, 0, 0);
+        ButtonSignIn.setText(GetActivity().getString(R.string.GeneralSignIn));
+        ButtonSignIn.setBackground(ListDrawableSignIn);
         ButtonSignIn.setEnabled(false);
         ButtonSignIn.setOnClickListener(new View.OnClickListener()
         {
@@ -335,28 +333,28 @@ class EmailSignInUI extends FragmentBase
                                     GetActivity().finish();
                                 break;
                                 case 1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError1));
                                     break;
                                 case 2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError2));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError3));
                                     break;
                                 case 4:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError4));
                                     break;
                                 case 5:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError5));
                                     break;
                                 case 6:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError6));
                                     break;
                                 case 7:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError7));
                                     break;
                                 case 8:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailSignInUIError8));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -365,7 +363,7 @@ class EmailSignInUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("EmailSignInUI-SignInEmail: " + e.toString());
+                            MiscHandler.Debug("EmailSignInUI: " + e.toString());
                         }
                     }
 

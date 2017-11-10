@@ -91,20 +91,16 @@
     <string name="PhoneVerifyUICodeWrong">اطلاعات وارد شده اشتباه است</string>
     <string name="PhoneVerifyUICodeNotFound">حساب کابری مورد نظر یافت نشد</string>
 
-
-
-
-
-
-
     <!--  Password UI -->
     <string name="PasswordUIMessage">لطفا مطمئن شوید رمز عبور شما به اندازه کافی قوی است. گذرواژه شما باید بیش از 5 حرف باشد</string>
 
     <!-- Email UI -->
-    <string name="EmailUIError1">کد تائیدیه خالی است</string>
-    <string name="EmailUIError2">کد تائیدیه باید 5 حرف باشد</string>
-    <string name="EmailUIError3">کد تائیدیه اشتباه است</string>
     <string name="EmailUIMessage">آدرس ایمیل زمانی که گذرواژه خود را فراموش کرده اید و میخواهید آن را بازیابی کنید به کار برده میشود . همچنین آدرس ایمیلتان باید تایید شود</string>
+    <string name="EmailUIError1">نام کاربری غیر معتبر است</string>
+    <string name="EmailUIError2">گذرواژه غیر معتبر است</string>
+    <string name="EmailUIError3">ایمیل آدرس غیر معتبر است</string>
+    <string name="EmailUIError4">نام کاربری یا ایمیل آدرس وارد شده قبلا ثبت شده است</string>
+    <string name="EmailUIError5">کد تاییدیه برای ایمیل شما ارسال شد</string>
 
     <!-- Email Verify UI -->
     <string name="EmailVerifyUI">تاییدیه ایمیل</string>
@@ -112,14 +108,8 @@
     <string name="EmailVerifyUIMessage">لطفا کد تاییدیه ارسال شده به این ایمیل را وارد کنید</string>
     <string name="EmailVerifyUIResend">ارسال مجدد</string>
     <string name="EmailVerifyUIResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
-    <string name="EmailVerifyUICodeEmpty">کد تاییدیه وارد نشده است</string>
-    <string name="EmailVerifyUICodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
+    <string name="EmailVerifyUICodeCount">کد تاییدیه باید 5 کلمه باشد</string>
     <string name="EmailVerifyUICodeWrong">اطلاعات وارد شده اشتباه است</string>
-    <string name="EmailVerifyUICodeNotFound">حساب کابری مورد نظر یافت نشد</string>
-
-
-
-
 
     <!-- Email UI -->
     <string name="EmailSignInUIOrUsername">ایمیل یا نام کاربری</string>
@@ -134,6 +124,9 @@
     <string name="EmailSignInUIError7">نام کاربری یا ایمیل وجود ندارد</string>
     <string name="EmailSignInUIError8">اطلاعات وارد شده صحیح نمی باشد</string>
 
+    <!-- Email UI -->
+    <string name="PasswordResetUI">ایمیل یا نام کاربری</string>
+    <string name="PasswordResetUIMessage">ما می توانیم با استفاده از نام کاربری یا آدرس ایمیل مرتبط با حساب کاربری Biogram خود، رمز عبور شما را بازیابی کنیم</string>
 
 
 
