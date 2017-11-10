@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -44,7 +45,7 @@ public class WelcomeUI extends FragmentBase
     private RelativeLayout RelativeLayoutGoogle;
     private ScrollView ScrollViewMain;
     private GoogleApiClient GoogleApiClient;
-    private boolean IsGoogleAvailable = false;
+    private boolean IsGoogleAvailable;
 
     @Override
     public void OnCreate()
@@ -78,7 +79,7 @@ public class WelcomeUI extends FragmentBase
 
         TextView TextViewLanguage = new TextView(GetActivity(), 16, false);
         TextViewLanguage.setLayoutParams(TextViewLanguageParam);
-        TextViewLanguage.setText(GetActivity().getString(R.string.WelcomeLanguage));
+        TextViewLanguage.setText(GetActivity().getString(R.string.WelcomeUILanguage));
         TextViewLanguage.setId(MiscHandler.GenerateViewID());
         TextViewLanguage.setOnClickListener(new View.OnClickListener()
         {
@@ -87,7 +88,7 @@ public class WelcomeUI extends FragmentBase
             {
                 final Dialog DialogLanguage = new Dialog(GetActivity());
                 DialogLanguage.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                DialogLanguage.setCancelable(false);
+                DialogLanguage.setCancelable(true);
 
                 LinearLayout LinearLayoutLanguage = new LinearLayout(GetActivity());
                 LinearLayoutLanguage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -104,8 +105,8 @@ public class WelcomeUI extends FragmentBase
                 TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-                TextViewTitle.setText(GetActivity().getString(R.string.WelcomeLanguageSelect));
-                TextViewTitle.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
+                TextViewTitle.setText(GetActivity().getString(R.string.WelcomeUILanguageSelect));
+                TextViewTitle.setPadding(MiscHandler.ToDimension(GetActivity(), 15), 0, MiscHandler.ToDimension(GetActivity(), 15), 0);
                 TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
 
                 RelativeLayoutHeader.addView(TextViewTitle);
@@ -116,7 +117,7 @@ public class WelcomeUI extends FragmentBase
                 ImageView ImageViewClose = new ImageView(GetActivity());
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                 ImageViewClose.setImageResource(R.drawable.ic_close_blue);
-                ImageViewClose.setPadding(MiscHandler.ToDimension(GetActivity(), 8), MiscHandler.ToDimension(GetActivity(), 8), MiscHandler.ToDimension(GetActivity(), 8), MiscHandler.ToDimension(GetActivity(), 8));
+                ImageViewClose.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); } });
 
                 RelativeLayoutHeader.addView(ImageViewClose);
@@ -133,8 +134,8 @@ public class WelcomeUI extends FragmentBase
                 TextView TextViewEnglish = new TextView(GetActivity(), 16, false);
                 TextViewEnglish.setLayoutParams(TextViewEnglishParam);
                 TextViewEnglish.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-                TextViewEnglish.setText(GetActivity().getString(R.string.WelcomeLanguageEnglish));
-                TextViewEnglish.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
+                TextViewEnglish.setText(GetActivity().getString(R.string.WelcomeUILanguageEnglish));
+                TextViewEnglish.setPadding(MiscHandler.ToDimension(GetActivity(), 15), 0, MiscHandler.ToDimension(GetActivity(), 15), 0);
                 TextViewEnglish.setGravity(MiscHandler.Gravity("L") | Gravity.CENTER_VERTICAL);
                 TextViewEnglish.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); MiscHandler.ChangeLanguage(GetActivity(), "en"); } });
 
@@ -152,8 +153,8 @@ public class WelcomeUI extends FragmentBase
                 TextView TextViewPersian = new TextView(GetActivity(), 16, false);
                 TextViewPersian.setLayoutParams(TextViewPersianParam);
                 TextViewPersian.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-                TextViewPersian.setText(GetActivity().getString(R.string.WelcomeLanguagePersian));
-                TextViewPersian.setPadding(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
+                TextViewPersian.setText(GetActivity().getString(R.string.WelcomeUILanguagePersian));
+                TextViewPersian.setPadding(MiscHandler.ToDimension(GetActivity(), 15), 0, MiscHandler.ToDimension(GetActivity(), 15), 0);
                 TextViewPersian.setGravity(MiscHandler.Gravity("R") | Gravity.CENTER_VERTICAL);
                 TextViewPersian.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); MiscHandler.ChangeLanguage(GetActivity(), "fa"); } });
 
@@ -188,13 +189,13 @@ public class WelcomeUI extends FragmentBase
 
         TextView TextViewHeader = new TextView(GetActivity(), 14, false);
         TextViewHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewHeader.setText(GetActivity().getString(R.string.WelcomeHeader));
+        TextViewHeader.setText(GetActivity().getString(R.string.WelcomeUIHeader));
 
         LinearLayoutHeader.addView(TextViewHeader);
 
         TextView TextViewHeader2 = new TextView(GetActivity(), 14, false);
         TextViewHeader2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewHeader2.setText(GetActivity().getString(R.string.WelcomeHeader2));
+        TextViewHeader2.setText(GetActivity().getString(R.string.WelcomeUIHeader2));
 
         LinearLayoutHeader.addView(TextViewHeader2);
 
@@ -209,7 +210,7 @@ public class WelcomeUI extends FragmentBase
 
         Button ButtonSignUp = new Button(GetActivity(), 16, true);
         ButtonSignUp.setLayoutParams(RelativeLayoutSignUpParam);
-        ButtonSignUp.setText(GetActivity().getString(R.string.WelcomeSignUp));
+        ButtonSignUp.setText(GetActivity().getString(R.string.GeneralSignUp));
         ButtonSignUp.setId(MiscHandler.GenerateViewID());
         ButtonSignUp.setBackground(DrawableSignUp);
         ButtonSignUp.setOnClickListener(new View.OnClickListener()
@@ -222,7 +223,7 @@ public class WelcomeUI extends FragmentBase
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new SignPhoneUI(true), R.id.WelcomeActivityContainer, "SignPhoneUI");
+                GetActivity().GetManager().OpenView(new PhoneUI(true), R.id.WelcomeActivityContainer, "PhoneUI");
             }
         });
 
@@ -246,7 +247,7 @@ public class WelcomeUI extends FragmentBase
 
         TextView TextViewOR = new TextView(GetActivity(), 14, true);
         TextViewOR.setLayoutParams(TextViewORParam);
-        TextViewOR.setText(GetActivity().getString(R.string.WelcomeOR));
+        TextViewOR.setText(GetActivity().getString(R.string.WelcomeUIOR));
         TextViewOR.setId(MiscHandler.GenerateViewID());
         TextViewOR.setGravity(Gravity.CENTER);
         TextViewOR.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray));
@@ -286,6 +287,9 @@ public class WelcomeUI extends FragmentBase
             @Override
             public void onClick(View v)
             {
+                if (Build.VERSION.SDK_INT > 20)
+                    GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+
                 RelativeLayoutGoogle.setVisibility(View.VISIBLE);
                 LoadingViewGoogle.Start();
                 GetActivity().startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(GoogleApiClient), 100);
@@ -306,7 +310,7 @@ public class WelcomeUI extends FragmentBase
         TextView TextViewGoogle = new TextView(GetActivity(), 16, true);
         TextViewGoogle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewGoogle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewGoogle.setText(GetActivity().getString(R.string.WelcomeSignInGoogle));
+        TextViewGoogle.setText(GetActivity().getString(R.string.WelcomeUISignInGoogle));
         TextViewGoogle.setPadding(0, MiscHandler.ToDimension(GetActivity(), MiscHandler.IsFa() ? 3 : 5), 0, 0);
         TextViewGoogle.setGravity(Gravity.CENTER_VERTICAL);
 
@@ -330,16 +334,16 @@ public class WelcomeUI extends FragmentBase
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new co.biogram.main.ui.welcome.SignPhoneUI(false), R.id.WelcomeActivityContainer, "SignPhoneUI");
+                GetActivity().GetManager().OpenView(new PhoneUI(false), R.id.WelcomeActivityContainer, "PhoneUI");
             }
         });
 
         RelativeLayoutMain.addView(RelativeLayoutSignIn);
 
-        TextView TextViewSignIn = new TextView(GetActivity(), 16, false);
+        TextView TextViewSignIn = new TextView(GetActivity(), 14, false);
         TextViewSignIn.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewSignIn.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewSignIn.setText(GetActivity().getString(R.string.WelcomeSignIn));
+        TextViewSignIn.setText(GetActivity().getString(R.string.WelcomeUISignIn));
         TextViewSignIn.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutSignIn.addView(TextViewSignIn);
@@ -348,10 +352,10 @@ public class WelcomeUI extends FragmentBase
         TextViewSignIn2Param.setMargins(MiscHandler.ToDimension(GetActivity(), 5), 0, MiscHandler.ToDimension(GetActivity(), 5), 0);
         TextViewSignIn2Param.addRule(MiscHandler.AlignTo("R"), TextViewSignIn.getId());
 
-        TextView TextViewSignIn2 = new TextView(GetActivity(), 16, false);
+        TextView TextViewSignIn2 = new TextView(GetActivity(), 14, false);
         TextViewSignIn2.setLayoutParams(TextViewSignIn2Param);
         TextViewSignIn2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewSignIn2.setText(GetActivity().getString(R.string.WelcomeSignIn2));
+        TextViewSignIn2.setText(GetActivity().getString(R.string.GeneralSignIn));
 
         RelativeLayoutSignIn.addView(TextViewSignIn2);
 
@@ -370,10 +374,10 @@ public class WelcomeUI extends FragmentBase
         TextViewTerm2Param.addRule(RelativeLayout.ABOVE, ViewLine.getId());
         TextViewTerm2Param.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewTerm2 = new TextView(GetActivity(), 16, true);
+        TextView TextViewTerm2 = new TextView(GetActivity(), 14, false);
         TextViewTerm2.setLayoutParams(TextViewTerm2Param);
-        TextViewTerm2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray));
-        TextViewTerm2.setText(GetActivity().getString(R.string.WelcomeTerm2));
+        TextViewTerm2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray2));
+        TextViewTerm2.setText(GetActivity().getString(R.string.WelcomeUITerm2));
         TextViewTerm2.setId(MiscHandler.GenerateViewID());
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -383,10 +387,10 @@ public class WelcomeUI extends FragmentBase
         TextViewTermParam.addRule(RelativeLayout.ABOVE, TextViewTerm2.getId());
         TextViewTermParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewTerm = new TextView(GetActivity(), 16, false);
+        TextView TextViewTerm = new TextView(GetActivity(), 14, false);
         TextViewTerm.setLayoutParams(TextViewTermParam);
         TextViewTerm.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray));
-        TextViewTerm.setText(GetActivity().getString(R.string.WelcomeTerm));
+        TextViewTerm.setText(GetActivity().getString(R.string.WelcomeUITerm));
 
         RelativeLayoutMain.addView(TextViewTerm);
 
@@ -403,6 +407,7 @@ public class WelcomeUI extends FragmentBase
 
         LoadingViewGoogle = new LoadingView(GetActivity());
         LoadingViewGoogle.setLayoutParams(LoadingViewGoogleParam);
+        LoadingViewGoogle.SetColor(R.color.White);
 
         RelativeLayoutGoogle.addView(LoadingViewGoogle);
 
@@ -447,9 +452,6 @@ public class WelcomeUI extends FragmentBase
     {
         if (RequestCode == 100)
         {
-            LoadingViewGoogle.Stop();
-            RelativeLayoutGoogle.setVisibility(View.GONE);
-
             GoogleSignInResult Result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
 
             if (Result.isSuccess())
@@ -468,6 +470,8 @@ public class WelcomeUI extends FragmentBase
                         @Override
                         public void onResponse(String Response)
                         {
+                            HideGoogleLoading();
+
                             try
                             {
                                 JSONObject Result3 = new JSONObject(Response);
@@ -494,14 +498,17 @@ public class WelcomeUI extends FragmentBase
 
                                         ScrollViewMain.setAnimation(Anim);
 
-                                        GetActivity().GetManager().OpenView(new SignUpUsernameUI(Result2.getIdToken(), 0), R.id.WelcomeActivityContainer, "SignUpUsernameUI");
+                                        GetActivity().GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), R.id.WelcomeActivityContainer, "UsernameUI");
                                         break;
                                     case 1:
                                     case 2:
                                     case 3:
                                     case 4:
                                     case 5:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.WelcomeGoogleError));
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.WelcomeUIGoogleError1));
+                                        break;
+                                    case 6:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.WelcomeUIGoogleError2));
                                         break;
                                     default:
                                         MiscHandler.GeneralError(GetActivity(), Result3.getInt("Message"));
@@ -509,18 +516,36 @@ public class WelcomeUI extends FragmentBase
                             }
                             catch (Exception e)
                             {
-                                MiscHandler.Debug("WelcomeUI-SignInGoogle: " + e.toString());
+                                MiscHandler.Debug("WelcomeUI: " + e.toString());
                             }
                         }
 
                         @Override
                         public void onError(ANError e)
                         {
+                            HideGoogleLoading();
                             MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                         }
                     });
                 }
+                else
+                {
+                    HideGoogleLoading();
+                }
+            }
+            else
+            {
+                HideGoogleLoading();
             }
         }
+    }
+
+    private void HideGoogleLoading()
+    {
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+
+        LoadingViewGoogle.Stop();
+        RelativeLayoutGoogle.setVisibility(View.GONE);
     }
 }

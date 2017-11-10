@@ -37,7 +37,7 @@ import co.biogram.main.R;
 import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.view.TouchImageView;
-import co.biogram.main.ui.welcome.SignUpDescriptionUI;
+import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
@@ -243,7 +243,7 @@ public class ImagePreviewUI extends FragmentBase
                         FOS.flush();
                         FOS.close();
 
-                        SignUpDescriptionUI SignUpDescription = (SignUpDescriptionUI) GetActivity().GetManager().FindByTag("SignUpDescriptionUI");
+                        DescriptionUI SignUpDescription = (DescriptionUI) GetActivity().GetManager().FindByTag("DescriptionUI");
                         SignUpDescription.Update(ProfileFile);
 
                         GetActivity().onBackPressed();

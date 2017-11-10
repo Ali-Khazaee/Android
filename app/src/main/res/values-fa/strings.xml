@@ -3,8 +3,13 @@
     <!-- Application -->
     <string name="ApplicationName">بیوگرام</string>
 
+    <!-- Dialog Permission -->
+    <string name="DialogPermissionAccept">اجازه دادن</string>
+    <string name="DialogPermissionDecline">نه فعلا</string>
+
     <!-- General -->
     <string name="GeneralNoInternet">اتصال اينترنت خود را چک کنيد</string>
+
     <string name="GeneralError1">لطفا مجددا تلاش کنید</string>
     <string name="GeneralError2">لطفا زمانی دیگر مراجعه کنید</string>
     <string name="GeneralError3">لطفا مجددا تلاش کنید</string>
@@ -12,124 +17,135 @@
     <string name="GeneralError6">اشکالی به وجود آمده است, لطفا زمانی دیگر مراجعه کنید</string>
     <string name="GeneralError7">لطفا مجددا تلاش کنید</string>
 
-    <!-- Dialog Permission -->
-    <string name="DialogPermissionAccept">اجازه دادن</string>
-    <string name="DialogPermissionDecline">نه فعلا</string>
+    <string name="GeneralUsername">نام کاربری</string>
+    <string name="GeneralPassword">گذرواژه</string>
+    <string name="GeneralDescription">توضیحات</string>
+    <string name="GeneralEmail">ایمیل</string>
+    <string name="GeneralNext">بعدی</string>
+    <string name="GeneralSignIn">ورود</string>
+    <string name="GeneralSignUp">ثبت نام</string>
+    <string name="GeneralTerm">شرايط و حريم خصوصي</string>
+    <string name="GeneralEmailAddress">ایمیل آدرس</string>
+
+    <string name="GeneralPhone">پیش شماره وارد شده اشتباه است</string>
+    <string name="GeneralPhoneCode">شماره موبایل وارد شده اشتباه است</string>
 
     <!-- Welcome UI -->
-    <string name="WelcomeLanguage">فارسی</string>
-    <string name="WelcomeLanguageSelect">انتخاب زبان</string>
-    <string name="WelcomeLanguageEnglish">English</string>
-    <string name="WelcomeLanguagePersian">فارسی</string>
-    <string name="WelcomeHeader">برای اشتراک گذاری رویدادهای خود ثبت نام کنید</string>
-    <string name="WelcomeHeader2">و آخرین لحظات را مشاهده کنید</string>
-    <string name="WelcomeSignUp">ثبت نام</string>
-    <string name="WelcomeOR">یا</string>
-    <string name="WelcomeSignInGoogle">ورود از طريق گوگل</string>
-    <string name="WelcomeSignIn">در حال حاضر يک حساب کاربري داريد ؟</string>
-    <string name="WelcomeSignIn2">ورود</string>
-    <string name="WelcomeTerm">با ثبت نام، شما با ما موافقت مي کنيد</string>
-    <string name="WelcomeTerm2">شرايط و حريم خصوصي</string>
-    <string name="WelcomeGoogleError">اشتباهي رخ داده است، لطفا دوباره امتحان کنيد</string>
+    <string name="WelcomeUILanguage">فارسی</string>
+    <string name="WelcomeUILanguageSelect">انتخاب زبان</string>
+    <string name="WelcomeUILanguageEnglish">English</string>
+    <string name="WelcomeUILanguagePersian">فارسی</string>
+    <string name="WelcomeUIHeader">برای اشتراک گذاری رویدادهای خود ثبت نام کنید</string>
+    <string name="WelcomeUIHeader2">و آخرین لحظات را مشاهده کنید</string>
+    <string name="WelcomeUIOR">یا</string>
+    <string name="WelcomeUISignInGoogle">ورود از طريق گوگل</string>
+    <string name="WelcomeUISignIn">در حال حاضر يک حساب کاربري داريد ؟</string>
+    <string name="WelcomeUITerm">با ثبت نام، شما با ما موافقت مي کنيد</string>
+    <string name="WelcomeUITerm2">شرايط و حريم خصوصي</string>
+    <string name="WelcomeUIGoogleError1">اشتباهي رخ داده است، لطفا دوباره امتحان کنيد</string>
+    <string name="WelcomeUIGoogleError2">ایمیل وارد شده قبلا استفاده شده است</string>
 
-    <!-- Sign Up Username UI -->
-    <string name="SignUpUsername">نام کاربری</string>
-    <string name="SignUpUsernameMessage">نام کاربري شما منحصر به فرد است و براي شخصي سازي گوشي و حساب بيوگرام مورد استفاده قرار مي گيرد. شما هميشه مي توانيد آن را بعدا تغيير دهيد.</string>
-    <string name="SignUpUsernameHint">نام کاربری باید لاتین باشد</string>
-    <string name="SignUpUsernameTerm">شرايط و حريم خصوصي</string>
-    <string name="SignUpUsernameNext">بعدی</string>
-    <string name="SignUpUsernameError1">نام کاربری خالی است</string>
-    <string name="SignUpUsernameError3">نام کاربری باید کمتر از 32 حرف باشد</string>
-    <string name="SignUpUsernameError4">نام کاربری معتبر نمیباشد</string>
-    <string name="SignUpUsernameError5">نام کاربری قبلا استفاده شده است</string>
+    <!-- Username UI -->
+    <string name="UsernameUIMessage">نام کاربري شما منحصر به فرد است و براي شخصي سازي گوشي و حساب بيوگرام مورد استفاده قرار مي گيرد. شما هميشه مي توانيد آن را بعدا تغيير دهيد.</string>
+    <string name="UsernameUIHint">نام کاربری باید لاتین باشد</string>
+    <string name="UsernameUIError1">نام کاربری خالی است</string>
+    <string name="UsernameUIError2">نام کاربری باید بزرگتر از 3 حرف باشد</string>
+    <string name="UsernameUIError3">نام کاربری باید کمتر از 32 حرف باشد</string>
+    <string name="UsernameUIError4">نام کاربری معتبر نمیباشد</string>
+    <string name="UsernameUIError5">نام کاربری قبلا استفاده شده است</string>
 
-    <!-- Sign Up Password UI -->
-    <string name="SignUpPassword">گذرواژه</string>
-    <string name="SignUpPasswordNext">بعدی</string>
-    <string name="SignUpPasswordTerm">شرايط و حريم خصوصي</string>
-    <string name="SignUpPasswordMessage">لطفا مطمئن شوید رمز عبور شما به اندازه کافی قوی است. گذرواژه شما باید بیش از 5 حرف باشد</string>
+    <!-- Description UI -->
+    <string name="DescriptionUI">سایر مشخصات</string>
+    <string name="DescriptionUIName">نام</string>
+    <string name="DescriptionUIFinish">پایان</string>
+    <string name="DescriptionUIMessage">لطفا نام، عکس و توضیحات کاربری خود را ارائه دهید. این موارد شما را به دیگر کاربران بهتر نشان خواهد داد</string>
+    <string name="DescriptionUIProfile">گزینه های شما</string>
+    <string name="DescriptionUIProfileGallery">انتخاب از گالری</string>
+    <string name="DescriptionUIProfileCamera">گرفتن عکس از طریق دوربین</string>
+    <string name="DescriptionUIProfileRemove">حذف عکس فعلی</string>
+    <string name="DescriptionUIEditName">نام خود را وارد کنید</string>
+    <string name="DescriptionUIEditDescription">توضیحاتی درباره خود بنوسید</string>
+    <string name="DescriptionUIPermissionCamera">برای استفاده دوربین، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
+    <string name="DescriptionUIPermissionStorage">برای استفاده از محتویات حافظه خود، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
+    <string name="DescriptionUIUpload"> در حال ارسال اطلاعات, لطفا صبر کنید&#8230;</string>
 
-    <!-- Sign Up Email UI -->
-    <string name="SignUpEmail">ایمیل</string>
-    <string name="SignUpEmailAddress">ایمیل آدرس</string>
-    <string name="SignUpEmailNext">بعدی</string>
-    <string name="SignUpEmailTerm">شرايط و حريم خصوصي</string>
-    <string name="SignUpEmailError1">کد تائیدیه خالی است</string>
-    <string name="SignUpEmailError2">کد تائیدیه باید 5 حرف باشد</string>
-    <string name="SignUpEmailError3">کد تائیدیه اشتباه است</string>
-    <string name="SignUpEmailMessage">آدرس ایمیل زمانی که گذرواژه خود را فراموش کرده اید و میخواهید آن را بازیابی کنید به کار برده میشود . همچنین آدرس ایمیلتان باید تایید شود</string>
+    <!-- Phone UI -->
+    <string name="PhoneUICode">کد</string>
+    <string name="PhoneUIPreCode">انتخاب پیش شماره</string>
+    <string name="PhoneUINumber">شماره تلفن</string>
+    <string name="PhoneUIMessageUp">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
+    <string name="PhoneUIMessageIn">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
+    <string name="PhoneUIMessageUp2">از طریق ایمیل خود نیز ثبت نام کنید</string>
+    <string name="PhoneUIMessageIn2">از طریق ایمیل خود نیز وارد شوید</string>
+    <string name="PhoneUIPermission">لطفا برای سهولت در روند ثبت نام، دسترسی به خوانده شدن پیامک را فعال کنید</string>
+    <string name="PhoneUIError">شماره موبایل وارد شده قبلا استفاده شد است</string>
+    <string name="PhoneUIError2">شماره موبایل وارد شده قبلا ثبت نشده است</string>
 
-    <!-- Sign Up Email Verify UI -->
-    <string name="SignUpEmailVerify">تاییدیه تلفن</string>
-    <string name="SignUpEmailVerifyCode">کد تاییدیه</string>
-    <string name="SignUpEmailVerifyMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
-    <string name="SignUpEmailVerifyResend">ارسال مجدد</string>
-    <string name="SignUpEmailVerifyResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
-    <string name="SignUpEmailVerifyCodeEmpty">کد تاییدیه وارد نشده است</string>
-    <string name="SignUpEmailVerifyCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
-    <string name="SignUpEmailVerifyCodeWrong">اطلاعات وارد شده اشتباه است</string>
-    <string name="SignUpEmailVerifyCodeNotFound">حساب کابری مورد نظر یافت نشد</string>
+    <!-- Phone Verify UI -->
+    <string name="PhoneVerifyUI">تاییدیه تلفن</string>
+    <string name="PhoneVerifyUICode">کد تاییدیه</string>
+    <string name="PhoneVerifyUIMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
+    <string name="PhoneVerifyUIResend">ارسال مجدد</string>
+    <string name="PhoneVerifyUIResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
+    <string name="PhoneVerifyUICodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
+    <string name="PhoneVerifyUICodeWrong">اطلاعات وارد شده اشتباه است</string>
+    <string name="PhoneVerifyUICodeNotFound">حساب کابری مورد نظر یافت نشد</string>
 
-    <!-- Sign Up Description UI -->
-    <string name="SignUpDescription">سایر مشخصات</string>
-    <string name="SignUpDescriptionName">نام</string>
-    <string name="SignUpDescriptionInfo">توضیحات</string>
-    <string name="SignUpDescriptionTerm">شرايط و حريم خصوصي</string>
-    <string name="SignUpDescriptionFinish">پایان</string>
-    <string name="SignUpDescriptionMessage">لطفا نام، عکس و توضیحات کاربری خود را ارائه دهید. این موارد شما را به دیگر کاربران بهتر نشان خواهد داد</string>
-    <string name="SignUpDescriptionProfile">گزینه های شما</string>
-    <string name="SignUpDescriptionProfileGallery">انتخاب از گالری</string>
-    <string name="SignUpDescriptionProfileCamera">گرفتن عکس از طریق دوربین</string>
-    <string name="SignUpDescriptionProfileRemove">حذف عکس فعلی</string>
-    <string name="SignUpDescriptionEditName">نام خود را وارد کنید</string>
-    <string name="SignUpDescriptionEditDescription">توضیحاتی درباره خود بنوسید</string>
-    <string name="SignUpDescriptionPermissionCamera">لطفا برای استفاده دوربین، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
-    <string name="SignUpDescriptionPermissionStorage">لطفا برای استفاده از محتویات حافظه خود، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
-    <string name="SignUpDescriptionUpload">&#8230;در حال ارسال اطلاعات, لطفا صبر کنید </string>
 
-    <!-- Sign Up Phone UI -->
-    <string name="SignUpPhone">ثبت نام</string>
-    <string name="SignUpPhoneIn">ورود</string>
-    <string name="SignUpPhoneCode">کد</string>
-    <string name="SignUpPhoneTitleCode">انتخاب پیش شماره</string>
-    <string name="SignUpPhoneNumber">شماره تلفن</string>
-    <string name="SignUpPhoneMessage">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
-    <string name="SignUpPhoneMessageIn">لطفا شماره تلفن خود را برای دریافت یک کد تأییدیه وارد کنید, همچنین شما می توانید</string>
-    <string name="SignUpPhoneMessageEmail">از طریق ایمیل خود نیز ثبت نام کنید</string>
-    <string name="SignUpPhoneMessageIn2">از طریق ایمیل خود نیز وارد شوید</string>
-    <string name="SignUpPhoneTerm">شرايط و حريم خصوصي</string>
-    <string name="SignUpPhoneNext">بعدی</string>
-    <string name="SignUpPhonePermission">لطفا برای سهولت در روند ثبت نام، دسترسی به خوانده شدن پیامک را فعال کنید</string>
-    <string name="SignUpPhoneErrorCountry">اشکال در شناسایی کد کشور</string>
-    <string name="SignUpPhoneErrorPhone">اشکال در شناسایی ساختار شماره</string>
-    <string name="SignUpPhoneErrorAlready">این شماره قبلا استفاده شده است</string>
-    <string name="SignUpPhoneErrorNotFound">شماره مورد وارد شده معتبر نمی باشد</string>
 
-    <!-- Sign Up Phone Verify UI -->
-    <string name="SignUpPhoneVerify">تاییدیه تلفن</string>
-    <string name="SignUpPhoneVerifyCode">کد تاییدیه</string>
-    <string name="SignUpPhoneVerifyMessage">لطفا کد تاییدیه ارسال شده به این شماره را وارد کنید</string>
-    <string name="SignUpPhoneVerifyResend">ارسال مجدد</string>
-    <string name="SignUpPhoneVerifyResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
-    <string name="SignUpPhoneVerifyCodeEmpty">کد تاییدیه وارد نشده است</string>
-    <string name="SignUpPhoneVerifyCodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
-    <string name="SignUpPhoneVerifyCodeWrong">اطلاعات وارد شده اشتباه است</string>
-    <string name="SignUpPhoneVerifyCodeNotFound">حساب کابری مورد نظر یافت نشد</string>
 
-    <!-- Sign In Email UI -->
-    <string name="SignInEmail">ورود</string>
-    <string name="SignInEmailOrUsername">ایمیل یا نام کاربری</string>
-    <string name="SignInEmailPassword">گذرواژه</string>
-    <string name="SignInEmailMessage">برای به اشتراک گذاشتن رویدادها و تماشای رویدادهای جهانی وارد شوید و یا نظر خود را با دیگران به اشتراک بگذارید</string>
-    <string name="SignInEmailForgot">گذرواژه را فراموش کردید ؟</string>
-    <string name="SignInEmailError1">نام کاربری یا ایمیل نباید خالی باشد</string>
-    <string name="SignInEmailError2">نام کاربری یا ایمیل نباید کمتر از 3 حرف باشد</string>
-    <string name="SignInEmailError3">نام کاربری یا ایمیل نباید بزرگتر از 64 حرف باشد</string>
-    <string name="SignInEmailError4">گذرواژه نباید خالی باشد</string>
-    <string name="SignInEmailError5">گذرواژه باید بیشتر از 3 حرف باشد</string>
-    <string name="SignInEmailError6">گذرواژه باید کمتر از 32 حرف باشد</string>
-    <string name="SignInEmailError7">نام کاربری یا ایمیل وجود ندارد</string>
-    <string name="SignInEmailError8">اطلاعات وارد شده صحیح نمی باشد</string>
+
+
+
+    <!--  Password UI -->
+    <string name="PasswordUIMessage">لطفا مطمئن شوید رمز عبور شما به اندازه کافی قوی است. گذرواژه شما باید بیش از 5 حرف باشد</string>
+
+    <!-- Email UI -->
+    <string name="EmailUIError1">کد تائیدیه خالی است</string>
+    <string name="EmailUIError2">کد تائیدیه باید 5 حرف باشد</string>
+    <string name="EmailUIError3">کد تائیدیه اشتباه است</string>
+    <string name="EmailUIMessage">آدرس ایمیل زمانی که گذرواژه خود را فراموش کرده اید و میخواهید آن را بازیابی کنید به کار برده میشود . همچنین آدرس ایمیلتان باید تایید شود</string>
+
+    <!-- Email Verify UI -->
+    <string name="EmailVerifyUI">تاییدیه ایمیل</string>
+    <string name="EmailVerifyUICode">کد تاییدیه</string>
+    <string name="EmailVerifyUIMessage">لطفا کد تاییدیه ارسال شده به این ایمیل را وارد کنید</string>
+    <string name="EmailVerifyUIResend">ارسال مجدد</string>
+    <string name="EmailVerifyUIResendDone">کد تاییدیه مجددا برای شما ارسال شد</string>
+    <string name="EmailVerifyUICodeEmpty">کد تاییدیه وارد نشده است</string>
+    <string name="EmailVerifyUICodeCount">کد تاییدیه کمتر از 5 کلمه نمیباشد</string>
+    <string name="EmailVerifyUICodeWrong">اطلاعات وارد شده اشتباه است</string>
+    <string name="EmailVerifyUICodeNotFound">حساب کابری مورد نظر یافت نشد</string>
+
+
+
+
+
+    <!-- Email UI -->
+    <string name="EmailSignInUIOrUsername">ایمیل یا نام کاربری</string>
+    <string name="EmailSignInUIMessage">برای به اشتراک گذاشتن رویدادها و تماشای رویدادهای جهانی وارد شوید و یا نظر خود را با دیگران به اشتراک بگذارید</string>
+    <string name="EmailSignInUIForgot">گذرواژه را فراموش کردید ؟</string>
+    <string name="EmailSignInUIError1">نام کاربری یا ایمیل نباید خالی باشد</string>
+    <string name="EmailSignInUIError2">نام کاربری یا ایمیل نباید کمتر از 3 حرف باشد</string>
+    <string name="EmailSignInUIError3">نام کاربری یا ایمیل نباید بزرگتر از 64 حرف باشد</string>
+    <string name="EmailSignInUIError4">گذرواژه نباید خالی باشد</string>
+    <string name="EmailSignInUIError5">گذرواژه باید بیشتر از 3 حرف باشد</string>
+    <string name="EmailSignInUIError6">گذرواژه باید کمتر از 32 حرف باشد</string>
+    <string name="EmailSignInUIError7">نام کاربری یا ایمیل وجود ندارد</string>
+    <string name="EmailSignInUIError8">اطلاعات وارد شده صحیح نمی باشد</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

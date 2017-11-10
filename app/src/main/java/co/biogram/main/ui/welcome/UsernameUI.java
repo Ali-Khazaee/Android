@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.View;
@@ -35,16 +36,29 @@ import org.json.JSONObject;
 
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
+import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class ResetPasswordUI extends FragmentBase
+class UsernameUI extends FragmentBase
 {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
-    private int HeightDifference = 0;
+    private String Code;
+    private int Type;
+
+    UsernameUI()
+    {
+        Type = 2;
+    }
+
+    UsernameUI(String code, int type)
+    {
+        Code = code;
+        Type = type;
+    }
 
     @Override
     public void OnCreate()
@@ -59,6 +73,8 @@ class ResetPasswordUI extends FragmentBase
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
+            int HeightDifference = 0;
+
             @Override
             public void onGlobalLayout()
             {
@@ -114,7 +130,7 @@ class ResetPasswordUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.SignUpUsername));
+        TextViewTitle.setText(GetActivity().getString(R.string.GeneralUsername));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -146,10 +162,10 @@ class ResetPasswordUI extends FragmentBase
         TextViewUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewUsernameParam.addRule(MiscHandler.Align("R"));
 
-        TextView TextViewUsername = new TextView(GetActivity(), 16, true);
+        TextView TextViewUsername = new TextView(GetActivity(), 16, false);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewUsername.setText(GetActivity().getString(R.string.SignUpUsername));
+        TextViewUsername.setText(GetActivity().getString(R.string.GeneralUsername));
         TextViewUsername.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewUsername);
@@ -158,16 +174,41 @@ class ResetPasswordUI extends FragmentBase
         EditTextUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
 
-        final EditText EditTextEmail = new EditText(GetActivity());
-        EditTextEmail.setLayoutParams(EditTextUsernameParam);
-        EditTextEmail.setId(MiscHandler.GenerateViewID());
-        EditTextEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextEmail.setFilters(new InputFilter[] { new InputFilter.LengthFilter(128) });
-        EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        EditTextEmail.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextEmail.requestFocus();
-        EditTextEmail.setHint(GetActivity().getString(R.string.SignUpUsernameHint));
-        EditTextEmail.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
+        final EditText EditTextUsername = new EditText(GetActivity());
+        EditTextUsername.setLayoutParams(EditTextUsernameParam);
+        EditTextUsername.setId(MiscHandler.GenerateViewID());
+        EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextUsername.setFilters(new InputFilter[]
+        {
+            new InputFilter.LengthFilter(32), new InputFilter()
+            {
+                @Override
+                public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
+                {
+                    if (End > Start)
+                    {
+                        char[] AllowChar = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+                        for (int I = Start; I < End; I++)
+                        {
+                            if (!new String(AllowChar).contains(String.valueOf(s.charAt(I))))
+                            {
+                                return "";
+                            }
+                        }
+                    }
+
+                    return null;
+                }
+            }
+        });
+        EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextUsername.requestFocus();
+        EditTextUsername.setPadding(0, -MiscHandler.ToDimension(GetActivity(), 2), 0, MiscHandler.ToDimension(GetActivity(), 5));
+        EditTextUsername.setTypeface(FontHandler.GetTypeface(GetActivity()));
+        EditTextUsername.setHint(GetActivity().getString(R.string.UsernameUIHint));
+        EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
         {
             private final Paint paint;
 
@@ -182,7 +223,7 @@ class ResetPasswordUI extends FragmentBase
             @Override
             public void draw(@NonNull Canvas canvas)
             {
-                canvas.drawText("@", 0, 10, paint);
+                canvas.drawText("@", 0, MiscHandler.ToDimension(GetActivity(), 2), paint);
             }
 
             @Override
@@ -203,8 +244,8 @@ class ResetPasswordUI extends FragmentBase
                 return PixelFormat.TRANSLUCENT;
             }
         }, null, null, null);
-        EditTextEmail.setCompoundDrawablePadding(MiscHandler.ToDimension(GetActivity(), 20));
-        EditTextEmail.addTextChangedListener(new TextWatcher()
+        EditTextUsername.setCompoundDrawablePadding(MiscHandler.ToDimension(GetActivity(), 20));
+        EditTextUsername.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void afterTextChanged(Editable s) { }
@@ -216,15 +257,15 @@ class ResetPasswordUI extends FragmentBase
             }
         });
 
-        RelativeLayoutScroll.addView(EditTextEmail);
+        RelativeLayoutScroll.addView(EditTextUsername);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextEmail.getId());
+        TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextUsername.getId());
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpUsernameMessage));
+        TextViewMessage.setText(GetActivity().getString(R.string.UsernameUIMessage));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -245,7 +286,7 @@ class ResetPasswordUI extends FragmentBase
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpUsernameTerm));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -274,10 +315,9 @@ class ResetPasswordUI extends FragmentBase
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        ButtonNext.setText(GetActivity().getString(R.string.SignUpUsernameNext));
+        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
-        ButtonNext.setPadding(0, 0, 0, 0);
+        ButtonNext.setPadding(0, MiscHandler.IsFa() ? 0 : MiscHandler.ToDimension(GetActivity(), 3), 0, 0);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
@@ -288,8 +328,8 @@ class ResetPasswordUI extends FragmentBase
                 LoadingViewNext.Start();
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("Username"))
-                .addBodyParameter("Username", EditTextEmail.getText().toString())
-                .setTag("SignUpUsernameUI")
+                .addBodyParameter("Username", EditTextUsername.getText().toString())
+                .setTag("UsernameUI")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -310,21 +350,28 @@ class ResetPasswordUI extends FragmentBase
                                     Anim.setDuration(200);
 
                                     RelativeLayoutMain.setAnimation(Anim);
+
+                                    if (Type == 0)
+                                        GetActivity().GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 0), R.id.WelcomeActivityContainer, "DescriptionUI");
+                                    else if (Type == 1)
+                                        GetActivity().GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 1), R.id.WelcomeActivityContainer, "DescriptionUI");
+                                    else if (Type == 2)
+                                        GetActivity().GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "PasswordUI");
                                     break;
                                 case 1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError1));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError1));
                                     break;
                                 case 2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError3));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError2));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError3));
                                     break;
                                 case 4:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError4));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError4));
                                     break;
                                 case 5:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpUsernameError5));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError5));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -332,7 +379,7 @@ class ResetPasswordUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignUpUsernameUI-Username: " + e.toString());
+                            MiscHandler.Debug("UsernameUI: " + e.toString());
                         }
                     }
 
@@ -363,7 +410,7 @@ class ResetPasswordUI extends FragmentBase
         {
             @Override public void onAnimationStart(Animation animation) { }
             @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextEmail); }
+            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextUsername); }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -380,7 +427,8 @@ class ResetPasswordUI extends FragmentBase
     @Override
     public void OnPause()
     {
-        AndroidNetworking.forceCancel("ResetPasswordUI");
+        MiscHandler.HideSoftKey(GetActivity());
+        AndroidNetworking.forceCancel("UsernameUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }
 }

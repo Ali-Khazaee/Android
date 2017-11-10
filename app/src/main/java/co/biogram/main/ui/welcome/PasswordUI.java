@@ -27,14 +27,13 @@ import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.TextView;
 
-class SignUpPasswordUI extends FragmentBase
+class PasswordUI extends FragmentBase
 {
-    private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
+    private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
-    private int HeightDifference = 0;
-    private String Username = "";
+    private final String Username;
 
-    SignUpPasswordUI(String username)
+    PasswordUI(String username)
     {
         Username = username;
     }
@@ -49,8 +48,10 @@ class SignUpPasswordUI extends FragmentBase
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayoutMainListener = new ViewTreeObserver.OnGlobalLayoutListener()
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
+            int HeightDifference = 0;
+
             @Override
             public void onGlobalLayout()
             {
@@ -103,7 +104,7 @@ class SignUpPasswordUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.SignUpPassword));
+        TextViewTitle.setText(GetActivity().getString(R.string.GeneralNoInternet));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -123,7 +124,6 @@ class SignUpPasswordUI extends FragmentBase
         ScrollView ScrollViewMain = new ScrollView(GetActivity());
         ScrollViewMain.setLayoutParams(ScrollViewMainParam);
         ScrollViewMain.setFillViewport(true);
-        ScrollViewMain.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(ScrollViewMain);
 
@@ -137,8 +137,8 @@ class SignUpPasswordUI extends FragmentBase
 
         TextView TextViewPassword = new TextView(GetActivity(), 16, true);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
-        TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
-        TextViewPassword.setText(GetActivity().getString(R.string.SignUpPassword));
+        TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewPassword.setText(GetActivity().getString(R.string.GeneralNoInternet));
         TextViewPassword.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewPassword);
@@ -178,7 +178,7 @@ class SignUpPasswordUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpPasswordMessage));
+        TextViewMessage.setText(GetActivity().getString(R.string.GeneralNoInternet));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -199,7 +199,7 @@ class SignUpPasswordUI extends FragmentBase
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpUsernameTerm));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralNoInternet));
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -229,9 +229,9 @@ class SignUpPasswordUI extends FragmentBase
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
         ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        ButtonNext.setText(GetActivity().getString(R.string.SignUpUsernameNext));
+        ButtonNext.setText(GetActivity().getString(R.string.GeneralNoInternet));
         ButtonNext.setBackground(ListDrawableNext);
-        ButtonNext.setPadding(0, 0, 0, 0);
+        ButtonNext.setPadding(0, MiscHandler.IsFa() ? 0 : MiscHandler.ToDimension(GetActivity(), 3), 0, 0);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
@@ -243,7 +243,7 @@ class SignUpPasswordUI extends FragmentBase
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new SignUpEmailUI(Username, EditTextPassword.getText().toString()), R.id.WelcomeActivityContainer, "SignUpEmailUI");
+                GetActivity().GetManager().OpenView(new EmailUI(Username, EditTextPassword.getText().toString()), R.id.WelcomeActivityContainer, "EmailUI");
             }
         });
 
@@ -266,13 +266,13 @@ class SignUpPasswordUI extends FragmentBase
     @Override
     public void OnResume()
     {
-        RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(RelativeLayoutMainListener);
+        RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
     public void OnPause()
     {
         MiscHandler.HideSoftKey(GetActivity());
-        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
+        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }
 }

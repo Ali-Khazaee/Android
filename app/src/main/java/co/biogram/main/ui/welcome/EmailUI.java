@@ -31,20 +31,18 @@ import org.json.JSONObject;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class SignUpEmailUI extends FragmentBase
+class EmailUI extends FragmentBase
 {
-    private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
+    private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
-    private int HeightDifference = 0;
-    private String Username;
-    private String Password;
+    private final String Username;
+    private final String Password;
 
-    SignUpEmailUI(String username, String password)
+    EmailUI(String username, String password)
     {
         Username = username;
         Password = password;
@@ -61,8 +59,10 @@ class SignUpEmailUI extends FragmentBase
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayoutMainListener = new ViewTreeObserver.OnGlobalLayoutListener()
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
+            int HeightDifference = 0;
+
             @Override
             public void onGlobalLayout()
             {
@@ -115,7 +115,7 @@ class SignUpEmailUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.SignUpEmail));
+        TextViewTitle.setText(GetActivity().getString(R.string.GeneralNoInternet));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -150,7 +150,7 @@ class SignUpEmailUI extends FragmentBase
         TextView TextViewUsername = new TextView(GetActivity(), 14, true);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewUsername.setText(GetActivity().getString(R.string.SignUpEmailAddress));
+        TextViewUsername.setText(GetActivity().getString(R.string.GeneralNoInternet));
         TextViewUsername.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewUsername);
@@ -190,7 +190,7 @@ class SignUpEmailUI extends FragmentBase
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpEmailMessage));
+        TextViewMessage.setText(GetActivity().getString(R.string.GeneralNoInternet));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -211,7 +211,7 @@ class SignUpEmailUI extends FragmentBase
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        TextViewPrivacy.setText(GetActivity().getString(R.string.SignUpUsernameTerm));
+        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralNoInternet));
         TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -241,7 +241,7 @@ class SignUpEmailUI extends FragmentBase
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
         ButtonNext.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
-        ButtonNext.setText(GetActivity().getString(R.string.SignUpUsernameNext));
+        ButtonNext.setText(GetActivity().getString(R.string.GeneralNoInternet));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setPadding(0, 0, 0, 0);
         ButtonNext.setEnabled(false);
@@ -257,7 +257,7 @@ class SignUpEmailUI extends FragmentBase
                 .addBodyParameter("Username", Username)
                 .addBodyParameter("Password", Password)
                 .addBodyParameter("Email", EditTextEmail.getText().toString())
-                .setTag("SignUpEmailUI")
+                .setTag("EmailUI")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -278,16 +278,16 @@ class SignUpEmailUI extends FragmentBase
                                     Anim.setDuration(200);
 
                                     RelativeLayoutMain.setAnimation(Anim);
-                                    GetActivity().GetManager().OpenView(new SignUpEmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), R.id.WelcomeActivityContainer, "SignUpEmailVerifyUI");
+                                    GetActivity().GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), R.id.WelcomeActivityContainer, "EmailVerifyUI");
                                     break;
                                 case 1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpEmailError1));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError1));
                                     break;
                                 case 2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpEmailError2));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError2));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpEmailError3));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError3));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -296,7 +296,7 @@ class SignUpEmailUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignUpEmailUI: " + e.toString());
+                            MiscHandler.Debug("EmailUI: " + e.toString());
                         }
                     }
 
@@ -338,14 +338,14 @@ class SignUpEmailUI extends FragmentBase
     @Override
     public void OnResume()
     {
-        RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(RelativeLayoutMainListener);
+        RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
     public void OnPause()
     {
         MiscHandler.HideSoftKey(GetActivity());
-        AndroidNetworking.forceCancel("SignUpEmailUI");
-        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
+        AndroidNetworking.forceCancel("EmailUI");
+        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }
 }

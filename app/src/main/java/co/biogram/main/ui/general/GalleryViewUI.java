@@ -25,7 +25,7 @@ import co.biogram.main.R;
 
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.ui.welcome.SignUpDescriptionUI;
+import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.TextView;
 
 public class GalleryViewUI extends FragmentBase
@@ -143,7 +143,7 @@ public class GalleryViewUI extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                SignUpDescriptionUI SignUpDescription = (SignUpDescriptionUI) GetActivity().GetManager().FindByTag("SignUpDescriptionUI");
+                DescriptionUI SignUpDescription = (DescriptionUI) GetActivity().GetManager().FindByTag("DescriptionUI");
 
                 if (SignUpDescription != null && !SelectionPath.equals(""))
                     SignUpDescription.Update(new File(SelectionPath));

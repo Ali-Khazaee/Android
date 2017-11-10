@@ -42,15 +42,10 @@
         <activity android:name=".activity.SocialActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.ChatActivity" android:screenOrientation="portrait" />
 
-        <receiver android:name="co.biogram.main.service.OnBootService">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="co.biogram.main.service.SMSService" android:permission="android.permission.BROADCAST_SMS">
+        <receiver android:name="co.biogram.main.service.BroadCastService" android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="Biogram.SMS.Request" />
             </intent-filter>
         </receiver>
@@ -59,6 +54,7 @@
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
+
             <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
         </service>
 

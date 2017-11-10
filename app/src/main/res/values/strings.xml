@@ -3,8 +3,13 @@
     <!-- Application -->
     <string name="ApplicationName">Biogram</string>
 
+    <!-- Dialog Permission -->
+    <string name="DialogPermissionAccept">ALLOW</string>
+    <string name="DialogPermissionDecline">NOT NOW</string>
+
     <!-- General -->
     <string name="GeneralNoInternet">Check your connection</string>
+
     <string name="GeneralError1">Please Try again</string> <!-- DataBase -->
     <string name="GeneralError2">Please Try again later</string> <!-- Exceed -->
     <string name="GeneralError3">Please Try again</string> <!-- Bcrypt -->
@@ -12,124 +17,152 @@
     <string name="GeneralError6">Please Try again</string> <!-- Request -->
     <string name="GeneralError7">Please Try again</string> <!-- Formidable -->
 
-    <!-- Dialog Permission -->
-    <string name="DialogPermissionAccept">ALLOW</string>
-    <string name="DialogPermissionDecline">NOT NOW</string>
+    <string name="GeneralUsername">Username</string>
+    <string name="GeneralPassword">Password</string>
+    <string name="GeneralDescription">Description</string>
+    <string name="GeneralEmail">Email</string>
+    <string name="GeneralNext">Next</string>
+    <string name="GeneralSignIn">Sign In</string>
+    <string name="GeneralSignUp">Sign Up</string>
+    <string name="GeneralTerm">Term &amp; Privacy</string>
+    <string name="GeneralEmailAddress">Email Address</string>
+
+    <string name="GeneralPhone">Phone pre code is wrong</string>
+    <string name="GeneralPhoneCode">Phone number is wrong</string>
 
     <!-- Welcome UI -->
-    <string name="WelcomeLanguage">English</string>
-    <string name="WelcomeLanguageSelect">Select Your Language</string>
-    <string name="WelcomeLanguageEnglish">English</string>
-    <string name="WelcomeLanguagePersian">فارسی</string>
-    <string name="WelcomeHeader">Sign Up to share events and</string>
-    <string name="WelcomeHeader2">See the recently moments</string>
-    <string name="WelcomeSignUp">Sign Up</string>
-    <string name="WelcomeOR">OR</string>
-    <string name="WelcomeSignInGoogle">Sign in with Google</string>
-    <string name="WelcomeSignIn">Already have an account ?</string>
-    <string name="WelcomeSignIn2">Sign In</string>
-    <string name="WelcomeTerm">By Signing Up you agree to our</string>
-    <string name="WelcomeTerm2">Terms &amp; Privacy and Policy</string>
-    <string name="WelcomeGoogleError">Something went wrong, Please try again</string>
+    <string name="WelcomeUILanguage">English</string>
+    <string name="WelcomeUILanguageSelect">Select Your Language</string>
+    <string name="WelcomeUILanguageEnglish">English</string>
+    <string name="WelcomeUILanguagePersian">فارسی</string>
+    <string name="WelcomeUIHeader">Sign Up to share events and</string>
+    <string name="WelcomeUIHeader2">See the recently moments</string>
+    <string name="WelcomeUIOR">OR</string>
+    <string name="WelcomeUISignInGoogle">Sign in with Google</string>
+    <string name="WelcomeUISignIn">Already have an account ?</string>
+    <string name="WelcomeUITerm">By Signing Up you agree to our</string>
+    <string name="WelcomeUITerm2">Terms &amp; Privacy and Policy</string>
+    <string name="WelcomeUIGoogleError1">Something went wrong, Please try again</string>
+    <string name="WelcomeUIGoogleError2">Your email is already in use</string>
 
-    <!-- Sign Up Username UI -->
-    <string name="SignUpUsername">Username</string>
-    <string name="SignUpUsernameMessage">Your username is unique and used to personalize your phone and Biogram account. You can always change it later.</string>
-    <string name="SignUpUsernameHint">Username must be english</string>
-    <string name="SignUpUsernameTerm">Term &amp; Privacy</string>
-    <string name="SignUpUsernameNext">Next</string>
-    <string name="SignUpUsernameError1">Username is empty</string>
-    <string name="SignUpUsernameError3">Username must be lower than 32 characters</string>
-    <string name="SignUpUsernameError4">Username is unavailable</string>
-    <string name="SignUpUsernameError5">Username is already in use</string>
+    <!-- Username UI -->
+    <string name="UsernameUIMessage">Your username is unique and used to personalize your phone and Biogram account. You can always change it later.</string>
+    <string name="UsernameUIHint">Username must be english</string>
+    <string name="UsernameUIError1">Username is empty</string>
+    <string name="UsernameUIError2">Username must be greater than 3 characters</string>
+    <string name="UsernameUIError3">Username must be less than 32 characters</string>
+    <string name="UsernameUIError4">Username is unavailable</string>
+    <string name="UsernameUIError5">Username is already in use</string>
 
-    <!-- Sign Up Password UI -->
-    <string name="SignUpPassword">Password</string>
-    <string name="SignUpPasswordNext">Next</string>
-    <string name="SignUpPasswordTerm">Term &amp; Privacy</string>
-    <string name="SignUpPasswordMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
+    <!-- Description UI -->
+    <string name="DescriptionUI">Profile info</string>
+    <string name="DescriptionUIName">Name</string>
+    <string name="DescriptionUIFinish">Finish</string>
+    <string name="DescriptionUIMessage">Please provide your name, photo and description. These will show you better to other users</string>
+    <string name="DescriptionUIProfile">Your choices</string>
+    <string name="DescriptionUIProfileGallery">Select from gallery</string>
+    <string name="DescriptionUIProfileCamera">Take from camera</string>
+    <string name="DescriptionUIProfileRemove">Remove current photo</string>
+    <string name="DescriptionUIEditName">Enter your name</string>
+    <string name="DescriptionUIEditDescription">Write about yourself</string>
+    <string name="DescriptionUIPermissionCamera">Please allow biogram to use the camera. This will help to complete your profile</string>
+    <string name="DescriptionUIPermissionStorage">Please allow biogram to access your Storage This will help to complete your profile</string>
+    <string name="DescriptionUIUpload">Please wait, uploading data to server &#8230;</string>
 
-    <!-- Sign Up Email UI -->
-    <string name="SignUpEmail">Email</string>
-    <string name="SignUpEmailAddress">Email Address</string>
-    <string name="SignUpEmailNext">Next</string>
-    <string name="SignUpEmailTerm">Term &amp; Privacy</string>
-    <string name="SignUpEmailError1">The verification code is empty</string>
-    <string name="SignUpEmailError2">The verification code must be 5 characters</string>
-    <string name="SignUpEmailError3">The verification code is wrong</string>
-    <string name="SignUpEmailMessage">Your recovery email address will be used in the event you forget your Biogram password and require assistance from BioGram to reset your password, also you must verify your email</string>
+    <!-- Phone UI -->
+    <string name="PhoneUICode">Code</string>
+    <string name="PhoneUIPreCode">Pre code number</string>
+    <string name="PhoneUINumber">Phone Number</string>
+    <string name="PhoneUIMessageUp">Please enter your phone number to receive a verification code, Also you can Sign Up via</string>
+    <string name="PhoneUIMessageIn">Please enter your phone number to receive a verification code, Also you can Sign In via</string>
+    <string name="PhoneUIMessageUp2">Email Address</string>
+    <string name="PhoneUIMessageIn2">Email Address</string>
+    <string name="PhoneUIPermission">To make Registration process easier, Allow biogram to have access to your next SMS that your receive</string>
+    <string name="PhoneUIError">The phone number is already in use</string>
+    <string name="PhoneUIError2">The entered mobile number has not been registered yet</string>
 
-    <!-- Sign Up Email Verify UI -->
-    <string name="SignUpEmailVerify">Verify Phone</string>
-    <string name="SignUpEmailVerifyCode">Verification Code</string>
-    <string name="SignUpEmailVerifyMessage">Please enter the verification code sent to</string>
-    <string name="SignUpEmailVerifyResend">Resend Code</string>
-    <string name="SignUpEmailVerifyResendDone">The verification code has been sent to you again</string>
-    <string name="SignUpEmailVerifyCodeEmpty">The verification code has not been entered</string>
-    <string name="SignUpEmailVerifyCodeCount">Verification is should be 5 charecters</string>
-    <string name="SignUpEmailVerifyCodeWrong">The code entered is incorrect</string>
-    <string name="SignUpEmailVerifyCodeNotFound">The account does not exist</string>
+    <!-- Phone Verify UI -->
+    <string name="PhoneVerifyUI">Verify Phone</string>
+    <string name="PhoneVerifyUICode">Verification Code</string>
+    <string name="PhoneVerifyUIMessage">Please enter the verification code sent to</string>
+    <string name="PhoneVerifyUIResend">Resend Code</string>
+    <string name="PhoneVerifyUIResendDone">The verification code has been sent to you again</string>
+    <string name="PhoneVerifyUICodeCount">Verification must be 5 charecters</string>
+    <string name="PhoneVerifyUICodeWrong">The code entered is incorrect</string>
+    <string name="PhoneVerifyUICodeNotFound">The account does not exist</string>
 
-    <!-- Sign Up Description UI -->
-    <string name="SignUpDescription">Profile info</string>
-    <string name="SignUpDescriptionName">Name</string>
-    <string name="SignUpDescriptionInfo">Description</string>
-    <string name="SignUpDescriptionTerm">Term &amp; Privacy</string>
-    <string name="SignUpDescriptionFinish">Finish</string>
-    <string name="SignUpDescriptionMessage">Please provide your name, photo and description. These will show you better to other users</string>
-    <string name="SignUpDescriptionProfile">Your choices</string>
-    <string name="SignUpDescriptionProfileGallery">Select from gallery</string>
-    <string name="SignUpDescriptionProfileCamera">Take from camera</string>
-    <string name="SignUpDescriptionProfileRemove">Remove current photo</string>
-    <string name="SignUpDescriptionEditName">Enter your name</string>
-    <string name="SignUpDescriptionEditDescription">Write about yourself</string>
-    <string name="SignUpDescriptionPermissionCamera">Please allow biogram to use the camera. This will help to complete your profile</string>
-    <string name="SignUpDescriptionPermissionStorage">Please allow biogram to acces your Storage This will help to complete your profile</string>
-    <string name="SignUpDescriptionUpload">Please wait, Uploading data to server &#8230;</string>
 
-    <!-- Sign Up Phone UI -->
-    <string name="SignUpPhone">Sign Up</string>
-    <string name="SignUpPhoneIn">Sign In</string>
-    <string name="SignUpPhoneCode">Code</string>
-    <string name="SignUpPhoneTitleCode">Pre code number</string>
-    <string name="SignUpPhoneNumber">Phone Number</string>
-    <string name="SignUpPhoneMessage">Please enter your phone number to receive a verification code, Also you can Sign Up via</string>
-    <string name="SignUpPhoneMessageIn">Please enter your phone number to receive a verification code, Also you can Sign In via</string>
-    <string name="SignUpPhoneMessageEmail">Email Address</string>
-    <string name="SignUpPhoneMessageIn2">Email Address</string>
-    <string name="SignUpPhoneTerm">Term &amp; Privacy</string>
-    <string name="SignUpPhoneNext">Next</string>
-    <string name="SignUpPhonePermission">To make Registration process easier, Allow biogram to have access to your next SMS that your receive</string>
-    <string name="SignUpPhoneErrorCountry">Country code is wrong</string>
-    <string name="SignUpPhoneErrorPhone">Phone number is wrong</string>
-    <string name="SignUpPhoneErrorAlready">This phone number is already used</string>
-    <string name="SignUpPhoneErrorNotFound">This phone number is already used</string>
 
-    <!-- Sign Up Phone Verify UI -->
-    <string name="SignUpPhoneVerify">Verify Phone</string>
-    <string name="SignUpPhoneVerifyCode">Verification Code</string>
-    <string name="SignUpPhoneVerifyMessage">Please enter the verification code sent to</string>
-    <string name="SignUpPhoneVerifyResend">Resend Code</string>
-    <string name="SignUpPhoneVerifyResendDone">The verification code has been sent to you again</string>
-    <string name="SignUpPhoneVerifyCodeEmpty">The verification code has not been entered</string>
-    <string name="SignUpPhoneVerifyCodeCount">Verification is should be 5 charecters</string>
-    <string name="SignUpPhoneVerifyCodeWrong">The code entered is incorrect</string>
-    <string name="SignUpPhoneVerifyCodeNotFound">The account does not exist</string>
 
-    <!-- Sign In Email UI -->
-    <string name="SignInEmail">Sign In</string>
-    <string name="SignInEmailOrUsername">Email or Username</string>
-    <string name="SignInEmailPassword">Password</string>
-    <string name="SignInEmailMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
-    <string name="SignInEmailForgot">Forgot Password ?</string>
-    <string name="SignInEmailError1">Username or email must not be empty</string>
-    <string name="SignInEmailError2">Username or email should not be less than 3 charecter</string>
-    <string name="SignInEmailError3">Username or email must be less than 64 characters</string>
-    <string name="SignInEmailError4">Password must not be empty</string>
-    <string name="SignInEmailError5">The password must be greater than 3 characters</string>
-    <string name="SignInEmailError6">Password must be less than 32 characters</string>
-    <string name="SignInEmailError7">There is no such username or email</string>
-    <string name="SignInEmailError8">The information is not correct</string>
+
+
+
+
+
+
+
+    <!-- Password UI -->
+    <string name="PasswordUIMessage">Please, Make sure your password is strong enough. Your password must be more than 5 characters</string>
+
+    <!-- Email UI -->
+    <string name="EmailUIError1">The verification code is empty</string>
+    <string name="EmailUIError2">The verification code must be 5 characters</string>
+    <string name="EmailUIError3">The verification code is wrong</string>
+    <string name="EmailUIMessage">Your recovery email address will be used in the event you forget your Biogram password and require assistance from BioGram to reset your password, also you must verify your email</string>
+
+    <!-- Email Verify UI -->
+    <string name="EmailVerifyUI">Verify Email</string>
+    <string name="EmailVerifyUICode">Verification Code</string>
+    <string name="EmailVerifyUIMessage">Please enter the verification code sent to</string>
+    <string name="EmailVerifyUIResend">Resend Code</string>
+    <string name="EmailVerifyUIResendDone">The verification code has been sent to you again</string>
+    <string name="EmailVerifyUICodeEmpty">The verification code has not been entered</string>
+    <string name="EmailVerifyUICodeCount">Verification is should be 5 charecters</string>
+    <string name="EmailVerifyUICodeWrong">The code entered is incorrect</string>
+    <string name="EmailVerifyUICodeNotFound">The account does not exist</string>
+
+
+
+
+
+
+
+    <!-- Email Sign In UI -->
+    <string name="EmailSignInUIOrUsername">Email or Username</string>
+    <string name="EmailSignInUIMessage">Sign In to Share Events and watch world events or share your opinion to other people</string>
+    <string name="EmailSignInUIForgot">Forgot Password ?</string>
+    <string name="EmailSignInUIError1">Username or email must not be empty</string>
+    <string name="EmailSignInUIError2">Username or email should not be less than 3 charecter</string>
+    <string name="EmailSignInUIError3">Username or email must be less than 64 characters</string>
+    <string name="EmailSignInUIError4">Password must not be empty</string>
+    <string name="EmailSignInUIError5">The password must be greater than 3 characters</string>
+    <string name="EmailSignInUIError6">Password must be less than 32 characters</string>
+    <string name="EmailSignInUIError7">There is no such username or email</string>
+    <string name="EmailSignInUIError8">The information is not correct</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">Image Preview</string>

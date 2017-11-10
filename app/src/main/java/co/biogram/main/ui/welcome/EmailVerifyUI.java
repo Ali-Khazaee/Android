@@ -40,9 +40,9 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class SignUpEmailVerifyUI extends FragmentBase
+class EmailVerifyUI extends FragmentBase
 {
-    private ViewTreeObserver.OnGlobalLayoutListener RelativeLayoutMainListener;
+    private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
     private EditText EditTextCode1;
     private EditText EditTextCode2;
@@ -50,7 +50,6 @@ class SignUpEmailVerifyUI extends FragmentBase
     private EditText EditTextCode4;
     private EditText EditTextCode5;
     private CountDownTimer CountDownTimerResend;
-    private int HeightDifference = 0;
     private boolean Field1 = false;
     private boolean Field2 = false;
     private boolean Field3 = false;
@@ -60,7 +59,7 @@ class SignUpEmailVerifyUI extends FragmentBase
     private final String Password;
     private final String Email;
 
-    SignUpEmailVerifyUI(String username, String password, String email)
+    EmailVerifyUI(String username, String password, String email)
     {
         Username = username;
         Password = password;
@@ -80,8 +79,10 @@ class SignUpEmailVerifyUI extends FragmentBase
         RelativeLayoutMain.setFocusable(true);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayoutMainListener = new ViewTreeObserver.OnGlobalLayoutListener()
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
+            int HeightDifference = 0;
+
             @Override
             public void onGlobalLayout()
             {
@@ -137,7 +138,7 @@ class SignUpEmailVerifyUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.SignUpEmailVerify));
+        TextViewTitle.setText(GetActivity().getString(R.string.EmailVerifyUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -182,7 +183,7 @@ class SignUpEmailVerifyUI extends FragmentBase
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 40), MiscHandler.ToDimension(GetActivity(), 20), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-        TextViewVerificationCode.setText(GetActivity().getString(R.string.SignUpEmailVerifyCode));
+        TextViewVerificationCode.setText(GetActivity().getString(R.string.EmailVerifyUICode));
         TextViewVerificationCode.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewVerificationCode);
@@ -394,7 +395,7 @@ class SignUpEmailVerifyUI extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText(GetActivity().getString(R.string.SignUpEmailVerifyMessage));
+        TextViewMessage.setText(GetActivity().getString(R.string.EmailVerifyUIMessage));
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -421,7 +422,7 @@ class SignUpEmailVerifyUI extends FragmentBase
         final TextView TextViewResend = new TextView(GetActivity(), 14, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
-        TextViewResend.setText(GetActivity().getString(R.string.SignUpEmailVerifyResend));
+        TextViewResend.setText(GetActivity().getString(R.string.EmailVerifyUIResend));
         TextViewResend.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
         {
@@ -438,7 +439,7 @@ class SignUpEmailVerifyUI extends FragmentBase
                 .addBodyParameter("Username", Username)
                 .addBodyParameter("Password", Password)
                 .addBodyParameter("Email", Email)
-                .setTag("SignUpEmailVerifyUI")
+                .setTag("EmailVerifyUI")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -456,20 +457,20 @@ class SignUpEmailVerifyUI extends FragmentBase
                             {
                                 case 0:
                                     CountDownTimerResend.start();
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpEmailVerifyResendDone));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.EmailVerifyUIResendDone));
                                     break;
                                 case 1:
                                 case 2:
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                                     break;
                                 case 4:
                                 case 5:
                                 case 6:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorPhone));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                                     break;
                                 case 7:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorAlready));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -478,7 +479,7 @@ class SignUpEmailVerifyUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignUpEmailVerifyUI-SignUpEmail: " + e.toString());
+                            MiscHandler.Debug("EmailVerifyUI-SignUpEmail: " + e.toString());
                         }
                     }
 
@@ -552,9 +553,9 @@ class SignUpEmailVerifyUI extends FragmentBase
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonNext.setText(GetActivity().getString(R.string.SignUpPhoneNext));
+        ButtonNext.setText(GetActivity().getString(R.string.GeneralNoInternet));
         ButtonNext.setBackground(StateListNext);
-        ButtonNext.setPadding(0, 0, 0, 0);
+        ButtonNext.setPadding(0, MiscHandler.IsFa() ? 0 : MiscHandler.ToDimension(GetActivity(), 3), 0, 0);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
         {
@@ -568,7 +569,7 @@ class SignUpEmailVerifyUI extends FragmentBase
 
                 AndroidNetworking.post(MiscHandler.GetRandomServer("SignUpEmailVerify"))
                 .addBodyParameter("VerifyCode", VerifyCode)
-                .setTag("SignUpEmailVerifyUI")
+                .setTag("EmailVerifyUI")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -590,24 +591,16 @@ class SignUpEmailVerifyUI extends FragmentBase
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
-                                    SharedHandler.SetBoolean(GetActivity(), "IsGoogle", false);
-                                    SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
-                                    SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
-                                    SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
-                                    SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
-
-                                    GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
-                                    GetActivity().finish();
+                                    GetActivity().GetManager().OpenView(new DescriptionUI(VerifyCode, 2), R.id.WelcomeActivityContainer, "DescriptionUI");
                                     break;
                                 case 1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                                     break;
                                 case 2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.SignUpPhoneErrorCountry));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -616,7 +609,7 @@ class SignUpEmailVerifyUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("SignUpEmailVerifyUI-SignUpEmailVerify: " + e.toString());
+                            MiscHandler.Debug("EmailVerifyUI-SignUpEmailVerify: " + e.toString());
                         }
                     }
 
@@ -652,14 +645,14 @@ class SignUpEmailVerifyUI extends FragmentBase
     @Override
     public void OnResume()
     {
-        RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(RelativeLayoutMainListener);
+        RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
     public void OnPause()
     {
-        AndroidNetworking.forceCancel("SignUpEmailVerifyUI");
-        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(RelativeLayoutMainListener);
+        AndroidNetworking.forceCancel("EmailVerifyUI");
+        RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override

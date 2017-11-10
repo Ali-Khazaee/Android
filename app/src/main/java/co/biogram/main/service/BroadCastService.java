@@ -13,20 +13,20 @@ import java.util.regex.Pattern;
 
 import co.biogram.main.handler.MiscHandler;
 
-public class SMSService extends BroadcastReceiver
+public class BroadCastService extends BroadcastReceiver
 {
-    private boolean IsWaiting = false;
+    private static boolean IsSMS = false;
 
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        if (intent.getAction().equalsIgnoreCase("android.intent.action.BOOT_COMPLETED"))
+            context.startService(new Intent(context, SocketService.class));
+
         if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Request"))
-            IsWaiting = intent.getExtras().getBoolean("SetWaiting", false);
+            IsSMS = intent.getExtras().getBoolean("SetWaiting", false);
 
-        if (!IsWaiting)
-            return;
-
-        if (intent.getAction().equalsIgnoreCase("android.provider.Telephony.SMS_RECEIVED"))
+        if (IsSMS && intent.getAction().equalsIgnoreCase("android.provider.Telephony.SMS_RECEIVED"))
         {
             Bundle bundle = intent.getExtras();
 
@@ -73,7 +73,7 @@ public class SMSService extends BroadcastReceiver
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("SMSService: " + e.toString());
+                    MiscHandler.Debug("BroadCastService: " + e.toString());
                 }
             }
         }
