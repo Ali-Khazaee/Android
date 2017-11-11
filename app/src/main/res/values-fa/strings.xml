@@ -68,6 +68,11 @@
     <string name="DescriptionUIPermissionCamera">برای استفاده دوربین، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
     <string name="DescriptionUIPermissionStorage">برای استفاده از محتویات حافظه خود، دسترسی به آن را فعال کنید. این کار برای تکمیل مشخصات شما کمک میکند</string>
     <string name="DescriptionUIUpload"> در حال ارسال اطلاعات, لطفا صبر کنید&#8230;</string>
+    <string name="DescriptionUICode">لطفا مجدد ثبت نام کنید</string>
+    <string name="DescriptionUIUsernameUnavailable">نام کاربری معتبر نیست</string>
+    <string name="DescriptionUINameEmpty">نام خالی است</string>
+    <string name="DescriptionUINameLess">نام باید بزرگتر از 2 کلمه باشد</string>
+    <string name="DescriptionUINameGreater">نام باید کوچکتر از 32 کلمه باشد</string>
 
     <!-- Phone UI -->
     <string name="PhoneUICode">کد</string>
@@ -127,27 +132,18 @@
     <!-- Email UI -->
     <string name="PasswordResetUI">ایمیل یا نام کاربری</string>
     <string name="PasswordResetUIMessage">ما می توانیم با استفاده از نام کاربری یا آدرس ایمیل مرتبط با حساب کاربری Biogram خود، رمز عبور شما را بازیابی کنیم</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="PasswordResetUIFinish">پایان</string>
+    <string name="PasswordResetUIError1">نام کاربری یا ایمیل خالی است</string>
+    <string name="PasswordResetUIError2">نام کاربری معتبر نیست</string>
+    <string name="PasswordResetUIError3">نام کاربری یا ایمیل وارد شده وجود ندارد</string>
+    <string name="PasswordResetUIError4">لینک برای ایمل شما ارسال شد</string>
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">نمایش عکس</string>
 
     <!-- Gallery View UI -->
     <string name="GalleryView">گالری</string>
+    <string name="GalleryViewGallery">Gallery</string>
     <string name="GalleryViewMaximum">حداکثر تعداد انتخاب عکس ها </string>
 
 </resources>

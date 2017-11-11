@@ -244,9 +244,9 @@ public class MiscHandler
         }
     }
 
-    public static boolean IsDark(FragmentActivity activity)
+    public static boolean IsDark(Context context)
     {
-        return SharedHandler.GetBoolean(activity, "IsDark");
+        return SharedHandler.GetBoolean(context, "IsDark");
     }
 
     public static String GetRandomServer(String URL)

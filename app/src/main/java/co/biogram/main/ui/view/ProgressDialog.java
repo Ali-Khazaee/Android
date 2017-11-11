@@ -27,7 +27,7 @@ public class ProgressDialog extends AlertDialog
     private TextView TextViewPercent;
     private CharSequence Title;
     private int MaxPercentage;
-    private NumberFormat PercentFormat;
+    private final NumberFormat PercentFormat;
     private boolean HasStarted;
     private int ProgressValue;
     private int SecondaryProgressValue;

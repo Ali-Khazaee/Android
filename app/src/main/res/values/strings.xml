@@ -68,6 +68,11 @@
     <string name="DescriptionUIPermissionCamera">Please allow biogram to use the camera. This will help to complete your profile</string>
     <string name="DescriptionUIPermissionStorage">Please allow biogram to access your Storage This will help to complete your profile</string>
     <string name="DescriptionUIUpload">Please wait, uploading data to server &#8230;</string>
+    <string name="DescriptionUICode">Something went wrong, Please try again</string>
+    <string name="DescriptionUIUsernameUnavailable">Username is unavailable</string>
+    <string name="DescriptionUINameEmpty">Name is empty</string>
+    <string name="DescriptionUINameLess">Name must be greater than 2 characters</string>
+    <string name="DescriptionUINameGreater">Name must be less than 32 characters</string>
 
     <!-- Phone UI -->
     <string name="PhoneUICode">Code</string>
@@ -127,28 +132,11 @@
     <!-- Email UI -->
     <string name="PasswordResetUI">Reset Password</string>
     <string name="PasswordResetUIMessage">We can help you reset your password using your Biogram username or the email address linked to your account</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="PasswordResetUIFinish">Finish</string>
+    <string name="PasswordResetUIError1">Email or username is empty</string>
+    <string name="PasswordResetUIError2">Username is unavailable</string>
+    <string name="PasswordResetUIError3">Email or username does not exist</string>
+    <string name="PasswordResetUIError4">The link has sent to your email address</string>
 
     <!-- Image Preview UI -->
     <string name="ImagePreview">Image Preview</string>

@@ -47,7 +47,7 @@ class UsernameUI extends FragmentBase
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
     private String Code;
-    private int Type;
+    private final int Type;
 
     UsernameUI()
     {

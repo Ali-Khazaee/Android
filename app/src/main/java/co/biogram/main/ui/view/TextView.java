@@ -7,6 +7,7 @@ import android.util.TypedValue;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.FontHandler;
+import co.biogram.main.handler.MiscHandler;
 
 public class TextView extends android.widget.TextView
 {
@@ -25,6 +26,6 @@ public class TextView extends android.widget.TextView
             setTypeface(FontHandler.GetTypeface(context));
 
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
-        setTextColor(ContextCompat.getColor(context, R.color.White));
+        setTextColor(ContextCompat.getColor(context, MiscHandler.IsDark(context) ? R.color.TextDark : R.color.TextWhite));
     }
 }

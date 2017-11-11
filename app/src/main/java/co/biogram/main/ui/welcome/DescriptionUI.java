@@ -581,41 +581,28 @@ public class DescriptionUI extends FragmentBase
                                          GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                          GetActivity().finish();
                                          break;
-                                     case 1: // TODO Strings
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // token empty
-                                         break;
+                                     case 13:
                                      case 2:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // username is unavaliable
-                                         break;
                                      case 3:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // username is unavaliable
-                                         break;
                                      case 4:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // username is unavaliable
-                                         break;
                                      case 5:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // username is unavaliable
+                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
                                          break;
                                      case 6:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // name is empty
+                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameEmpty));
                                          break;
                                      case 7:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // name is low
+                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameLess));
                                          break;
                                      case 8:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // name is high
+                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameGreater));
                                          break;
+                                     case 1:
                                      case 9:
-                                         break;
                                      case 10:
-                                         break;
                                      case 11:
-                                         break;
                                      case 12:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // try again
-                                         break;
-                                     case 13:
-                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet)); // username is exist
+                                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUICode));
                                          break;
                                      default:
                                          MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -641,7 +628,7 @@ public class DescriptionUI extends FragmentBase
                 else if (Type == 1)
                 {
                     AndroidNetworking.upload(MiscHandler.GetRandomServer("SignUpPhoneFinish"))
-                    .addMultipartParameter("Key", Code)
+                    .addMultipartParameter("Code", Code)
                     .addMultipartParameter("Name", EditTextName.getText().toString())
                     .addMultipartParameter("Username", Username)
                     .addMultipartParameter("Description", EditTextDescription.getText().toString())
@@ -666,26 +653,12 @@ public class DescriptionUI extends FragmentBase
                             LoadingViewFinish.Stop();
                             ButtonFinish.setVisibility(View.VISIBLE);
 
-                            MiscHandler.Debug(Response);
-
                             try
                             {
                                 JSONObject Result = new JSONObject(Response);
 
                                 switch (Result.getInt("Message"))
                                 {
-                                    case -7:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError7));
-                                        break;
-                                    case -6:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError6));
-                                        break;
-                                    case -2:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError2));
-                                        break;
-                                    case -1:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralError1));
-                                        break;
                                     case 0:
                                         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                                         Anim.setDuration(200);
@@ -693,6 +666,7 @@ public class DescriptionUI extends FragmentBase
                                         RelativeLayoutMain.setAnimation(Anim);
 
                                         SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
+                                        SharedHandler.SetBoolean(GetActivity(), "IsGoogle", true);
                                         SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
                                         SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
                                         SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
@@ -702,25 +676,123 @@ public class DescriptionUI extends FragmentBase
                                         GetActivity().finish();
                                         break;
                                     case 1:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    case 9:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUICode));
                                         break;
                                     case 2:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                        break;
                                     case 3:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                        break;
                                     case 4:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                        break;
                                     case 5:
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    case 10:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
+                                        break;
+                                    case 6:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameEmpty));
+                                        break;
+                                    case 7:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameLess));
+                                        break;
+                                    case 8:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameGreater));
+                                        break;
+                                    default:
+                                        MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
                                         break;
                                 }
                             }
                             catch (Exception e)
                             {
-                                MiscHandler.Debug("DescriptionUI-SignInGoogleVerify: " + e.toString());
+                                MiscHandler.Debug("DescriptionUI-SignUpPhoneFinish: " + e.toString());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setVisibility(View.VISIBLE);
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        }
+                    });
+                }
+                else if (Type == 2)
+                {
+                    AndroidNetworking.upload(MiscHandler.GetRandomServer("SignUpEmailFinish"))
+                    .addMultipartParameter("Code", Code)
+                    .addMultipartParameter("Name", EditTextName.getText().toString())
+                    .addMultipartParameter("Description", EditTextDescription.getText().toString())
+                    .addMultipartParameter("Session", MiscHandler.GenerateSession())
+                    .addMultipartFile("Avatar", ProfileFile)
+                    .setTag("DescriptionUI")
+                    .build()
+                    .setUploadProgressListener(new UploadProgressListener()
+                    {
+                        @Override
+                        public void onProgress(long u, long t)
+                        {
+                            Progress.setProgress((int) (100 * u / t));
+                        }
+                    })
+                    .getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setVisibility(View.VISIBLE);
+
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                switch (Result.getInt("Message"))
+                                {
+                                    case 0:
+                                        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                        Anim.setDuration(200);
+
+                                        RelativeLayoutMain.setAnimation(Anim);
+
+                                        SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
+                                        SharedHandler.SetBoolean(GetActivity(), "IsGoogle", true);
+                                        SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
+                                        SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
+                                        SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
+                                        SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
+
+                                        GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
+                                        GetActivity().finish();
+                                        break;
+                                    case 1:
+                                    case 9:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUICode));
+                                        break;
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    case 10:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
+                                        break;
+                                    case 6:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameEmpty));
+                                        break;
+                                    case 7:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameLess));
+                                        break;
+                                    case 8:
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameGreater));
+                                        break;
+                                    default:
+                                        MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
+                                        break;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                MiscHandler.Debug("DescriptionUI-SignUpEmailFinish: " + e.toString());
                             }
                         }
 

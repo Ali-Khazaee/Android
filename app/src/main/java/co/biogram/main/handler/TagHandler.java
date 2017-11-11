@@ -98,13 +98,13 @@ class TagHandler
         @Override
         public void onClick(View Widget)
         {
-            CharSequence Text = ((TextView) Widget).getText();
+            /*CharSequence Text = ((TextView) Widget).getText();
             Spanned Span = (Spanned) Text;
             int Start = Span.getSpanStart(this);
             int End = Span.getSpanEnd(this);
             String Message = Text.subSequence(Start + 1, End).toString();
 
-            /*if (TagType == 1)
+            if (TagType == 1)
             {
                 Bundle bundle = new Bundle();
                 bundle.putString("Tag", Message);

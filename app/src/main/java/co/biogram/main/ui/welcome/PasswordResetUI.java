@@ -154,15 +154,15 @@ class PasswordResetUI extends FragmentBase
         EditTextUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewEmail.getId());
 
-        final EditText EditTextEmail = new EditText(GetActivity());
-        EditTextEmail.setLayoutParams(EditTextUsernameParam);
-        EditTextEmail.setId(MiscHandler.GenerateViewID());
-        EditTextEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextEmail.setFilters(new InputFilter[] { new InputFilter.LengthFilter(128) });
-        EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        EditTextEmail.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
-        EditTextEmail.requestFocus();
-        EditTextEmail.addTextChangedListener(new TextWatcher()
+        final EditText EditTextEmailOrUsername = new EditText(GetActivity());
+        EditTextEmailOrUsername.setLayoutParams(EditTextUsernameParam);
+        EditTextEmailOrUsername.setId(MiscHandler.GenerateViewID());
+        EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(128) });
+        EditTextEmailOrUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        EditTextEmailOrUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextEmailOrUsername.requestFocus();
+        EditTextEmailOrUsername.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void afterTextChanged(Editable s) { }
@@ -170,19 +170,19 @@ class PasswordResetUI extends FragmentBase
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                ButtonFinish.setEnabled(s.length() > 6 && Patterns.EMAIL_ADDRESS.matcher(s).matches());
+                ButtonFinish.setEnabled(s.length() > 2 && Patterns.EMAIL_ADDRESS.matcher(s).matches());
             }
         });
 
-        RelativeLayoutScroll.addView(EditTextEmail);
+        RelativeLayoutScroll.addView(EditTextEmailOrUsername);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextEmail.getId());
+        TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextEmailOrUsername.getId());
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
-        TextViewMessage.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        TextViewMessage.setText(GetActivity().getString(R.string.PasswordResetUIMessage));
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
 
@@ -232,7 +232,7 @@ class PasswordResetUI extends FragmentBase
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
-        ButtonFinish.setText(GetActivity().getString(R.string.GeneralNoInternet));
+        ButtonFinish.setText(GetActivity().getString(R.string.PasswordResetUIFinish));
         ButtonFinish.setBackground(ListDrawableNext);
         ButtonFinish.setEnabled(false);
         ButtonFinish.setOnClickListener(new View.OnClickListener()
@@ -243,9 +243,9 @@ class PasswordResetUI extends FragmentBase
                 ButtonFinish.setVisibility(View.GONE);
                 LoadingViewFinish.Start();
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("Username"))
-                .addBodyParameter("Username", EditTextEmail.getText().toString())
-                .setTag("UsernameUI")
+                AndroidNetworking.post(MiscHandler.GetRandomServer("ResetPassword"))
+                .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
+                .setTag("PasswordResetUI")
                 .build()
                 .getAsString(new StringRequestListener()
                 {
@@ -262,25 +262,16 @@ class PasswordResetUI extends FragmentBase
                             switch (Result.getInt("Message"))
                             {
                                 case 0:
-                                    TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                    Anim.setDuration(200);
-
-                                    RelativeLayoutMain.setAnimation(Anim);
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.PasswordResetUIError4));
                                     break;
                                 case 1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.PasswordResetUIError1));
                                     break;
                                 case 2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.PasswordResetUIError2));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                    break;
-                                case 4:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
-                                    break;
-                                case 5:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.PasswordResetUIError3));
                                     break;
                                 default:
                                     MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
@@ -288,7 +279,7 @@ class PasswordResetUI extends FragmentBase
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("UsernameUI-Username: " + e.toString());
+                            MiscHandler.Debug("PasswordResetUI: " + e.toString());
                         }
                     }
 
@@ -319,7 +310,7 @@ class PasswordResetUI extends FragmentBase
         {
             @Override public void onAnimationStart(Animation animation) { }
             @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextEmail); }
+            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextEmailOrUsername); }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
