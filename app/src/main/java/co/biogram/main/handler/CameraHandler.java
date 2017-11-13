@@ -14,11 +14,15 @@ public class CameraHandler extends TextureView
     private int CameraFlash = 0;
     private int CameraID = 0;
     private Camera camera;
+    private boolean IsAvaiable = false;
 
     public CameraHandler(Context context)
     {
         super(context);
+    }
 
+    private void Init()
+    {
         camera = Camera.open(CameraID);
         camera.setDisplayOrientation(90);
 
@@ -35,6 +39,8 @@ public class CameraHandler extends TextureView
                 try
                 {
                     camera.setPreviewTexture(s);
+                    camera.startPreview();
+                    IsAvaiable = true;
                 }
                 catch (Exception e)
                 {
@@ -43,13 +49,19 @@ public class CameraHandler extends TextureView
             }
 
             @Override public void onSurfaceTextureSizeChanged(SurfaceTexture s, int w, int h) { }
-            @Override public boolean onSurfaceTextureDestroyed(SurfaceTexture s) { return false; }
+            @Override public boolean onSurfaceTextureDestroyed(SurfaceTexture s) { IsAvaiable = false; return false; }
             @Override public void onSurfaceTextureUpdated(SurfaceTexture s) { }
         });
     }
 
     public void TakePicture(final CameraListener Listener)
     {
+        if (!IsAvaiable)
+        {
+            Listener.OnFailed();
+            return;
+        }
+
         try
         {
             camera.takePicture(null, null, new Camera.PictureCallback()
@@ -70,6 +82,9 @@ public class CameraHandler extends TextureView
 
     public int SwitchFlash()
     {
+        if (!IsAvaiable)
+            return 0;
+
         Camera.Parameters parameters = camera.getParameters();
 
         switch (CameraFlash)
@@ -96,6 +111,9 @@ public class CameraHandler extends TextureView
 
     public void SwitchCamera()
     {
+        if (!IsAvaiable)
+            return;
+
         camera.stopPreview();
         camera.release();
 
@@ -121,7 +139,7 @@ public class CameraHandler extends TextureView
 
         int Result = (info.orientation - Degrees + 360) % 360;
 
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
+        if (CameraID == Camera.CameraInfo.CAMERA_FACING_FRONT)
         {
             Result = (info.orientation + Degrees) % 360;
             Result = (360 - Result) % 360;
@@ -132,19 +150,20 @@ public class CameraHandler extends TextureView
         try
         {
             camera.setPreviewTexture(getSurfaceTexture());
+            camera.startPreview();
         }
         catch (Exception e)
         {
             MiscHandler.Debug("CameraHandler-SwitchCamera: " + e.toString());
         }
-
-        camera.startPreview();
     }
 
     public void Start()
     {
-        if (camera != null)
+        if (IsAvaiable && camera != null)
             camera.startPreview();
+        else
+            Init();
     }
 
     public void Stop()

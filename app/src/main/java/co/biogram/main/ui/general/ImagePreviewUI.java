@@ -8,17 +8,16 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -35,20 +34,19 @@ import java.util.List;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.CacheHandler;
+import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.ui.view.TouchImageView;
 import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class ImagePreviewUI extends FragmentBase
+class ImagePreviewUI extends FragmentBase
 {
     private final List<String> UrlList = new ArrayList<>();
-
-    private boolean Selected = false;
-    private OnSelectListener SelectListener;
-
     private RelativeLayout RelativeLayoutHeader;
+    private OnSelectListener SelectListener;
+    private boolean Selected = false;
     private Bitmap bitmap = null;
     private int Type = 0;
 
@@ -177,7 +175,6 @@ public class ImagePreviewUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
         TextViewTitle.setText(GetActivity().getString(R.string.ImagePreview));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -190,7 +187,7 @@ public class ImagePreviewUI extends FragmentBase
             ImageViewDoneParam.addRule(MiscHandler.Align("L"));
 
             ImageView ImageViewDone = new ImageView(GetActivity());
-            ImageViewDone.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
+            ImageViewDone.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
             ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone.setLayoutParams(ImageViewDoneParam);
             ImageViewDone.setImageResource(R.drawable.ic_done_white);
@@ -200,7 +197,7 @@ public class ImagePreviewUI extends FragmentBase
                 public void onClick(View v)
                 {
                     CropImageViewMain.setVisibility(View.VISIBLE);
-                    String ResizeBitmapPath = MediaStore.Images.Media.insertImage(GetActivity().getContentResolver(), bitmap, "BioGram Crop Image", null);
+                    String ResizeBitmapPath = MediaStore.Images.Media.insertImage(GetActivity().getContentResolver(), bitmap, "Biogram Crop Image", null);
                     CropImageViewMain.setImageUriAsync(Uri.parse(ResizeBitmapPath));
                 }
             });
@@ -220,7 +217,7 @@ public class ImagePreviewUI extends FragmentBase
             ImageViewDone2Param.addRule(MiscHandler.Align("L"));
 
             ImageView ImageViewDone2 = new ImageView(GetActivity());
-            ImageViewDone2.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
+            ImageViewDone2.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
             ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone2.setLayoutParams(ImageViewDone2Param);
             ImageViewDone2.setImageResource(R.drawable.ic_done_white);
@@ -251,7 +248,7 @@ public class ImagePreviewUI extends FragmentBase
                     }
                     catch (Exception e)
                     {
-                        MiscHandler.Debug("ImagePreviewUI-Crop: " + e.toString());
+                        MiscHandler.Debug("ImagePreviewUI-Type1: " + e.toString());
                     }
                 }
             });
@@ -331,22 +328,13 @@ public class ImagePreviewUI extends FragmentBase
     @Override
     public void OnResume()
     {
-        if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
     public void OnPause()
     {
-        if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-    }
-
-    void SetType(boolean select, OnSelectListener l)
-    {
-        Type = 2;
-        Selected = select;
-        SelectListener = l;
+        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private class PreviewAdapter extends PagerAdapter
@@ -383,7 +371,7 @@ public class ImagePreviewUI extends FragmentBase
 
             RelativeLayoutMain.addView(LoadingViewMain);
 
-            Glide.with(GetActivity())
+            GlideApp.with(GetActivity())
             .load(UrlList.get(Position))
             .listener(new RequestListener<Drawable>()
             {
@@ -431,6 +419,13 @@ public class ImagePreviewUI extends FragmentBase
         {
             return UrlList.size();
         }
+    }
+
+    void SetType(boolean select, OnSelectListener l)
+    {
+        Type = 2;
+        Selected = select;
+        SelectListener = l;
     }
 
     interface OnSelectListener
