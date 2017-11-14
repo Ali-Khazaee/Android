@@ -248,7 +248,6 @@ public class GalleryViewUI extends FragmentBase
     @Override
     public void OnResume()
     {
-        MiscHandler.HideSoftKey(GetActivity());
         GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 

@@ -32,6 +32,8 @@ public class WelcomeActivity extends FragmentActivity
         if (Build.VERSION.SDK_INT > 20)
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.BlueLight));
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         RelativeLayout RelativeLayoutMain = new RelativeLayout(this);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setId(R.id.WelcomeActivityContainer);
