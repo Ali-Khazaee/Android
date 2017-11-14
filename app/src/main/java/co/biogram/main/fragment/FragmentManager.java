@@ -1,7 +1,7 @@
 package co.biogram.main.fragment;
 
 import android.content.Intent;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,8 @@ public class FragmentManager
 
         if (Fragment.ViewMain != null)
         {
-            FrameLayout FrameLayoutMain = (FrameLayout) Activity.findViewById(ID);
-            FrameLayoutMain.addView(Fragment.ViewMain);
+            RelativeLayout RelativeLayoutMain = (RelativeLayout) Activity.findViewById(ID);
+            RelativeLayoutMain.addView(Fragment.ViewMain);
         }
 
         FragmentList.add(Fragment);

@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -36,7 +37,7 @@ import co.biogram.main.R;
 import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.MiscHandler;
-import co.biogram.main.ui.view.TouchImageView;
+import co.biogram.main.ui.view.PhotoView;
 import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -48,6 +49,7 @@ class ImagePreviewUI extends FragmentBase
     private OnSelectListener SelectListener;
     private boolean Selected = false;
     private Bitmap bitmap = null;
+    private boolean IsMax = false;
     private int Type = 0;
 
     ImagePreviewUI(Context context, byte[] data)
@@ -124,10 +126,10 @@ class ImagePreviewUI extends FragmentBase
 
         if (bitmap != null)
         {
-            TouchImageView TouchImageViewMain = new TouchImageView(GetActivity());
-            TouchImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            TouchImageViewMain.setImageBitmap(bitmap);
-            TouchImageViewMain.setOnClickListener(new View.OnClickListener()
+            PhotoView PhotoViewMain = new PhotoView(GetActivity());
+            PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            PhotoViewMain.setImageBitmap(bitmap);
+            PhotoViewMain.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
@@ -139,11 +141,42 @@ class ImagePreviewUI extends FragmentBase
                 }
             });
 
-            RelativeLayoutMain.addView(TouchImageViewMain);
+            RelativeLayoutMain.addView(PhotoViewMain);
         }
         else
         {
-            ViewPager ViewPagerMain = new ViewPager(GetActivity());
+            ViewPager ViewPagerMain = new ViewPager(GetActivity())
+            {
+                @Override
+                public boolean onTouchEvent(MotionEvent ev)
+                {
+                    try
+                    {
+                        return super.onTouchEvent(ev);
+                    }
+                    catch (IllegalArgumentException ex)
+                    {
+                        //
+                    }
+
+                    return false;
+                }
+
+                @Override
+                public boolean onInterceptTouchEvent(MotionEvent ev)
+                {
+                    try
+                    {
+                        return super.onInterceptTouchEvent(ev);
+                    }
+                    catch (IllegalArgumentException ex)
+                    {
+                        //
+                    }
+
+                    return false;
+                }
+            };
             ViewPagerMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             ViewPagerMain.setAdapter(new PreviewAdapter());
 
@@ -257,14 +290,14 @@ class ImagePreviewUI extends FragmentBase
         }
         else if (Type == 2)
         {
-            final GradientDrawable GradientDrawableSelect = new GradientDrawable();
-            GradientDrawableSelect.setShape(GradientDrawable.OVAL);
-            GradientDrawableSelect.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            final GradientDrawable DrawableSelect = new GradientDrawable();
+            DrawableSelect.setShape(GradientDrawable.OVAL);
+            DrawableSelect.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
 
-            final GradientDrawable GradientDrawableSelected = new GradientDrawable();
-            GradientDrawableSelected.setShape(GradientDrawable.OVAL);
-            GradientDrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-            GradientDrawableSelected.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            final GradientDrawable DrawableSelected = new GradientDrawable();
+            DrawableSelected.setShape(GradientDrawable.OVAL);
+            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+            DrawableSelected.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
 
             RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 24), MiscHandler.ToDimension(GetActivity(), 24));
             ViewCircleParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), 0, MiscHandler.ToDimension(GetActivity(), 15), 0);
@@ -278,15 +311,21 @@ class ImagePreviewUI extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
+                    if (IsMax)
+                    {
+                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewReach));
+                        return;
+                    }
+
                     if (Selected)
                     {
-                        v.setBackground(GradientDrawableSelect);
+                        v.setBackground(DrawableSelect);
                         Selected = false;
                     }
                     else
                     {
                         Selected = true;
-                        v.setBackground(GradientDrawableSelected);
+                        v.setBackground(DrawableSelected);
                     }
 
                     SelectListener.OnSelect();
@@ -294,9 +333,9 @@ class ImagePreviewUI extends FragmentBase
             });
 
             if (Selected)
-                ViewCircle.setBackground(GradientDrawableSelected);
+                ViewCircle.setBackground(DrawableSelected);
             else
-                ViewCircle.setBackground(GradientDrawableSelect);
+                ViewCircle.setBackground(DrawableSelect);
 
             RelativeLayoutHeader.addView(ViewCircle);
         }
@@ -315,7 +354,7 @@ class ImagePreviewUI extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
-
+                    // TODO Download
                 }
             });
 
@@ -345,9 +384,9 @@ class ImagePreviewUI extends FragmentBase
             RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
-            TouchImageView TouchImageViewMain = new TouchImageView(GetActivity());
-            TouchImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            TouchImageViewMain.setOnClickListener(new View.OnClickListener()
+            PhotoView PhotoViewMain = new PhotoView(GetActivity());
+            PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            PhotoViewMain.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
@@ -359,7 +398,7 @@ class ImagePreviewUI extends FragmentBase
                 }
             });
 
-            RelativeLayoutMain.addView(TouchImageViewMain);
+            RelativeLayoutMain.addView(PhotoViewMain);
 
             RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56));
             LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -389,7 +428,7 @@ class ImagePreviewUI extends FragmentBase
                     return false;
                 }
             })
-            .into(TouchImageViewMain);
+            .into(PhotoViewMain);
 
             Container.addView(RelativeLayoutMain);
 
@@ -421,9 +460,10 @@ class ImagePreviewUI extends FragmentBase
         }
     }
 
-    void SetType(boolean select, OnSelectListener l)
+    void SetType(boolean select, boolean isMax, OnSelectListener l)
     {
         Type = 2;
+        IsMax = isMax;
         Selected = select;
         SelectListener = l;
     }

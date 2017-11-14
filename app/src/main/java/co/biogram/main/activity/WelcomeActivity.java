@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.R;
@@ -20,8 +20,6 @@ public class WelcomeActivity extends FragmentActivity
 
         if (SharedHandler.GetBoolean(this, "IsLogin"))
         {
-            SharedHandler.SetBoolean(this, "IsLogin", false);
-
             if (SharedHandler.GetString(this, "Activity").equals("Chat"))
                 startActivity(new Intent(this, ChatActivity.class));
             else
@@ -34,11 +32,11 @@ public class WelcomeActivity extends FragmentActivity
         if (Build.VERSION.SDK_INT > 20)
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.BlueLight));
 
-        FrameLayout FrameLayoutMain = new FrameLayout(this);
-        FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        FrameLayoutMain.setId(R.id.WelcomeActivityContainer);
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(this);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setId(R.id.WelcomeActivityContainer);
 
-        setContentView(FrameLayoutMain);
+        setContentView(RelativeLayoutMain);
 
         GetManager().OpenView(new WelcomeUI(), R.id.WelcomeActivityContainer, "WelcomeUI");
     }

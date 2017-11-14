@@ -11,6 +11,7 @@ import co.biogram.main.handler.MiscHandler;
 public abstract class FragmentActivity extends Activity
 {
     private OnPermissionListener PermissionListener;
+    private boolean FirstResume = true;
     private FragmentManager Manager;
     private String Permission;
 
@@ -40,6 +41,13 @@ public abstract class FragmentActivity extends Activity
     public void onResume()
     {
         super.onResume();
+
+        if (FirstResume)
+        {
+            FirstResume = false;
+            return;
+        }
+
         GetManager().OnResume();
     }
 

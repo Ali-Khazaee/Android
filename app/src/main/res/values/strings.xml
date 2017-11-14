@@ -143,7 +143,8 @@
 
     <!-- Gallery View UI -->
     <string name="GalleryView">Gallery</string>
-    <string name="GalleryViewGallery">Gallery</string>
+    <string name="GalleryView2">Gallery</string>
     <string name="GalleryViewMaximum">Maximum selection is </string>
+    <string name="GalleryViewReach">You have been reached maximum selection</string>
 
 </resources>

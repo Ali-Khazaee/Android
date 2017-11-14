@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -32,17 +33,15 @@ public class GalleryViewUI extends FragmentBase
 {
     private final List<Struct> GalleryList = new ArrayList<>();
     private final List<String> FolderList = new ArrayList<>();
-
     private String SelectionPath = "";
-
-    private int Count = 1;
-    private final boolean IsVideo;
     private String Type = "Gallery";
+    private final boolean IsVideo;
+    private final int Count;
 
-    public GalleryViewUI(int count, boolean video)
+    public GalleryViewUI(int count, boolean isVideo)
     {
         Count = count;
-        IsVideo = video;
+        IsVideo = isVideo;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class GalleryViewUI extends FragmentBase
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.LineWhite);
+        RelativeLayoutHeader.setBackgroundResource(MiscHandler.IsDark(GetActivity()) ? R.color.ActionBarDark : R.color.ActionBarWhite);
         RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -81,7 +80,7 @@ public class GalleryViewUI extends FragmentBase
 
         final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), MiscHandler.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
         TextViewTitle.setText(GetActivity().getString(R.string.GalleryView));
         TextViewTitle.setId(MiscHandler.GenerateViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
@@ -90,7 +89,7 @@ public class GalleryViewUI extends FragmentBase
             public void onClick(View v)
             {
                 PopupMenu PopMenu = new PopupMenu(GetActivity(), TextViewTitle);
-                PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.GalleryViewGallery));
+                PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.GalleryView2));
 
                 int FolderCount = 1;
 
@@ -136,7 +135,7 @@ public class GalleryViewUI extends FragmentBase
         ImageView ImageViewSave = new ImageView(GetActivity());
         ImageViewSave.setLayoutParams(ImageViewSaveParam);
         ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewSave.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
+        ImageViewSave.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
         ImageViewSave.setImageResource(R.drawable.ic_done_blue);
         ImageViewSave.setOnClickListener(new View.OnClickListener()
         {
@@ -149,27 +148,6 @@ public class GalleryViewUI extends FragmentBase
                     SignUpDescription.Update(new File(SelectionPath));
 
                 GetActivity().onBackPressed();
-
-
-                /*EditFragment editFragment = ((EditFragment) getActivity().getSupportFragmentManager().findFragmentByTag("EditFragment"));
-
-                if (editFragment != null)
-                {
-                    for (Struct item : GalleryList)
-                        if (item.Selection)
-                            editFragment.DoCrop(item.Path);
-                }
-
-                WriteFragment writeFragment = ((WriteFragment) getActivity().getSupportFragmentManager().findFragmentByTag("WriteFragment"));
-
-                if (writeFragment != null)
-                {
-                    for (Struct item : GalleryList)
-                        if (item.Selection)
-                            writeFragment.GetData(item.Path, IsVideo);
-                }
-
-                getActivity().onBackPressed();*/
             }
         });
 
@@ -267,34 +245,44 @@ public class GalleryViewUI extends FragmentBase
         ViewMain = RelativeLayoutMain;
     }
 
+    @Override
+    public void OnResume()
+    {
+        MiscHandler.HideSoftKey(GetActivity());
+        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    @Override
+    public void OnPause()
+    {
+        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
         private final List<Struct> FileList = new ArrayList<>();
-
         private final int ID_MAIN = MiscHandler.GenerateViewID();
         private final int ID_CIRCLE = MiscHandler.GenerateViewID();
-
-        private final GradientDrawable Select;
-        private final GradientDrawable Selected;
-
+        private final GradientDrawable DrawableSelect;
+        private final GradientDrawable DrawableSelected;
         private int Selection = 0;
 
         AdapterGallery()
         {
-            Select = new GradientDrawable();
-            Select.setShape(GradientDrawable.OVAL);
-            Select.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            DrawableSelect = new GradientDrawable();
+            DrawableSelect.setShape(GradientDrawable.OVAL);
+            DrawableSelect.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
 
-            Selected = new GradientDrawable();
-            Selected.setShape(GradientDrawable.OVAL);
-            Selected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-            Selected.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            DrawableSelected = new GradientDrawable();
+            DrawableSelected.setShape(GradientDrawable.OVAL);
+            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+            DrawableSelected.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
-            private final ImageView ImageViewMain;
-            private final View ViewCircle;
+            ImageView ImageViewMain;
+            View ViewCircle;
 
             ViewHolderMain(View view)
             {
@@ -318,8 +306,8 @@ public class GalleryViewUI extends FragmentBase
                     {
                         Selection--;
                         SelectionPath = "";
-                        Holder.ViewCircle.setBackground(Select);
                         FileList.get(Position).Selection = false;
+                        Holder.ViewCircle.setBackground(DrawableSelect);
                     }
                     else
                     {
@@ -331,16 +319,16 @@ public class GalleryViewUI extends FragmentBase
 
                         Selection++;
                         SelectionPath = FileList.get(Position).Path;
-                        Holder.ViewCircle.setBackground(Selected);
                         FileList.get(Position).Selection = true;
+                        Holder.ViewCircle.setBackground(DrawableSelected);
                     }
                 }
             });
 
             if (FileList.get(Position).Selection)
-                Holder.ViewCircle.setBackground(Selected);
+                Holder.ViewCircle.setBackground(DrawableSelected);
             else
-                Holder.ViewCircle.setBackground(Select);
+                Holder.ViewCircle.setBackground(DrawableSelect);
 
             GlideApp.with(GetActivity())
             .load(FileList.get(Position).Path)
@@ -371,7 +359,7 @@ public class GalleryViewUI extends FragmentBase
                     else*/
                     {
                         ImagePreviewUI imagePreview = new ImagePreviewUI(FileList.get(Position).Path);
-                        imagePreview.SetType(FileList.get(Position).Selection, new ImagePreviewUI.OnSelectListener()
+                        imagePreview.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener()
                         {
                             @Override
                             public void OnSelect()
@@ -380,7 +368,7 @@ public class GalleryViewUI extends FragmentBase
                                 {
                                     Selection--;
                                     SelectionPath = "";
-                                    Holder.ViewCircle.setBackground(Select);
+                                    Holder.ViewCircle.setBackground(DrawableSelect);
                                     FileList.get(Position).Selection = false;
                                 }
                                 else
@@ -393,7 +381,7 @@ public class GalleryViewUI extends FragmentBase
 
                                     Selection++;
                                     SelectionPath = FileList.get(Position).Path;
-                                    Holder.ViewCircle.setBackground(Selected);
+                                    Holder.ViewCircle.setBackground(DrawableSelected);
                                     FileList.get(Position).Selection = true;
                                 }
                             }
@@ -433,6 +421,7 @@ public class GalleryViewUI extends FragmentBase
         @Override
         public int getItemCount()
         {
+            Selection = 0;
             FileList.clear();
 
             if (Type.equals("Gallery"))
@@ -471,9 +460,9 @@ public class GalleryViewUI extends FragmentBase
 
     private class Struct
     {
-        private final String Path;
-        private final String Album;
-        private boolean Selection = false;
+        final String Path;
+        final String Album;
+        boolean Selection = false;
 
         Struct(String album, String path)
         {
