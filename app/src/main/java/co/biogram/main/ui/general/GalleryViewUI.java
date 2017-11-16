@@ -145,7 +145,7 @@ public class GalleryViewUI extends FragmentBase
                 DescriptionUI SignUpDescription = (DescriptionUI) GetActivity().GetManager().FindByTag("DescriptionUI");
 
                 if (SignUpDescription != null && !SelectionPath.equals(""))
-                    SignUpDescription.Update(new File(SelectionPath));
+                    SignUpDescription.Update(new File(SelectionPath), true);
 
                 GetActivity().onBackPressed();
             }
@@ -342,7 +342,7 @@ public class GalleryViewUI extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
-                    /*if (IsVideo)
+                    if (IsVideo)
                     {
                         /* TODO Fix Video View
                         Bundle bundle = new Bundle();
@@ -353,9 +353,9 @@ public class GalleryViewUI extends FragmentBase
                         fragment.SetLocalVideo();
 
                         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
-
+                        */
                     }
-                    else*/
+                    else
                     {
                         ImagePreviewUI imagePreview = new ImagePreviewUI(FileList.get(Position).Path);
                         imagePreview.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener()

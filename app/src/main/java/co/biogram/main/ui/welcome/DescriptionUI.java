@@ -4,11 +4,13 @@ import android.Manifest;
 import android.app.Dialog;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -31,15 +33,19 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
+import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
@@ -57,6 +63,7 @@ public class DescriptionUI extends FragmentBase
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private CircleImageView CircleImageViewProfile;
     private RelativeLayout RelativeLayoutMain;
+    private CropImageView CropImageViewMain;
     private File ProfileFile;
     private String Username;
     private final String Code;
@@ -819,6 +826,58 @@ public class DescriptionUI extends FragmentBase
 
         RelativeLayoutFinish.addView(LoadingViewFinish);
 
+        CropImageViewMain = new CropImageView(GetActivity());
+        CropImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        CropImageViewMain.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
+        CropImageViewMain.setFixedAspectRatio(true);
+        CropImageViewMain.setBackgroundResource(R.color.Black);
+        CropImageViewMain.setAutoZoomEnabled(true);
+        CropImageViewMain.setAspectRatio(1, 1);
+        CropImageViewMain.setVisibility(View.GONE);
+
+        RelativeLayoutMain.addView(CropImageViewMain);
+
+        RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
+        ImageViewDoneParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+        ImageView ImageViewDone = new ImageView(GetActivity());
+        ImageViewDone.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
+        ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewDone.setLayoutParams(ImageViewDoneParam);
+        ImageViewDone.setImageResource(R.drawable.ic_done_white);
+        ImageViewDone.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (Build.VERSION.SDK_INT > 20)
+                    GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+
+                try
+                {
+                    CropImageViewMain.setVisibility(View.GONE);
+
+                    ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
+                    CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
+
+                    File ProfileFile = new File(CacheHandler.CacheDir(GetActivity()), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
+
+                    FileOutputStream FOS = new FileOutputStream(ProfileFile);
+                    FOS.write(BAOS.toByteArray());
+                    FOS.flush();
+                    FOS.close();
+
+                    Update(ProfileFile, false);
+                }
+                catch (Exception e)
+                {
+                    MiscHandler.Debug("DescriptionUI-Crop: " + e.toString());
+                }
+            }
+        });
+
+        CropImageViewMain.addView(ImageViewDone);
+
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
         Anim.setAnimationListener(new Animation.AnimationListener()
@@ -847,8 +906,18 @@ public class DescriptionUI extends FragmentBase
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }
 
-    public void Update(File file)
+    public void Update(File file, boolean Crop)
     {
+        if (Crop)
+        {
+            if (Build.VERSION.SDK_INT > 20)
+                GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+
+            CropImageViewMain.setVisibility(View.VISIBLE);
+            CropImageViewMain.setImageUriAsync(Uri.fromFile(file));
+            return;
+        }
+
         CircleImageViewProfile.setImageURI(Uri.parse(file.getAbsolutePath()));
         ProfileFile = file;
     }

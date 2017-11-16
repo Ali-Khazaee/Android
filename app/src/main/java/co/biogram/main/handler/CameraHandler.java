@@ -3,10 +3,7 @@ package co.biogram.main.handler;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.view.Surface;
 import android.view.TextureView;
-
-import co.biogram.main.fragment.FragmentActivity;
 
 @SuppressWarnings("deprecation")
 public class CameraHandler extends TextureView
@@ -66,10 +63,11 @@ public class CameraHandler extends TextureView
         {
             camera.takePicture(null, null, new Camera.PictureCallback()
             {
+
                 @Override
                 public void onPictureTaken(byte[] Data, Camera camera)
                 {
-                    Listener.OnCapture(Data);
+                    Listener.OnCapture(Data, CameraID == Camera.CameraInfo.CAMERA_FACING_BACK ? 90 : -90);
                 }
             });
         }
@@ -123,29 +121,7 @@ public class CameraHandler extends TextureView
             CameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
 
         camera = Camera.open(CameraID);
-
-        Camera.CameraInfo info = new Camera.CameraInfo();
-        Camera.getCameraInfo(CameraID, info);
-
-        int Degrees = 0;
-
-        switch (((FragmentActivity) getContext()).getWindowManager().getDefaultDisplay().getRotation())
-        {
-            case Surface.ROTATION_0: Degrees = 0; break;
-            case Surface.ROTATION_90: Degrees = 90; break;
-            case Surface.ROTATION_180: Degrees = 180; break;
-            case Surface.ROTATION_270: Degrees = 270; break;
-        }
-
-        int Result = (info.orientation - Degrees + 360) % 360;
-
-        if (CameraID == Camera.CameraInfo.CAMERA_FACING_FRONT)
-        {
-            Result = (info.orientation + Degrees) % 360;
-            Result = (360 - Result) % 360;
-        }
-
-        camera.setDisplayOrientation(Result);
+        camera.setDisplayOrientation(90);
 
         try
         {
@@ -183,7 +159,7 @@ public class CameraHandler extends TextureView
 
     public interface CameraListener
     {
-        void OnCapture(byte[] Data);
+        void OnCapture(byte[] Data, int O);
         void OnFailed();
     }
 }

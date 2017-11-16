@@ -82,10 +82,10 @@ public class CameraViewUI extends FragmentBase
                 Camera.TakePicture(new CameraHandler.CameraListener()
                 {
                     @Override
-                    public void OnCapture(byte[] Data)
+                    public void OnCapture(byte[] Data, int O)
                     {
                         IsClicked = false;
-                        GetActivity().GetManager().OpenView(new ImagePreviewUI(GetActivity(), Data), R.id.WelcomeActivityContainer, "ImagePreviewUI");
+                        GetActivity().GetManager().OpenView(new ImagePreviewUI(GetActivity(), Data, O), R.id.WelcomeActivityContainer, "ImagePreviewUI");
                     }
 
                     @Override

@@ -52,7 +52,7 @@ class ImagePreviewUI extends FragmentBase
     private boolean IsMax = false;
     private int Type = 0;
 
-    ImagePreviewUI(Context context, byte[] data)
+    ImagePreviewUI(Context context, byte[] data, int O)
     {
         try
         {
@@ -83,7 +83,10 @@ class ImagePreviewUI extends FragmentBase
             FOS.close();
 
             Matrix matrix = new Matrix();
-            matrix.postRotate(90);
+            matrix.postRotate(O);
+
+            if (O == -90)
+                matrix.postScale(-1, 1, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
 
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         }
@@ -274,7 +277,7 @@ class ImagePreviewUI extends FragmentBase
                         FOS.close();
 
                         DescriptionUI SignUpDescription = (DescriptionUI) GetActivity().GetManager().FindByTag("DescriptionUI");
-                        SignUpDescription.Update(ProfileFile);
+                        SignUpDescription.Update(ProfileFile, false);
 
                         GetActivity().onBackPressed();
                         GetActivity().onBackPressed();
@@ -311,6 +314,8 @@ class ImagePreviewUI extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
+                    GetActivity().onBackPressed();
+
                     if (IsMax)
                     {
                         MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewReach));
