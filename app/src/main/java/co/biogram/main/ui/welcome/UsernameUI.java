@@ -130,6 +130,7 @@ class UsernameUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.GeneralUsername));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -177,7 +178,7 @@ class UsernameUI extends FragmentBase
         final EditText EditTextUsername = new EditText(GetActivity());
         EditTextUsername.setLayoutParams(EditTextUsernameParam);
         EditTextUsername.setId(MiscHandler.GenerateViewID());
-        EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextUsername.setFilters(new InputFilter[]
         {
             new InputFilter.LengthFilter(32), new InputFilter()
@@ -205,7 +206,7 @@ class UsernameUI extends FragmentBase
         EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextUsername.requestFocus();
-        EditTextUsername.setPadding(0, -MiscHandler.ToDimension(GetActivity(), 2), 0, MiscHandler.ToDimension(GetActivity(), 5));
+        EditTextUsername.setPadding(0, -MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 8), MiscHandler.ToDimension(GetActivity(), 5));
         EditTextUsername.setTypeface(FontHandler.GetTypeface(GetActivity()));
         EditTextUsername.setHint(GetActivity().getString(R.string.UsernameUIHint));
         EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
@@ -215,7 +216,7 @@ class UsernameUI extends FragmentBase
             {
                 paint = new Paint();
                 paint.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-                paint.setTextSize(50f);
+                paint.setTextSize(MiscHandler.ToDimension(GetActivity(), 18));
                 paint.setAntiAlias(true);
                 paint.setTextAlign(Paint.Align.LEFT);
             }
@@ -223,7 +224,7 @@ class UsernameUI extends FragmentBase
             @Override
             public void draw(@NonNull Canvas canvas)
             {
-                canvas.drawText("@", 0, MiscHandler.ToDimension(GetActivity(), 2), paint);
+                canvas.drawText("@", MiscHandler.ToDimension(GetActivity(), 8), MiscHandler.ToDimension(GetActivity(), 2), paint);
             }
 
             @Override
@@ -244,7 +245,7 @@ class UsernameUI extends FragmentBase
                 return PixelFormat.TRANSLUCENT;
             }
         }, null, null, null);
-        EditTextUsername.setCompoundDrawablePadding(MiscHandler.ToDimension(GetActivity(), 20));
+        EditTextUsername.setCompoundDrawablePadding(MiscHandler.ToDimension(GetActivity(), 27));
         EditTextUsername.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }

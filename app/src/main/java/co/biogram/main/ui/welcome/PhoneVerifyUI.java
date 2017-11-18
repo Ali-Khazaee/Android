@@ -21,6 +21,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
@@ -143,6 +144,7 @@ class PhoneVerifyUI extends FragmentBase
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setText(GetActivity().getString(R.string.PhoneVerifyUI));
 
@@ -270,6 +272,20 @@ class PhoneVerifyUI extends FragmentBase
                 NextField.requestFocus();
             }
         });
+        EditTextCode2.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode2.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
+            }
+        });
 
         LinearLayoutVerificationCode.addView(EditTextCode2);
 
@@ -303,6 +319,20 @@ class PhoneVerifyUI extends FragmentBase
                     NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
+            }
+        });
+        EditTextCode3.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode3.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
             }
         });
 
@@ -340,6 +370,20 @@ class PhoneVerifyUI extends FragmentBase
                 NextField.requestFocus();
             }
         });
+        EditTextCode4.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode4.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
+            }
+        });
 
         LinearLayoutVerificationCode.addView(EditTextCode4);
 
@@ -371,6 +415,20 @@ class PhoneVerifyUI extends FragmentBase
                     EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
+            }
+        });
+        EditTextCode5.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode5.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
             }
         });
 

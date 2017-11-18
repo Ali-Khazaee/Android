@@ -17,6 +17,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
@@ -138,6 +139,7 @@ class EmailVerifyUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.EmailVerifyUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -220,10 +222,7 @@ class EmailVerifyUI extends FragmentBase
             {
                 Field1 = (s.length() != 0);
 
-                if (Field1 && Field2 && Field3 && Field4 && Field5)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
+                ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
                 if (s.length() == 0)
                     return;
@@ -257,10 +256,7 @@ class EmailVerifyUI extends FragmentBase
             {
                 Field2 = (s.length() != 0);
 
-                if (Field1 && Field2 && Field3 && Field4 && Field5)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
+                ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
                 EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_RIGHT);
 
@@ -268,6 +264,20 @@ class EmailVerifyUI extends FragmentBase
                     NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
+            }
+        });
+        EditTextCode2.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode2.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
             }
         });
 
@@ -295,10 +305,7 @@ class EmailVerifyUI extends FragmentBase
             {
                 Field3 = (s.length() != 0);
 
-                if (Field1 && Field2 && Field3 && Field4 && Field5)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
+                ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
                 EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_RIGHT);
 
@@ -306,6 +313,20 @@ class EmailVerifyUI extends FragmentBase
                     NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
+            }
+        });
+        EditTextCode3.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode3.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
             }
         });
 
@@ -333,10 +354,7 @@ class EmailVerifyUI extends FragmentBase
             {
                 Field4 = (s.length() != 0);
 
-                if (Field1 && Field2 && Field3 && Field4 && Field5)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
+                ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
                 EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_RIGHT);
 
@@ -344,6 +362,20 @@ class EmailVerifyUI extends FragmentBase
                     NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
+            }
+        });
+        EditTextCode4.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode4.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
             }
         });
 
@@ -370,16 +402,27 @@ class EmailVerifyUI extends FragmentBase
             {
                 Field5 = (s.length() != 0);
 
-                if (Field1 && Field2 && Field3 && Field4 && Field5)
-                    ButtonNext.setEnabled(true);
-                else
-                    ButtonNext.setEnabled(false);
+                ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
                 if (s.length() == 0)
                 {
                     EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
+            }
+        });
+        EditTextCode5.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode5.getText().length() == 0)
+                {
+                    EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
+                    NextField.requestFocus();
+                }
+
+                return false;
             }
         });
 

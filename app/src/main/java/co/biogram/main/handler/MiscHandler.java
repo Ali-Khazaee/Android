@@ -1,5 +1,7 @@
 package co.biogram.main.handler;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -247,6 +249,13 @@ public class MiscHandler
     public static boolean IsDark(Context context)
     {
         return SharedHandler.GetBoolean(context, "IsDark");
+    }
+
+    public static void CreateAccount(Context context)
+    {
+        AccountManager Manager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        Account account = new Account("Biogram", "co.biogram.main.service.AuthenticatorService");
+        Manager.addAccountExplicitly(account, null, null);
     }
 
     public static String GetRandomServer(String URL)

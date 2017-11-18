@@ -82,6 +82,7 @@ public class GalleryViewUI extends FragmentBase
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), MiscHandler.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
         TextViewTitle.setText(GetActivity().getString(R.string.GalleryView));
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setId(MiscHandler.GenerateViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
         {

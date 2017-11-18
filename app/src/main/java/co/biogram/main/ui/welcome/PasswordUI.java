@@ -107,6 +107,7 @@ class PasswordUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.GeneralPassword));
 
         RelativeLayoutHeader.addView(TextViewTitle);

@@ -152,6 +152,7 @@ public class DescriptionUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.DescriptionUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -585,6 +586,8 @@ public class DescriptionUI extends FragmentBase
                                          SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
                                          SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
 
+                                         MiscHandler.CreateAccount(GetActivity());
+
                                          GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                          GetActivity().finish();
                                          break;
@@ -679,6 +682,8 @@ public class DescriptionUI extends FragmentBase
                                         SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
                                         SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
 
+                                        MiscHandler.CreateAccount(GetActivity());
+
                                         GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                         GetActivity().finish();
                                         break;
@@ -769,6 +774,8 @@ public class DescriptionUI extends FragmentBase
                                         SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
                                         SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
 
+                                        MiscHandler.CreateAccount(GetActivity());
+
                                         GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                         GetActivity().finish();
                                         break;
@@ -837,8 +844,13 @@ public class DescriptionUI extends FragmentBase
 
         RelativeLayoutMain.addView(CropImageViewMain);
 
+        RelativeLayout RelativeLayoutCrop = new RelativeLayout(GetActivity());
+        RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
+
+        CropImageViewMain.addView(RelativeLayoutCrop);
+
         RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-        ImageViewDoneParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        ImageViewDoneParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         ImageView ImageViewDone = new ImageView(GetActivity());
         ImageViewDone.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
@@ -876,7 +888,7 @@ public class DescriptionUI extends FragmentBase
             }
         });
 
-        CropImageViewMain.addView(ImageViewDone);
+        RelativeLayoutCrop.addView(ImageViewDone);
 
         TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);

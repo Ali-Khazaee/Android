@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -69,18 +67,6 @@ class ImagePreviewUI extends FragmentBase
             o.inJustDecodeBounds = false;
 
             bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, o);
-
-            ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
-            byte[] ByteData = BAOS.toByteArray();
-
-            String PicturePath = CacheHandler.CacheDir(context).getPath() + File.separator + String.valueOf(System.currentTimeMillis()) + "_imagepreview.jpg";
-            File PictureFile = new File(PicturePath);
-
-            FileOutputStream FOS = new FileOutputStream(PictureFile);
-            FOS.write(ByteData);
-            FOS.flush();
-            FOS.close();
 
             Matrix matrix = new Matrix();
             matrix.postRotate(O);
@@ -211,6 +197,7 @@ class ImagePreviewUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.ImagePreview));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -233,8 +220,7 @@ class ImagePreviewUI extends FragmentBase
                 public void onClick(View v)
                 {
                     CropImageViewMain.setVisibility(View.VISIBLE);
-                    String ResizeBitmapPath = MediaStore.Images.Media.insertImage(GetActivity().getContentResolver(), bitmap, "Biogram Crop Image", null);
-                    CropImageViewMain.setImageUriAsync(Uri.parse(ResizeBitmapPath));
+                    CropImageViewMain.setImageBitmap(bitmap);
                 }
             });
 
@@ -249,8 +235,13 @@ class ImagePreviewUI extends FragmentBase
 
             RelativeLayoutMain.addView(CropImageViewMain);
 
+            RelativeLayout RelativeLayoutCrop = new RelativeLayout(GetActivity());
+            RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
+
+            CropImageViewMain.addView(RelativeLayoutCrop);
+
             RelativeLayout.LayoutParams ImageViewDone2Param = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-            ImageViewDone2Param.addRule(MiscHandler.Align("L"));
+            ImageViewDone2Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
             ImageView ImageViewDone2 = new ImageView(GetActivity());
             ImageViewDone2.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
@@ -289,7 +280,7 @@ class ImagePreviewUI extends FragmentBase
                 }
             });
 
-            CropImageViewMain.addView(ImageViewDone2);
+            RelativeLayoutCrop.addView(ImageViewDone2);
         }
         else if (Type == 2)
         {

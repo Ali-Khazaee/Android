@@ -41,7 +41,6 @@ class EmailSignInUI extends FragmentBase
     private RelativeLayout RelativeLayoutMain;
     private boolean RequestUsername = false;
     private boolean RequestPassword = false;
-    private int HeightDifference = 0;
 
     @Override
     public void OnCreate()
@@ -56,6 +55,8 @@ class EmailSignInUI extends FragmentBase
 
         RelativeLayoutMainListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
+            int HeightDifference = 0;
+
             @Override
             public void onGlobalLayout()
             {
@@ -111,6 +112,7 @@ class EmailSignInUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.GeneralEmail));
 
         RelativeLayoutHeader.addView(TextViewTitle);

@@ -130,6 +130,7 @@ class PhoneUI extends FragmentBase
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setText(GetActivity().getString(IsSignUp ? R.string.GeneralSignUp : R.string.GeneralSignIn));
+        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 

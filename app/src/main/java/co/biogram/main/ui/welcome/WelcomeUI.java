@@ -340,8 +340,11 @@ public class WelcomeUI extends FragmentBase
 
         RelativeLayoutMain.addView(RelativeLayoutSignIn);
 
+        RelativeLayout.LayoutParams TextViewSignInParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewSignInParam.addRule(MiscHandler.Align("R"));
+
         TextView TextViewSignIn = new TextView(GetActivity(), 14, false);
-        TextViewSignIn.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        TextViewSignIn.setLayoutParams(TextViewSignInParam);
         TextViewSignIn.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewSignIn.setText(GetActivity().getString(R.string.WelcomeUISignIn));
         TextViewSignIn.setId(MiscHandler.GenerateViewID());

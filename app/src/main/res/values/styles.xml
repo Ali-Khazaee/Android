@@ -2,5 +2,6 @@
     <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlActivated">@color/BlueLight</item>
         <item name="colorControlHighlight">@color/BlueLight</item>
+        <item name="android:textColorHint">@color/Gray2</item>
     </style>
 </resources>
