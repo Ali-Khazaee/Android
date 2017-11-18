@@ -615,6 +615,7 @@ class PhoneVerifyUI extends FragmentBase
             }
         });
 
+        // TODO Memory Leak
         CountDownTimerResend = new CountDownTimer(120000, 1000)
         {
             private boolean Enabled = true;
@@ -760,6 +761,7 @@ class PhoneVerifyUI extends FragmentBase
                     .addBodyParameter("Code", Code)
                     .addBodyParameter("Phone", Phone)
                     .addBodyParameter("VerifyCode", VerifyCode)
+                    .addBodyParameter("Session", MiscHandler.GenerateSession())
                     .setTag("PhoneVerifyUI")
                     .build()
                     .getAsString(new StringRequestListener()

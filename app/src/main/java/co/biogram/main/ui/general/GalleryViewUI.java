@@ -81,7 +81,7 @@ public class GalleryViewUI extends FragmentBase
         final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), MiscHandler.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
-        TextViewTitle.setText(GetActivity().getString(R.string.GalleryView));
+        TextViewTitle.setText(GetActivity().getString(R.string.GalleryViewUI));
         TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
         TextViewTitle.setId(MiscHandler.GenerateViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
@@ -90,7 +90,7 @@ public class GalleryViewUI extends FragmentBase
             public void onClick(View v)
             {
                 PopupMenu PopMenu = new PopupMenu(GetActivity(), TextViewTitle);
-                PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.GalleryView2));
+                PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.GalleryViewUI2));
 
                 int FolderCount = 1;
 
@@ -313,7 +313,7 @@ public class GalleryViewUI extends FragmentBase
                     {
                         if (Count <= Selection)
                         {
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewMaximum) + " " + Count);
+                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
                             return;
                         }
 
@@ -375,7 +375,7 @@ public class GalleryViewUI extends FragmentBase
                                 {
                                     if (Count <= Selection)
                                     {
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewMaximum) + " " + Count);
+                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
                                         return;
                                     }
 

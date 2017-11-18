@@ -139,12 +139,15 @@
     <string name="PasswordResetUIError4">The link has sent to your email address</string>
 
     <!-- Image Preview UI -->
-    <string name="ImagePreview">Image Preview</string>
+    <string name="ImagePreviewUI">Image Preview</string>
 
     <!-- Gallery View UI -->
-    <string name="GalleryView">Gallery</string>
-    <string name="GalleryView2">Gallery</string>
-    <string name="GalleryViewMaximum">Maximum selection is </string>
-    <string name="GalleryViewReach">You have been reached maximum selection</string>
+    <string name="GalleryViewUI">Gallery</string>
+    <string name="GalleryViewUI2">Gallery</string>
+    <string name="GalleryViewUIMaximum">Maximum selection is </string>
+    <string name="GalleryViewUIReach">You have been reached maximum selection</string>
+
+    <!-- Inbox UI -->
+    <string name="InboxUI">Inbox</string>
 
 </resources>

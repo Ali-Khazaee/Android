@@ -2,7 +2,6 @@ package co.biogram.main.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,8 +20,8 @@ public class SocialActivity extends FragmentActivity
 {
     private boolean NotificationEnable = false;
 
-    private ImageView ImageViewMoment;
     private ImageView ImageViewInbox;
+    private ImageView ImageViewMoment;
     private ImageView ImageViewNotification;
     private ImageView ImageViewProfile;
 
@@ -46,21 +45,21 @@ public class SocialActivity extends FragmentActivity
 
         RelativeLayoutMain.addView(LinearLayoutMenu);
 
-        ImageViewMoment = new ImageView(this);
-        ImageViewMoment.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-        ImageViewMoment.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewMoment.setPadding(MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15));
-        ImageViewMoment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(1); } });
-
-        LinearLayoutMenu.addView(ImageViewMoment);
-
         ImageViewInbox = new ImageView(this);
         ImageViewInbox.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewInbox.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewInbox.setPadding(MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17));
-        ImageViewInbox.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(2); } });
+        ImageViewInbox.setPadding(MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15));
+        ImageViewInbox.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(1); } });
 
         LinearLayoutMenu.addView(ImageViewInbox);
+
+        ImageViewMoment = new ImageView(this);
+        ImageViewMoment.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        ImageViewMoment.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewMoment.setPadding(MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17));
+        ImageViewMoment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(2); } });
+
+        LinearLayoutMenu.addView(ImageViewMoment);
 
         ImageView ImageViewChat = new ImageView(this);
         ImageViewChat.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
@@ -75,7 +74,7 @@ public class SocialActivity extends FragmentActivity
         ImageViewNotification.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewNotification.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewNotification.setPadding(MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17));
-        ImageViewNotification.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(4); } });
+        ImageViewNotification.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(3); } });
 
         LinearLayoutMenu.addView(ImageViewNotification);
 
@@ -83,7 +82,7 @@ public class SocialActivity extends FragmentActivity
         ImageViewProfile.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewProfile.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewProfile.setPadding(MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15));
-        ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(5); } });
+        ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(4); } });
 
         LinearLayoutMenu.addView(ImageViewProfile);
 
@@ -100,17 +99,17 @@ public class SocialActivity extends FragmentActivity
         RelativeLayout.LayoutParams FrameLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         FrameLayoutContentParam.addRule(RelativeLayout.ABOVE, ViewLine.getId());
 
-        FrameLayout FrameLayoutContent = new FrameLayout(this);
-        FrameLayoutContent.setLayoutParams(FrameLayoutContentParam);
-        FrameLayoutContent.setId(R.id.SocialActivityContainer);
+        RelativeLayout RelativeLayoutContent = new RelativeLayout(this);
+        RelativeLayoutContent.setLayoutParams(FrameLayoutContentParam);
+        RelativeLayoutContent.setId(R.id.SocialActivityContainer);
 
-        RelativeLayoutMain.addView(FrameLayoutContent);
+        RelativeLayoutMain.addView(RelativeLayoutContent);
 
-        FrameLayout FrameLayoutContentFull = new FrameLayout(this);
-        FrameLayoutContentFull.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        FrameLayoutContentFull.setId(R.id.SocialActivityContainerFull);
+        RelativeLayout RelativeLayoutContentFull = new RelativeLayout(this);
+        RelativeLayoutContentFull.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutContentFull.setId(R.id.SocialActivityContainerFull);
 
-        RelativeLayoutMain.addView(FrameLayoutContentFull);
+        RelativeLayoutMain.addView(RelativeLayoutContentFull);
 
         setContentView(RelativeLayoutMain);
 
@@ -144,8 +143,8 @@ public class SocialActivity extends FragmentActivity
 
     private void ChangePage(int Page)
     {
-        ImageViewMoment.setImageResource(R.drawable.ic_moment_gray);
         ImageViewInbox.setImageResource(R.drawable.ic_inbox_gray);
+        ImageViewMoment.setImageResource(R.drawable.ic_moment_gray);
         ImageViewNotification.setImageResource(NotificationEnable ? R.drawable.ic_notification_gray2 : R.drawable.ic_notification_gray);
         ImageViewProfile.setImageResource(R.drawable.ic_profile_gray);
 
@@ -155,22 +154,22 @@ public class SocialActivity extends FragmentActivity
         switch (Page)
         {
             default:
-                Tag = "MomentUI";
-                Fragment = new MomentUI();
-                ImageViewMoment.setImageResource(R.drawable.ic_moment_blue);
-                break;
-            case 2:
                 Tag = "InboxUI";
                 Fragment = new InboxUI();
                 ImageViewInbox.setImageResource(R.drawable.ic_inbox_blue);
                 break;
-            case 4:
+            case 2:
+                Tag = "MomentUI";
+                Fragment = new MomentUI();
+                ImageViewMoment.setImageResource(R.drawable.ic_moment_blue);
+                break;
+            case 3:
                 Tag = "NotificationUI";
                 Fragment = new NotificationUI();
                 NotificationEnable = false;
                 ImageViewNotification.setImageResource(R.drawable.ic_notification_blue);
                 break;
-            case 5:
+            case 4:
                 Tag = "ProfileUI";
                 Fragment = new ProfileUI();
                 ImageViewProfile.setImageResource(R.drawable.ic_profile_blue);

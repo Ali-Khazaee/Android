@@ -69,7 +69,7 @@ public class DescriptionUI extends FragmentBase
     private final String Code;
     private final int Type;
 
-    public DescriptionUI(String code, int type)
+    DescriptionUI(String code, int type)
     {
         Code = code;
         Type = type;
@@ -586,8 +586,6 @@ public class DescriptionUI extends FragmentBase
                                          SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
                                          SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
 
-                                         MiscHandler.CreateAccount(GetActivity());
-
                                          GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                          GetActivity().finish();
                                          break;
@@ -682,8 +680,6 @@ public class DescriptionUI extends FragmentBase
                                         SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
                                         SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
 
-                                        MiscHandler.CreateAccount(GetActivity());
-
                                         GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                         GetActivity().finish();
                                         break;
@@ -773,8 +769,6 @@ public class DescriptionUI extends FragmentBase
                                         SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
                                         SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
                                         SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
-
-                                        MiscHandler.CreateAccount(GetActivity());
 
                                         GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                         GetActivity().finish();

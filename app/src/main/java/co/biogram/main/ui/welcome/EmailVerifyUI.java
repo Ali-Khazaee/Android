@@ -554,6 +554,7 @@ class EmailVerifyUI extends FragmentBase
             }
         });
 
+        // TODO Memory Leak
         CountDownTimerResend = new CountDownTimer(120000, 1000)
         {
             private boolean Enabled = true;

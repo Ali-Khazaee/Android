@@ -20,8 +20,6 @@ public class WelcomeActivity extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
 
-        MiscHandler.CreateAccount(this);
-
         if (SharedHandler.GetBoolean(this, "IsLogin"))
         {
             if (SharedHandler.GetString(this, "Activity").equals("Chat"))

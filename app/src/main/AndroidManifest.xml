@@ -50,22 +50,6 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="co.biogram.main.service.AuthenticatorService" android:exported="false" android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
-            </intent-filter>
-
-            <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator" />
-        </service>
-
-        <service android:name="co.biogram.main.service.SyncService" android:exported="true" android:process=":sync" android:permission="android.permission.ACCOUNT_MANAGER">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-
-            <meta-data android:name="android.content.SyncAdapter" android:resource="@xml/syncadapter" />
-        </service>
-
         <service android:name=".service.SocketService" />
 
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAEzDCzmm_0IoHUeOeaNdAE13hWvPFXdbw" />

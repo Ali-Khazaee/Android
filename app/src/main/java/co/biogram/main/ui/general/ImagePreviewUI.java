@@ -198,7 +198,7 @@ class ImagePreviewUI extends FragmentBase
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.ImagePreview));
+        TextViewTitle.setText(GetActivity().getString(R.string.ImagePreviewUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -309,7 +309,7 @@ class ImagePreviewUI extends FragmentBase
 
                     if (IsMax)
                     {
-                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewReach));
+                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIReach));
                         return;
                     }
 

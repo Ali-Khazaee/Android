@@ -139,12 +139,15 @@
     <string name="PasswordResetUIError4">لینک برای ایمل شما ارسال شد</string>
 
     <!-- Image Preview UI -->
-    <string name="ImagePreview">نمایش عکس</string>
+    <string name="ImagePreviewUI">نمایش عکس</string>
 
     <!-- Gallery View UI -->
-    <string name="GalleryView">گالری</string>
-    <!-- Unused -->
-    <string name="GalleryViewMaximum">حداکثر تعداد انتخاب عکس ها </string>
-    <string name="GalleryViewReach">شما به حداکثر انتخاب رسیدید</string>
+    <string name="GalleryViewUI">گالری</string>
+    <string name="GalleryViewUI2">Gallery</string>
+    <string name="GalleryViewUIMaximum">حداکثر تعداد انتخاب عکس ها </string>
+    <string name="GalleryViewUIReach">شما به حداکثر انتخاب رسیدید</string>
+
+    <!-- Inbox UI -->
+    <string name="InboxUI">صندوق</string>
 
 </resources>
