@@ -63,7 +63,6 @@ public class CameraHandler extends TextureView
         {
             camera.takePicture(null, null, new Camera.PictureCallback()
             {
-
                 @Override
                 public void onPictureTaken(byte[] Data, Camera camera)
                 {

@@ -14,20 +14,20 @@ import co.biogram.main.handler.MiscHandler;
 
 public class AuthenticatorService extends Service
 {
-    private Authenticator mAuthenticator;
+    private Authenticator authenticator;
 
     @Override
     public void onCreate()
     {
-        MiscHandler.Debug("onCreate Called");
-        mAuthenticator = new Authenticator(this);
+        MiscHandler.Debug("AuthenticatorService onCreate Called");
+        authenticator = new Authenticator(this);
     }
 
     @Override
     public IBinder onBind(Intent intent)
     {
-        MiscHandler.Debug("onBind Called");
-        return mAuthenticator.getIBinder();
+        MiscHandler.Debug("AuthenticatorService onBind Called");
+        return authenticator.getIBinder();
     }
 
     private class Authenticator extends AbstractAccountAuthenticator
