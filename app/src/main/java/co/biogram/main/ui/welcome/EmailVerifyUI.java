@@ -438,7 +438,7 @@ class EmailVerifyUI extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText(GetActivity().getString(R.string.EmailVerifyUIMessage) + " " + Email, TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText((GetActivity().getString(R.string.EmailVerifyUIMessage) + " " + Email), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         CharacterStyle CharacterStyleMessage = new CharacterStyle()
@@ -565,7 +565,7 @@ class EmailVerifyUI extends FragmentBase
                 long Min = (Counter / 1000) / 60;
                 long Sec = (Counter / 1000) - (Min * 60);
 
-                TextViewTime.setText("0" + Min + ":" + (Sec < 9 ? "0" + String.valueOf(Sec) : String.valueOf(Sec)));
+                TextViewTime.setText(("0" + Min + ":" + (Sec < 9 ? "0" + String.valueOf(Sec) : String.valueOf(Sec))));
 
                 if (Enabled)
                 {

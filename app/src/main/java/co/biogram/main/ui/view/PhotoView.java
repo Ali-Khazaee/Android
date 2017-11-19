@@ -302,7 +302,7 @@ class CustomGestureDetector
     }
 }
 
-class PhotoViewAttacher implements View.OnTouchListener, View.OnLayoutChangeListener
+class PhotoViewAttacher
 {
     private static float DEFAULT_MAX_SCALE = 3.0f;
     private static float DEFAULT_MID_SCALE = 1.75f;
@@ -376,11 +376,83 @@ class PhotoViewAttacher implements View.OnTouchListener, View.OnLayoutChangeList
         }
     };
 
-     PhotoViewAttacher(ImageView imageView)
-     {
+    PhotoViewAttacher(ImageView imageView)
+    {
         mImageView = imageView;
-        imageView.setOnTouchListener(this);
-        imageView.addOnLayoutChangeListener(this);
+        // TODO Fix Me
+        imageView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent ev)
+            {
+                boolean handled = false;
+
+                if (mZoomEnabled && ((ImageView) v).getDrawable() != null)
+                {
+                    switch (ev.getAction())
+                    {
+                        case MotionEvent.ACTION_DOWN:
+                            ViewParent parent = v.getParent();
+
+                            if (parent != null)
+                                parent.requestDisallowInterceptTouchEvent(true);
+
+                            cancelFling();
+                            break;
+                        case MotionEvent.ACTION_CANCEL:
+                        case MotionEvent.ACTION_UP:
+                            if (getScale() < mMinScale)
+                            {
+                                RectF rect = getDisplayRect();
+
+                                if (rect != null)
+                                {
+                                    v.post(new AnimatedZoomRunnable(getScale(), mMinScale, rect.centerX(), rect.centerY()));
+                                    handled = true;
+                                }
+                            }
+                            else if (getScale() > mMaxScale)
+                            {
+                                RectF rect = getDisplayRect();
+
+                                if (rect != null)
+                                {
+                                    v.post(new AnimatedZoomRunnable(getScale(), mMaxScale, rect.centerX(), rect.centerY()));
+                                    handled = true;
+                                }
+                            }
+                            break;
+                    }
+
+                    if (mScaleDragDetector != null)
+                    {
+                        boolean wasScaling = mScaleDragDetector.isScaling();
+                        boolean wasDragging = mScaleDragDetector.isDragging();
+
+                        handled = mScaleDragDetector.onTouchEvent(ev);
+
+                        boolean didntScale = !wasScaling && !mScaleDragDetector.isScaling();
+                        boolean didntDrag = !wasDragging && !mScaleDragDetector.isDragging();
+
+                        mBlockParentIntercept = didntScale && didntDrag;
+                    }
+
+                    if (mGestureDetector != null && mGestureDetector.onTouchEvent(ev))
+                        handled = true;
+                }
+
+                return handled;
+            }
+        });
+        imageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener()
+        {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
+            {
+                if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom)
+                    updateBaseMatrix(mImageView.getDrawable());
+            }
+        });
 
         if (imageView.isInEditMode())
             return;
@@ -427,11 +499,11 @@ class PhotoViewAttacher implements View.OnTouchListener, View.OnLayoutChangeList
                     float y = ev.getY();
 
                     if (scale < getMediumScale())
-                        setScale(getMediumScale(), x, y, true);
+                        setScale(getMediumScale(), x, y);
                     else if (scale >= getMediumScale() && scale < getMaximumScale())
-                        setScale(getMaximumScale(), x, y, true);
+                        setScale(getMaximumScale(), x, y);
                     else
-                        setScale(getMinimumScale(), x, y, true);
+                        setScale(getMinimumScale(), x, y);
                 }
                 catch (ArrayIndexOutOfBoundsException e)
                 {
@@ -486,74 +558,7 @@ class PhotoViewAttacher implements View.OnTouchListener, View.OnLayoutChangeList
         return mScaleType;
     }
 
-    @Override
-    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
-    {
-        if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom)
-            updateBaseMatrix(mImageView.getDrawable());
-    }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent ev)
-    {
-        boolean handled = false;
-
-        if (mZoomEnabled && ((ImageView) v).getDrawable() != null)
-        {
-            switch (ev.getAction())
-            {
-                case MotionEvent.ACTION_DOWN:
-                    ViewParent parent = v.getParent();
-
-                    if (parent != null)
-                        parent.requestDisallowInterceptTouchEvent(true);
-
-                    cancelFling();
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    if (getScale() < mMinScale)
-                    {
-                        RectF rect = getDisplayRect();
-
-                        if (rect != null)
-                        {
-                            v.post(new AnimatedZoomRunnable(getScale(), mMinScale, rect.centerX(), rect.centerY()));
-                            handled = true;
-                        }
-                    }
-                    else if (getScale() > mMaxScale)
-                    {
-                        RectF rect = getDisplayRect();
-
-                        if (rect != null)
-                        {
-                            v.post(new AnimatedZoomRunnable(getScale(), mMaxScale, rect.centerX(), rect.centerY()));
-                            handled = true;
-                        }
-                    }
-                    break;
-            }
-
-            if (mScaleDragDetector != null)
-            {
-                boolean wasScaling = mScaleDragDetector.isScaling();
-                boolean wasDragging = mScaleDragDetector.isDragging();
-
-                handled = mScaleDragDetector.onTouchEvent(ev);
-
-                boolean didntScale = !wasScaling && !mScaleDragDetector.isScaling();
-                boolean didntDrag = !wasDragging && !mScaleDragDetector.isDragging();
-
-                mBlockParentIntercept = didntScale && didntDrag;
-            }
-
-            if (mGestureDetector != null && mGestureDetector.onTouchEvent(ev))
-                handled = true;
-        }
-
-        return handled;
-    }
 
     void setOnLongClickListener(OnLongClickListener listener)
     {
@@ -565,18 +570,12 @@ class PhotoViewAttacher implements View.OnTouchListener, View.OnLayoutChangeList
         mOnClickListener = listener;
     }
 
-    private void setScale(float scale, float focalX, float focalY, boolean animate)
+    private void setScale(float scale, float focalX, float focalY)
     {
         if (scale < mMinScale || scale > mMaxScale)
             throw new IllegalArgumentException("Scale must be within the range of minScale and maxScale");
 
-        if (animate)
-            mImageView.post(new AnimatedZoomRunnable(getScale(), scale, focalX, focalY));
-        else
-        {
-            mSuppMatrix.setScale(scale, scale, focalX, focalY);
-            checkAndDisplayMatrix();
-        }
+        mImageView.post(new AnimatedZoomRunnable(getScale(), scale, focalX, focalY));
     }
 
     public void setScaleType(ScaleType scaleType)

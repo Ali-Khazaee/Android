@@ -112,14 +112,14 @@ public class SocketService extends Service
 
     private void CreateNotification(Context context, String Message, String Data, int Type)
     {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        /*NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
         .setSmallIcon(R.drawable.ic_notification)
         .setContentTitle("Biogram")
         .setContentText(Message);
 
         /*Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("Data", Data);
-        intent.putExtra("Type", Type);*/
+        intent.putExtra("Type", Type);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, null, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -127,6 +127,6 @@ public class SocketService extends Service
         builder.setAutoCancel(true);
 
         NotificationManager Manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Manager.notify(MiscHandler.GenerateViewID(), builder.build());
+        Manager.notify(MiscHandler.GenerateViewID(), builder.build());*/
     }
 }

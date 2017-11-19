@@ -350,7 +350,7 @@ class PhoneUI extends FragmentBase
         TextViewMessage.setId(MiscHandler.GenerateViewID());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
-        TextViewMessage.setText(GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText((GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         ClickableSpan ClickableSpanMessage = new ClickableSpan()

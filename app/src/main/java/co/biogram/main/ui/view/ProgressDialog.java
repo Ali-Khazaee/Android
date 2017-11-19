@@ -48,6 +48,7 @@ public class ProgressDialog extends AlertDialog
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // TODO Memory Leak
         ViewUpdateHandler = new Handler()
         {
             @Override

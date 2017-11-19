@@ -287,7 +287,7 @@ public class GalleryViewUI extends FragmentBase
             ViewHolderMain(View view)
             {
                 super(view);
-                ImageViewMain = (ImageView) view.findViewById(ID_MAIN);
+                ImageViewMain = view.findViewById(ID_MAIN);
                 ViewCircle = view.findViewById(ID_CIRCLE);
             }
         }

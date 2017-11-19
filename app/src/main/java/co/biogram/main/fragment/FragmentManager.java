@@ -31,7 +31,7 @@ public class FragmentManager
 
         if (Fragment.ViewMain != null)
         {
-            RelativeLayout RelativeLayoutMain = (RelativeLayout) Activity.findViewById(ID);
+            RelativeLayout RelativeLayoutMain = Activity.findViewById(ID);
             RelativeLayoutMain.addView(Fragment.ViewMain);
         }
 

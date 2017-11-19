@@ -143,12 +143,18 @@ class ImagePreviewUI extends FragmentBase
                     {
                         return super.onTouchEvent(ev);
                     }
-                    catch (IllegalArgumentException ex)
+                    catch (Exception e)
                     {
                         //
                     }
 
                     return false;
+                }
+
+                @Override
+                public boolean performClick()
+                {
+                    return super.performClick();
                 }
 
                 @Override
@@ -158,7 +164,7 @@ class ImagePreviewUI extends FragmentBase
                     {
                         return super.onInterceptTouchEvent(ev);
                     }
-                    catch (IllegalArgumentException ex)
+                    catch (Exception e)
                     {
                         //
                     }

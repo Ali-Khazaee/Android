@@ -7,7 +7,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 
 import android.widget.TextView;
-import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
