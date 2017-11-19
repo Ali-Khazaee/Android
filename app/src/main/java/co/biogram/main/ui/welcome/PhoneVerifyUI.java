@@ -892,6 +892,9 @@ class PhoneVerifyUI extends FragmentBase
         @Override
         public void onReceive(Context context, Intent intent)
         {
+            if (intent.getAction() == null || intent.getExtras() == null)
+                return;
+
             if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Verify"))
             {
                 String VerifyCode = intent.getExtras().getString("Code", "");

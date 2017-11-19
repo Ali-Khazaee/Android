@@ -69,10 +69,10 @@ public class DescriptionUI extends FragmentBase
     private final String Code;
     private final int Type;
 
-    DescriptionUI(String code, int type)
+    DescriptionUI(String code)
     {
         Code = code;
-        Type = type;
+        Type = 2;
     }
 
     DescriptionUI(String code, String username, int type)

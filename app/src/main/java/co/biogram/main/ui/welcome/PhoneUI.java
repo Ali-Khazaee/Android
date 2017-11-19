@@ -175,9 +175,9 @@ class PhoneUI extends FragmentBase
         LinearLayoutCode.addView(TextViewPhoneCode);
 
         TelephonyManager Telephony = (TelephonyManager) GetActivity().getSystemService(Context.TELEPHONY_SERVICE);
-        String CountryCode = Telephony.getNetworkCountryIso();
+        String CountryCode =  Telephony == null ? "" : Telephony.getNetworkCountryIso();
 
-        if (CountryCode == null || CountryCode.equals(""))
+        if (Telephony != null && (CountryCode == null || CountryCode.equals("")))
             CountryCode = Telephony.getSimCountryIso();
 
         switch (CountryCode)

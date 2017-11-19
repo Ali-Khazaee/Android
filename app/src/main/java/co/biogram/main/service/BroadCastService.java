@@ -20,10 +20,13 @@ public class BroadCastService extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        if (intent.getAction() == null)
+            return;
+
         if (intent.getAction().equalsIgnoreCase("android.intent.action.BOOT_COMPLETED"))
             context.startService(new Intent(context, SocketService.class));
 
-        if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Request"))
+        if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Request") && intent.getExtras() != null)
             IsSMS = intent.getExtras().getBoolean("SetWaiting", false);
 
         if (IsSMS && intent.getAction().equalsIgnoreCase("android.provider.Telephony.SMS_RECEIVED"))
@@ -35,14 +38,14 @@ public class BroadCastService extends BroadcastReceiver
                 try
                 {
                     SmsMessage[] SMS;
-                    String Message = "";
+                    StringBuilder Message = new StringBuilder();
 
                     if (Build.VERSION.SDK_INT > 18)
                     {
                         SMS = Telephony.Sms.Intents.getMessagesFromIntent(intent);
 
                         for (SmsMessage sms : SMS)
-                            Message += sms.getMessageBody();
+                            Message.append(sms.getMessageBody());
                     }
                     else
                     {
@@ -56,12 +59,12 @@ public class BroadCastService extends BroadcastReceiver
                             {
                                 // noinspection all
                                 SMS[i] = SmsMessage.createFromPdu((byte[]) Data[i]);
-                                Message += SMS[i].getMessageBody();
+                                Message.append(SMS[i].getMessageBody());
                             }
                         }
                     }
 
-                    Matcher matcher = Pattern.compile("[0-9]+").matcher(Message);
+                    Matcher matcher = Pattern.compile("[0-9]+").matcher(Message.toString());
 
                     if (matcher.find())
                     {

@@ -141,6 +141,7 @@ class ImagePreviewUI extends FragmentBase
                 {
                     try
                     {
+                        performClick();
                         return super.onTouchEvent(ev);
                     }
                     catch (Exception e)

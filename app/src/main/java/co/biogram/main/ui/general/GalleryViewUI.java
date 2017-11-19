@@ -281,8 +281,8 @@ public class GalleryViewUI extends FragmentBase
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
-            ImageView ImageViewMain;
-            View ViewCircle;
+            final ImageView ImageViewMain;
+            final View ViewCircle;
 
             ViewHolderMain(View view)
             {

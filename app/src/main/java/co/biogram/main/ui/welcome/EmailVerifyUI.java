@@ -651,7 +651,7 @@ class EmailVerifyUI extends FragmentBase
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    GetActivity().GetManager().OpenView(new DescriptionUI(VerifyCode, 2), R.id.WelcomeActivityContainer, "DescriptionUI");
+                                    GetActivity().GetManager().OpenView(new DescriptionUI(VerifyCode), R.id.WelcomeActivityContainer, "DescriptionUI");
                                     break;
                                 case 1:
                                 case 2:

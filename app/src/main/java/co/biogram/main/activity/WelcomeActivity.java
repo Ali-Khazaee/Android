@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.R;
-import co.biogram.main.handler.MiscHandler;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.welcome.WelcomeUI;
 

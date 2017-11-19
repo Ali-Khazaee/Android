@@ -157,6 +157,10 @@ public class MiscHandler
     public static void ShowSoftKey(View view)
     {
         InputMethodManager IMM = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (IMM == null)
+            return;
+
         IMM.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
@@ -168,7 +172,7 @@ public class MiscHandler
         {
             InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            if (!IMM.isActive())
+            if (IMM == null || !IMM.isActive())
                 return;
 
             IMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -226,7 +230,9 @@ public class MiscHandler
         Editor.commit();
 
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+
+        if (alarmManager != null)
+            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
 
         System.exit(0);
     }

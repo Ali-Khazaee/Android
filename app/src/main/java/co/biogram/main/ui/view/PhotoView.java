@@ -22,7 +22,7 @@ import android.widget.OverScroller;
 
 public class PhotoView extends ImageView
 {
-    private PhotoViewAttacher Attacher;
+    private final PhotoViewAttacher Attacher;
     private ScaleType scaleType;
 
     public PhotoView(Context context)
@@ -111,11 +111,17 @@ public class PhotoView extends ImageView
         return Changed;
     }
 
+    @Override
+    public boolean performClick()
+    {
+        return super.performClick();
+    }
+
     interface OnGestureListener
     {
         void onDrag(float dx, float dy);
         void onScale(float scaleFactor, float focusX, float focusY);
-        void onFling(float startX, float startY, float velocityX, float velocityY);
+        void onFling(float velocityX, float velocityY);
     }
 }
 
@@ -131,7 +137,7 @@ class CustomGestureDetector
     private float mLastTouchY;
     private final float mTouchSlop;
     private final float mMinimumVelocity;
-    private PhotoView.OnGestureListener mListener;
+    private final PhotoView.OnGestureListener mListener;
 
     CustomGestureDetector(Context context, PhotoView.OnGestureListener listener)
     {
@@ -205,15 +211,17 @@ class CustomGestureDetector
         try
         {
             mDetector.onTouchEvent(ev);
-            return processTouchEvent(ev);
+            processTouchEvent(ev);
         }
-        catch (IllegalArgumentException e)
+        catch (Exception e)
         {
-            return true;
+            //
         }
+
+        return true;
     }
 
-    private boolean processTouchEvent(MotionEvent ev)
+    private void processTouchEvent(MotionEvent ev)
     {
         int action = ev.getAction();
 
@@ -273,7 +281,7 @@ class CustomGestureDetector
                         float vX = mVelocityTracker.getXVelocity(), vY = mVelocityTracker.getYVelocity();
 
                         if (Math.max(Math.abs(vX), Math.abs(vY)) >= mMinimumVelocity)
-                            mListener.onFling(mLastTouchX, mLastTouchY, -vX, -vY);
+                            mListener.onFling(-vX, -vY);
                     }
                 }
 
@@ -298,27 +306,22 @@ class CustomGestureDetector
         }
 
         mActivePointerIndex = ev.findPointerIndex(mActivePointerId != INVALID_POINTER_ID ? mActivePointerId : 0);
-        return true;
     }
 }
 
 class PhotoViewAttacher
 {
-    private static float DEFAULT_MAX_SCALE = 3.0f;
-    private static float DEFAULT_MID_SCALE = 1.75f;
-    private static float DEFAULT_MIN_SCALE = 1.0f;
-    private static int DEFAULT_ZOOM_DURATION = 200;
+    private static final float DEFAULT_MAX_SCALE = 3.0f;
+    private static final float DEFAULT_MIN_SCALE = 1.0f;
     private static final int EDGE_NONE = -1;
     private static final int EDGE_LEFT = 0;
     private static final int EDGE_RIGHT = 1;
     private static final int EDGE_BOTH = 2;
-    private Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
-    private int mZoomDuration = DEFAULT_ZOOM_DURATION;
-    private float mMinScale = DEFAULT_MIN_SCALE;
-    private float mMidScale = DEFAULT_MID_SCALE;
-    private float mMaxScale = DEFAULT_MAX_SCALE;
+    private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+    private final float mMinScale = DEFAULT_MIN_SCALE;
+    private final float mMaxScale = DEFAULT_MAX_SCALE;
     private boolean mBlockParentIntercept = false;
-    private ImageView mImageView;
+    private final PhotoView mImageView;
     private GestureDetector mGestureDetector;
     private CustomGestureDetector mScaleDragDetector;
     private final Matrix mBaseMatrix = new Matrix();
@@ -331,10 +334,9 @@ class PhotoViewAttacher
     private FlingRunnable mCurrentFlingRunnable;
     private int mScrollEdge = EDGE_BOTH;
     private float mBaseRotation;
-    private boolean mZoomEnabled = true;
     private ScaleType mScaleType = ScaleType.FIT_CENTER;
 
-    private PhotoView.OnGestureListener onGestureListener = new PhotoView.OnGestureListener()
+    private final PhotoView.OnGestureListener onGestureListener = new PhotoView.OnGestureListener()
     {
         @Override
         public void onDrag(float dx, float dy)
@@ -358,7 +360,7 @@ class PhotoViewAttacher
         }
 
         @Override
-        public void onFling(float startX, float startY, float velocityX, float velocityY)
+        public void onFling(float velocityX, float velocityY)
         {
             mCurrentFlingRunnable = new FlingRunnable(mImageView.getContext());
             mCurrentFlingRunnable.fling(getImageViewWidth(mImageView), getImageViewHeight(mImageView), (int) velocityX, (int) velocityY);
@@ -376,18 +378,19 @@ class PhotoViewAttacher
         }
     };
 
-    PhotoViewAttacher(ImageView imageView)
+    PhotoViewAttacher(PhotoView imageView)
     {
         mImageView = imageView;
-        // TODO Fix Me
-        imageView.setOnTouchListener(new View.OnTouchListener()
+        mImageView.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
             public boolean onTouch(View v, MotionEvent ev)
             {
+                mImageView.performClick();
+
                 boolean handled = false;
 
-                if (mZoomEnabled && ((ImageView) v).getDrawable() != null)
+                if (((ImageView) v).getDrawable() != null)
                 {
                     switch (ev.getAction())
                     {
@@ -540,7 +543,7 @@ class PhotoViewAttacher
 
     private float getMediumScale()
     {
-        return mMidScale;
+        return 1.75f;
     }
 
     private float getMaximumScale()
@@ -589,10 +592,7 @@ class PhotoViewAttacher
 
     void update()
     {
-        if (mZoomEnabled)
-            updateBaseMatrix(mImageView.getDrawable());
-        else
-            resetMatrix();
+        updateBaseMatrix(mImageView.getDrawable());
     }
 
     private Matrix getDrawMatrix()
@@ -819,7 +819,7 @@ class PhotoViewAttacher
 
         private float interpolate()
         {
-            float t = 1f * (System.currentTimeMillis() - mStartTime) / mZoomDuration;
+            float t = 1f * (System.currentTimeMillis() - mStartTime) / 200;
             t = Math.min(1f, t);
             t = mInterpolator.getInterpolation(t);
             return t;
