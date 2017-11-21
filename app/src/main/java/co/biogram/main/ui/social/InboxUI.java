@@ -1,6 +1,7 @@
 package co.biogram.main.ui.social;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -87,6 +88,14 @@ public class InboxUI extends FragmentBase
         ViewLine.setId(MiscHandler.GenerateViewID());
 
         RelativeLayoutMain.addView(ViewLine);
+
+        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
+        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+
+        RelativeLayoutMain.addView(RecyclerViewMain);
 
         ViewMain = RelativeLayoutMain;
     }
