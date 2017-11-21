@@ -149,5 +149,6 @@
 
     <!-- Inbox UI -->
     <string name="InboxUI">Inbox</string>
+    <string name="InboxUIUserLevel">User Level</string>
 
 </resources>

@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.activity.WelcomeActivity;
@@ -218,41 +217,60 @@ public class MiscHandler
         return S;
     }
 
-    public static void ChangeLanguage(FragmentActivity activity, String Language)
+    public static void ChangeLanguage(Context c, String Language)
     {
-        if (SharedHandler.GetString(activity, "Language").equals(Language))
+        if (SharedHandler.GetString(c, "Language").equals(Language))
             return;
 
-        SharedPreferences Shared = activity.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
+        SharedPreferences Shared = c.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
         SharedPreferences.Editor Editor = Shared.edit();
         Editor.putString("Language", Language);
         // noinspection all
         Editor.commit();
 
-        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
 
         if (alarmManager != null)
-            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(activity, 123456, new Intent(activity, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(c, 123456, new Intent(c, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
 
         System.exit(0);
     }
 
-    public static void GeneralError(FragmentActivity activity, int Error)
+    public static void GeneralError(Context c, int Error)
     {
         switch (Error)
         {
-            case -1: Toast(activity, activity.getString(R.string.GeneralError1)); break;
-            case -2: Toast(activity, activity.getString(R.string.GeneralError2)); break;
-            case -3: Toast(activity, activity.getString(R.string.GeneralError3)); break;
-            case -4: Toast(activity, activity.getString(R.string.GeneralError4)); break;
-            case -6: Toast(activity, activity.getString(R.string.GeneralError6)); break;
-            case -7: Toast(activity, activity.getString(R.string.GeneralError7)); break;
+            case -1: Toast(c, c.getString(R.string.GeneralError1)); break;
+            case -2: Toast(c, c.getString(R.string.GeneralError2)); break;
+            case -3: Toast(c, c.getString(R.string.GeneralError3)); break;
+            case -4: Toast(c, c.getString(R.string.GeneralError4)); break;
+            case -6: Toast(c, c.getString(R.string.GeneralError6)); break;
+            case -7: Toast(c, c.getString(R.string.GeneralError7)); break;
         }
     }
 
-    public static boolean IsDark(Context context)
+    public static void ChangeTheme(Context context, boolean IsDark)
     {
-        return SharedHandler.GetBoolean(context, "IsDark");
+        if (SharedHandler.GetBoolean(context, "IsDark") == IsDark)
+            return;
+
+        SharedPreferences Shared = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
+        SharedPreferences.Editor Editor = Shared.edit();
+        Editor.putBoolean("IsDark", IsDark);
+        // noinspection all
+        Editor.commit();
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if (alarmManager != null)
+            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, new Intent(context, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+
+        System.exit(0);
+    }
+
+    public static boolean IsDark(Context c)
+    {
+        return SharedHandler.GetBoolean(c, "IsDark");
     }
 
     public static String GetRandomServer(String URL)

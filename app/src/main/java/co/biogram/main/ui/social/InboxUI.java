@@ -1,24 +1,33 @@
 package co.biogram.main.ui.social;
 
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.PostAdapter;
+import co.biogram.main.handler.OnScrollRecyclerView;
 import co.biogram.main.ui.view.TextView;
 
 public class InboxUI extends FragmentBase
 {
+    private List<PostAdapter.PostStruct> PostList = new ArrayList<>();
+
     @Override
     public void OnCreate()
     {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(MiscHandler.IsDark(GetActivity()) ? R.color.GroundDark : R.color.GroundWhite);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
@@ -92,11 +101,40 @@ public class InboxUI extends FragmentBase
         RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
+
+        PostList.add(new PostAdapter.PostStruct(0));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(1));
+        PostList.add(new PostAdapter.PostStruct(1));
+        PostList.add(new PostAdapter.PostStruct(1));
+        PostList.add(new PostAdapter.PostStruct(3));
+        PostList.add(new PostAdapter.PostStruct(1));
+        PostList.add(new PostAdapter.PostStruct(1));
+        PostList.add(new PostAdapter.PostStruct(1));
+
         RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setAdapter(new PostAdapter(GetActivity(), PostList));
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
+        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain)
+        {
+            @Override
+            public void OnLoadMore()
+            {
+
+            }
+        });
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
         ViewMain = RelativeLayoutMain;
+    }
+
+    @Override
+    public void OnResume()
+    {
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), MiscHandler.IsDark(GetActivity()) ? R.color.StatusBarDark : R.color.StatusBarWhite));
     }
 }

@@ -148,6 +148,7 @@
     <string name="GalleryViewUIReach">شما به حداکثر انتخاب رسیدید</string>
 
     <!-- Inbox UI -->
-    <string name="InboxUI">صندوق</string>
+    <string name="InboxUI">صندوق ورودی</string>
+    <string name="InboxUIUserLevel">سطح کاربری</string>
 
 </resources>

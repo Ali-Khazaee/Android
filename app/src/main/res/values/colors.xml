@@ -4,11 +4,13 @@
     <color name="LineWhite">#ccc</color>
     <color name="GroundWhite">#fff</color>
     <color name="ActionBarWhite">#fafafa</color>
+    <color name="StatusBarWhite">#ccc</color>
 
     <color name="TextDark">#fff</color>
-    <color name="LineDark">#1e2bcb</color>
+    <color name="LineDark">#2b4159</color>
     <color name="GroundDark">#1b2936</color>
     <color name="ActionBarDark">#233446</color>
+    <color name="StatusBarDark">#1b2936</color>
 
     <color name="Toast">#144766</color>
     <color name="ToastLine">#0a3148</color>
