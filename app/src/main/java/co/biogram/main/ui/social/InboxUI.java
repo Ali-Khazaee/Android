@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,7 +21,8 @@ import co.biogram.main.ui.view.TextView;
 
 public class InboxUI extends FragmentBase
 {
-    private List<PostAdapter.PostStruct> PostList = new ArrayList<>();
+    private final List<PostAdapter.PostStruct> PostList = new ArrayList<>();
+    private PostAdapter AdapterMain;
 
     @Override
     public void OnCreate()
@@ -105,6 +107,18 @@ public class InboxUI extends FragmentBase
 
         PostList.add(new PostAdapter.PostStruct(0));
         PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct(2));
         PostList.add(new PostAdapter.PostStruct(1));
         PostList.add(new PostAdapter.PostStruct(1));
         PostList.add(new PostAdapter.PostStruct(1));
@@ -113,9 +127,26 @@ public class InboxUI extends FragmentBase
         PostList.add(new PostAdapter.PostStruct(1));
         PostList.add(new PostAdapter.PostStruct(1));
 
-        RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
+        AdapterMain = new PostAdapter(GetActivity(), PostList, new PostAdapter.PullToRefreshListener()
+        {
+            @Override
+            public void OnRefresh()
+            {
+                AdapterMain.SetRefreshComplete();
+            }
+        });
+
+        RecyclerView RecyclerViewMain = new RecyclerView(GetActivity())
+        {
+            @Override
+            public boolean onTouchEvent(MotionEvent e)
+            {
+                AdapterMain.GetPullToRefreshView().onTouchEvent(e);
+                return super.onTouchEvent(e);
+            }
+        };
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
-        RecyclerViewMain.setAdapter(new PostAdapter(GetActivity(), PostList));
+        RecyclerViewMain.setAdapter(AdapterMain);
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
         RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain)
         {

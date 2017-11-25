@@ -150,5 +150,11 @@
     <!-- Inbox UI -->
     <string name="InboxUI">صندوق ورودی</string>
     <string name="InboxUIUserLevel">سطح کاربری</string>
+    <string name="InboxUIRating">رتبه بندی</string>
+    <string name="InboxUIInfo">Your activities in biogram will result in users level increased and also rise in the users social rank, more information in</string>
+    <string name="InboxUIInfo2">in biogram help center</string>
+    <string name="InboxUIJoin">Join</string>
+    <string name="InboxUIPopular">Popular</string>
+    <string name="InboxUIScore">Score</string>
 
 </resources>
