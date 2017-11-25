@@ -7,20 +7,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
-import android.graphics.Outline;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
-import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
 import co.biogram.main.handler.MiscHandler;
@@ -35,6 +29,7 @@ public class CircleImageView extends ImageView
     private int BackgroundColor = Color.TRANSPARENT;
 
     private final boolean IsReady;
+    private boolean WithPladding = false;
     private boolean IsSetupPending;
 
     private float BorderRadius;
@@ -53,9 +48,6 @@ public class CircleImageView extends ImageView
         super.setScaleType(ScaleType.CENTER_CROP);
 
         IsReady = true;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            setOutlineProvider(new OutlineProvider());
 
         if (IsSetupPending)
         {
@@ -157,21 +149,26 @@ public class CircleImageView extends ImageView
             BitmapPaint.setColorFilter(colorFilter);
     }
 
-    public void setBorderColor(int ID)
+    public void SetBorderColor(int ID)
     {
         BorderColor = ContextCompat.getColor(getContext(), ID);
         BorderPaint.setColor(BorderColor);
         invalidate();
     }
 
-    public void setCircleBackgroundColor(int ID)
+    public void SetCircleBackgroundColor(int ID)
     {
         BackgroundColor = ContextCompat.getColor(getContext(), ID);
         BackgroundPaint.setColor(BackgroundColor);
         invalidate();
     }
 
-    public void setBorderWidth(int Width)
+    public void SetWidthPadding()
+    {
+        WithPladding = true;
+    }
+
+    public void SetBorderWidth(int Width)
     {
         BorderWidth = MiscHandler.ToDimension(getContext(), Width);
         Setup();
@@ -248,6 +245,9 @@ public class CircleImageView extends ImageView
         BorderRect.set(new RectF(Left, Top, Left + SideLength, Top + SideLength));
         BorderRadius = Math.min((BorderRect.height() - BorderWidth) / 2.0f, (BorderRect.width() - BorderWidth) / 2.0f);
 
+        if (WithPladding)
+            BorderRadius += (getPaddingTop() + getPaddingLeft() + getPaddingRight() + getPaddingBottom()) / 4;
+
         DrawableRect.set(BorderRect);
 
         if (BorderWidth > 0)
@@ -279,18 +279,5 @@ public class CircleImageView extends ImageView
         bitmapShader.setLocalMatrix(ShaderMatrix);
 
         invalidate();
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private class OutlineProvider extends ViewOutlineProvider
-    {
-        @Override
-        public void getOutline(View view, Outline outline)
-        {
-            Rect Bounds = new Rect();
-
-            BorderRect.roundOut(Bounds);
-            outline.setRoundRect(Bounds, Bounds.width() / 2.0f);
-        }
     }
 }

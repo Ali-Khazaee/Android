@@ -156,5 +156,6 @@
     <string name="InboxUIJoin">Join</string>
     <string name="InboxUIPopular">Popular</string>
     <string name="InboxUIScore">Score</string>
+    <string name="InboxUIMedal">Medal</string>
 
 </resources>

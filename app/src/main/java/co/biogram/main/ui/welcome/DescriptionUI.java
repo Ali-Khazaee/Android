@@ -189,8 +189,8 @@ public class DescriptionUI extends FragmentBase
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.setId(MiscHandler.GenerateViewID());
         CircleImageViewProfile.setImageResource(R.drawable.ic_person_blue);
-        CircleImageViewProfile.setBorderColor(R.color.Gray);
-        CircleImageViewProfile.setBorderWidth(2);
+        CircleImageViewProfile.SetBorderColor(R.color.Gray);
+        CircleImageViewProfile.SetBorderWidth(2);
         CircleImageViewProfile.setPadding(MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 2));
         CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
         {

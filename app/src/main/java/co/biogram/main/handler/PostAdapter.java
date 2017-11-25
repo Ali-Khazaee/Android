@@ -39,6 +39,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int ID_JOIN = MiscHandler.GenerateViewID();
     private final int ID_POPULAR = MiscHandler.GenerateViewID();
     private final int ID_SCORE = MiscHandler.GenerateViewID();
+    private final int ID_MEDAL = MiscHandler.GenerateViewID();
     private final int ID_CLOSE = MiscHandler.GenerateViewID();
 
     public PostAdapter(FragmentActivity a, List<PostStruct> p, PullToRefreshListener l)
@@ -56,6 +57,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         CircleView CircleViewJoin;
         CircleView CircleViewPopular;
         CircleView CircleViewScore;
+        CircleImageView CircleImageViewMedal;
         ImageView ImageViewClose;
 
         ViewHolderMain(View v, int viewType)
@@ -70,6 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 CircleViewJoin = v.findViewById(ID_JOIN);
                 CircleViewPopular = v.findViewById(ID_POPULAR);
                 CircleViewScore = v.findViewById(ID_SCORE);
+                CircleImageViewMedal = v.findViewById(ID_MEDAL);
                 ImageViewClose = v.findViewById(ID_CLOSE);
             }
         }
@@ -136,7 +139,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             RelativeLayout.LayoutParams CircleViewLevelParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(Activity, 75), MiscHandler.ToDimension(Activity, 75));
             CircleViewLevelParam.addRule(RelativeLayout.BELOW, TextViewLevel.getId());
-            CircleViewLevelParam.setMargins(MiscHandler.ToDimension(Activity, 15), 0, MiscHandler.ToDimension(Activity, 15), 0);
+            CircleViewLevelParam.setMargins(MiscHandler.ToDimension(Activity, 15), MiscHandler.ToDimension(Activity, 10), MiscHandler.ToDimension(Activity, 15), 0);
             CircleViewLevelParam.addRule(MiscHandler.Align("R"));
 
             CircleView CircleViewLevel = new CircleView(Activity);
@@ -245,27 +248,27 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             RelativeLayoutInfo.addView(LinearLayoutMore);
 
             CircleView CircleViewJoin = new CircleView(Activity);
-            CircleViewJoin.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(Activity, 75), 1));
+            CircleViewJoin.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(Activity, 60), 1));
             CircleViewJoin.setId(ID_JOIN);
             CircleViewJoin.SetMessage("2");
-            CircleViewJoin.SetMessageSize(20);
+            CircleViewJoin.SetMessageSize(17);
             CircleViewJoin.SetMessageBold();
             CircleViewJoin.SetMessageColor(R.color.BlueLight);
             CircleViewJoin.SetStrokeColor(R.color.BlueLight);
             CircleViewJoin.SetStrokeWidth(1);
             CircleViewJoin.SetSubMessage("Month");
-            CircleViewJoin.SetSubMessageSize(13);
-            CircleViewJoin.SetSubMessageSpace(15);
+            CircleViewJoin.SetSubMessageSize(10);
+            CircleViewJoin.SetSubMessageSpace(12);
             CircleViewJoin.SetSubMessageColor(R.color.BlueLight);
             CircleViewJoin.InvalidateTextPaints();
 
             LinearLayoutMore.addView(CircleViewJoin);
 
             CircleView CircleViewPopular = new CircleView(Activity);
-            CircleViewPopular.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(Activity, 75), 1));
+            CircleViewPopular.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(Activity, 60), 1));
             CircleViewPopular.setId(ID_POPULAR);
             CircleViewPopular.SetMessage("4.5");
-            CircleViewPopular.SetMessageSize(20);
+            CircleViewPopular.SetMessageSize(17);
             CircleViewPopular.SetMessageBold();
             CircleViewPopular.SetSubMessageSpace(14);
             CircleViewPopular.SetMessageColor(R.color.BlueLight);
@@ -277,16 +280,27 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             LinearLayoutMore.addView(CircleViewPopular);
 
             CircleView CircleViewScore = new CircleView(Activity);
-            CircleViewScore.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(Activity, 75), 1));
+            CircleViewScore.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(Activity, 60), 1));
             CircleViewScore.setId(ID_SCORE);
             CircleViewScore.SetMessage("66K");
-            CircleViewScore.SetMessageSize(20);
+            CircleViewScore.SetMessageSize(16);
             CircleViewScore.SetMessageColor(R.color.White);
             CircleViewScore.SetStrokeColor(R.color.BlueLight);
             CircleViewScore.SetStrokeWidth(50);
             CircleViewScore.InvalidateTextPaints();
 
             LinearLayoutMore.addView(CircleViewScore);
+
+            CircleImageView CircleImageViewMedal = new CircleImageView(Activity);
+            CircleImageViewMedal.setLayoutParams(new LinearLayout.LayoutParams(0, MiscHandler.ToDimension(Activity, 60), 1));
+            CircleImageViewMedal.setId(ID_SCORE);
+            CircleImageViewMedal.SetBorderColor(R.color.Gray2);
+            CircleImageViewMedal.SetBorderWidth(1);
+            CircleImageViewMedal.SetWidthPadding();
+            CircleImageViewMedal.setPadding(MiscHandler.ToDimension(Activity, 10), MiscHandler.ToDimension(Activity, 10), MiscHandler.ToDimension(Activity, 10), MiscHandler.ToDimension(Activity, 10));
+            CircleImageViewMedal.setImageResource(R.drawable.ic_write_plus);
+
+            LinearLayoutMore.addView(CircleImageViewMedal);
 
             RelativeLayout.LayoutParams LinearLayoutMore2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
             LinearLayoutMore2Param.addRule(RelativeLayout.BELOW, LinearLayoutMore.getId());
@@ -321,6 +335,14 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             LinearLayoutMore2.addView(TextViewScore);
 
+            TextView TextViewMedal = new TextView(Activity, 14, false);
+            TextViewMedal.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            TextViewMedal.setText(Activity.getString(R.string.InboxUIMedal));
+            TextViewMedal.setGravity(Gravity.CENTER);
+            TextViewMedal.setTextColor(ContextCompat.getColor(Activity, R.color.Gray4));
+
+            LinearLayoutMore2.addView(TextViewMedal);
+
             RelativeLayout.LayoutParams CircleImageViewMoreParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(Activity, 40), MiscHandler.ToDimension(Activity, 40));
             CircleImageViewMoreParam.setMargins(MiscHandler.ToDimension(Activity, 15), -MiscHandler.ToDimension(Activity, 10), MiscHandler.ToDimension(Activity, 15), 0);
             CircleImageViewMoreParam.addRule(RelativeLayout.BELOW, LinearLayoutMore2.getId());
@@ -330,8 +352,8 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             CircleImageViewMore.setLayoutParams(CircleImageViewMoreParam);
             CircleImageViewMore.setId(MiscHandler.GenerateViewID());
             CircleImageViewMore.setImageResource(R.drawable.ic_person_blue);
-            CircleImageViewMore.setBorderColor(R.color.Gray);
-            CircleImageViewMore.setBorderWidth(2);
+            CircleImageViewMore.SetBorderColor(R.color.Gray);
+            CircleImageViewMore.SetBorderWidth(2);
             CircleImageViewMore.setPadding(MiscHandler.ToDimension(Activity, 2), MiscHandler.ToDimension(Activity, 2), MiscHandler.ToDimension(Activity, 2), MiscHandler.ToDimension(Activity, 2));
             CircleImageViewMore.setOnClickListener(new View.OnClickListener()
             {
