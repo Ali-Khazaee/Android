@@ -37,7 +37,7 @@ import org.json.JSONObject;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.FontHandler;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -105,43 +105,43 @@ class UsernameUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
-        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-        ImageViewBackParam.addRule(MiscHandler.Align("R"));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(MiscHandler.GenerateViewID());
-        ImageViewBack.setImageResource(MiscHandler.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
-        ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
+        ImageViewBack.setId(Misc.GenerateViewID());
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
+        TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
+        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.GeneralUsername));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
-        ViewLine.setId(MiscHandler.GenerateViewID());
+        ViewLine.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -160,24 +160,24 @@ class UsernameUI extends FragmentBase
         ScrollViewMain.addView(RelativeLayoutScroll);
 
         RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
-        TextViewUsernameParam.addRule(MiscHandler.Align("R"));
+        TextViewUsernameParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewUsernameParam.addRule(Misc.Align("R"));
 
         TextView TextViewUsername = new TextView(GetActivity(), 16, false);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewUsername.setText(GetActivity().getString(R.string.GeneralUsername));
-        TextViewUsername.setId(MiscHandler.GenerateViewID());
+        TextViewUsername.setId(Misc.GenerateViewID());
 
         RelativeLayoutScroll.addView(TextViewUsername);
 
         RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextUsernameParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), 0, MiscHandler.ToDimension(GetActivity(), 10), 0);
+        EditTextUsernameParam.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
 
         final EditText EditTextUsername = new EditText(GetActivity());
         EditTextUsername.setLayoutParams(EditTextUsernameParam);
-        EditTextUsername.setId(MiscHandler.GenerateViewID());
+        EditTextUsername.setId(Misc.GenerateViewID());
         EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextUsername.setFilters(new InputFilter[]
         {
@@ -206,7 +206,7 @@ class UsernameUI extends FragmentBase
         EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextUsername.requestFocus();
-        EditTextUsername.setPadding(0, -MiscHandler.ToDimension(GetActivity(), 2), MiscHandler.ToDimension(GetActivity(), 8), MiscHandler.ToDimension(GetActivity(), 5));
+        EditTextUsername.setPadding(0, -Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 5));
         EditTextUsername.setTypeface(FontHandler.GetTypeface(GetActivity()));
         EditTextUsername.setHint(GetActivity().getString(R.string.UsernameUIHint));
         EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
@@ -216,7 +216,7 @@ class UsernameUI extends FragmentBase
             {
                 paint = new Paint();
                 paint.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-                paint.setTextSize(MiscHandler.ToDimension(GetActivity(), 18));
+                paint.setTextSize(Misc.ToDP(GetActivity(), 18));
                 paint.setAntiAlias(true);
                 paint.setTextAlign(Paint.Align.LEFT);
             }
@@ -224,7 +224,7 @@ class UsernameUI extends FragmentBase
             @Override
             public void draw(@NonNull Canvas canvas)
             {
-                canvas.drawText("@", MiscHandler.ToDimension(GetActivity(), 8), MiscHandler.ToDimension(GetActivity(), 2), paint);
+                canvas.drawText("@", Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 2), paint);
             }
 
             @Override
@@ -245,7 +245,7 @@ class UsernameUI extends FragmentBase
                 return PixelFormat.TRANSLUCENT;
             }
         }, null, null, null);
-        EditTextUsername.setCompoundDrawablePadding(MiscHandler.ToDimension(GetActivity(), 27));
+        EditTextUsername.setCompoundDrawablePadding(Misc.ToDP(GetActivity(), 27));
         EditTextUsername.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -267,8 +267,8 @@ class UsernameUI extends FragmentBase
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
         TextViewMessage.setText(GetActivity().getString(R.string.UsernameUIMessage));
-        TextViewMessage.setId(MiscHandler.GenerateViewID());
-        TextViewMessage.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+        TextViewMessage.setId(Misc.GenerateViewID());
+        TextViewMessage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -282,27 +282,27 @@ class UsernameUI extends FragmentBase
 
         RelativeLayout.LayoutParams TextViewPrivacyParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewPrivacyParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewPrivacyParam.addRule(MiscHandler.Align("R"));
+        TextViewPrivacyParam.addRule(Misc.Align("R"));
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
-        TextViewPrivacy.setPadding(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
+        TextViewPrivacy.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
-        RelativeLayoutNextParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15), MiscHandler.ToDimension(GetActivity(), 15));
-        RelativeLayoutNextParam.addRule(MiscHandler.Align("L"));
+        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
+        RelativeLayoutNextParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        RelativeLayoutNextParam.addRule(Misc.Align("L"));
 
         GradientDrawable DrawableEnable = new GradientDrawable();
         DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableEnable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        DrawableEnable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
-        DrawableDisable.setCornerRadius(MiscHandler.ToDimension(GetActivity(), 7));
+        DrawableDisable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
         DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
@@ -315,7 +315,7 @@ class UsernameUI extends FragmentBase
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
-        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35)));
+        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35)));
         ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
@@ -327,7 +327,7 @@ class UsernameUI extends FragmentBase
                 ButtonNext.setVisibility(View.GONE);
                 LoadingViewNext.Start();
 
-                AndroidNetworking.post(MiscHandler.GetRandomServer("Username"))
+                AndroidNetworking.post(Misc.GetRandomServer("Username"))
                 .addBodyParameter("Username", EditTextUsername.getText().toString())
                 .setTag("UsernameUI")
                 .build()
@@ -346,7 +346,7 @@ class UsernameUI extends FragmentBase
                             switch (Result.getInt("Message"))
                             {
                                 case 0:
-                                    TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                    TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                                     Anim.setDuration(200);
 
                                     RelativeLayoutMain.setAnimation(Anim);
@@ -359,27 +359,27 @@ class UsernameUI extends FragmentBase
                                         GetActivity().GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "PasswordUI");
                                     break;
                                 case 1:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError1));
+                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError1));
                                     break;
                                 case 2:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError2));
+                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError2));
                                     break;
                                 case 3:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError3));
+                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError3));
                                     break;
                                 case 4:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError4));
+                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError4));
                                     break;
                                 case 5:
-                                    MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError5));
+                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError5));
                                     break;
                                 default:
-                                    MiscHandler.GeneralError(GetActivity(), Result.getInt("Message"));
+                                    Misc.GeneralError(GetActivity(), Result.getInt("Message"));
                             }
                         }
                         catch (Exception e)
                         {
-                            MiscHandler.Debug("UsernameUI: " + e.toString());
+                            Misc.Debug("UsernameUI: " + e.toString());
                         }
                     }
 
@@ -388,7 +388,7 @@ class UsernameUI extends FragmentBase
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
                     }
                 });
             }
@@ -396,7 +396,7 @@ class UsernameUI extends FragmentBase
 
         RelativeLayoutNext.addView(ButtonNext);
 
-        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 90), MiscHandler.ToDimension(GetActivity(), 35));
+        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);
@@ -404,13 +404,13 @@ class UsernameUI extends FragmentBase
 
         RelativeLayoutNext.addView(LoadingViewNext);
 
-        TranslateAnimation Anim = MiscHandler.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
+        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
         Anim.setAnimationListener(new Animation.AnimationListener()
         {
             @Override public void onAnimationStart(Animation animation) { }
             @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { MiscHandler.ShowSoftKey(EditTextUsername); }
+            @Override public void onAnimationEnd(Animation animation) { Misc.ShowSoftKey(EditTextUsername); }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -427,7 +427,7 @@ class UsernameUI extends FragmentBase
     @Override
     public void OnPause()
     {
-        MiscHandler.HideSoftKey(GetActivity());
+        Misc.HideSoftKey(GetActivity());
         AndroidNetworking.forceCancel("UsernameUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }

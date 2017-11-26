@@ -85,7 +85,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("CacheHandler-SetUp: " + e.toString());
+            Misc.Debug("CacheHandler-SetUp: " + e.toString());
         }
     }
 
@@ -105,7 +105,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("CacheHandler-StoreCacheData: " + e.toString());
+            Misc.Debug("CacheHandler-StoreCacheData: " + e.toString());
         }
     }
 
@@ -128,7 +128,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("CacheHandler-LinkFind: " + e.toString());
+            Misc.Debug("CacheHandler-LinkFind: " + e.toString());
         }
 
         return null;
@@ -152,7 +152,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("CacheHandler-LinkStore: " + e.toString());
+            Misc.Debug("CacheHandler-LinkStore: " + e.toString());
         }
     }
 
@@ -178,7 +178,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("CacheHandler-BitmapFind: " + e.toString());
+            Misc.Debug("CacheHandler-BitmapFind: " + e.toString());
         }
 
         return null;
@@ -210,7 +210,7 @@ public class CacheHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("CacheHandler-StoreBitmap: " + e.toString());
+            Misc.Debug("CacheHandler-StoreBitmap: " + e.toString());
         }
     }
 }

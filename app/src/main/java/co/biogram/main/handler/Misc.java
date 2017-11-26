@@ -33,7 +33,7 @@ import co.biogram.main.R;
 import co.biogram.main.activity.WelcomeActivity;
 import co.biogram.main.ui.view.TextView;
 
-public class MiscHandler
+public class Misc
 {
     private static final AtomicInteger NextGeneratedID = new AtomicInteger(1);
 
@@ -120,7 +120,7 @@ public class MiscHandler
             return IsRTL() ? Gravity.END : Gravity.START;
     }
 
-    public static int ToDimension(Context context, float Value)
+    public static int ToDP(Context context, float Value)
     {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
     }
@@ -130,7 +130,7 @@ public class MiscHandler
         GradientDrawable DrawableToast = new GradientDrawable();
         DrawableToast.setColor(ContextCompat.getColor(context, R.color.Toast));
         DrawableToast.setCornerRadius(10.0f);
-        DrawableToast.setStroke(ToDimension(context, 1), ContextCompat.getColor(context, R.color.ToastLine));
+        DrawableToast.setStroke(ToDP(context, 1), ContextCompat.getColor(context, R.color.ToastLine));
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -142,12 +142,12 @@ public class MiscHandler
         TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setText(Message);
-        TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewMessage.setPadding(ToDP(context, 15), ToDP(context, 15), ToDP(context, 15), ToDP(context, 15));
 
         RelativeLayoutMain.addView(TextViewMessage);
 
         Toast ToastMain = new Toast(context);
-        ToastMain.setGravity(Gravity.BOTTOM, 0, MiscHandler.ToDimension(context, 65));
+        ToastMain.setGravity(Gravity.BOTTOM, 0, ToDP(context, 65));
         ToastMain.setDuration(Toast.LENGTH_SHORT);
         ToastMain.setView(RelativeLayoutMain);
         ToastMain.show();
@@ -377,7 +377,7 @@ public class MiscHandler
             }
             catch (Exception e)
             {
-                MiscHandler.Debug("MiscHandler-VideoThumbnail: " + e.toString());
+                Debug("Misc-VideoThumbnail: " + e.toString());
             }
 
             return bitmap;

@@ -25,7 +25,7 @@ import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 
 import co.biogram.main.handler.GlideApp;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.TextView;
 
@@ -55,35 +55,35 @@ public class GalleryViewUI extends FragmentBase
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
-        RelativeLayoutHeader.setBackgroundResource(MiscHandler.IsDark(GetActivity()) ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-        ImageViewBackParam.addRule(MiscHandler.Align("R"));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
-        ImageViewBack.setImageResource(MiscHandler.IsRTL() ? R.drawable.ic_back_blue_rtl : R.drawable.ic_back_blue);
-        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_blue_rtl : R.drawable.ic_back_blue);
+        ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
+        TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), MiscHandler.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
+        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
         TextViewTitle.setText(GetActivity().getString(R.string.GalleryViewUI));
-        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
-        TextViewTitle.setId(MiscHandler.GenerateViewID());
+        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
+        TextViewTitle.setId(Misc.GenerateViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -118,25 +118,25 @@ public class GalleryViewUI extends FragmentBase
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ImageViewListParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 24), MiscHandler.ToDimension(GetActivity(), 24));
-        ImageViewListParam.addRule(MiscHandler.AlignTo("R"), TextViewTitle.getId());
+        RelativeLayout.LayoutParams ImageViewListParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 24), Misc.ToDP(GetActivity(), 24));
+        ImageViewListParam.addRule(Misc.AlignTo("R"), TextViewTitle.getId());
         ImageViewListParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         ImageView ImageViewList = new ImageView(GetActivity());
         ImageViewList.setLayoutParams(ImageViewListParam);
         ImageViewList.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewList.setPadding(MiscHandler.ToDimension(GetActivity(), 3), MiscHandler.ToDimension(GetActivity(), 3), MiscHandler.ToDimension(GetActivity(), 3), MiscHandler.ToDimension(GetActivity(), 3));
+        ImageViewList.setPadding(Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3));
         ImageViewList.setImageResource(R.drawable.ic_arrow_down_blue);
 
         RelativeLayoutHeader.addView(ImageViewList);
 
-        RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-        ImageViewSaveParam.addRule(MiscHandler.Align("L"));
+        RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewSaveParam.addRule(Misc.Align("L"));
 
         ImageView ImageViewSave = new ImageView(GetActivity());
         ImageViewSave.setLayoutParams(ImageViewSaveParam);
         ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewSave.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
+        ImageViewSave.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
         ImageViewSave.setImageResource(R.drawable.ic_done_blue);
         ImageViewSave.setOnClickListener(new View.OnClickListener()
         {
@@ -154,13 +154,13 @@ public class GalleryViewUI extends FragmentBase
 
         RelativeLayoutHeader.addView(ImageViewSave);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
-        ViewLine.setId(MiscHandler.GenerateViewID());
+        ViewLine.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -240,7 +240,7 @@ public class GalleryViewUI extends FragmentBase
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("GalleryViewUI-MediaList: " + e.toString());
+            Misc.Debug("GalleryViewUI-MediaList: " + e.toString());
         }
 
         ViewMain = RelativeLayoutMain;
@@ -261,8 +261,8 @@ public class GalleryViewUI extends FragmentBase
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
         private final List<Struct> FileList = new ArrayList<>();
-        private final int ID_MAIN = MiscHandler.GenerateViewID();
-        private final int ID_CIRCLE = MiscHandler.GenerateViewID();
+        private final int ID_MAIN = Misc.GenerateViewID();
+        private final int ID_CIRCLE = Misc.GenerateViewID();
         private final GradientDrawable DrawableSelect;
         private final GradientDrawable DrawableSelected;
         private int Selection = 0;
@@ -271,12 +271,12 @@ public class GalleryViewUI extends FragmentBase
         {
             DrawableSelect = new GradientDrawable();
             DrawableSelect.setShape(GradientDrawable.OVAL);
-            DrawableSelect.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            DrawableSelect.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
 
             DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
             DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-            DrawableSelected.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            DrawableSelected.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder
@@ -313,7 +313,7 @@ public class GalleryViewUI extends FragmentBase
                     {
                         if (Count <= Selection)
                         {
-                            MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
+                            Misc.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
                             return;
                         }
 
@@ -375,7 +375,7 @@ public class GalleryViewUI extends FragmentBase
                                 {
                                     if (Count <= Selection)
                                     {
-                                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
+                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
                                         return;
                                     }
 
@@ -397,7 +397,7 @@ public class GalleryViewUI extends FragmentBase
         public ViewHolderMain onCreateViewHolder(ViewGroup parent, int ViewType)
         {
             RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
-            RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 90)));
+            RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 90)));
 
             ImageView ImageViewMain = new ImageView(GetActivity());
             ImageViewMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
@@ -405,9 +405,9 @@ public class GalleryViewUI extends FragmentBase
 
             RelativeLayoutMain.addView(ImageViewMain);
 
-            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 24), MiscHandler.ToDimension(GetActivity(), 24));
-            ViewCircleParam.setMargins(MiscHandler.ToDimension(GetActivity(), 10), MiscHandler.ToDimension(GetActivity(), 10), MiscHandler.ToDimension(GetActivity(), 10), 0);
-            ViewCircleParam.addRule(MiscHandler.Align("R"));
+            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 24), Misc.ToDP(GetActivity(), 24));
+            ViewCircleParam.setMargins(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), 0);
+            ViewCircleParam.addRule(Misc.Align("R"));
 
             View ViewCircle = new View(GetActivity());
             ViewCircle.setLayoutParams(ViewCircleParam);
@@ -444,7 +444,7 @@ public class GalleryViewUI extends FragmentBase
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
         {
             int SpanCount = 3;
-            int Spacing = MiscHandler.ToDimension(parent.getContext(), 4);
+            int Spacing = Misc.ToDP(parent.getContext(), 4);
             int Position = parent.getChildAdapterPosition(view);
             int Column = Position % SpanCount;
 

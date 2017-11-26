@@ -41,7 +41,7 @@ public class CameraHandler extends TextureView
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("CameraHandler-OnSurfaceTextureAvailable" + e.toString());
+                    Misc.Debug("CameraHandler-OnSurfaceTextureAvailable" + e.toString());
                 }
             }
 
@@ -73,7 +73,7 @@ public class CameraHandler extends TextureView
         catch (Exception e)
         {
             Listener.OnFailed();
-            MiscHandler.Debug("CameraHandler-TakePicture: " + e.toString());
+            Misc.Debug("CameraHandler-TakePicture: " + e.toString());
         }
     }
 
@@ -129,7 +129,7 @@ public class CameraHandler extends TextureView
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("CameraHandler-SwitchCamera: " + e.toString());
+            Misc.Debug("CameraHandler-SwitchCamera: " + e.toString());
         }
     }
 

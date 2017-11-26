@@ -11,7 +11,7 @@ import android.telephony.SmsMessage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 
 public class BroadCastService extends BroadcastReceiver
 {
@@ -76,7 +76,7 @@ public class BroadCastService extends BroadcastReceiver
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("BroadCastService: " + e.toString());
+                    Misc.Debug("BroadCastService: " + e.toString());
                 }
             }
         }

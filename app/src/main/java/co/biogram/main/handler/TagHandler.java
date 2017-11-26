@@ -127,7 +127,7 @@ class TagHandler
                 Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
             }*/
 
-            MiscHandler.HideSoftKey(Activity);
+            Misc.HideSoftKey(Activity);
         }
     }
 }

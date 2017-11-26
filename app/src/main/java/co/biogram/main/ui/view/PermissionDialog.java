@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import co.biogram.main.R;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 
 public class PermissionDialog extends Dialog
 {
@@ -30,13 +30,13 @@ public class PermissionDialog extends Dialog
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(context, 125)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(context, 125)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
-        RelativeLayoutHeader.setId(MiscHandler.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewMainParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(context, 32), MiscHandler.ToDimension(context, 32));
+        RelativeLayout.LayoutParams ImageViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(context, 32), Misc.ToDP(context, 32));
         ImageViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         ImageView ImageViewMain = new ImageView(context);
@@ -47,13 +47,13 @@ public class PermissionDialog extends Dialog
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
-        TextViewMessageParam.addRule(MiscHandler.Align("R"));
+        TextViewMessageParam.addRule(Misc.Align("R"));
 
         TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
-        TextViewMessage.setId(MiscHandler.GenerateViewID());
-        TextViewMessage.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 25), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 25));
+        TextViewMessage.setId(Misc.GenerateViewID());
+        TextViewMessage.setPadding(Misc.ToDP(context, 15), Misc.ToDP(context, 25), Misc.ToDP(context, 15), Misc.ToDP(context, 25));
         TextViewMessage.setText(Message);
 
         RelativeLayoutMain.addView(TextViewMessage);
@@ -71,7 +71,7 @@ public class PermissionDialog extends Dialog
         TextView TextViewDecline = new TextView(context, 14, true);
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
-        TextViewDecline.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewDecline.setPadding(Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15));
         TextViewDecline.setText(context.getString(R.string.DialogPermissionDecline));
         TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
 
@@ -80,7 +80,7 @@ public class PermissionDialog extends Dialog
         TextView TextViewContinue = new TextView(context, 14, true);
         TextViewContinue.setLayoutParams(TextViewMessageParam);
         TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-        TextViewContinue.setPadding(MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15), MiscHandler.ToDimension(context, 15));
+        TextViewContinue.setPadding(Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15));
         TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
         TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
 

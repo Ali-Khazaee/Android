@@ -17,7 +17,7 @@ import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 
 public class CircleImageView extends ImageView
 {
@@ -170,7 +170,7 @@ public class CircleImageView extends ImageView
 
     public void SetBorderWidth(int Width)
     {
-        BorderWidth = MiscHandler.ToDimension(getContext(), Width);
+        BorderWidth = Misc.ToDP(getContext(), Width);
         Setup();
     }
 

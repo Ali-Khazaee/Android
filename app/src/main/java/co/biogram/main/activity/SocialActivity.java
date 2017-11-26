@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
@@ -32,23 +32,23 @@ public class SocialActivity extends FragmentActivity
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(this);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(MiscHandler.IsDark(this) ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark(this) ? R.color.GroundDark : R.color.GroundWhite);
 
-        RelativeLayout.LayoutParams LinearLayoutMenuParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(this, 56));
+        RelativeLayout.LayoutParams LinearLayoutMenuParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(this, 56));
         LinearLayoutMenuParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         LinearLayout LinearLayoutMenu = new LinearLayout(this);
         LinearLayoutMenu.setLayoutParams(LinearLayoutMenuParam);
-        LinearLayoutMenu.setBackgroundResource(MiscHandler.IsDark(this) ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        LinearLayoutMenu.setBackgroundResource(Misc.IsDark(this) ? R.color.ActionBarDark : R.color.ActionBarWhite);
         LinearLayoutMenu.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutMenu.setId(MiscHandler.GenerateViewID());
+        LinearLayoutMenu.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(LinearLayoutMenu);
 
         ImageViewInbox = new ImageView(this);
         ImageViewInbox.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewInbox.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewInbox.setPadding(MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15));
+        ImageViewInbox.setPadding(Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15));
         ImageViewInbox.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(1); } });
 
         LinearLayoutMenu.addView(ImageViewInbox);
@@ -56,7 +56,7 @@ public class SocialActivity extends FragmentActivity
         ImageViewMoment = new ImageView(this);
         ImageViewMoment.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewMoment.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewMoment.setPadding(MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17));
+        ImageViewMoment.setPadding(Misc.ToDP(this, 17), Misc.ToDP(this, 17), Misc.ToDP(this, 17), Misc.ToDP(this, 17));
         ImageViewMoment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(2); } });
 
         LinearLayoutMenu.addView(ImageViewMoment);
@@ -65,7 +65,7 @@ public class SocialActivity extends FragmentActivity
         ImageViewChat.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewChat.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewChat.setImageResource(R.drawable.ic_chat_gray);
-        ImageViewChat.setPadding(MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15));
+        ImageViewChat.setPadding(Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15));
         ImageViewChat.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { /* TODO Change Activity To Chat */ } });
 
         LinearLayoutMenu.addView(ImageViewChat);
@@ -73,7 +73,7 @@ public class SocialActivity extends FragmentActivity
         ImageViewNotification = new ImageView(this);
         ImageViewNotification.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewNotification.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewNotification.setPadding(MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17), MiscHandler.ToDimension(this, 17));
+        ImageViewNotification.setPadding(Misc.ToDP(this, 17), Misc.ToDP(this, 17), Misc.ToDP(this, 17), Misc.ToDP(this, 17));
         ImageViewNotification.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(3); } });
 
         LinearLayoutMenu.addView(ImageViewNotification);
@@ -81,18 +81,18 @@ public class SocialActivity extends FragmentActivity
         ImageViewProfile = new ImageView(this);
         ImageViewProfile.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewProfile.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewProfile.setPadding(MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15), MiscHandler.ToDimension(this, 15));
+        ImageViewProfile.setPadding(Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15));
         ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { ChangePage(4); } });
 
         LinearLayoutMenu.addView(ImageViewProfile);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(this, 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(this, 1));
         ViewLineParam.addRule(RelativeLayout.ABOVE, LinearLayoutMenu.getId());
 
         View ViewLine = new View(this);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setId(MiscHandler.GenerateViewID());
-        ViewLine.setBackgroundResource(MiscHandler.IsDark(this) ? R.color.LineDark : R.color.LineWhite);
+        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setBackgroundResource(Misc.IsDark(this) ? R.color.LineDark : R.color.LineWhite);
 
         RelativeLayoutMain.addView(ViewLine);
 

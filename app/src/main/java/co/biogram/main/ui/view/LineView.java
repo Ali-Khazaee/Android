@@ -2,13 +2,11 @@ package co.biogram.main.ui.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 
 public class LineView extends View
 {
@@ -56,7 +54,7 @@ public class LineView extends View
 
     public void SetStrokeWidth(int width)
     {
-        StrokeWidth = MiscHandler.ToDimension(getContext(), width);
+        StrokeWidth = Misc.ToDP(getContext(), width);
     }
 
     public void SetProgressColor(int color)

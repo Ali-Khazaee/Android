@@ -11,7 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
 import android.view.View;
 
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 
 public class CircleView extends View
 {
@@ -103,13 +103,13 @@ public class CircleView extends View
             canvas.drawText(SubMessage, XPos, YPos + SubMessageSpace, SubMessagePaint);
 
         if (bitmap != null)
-            canvas.drawBitmap(bitmap, XPos - MiscHandler.ToDimension(getContext(), 10), YPos, null);
+            canvas.drawBitmap(bitmap, XPos - Misc.ToDP(getContext(), 10), YPos, null);
     }
 
     public void SetBitmap(int resource)
     {
         bitmap = BitmapFactory.decodeResource(getContext().getResources(), resource);
-        bitmap = Bitmap.createScaledBitmap(bitmap, MiscHandler.ToDimension(getContext(), 20), MiscHandler.ToDimension(getContext(), 20), true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, Misc.ToDP(getContext(), 20), Misc.ToDP(getContext(), 20), true);
     }
 
     public void SetMessage(String message)
@@ -124,7 +124,7 @@ public class CircleView extends View
 
     public void SetMessageSize(int size)
     {
-        MessageSize = MiscHandler.ToDimension(getContext(), size);
+        MessageSize = Misc.ToDP(getContext(), size);
     }
 
     public void SetMessageColor(int color)
@@ -139,7 +139,7 @@ public class CircleView extends View
 
     public void SetSubMessageSize(int size)
     {
-        SubMessageSize = MiscHandler.ToDimension(getContext(), size);
+        SubMessageSize = Misc.ToDP(getContext(), size);
     }
 
     public void SetSubMessageColor(int color)
@@ -149,7 +149,7 @@ public class CircleView extends View
 
     public void SetSubMessageSpace(int size)
     {
-        SubMessageSpace = MiscHandler.ToDimension(getContext(), size);
+        SubMessageSpace = Misc.ToDP(getContext(), size);
     }
 
     public void SetStrokeColor(int color)
@@ -159,7 +159,7 @@ public class CircleView extends View
 
     public void SetStrokeWidth(int width)
     {
-        StrokeWidth = MiscHandler.ToDimension(getContext(), width);
+        StrokeWidth = Misc.ToDP(getContext(), width);
     }
 
     public void SetProgressColor(int color)
@@ -169,7 +169,7 @@ public class CircleView extends View
 
     public void SetProgressWidth(int width)
     {
-        ProgressWidth = MiscHandler.ToDimension(getContext(), width);
+        ProgressWidth = Misc.ToDP(getContext(), width);
     }
 
     public void SetProgressPercentage(int percent)

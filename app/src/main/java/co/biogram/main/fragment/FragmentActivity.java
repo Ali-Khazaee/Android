@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 
 public abstract class FragmentActivity extends Activity
 {
@@ -83,7 +83,7 @@ public abstract class FragmentActivity extends Activity
         Permission = permission;
         PermissionListener = Listener;
 
-        if (MiscHandler.HasPermission(this, Permission))
+        if (Misc.HasPermission(this, Permission))
         {
             PermissionListener.OnGranted();
             return;

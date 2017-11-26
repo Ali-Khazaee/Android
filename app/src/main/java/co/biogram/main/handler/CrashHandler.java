@@ -72,7 +72,7 @@ class CrashHandler
                 }
                 catch (Exception e2)
                 {
-                    MiscHandler.Debug("UncaughtExceptionHandler: " + e2.toString());
+                    Misc.Debug("UncaughtExceptionHandler: " + e2.toString());
                 }
 
                 Report.append("\n\nStack :\n");
@@ -108,10 +108,10 @@ class CrashHandler
                 }
                 catch (Exception e3)
                 {
-                    MiscHandler.Debug("UncaughtExceptionHandler-SaveFile: " + e3.toString());
+                    Misc.Debug("UncaughtExceptionHandler-SaveFile: " + e3.toString());
                 }
 
-                MiscHandler.Debug("\n\n" + Report.toString() + "\n\n");
+                Misc.Debug("\n\n" + Report.toString() + "\n\n");
 
                 UploadCrash(context);
 
@@ -165,7 +165,7 @@ class CrashHandler
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("CrashHandler-UploadCrash: " + e.toString());
+                    Misc.Debug("CrashHandler-UploadCrash: " + e.toString());
                 }
                 finally
                 {
@@ -176,13 +176,13 @@ class CrashHandler
                     }
                     catch (Exception e)
                     {
-                        MiscHandler.Debug("CrashHandler-UploadCrash2: " + e.toString());
+                        Misc.Debug("CrashHandler-UploadCrash2: " + e.toString());
                     }
                 }
             }
         }
 
-        AndroidNetworking.post(MiscHandler.GetRandomServer("Crash"))
+        AndroidNetworking.post(Misc.GetRandomServer("Crash"))
         .addBodyParameter("Crash", WholeErrorText.toString())
         .build()
         .getAsString(new StringRequestListener()
@@ -203,7 +203,7 @@ class CrashHandler
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("CrashHandler-RequestCrash: " + e.toString());
+                    Misc.Debug("CrashHandler-RequestCrash: " + e.toString());
                 }
             }
 

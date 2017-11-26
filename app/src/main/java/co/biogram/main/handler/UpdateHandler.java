@@ -23,7 +23,7 @@ class UpdateHandler
 {
     public static void SetUp(final Context context)
     {
-        AndroidNetworking.post(MiscHandler.GetRandomServer("Update"))
+        AndroidNetworking.post(Misc.GetRandomServer("Update"))
         .build()
         .getAsString(new StringRequestListener()
         {
@@ -67,7 +67,7 @@ class UpdateHandler
                 }
                 catch (Exception e)
                 {
-                    MiscHandler.Debug("CrashHandler-RequestCrash: " + e.toString());
+                    Misc.Debug("CrashHandler-RequestCrash: " + e.toString());
                 }
             }
 
@@ -83,7 +83,7 @@ class UpdateHandler
         if (!UpdateFolder.exists())
             UpdateFolder.mkdir();
 
-        AndroidNetworking.download(MiscHandler.GetRandomServer("biogram.apk"), UpdateFolder.getAbsolutePath(), Filename)
+        AndroidNetworking.download(Misc.GetRandomServer("biogram.apk"), UpdateFolder.getAbsolutePath(), Filename)
         .setPriority(Priority.MEDIUM)
         .build()
         .startDownload(new DownloadListener()
@@ -149,7 +149,7 @@ class UpdateHandler
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("UpdateHandler-IsUpdateAvailable: " + e.toString());
+            Misc.Debug("UpdateHandler-IsUpdateAvailable: " + e.toString());
         }
 
         return true;

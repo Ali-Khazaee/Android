@@ -5,7 +5,7 @@ import android.widget.RelativeLayout;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentBase;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.TextView;
 
@@ -29,13 +29,13 @@ public class ProfileUI extends FragmentBase
         RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayout.LayoutParams TextViewThemeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 50));
+        RelativeLayout.LayoutParams TextViewThemeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 50));
         TextViewThemeParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         TextView TextViewTheme = new TextView(GetActivity() , 16, false);
         TextViewTheme.setLayoutParams(TextViewThemeParam);
         TextViewTheme.setText(("Theme"));
-        TextViewTheme.setId(MiscHandler.GenerateViewID());
+        TextViewTheme.setId(Misc.GenerateViewID());
         TextViewTheme.setBackgroundResource(R.color.BlueGray2);
         TextViewTheme.setOnClickListener(new View.OnClickListener()
         {
@@ -43,15 +43,15 @@ public class ProfileUI extends FragmentBase
             public void onClick(View v)
             {
                 if (SharedHandler.GetBoolean(GetActivity(), "IsDark"))
-                    MiscHandler.ChangeTheme(GetActivity(), false);
+                    Misc.ChangeTheme(GetActivity(), false);
                 else
-                    MiscHandler.ChangeTheme(GetActivity(), true);
+                    Misc.ChangeTheme(GetActivity(), true);
             }
         });
 
         RelativeLayoutMain.addView(TextViewTheme);
 
-        RelativeLayout.LayoutParams TextViewLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 50));
+        RelativeLayout.LayoutParams TextViewLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 50));
         TextViewLanguageParam.addRule(RelativeLayout.BELOW, TextViewTheme.getId());
 
         TextView TextViewLanguage = new TextView(GetActivity() , 16, false);
@@ -64,9 +64,9 @@ public class ProfileUI extends FragmentBase
             public void onClick(View v)
             {
                 if (SharedHandler.GetString(GetActivity(), "Language").equals("fa"))
-                    MiscHandler.ChangeLanguage(GetActivity(), "en");
+                    Misc.ChangeLanguage(GetActivity(), "en");
                 else
-                    MiscHandler.ChangeLanguage(GetActivity(), "fa");
+                    Misc.ChangeLanguage(GetActivity(), "fa");
             }
         });
 

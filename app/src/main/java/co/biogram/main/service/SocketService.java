@@ -35,7 +35,7 @@ public class SocketService extends Service
                     }
                     catch (Exception e)
                     {
-                        MiscHandler.Debug("SocketService-Connect: " + e.toString());
+                        Misc.Debug("SocketService-Connect: " + e.toString());
                     }
                 }
             });
@@ -79,7 +79,7 @@ public class SocketService extends Service
                     }
                     catch (Exception e)
                     {
-                        MiscHandler.Debug("SocketService-Notification: " + e.toString());
+                        Misc.Debug("SocketService-Notification: " + e.toString());
                     }
                 }
             });
@@ -87,7 +87,7 @@ public class SocketService extends Service
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("SocketService: " + e.toString());
+            Misc.Debug("SocketService: " + e.toString());
         }*/
 
         return START_STICKY;

@@ -18,7 +18,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import co.biogram.main.R;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 
 public class ProgressDialog extends AlertDialog
 {
@@ -72,47 +72,47 @@ public class ProgressDialog extends AlertDialog
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTitleParam.setMargins(MiscHandler.ToDimension(getContext(), 15), MiscHandler.ToDimension(getContext(), 10), MiscHandler.ToDimension(getContext(), 15), MiscHandler.ToDimension(getContext(), 10));
-        TextViewTitleParam.addRule(MiscHandler.Align("R"));
+        TextViewTitleParam.setMargins(Misc.ToDP(getContext(), 15), Misc.ToDP(getContext(), 10), Misc.ToDP(getContext(), 15), Misc.ToDP(getContext(), 10));
+        TextViewTitleParam.addRule(Misc.Align("R"));
 
         TextView TextViewTitle = new TextView(getContext(), 14, false);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setId(MiscHandler.GenerateViewID());
+        TextViewTitle.setId(Misc.GenerateViewID());
         TextViewTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.Black));
 
         RelativeLayoutMain.addView(TextViewTitle);
 
         RelativeLayout.LayoutParams ProgressBarMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        ProgressBarMainParam.setMargins(MiscHandler.ToDimension(getContext(), 10), MiscHandler.ToDimension(getContext(), 12), MiscHandler.ToDimension(getContext(), 10), MiscHandler.ToDimension(getContext(), 1));
+        ProgressBarMainParam.setMargins(Misc.ToDP(getContext(), 10), Misc.ToDP(getContext(), 12), Misc.ToDP(getContext(), 10), Misc.ToDP(getContext(), 1));
         ProgressBarMainParam.addRule(RelativeLayout.BELOW, TextViewTitle.getId());
         ProgressBarMainParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
         ProgressBarMain = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleHorizontal);
         ProgressBarMain.setLayoutParams(ProgressBarMainParam);
-        ProgressBarMain.setId(MiscHandler.GenerateViewID());
+        ProgressBarMain.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(ProgressBarMain);
 
         RelativeLayout.LayoutParams TextViewNumberParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewNumberParam.setMargins(MiscHandler.ToDimension(getContext(), 15), 0, MiscHandler.ToDimension(getContext(), 15), 0);
+        TextViewNumberParam.setMargins(Misc.ToDP(getContext(), 15), 0, Misc.ToDP(getContext(), 15), 0);
         TextViewNumberParam.addRule(RelativeLayout.BELOW, ProgressBarMain.getId());
         TextViewNumberParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
         TextViewNumber = new TextView(getContext(), 14, false);
         TextViewNumber.setLayoutParams(TextViewNumberParam);
-        TextViewNumber.setPadding(0, MiscHandler.ToDimension(getContext(), 10), 0, MiscHandler.ToDimension(getContext(), 10));
+        TextViewNumber.setPadding(0, Misc.ToDP(getContext(), 10), 0, Misc.ToDP(getContext(), 10));
         TextViewNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.Black));
 
         RelativeLayoutMain.addView(TextViewNumber);
 
         RelativeLayout.LayoutParams TextViewPercentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewPercentParam.setMargins(MiscHandler.ToDimension(getContext(), 15), 0, MiscHandler.ToDimension(getContext(), 15), 0);
+        TextViewPercentParam.setMargins(Misc.ToDP(getContext(), 15), 0, Misc.ToDP(getContext(), 15), 0);
         TextViewPercentParam.addRule(RelativeLayout.BELOW, ProgressBarMain.getId());
         TextViewPercentParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         TextViewPercent = new TextView(getContext(), 14, false);
         TextViewPercent.setLayoutParams(TextViewPercentParam);
-        TextViewPercent.setPadding(0, MiscHandler.ToDimension(getContext(), 10), 0, MiscHandler.ToDimension(getContext(), 10));
+        TextViewPercent.setPadding(0, Misc.ToDP(getContext(), 10), 0, Misc.ToDP(getContext(), 10));
         TextViewPercent.setTextColor(ContextCompat.getColor(getContext(), R.color.Black));
 
         RelativeLayoutMain.addView(TextViewPercent);

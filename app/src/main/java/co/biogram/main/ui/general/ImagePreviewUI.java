@@ -34,7 +34,7 @@ import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.GlideApp;
-import co.biogram.main.handler.MiscHandler;
+import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.PhotoView;
 import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.LoadingView;
@@ -61,9 +61,9 @@ class ImagePreviewUI extends FragmentBase
 
             BitmapFactory.decodeByteArray(data, 0, data.length, o);
 
-            int Size = MiscHandler.ToDimension(context, 150);
+            int Size = Misc.ToDP(context, 150);
 
-            o.inSampleSize = MiscHandler.SampleSize(o, Size, Size);
+            o.inSampleSize = Misc.SampleSize(o, Size, Size);
             o.inJustDecodeBounds = false;
 
             bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, o);
@@ -78,7 +78,7 @@ class ImagePreviewUI extends FragmentBase
         }
         catch (Exception e)
         {
-            MiscHandler.Debug("ImagePreviewUI-Data: " + e.toString());
+            Misc.Debug("ImagePreviewUI-Data: " + e.toString());
         }
     }
 
@@ -180,31 +180,31 @@ class ImagePreviewUI extends FragmentBase
         }
 
         RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#3f000000"));
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-        ImageViewBackParam.addRule(MiscHandler.Align("R"));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
-        ImageViewBack.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
+        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
-        ImageViewBack.setImageResource(MiscHandler.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
-        ImageViewBack.setId(MiscHandler.GenerateViewID());
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
         RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTitleParam.addRule(MiscHandler.AlignTo("R"), ImageViewBack.getId());
+        TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setPadding(0, MiscHandler.ToDimension(GetActivity(), 6), 0, 0);
+        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.ImagePreviewUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -213,11 +213,11 @@ class ImagePreviewUI extends FragmentBase
         {
             final CropImageView CropImageViewMain = new CropImageView(GetActivity());
 
-            RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-            ImageViewDoneParam.addRule(MiscHandler.Align("L"));
+            RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+            ImageViewDoneParam.addRule(Misc.Align("L"));
 
             ImageView ImageViewDone = new ImageView(GetActivity());
-            ImageViewDone.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
+            ImageViewDone.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
             ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone.setLayoutParams(ImageViewDoneParam);
             ImageViewDone.setImageResource(R.drawable.ic_done_white);
@@ -243,15 +243,15 @@ class ImagePreviewUI extends FragmentBase
             RelativeLayoutMain.addView(CropImageViewMain);
 
             RelativeLayout RelativeLayoutCrop = new RelativeLayout(GetActivity());
-            RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56)));
+            RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
 
             CropImageViewMain.addView(RelativeLayoutCrop);
 
-            RelativeLayout.LayoutParams ImageViewDone2Param = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
+            RelativeLayout.LayoutParams ImageViewDone2Param = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
             ImageViewDone2Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
             ImageView ImageViewDone2 = new ImageView(GetActivity());
-            ImageViewDone2.setPadding(MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6), MiscHandler.ToDimension(GetActivity(), 6));
+            ImageViewDone2.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
             ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone2.setLayoutParams(ImageViewDone2Param);
             ImageViewDone2.setImageResource(R.drawable.ic_done_white);
@@ -282,7 +282,7 @@ class ImagePreviewUI extends FragmentBase
                     }
                     catch (Exception e)
                     {
-                        MiscHandler.Debug("ImagePreviewUI-Type1: " + e.toString());
+                        Misc.Debug("ImagePreviewUI-Type1: " + e.toString());
                     }
                 }
             });
@@ -293,17 +293,17 @@ class ImagePreviewUI extends FragmentBase
         {
             final GradientDrawable DrawableSelect = new GradientDrawable();
             DrawableSelect.setShape(GradientDrawable.OVAL);
-            DrawableSelect.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            DrawableSelect.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
 
             final GradientDrawable DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
             DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-            DrawableSelected.setStroke(MiscHandler.ToDimension(GetActivity(), 2), Color.WHITE);
+            DrawableSelected.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
 
-            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 24), MiscHandler.ToDimension(GetActivity(), 24));
-            ViewCircleParam.setMargins(MiscHandler.ToDimension(GetActivity(), 15), 0, MiscHandler.ToDimension(GetActivity(), 15), 0);
+            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 24), Misc.ToDP(GetActivity(), 24));
+            ViewCircleParam.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 15), 0);
             ViewCircleParam.addRule(RelativeLayout.CENTER_VERTICAL);
-            ViewCircleParam.addRule(MiscHandler.Align("L"));
+            ViewCircleParam.addRule(Misc.Align("L"));
 
             View ViewCircle = new View(GetActivity());
             ViewCircle.setLayoutParams(ViewCircleParam);
@@ -316,7 +316,7 @@ class ImagePreviewUI extends FragmentBase
 
                     if (IsMax)
                     {
-                        MiscHandler.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIReach));
+                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIReach));
                         return;
                     }
 
@@ -344,11 +344,11 @@ class ImagePreviewUI extends FragmentBase
         }
         else
         {
-            RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(MiscHandler.ToDimension(GetActivity(), 56), MiscHandler.ToDimension(GetActivity(), 56));
-            ImageViewOptionParam.addRule(MiscHandler.Align("L"));
+            RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+            ImageViewOptionParam.addRule(Misc.Align("L"));
 
             ImageView ImageViewOption = new ImageView(GetActivity());
-            ImageViewOption.setPadding(MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12), MiscHandler.ToDimension(GetActivity(), 12));
+            ImageViewOption.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
             ImageViewOption.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewOption.setLayoutParams(ImageViewOptionParam);
             ImageViewOption.setImageResource(R.drawable.ic_more_white);
@@ -403,7 +403,7 @@ class ImagePreviewUI extends FragmentBase
 
             RelativeLayoutMain.addView(PhotoViewMain);
 
-            RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, MiscHandler.ToDimension(GetActivity(), 56));
+            RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
             LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
             final LoadingView LoadingViewMain = new LoadingView(GetActivity());
