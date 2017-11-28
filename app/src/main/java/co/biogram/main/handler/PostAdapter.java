@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +47,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID1_LIKE = Misc.GenerateViewID();
     private final int ID1_COMMENT = Misc.GenerateViewID();
     private final int ID1_REPLAY = Misc.GenerateViewID();
-    private final int ID1_CHAT = Misc.GenerateViewID();
+    private final int ID1_FORWARD = Misc.GenerateViewID();
+    private final int ID1_IMAGE_LAYOUT = Misc.GenerateViewID();
+    private final int ID1_SINGLE = Misc.GenerateViewID();
+    private final int ID1_DOUBLE_LAYOUT = Misc.GenerateViewID();
+    private final int ID1_DOUBLE1 = Misc.GenerateViewID();
+    private final int ID1_DOUBLE2 = Misc.GenerateViewID();
+    private final int ID1_TRIPLE_LAYOUT = Misc.GenerateViewID();
+    private final int ID1_TRIPLE1 = Misc.GenerateViewID();
+    private final int ID1_TRIPLE2 = Misc.GenerateViewID();
+    private final int ID1_TRIPLE3 = Misc.GenerateViewID();
 
     // ViewType 2
     private final int ID2_LEVEL = Misc.GenerateViewID();
@@ -52,7 +64,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID2_RATING = Misc.GenerateViewID();
     private final int ID2_JOIN = Misc.GenerateViewID();
     private final int ID2_POPULAR = Misc.GenerateViewID();
-    private final int ID2_SCORE = Misc.GenerateViewID();
+    private final int ID2_POINT = Misc.GenerateViewID();
     private final int ID2_MEDAL = Misc.GenerateViewID();
     private final int ID2_CLOSE = Misc.GenerateViewID();
     private final int ID2_MORE = Misc.GenerateViewID();
@@ -67,13 +79,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
     class ViewHolderMain extends RecyclerView.ViewHolder
     {
+        // ViewType 1
+        CircleImageView CircleImageViewProfile;
+        TextView TextViewName;
+        ImageView ImageiewMedal;
+        TextView TextViewUsername;
+        ImageView ImageiewOption;
+        TextView TextViewTime;
+        TextView TextViewMessage;
+        RelativeLayout RelativeLayoutImage;
+        ImageView ImageViewSingle;
+        LinearLayout LinearLayoutDouble;
+        ImageView ImageViewDouble1;
+        ImageView ImageViewDouble2;
+        LinearLayout LinearLayoutTriple;
+        ImageView ImageViewTriple1;
+        ImageView ImageViewTriple2;
+        ImageView ImageViewTriple3;
+
         // ViewType 2
         CircleView CircleViewLevel;
         TextView TextViewNumber;
         LineView LineViewRating;
         CircleView CircleViewJoin;
         CircleView CircleViewPopular;
-        CircleView CircleViewScore;
+        CircleView CircleViewPoint;
         CircleImageView CircleImageViewMedal;
         ImageView ImageViewClose;
         LinearLayout LinearLayoutMore;
@@ -85,7 +115,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             if (viewType == 1)
             {
-
+                CircleImageViewProfile = v.findViewById(ID1_PROFILE);
+                TextViewName = v.findViewById(ID1_NAME);
+                ImageiewMedal = v.findViewById(ID1_MEDAL);
+                TextViewUsername = v.findViewById(ID1_USERNAME);
+                ImageiewOption = v.findViewById(ID1_OPTION);
+                TextViewTime = v.findViewById(ID1_TIME);
+                TextViewMessage = v.findViewById(ID1_MESSAGE);
+                RelativeLayoutImage = v.findViewById(ID1_IMAGE_LAYOUT);
+                ImageViewSingle = v.findViewById(ID1_SINGLE);
+                LinearLayoutDouble = v.findViewById(ID1_DOUBLE_LAYOUT);
+                ImageViewDouble1 = v.findViewById(ID1_DOUBLE1);
+                ImageViewDouble2 = v.findViewById(ID1_DOUBLE2);
+                LinearLayoutTriple = v.findViewById(ID1_TRIPLE_LAYOUT);
+                ImageViewTriple1 = v.findViewById(ID1_TRIPLE1);
+                ImageViewTriple2 = v.findViewById(ID1_TRIPLE2);
+                ImageViewTriple3 = v.findViewById(ID1_TRIPLE3);
             }
             else if (viewType == 2)
             {
@@ -94,7 +139,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 LineViewRating = v.findViewById(ID2_RATING);
                 CircleViewJoin = v.findViewById(ID2_JOIN);
                 CircleViewPopular = v.findViewById(ID2_POPULAR);
-                CircleViewScore = v.findViewById(ID2_SCORE);
+                CircleViewPoint = v.findViewById(ID2_POINT);
                 CircleImageViewMedal = v.findViewById(ID2_MEDAL);
                 ImageViewClose = v.findViewById(ID2_CLOSE);
                 LinearLayoutMore = v.findViewById(ID2_MORE);
@@ -201,9 +246,153 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutMain.addView(TextViewTime);
 
+            RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewMessageParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);
+            TextViewMessageParam.addRule(RelativeLayout.BELOW, ID1_TIME);
 
+            TextView TextViewMessage = new TextView(Activity, 14, false);
+            TextViewMessage.setLayoutParams(TextViewMessageParam);
+            TextViewMessage.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.Black) : ContextCompat.getColor(Activity, R.color.Black));
+            TextViewMessage.setId(ID1_MESSAGE);
+            TextViewMessage.setText(("salam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنی #Salam"));
+
+            RelativeLayoutMain.addView(TextViewMessage);
+
+            RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayoutContentParam.setMargins(0, 0, Misc.ToDP(Activity, 5), 0);
+            RelativeLayoutContentParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);
+            RelativeLayoutContentParam.addRule(RelativeLayout.BELOW, ID1_MESSAGE);
+
+            RelativeLayout RelativeLayoutContent = new RelativeLayout(Activity);
+            RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
+            RelativeLayoutContent.setId(Misc.GenerateViewID());
+
+            RelativeLayoutMain.addView(RelativeLayoutContent);
+
+            RelativeLayout RelativeLayoutImage = new RelativeLayout(Activity);
+            RelativeLayoutImage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 150)));
+            RelativeLayoutImage.setId(ID1_IMAGE_LAYOUT);
+            RelativeLayoutImage.setVisibility(View.GONE);
+
+            RelativeLayoutContent.addView(RelativeLayoutImage);
+
+            ImageView ImageiewSingle = new ImageView(Activity);
+            ImageiewSingle.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageiewSingle.setId(ID1_SINGLE);
+            ImageiewSingle.setVisibility(View.GONE);
+
+            RelativeLayoutImage.addView(ImageiewSingle);
+
+            LinearLayout LinearLayoutDouble = new LinearLayout(Activity);
+            LinearLayoutDouble.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            LinearLayoutDouble.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayoutDouble.setVisibility(View.GONE);
+            LinearLayoutDouble.setId(ID1_DOUBLE_LAYOUT);
+
+            RelativeLayoutImage.addView(LinearLayoutDouble);
+
+            ImageView ImageiewDouble1 = new ImageView(Activity);
+            ImageiewDouble1.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            ImageiewDouble1.setId(ID1_DOUBLE1);
+
+            LinearLayoutDouble.addView(ImageiewDouble1);
+
+            View ViewLineDouble = new View(Activity);
+            ViewLineDouble.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.03f));
+            ViewLineDouble.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.White);
+
+            LinearLayoutDouble.addView(ViewLineDouble);
+
+            ImageView ImageiewDouble2 = new ImageView(Activity);
+            ImageiewDouble2.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            ImageiewDouble2.setId(ID1_DOUBLE2);
+
+            LinearLayoutDouble.addView(ImageiewDouble2);
+
+            LinearLayout LinearLayoutTriple = new LinearLayout(Activity);
+            LinearLayoutTriple.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            LinearLayoutTriple.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayoutTriple.setVisibility(View.GONE);
+            LinearLayoutTriple.setId(ID1_TRIPLE_LAYOUT);
+
+            RelativeLayoutImage.addView(LinearLayoutTriple);
+
+            ImageView ImageiewTriple1 = new ImageView(Activity);
+            ImageiewTriple1.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            ImageiewTriple1.setId(ID1_TRIPLE1);
+
+            LinearLayoutTriple.addView(ImageiewTriple1);
+
+            View ViewLineTriple = new View(Activity);
+            ViewLineTriple.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.02f));
+            ViewLineTriple.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.White);
+
+            LinearLayoutTriple.addView(ViewLineTriple);
+
+            LinearLayout LinearLayoutDouble2 = new LinearLayout(Activity);
+            LinearLayoutDouble2.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            LinearLayoutDouble2.setOrientation(LinearLayout.VERTICAL);
+
+            LinearLayoutTriple.addView(LinearLayoutDouble2);
+
+            ImageView ImageiewTriple2 = new ImageView(Activity);
+            ImageiewTriple2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1));
+            ImageiewTriple2.setId(ID1_TRIPLE2);
+
+            LinearLayoutDouble2.addView(ImageiewTriple2);
+
+            View ViewLineTriple2 = new View(Activity);
+            ViewLineTriple2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0.03f));
+            ViewLineTriple2.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.White);
+
+            LinearLayoutDouble2.addView(ViewLineTriple2);
+
+            ImageView ImageiewTriple3 = new ImageView(Activity);
+            ImageiewTriple3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1));
+            ImageiewTriple3.setId(ID1_TRIPLE3);
+
+            LinearLayoutDouble2.addView(ImageiewTriple3);
+
+            RelativeLayout.LayoutParams LinearLayoutToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 40));
+            LinearLayoutToolParam.addRule(RelativeLayout.BELOW, RelativeLayoutContent.getId());
+            LinearLayoutToolParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);
+
+            LinearLayout LinearLayoutTool = new LinearLayout(Activity);
+            LinearLayoutTool.setLayoutParams(LinearLayoutToolParam);
+            LinearLayoutTool.setOrientation(LinearLayout.HORIZONTAL);
+
+            RelativeLayoutMain.addView(LinearLayoutTool);
+
+            ImageView ImageiewLike = new ImageView(Activity);
+            ImageiewLike.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            ImageiewLike.setImageResource(R.drawable.ic_like);
+            ImageiewLike.setId(ID1_LIKE);
+
+            LinearLayoutTool.addView(ImageiewLike);
+
+            ImageView ImageiewComment = new ImageView(Activity);
+            ImageiewComment.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            ImageiewComment.setImageResource(R.drawable.ic_like);
+            ImageiewComment.setId(ID1_COMMENT);
+
+            LinearLayoutTool.addView(ImageiewComment);
+
+            ImageView ImageiewReplay = new ImageView(Activity);
+            ImageiewReplay.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            ImageiewReplay.setImageResource(R.drawable.ic_like);
+            ImageiewReplay.setId(ID1_REPLAY);
+
+            LinearLayoutTool.addView(ImageiewReplay);
+
+            ImageView ImageiewForward = new ImageView(Activity);
+            ImageiewForward.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            ImageiewForward.setImageResource(R.drawable.ic_like);
+            ImageiewForward.setId(ID1_FORWARD);
+
+            LinearLayoutTool.addView(ImageiewForward);
 
             RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1));
+            ViewLineParam.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
             ViewLineParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
             View ViewLine = new View(Activity);
@@ -354,7 +543,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutRating.addView(TextViewInfo);
 
             RelativeLayout.LayoutParams LinearLayoutMoreParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
-            LinearLayoutMoreParam.setMargins(0, Misc.ToDP(Activity, 10), 0, 0);
+            LinearLayoutMoreParam.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
             LinearLayoutMoreParam.addRule(RelativeLayout.BELOW, RelativeLayoutRating.getId());
 
             LinearLayout LinearLayoutMore = new LinearLayout(Activity);
@@ -390,26 +579,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleViewPopular.SetMessageColor(R.color.BlueLight);
             CircleViewPopular.SetStrokeColor(R.color.BlueLight);
             CircleViewPopular.SetStrokeWidth(1);
-            CircleViewPopular.SetBitmap(R.drawable.ic_launcher);
+            CircleViewPopular.SetBitmap(R.drawable.ic_popular_blue, 24);
             CircleViewPopular.InvalidateTextPaints();
 
             LinearLayoutMore.addView(CircleViewPopular);
 
-            CircleView CircleViewScore = new CircleView(Activity);
-            CircleViewScore.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
-            CircleViewScore.setId(ID2_SCORE);
-            CircleViewScore.SetMessage("66K");
-            CircleViewScore.SetMessageSize(16);
-            CircleViewScore.SetMessageColor(R.color.White);
-            CircleViewScore.SetStrokeColor(R.color.BlueLight);
-            CircleViewScore.SetStrokeWidth(50);
-            CircleViewScore.InvalidateTextPaints();
+            CircleView CircleViewPoint = new CircleView(Activity);
+            CircleViewPoint.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
+            CircleViewPoint.setId(ID2_POINT);
+            CircleViewPoint.SetMessage("66K");
+            CircleViewPoint.SetMessageSize(16);
+            CircleViewPoint.SetMessageColor(R.color.White);
+            CircleViewPoint.SetStrokeColor(R.color.BlueLight);
+            CircleViewPoint.SetStrokeWidth(50);
+            CircleViewPoint.InvalidateTextPaints();
 
-            LinearLayoutMore.addView(CircleViewScore);
+            LinearLayoutMore.addView(CircleViewPoint);
 
             CircleImageView CircleImageViewMedal = new CircleImageView(Activity);
             CircleImageViewMedal.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
-            CircleImageViewMedal.setId(ID2_SCORE);
+            CircleImageViewMedal.setId(ID2_POINT);
             CircleImageViewMedal.SetBorderColor(Misc.IsDark(Activity) ? R.color.White : R.color.Gray2);
             CircleImageViewMedal.SetBorderWidth(1);
             CircleImageViewMedal.SetWidthPadding();
@@ -421,7 +610,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayout.LayoutParams LinearLayoutMore2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
             LinearLayoutMore2Param.addRule(RelativeLayout.BELOW, LinearLayoutMore.getId());
 
-            final LinearLayout LinearLayoutMore2 = new LinearLayout(Activity);
+            LinearLayout LinearLayoutMore2 = new LinearLayout(Activity);
             LinearLayoutMore2.setLayoutParams(LinearLayoutMore2Param);
             LinearLayoutMore2.setId(ID2_MORE2);
 
@@ -443,13 +632,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             LinearLayoutMore2.addView(TextViewPopular);
 
-            TextView TextViewScore = new TextView(Activity, 14, false);
-            TextViewScore.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-            TextViewScore.setText(Activity.getString(R.string.InboxUIScore));
-            TextViewScore.setGravity(Gravity.CENTER);
-            TextViewScore.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextView TextViewPoint = new TextView(Activity, 14, false);
+            TextViewPoint.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            TextViewPoint.setText(Activity.getString(R.string.InboxUIPoint));
+            TextViewPoint.setGravity(Gravity.CENTER);
+            TextViewPoint.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
 
-            LinearLayoutMore2.addView(TextViewScore);
+            LinearLayoutMore2.addView(TextViewPoint);
 
             TextView TextViewMedal = new TextView(Activity, 14, false);
             TextViewMedal.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
@@ -480,7 +669,62 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     {
         final int Position = Holder.getAdapterPosition();
 
-        if (Holder.getItemViewType() == 2)
+        if (Holder.getItemViewType() == 1)
+        {
+            Holder.RelativeLayoutImage.setVisibility(View.VISIBLE);
+
+            switch (Position)
+            {
+                case 3:
+                    Holder.ImageViewSingle.setVisibility(View.VISIBLE);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/sites/default/files/images/blog/t-natuwal.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewSingle);
+                    break;
+                case 4:
+                    Holder.LinearLayoutDouble.setVisibility(View.VISIBLE);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/wallpaper/sites/default/files/images/04-2013/mediterranean-beach-wallpaper.preview.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewDouble1);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/wallpaper/sites/default/files/images/04-2013/tropical-beach-wallpaper.preview.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewDouble2);
+                    break;
+                case 5:
+                    Holder.LinearLayoutTriple.setVisibility(View.VISIBLE);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/sites/default/files/images/blog/t-natuwal.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewTriple1);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/wallpaper/sites/default1/files/images/04-2013/mediterranean-beach-wallpaper.preview.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewTriple2);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/wallpaper/sites/defaul1t/files/images/04-2013/tropical-beach-wallpaper.preview.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewTriple3);
+                    break;
+                case 6:
+                    Holder.ImageViewSingle.setVisibility(View.VISIBLE);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/sites/default1/files/images/blog/t-natuwal.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewSingle);
+                    break;
+            }
+        }
+        else if (Holder.getItemViewType() == 2)
         {
             Holder.ImageViewClose.setOnClickListener(new View.OnClickListener()
             {
@@ -491,7 +735,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 {
                     if (IsMore)
                     {
-                        ValueAnimator Anim = ValueAnimator.ofInt(Holder.LinearLayoutMore.getMeasuredHeight(), Misc.ToDP(Activity, 100));
+                        ValueAnimator Anim = ValueAnimator.ofInt(Holder.LinearLayoutMore.getMeasuredHeight(), Misc.ToDP(Activity, 90));
                         Anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
                         {
                             @Override
@@ -500,7 +744,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 int Height = (int) va.getAnimatedValue();
 
                                 ViewGroup.LayoutParams Param = Holder.LinearLayoutMore.getLayoutParams();
-                                Param.height = Math.min(Height, Misc.ToDP(Activity, 80));
+                                Param.height = Math.min(Height, Misc.ToDP(Activity, 65));
 
                                 Holder.LinearLayoutMore.setLayoutParams(Param);
 
@@ -520,6 +764,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                     else
                     {
                         PostList.remove(Position);
+                        notifyDataSetChanged();
                     }
                 }
             });
@@ -538,12 +783,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         return PostList.size();
     }
 
+
     public static class PostStruct
     {
+        int DataType; // 1: Image 2: Video 3: Vote 4: Music
         int ViewType;
 
-        public PostStruct(int viewType)
+        public PostStruct(int dataType, int viewType)
         {
+            DataType = dataType;
             ViewType = viewType;
         }
     }

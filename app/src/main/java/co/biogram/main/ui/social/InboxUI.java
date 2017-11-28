@@ -105,22 +105,22 @@ public class InboxUI extends FragmentBase
 
         LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
 
-        PostList.add(new PostAdapter.PostStruct(0));
-        PostList.add(new PostAdapter.PostStruct(2));
-        PostList.add(new PostAdapter.PostStruct(1));
-        PostList.add(new PostAdapter.PostStruct(1));
-        PostList.add(new PostAdapter.PostStruct(1));
-        PostList.add(new PostAdapter.PostStruct(3));
-        PostList.add(new PostAdapter.PostStruct(1));
-        PostList.add(new PostAdapter.PostStruct(1));
-        PostList.add(new PostAdapter.PostStruct(1));
+        PostList.add(new PostAdapter.PostStruct(0,0));
+        PostList.add(new PostAdapter.PostStruct(0,2));
+        PostList.add(new PostAdapter.PostStruct(1,1));
+        PostList.add(new PostAdapter.PostStruct(1,1));
+        PostList.add(new PostAdapter.PostStruct(1,1));
+        PostList.add(new PostAdapter.PostStruct(1,1));
+        PostList.add(new PostAdapter.PostStruct(1,1));
+        PostList.add(new PostAdapter.PostStruct(1,1));
+        PostList.add(new PostAdapter.PostStruct(1,1));
 
         AdapterMain = new PostAdapter(GetActivity(), PostList, new PostAdapter.PullToRefreshListener()
         {
             @Override
             public void OnRefresh()
             {
-                PostList.add(new PostAdapter.PostStruct(1));
+                PostList.add(new PostAdapter.PostStruct(1,1));
                 AdapterMain.SetRefreshComplete();
             }
         });

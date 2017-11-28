@@ -106,10 +106,10 @@ public class CircleView extends View
             canvas.drawBitmap(bitmap, XPos - Misc.ToDP(getContext(), 10), YPos, null);
     }
 
-    public void SetBitmap(int resource)
+    public void SetBitmap(int resource, int size)
     {
         bitmap = BitmapFactory.decodeResource(getContext().getResources(), resource);
-        bitmap = Bitmap.createScaledBitmap(bitmap, Misc.ToDP(getContext(), 20), Misc.ToDP(getContext(), 20), true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, Misc.ToDP(getContext(), size), Misc.ToDP(getContext(), size), true);
     }
 
     public void SetMessage(String message)
