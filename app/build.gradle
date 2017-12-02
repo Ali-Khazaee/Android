@@ -19,25 +19,6 @@ android
         versionCode 203
         versionName "2.0.3"
         resConfigs "en", "fa"
-
-        externalNativeBuild
-        {
-            ndkBuild
-            {
-                arguments "NDK_APPLICATION_MK:=jni/Application.mk", "APP_PLATFORM:=android-14"
-                abiFilters "armeabi-v7a", "x86"
-            }
-        }
-    }
-
-    sourceSets.main.jniLibs.srcDirs = ['./jni/']
-
-    externalNativeBuild
-    {
-        ndkBuild
-        {
-            path "jni/Android.mk"
-        }
     }
 
     compileOptions
@@ -63,7 +44,7 @@ android
         release
         {
             debuggable true
-            jniDebuggable true
+            jniDebuggable false
             minifyEnabled true
             zipAlignEnabled true
             shrinkResources true

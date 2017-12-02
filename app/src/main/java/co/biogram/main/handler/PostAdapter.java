@@ -2,6 +2,8 @@ package co.biogram.main.handler;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -57,6 +59,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID1_TRIPLE1 = Misc.GenerateViewID();
     private final int ID1_TRIPLE2 = Misc.GenerateViewID();
     private final int ID1_TRIPLE3 = Misc.GenerateViewID();
+    private final int ID1_VIDEO_LAYOUT = Misc.GenerateViewID();
+    private final int ID1_VIDEO_IMAGE = Misc.GenerateViewID();
+    private final int ID1_VIDEO_DUROTION = Misc.GenerateViewID();
 
     // ViewType 2
     private final int ID2_LEVEL = Misc.GenerateViewID();
@@ -96,6 +101,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         ImageView ImageViewTriple1;
         ImageView ImageViewTriple2;
         ImageView ImageViewTriple3;
+        RelativeLayout RelativeLayoutVideo;
+        ImageView ImageViewVideo;
+        TextView TextViewDurotion;
 
         // ViewType 2
         CircleView CircleViewLevel;
@@ -131,6 +139,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 ImageViewTriple1 = v.findViewById(ID1_TRIPLE1);
                 ImageViewTriple2 = v.findViewById(ID1_TRIPLE2);
                 ImageViewTriple3 = v.findViewById(ID1_TRIPLE3);
+                RelativeLayoutVideo = v.findViewById(ID1_VIDEO_LAYOUT);
+                ImageViewVideo = v.findViewById(ID1_VIDEO_IMAGE);
+                TextViewDurotion = v.findViewById(ID1_VIDEO_DUROTION);
             }
             else if (viewType == 2)
             {
@@ -252,7 +263,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewMessage = new TextView(Activity, 14, false);
             TextViewMessage.setLayoutParams(TextViewMessageParam);
-            TextViewMessage.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.Black) : ContextCompat.getColor(Activity, R.color.Black));
+            TextViewMessage.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Black));
             TextViewMessage.setId(ID1_MESSAGE);
             TextViewMessage.setText(("salam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنی #Salam"));
 
@@ -353,6 +364,81 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             LinearLayoutDouble2.addView(ImageiewTriple3);
 
+            RelativeLayout RelativeLayoutVideo = new RelativeLayout(Activity);
+            RelativeLayoutVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 150)));
+            RelativeLayoutVideo.setVisibility(View.GONE);
+            RelativeLayoutVideo.setId(ID1_VIDEO_LAYOUT);
+
+            RelativeLayoutContent.addView(RelativeLayoutVideo);
+
+            ImageView ImageViewVideo = new ImageView(Activity);
+            ImageViewVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            ImageViewVideo.setBackgroundResource(R.color.BlueGray2);
+            ImageViewVideo.setId(ID1_VIDEO_IMAGE);
+
+            RelativeLayoutVideo.addView(ImageViewVideo);
+
+            GradientDrawable DrawableText = new GradientDrawable();
+            DrawableText.setColor(Color.parseColor("#50000000"));
+            DrawableText.setCornerRadius(Misc.ToDP(Activity, 4));
+
+            RelativeLayout.LayoutParams TextViewDuritonParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewDuritonParam.setMargins(Misc.ToDP(Activity, 8), 0, Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            TextViewDuritonParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            TextViewDuritonParam.addRule(Misc.Align("L"));
+
+            TextView TextViewDurotion = new TextView(Activity, 12, false);
+            TextViewDurotion.setLayoutParams(TextViewDuritonParam);
+            TextViewDurotion.setTextColor(ContextCompat.getColor(Activity, R.color.White));
+            TextViewDurotion.setBackground(DrawableText);
+            TextViewDurotion.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
+            TextViewDurotion.setId(ID1_VIDEO_DUROTION);
+            TextViewDurotion.setText(("1:32"));
+
+            RelativeLayoutVideo.addView(TextViewDurotion);
+
+            RelativeLayout.LayoutParams TextViewVideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewVideoParam.setMargins(Misc.ToDP(Activity, 8), 0, Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            TextViewVideoParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            TextViewVideoParam.addRule(Misc.Align("R"));
+
+            TextView TextViewVideo = new TextView(Activity, 12, false);
+            TextViewVideo.setLayoutParams(TextViewVideoParam);
+            TextViewVideo.setTextColor(ContextCompat.getColor(Activity, R.color.White));
+            TextViewVideo.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
+            TextViewVideo.setBackground(DrawableText);
+            TextViewVideo.setText(("Video"));
+
+            RelativeLayoutVideo.addView(TextViewVideo);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             RelativeLayout.LayoutParams LinearLayoutToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 40));
             LinearLayoutToolParam.addRule(RelativeLayout.BELOW, RelativeLayoutContent.getId());
             LinearLayoutToolParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);
@@ -372,21 +458,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             ImageView ImageiewComment = new ImageView(Activity);
             ImageiewComment.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            ImageiewComment.setImageResource(R.drawable.ic_like);
+            ImageiewComment.setImageResource(R.drawable.ic_comment);
             ImageiewComment.setId(ID1_COMMENT);
 
             LinearLayoutTool.addView(ImageiewComment);
 
             ImageView ImageiewReplay = new ImageView(Activity);
             ImageiewReplay.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            ImageiewReplay.setImageResource(R.drawable.ic_like);
+            ImageiewReplay.setImageResource(R.drawable.ic_like_red);
             ImageiewReplay.setId(ID1_REPLAY);
 
             LinearLayoutTool.addView(ImageiewReplay);
 
             ImageView ImageiewForward = new ImageView(Activity);
             ImageiewForward.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            ImageiewForward.setImageResource(R.drawable.ic_like);
+            ImageiewForward.setImageResource(R.drawable.ic_remove);
             ImageiewForward.setId(ID1_FORWARD);
 
             LinearLayoutTool.addView(ImageiewForward);
@@ -675,6 +761,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             switch (Position)
             {
+                case 2:
+                    Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
+                    GlideApp.with(Activity)
+                            .load("http://webneel.com/sites/default/files/images/blog/t-natuwal.jpg")
+                            .placeholder(R.color.BlueGray2)
+                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
+                            .into(Holder.ImageViewVideo);
+                    break;
                 case 3:
                     Holder.ImageViewSingle.setVisibility(View.VISIBLE);
                     GlideApp.with(Activity)
