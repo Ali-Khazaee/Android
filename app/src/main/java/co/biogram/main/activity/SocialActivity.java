@@ -167,7 +167,7 @@ public class SocialActivity extends FragmentActivity
                 Tag = "NotificationUI";
                 Fragment = new NotificationUI();
                 NotificationEnable = false;
-                ImageViewNotification.setImageResource(R.drawable.ic_notification_blue);
+                ImageViewNotification.setImageResource(R.drawable.ic_notification_gray);
                 break;
             case 4:
                 Tag = "ProfileUI";
