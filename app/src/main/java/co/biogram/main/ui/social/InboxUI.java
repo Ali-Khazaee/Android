@@ -105,22 +105,18 @@ public class InboxUI extends FragmentBase
 
         LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
 
-        PostList.add(new PostAdapter.PostStruct(0,0));
-        PostList.add(new PostAdapter.PostStruct(0,2));
-        PostList.add(new PostAdapter.PostStruct(1,1));
-        PostList.add(new PostAdapter.PostStruct(1,1));
-        PostList.add(new PostAdapter.PostStruct(1,1));
-        PostList.add(new PostAdapter.PostStruct(1,1));
-        PostList.add(new PostAdapter.PostStruct(1,1));
-        PostList.add(new PostAdapter.PostStruct(1,1));
-        PostList.add(new PostAdapter.PostStruct(1,1));
+        PostList.add(new PostAdapter.PostStruct(0));
+        PostList.add(new PostAdapter.PostStruct(2));
+        PostList.add(new PostAdapter.PostStruct("Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@ali", 1512525803, "Post e Jadid e Man\n #NewPost\n#GoodLuck", 1, "", true, 100, true, 341));
+        PostList.add(new PostAdapter.PostStruct("Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@ali", 1512545803, "پوست جدید من \n #NewPost\n#GoodLuck", 1, "", false, 521, true, 18));
+        PostList.add(new PostAdapter.PostStruct("Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@ali", 1512745803, "  \n #News \n #Good پوست جدید من", 1, "", false, 521, true, 18));
 
         AdapterMain = new PostAdapter(GetActivity(), PostList, new PostAdapter.PullToRefreshListener()
         {
             @Override
             public void OnRefresh()
             {
-                PostList.add(new PostAdapter.PostStruct(1,1));
+                PostList.add(new PostAdapter.PostStruct(1));
                 AdapterMain.SetRefreshComplete();
             }
         });

@@ -47,7 +47,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID1_OPTION = Misc.GenerateViewID();
     private final int ID1_MESSAGE = Misc.GenerateViewID();
     private final int ID1_LIKE = Misc.GenerateViewID();
+    private final int ID1_LIKE_COUNT = Misc.GenerateViewID();
     private final int ID1_COMMENT = Misc.GenerateViewID();
+    private final int ID1_COMMENT_COUNT = Misc.GenerateViewID();
     private final int ID1_REPLAY = Misc.GenerateViewID();
     private final int ID1_FORWARD = Misc.GenerateViewID();
     private final int ID1_IMAGE_LAYOUT = Misc.GenerateViewID();
@@ -63,6 +65,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID1_VIDEO_IMAGE = Misc.GenerateViewID();
     private final int ID1_VIDEO_DUROTION = Misc.GenerateViewID();
     private final int ID1_VOTE_LAYOUT = Misc.GenerateViewID();
+    private final int ID1_VOTE = Misc.GenerateViewID();
     private final int ID1_VOTE1 = Misc.GenerateViewID();
     private final int ID1_VOTE_PER1 = Misc.GenerateViewID();
     private final int ID1_VOTE2 = Misc.GenerateViewID();
@@ -230,7 +233,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleImageViewProfile.setId(ID1_PROFILE);
             CircleImageViewProfile.SetBorderColor(R.color.Gray2);
             CircleImageViewProfile.SetBorderWidth(1);
-            CircleImageViewProfile.setImageResource(R.drawable.ic_profile_blue);
 
             RelativeLayoutMain.addView(CircleImageViewProfile);
 
@@ -249,14 +251,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewName.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
             TextViewName.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
             TextViewName.setId(ID1_NAME);
-            TextViewName.setText(("ali blog"));
 
             LinearLayoutProfile.addView(TextViewName);
 
             ImageView ImageiewMedal = new ImageView(Activity);
             ImageiewMedal.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 24), Misc.ToDP(Activity, 24)));
             ImageiewMedal.setId(ID1_MEDAL);
-            ImageiewMedal.setImageResource(R.drawable.ic_profile_blue);
 
             LinearLayoutProfile.addView(ImageiewMedal);
 
@@ -265,7 +265,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewUsername.setTextColor(ContextCompat.getColor(Activity, R.color.Gray4));
             TextViewUsername.setId(ID1_USERNAME);
             TextViewUsername.setLineSpacing(1.0f, 3.0f);
-            TextViewUsername.setText(("usernamealiusernamealiusernameali"));
 
             LinearLayoutProfile.addView(TextViewUsername);
 
@@ -289,7 +288,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewTime.setLayoutParams(TextViewTimeParam);
             TextViewTime.setTextColor(ContextCompat.getColor(Activity, R.color.Gray2));
             TextViewTime.setId(ID1_TIME);
-            TextViewTime.setText(("1h"));
 
             RelativeLayoutMain.addView(TextViewTime);
 
@@ -301,7 +299,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewMessage.setLayoutParams(TextViewMessageParam);
             TextViewMessage.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Black));
             TextViewMessage.setId(ID1_MESSAGE);
-            TextViewMessage.setText(("salam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنیsalam khobi khoshi ? چه میکنی #Salam"));
 
             RelativeLayoutMain.addView(TextViewMessage);
 
@@ -429,7 +426,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewDurotion.setBackground(DrawableVideo);
             TextViewDurotion.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
             TextViewDurotion.setId(ID1_VIDEO_DUROTION);
-            TextViewDurotion.setText(("1:32"));
 
             RelativeLayoutVideo.addView(TextViewDurotion);
 
@@ -443,7 +439,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewVideo.setTextColor(ContextCompat.getColor(Activity, R.color.White));
             TextViewVideo.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
             TextViewVideo.setBackground(DrawableVideo);
-            TextViewVideo.setText(("Video"));
 
             RelativeLayoutVideo.addView(TextViewVideo);
 
@@ -613,13 +608,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutVote.addView(ViewVote);
 
-            RelativeLayout.LayoutParams TextViewResultParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
+            RelativeLayout.LayoutParams TextViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
+            TextViewVoteParam.setMargins(0, Misc.ToDP(Activity, 8), 0, 0);
+            TextViewVoteParam.addRule(RelativeLayout.BELOW, ViewVote.getId());
+
+            GradientDrawable DrawableVote2 = new GradientDrawable();
+            DrawableVote2.setCornerRadius(Misc.ToDP(Activity, 2));
+            DrawableVote2.setColor(ContextCompat.getColor(Activity, R.color.BlueLight));
+            DrawableVote2.setStroke(Misc.ToDP(Activity, 1), ContextCompat.getColor(Activity, R.color.BlueLight));
+
+            TextView TextViewVote = new TextView(Activity, 14, false);
+            TextViewVote.setLayoutParams(TextViewVoteParam);
+            TextViewVote.setTextColor(ContextCompat.getColor(Activity, R.color.White));
+            TextViewVote.setBackground(DrawableVote2);
+            TextViewVote.setPadding(Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5));
+            TextViewVote.setGravity(Gravity.CENTER_VERTICAL);
+            TextViewVote.setText(Activity.getString(R.string.PostAdapterVideo));
+            TextViewVote.setId(ID1_VOTE);
+
+            RelativeLayoutVote.addView(TextViewVote);
+
+            RelativeLayout.LayoutParams TextViewResultParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TextViewResultParam.addRule(Misc.AlignTo("R"), TextViewVote.getId());
             TextViewResultParam.addRule(RelativeLayout.BELOW, ViewVote.getId());
 
             TextView TextViewResult = new TextView(Activity, 14, false);
             TextViewResult.setLayoutParams(TextViewResultParam);
             TextViewResult.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray2));
-            TextViewResult.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
+            TextViewResult.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 15), 0, 0);
             TextViewResult.setGravity(Gravity.CENTER_VERTICAL);
             TextViewResult.setId(ID1_VOTE_RESULT);
 
@@ -634,48 +650,72 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutMain.addView(RelativeLayoutTool);
 
-            RelativeLayout.LayoutParams ImageViewLikeParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 40), RelativeLayout.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams ImageViewLikeParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewLikeParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
             ImageView ImageViewLike = new ImageView(Activity);
             ImageViewLike.setLayoutParams(ImageViewLikeParam);
-            ImageViewLike.setPadding(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            ImageViewLike.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3));
             ImageViewLike.setImageResource(R.drawable.ic_like);
             ImageViewLike.setId(ID1_LIKE);
 
             RelativeLayoutTool.addView(ImageViewLike);
 
-            RelativeLayout.LayoutParams ImageViewCommentParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 40), RelativeLayout.LayoutParams.MATCH_PARENT);
-            ImageViewCommentParam.setMargins(Misc.ToDP(Activity, 40), 0, 0, 0);
-            ImageViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID1_LIKE);
+            RelativeLayout.LayoutParams TextViewLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            TextViewLikeParam.setMargins(0, 0, Misc.ToDP(Activity, 30), 0);
+            TextViewLikeParam.addRule(RelativeLayout.RIGHT_OF, ID1_LIKE);
 
-            ImageView ImageViewComment = new ImageView(Activity);
-            ImageViewComment.setLayoutParams(ImageViewCommentParam);
-            ImageViewComment.setPadding(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
-            ImageViewComment.setImageResource(R.drawable.ic_comment);
-            ImageViewComment.setId(ID1_COMMENT);
+            TextView TextViewLike = new TextView(Activity, 12, false);
+            TextViewLike.setLayoutParams(TextViewLikeParam);
+            TextViewLike.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray2));
+            TextViewLike.setPadding(0, Misc.ToDP(Activity, 4), 0, 0);
+            TextViewLike.setGravity(Gravity.CENTER_VERTICAL);
+            TextViewLike.setId(ID1_LIKE_COUNT);
 
-            RelativeLayoutTool.addView(ImageViewComment);
+            RelativeLayoutTool.addView(TextViewLike);
 
-            RelativeLayout.LayoutParams ImageViewReplayParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 40), RelativeLayout.LayoutParams.MATCH_PARENT);
-            ImageViewReplayParam.setMargins(0, 0, Misc.ToDP(Activity, 40), 0);
-            ImageViewReplayParam.addRule(RelativeLayout.LEFT_OF, ID1_FORWARD);
+            RelativeLayout.LayoutParams ImageViewReplayParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
+            ImageViewReplayParam.setMargins(0, 0, Misc.ToDP(Activity, 30), 0);
+            ImageViewReplayParam.addRule(RelativeLayout.RIGHT_OF, ID1_LIKE_COUNT);
 
             ImageView ImageViewReplay = new ImageView(Activity);
             ImageViewReplay.setLayoutParams(ImageViewReplayParam);
-            ImageViewReplay.setPadding(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            ImageViewReplay.setPadding(Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4));
             ImageViewReplay.setImageResource(R.drawable.ic_replay);
             ImageViewReplay.setId(ID1_REPLAY);
 
             RelativeLayoutTool.addView(ImageViewReplay);
 
-            RelativeLayout.LayoutParams ImageViewForwardParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 40), RelativeLayout.LayoutParams.MATCH_PARENT);
-            ImageViewForwardParam.setMargins(0, 0, Misc.ToDP(Activity, 10), 0);
-            ImageViewForwardParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            RelativeLayout.LayoutParams ImageViewCommentParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
+            ImageViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID1_REPLAY);
+
+            ImageView ImageViewComment = new ImageView(Activity);
+            ImageViewComment.setLayoutParams(ImageViewCommentParam);
+            ImageViewComment.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3));
+            ImageViewComment.setImageResource(R.drawable.ic_comment);
+            ImageViewComment.setId(ID1_COMMENT);
+
+            RelativeLayoutTool.addView(ImageViewComment);
+
+            RelativeLayout.LayoutParams TextViewCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            TextViewCommentParam.setMargins(0, 0, Misc.ToDP(Activity, 30), 0);
+            TextViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID1_COMMENT);
+
+            TextView TextViewComment = new TextView(Activity, 12, false);
+            TextViewComment.setLayoutParams(TextViewCommentParam);
+            TextViewComment.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray2));
+            TextViewComment.setPadding(0, Misc.ToDP(Activity, 5), 0, 0);
+            TextViewComment.setGravity(Gravity.CENTER_VERTICAL);
+            TextViewComment.setId(ID1_COMMENT_COUNT);
+
+            RelativeLayoutTool.addView(TextViewComment);
+
+            RelativeLayout.LayoutParams ImageViewForwardParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
+            ImageViewForwardParam.addRule(RelativeLayout.RIGHT_OF, ID1_COMMENT_COUNT);
 
             ImageView ImageViewForward = new ImageView(Activity);
             ImageViewForward.setLayoutParams(ImageViewForwardParam);
-            ImageViewForward.setPadding(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            ImageViewForward.setPadding(Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4));
             ImageViewForward.setImageResource(R.drawable.ic_chat);
             ImageViewForward.setId(ID1_FORWARD);
 
@@ -1120,12 +1160,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
     public static class PostStruct
     {
-        int DataType; // 1: Image 2: Video 3: Vote 4: Music
-        int ViewType;
+        String Name;
+        String Medal;
+        String Username;
+        int Time;
+        String Message;
+        int DataType; // 1: Image 2: Video 3: Vote
+        String Data;
+        int ViewType = 2; // 0: Pull 1: Post 2: Level 3: Suggestion
+        boolean IsLike;
+        int LikeCount;
+        boolean IsComment;
+        int CommentCount;
 
-        public PostStruct(int dataType, int viewType)
+        public PostStruct(String name, String medal, String username, int time, String message, int dataType, String data, boolean isLike, int likeCount, boolean isComment, int commentCount)
         {
+            Name = name;
+            Medal = medal;
+            Username = username;
+            Time = time;
+            Message = message;
             DataType = dataType;
+            Data = data;
+            IsLike = isLike;
+            LikeCount = likeCount;
+            IsComment = isComment;
+            CommentCount = commentCount;
+        }
+
+        public PostStruct(int viewType)
+        {
             ViewType = viewType;
         }
     }

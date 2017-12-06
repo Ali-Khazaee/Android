@@ -35,16 +35,13 @@ public class App extends Application
 
         Context context = getApplicationContext();
 
-        context.startService(new Intent(context, SocketService.class));
+        startService(new Intent(context, SocketService.class));
 
         OKClient = GetOKClient();
 
         AndroidNetworking.initialize(context, OKClient);
 
         CacheHandler.SetUp(context);
-        //CrashHandler.SetUp(context);
-        //UpdateHandler.SetUp(context);
-
     }
 
     @Override

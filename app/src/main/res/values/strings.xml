@@ -158,4 +158,7 @@
     <string name="InboxUIPoint">Point</string>
     <string name="InboxUIMedal">Medal</string>
 
+    <!-- Post Adapter -->
+    <string name="PostAdapterVideo">Video</string>
+
 </resources>
