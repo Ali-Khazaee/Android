@@ -138,8 +138,13 @@
     <string name="PasswordResetUIError3">نام کاربری یا ایمیل وارد شده وجود ندارد</string>
     <string name="PasswordResetUIError4">لینک برای ایمل شما ارسال شد</string>
 
+    <!-- Video Preview UI -->
+    <string name="VideoPreviewUI">نمایش ویدیو</string>
+
     <!-- Image Preview UI -->
     <string name="ImagePreviewUI">نمایش عکس</string>
+    <string name="ImagePreviewUIDownload">دانلود</string>
+    <string name="ImagePreviewUIDownloaded">عکس در محل دنلود ها ذخیره شد</string>
 
     <!-- Gallery View UI -->
     <string name="GalleryViewUI">گالری</string>

@@ -138,8 +138,13 @@
     <string name="PasswordResetUIError3">Email or username does not exist</string>
     <string name="PasswordResetUIError4">The link has sent to your email address</string>
 
+    <!-- Video Preview UI -->
+    <string name="VideoPreviewUI">Video Preview</string>
+
     <!-- Image Preview UI -->
     <string name="ImagePreviewUI">Image Preview</string>
+    <string name="ImagePreviewUIDownload">Download</string>
+    <string name="ImagePreviewUIDownloaded">Image saved on your download directory</string>
 
     <!-- Gallery View UI -->
     <string name="GalleryViewUI">Gallery</string>
@@ -159,6 +164,8 @@
     <string name="InboxUIMedal">Medal</string>
 
     <!-- Post Adapter -->
+    <string name="PostAdapterVote">Vote</string>
+    <string name="PostAdapterVotes">Votes</string>
     <string name="PostAdapterVideo">Video</string>
 
 </resources>

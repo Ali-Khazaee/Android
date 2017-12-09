@@ -10,8 +10,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
-import android.media.MediaMetadataRetriever;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -20,11 +18,9 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -141,8 +137,8 @@ public class Misc
 
         TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setText(Message);
         TextViewMessage.setPadding(ToDP(context, 15), ToDP(context, 15), ToDP(context, 15), ToDP(context, 15));
+        TextViewMessage.setText(Message);
 
         RelativeLayoutMain.addView(TextViewMessage);
 
@@ -283,33 +279,7 @@ public class Misc
         return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
     }
 
-    public static void Debug(String Message)
-    {
-        Log.e("Debug", Message);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static String GetTimeName(long T)
+    public static String GetTime(long T)
     {
         long Time = ((System.currentTimeMillis() - (T * 1000)) / 1000);
 
@@ -337,60 +307,9 @@ public class Misc
         return "";
     }
 
-
-
-
-
-    public static void CreateVideoThumbnail(String Url, Context context, ImageView View)
+    public static void Debug(String Message)
     {
-        if (CacheHandler.BitmapIsCache(context, Url))
-        {
-            Bitmap bitmap = CacheHandler.BitmapFind(context, Url);
-            View.setImageBitmap(bitmap);
-            return;
-        }
-
-        new VideoThumbnailTask(View, Url).execute();
-    }
-
-    private static class VideoThumbnailTask extends AsyncTask<Void, Void, Bitmap>
-    {
-        final String Url;
-        final ImageView ImageViewMain;
-
-        VideoThumbnailTask(ImageView imageView, String url)
-        {
-            ImageViewMain = imageView;
-            Url = url;
-        }
-
-        protected Bitmap doInBackground(Void... Voids)
-        {
-            Bitmap bitmap = null;
-
-            try
-            {
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(Url, new HashMap<String, String>());
-                bitmap = retriever.getFrameAtTime();
-                retriever.release();
-            }
-            catch (Exception e)
-            {
-                Debug("Misc-VideoThumbnail: " + e.toString());
-            }
-
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap Result)
-        {
-            if (Result == null || ImageViewMain == null)
-                return;
-
-            ImageViewMain.setImageBitmap(Result);
-            CacheHandler.BitmapStore(ImageViewMain.getContext(), Result, Url);
-        }
+        Log.e("Debug", Message);
     }
 
     public static Bitmap Blurry(Bitmap sentBitmap)

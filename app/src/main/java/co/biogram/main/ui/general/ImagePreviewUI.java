@@ -7,27 +7,35 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.DateFormat;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 
+import com.bumptech.glide.request.transition.Transition;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import co.biogram.main.fragment.FragmentBase;
@@ -40,11 +48,12 @@ import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class ImagePreviewUI extends FragmentBase
+public class ImagePreviewUI extends FragmentBase
 {
     private final List<String> UrlList = new ArrayList<>();
     private RelativeLayout RelativeLayoutHeader;
     private OnSelectListener SelectListener;
+    private ViewPager ViewPagerMain;
     private boolean Selected = false;
     private Bitmap bitmap = null;
     private boolean IsMax = false;
@@ -82,23 +91,18 @@ class ImagePreviewUI extends FragmentBase
         }
     }
 
-    ImagePreviewUI(Bitmap b)
-    {
-        bitmap = b;
-    }
-
-    ImagePreviewUI(String URL)
+    public ImagePreviewUI(String URL)
     {
         UrlList.add(URL);
     }
 
-    ImagePreviewUI(String URL, String URL2)
+    public ImagePreviewUI(String URL, String URL2)
     {
         UrlList.add(URL);
         UrlList.add(URL2);
     }
 
-    ImagePreviewUI(String URL, String URL2, String URL3)
+    public ImagePreviewUI(String URL, String URL2, String URL3)
     {
         UrlList.add(URL);
         UrlList.add(URL2);
@@ -134,28 +138,19 @@ class ImagePreviewUI extends FragmentBase
         }
         else
         {
-            ViewPager ViewPagerMain = new ViewPager(GetActivity())
+            ViewPagerMain = new ViewPager(GetActivity())
             {
                 @Override
                 public boolean onTouchEvent(MotionEvent ev)
                 {
                     try
                     {
-                        performClick();
                         return super.onTouchEvent(ev);
                     }
                     catch (Exception e)
                     {
-                        //
+                        return false;
                     }
-
-                    return false;
-                }
-
-                @Override
-                public boolean performClick()
-                {
-                    return super.performClick();
                 }
 
                 @Override
@@ -167,10 +162,8 @@ class ImagePreviewUI extends FragmentBase
                     }
                     catch (Exception e)
                     {
-                        //
+                        return false;
                     }
-
-                    return false;
                 }
             };
             ViewPagerMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -357,7 +350,51 @@ class ImagePreviewUI extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
-                    // TODO Download
+                    PopupMenu PopMenu = new PopupMenu(GetActivity(), v);
+                    PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.ImagePreviewUIDownload));
+                    PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                    {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item)
+                        {
+                            if (item.getItemId() == 0)
+                            {
+                                GlideApp.with(GetActivity())
+                                .asBitmap()
+                                .load(UrlList.get(ViewPagerMain.getCurrentItem()))
+                                .into(new SimpleTarget<Bitmap>()
+                                {
+                                    @Override
+                                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition)
+                                    {
+                                        try
+                                        {
+                                            File Download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                            Download.mkdir();
+
+                                            File Biogram = new File(Download, "Biogram");
+                                            Biogram.mkdir();
+
+                                            CharSequence Name = DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime());
+
+                                            File ImageFile = new File(Biogram, Name + ".jpg");
+                                            OutputStream OS = new FileOutputStream(ImageFile);
+                                            resource.compress(Bitmap.CompressFormat.JPEG, 100, OS);
+
+                                            Misc.Toast(GetActivity(), GetActivity().getString(R.string.ImagePreviewUIDownloaded));
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Misc.Debug("ImagePreviewUI-Download: " + e.toString());
+                                        }
+                                    }
+                                });
+                            }
+
+                            return false;
+                        }
+                    });
+                    PopMenu.show();
                 }
             });
 

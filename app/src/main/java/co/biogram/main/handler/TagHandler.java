@@ -1,8 +1,10 @@
 package co.biogram.main.handler;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 
@@ -12,11 +14,10 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 
 import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentActivity;
 
 class TagHandler
 {
-    public TagHandler(TextView textView, FragmentActivity activity)
+    public static void Show(TextView textView)
     {
         if (textView.getText().length() <= 2)
             return;
@@ -36,15 +37,10 @@ class TagHandler
 
             if ((Sign == '#' || Sign == '@') && (NextSign != '#' && NextSign != '@'))
             {
-                int TagType = 1;
-
-                if (Sign == '@')
-                    TagType = 2;
-
                 NextNotLetterDigitCharIndex = FindNextValidTagChar(Text, Index);
 
                 Spannable Span = (Spannable) textView.getText();
-                CharacterStyle TagChar = new ClickableForegroundColorSpan(TagType, ContextCompat.getColor(textView.getContext(), R.color.BlueLight), activity);
+                CharacterStyle TagChar = new HashTagSpan(Sign == '@' ? 2 : 1, textView.getContext());
 
                 Span.setSpan(TagChar, Index, NextNotLetterDigitCharIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
@@ -53,18 +49,18 @@ class TagHandler
         }
     }
 
-    private int FindNextValidTagChar(CharSequence Text, int Start)
+    private static int FindNextValidTagChar(CharSequence Text, int Start)
     {
         int NonLetterDigitCharIndex = -1;
 
-        for (int Index = Start + 1; Index < Text.length(); Index++)
+        for (int I = Start + 1; I < Text.length(); I++)
         {
-            char Sign = Text.charAt(Index);
+            char Sign = Text.charAt(I);
             boolean IsValidSign = Character.isLetterOrDigit(Sign) || Sign == '_' || Sign == '.';
 
             if (!IsValidSign)
             {
-                NonLetterDigitCharIndex = Index;
+                NonLetterDigitCharIndex = I;
                 break;
             }
         }
@@ -75,17 +71,17 @@ class TagHandler
         return NonLetterDigitCharIndex;
     }
 
-    private class ClickableForegroundColorSpan extends ClickableSpan
+    private static class HashTagSpan extends ClickableSpan
     {
-        private final FragmentActivity Activity;
+        private final Context context;
         private final int TagColor;
-        private final int TagType;
+        private final int Type;
 
-        ClickableForegroundColorSpan(int Type, int Color, FragmentActivity activity)
+        HashTagSpan(int type, Context c)
         {
-            TagType = Type;
-            TagColor = Color;
-            Activity = activity;
+            Type = type;
+            context = c;
+            TagColor = ContextCompat.getColor(c, R.color.BlueLight);
         }
 
         @Override
@@ -97,37 +93,27 @@ class TagHandler
         @Override
         public void onClick(View Widget)
         {
-            /*CharSequence Text = ((TextView) Widget).getText();
+            CharSequence Text = ((TextView) Widget).getText();
             Spanned Span = (Spanned) Text;
             int Start = Span.getSpanStart(this);
             int End = Span.getSpanEnd(this);
             String Message = Text.subSequence(Start + 1, End).toString();
 
-            if (TagType == 1)
+            if (Type == 1)
             {
-                Bundle bundle = new Bundle();
-                bundle.putString("Tag", Message);
+                Misc.Toast(context, Message + " - HashTag Clicked");
 
-                Fragment fragment = new TagFragment();
-                fragment.setArguments(bundle);
-
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("TagFragment").commitAllowingStateLoss();
+                // TODO Open View
             }
-            else if (TagType == 2)
+            else if (Type == 2)
             {
-                if (SharedHandler.GetString(Activity, "Username").equals(Message))
+                if (SharedHandler.GetString(context, "Username").equalsIgnoreCase(Message))
                     return;
 
-                Bundle bundle = new Bundle();
-                bundle.putString("Username", Message);
+                Misc.Toast(context, Message + " - ID Clicked");
 
-                Fragment fragment = new ProfileFragment();
-                fragment.setArguments(bundle);
-
-                Activity.getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ProfileFragment").commitAllowingStateLoss();
-            }*/
-
-            Misc.HideSoftKey(Activity);
+                // TODO Open View
+            }
         }
     }
 }

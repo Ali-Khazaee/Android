@@ -1,5 +1,7 @@
 package co.biogram.main.handler;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,11 +22,16 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
+import co.biogram.main.ui.general.ImagePreviewUI;
+import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.CircleView;
 import co.biogram.main.ui.view.LineView;
@@ -76,6 +83,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID1_VOTE_PER4 = Misc.GenerateViewID();
     private final int ID1_VOTE5 = Misc.GenerateViewID();
     private final int ID1_VOTE_PER5 = Misc.GenerateViewID();
+    private final int ID1_VOTE_CIRCLE = Misc.GenerateViewID();
     private final int ID1_VOTE_RESULT = Misc.GenerateViewID();
 
     // ViewType 2
@@ -102,7 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         // ViewType 1
         CircleImageView CircleImageViewProfile;
         TextView TextViewName;
-        ImageView ImageiewMedal;
+        ImageView ImageViewMedal;
         TextView TextViewUsername;
         ImageView ImageiewOption;
         TextView TextViewTime;
@@ -131,6 +139,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         TextView TextViewVote5;
         TextView TextViewPercent5;
         TextView TextViewResult;
+        View VoteCircle;
+        ImageView ImageViewLike;
+        TextView TextViewLikeCount;
+        ImageView ImageViewReplay;
+        ImageView ImageViewComment;
+        TextView TextViewCommentCount;
+        ImageView ImageViewForward;
 
         // ViewType 2
         CircleView CircleViewLevel;
@@ -152,7 +167,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             {
                 CircleImageViewProfile = v.findViewById(ID1_PROFILE);
                 TextViewName = v.findViewById(ID1_NAME);
-                ImageiewMedal = v.findViewById(ID1_MEDAL);
+                ImageViewMedal = v.findViewById(ID1_MEDAL);
                 TextViewUsername = v.findViewById(ID1_USERNAME);
                 ImageiewOption = v.findViewById(ID1_OPTION);
                 TextViewTime = v.findViewById(ID1_TIME);
@@ -181,6 +196,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewVote5 = v.findViewById(ID1_VOTE5);
                 TextViewPercent5 = v.findViewById(ID1_VOTE_PER5);
                 TextViewResult = v.findViewById(ID1_VOTE_RESULT);
+                VoteCircle = v.findViewById(ID1_VOTE_CIRCLE);
+                ImageViewLike = v.findViewById(ID1_LIKE);
+                TextViewLikeCount = v.findViewById(ID1_LIKE_COUNT);
+                ImageViewReplay = v.findViewById(ID1_REPLAY);
+                ImageViewComment = v.findViewById(ID1_COMMENT);
+                TextViewCommentCount = v.findViewById(ID1_COMMENT_COUNT);
+                ImageViewForward = v.findViewById(ID1_FORWARD);
             }
             else if (viewType == 2)
             {
@@ -298,6 +320,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextView TextViewMessage = new TextView(Activity, 14, false);
             TextViewMessage.setLayoutParams(TextViewMessageParam);
             TextViewMessage.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Black));
+            TextViewMessage.setPadding(0, 0, Misc.ToDP(Activity, 8), 0);
             TextViewMessage.setId(ID1_MESSAGE);
 
             RelativeLayoutMain.addView(TextViewMessage);
@@ -386,7 +409,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LinearLayoutDouble2.addView(ImageiewTriple2);
 
             View ViewLineTriple2 = new View(Activity);
-            ViewLineTriple2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0.03f));
+            ViewLineTriple2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0.04f));
             ViewLineTriple2.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.White);
 
             LinearLayoutDouble2.addView(ViewLineTriple2);
@@ -439,6 +462,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewVideo.setTextColor(ContextCompat.getColor(Activity, R.color.White));
             TextViewVideo.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
             TextViewVideo.setBackground(DrawableVideo);
+            TextViewVideo.setText(Activity.getString(R.string.PostAdapterVideo));
 
             RelativeLayoutVideo.addView(TextViewVideo);
 
@@ -597,6 +621,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutVote.addView(TextViewPercent5);
 
+            GradientDrawable DrawableVote3 = new GradientDrawable();
+            DrawableVote3.setCornerRadius(Misc.ToDP(Activity, 100));
+            DrawableVote3.setColor(ContextCompat.getColor(Activity, R.color.Black));
+
+            View ViewVoteCircle = new View(Activity);
+            ViewVoteCircle.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6)));
+            ViewVoteCircle.setBackground(DrawableVote3);
+            ViewVoteCircle.setVisibility(View.GONE);
+            ViewVoteCircle.setId(ID1_VOTE_CIRCLE);
+
+            RelativeLayoutVote.addView(ViewVoteCircle);
+
             RelativeLayout.LayoutParams ViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1));
             ViewVoteParam.setMargins(0, Misc.ToDP(Activity, 15), 0, 0);
             ViewVoteParam.addRule(RelativeLayout.BELOW, ID1_VOTE5);
@@ -623,7 +659,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewVote.setBackground(DrawableVote2);
             TextViewVote.setPadding(Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5));
             TextViewVote.setGravity(Gravity.CENTER_VERTICAL);
-            TextViewVote.setText(Activity.getString(R.string.PostAdapterVideo));
+            TextViewVote.setText(Activity.getString(R.string.PostAdapterVote));
             TextViewVote.setId(ID1_VOTE);
 
             RelativeLayoutVote.addView(TextViewVote);
@@ -635,7 +671,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextView TextViewResult = new TextView(Activity, 14, false);
             TextViewResult.setLayoutParams(TextViewResultParam);
             TextViewResult.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray2));
-            TextViewResult.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 15), 0, 0);
+            TextViewResult.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 14), 0, 0);
             TextViewResult.setGravity(Gravity.CENTER_VERTICAL);
             TextViewResult.setId(ID1_VOTE_RESULT);
 
@@ -1001,101 +1037,262 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
         if (Holder.getItemViewType() == 1)
         {
-            switch (Position)
+            try
             {
-                case 2:
-                    Holder.RelativeLayoutVote.setVisibility(View.VISIBLE);
-                    Holder.TextViewVote1.setVisibility(View.VISIBLE);
-                    Holder.TextViewVote1.setText("ali khobe");
-                    Holder.TextViewVote1.FillBackground(46);
-                    Holder.TextViewPercent1.setVisibility(View.VISIBLE);
-                    Holder.TextViewPercent1.setText("46%");
+                GlideApp.with(Activity).load(PostList.get(Position).Profile).placeholder(R.color.BlueGray2).into(Holder.CircleImageViewProfile);
+                Holder.TextViewName.setText(PostList.get(Position).Name);
+                GlideApp.with(Activity).load(PostList.get(Position).Medal).placeholder(R.drawable.ic_moment_blue).into(Holder.ImageViewMedal); // TODO Default Medal
+                Holder.TextViewUsername.setText(PostList.get(Position).Username);
+                Holder.TextViewTime.setText(Misc.GetTime(PostList.get(Position).Time));
+                Holder.TextViewMessage.setText(PostList.get(Position).Message);
+                TagHandler.Show(Holder.TextViewMessage);
 
-                    Holder.TextViewVote2.setVisibility(View.VISIBLE);
-                    Holder.TextViewVote2.setText("ali bad e");
-                    Holder.TextViewVote2.FillBackground(61);
-                    Holder.TextViewPercent2.setVisibility(View.VISIBLE);
-                    Holder.TextViewPercent2.setText("61%");
+                Holder.RelativeLayoutVote.setVisibility(View.GONE);
+                Holder.RelativeLayoutVideo.setVisibility(View.GONE);
+                Holder.RelativeLayoutImage.setVisibility(View.GONE);
 
-                    Holder.TextViewVote3.setVisibility(View.VISIBLE);
-                    Holder.TextViewVote3.setText("ali bad e");
-                    Holder.TextViewVote3.FillBackground(100);
-                    Holder.TextViewPercent3.setVisibility(View.VISIBLE);
-                    Holder.TextViewPercent3.setText("100%");
+                switch (PostList.get(Position).DataType)
+                {
+                    case 1:
+                    {
+                        Holder.RelativeLayoutImage.setVisibility(View.VISIBLE);
+                        Holder.ImageViewSingle.setVisibility(View.GONE);
+                        Holder.LinearLayoutDouble.setVisibility(View.GONE);
+                        Holder.LinearLayoutTriple.setVisibility(View.GONE);
 
-                    Holder.TextViewVote4.setVisibility(View.VISIBLE);
-                    Holder.TextViewVote4.setText("ali bad e");
-                    Holder.TextViewVote4.FillBackground(18);
-                    Holder.TextViewPercent4.setVisibility(View.VISIBLE);
-                    Holder.TextViewPercent4.setText("18%");
+                        JSONArray URL = new JSONArray(PostList.get(Position).Data);
 
-                    Holder.TextViewVote5.setVisibility(View.VISIBLE);
-                    Holder.TextViewVote5.setText("ali bad e");
-                    Holder.TextViewVote5.FillBackground(37);
-                    Holder.TextViewPercent5.setVisibility(View.VISIBLE);
-                    Holder.TextViewPercent5.setText("37%");
+                        switch (URL.length())
+                        {
+                            case 1:
+                                final String URL1 = URL.get(0).toString();
+                                Holder.ImageViewSingle.setVisibility(View.VISIBLE);
+                                GlideApp.with(Activity).load(URL1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewSingle);
+                                Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1), R.id.SocialActivityContainerFull, "ImagePreviewUI");  } });
+                            break;
+                            case 2:
+                                final String URLD1 = URL.get(0).toString();
+                                final String URLD2 = URL.get(1).toString();
+                                Holder.LinearLayoutDouble.setVisibility(View.VISIBLE);
+                                GlideApp.with(Activity).load(URLD1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewDouble1);
+                                Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD1, URLD2), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                GlideApp.with(Activity).load(URLD2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewDouble2);
+                                Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD2, URLD1), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                break;
+                            case 3:
+                                final String URLT1 = URL.get(0).toString();
+                                final String URLT2 = URL.get(1).toString();
+                                final String URLT3 = URL.get(2).toString();
+                                Holder.LinearLayoutTriple.setVisibility(View.VISIBLE);
+                                GlideApp.with(Activity).load(URLT1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewTriple1);
+                                Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT1, URLT2, URLT3), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                GlideApp.with(Activity).load(URLT2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewTriple2);
+                                Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT2, URLT3, URLT1), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                GlideApp.with(Activity).load(URLT3).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewTriple3);
+                                Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT3, URLT1, URLT2), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                            break;
+                        }
+                    }
+                    break;
+                    case 2:
+                    {
+                        JSONArray URL = new JSONArray(PostList.get(Position).Data);
+                        final String VideoURL = URL.get(2).toString();
 
-                    Holder.TextViewResult.setText("5125 Votes");
+                        Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
+                        GlideApp.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewVideo);
+                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(VideoURL, false), R.id.SocialActivityContainerFull, "VideoPreviewUI"); } });
+
+                        int Time = Integer.parseInt(URL.get(1).toString());
+                        int Min = Time / 60;
+                        int Sec = Time - (Min * 60);
+
+                        Holder.TextViewDurotion.setText((String.valueOf(Min) + ":" + String.valueOf(Sec)));
+                    }
                     break;
-                case 3:
-                    Holder.RelativeLayoutImage.setVisibility(View.VISIBLE);
-                    Holder.ImageViewSingle.setVisibility(View.VISIBLE);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/sites/default/files/images/blog/t-natuwal.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewSingle);
+                    case 3:
+                    {
+                        Holder.RelativeLayoutVote.setVisibility(View.VISIBLE);
+
+                        JSONObject Vote = new JSONObject(PostList.get(Position).Data);
+                        Holder.TextViewResult.setText((Vote.getString("Total") + " " + Activity.getString(R.string.PostAdapterVotes)));
+                        int Total = Integer.parseInt(Vote.getString("Total"));
+                        int Per;
+
+                        if (!Vote.isNull("V1"))
+                        {
+                            Per = Vote.getInt("V1V") * 100 / Total;
+                            Holder.TextViewVote1.setVisibility(View.VISIBLE);
+                            Holder.TextViewVote1.setText(Vote.getString("V1"));
+                            Holder.TextViewVote1.FillBackground(Per);
+                            Holder.TextViewPercent1.setVisibility(View.VISIBLE);
+                            Holder.TextViewPercent1.setText((String.valueOf(Per) + "%"));
+                        }
+
+                        if (!Vote.isNull("V2"))
+                        {
+                            Per = Vote.getInt("V2V") * 100 / Total;
+                            Holder.TextViewVote2.setVisibility(View.VISIBLE);
+                            Holder.TextViewVote2.setText(Vote.getString("V2"));
+                            Holder.TextViewVote2.FillBackground(Per);
+                            Holder.TextViewPercent2.setVisibility(View.VISIBLE);
+                            Holder.TextViewPercent2.setText((String.valueOf(Per) + "%"));
+                        }
+
+                        if (!Vote.isNull("V3"))
+                        {
+                            Per = Vote.getInt("V3V") * 100 / Total;
+                            Holder.TextViewVote3.setVisibility(View.VISIBLE);
+                            Holder.TextViewVote3.setText(Vote.getString("V3"));
+                            Holder.TextViewVote3.FillBackground(Per);
+                            Holder.TextViewPercent3.setVisibility(View.VISIBLE);
+                            Holder.TextViewPercent3.setText((String.valueOf(Per) + "%"));
+                        }
+
+                        if (!Vote.isNull("V4"))
+                        {
+                            Per = Vote.getInt("V4V") * 100 / Total;
+                            Holder.TextViewVote4.setVisibility(View.VISIBLE);
+                            Holder.TextViewVote4.setText(Vote.getString("V4"));
+                            Holder.TextViewVote4.FillBackground(Per);
+                            Holder.TextViewPercent4.setVisibility(View.VISIBLE);
+                            Holder.TextViewPercent4.setText((String.valueOf(Per) + "%"));
+                        }
+
+                        if (!Vote.isNull("V5"))
+                        {
+                            Per = Vote.getInt("V5V") * 100 / Total;
+                            Holder.TextViewVote5.setVisibility(View.VISIBLE);
+                            Holder.TextViewVote5.setText(Vote.getString("V5"));
+                            Holder.TextViewVote5.FillBackground(Per);
+                            Holder.TextViewPercent5.setVisibility(View.VISIBLE);
+                            Holder.TextViewPercent5.setText((String.valueOf(Per) + "%"));
+                        }
+
+                        if (Vote.getInt("Vote") > 0)
+                        {
+                            int ID = 0;
+                            int Top = 17;
+
+                            switch (Vote.getInt("Vote"))
+                            {
+                                case 1: Top = 12; break;
+                                case 2: ID = Holder.TextViewVote1.getId(); break;
+                                case 3: ID = Holder.TextViewVote2.getId(); break;
+                                case 4: ID = Holder.TextViewVote3.getId(); break;
+                                case 5: ID = Holder.TextViewVote4.getId(); break;
+                            }
+
+                            RelativeLayout.LayoutParams Param = (RelativeLayout.LayoutParams) Holder.VoteCircle.getLayoutParams();
+                            Param.setMargins(0, Misc.ToDP(Activity, Top), Misc.ToDP(Activity, 10), 0);
+                            Param.addRule(RelativeLayout.LEFT_OF, Holder.TextViewPercent1.getId());
+
+                            if (ID != 0)
+                                Param.addRule(RelativeLayout.BELOW, ID);
+
+                            Holder.VoteCircle.setLayoutParams(Param);
+                            Holder.VoteCircle.setVisibility(View.VISIBLE);
+                            Holder.VoteCircle.invalidate();
+                        }
+                    }
                     break;
-                case 4:
-                    Holder.RelativeLayoutImage.setVisibility(View.VISIBLE);
-                    Holder.LinearLayoutDouble.setVisibility(View.VISIBLE);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/wallpaper/sites/default/files/images/04-2013/mediterranean-beach-wallpaper.preview.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewDouble1);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/wallpaper/sites/default/files/images/04-2013/tropical-beach-wallpaper.preview.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewDouble2);
-                    break;
-                case 5:
-                    Holder.RelativeLayoutImage.setVisibility(View.VISIBLE);
-                    Holder.LinearLayoutTriple.setVisibility(View.VISIBLE);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/sites/default/files/images/blog/t-natuwal.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewTriple1);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/wallpaper/sites/default1/files/images/04-2013/mediterranean-beach-wallpaper.preview.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewTriple2);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/wallpaper/sites/defaul1t/files/images/04-2013/tropical-beach-wallpaper.preview.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewTriple3);
-                    break;
-                case 6:
-                    Holder.RelativeLayoutImage.setVisibility(View.VISIBLE);
-                    Holder.ImageViewSingle.setVisibility(View.VISIBLE);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/sites/default1/files/images/blog/t-natuwal.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewSingle);
-                    break;
-                case 7:
-                    Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
-                    GlideApp.with(Activity)
-                            .load("http://webneel.com/sites/default/files/images/blog/t-natuwal.jpg")
-                            .placeholder(R.color.BlueGray2)
-                            .transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3)))
-                            .into(Holder.ImageViewVideo);
-                    break;
+                }
+
+                if (PostList.get(Position).IsLike)
+                {
+                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.RedLike));
+                    GlideApp.with(Activity).load(R.drawable.ic_like_red).into(Holder.ImageViewLike);
+                }
+                else
+                {
+                    Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray));
+                    GlideApp.with(Activity).load(R.drawable.ic_like).into(Holder.ImageViewLike);
+                }
+
+                Holder.ImageViewLike.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (PostList.get(Position).IsLike)
+                        {
+                            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray));
+                            Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
+
+                            ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
+                            Fade.setDuration(200);
+
+                            AnimatorSet AnimationSet = new AnimatorSet();
+                            AnimationSet.play(Fade);
+                            AnimationSet.start();
+
+                            PostList.get(Position).DesLike();
+                            PostList.get(Position).RevLike();
+
+                            Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
+                        }
+                        else
+                        {
+                            Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.RedLike));
+                            Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
+
+                            ObjectAnimator SizeX = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1.5f);
+                            SizeX.setDuration(200);
+
+                            ObjectAnimator SizeY = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleY", 1.5f);
+                            SizeY.setDuration(200);
+
+                            ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
+                            Fade.setDuration(400);
+
+                            ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1f);
+                            SizeX2.setDuration(200);
+                            SizeX2.setStartDelay(200);
+
+                            ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleY", 1f);
+                            SizeY2.setDuration(200);
+                            SizeY2.setStartDelay(200);
+
+                            AnimatorSet AnimationSet = new AnimatorSet();
+                            AnimationSet.playTogether(SizeX, SizeY, Fade, SizeX2, SizeY2);
+                            AnimationSet.start();
+
+                            PostList.get(Position).InsLike();
+                            PostList.get(Position).RevLike();
+
+                            Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
+                        }
+
+                        // Todo Create API
+                        /*AndroidNetworking.post(MiscHandler.GetRandomServer("PostLike"))
+                                .addBodyParameter("PostID", PostList.get(Position).PostID)
+                                .addHeaders("TOKEN", SharedHandler.GetString(Activity, "TOKEN"))
+                                .setTag(Tag)
+                                .build()
+                                .getAsString(null);*/
+                    }
+                });
+
+                Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
+                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  } }); // TODO Open Likes
+
+                if (PostList.get(Position).IsComment)
+                {
+                    Holder.ImageViewComment.setVisibility(View.VISIBLE);
+                    Holder.TextViewCommentCount.setVisibility(View.VISIBLE);
+                    Holder.TextViewCommentCount.setText(String.valueOf(PostList.get(Position).CommentCount));
+                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  } });  // TODO Open Comment
+                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  } });  // TODO Open Comment
+                }
+                else
+                {
+                    Holder.ImageViewComment.setVisibility(View.GONE);
+                    Holder.TextViewCommentCount.setVisibility(View.GONE);
+                }
+            }
+            catch (Exception e)
+            {
+                Misc.Debug("PostAdapter-ViewType1: " + e.toString());
             }
         }
         else if (Holder.getItemViewType() == 2)
@@ -1157,24 +1354,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         return PostList.size();
     }
 
-
     public static class PostStruct
     {
+        String Profile;
         String Name;
         String Medal;
         String Username;
         int Time;
         String Message;
-        int DataType; // 1: Image 2: Video 3: Vote
+        int DataType; // 0: Message 1: Image 2: Video 3: Vote
         String Data;
-        int ViewType = 2; // 0: Pull 1: Post 2: Level 3: Suggestion
+        int ViewType = 1; // 0: Pull 1: Post 2: Level 3: Suggestion
         boolean IsLike;
         int LikeCount;
         boolean IsComment;
         int CommentCount;
 
-        public PostStruct(String name, String medal, String username, int time, String message, int dataType, String data, boolean isLike, int likeCount, boolean isComment, int commentCount)
+        public PostStruct(String profile, String name, String medal, String username, int time, String message, int dataType, String data, boolean isLike, int likeCount, boolean isComment, int commentCount)
         {
+            Profile = profile;
             Name = name;
             Medal = medal;
             Username = username;
@@ -1191,6 +1389,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         public PostStruct(int viewType)
         {
             ViewType = viewType;
+        }
+
+        void RevLike()
+        {
+            IsLike = !IsLike;
+        }
+
+        void InsLike()
+        {
+            LikeCount++;
+        }
+
+        void DesLike()
+        {
+            LikeCount--;
         }
     }
 
