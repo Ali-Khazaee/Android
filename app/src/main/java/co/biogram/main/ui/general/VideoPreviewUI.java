@@ -1,17 +1,26 @@
 package co.biogram.main.ui.general;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.DownloadListener;
+import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -38,11 +47,13 @@ import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvicto
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 import java.io.File;
+import java.util.Date;
 
 import co.biogram.main.App;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
 public class VideoPreviewUI extends FragmentBase
@@ -70,6 +81,7 @@ public class VideoPreviewUI extends FragmentBase
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20ffffff"));
+        RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -96,6 +108,76 @@ public class VideoPreviewUI extends FragmentBase
         TextViewTitle.setText(GetActivity().getString(R.string.VideoPreviewUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
+
+        RelativeLayout.LayoutParams ImageViewDownloadParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewDownloadParam.addRule(Misc.Align("L"));
+
+        ImageView ImageViewDownload = new ImageView(GetActivity());
+        ImageViewDownload.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewDownload.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewDownload.setId(Misc.GenerateViewID());
+        ImageViewDownload.setLayoutParams(ImageViewDownloadParam);
+        ImageViewDownload.setImageResource(R.drawable.ic_download_white);
+        ImageViewDownload.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (IsLocal)
+                    return;
+
+                final int NotifyID = (int) (System.currentTimeMillis() / 1000);
+                CharSequence Name = DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime());
+                final NotificationManager NotifyManager = (NotificationManager) GetActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(GetActivity(), "BiogramVideo");
+                NotifyBuilder.setContentTitle("Biogram Video Download").setContentText("Download in progress").setSmallIcon(R.drawable.ic_download_white);
+
+                File Download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                Download.mkdir();
+
+                File Biogram = new File(Download, "Biogram");
+                Biogram.mkdir();
+
+                AndroidNetworking.download(VideoURL, Biogram.getAbsolutePath(), Name.toString() + ".mp4").build()
+                .setDownloadProgressListener(new DownloadProgressListener()
+                {
+                    @Override
+                    public void onProgress(long D, long T)
+                    {
+                        NotifyBuilder.setProgress(100, (int) (T * D / T), false);
+
+                        if (NotifyManager != null)
+                            NotifyManager.notify(NotifyID, NotifyBuilder.build());
+                    }
+                })
+                .startDownload(new DownloadListener()
+                {
+                    @Override
+                    public void onDownloadComplete()
+                    {
+                        NotifyBuilder.setContentText("Download completed").setProgress(0, 0, false);
+                    }
+
+                    @Override
+                    public void onError(ANError error)
+                    {
+                        NotifyBuilder.setContentText("Download failed").setProgress(0, 0, false);
+                    }
+                });
+            }
+        });
+
+        RelativeLayoutHeader.addView(ImageViewDownload);
+
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        LoadingViewMainParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        final LoadingView LoadingViewMain = new LoadingView(GetActivity());
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
+        LoadingViewMain.SetColor(R.color.White);
+        LoadingViewMain.SetScale(1.7f);
+        LoadingViewMain.SetSize(5);
 
         RelativeLayout.LayoutParams RelativeLayoutControlParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
         RelativeLayoutControlParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -181,6 +263,7 @@ public class VideoPreviewUI extends FragmentBase
         });
 
         RelativeLayoutMain.addView(SimpleExoPlayerViewMain);
+        RelativeLayoutMain.addView(LoadingViewMain);
 
         MediaSource MediaSourceMain = null;
 
@@ -209,13 +292,30 @@ public class VideoPreviewUI extends FragmentBase
         SimpleExoPlayerMain.setPlayWhenReady(true);
         SimpleExoPlayerMain.addListener(new Player.EventListener()
         {
+            boolean IsLoading = false;
+
             @Override public void onTimelineChanged(Timeline timeline, Object manifest) { }
             @Override public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) { }
-            @Override public void onLoadingChanged(boolean isLoading) { Misc.Debug("IsLoading: " + isLoading); }
             @Override public void onRepeatModeChanged(int repeatMode) { }
             @Override public void onPlayerError(ExoPlaybackException error) { }
             @Override public void onPositionDiscontinuity() { }
             @Override public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) { }
+            @Override public void onLoadingChanged(boolean isLoading)
+            {
+                IsLoading = isLoading;
+                if (IsLoading)
+                    LoadingViewMain.Start();
+                else
+                    LoadingViewMain.Stop();
+                Misc.RunOnUIThread(GetActivity(), new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+
+                    }
+                }, 150);
+            }
             @Override public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
             {
                 if (playbackState == 4)
@@ -243,8 +343,7 @@ public class VideoPreviewUI extends FragmentBase
         {
             @Override public void onStartTrackingTouch(SeekBar seekBar) { }
             @Override public void onStopTrackingTouch(SeekBar seekBar) { }
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
                 if (fromUser)
                 {

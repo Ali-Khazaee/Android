@@ -1,10 +1,13 @@
 package co.biogram.main.fragment;
 
 import android.content.Intent;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import co.biogram.main.handler.Misc;
 
 public class FragmentManager
 {
@@ -20,8 +23,13 @@ public class FragmentManager
 
     public void OpenView(FragmentBase fragment, int ID, String Tag)
     {
-        if (FragmentList.size() > 1)
+        if (FragmentList.size() > 0)
+        {
+            if (FragmentList.get(FragmentList.size() - 1).ViewMain != null)
+                FragmentList.get(FragmentList.size() - 1).ViewMain.setVisibility(View.GONE);
+
             FragmentList.get(FragmentList.size() - 1).OnPause();
+        }
 
         Fragment = fragment;
         Fragment.Tag = Tag;
@@ -51,6 +59,9 @@ public class FragmentManager
             Fragment = FragmentList.get(FragmentList.size() - 1);
             Fragment.OnResume();
 
+            if (Fragment.ViewMain != null)
+                Fragment.ViewMain.setVisibility(View.VISIBLE);
+
             return false;
         }
 
@@ -69,13 +80,23 @@ public class FragmentManager
     void OnResume()
     {
         if (Fragment != null)
+        {
+            if (Fragment.ViewMain != null)
+                Fragment.ViewMain.setVisibility(View.VISIBLE);
+
             Fragment.OnResume();
+        }
     }
 
     void OnPause()
     {
         if (Fragment != null)
+        {
+            if (Fragment.ViewMain != null)
+                Fragment.ViewMain.setVisibility(View.GONE);
+
             Fragment.OnPause();
+        }
     }
 
     void OnActivityResult(int RequestCode, int ResultCode, Intent intent)

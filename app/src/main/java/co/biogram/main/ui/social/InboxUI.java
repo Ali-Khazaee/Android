@@ -48,7 +48,7 @@ public class InboxUI extends FragmentBase
         ImageViewWrite.setId(Misc.GenerateViewID());
         ImageViewWrite.setImageResource(R.drawable.ic_write_plus);
         ImageViewWrite.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
-        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { } });
+        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new WriteUI(), R.id.SocialActivityContainerFull, "WriteUI"); } });
 
         RelativeLayoutHeader.addView(ImageViewWrite);
 
@@ -109,6 +109,7 @@ public class InboxUI extends FragmentBase
         String I2 = "[ \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg\" ]";
         String I3 = "[ \"http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg\", \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg\" ]";
         String I4 = "[ \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"152\", \"http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_1mb.mp4\" ]";
+        String I6 = "{ \"File\": \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"Name\" : \"ali_pdf.zip\", \"Detail\": \"13MB / ZIP\" }";
         String I5 = "{ \"Vote\" : \"1\", \"Total\" : \"67\", \"V1\" : \"Ali Khobe ?\", \"V2\" : \"Ali Bade ?\" , \"V3\" : \"Ali Gav e ?\", \"V1V\" : \"22\", \"V2V\" : \"34\" , \"V3V\" : \"11\" }";
 
         PostList.add(new PostAdapter.PostStruct(0));
@@ -116,7 +117,8 @@ public class InboxUI extends FragmentBase
         PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@mohammad", 1512525803, "Post e Jadid e Man\n #NewPost\n#GoodLuck", 1, I1, true, 100, true, 341));
         PostList.add(new PostAdapter.PostStruct("https://image.flaticon.com/icons/png/128/310/310831.png", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@ali", 1512325803, "پوست جدید من \n #NewPost\n#GoodLuck", 1,I2, false, 521, true, 18));
         PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@alireza", 1512125803, "  \n #News \n #Good پوست جدید من", 1, I3, false, 521, false, 18));
-        PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@alireza", 1511525803, "با سلام\nدوستان گلم #Ali هشتگ #علی سلام", 2, I4, false, 231, true, 412));
+        PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "", "@alireza", 1511525803, "با سلام\nدوستان گلم #Ali هشتگ #علی سلام", 2, I4, false, 231, true, 412));
+        PostList.add(new PostAdapter.PostStruct("http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg", "File Am", "https://image.flaticon.com/icons/png/128/310/310831.png", "@manfileam", 1511525803, "#File_To_File", 4, I6, false, 6812, true, 8541));
         PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@alireza", 1511525803, "با سلام\nدوستان گلم #Ali هشتگ #علی سلام", 3, I5, false, 231, true, 412));
 
         AdapterMain = new PostAdapter(GetActivity(), PostList, new PostAdapter.PullToRefreshListener()

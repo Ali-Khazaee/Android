@@ -163,9 +163,43 @@
     <string name="InboxUIPoint">Point</string>
     <string name="InboxUIMedal">Medal</string>
 
+    <!-- Category List -->
+    <string name="CategoryNews">News</string>
+    <string name="CategoryFun">Fun</string>
+    <string name="CategoryMusic">Music</string>
+    <string name="CategorySport">Sport</string>
+    <string name="CategoryFashion">Fashion</string>
+    <string name="CategoryFood">Food</string>
+    <string name="CategoryTechnology">Technology</string>
+    <string name="CategoryArt">Art</string>
+    <string name="CategoryArtist">Artist</string>
+    <string name="CategoryMedia">Media</string>
+    <string name="CategoryBusiness">Business</string>
+    <string name="CategoryEconomy">Economy</string>
+    <string name="CategoryLiterature">Literature</string>
+    <string name="CategoryTravel">Travel</string>
+    <string name="CategoryPolitics">Politics</string>
+    <string name="CategoryHealth">Health</string>
+    <string name="CategoryReligious">Religious</string>
+    <string name="CategoryKnowledge">Knowledge</string>
+    <string name="CategoryNature">Nature</string>
+    <string name="CategoryWeather">Weather</string>
+    <string name="CategoryHistorical">Historical</string>
+    <string name="CategoryOther">Other</string>
+
+    <!-- Write UI -->
+    <string name="WriteUI">Write</string>
+    <string name="WriteUIMessage">Write Your Message</string>
+    <string name="WriteUIDelete">Delete</string>
+    <string name="WriteUIPaste">Paste</string>
+    <string name="WriteUICopy">Copy</string>
+    <string name="WriteUIClipboard">Text copied yo clipboard</string>
+    <string name="WriteUICategory">Category</string>
+
     <!-- Post Adapter -->
     <string name="PostAdapterVote">Vote</string>
     <string name="PostAdapterVotes">Votes</string>
     <string name="PostAdapterVideo">Video</string>
+    <string name="PostAdapterVoteChoice">Submit your vote</string>
 
 </resources>
