@@ -352,11 +352,11 @@ class UsernameUI extends FragmentBase
                                     RelativeLayoutMain.setAnimation(Anim);
 
                                     if (Type == 0)
-                                        GetActivity().GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 0), R.id.WelcomeActivityContainer, "DescriptionUI");
+                                        GetActivity().GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 0), R.id.ContainerFull, "DescriptionUI");
                                     else if (Type == 1)
-                                        GetActivity().GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 1), R.id.WelcomeActivityContainer, "DescriptionUI");
+                                        GetActivity().GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 1), R.id.ContainerFull, "DescriptionUI");
                                     else if (Type == 2)
-                                        GetActivity().GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), R.id.WelcomeActivityContainer, "PasswordUI");
+                                        GetActivity().GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), R.id.ContainerFull, "PasswordUI");
                                     break;
                                 case 1:
                                     Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError1));

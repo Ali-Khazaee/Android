@@ -48,7 +48,7 @@ public class InboxUI extends FragmentBase
         ImageViewWrite.setId(Misc.GenerateViewID());
         ImageViewWrite.setImageResource(R.drawable.ic_write_plus);
         ImageViewWrite.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
-        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new WriteUI(), R.id.SocialActivityContainerFull, "WriteUI"); } });
+        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new WriteUI(), R.id.ContainerFull, "WriteUI"); } });
 
         RelativeLayoutHeader.addView(ImageViewWrite);
 

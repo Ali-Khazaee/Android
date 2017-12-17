@@ -37,10 +37,10 @@ public class WelcomeActivity extends FragmentActivity
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(this);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setId(R.id.WelcomeActivityContainer);
+        RelativeLayoutMain.setId(R.id.ContainerFull);
 
         setContentView(RelativeLayoutMain);
 
-        GetManager().OpenView(new WelcomeUI(), R.id.WelcomeActivityContainer, "WelcomeUI");
+        GetManager().OpenView(new WelcomeUI(), R.id.ContainerFull, "WelcomeUI");
     }
 }

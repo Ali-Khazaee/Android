@@ -282,7 +282,7 @@ class EmailUI extends FragmentBase
 
                                     Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError5));
 
-                                    GetActivity().GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), R.id.WelcomeActivityContainer, "EmailVerifyUI");
+                                    GetActivity().GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), R.id.ContainerFull, "EmailVerifyUI");
                                     break;
                                 case 1:
                                 case 2:

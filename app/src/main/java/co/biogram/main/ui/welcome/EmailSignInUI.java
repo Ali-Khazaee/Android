@@ -263,7 +263,7 @@ class EmailSignInUI extends FragmentBase
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new PasswordResetUI(), R.id.WelcomeActivityContainer, "PasswordResetUI");
+                GetActivity().GetManager().OpenView(new PasswordResetUI(), R.id.ContainerFull, "PasswordResetUI");
             }
         });
 

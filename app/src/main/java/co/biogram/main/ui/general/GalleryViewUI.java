@@ -33,15 +33,17 @@ public class GalleryViewUI extends FragmentBase
 {
     private final List<Struct> GalleryList = new ArrayList<>();
     private final List<String> FolderList = new ArrayList<>();
+    private final GalleryListener Listener;
     private String SelectionPath = "";
     private String Type = "Gallery";
     private final boolean IsVideo;
     private final int Count;
 
-    public GalleryViewUI(int count, boolean isVideo)
+    public GalleryViewUI(int count, boolean isVideo, GalleryListener l)
     {
         Count = count;
         IsVideo = isVideo;
+        Listener = l;
     }
 
     @Override
@@ -345,16 +347,7 @@ public class GalleryViewUI extends FragmentBase
                 {
                     if (IsVideo)
                     {
-                        /* TODO Fix Video View
-                        Bundle bundle = new Bundle();
-                        bundle.putString("VideoURL", FileList.get(Position).Path);
-
-                        VideoPreviewFragment fragment = new VideoPreviewFragment();
-                        fragment.setArguments(bundle);
-                        fragment.SetLocalVideo();
-
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
-                        */
+                        GetActivity().GetManager().OpenView(new VideoPreviewUI(FileList.get(Position).Path, true), R.id.ContainerFull, "VideoPreviewUI");
                     }
                     else
                     {
@@ -387,7 +380,7 @@ public class GalleryViewUI extends FragmentBase
                             }
                         });
 
-                        GetActivity().GetManager().OpenView(imagePreview, R.id.WelcomeActivityContainer, "ImagePreviewUI");
+                        GetActivity().GetManager().OpenView(imagePreview, R.id.ContainerFull, "ImagePreviewUI");
                     }
                 }
             });
@@ -469,5 +462,12 @@ public class GalleryViewUI extends FragmentBase
             Album = album;
             Path = path;
         }
+    }
+
+    public interface GalleryListener
+    {
+        void OnSelection();
+        void OnRemove();
+        void OnSave();
     }
 }

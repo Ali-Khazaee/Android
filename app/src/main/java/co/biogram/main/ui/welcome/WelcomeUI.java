@@ -223,7 +223,7 @@ public class WelcomeUI extends FragmentBase
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new PhoneUI(true), R.id.WelcomeActivityContainer, "PhoneUI");
+                GetActivity().GetManager().OpenView(new PhoneUI(true), R.id.ContainerFull, "PhoneUI");
             }
         });
 
@@ -334,7 +334,7 @@ public class WelcomeUI extends FragmentBase
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new PhoneUI(false), R.id.WelcomeActivityContainer, "PhoneUI");
+                GetActivity().GetManager().OpenView(new PhoneUI(false), R.id.ContainerFull, "PhoneUI");
             }
         });
 
@@ -501,7 +501,7 @@ public class WelcomeUI extends FragmentBase
 
                                         ScrollViewMain.setAnimation(Anim);
 
-                                        GetActivity().GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), R.id.WelcomeActivityContainer, "UsernameUI");
+                                        GetActivity().GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), R.id.ContainerFull, "UsernameUI");
                                         break;
                                     case 1:
                                     case 2:

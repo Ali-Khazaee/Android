@@ -101,13 +101,13 @@ public class SocialActivity extends FragmentActivity
 
         RelativeLayout RelativeLayoutContent = new RelativeLayout(this);
         RelativeLayoutContent.setLayoutParams(FrameLayoutContentParam);
-        RelativeLayoutContent.setId(R.id.SocialActivityContainer);
+        RelativeLayoutContent.setId(R.id.Container);
 
         RelativeLayoutMain.addView(RelativeLayoutContent);
 
         RelativeLayout RelativeLayoutContentFull = new RelativeLayout(this);
         RelativeLayoutContentFull.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutContentFull.setId(R.id.SocialActivityContainerFull);
+        RelativeLayoutContentFull.setId(R.id.ContainerFull);
 
         RelativeLayoutMain.addView(RelativeLayoutContentFull);
 
@@ -129,13 +129,13 @@ public class SocialActivity extends FragmentActivity
             case 1:
             {
                 String Username = getIntent().getStringExtra("Data");
-                GetManager().OpenView(new ProfileUI(Username), R.id.SocialActivityContainer, "ProfileUI");
+                GetManager().OpenView(new ProfileUI(Username), R.id.Container, "ProfileUI");
                 break;
             }
             case 2:
             {
                 String PostID = getIntent().getStringExtra("Data");
-                GetManager().OpenView(new PostUI(PostID), R.id.SocialActivityContainer, "PostUI");
+                GetManager().OpenView(new PostUI(PostID), R.id.Container, "PostUI");
                 break;
             }
         }
@@ -176,6 +176,6 @@ public class SocialActivity extends FragmentActivity
                 break;
         }
 
-        GetManager().OpenView(Fragment, R.id.SocialActivityContainer, Tag);
+        GetManager().OpenView(Fragment, R.id.Container, Tag);
     }
 }

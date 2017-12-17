@@ -8,6 +8,8 @@
     <string name="DialogPermissionDecline">NOT NOW</string>
 
     <!-- General -->
+    <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
+
     <string name="GeneralNoInternet">Check your connection</string>
 
     <string name="GeneralError1">Please Try again</string> <!-- DataBase -->
@@ -195,6 +197,10 @@
     <string name="WriteUICopy">Copy</string>
     <string name="WriteUIClipboard">Text copied yo clipboard</string>
     <string name="WriteUICategory">Category</string>
+    <string name="WriteUICategory2">Category:</string>
+    <string name="WriteUICategoryNone">none</string>
+    <string name="WriteUIMaximumImage">You have reach to maximum image</string>
+    <string name="WriteUIPermissionStorage">Please allow biogram to access your Storage This will help to complete your mission</string>
 
     <!-- Post Adapter -->
     <string name="PostAdapterVote">Vote</string>

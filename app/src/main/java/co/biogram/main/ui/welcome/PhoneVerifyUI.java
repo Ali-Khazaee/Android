@@ -716,7 +716,7 @@ class PhoneVerifyUI extends FragmentBase
 
                                         RelativeLayoutMain.setAnimation(Anim);
 
-                                        GetActivity().GetManager().OpenView(new UsernameUI(VerifyCode, 1), R.id.WelcomeActivityContainer, "UsernameUI");
+                                        GetActivity().GetManager().OpenView(new UsernameUI(VerifyCode, 1), R.id.ContainerFull, "UsernameUI");
                                         break;
                                     case 1:
                                     case 2:

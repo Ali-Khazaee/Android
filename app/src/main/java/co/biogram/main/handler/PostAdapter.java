@@ -1158,16 +1158,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 final String URL1 = URL.get(0).toString();
                                 Holder.ImageViewSingle.setVisibility(View.VISIBLE);
                                 GlideApp.with(Activity).load(URL1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewSingle);
-                                Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1), R.id.SocialActivityContainerFull, "ImagePreviewUI");  } });
+                                Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1), R.id.ContainerFull, "ImagePreviewUI");  } });
                             break;
                             case 2:
                                 final String URLD1 = URL.get(0).toString();
                                 final String URLD2 = URL.get(1).toString();
                                 Holder.LinearLayoutDouble.setVisibility(View.VISIBLE);
                                 GlideApp.with(Activity).load(URLD1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewDouble1);
-                                Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD1, URLD2), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD1, URLD2), R.id.ContainerFull, "ImagePreviewUI"); } });
                                 GlideApp.with(Activity).load(URLD2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewDouble2);
-                                Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD2, URLD1), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD2, URLD1), R.id.ContainerFull, "ImagePreviewUI"); } });
                                 break;
                             case 3:
                                 final String URLT1 = URL.get(0).toString();
@@ -1175,11 +1175,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 final String URLT3 = URL.get(2).toString();
                                 Holder.LinearLayoutTriple.setVisibility(View.VISIBLE);
                                 GlideApp.with(Activity).load(URLT1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewTriple1);
-                                Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT1, URLT2, URLT3), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT1, URLT2, URLT3), R.id.ContainerFull, "ImagePreviewUI"); } });
                                 GlideApp.with(Activity).load(URLT2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewTriple2);
-                                Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT2, URLT3, URLT1), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT2, URLT3, URLT1), R.id.ContainerFull, "ImagePreviewUI"); } });
                                 GlideApp.with(Activity).load(URLT3).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewTriple3);
-                                Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT3, URLT1, URLT2), R.id.SocialActivityContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT3, URLT1, URLT2), R.id.ContainerFull, "ImagePreviewUI"); } });
                             break;
                         }
                     }
@@ -1191,7 +1191,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
                         GlideApp.with(Activity).load(URL.get(0).toString()).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 3))).into(Holder.ImageViewVideo);
-                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(VideoURL, false), R.id.SocialActivityContainerFull, "VideoPreviewUI"); } });
+                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(VideoURL, false), R.id.ContainerFull, "VideoPreviewUI"); } });
 
                         int Time = Integer.parseInt(URL.get(1).toString());
                         int Min = Time / 60;

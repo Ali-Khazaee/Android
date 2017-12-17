@@ -233,7 +233,7 @@ public class DescriptionUI extends FragmentBase
                         if (Misc.HasPermission(GetActivity(), Manifest.permission.CAMERA))
                         {
                             DialogProfile.dismiss();
-                            GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.WelcomeActivityContainer, "CameraViewUI");
+                            GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
                             return;
                         }
 
@@ -256,7 +256,7 @@ public class DescriptionUI extends FragmentBase
                                     public void OnGranted()
                                     {
                                         DialogProfile.dismiss();
-                                        GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.WelcomeActivityContainer, "CameraViewUI");
+                                        GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
                                     }
 
                                     @Override
@@ -292,7 +292,7 @@ public class DescriptionUI extends FragmentBase
                         if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                         {
                             DialogProfile.dismiss();
-                            GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.WelcomeActivityContainer, "GalleryViewUI");
+                            GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.ContainerFull, "GalleryViewUI");
                             return;
                         }
 
@@ -315,7 +315,7 @@ public class DescriptionUI extends FragmentBase
                                     public void OnGranted()
                                     {
                                         DialogProfile.dismiss();
-                                        GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.WelcomeActivityContainer, "GalleryViewUI");
+                                        GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.ContainerFull, "GalleryViewUI");
                                     }
 
                                     @Override

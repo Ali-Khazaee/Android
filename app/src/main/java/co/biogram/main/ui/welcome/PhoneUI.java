@@ -364,9 +364,9 @@ class PhoneUI extends FragmentBase
                 RelativeLayoutMain.setAnimation(Anim);
 
                 if (IsSignUp)
-                    GetActivity().GetManager().OpenView(new UsernameUI(), R.id.WelcomeActivityContainer, "UsernameUI");
+                    GetActivity().GetManager().OpenView(new UsernameUI(), R.id.ContainerFull, "UsernameUI");
                 else
-                    GetActivity().GetManager().OpenView(new EmailSignInUI(), R.id.WelcomeActivityContainer, "EmailSignInUI");
+                    GetActivity().GetManager().OpenView(new EmailSignInUI(), R.id.ContainerFull, "EmailSignInUI");
             }
 
             @Override
@@ -545,7 +545,7 @@ class PhoneUI extends FragmentBase
                                 while (Phone.charAt(0) == '0')
                                     Phone = Phone.substring(1);
 
-                                GetActivity().GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, true), R.id.WelcomeActivityContainer, "PhoneVerifyUI");
+                                GetActivity().GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, true), R.id.ContainerFull, "PhoneVerifyUI");
                                 break;
                             case 1:
                             case 2:
@@ -612,7 +612,7 @@ class PhoneUI extends FragmentBase
                                 while (Phone.charAt(0) == '0')
                                     Phone = Phone.substring(1);
 
-                                GetActivity().GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, false), R.id.WelcomeActivityContainer, "PhoneVerifyUI");
+                                GetActivity().GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, false), R.id.ContainerFull, "PhoneVerifyUI");
                                 break;
                             case 1:
                             case 2:
