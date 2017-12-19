@@ -164,16 +164,14 @@ public class Misc
         View view = activity.getCurrentFocus();
 
         if (view != null)
-        {
-            InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            if (IMM == null || !IMM.isActive())
-                return;
-
-            IMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
             view.clearFocus();
-        }
+
+        InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (IMM == null)
+            return;
+
+        IMM.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
     public static boolean HasPermission(Context context, String Permission)

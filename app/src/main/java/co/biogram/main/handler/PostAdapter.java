@@ -760,12 +760,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutFile.addView(TextViewFileDetail);
 
-
-
-
-
-
-
             RelativeLayout.LayoutParams RelativeLayoutToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 40));
             RelativeLayoutToolParam.addRule(RelativeLayout.BELOW, RelativeLayoutContent.getId());
             RelativeLayoutToolParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);

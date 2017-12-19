@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Environment;
@@ -60,6 +61,8 @@ public class VideoPreviewUI extends FragmentBase
 {
     private SimpleExoPlayerView SimpleExoPlayerViewMain;
     private SimpleExoPlayer SimpleExoPlayerMain;
+    private OnSelectListener SelectListener;
+    private boolean Selected = false;
     private boolean IsLocal = false;
     private String VideoURL = "";
     private Runnable runnable;
@@ -167,7 +170,56 @@ public class VideoPreviewUI extends FragmentBase
             }
         });
 
-        RelativeLayoutHeader.addView(ImageViewDownload);
+        if (!IsLocal)
+            RelativeLayoutHeader.addView(ImageViewDownload);
+
+        if (SelectListener != null)
+        {
+            final GradientDrawable DrawableSelect = new GradientDrawable();
+            DrawableSelect.setShape(GradientDrawable.OVAL);
+            DrawableSelect.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
+
+            final GradientDrawable DrawableSelected = new GradientDrawable();
+            DrawableSelected.setShape(GradientDrawable.OVAL);
+            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+            DrawableSelected.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
+
+            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 24), Misc.ToDP(GetActivity(), 24));
+            ViewCircleParam.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 15), 0);
+            ViewCircleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+            ViewCircleParam.addRule(Misc.Align("L"));
+
+            View ViewCircle = new View(GetActivity());
+            ViewCircle.setLayoutParams(ViewCircleParam);
+            ViewCircle.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    GetActivity().onBackPressed();
+
+                    if (Selected)
+                    {
+                        Selected = false;
+                        v.setBackground(DrawableSelect);
+                    }
+                    else
+                    {
+                        Selected = true;
+                        v.setBackground(DrawableSelected);
+                    }
+
+                    SelectListener.OnSelect();
+                }
+            });
+
+            if (Selected)
+                ViewCircle.setBackground(DrawableSelected);
+            else
+                ViewCircle.setBackground(DrawableSelect);
+
+            RelativeLayoutHeader.addView(ViewCircle);
+        }
 
         RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
         LoadingViewMainParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
@@ -303,16 +355,16 @@ public class VideoPreviewUI extends FragmentBase
             @Override public void onLoadingChanged(boolean isLoading)
             {
                 IsLoading = isLoading;
-                if (IsLoading)
-                    LoadingViewMain.Start();
-                else
-                    LoadingViewMain.Stop();
+
                 Misc.RunOnUIThread(GetActivity(), new Runnable()
                 {
                     @Override
                     public void run()
                     {
-
+                        if (IsLoading)
+                            LoadingViewMain.Start();
+                        else
+                            LoadingViewMain.Stop();
                     }
                 }, 150);
             }
@@ -442,6 +494,17 @@ public class VideoPreviewUI extends FragmentBase
     {
         super.OnDestroy();
         SimpleExoPlayerMain.release();
+    }
+
+    void SetType(boolean select, OnSelectListener l)
+    {
+        Selected = select;
+        SelectListener = l;
+    }
+
+    interface OnSelectListener
+    {
+        void OnSelect();
     }
 
     private String StringForTime(long Time)

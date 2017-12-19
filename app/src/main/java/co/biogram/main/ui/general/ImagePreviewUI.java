@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -258,7 +259,7 @@ public class ImagePreviewUI extends FragmentBase
                         CropImageViewMain.setVisibility(View.GONE);
 
                         ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-                        CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
+                        CropImageViewMain.getCroppedImage(250, 250).compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
 
                         File ProfileFile = new File(CacheHandler.CacheDir(GetActivity()), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
 
@@ -418,8 +419,9 @@ public class ImagePreviewUI extends FragmentBase
 
     private class PreviewAdapter extends PagerAdapter
     {
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup Container, int Position)
+        public Object instantiateItem(@NonNull ViewGroup Container, int Position)
         {
             RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -476,19 +478,19 @@ public class ImagePreviewUI extends FragmentBase
         }
 
         @Override
-        public void destroyItem(ViewGroup Container, int position, Object object)
+        public void destroyItem(@NonNull ViewGroup Container, int position, @NonNull Object object)
         {
             Container.removeView((View) object);
         }
 
         @Override
-        public int getItemPosition(Object object)
+        public int getItemPosition(@NonNull Object object)
         {
             return POSITION_NONE;
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object)
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object)
         {
             return view == object;
         }

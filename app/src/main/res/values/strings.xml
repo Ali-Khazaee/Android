@@ -201,6 +201,9 @@
     <string name="WriteUICategoryNone">none</string>
     <string name="WriteUIMaximumImage">You have reach to maximum image</string>
     <string name="WriteUIPermissionStorage">Please allow biogram to access your Storage This will help to complete your mission</string>
+    <string name="WriteUIVideoLength">Video length is to high, maximum is 240 seconds</string>
+    <string name="WriteUIMB">MB</string>
+    <string name="WriteUISeconds">Seconds</string>
 
     <!-- Post Adapter -->
     <string name="PostAdapterVote">Vote</string>

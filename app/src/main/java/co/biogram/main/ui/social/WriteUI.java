@@ -5,8 +5,11 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -36,8 +39,10 @@ import android.widget.Scroller;
 import com.androidnetworking.AndroidNetworking;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
@@ -46,6 +51,8 @@ import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnClickRecyclerView;
 import co.biogram.main.ui.general.GalleryViewUI;
+import co.biogram.main.ui.general.ImagePreviewUI;
+import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.TextView;
 
@@ -57,8 +64,10 @@ class WriteUI extends FragmentBase
     private ImageView ImageViewVideo;
     private ImageView ImageViewVote;
     private ImageView ImageViewFile;
+    private ViewPagerAdapter ViewPagerAdapterImage;
+    private ViewPager ViewPagerImage;
 
-    private final List<Bitmap> SelectImage = new ArrayList<>();
+    private final List<String> SelectImage = new ArrayList<>();
     private int SelectCategory = 0;
     private File SelectFile;
     private File SelectVideo;
@@ -70,6 +79,10 @@ class WriteUI extends FragmentBase
         final TextView TextViewCategorySelect = new TextView(GetActivity(), 16, false);
         final TextView TextViewCount = new TextView(GetActivity(), 14, false);
         final EditText EditTextMessage = new EditText(GetActivity());
+        final ImageView ImageViewThumbVideo = new ImageView(GetActivity());
+        final RelativeLayout RelativeLayoutVideo = new RelativeLayout(GetActivity());
+        final TextView TextViewSizeVideo = new TextView(GetActivity(), 12, false);
+        final TextView TextViewLengthVideo = new TextView(GetActivity(), 12, false);
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -315,12 +328,42 @@ class WriteUI extends FragmentBase
 
                 if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
-                    GetActivity().GetManager().OpenView(new GalleryViewUI(3, false), R.id.ContainerFull, "GalleryViewUI");
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(3, false, new GalleryViewUI.GalleryListener()
+                    {
+                        List<String> IamgeURL = new ArrayList<>();
+
+                        @Override
+                        public void OnSelection(String URL)
+                        {
+                            IamgeURL.add(URL);
+                        }
+
+                        @Override
+                        public void OnRemove(String URL)
+                        {
+                            IamgeURL.remove(URL);
+                        }
+
+                        @Override
+                        public void OnSave()
+                        {
+                            if (IamgeURL.size() <= 0)
+                                return;
+
+                            for (String url : IamgeURL)
+                                if (SelectImage.size() < 3)
+                                    SelectImage.add(url);
+
+                            ChangeType(1);
+                            ViewPagerImage.setVisibility(View.VISIBLE);
+                            ViewPagerAdapterImage.notifyDataSetChanged();
+                        }
+                    }), R.id.ContainerFull, "GalleryViewUI");
                     return;
                 }
 
-                PermissionDialog PermissionDialogSMS = new PermissionDialog(GetActivity());
-                PermissionDialogSMS.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.WriteUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                PermissionDialog PermissionDialogGallery = new PermissionDialog(GetActivity());
+                PermissionDialogGallery.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.WriteUIPermissionStorage), new PermissionDialog.OnSelectedListener()
                 {
                     @Override
                     public void OnSelected(boolean Allow)
@@ -336,7 +379,34 @@ class WriteUI extends FragmentBase
                             @Override
                             public void OnGranted()
                             {
-                                GetActivity().GetManager().OpenView(new GalleryViewUI(3, false), R.id.ContainerFull, "GalleryViewUI");
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(3, false, new GalleryViewUI.GalleryListener()
+                                {
+                                    List<String> IamgeURL = new ArrayList<>();
+
+                                    @Override
+                                    public void OnSelection(String URL)
+                                    {
+                                        IamgeURL.add(URL);
+                                    }
+
+                                    @Override
+                                    public void OnRemove(String URL)
+                                    {
+                                        IamgeURL.remove(URL);
+                                    }
+
+                                    @Override
+                                    public void OnSave()
+                                    {
+                                        if (IamgeURL.size() <= 0)
+                                            return;
+
+                                        ChangeType(1);
+                                        SelectImage.addAll(IamgeURL);
+                                        ViewPagerImage.setVisibility(View.VISIBLE);
+                                        ViewPagerAdapterImage.notifyDataSetChanged();
+                                    }
+                                }), R.id.ContainerFull, "GalleryViewUI");
                             }
 
                             @Override
@@ -362,7 +432,109 @@ class WriteUI extends FragmentBase
             @Override
             public void onClick(View view)
             {
+                if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
+                {
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, true, new GalleryViewUI.GalleryListener()
+                    {
+                        String VideoURL;
 
+                        @Override
+                        public void OnSelection(String URL)
+                        {
+                            VideoURL = URL;
+                        }
+
+                        @Override
+                        public void OnRemove(String URL)
+                        {
+                            VideoURL = "";
+                        }
+
+                        @Override
+                        public void OnSave()
+                        {
+                            if (!VideoURL.equals(""))
+                            {
+                                MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
+                                Retriever.setDataSource(VideoURL);
+                                int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
+
+                                if (Time > 240)
+                                {
+                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.WriteUIVideoLength));
+                                    return;
+                                }
+
+                                ChangeType(2);
+                                SelectVideo = new File(VideoURL);
+                                ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                                RelativeLayoutVideo.setVisibility(View.VISIBLE);
+
+                                double Size = (double) SelectVideo.length() / 1048576.0;
+
+                                TextViewSizeVideo.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB)));
+                                TextViewLengthVideo.setText((String.valueOf(Time) + " " + GetActivity().getString(R.string.WriteUISeconds)));
+                            }
+                        }
+                    }), R.id.ContainerFull, "GalleryViewUI");
+                    return;
+                }
+
+                PermissionDialog PermissionDialogGallery = new PermissionDialog(GetActivity());
+                PermissionDialogGallery.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.WriteUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                {
+                    @Override
+                    public void OnSelected(boolean Allow)
+                    {
+                        if (!Allow)
+                        {
+                            Misc.Toast(GetActivity(), GetActivity().getString(R.string.PermissionStorage));
+                            return;
+                        }
+
+                        GetActivity().RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
+                        {
+                            @Override
+                            public void OnGranted()
+                            {
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, true, new GalleryViewUI.GalleryListener()
+                                {
+                                    List<String> ImgeURL = new ArrayList<>();
+
+                                    @Override
+                                    public void OnSelection(String URL)
+                                    {
+                                        ImgeURL.add(URL);
+                                    }
+
+                                    @Override
+                                    public void OnRemove(String URL)
+                                    {
+                                        ImgeURL.remove(URL);
+                                    }
+
+                                    @Override
+                                    public void OnSave()
+                                    {
+                                        if (ImgeURL.size() <= 0)
+                                            return;
+
+                                        ChangeType(1);
+                                        SelectImage.addAll(ImgeURL);
+                                        ViewPagerImage.setVisibility(View.VISIBLE);
+                                        ViewPagerAdapterImage.notifyDataSetChanged();
+                                    }
+                                }), R.id.ContainerFull, "GalleryViewUI");
+                            }
+
+                            @Override
+                            public void OnDenied()
+                            {
+                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.PermissionStorage));
+                            }
+                        });
+                    }
+                });
             }
         });
 
@@ -585,9 +757,9 @@ class WriteUI extends FragmentBase
 
         RelativeLayoutMain.addView(RelativeLayoutContent);
 
-        ViewPager ViewPagerImage = new ViewPager(GetActivity());
+        ViewPagerImage = new ViewPager(GetActivity());
         ViewPagerImage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        ViewPagerImage.setAdapter(new ViewPagerAdapter());
+        ViewPagerImage.setAdapter(ViewPagerAdapterImage = new ViewPagerAdapter());
         ViewPagerImage.setVisibility(View.GONE);
 
         RelativeLayoutContent.addView(ViewPagerImage);
@@ -596,33 +768,15 @@ class WriteUI extends FragmentBase
         RelativeLayoutVideoParam.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
         RelativeLayoutVideoParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-        final RelativeLayout RelativeLayoutVideo = new RelativeLayout(GetActivity());
         RelativeLayoutVideo.setLayoutParams(RelativeLayoutVideoParam);
         RelativeLayoutVideo.setBackgroundResource(R.color.Black);
         RelativeLayoutVideo.setVisibility(View.GONE);
 
         RelativeLayoutContent.addView(RelativeLayoutVideo);
 
-        final ImageView ImageViewThumbVideo = new ImageView(GetActivity());
         ImageViewThumbVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         ImageViewThumbVideo.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        ImageViewThumbVideo.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                /*MiscHandler.HideSoftKey(getActivity());
-
-                Bundle bundle = new Bundle();
-                bundle.putString("VideoURL", SelectVideo.getAbsolutePath());
-
-                Fragment fragment = new VideoPreviewFragment();
-                fragment.setArguments(bundle);
-
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("VideoPreviewFragment").commitAllowingStateLoss();
-                */
-            }
-        });
+        ImageViewThumbVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().GetManager().OpenView(new VideoPreviewUI(SelectVideo.getAbsolutePath(), true), R.id.ContainerFull, "VideoPreviewUI"); } });
 
         RelativeLayoutVideo.addView(ImageViewThumbVideo);
 
@@ -634,6 +788,7 @@ class WriteUI extends FragmentBase
         ImageViewRemoveVideo.setLayoutParams(ImageViewRemoveVideoParam);
         ImageViewRemoveVideo.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewRemoveVideo.setImageResource(R.drawable.ic_remove);
+        ImageViewRemoveVideo.setId(Misc.GenerateViewID());
         ImageViewRemoveVideo.setAlpha(0.75f);
         ImageViewRemoveVideo.setOnClickListener(new View.OnClickListener()
         {
@@ -648,6 +803,52 @@ class WriteUI extends FragmentBase
         });
 
         RelativeLayoutVideo.addView(ImageViewRemoveVideo);
+
+        RelativeLayout.LayoutParams ImageViewEditVideoParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 25), Misc.ToDP(GetActivity(), 25));
+        ImageViewEditVideoParam.setMargins(0, Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), 0);
+        ImageViewEditVideoParam.addRule(RelativeLayout.BELOW, ImageViewRemoveVideo.getId());
+        ImageViewEditVideoParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageView ImageViewEditVideo = new ImageView(GetActivity());
+        ImageViewEditVideo.setLayoutParams(ImageViewEditVideoParam);
+        ImageViewEditVideo.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewEditVideo.setImageResource(R.drawable.ic_remove);
+        ImageViewEditVideo.setAlpha(0.75f);
+        ImageViewEditVideo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+            }
+        });
+
+        RelativeLayoutVideo.addView(ImageViewEditVideo);
+
+        GradientDrawable DrawableVideoSize = new GradientDrawable();
+        DrawableVideoSize.setColor(Color.parseColor("#65000000"));
+        DrawableVideoSize.setCornerRadius(Misc.ToDP(GetActivity(), 4));
+
+        RelativeLayout.LayoutParams TextViewSizeVideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewSizeVideoParam.setMargins(Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8));
+        TextViewSizeVideoParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+        TextViewSizeVideo.setLayoutParams(TextViewSizeVideoParam);
+        TextViewSizeVideo.setPadding(Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), 0);
+        TextViewSizeVideo.setBackground(DrawableVideoSize);
+        TextViewSizeVideo.setId(Misc.GenerateViewID());
+
+        RelativeLayoutVideo.addView(TextViewSizeVideo);
+
+        RelativeLayout.LayoutParams TextViewLengthVideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewLengthVideoParam.setMargins(Misc.ToDP(GetActivity(), 8), 0, Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8));
+        TextViewLengthVideoParam.addRule(RelativeLayout.BELOW, TextViewSizeVideo.getId());
+
+        TextViewLengthVideo.setLayoutParams(TextViewLengthVideoParam);
+        TextViewLengthVideo.setPadding(Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), 0);
+        TextViewLengthVideo.setBackground(DrawableVideoSize);
+
+        RelativeLayoutVideo.addView(TextViewLengthVideo);
 
         RelativeLayout.LayoutParams ImageViewPlayVideoParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 65), Misc.ToDP(GetActivity(), 65));
         ImageViewPlayVideoParam.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -671,7 +872,6 @@ class WriteUI extends FragmentBase
     @Override
     public void OnPause()
     {
-        Misc.HideSoftKey(GetActivity());
         AndroidNetworking.forceCancel("WriteUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
         GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -742,22 +942,14 @@ class WriteUI extends FragmentBase
             ImageView ImageViewImage = new ImageView(GetActivity());
             ImageViewImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             ImageViewImage.setLayoutParams(ImageViewImageParam);
-            ImageViewImage.setImageBitmap(SelectImage.get(Position));
+            ImageViewImage.setImageURI(Uri.parse(SelectImage.get(Position)));
             ImageViewImage.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
                     if (SelectImage.size() > 0)
-                    {
-                        /*MiscHandler.HideSoftKey(getActivity());
-
-                        ImagePreviewFragment fragment = new ImagePreviewFragment();
-                        fragment.SetBitmap(SelectImage.get(Position));
-
-                        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.MainActivityFullContainer, fragment).addToBackStack("ImagePreviewFragment").commitAllowingStateLoss();
-                        */
-                    }
+                        GetActivity().GetManager().OpenView(new ImagePreviewUI(SelectImage.get(Position)), R.id.ContainerFull, "ImagePreviewUI");
                 }
             });
 
@@ -777,14 +969,14 @@ class WriteUI extends FragmentBase
                 @Override
                 public void onClick(View view)
                 {
-                    /*SelectImage.remove(Position);
+                    SelectImage.remove(Position);
                     ViewPagerAdapterImage.notifyDataSetChanged();
 
                     if (SelectImage.size() <= 0)
                     {
                         ChangeType(0);
                         ViewPagerImage.setVisibility(View.GONE);
-                    }*/
+                    }
                 }
             });
 

@@ -292,7 +292,29 @@ public class DescriptionUI extends FragmentBase
                         if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                         {
                             DialogProfile.dismiss();
-                            GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.ContainerFull, "GalleryViewUI");
+                            GetActivity().GetManager().OpenView(new GalleryViewUI(1, false, new GalleryViewUI.GalleryListener()
+                            {
+                                String ImageURL;
+
+                                @Override
+                                public void OnSelection(String URL)
+                                {
+                                    ImageURL = URL;
+                                }
+
+                                @Override
+                                public void OnRemove(String URL)
+                                {
+                                    ImageURL = "";
+                                }
+
+                                @Override
+                                public void OnSave()
+                                {
+
+                                    Update(new File(ImageURL), true);
+                                }
+                            }), R.id.ContainerFull, "GalleryViewUI");
                             return;
                         }
 
@@ -315,7 +337,29 @@ public class DescriptionUI extends FragmentBase
                                     public void OnGranted()
                                     {
                                         DialogProfile.dismiss();
-                                        GetActivity().GetManager().OpenView(new GalleryViewUI(1, false), R.id.ContainerFull, "GalleryViewUI");
+                                        GetActivity().GetManager().OpenView(new GalleryViewUI(1, false, new GalleryViewUI.GalleryListener()
+                                        {
+                                            String ImageURL;
+
+                                            @Override
+                                            public void OnSelection(String URL)
+                                            {
+                                                ImageURL = URL;
+                                            }
+
+                                            @Override
+                                            public void OnRemove(String URL)
+                                            {
+                                                ImageURL = "";
+                                            }
+
+                                            @Override
+                                            public void OnSave()
+                                            {
+
+                                                Update(new File(ImageURL), true);
+                                            }
+                                        }), R.id.ContainerFull, "GalleryViewUI");
                                     }
 
                                     @Override
@@ -864,7 +908,7 @@ public class DescriptionUI extends FragmentBase
                     CropImageViewMain.setVisibility(View.GONE);
 
                     ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-                    CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
+                    CropImageViewMain.getCroppedImage(250, 250).compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
 
                     File ProfileFile = new File(CacheHandler.CacheDir(GetActivity()), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
 
@@ -914,6 +958,9 @@ public class DescriptionUI extends FragmentBase
 
     public void Update(File file, boolean Crop)
     {
+        if (file == null)
+            return;
+
         if (Crop)
         {
             if (Build.VERSION.SDK_INT > 20)

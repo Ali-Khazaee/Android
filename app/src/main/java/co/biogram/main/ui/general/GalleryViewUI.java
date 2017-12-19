@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,6 @@ import co.biogram.main.R;
 
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.TextView;
 
 public class GalleryViewUI extends FragmentBase
@@ -34,7 +32,6 @@ public class GalleryViewUI extends FragmentBase
     private final List<Struct> GalleryList = new ArrayList<>();
     private final List<String> FolderList = new ArrayList<>();
     private final GalleryListener Listener;
-    private String SelectionPath = "";
     private String Type = "Gallery";
     private final boolean IsVideo;
     private final int Count;
@@ -145,11 +142,7 @@ public class GalleryViewUI extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                DescriptionUI SignUpDescription = (DescriptionUI) GetActivity().GetManager().FindByTag("DescriptionUI");
-
-                if (SignUpDescription != null && !SelectionPath.equals(""))
-                    SignUpDescription.Update(new File(SelectionPath), true);
-
+                Listener.OnSave();
                 GetActivity().onBackPressed();
             }
         });
@@ -307,7 +300,7 @@ public class GalleryViewUI extends FragmentBase
                     if (FileList.get(Position).Selection)
                     {
                         Selection--;
-                        SelectionPath = "";
+                        Listener.OnRemove(FileList.get(Position).Path);
                         FileList.get(Position).Selection = false;
                         Holder.ViewCircle.setBackground(DrawableSelect);
                     }
@@ -320,7 +313,7 @@ public class GalleryViewUI extends FragmentBase
                         }
 
                         Selection++;
-                        SelectionPath = FileList.get(Position).Path;
+                        Listener.OnSelection(FileList.get(Position).Path);
                         FileList.get(Position).Selection = true;
                         Holder.ViewCircle.setBackground(DrawableSelected);
                     }
@@ -347,12 +340,8 @@ public class GalleryViewUI extends FragmentBase
                 {
                     if (IsVideo)
                     {
-                        GetActivity().GetManager().OpenView(new VideoPreviewUI(FileList.get(Position).Path, true), R.id.ContainerFull, "VideoPreviewUI");
-                    }
-                    else
-                    {
-                        ImagePreviewUI imagePreview = new ImagePreviewUI(FileList.get(Position).Path);
-                        imagePreview.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener()
+                        VideoPreviewUI vp = new VideoPreviewUI(FileList.get(Position).Path, true);
+                        vp.SetType(FileList.get(Position).Selection, new VideoPreviewUI.OnSelectListener()
                         {
                             @Override
                             public void OnSelect()
@@ -360,7 +349,7 @@ public class GalleryViewUI extends FragmentBase
                                 if (FileList.get(Position).Selection)
                                 {
                                     Selection--;
-                                    SelectionPath = "";
+                                    Listener.OnRemove(FileList.get(Position).Path);
                                     Holder.ViewCircle.setBackground(DrawableSelect);
                                     FileList.get(Position).Selection = false;
                                 }
@@ -373,14 +362,47 @@ public class GalleryViewUI extends FragmentBase
                                     }
 
                                     Selection++;
-                                    SelectionPath = FileList.get(Position).Path;
+                                    Listener.OnSelection(FileList.get(Position).Path);
                                     Holder.ViewCircle.setBackground(DrawableSelected);
                                     FileList.get(Position).Selection = true;
                                 }
                             }
                         });
 
-                        GetActivity().GetManager().OpenView(imagePreview, R.id.ContainerFull, "ImagePreviewUI");
+                        GetActivity().GetManager().OpenView(vp, R.id.ContainerFull, "VideoPreviewUI");
+                    }
+                    else
+                    {
+                        ImagePreviewUI ip = new ImagePreviewUI(FileList.get(Position).Path);
+                        ip.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener()
+                        {
+                            @Override
+                            public void OnSelect()
+                            {
+                                if (FileList.get(Position).Selection)
+                                {
+                                    Selection--;
+                                    Listener.OnRemove(FileList.get(Position).Path);
+                                    Holder.ViewCircle.setBackground(DrawableSelect);
+                                    FileList.get(Position).Selection = false;
+                                }
+                                else
+                                {
+                                    if (Count <= Selection)
+                                    {
+                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
+                                        return;
+                                    }
+
+                                    Selection++;
+                                    Listener.OnSelection(FileList.get(Position).Path);
+                                    Holder.ViewCircle.setBackground(DrawableSelected);
+                                    FileList.get(Position).Selection = true;
+                                }
+                            }
+                        });
+
+                        GetActivity().GetManager().OpenView(ip, R.id.ContainerFull, "ImagePreviewUI");
                     }
                 }
             });
@@ -414,7 +436,6 @@ public class GalleryViewUI extends FragmentBase
         @Override
         public int getItemCount()
         {
-            Selection = 0;
             FileList.clear();
 
             if (Type.equals("Gallery"))
@@ -466,8 +487,8 @@ public class GalleryViewUI extends FragmentBase
 
     public interface GalleryListener
     {
-        void OnSelection();
-        void OnRemove();
+        void OnSelection(String URL);
+        void OnRemove(String URL);
         void OnSave();
     }
 }

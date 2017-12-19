@@ -11,6 +11,31 @@ android
         abortOnError false
     }
 
+    packagingOptions
+    {
+        exclude 'third_party/java_src/error_prone/project/annotations/Annotations.gwt.xml'
+        exclude 'third_party/java_src/error_prone/project/annotations/Google_internal.gwt.xml'
+        exclude 'META-INF/android.arch.lifecycle_runtime.version'
+        exclude 'META-INF/com.android.support_animated-vector-drawable.version'
+        exclude 'META-INF/com.android.support_appcompat-v7.version'
+        exclude 'META-INF/com.android.support_design.version'
+        exclude 'META-INF/com.android.support_exifinterface.version'
+        exclude 'META-INF/com.android.support_recyclerview-v7.version'
+        exclude 'META-INF/com.android.support_support-compat.version'
+        exclude 'META-INF/com.android.support_support-core-ui.version'
+        exclude 'META-INF/com.android.support_support-core-utils.version'
+        exclude 'META-INF/com.android.support_support-fragment.version'
+        exclude 'META-INF/com.android.support_support-media-compat.version'
+        exclude 'META-INF/com.android.support_support-v4.version'
+        exclude 'META-INF/com.android.support_support-vector-drawable.version'
+        exclude 'META-INF/com.android.support_transition.version'
+        exclude 'protobuf.meta'
+        exclude 'build-data.properties'
+        exclude 'META-INF/LICENSE'
+        exclude 'jsr305_annotations/Jsr305_annotations.gwt.xml'
+        exclude 'error_prone/Annotations.gwt.xml'
+    }
+
     defaultConfig
     {
         applicationId "co.biogram.main"
