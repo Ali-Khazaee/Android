@@ -8,6 +8,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
+import android.media.MediaCodecInfo;
+import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -19,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
@@ -34,27 +37,38 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Scroller;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnClickRecyclerView;
+import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
+import co.biogram.main.ui.view.ProgressDialog;
 import co.biogram.main.ui.view.TextView;
+import co.biogram.media.MediaTransCoder;
 
 class WriteUI extends FragmentBase
 {
@@ -72,6 +86,8 @@ class WriteUI extends FragmentBase
     private File SelectFile;
     private File SelectVideo;
     private int SelectType = 0;
+    private int IsWorld = 0;
+    private int VoteTime = 0;
 
     @Override
     public void OnCreate()
@@ -83,6 +99,11 @@ class WriteUI extends FragmentBase
         final RelativeLayout RelativeLayoutVideo = new RelativeLayout(GetActivity());
         final TextView TextViewSizeVideo = new TextView(GetActivity(), 12, false);
         final TextView TextViewLengthVideo = new TextView(GetActivity(), 12, false);
+        final RelativeLayout RelativeLayoutFile = new RelativeLayout(GetActivity());
+        final TextView TextViewFileName = new TextView(GetActivity(), 14, false);
+        final TextView TextViewFileDetail = new TextView(GetActivity(), 12, false);
+        final ScrollView ScrollViewVote = new ScrollView(GetActivity());
+        final ImageView ImageViewRemoveVote = new ImageView(GetActivity());
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -153,6 +174,34 @@ class WriteUI extends FragmentBase
         TextViewTitle.setText(GetActivity().getString(R.string.WriteUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
+
+        RelativeLayout.LayoutParams ImageViewWorldParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewWorldParam.addRule(Misc.Align("L"));
+
+        final ImageView ImageViewWorld = new ImageView(GetActivity());
+        ImageViewWorld.setLayoutParams(ImageViewWorldParam);
+        ImageViewWorld.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewWorld.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
+        ImageViewWorld.setImageResource(R.drawable.i_global_gray);
+        ImageViewWorld.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (IsWorld == 0)
+                {
+                    IsWorld = 1;
+                    ImageViewWorld.setImageResource(R.drawable.i_global_blue);
+                }
+                else
+                {
+                    IsWorld = 0;
+                    ImageViewWorld.setImageResource(R.drawable.i_global_gray);
+                }
+            }
+        });
+
+        RelativeLayoutHeader.addView(ImageViewWorld);
 
         RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
@@ -328,7 +377,7 @@ class WriteUI extends FragmentBase
 
                 if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
-                    GetActivity().GetManager().OpenView(new GalleryViewUI(3, false, new GalleryViewUI.GalleryListener()
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(3, 1, new GalleryViewUI.GalleryListener()
                     {
                         List<String> IamgeURL = new ArrayList<>();
 
@@ -379,7 +428,7 @@ class WriteUI extends FragmentBase
                             @Override
                             public void OnGranted()
                             {
-                                GetActivity().GetManager().OpenView(new GalleryViewUI(3, false, new GalleryViewUI.GalleryListener()
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(3, 1, new GalleryViewUI.GalleryListener()
                                 {
                                     List<String> IamgeURL = new ArrayList<>();
 
@@ -434,7 +483,7 @@ class WriteUI extends FragmentBase
             {
                 if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
-                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, true, new GalleryViewUI.GalleryListener()
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, 2, new GalleryViewUI.GalleryListener()
                     {
                         String VideoURL;
 
@@ -497,32 +546,47 @@ class WriteUI extends FragmentBase
                             @Override
                             public void OnGranted()
                             {
-                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, true, new GalleryViewUI.GalleryListener()
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, 2, new GalleryViewUI.GalleryListener()
                                 {
-                                    List<String> ImgeURL = new ArrayList<>();
+                                    String VideoURL;
 
                                     @Override
                                     public void OnSelection(String URL)
                                     {
-                                        ImgeURL.add(URL);
+                                        VideoURL = URL;
                                     }
 
                                     @Override
                                     public void OnRemove(String URL)
                                     {
-                                        ImgeURL.remove(URL);
+                                        VideoURL = "";
                                     }
 
                                     @Override
                                     public void OnSave()
                                     {
-                                        if (ImgeURL.size() <= 0)
-                                            return;
+                                        if (!VideoURL.equals(""))
+                                        {
+                                            MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
+                                            Retriever.setDataSource(VideoURL);
+                                            int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
 
-                                        ChangeType(1);
-                                        SelectImage.addAll(ImgeURL);
-                                        ViewPagerImage.setVisibility(View.VISIBLE);
-                                        ViewPagerAdapterImage.notifyDataSetChanged();
+                                            if (Time > 240)
+                                            {
+                                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.WriteUIVideoLength));
+                                                return;
+                                            }
+
+                                            ChangeType(2);
+                                            SelectVideo = new File(VideoURL);
+                                            ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                                            RelativeLayoutVideo.setVisibility(View.VISIBLE);
+
+                                            double Size = (double) SelectVideo.length() / 1048576.0;
+
+                                            TextViewSizeVideo.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB)));
+                                            TextViewLengthVideo.setText((String.valueOf(Time) + " " + GetActivity().getString(R.string.WriteUISeconds)));
+                                        }
                                     }
                                 }), R.id.ContainerFull, "GalleryViewUI");
                             }
@@ -550,7 +614,8 @@ class WriteUI extends FragmentBase
             @Override
             public void onClick(View view)
             {
-
+                ChangeType(3);
+                ScrollViewVote.setVisibility(View.VISIBLE);
             }
         });
 
@@ -566,7 +631,71 @@ class WriteUI extends FragmentBase
             @Override
             public void onClick(View view)
             {
+                if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
+                {
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, 3, new GalleryViewUI.GalleryListener()
+                    {
+                        @Override
+                        public void OnSelection(String URL)
+                        {
+                            SelectFile = new File(URL);
+                            double Size = (double) SelectFile.length() / 1048576.0;
 
+                            RelativeLayoutFile.setVisibility(View.VISIBLE);
+                            TextViewFileName.setText(SelectFile.getName());
+                            TextViewFileDetail.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
+                        }
+
+                        @Override public void OnRemove(String URL) { }
+                        @Override public void OnSave() { }
+                    }), R.id.ContainerFull, "GalleryViewUI");
+
+                    return;
+                }
+
+                PermissionDialog PermissionDialogGallery = new PermissionDialog(GetActivity());
+                PermissionDialogGallery.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.WriteUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                {
+                    @Override
+                    public void OnSelected(boolean Allow)
+                    {
+                        if (!Allow)
+                        {
+                            Misc.Toast(GetActivity(), GetActivity().getString(R.string.PermissionStorage));
+                            return;
+                        }
+
+                        GetActivity().RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
+                        {
+                            @Override
+                            public void OnGranted()
+                            {
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, 3, new GalleryViewUI.GalleryListener()
+                                {
+                                    @Override
+                                    public void OnSelection(String URL)
+                                    {
+                                        SelectFile = new File(URL);
+                                        double Size = (double) SelectFile.length() / 1048576.0;
+
+                                        RelativeLayoutFile.setVisibility(View.VISIBLE);
+                                        TextViewFileName.setText(SelectFile.getName());
+                                        TextViewFileDetail.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
+                                    }
+
+                                    @Override public void OnRemove(String URL) { }
+                                    @Override public void OnSave() { }
+                                }), R.id.ContainerFull, "GalleryViewUI");
+                            }
+
+                            @Override
+                            public void OnDenied()
+                            {
+                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.PermissionStorage));
+                            }
+                        });
+                    }
+                });
             }
         });
 
@@ -585,14 +714,6 @@ class WriteUI extends FragmentBase
         ImageViewSend.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSend.setPadding(Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8));
         ImageViewSend.setImageResource(R.drawable.ic_done_blue);
-        ImageViewSend.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-            }
-        });
 
         LinearLayoutBottom.addView(ImageViewSend);
 
@@ -757,6 +878,402 @@ class WriteUI extends FragmentBase
 
         RelativeLayoutMain.addView(RelativeLayoutContent);
 
+        ScrollViewVote.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.WRAP_CONTENT));
+        ScrollViewVote.setVisibility(View.GONE);
+
+        RelativeLayoutContent.addView(ScrollViewVote);
+
+        RelativeLayout RelativeLayoutVote = new RelativeLayout(GetActivity());
+        RelativeLayoutVote.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+        ScrollViewVote.addView(RelativeLayoutVote);
+
+        RelativeLayout.LayoutParams ImageViewCloseVoteParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewCloseVoteParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageView ImageViewCloseVote = new ImageView(GetActivity());
+        ImageViewCloseVote.setLayoutParams(ImageViewCloseVoteParam);
+        ImageViewCloseVote.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewCloseVote.setImageResource(R.drawable.ic_remove);
+        ImageViewCloseVote.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewCloseVote.setId(Misc.GenerateViewID());
+        ImageViewCloseVote.setAlpha(0.75f);
+        ImageViewCloseVote.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ChangeType(0);
+                ScrollViewVote.setVisibility(View.GONE);
+            }
+        });
+
+        RelativeLayoutVote.addView(ImageViewCloseVote);
+
+        final GradientDrawable DrawableEnable = new GradientDrawable();
+        DrawableEnable.setCornerRadius(Misc.ToDP(GetActivity(), 4));
+        DrawableEnable.setStroke(Misc.ToDP(GetActivity(), 1), ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+
+        final GradientDrawable DrawableDisable = new GradientDrawable();
+        DrawableDisable.setCornerRadius(Misc.ToDP(GetActivity(), 4));
+        DrawableDisable.setStroke(Misc.ToDP(GetActivity(), 1), ContextCompat.getColor(GetActivity(), R.color.Gray2));
+
+        View.OnFocusChangeListener OnFocus = new View.OnFocusChangeListener() { @Override public void onFocusChange(View view, boolean hasFocus) { view.setBackground(hasFocus ? DrawableEnable : DrawableDisable); } };
+
+        RelativeLayout.LayoutParams EditTextVote1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+        EditTextVote1Param.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 5));
+        EditTextVote1Param.addRule(RelativeLayout.LEFT_OF, ImageViewCloseVote.getId());
+
+        final EditText EditTextVote1 = new EditText(GetActivity());
+        EditTextVote1.setLayoutParams(EditTextVote1Param);
+        EditTextVote1.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+        EditTextVote1.setId(Misc.GenerateViewID());
+        EditTextVote1.setHint(R.string.WriteUIChoice1);
+        EditTextVote1.setBackground(DrawableDisable);
+        EditTextVote1.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        EditTextVote1.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        EditTextVote1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
+        EditTextVote1.setOnFocusChangeListener(OnFocus);
+
+        RelativeLayoutVote.addView(EditTextVote1);
+
+        RelativeLayout.LayoutParams EditTextVote2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+        EditTextVote2Param.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 5));
+        EditTextVote2Param.addRule(RelativeLayout.LEFT_OF, ImageViewCloseVote.getId());
+        EditTextVote2Param.addRule(RelativeLayout.BELOW, EditTextVote1.getId());
+
+        final EditText EditTextVote2 = new EditText(GetActivity());
+        EditTextVote2.setLayoutParams(EditTextVote2Param);
+        EditTextVote2.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+        EditTextVote2.setId(Misc.GenerateViewID());
+        EditTextVote2.setHint(R.string.WriteUIChoice2);
+        EditTextVote2.setBackground(DrawableDisable);
+        EditTextVote2.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        EditTextVote2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        EditTextVote2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
+        EditTextVote2.setOnFocusChangeListener(OnFocus);
+
+        RelativeLayoutVote.addView(EditTextVote2);
+
+        RelativeLayout.LayoutParams EditTextVote3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+        EditTextVote3Param.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 5));
+        EditTextVote3Param.addRule(RelativeLayout.LEFT_OF, ImageViewCloseVote.getId());
+        EditTextVote3Param.addRule(RelativeLayout.BELOW, EditTextVote2.getId());
+
+        final EditText EditTextVote3 = new EditText(GetActivity());
+        EditTextVote3.setLayoutParams(EditTextVote3Param);
+        EditTextVote3.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+        EditTextVote3.setId(Misc.GenerateViewID());
+        EditTextVote3.setHint(R.string.WriteUIChoice3);
+        EditTextVote3.setBackground(DrawableDisable);
+        EditTextVote3.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        EditTextVote3.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        EditTextVote3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
+        EditTextVote3.setOnFocusChangeListener(OnFocus);
+        EditTextVote3.setVisibility(View.GONE);
+
+        RelativeLayoutVote.addView(EditTextVote3);
+
+        RelativeLayout.LayoutParams EditTextVote4Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+        EditTextVote4Param.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 5));
+        EditTextVote4Param.addRule(RelativeLayout.LEFT_OF, ImageViewCloseVote.getId());
+        EditTextVote4Param.addRule(RelativeLayout.BELOW, EditTextVote3.getId());
+
+        final EditText EditTextVote4 = new EditText(GetActivity());
+        EditTextVote4.setLayoutParams(EditTextVote4Param);
+        EditTextVote4.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+        EditTextVote4.setId(Misc.GenerateViewID());
+        EditTextVote4.setHint(R.string.WriteUIChoice4);
+        EditTextVote4.setBackground(DrawableDisable);
+        EditTextVote4.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        EditTextVote4.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        EditTextVote4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
+        EditTextVote4.setOnFocusChangeListener(OnFocus);
+        EditTextVote4.setVisibility(View.GONE);
+
+        RelativeLayoutVote.addView(EditTextVote4);
+
+        RelativeLayout.LayoutParams EditTextVote5Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+        EditTextVote5Param.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 5));
+        EditTextVote5Param.addRule(RelativeLayout.LEFT_OF, ImageViewCloseVote.getId());
+        EditTextVote5Param.addRule(RelativeLayout.BELOW, EditTextVote4.getId());
+
+        final EditText EditTextVote5 = new EditText(GetActivity());
+        EditTextVote5.setLayoutParams(EditTextVote5Param);
+        EditTextVote5.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+        EditTextVote5.setHint(R.string.WriteUIChoice5);
+        EditTextVote5.setBackground(DrawableDisable);
+        EditTextVote5.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        EditTextVote5.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        EditTextVote5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
+        EditTextVote5.setOnFocusChangeListener(OnFocus);
+        EditTextVote5.setVisibility(View.GONE);
+        EditTextVote5.setId(Misc.GenerateViewID());
+
+        RelativeLayoutVote.addView(EditTextVote5);
+
+        RelativeLayout.LayoutParams TextViewLengthParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewLengthParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), 0);
+        TextViewLengthParam.addRule(RelativeLayout.BELOW, EditTextVote5.getId());
+
+        final TextView TextViewLength = new TextView(GetActivity(), 14, false);
+        TextViewLength.setLayoutParams(TextViewLengthParam);
+        TextViewLength.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewLength.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                final Dialog DialogVote = new Dialog(GetActivity());
+                DialogVote.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogVote.setCancelable(false);
+
+                RelativeLayout LinearLayoutMain = new RelativeLayout(GetActivity());
+                LinearLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setClickable(true);
+
+                RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+                RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+                RelativeLayoutHeader.setBackgroundResource(R.color.ActionBarWhite);
+                RelativeLayoutHeader.setId(Misc.GenerateViewID());
+
+                LinearLayoutMain.addView(RelativeLayoutHeader);
+
+                RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+                ImageViewBackParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+                ImageView ImageViewBack = new ImageView(GetActivity());
+                ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+                ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                ImageViewBack.setLayoutParams(ImageViewBackParam);
+                ImageViewBack.setImageResource(R.drawable.ic_close_blue);
+                ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { DialogVote.dismiss(); } });
+
+                RelativeLayoutHeader.addView(ImageViewBack);
+
+                RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewNameParam.addRule(RelativeLayout.CENTER_VERTICAL);
+                TextViewNameParam.setMargins(Misc.ToDP(GetActivity(), 15), 0, 0, 0);
+
+                TextView TextViewName = new TextView(GetActivity(), 16, true);
+                TextViewName.setLayoutParams(TextViewNameParam);
+                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewName.setText(GetActivity().getString(R.string.WriteUILength));
+
+                RelativeLayoutHeader.addView(TextViewName);
+
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
+
+                View ViewLine = new View(GetActivity());
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray2);
+                ViewLine.setId(Misc.GenerateViewID());
+
+                LinearLayoutMain.addView(ViewLine);
+
+                RelativeLayout.LayoutParams EditTextTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+                EditTextTimeParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+                final EditText EditTextTime = new EditText(GetActivity());
+                EditTextTime.setLayoutParams(EditTextTimeParam);
+                EditTextTime.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+                EditTextTime.setHint(R.string.WriteUITime);
+                EditTextTime.setBackground(null);
+                EditTextTime.setGravity(Gravity.CENTER);
+                EditTextTime.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+                EditTextTime.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                EditTextTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                EditTextTime.setId(Misc.GenerateViewID());
+                EditTextTime.setInputType(InputType.TYPE_CLASS_PHONE);
+                EditTextTime.requestFocus();
+                EditTextTime.setFilters(new InputFilter[]
+                {
+                    new InputFilter.LengthFilter(4), new InputFilter()
+                    {
+                        @Override
+                        public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
+                        {
+                            if (End > Start)
+                            {
+                                char[] AllowChar = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+                                for (int I = Start; I < End; I++)
+                                {
+                                    if (!new String(AllowChar).contains(String.valueOf(s.charAt(I))))
+                                    {
+                                        return "";
+                                    }
+                                }
+                            }
+
+                            return null;
+                        }
+                    }
+                });
+
+                LinearLayoutMain.addView(EditTextTime);
+
+                RelativeLayout.LayoutParams TextViewSetParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+                TextViewSetParam.addRule(RelativeLayout.BELOW, EditTextTime.getId());
+
+                TextView TextViewSet = new TextView(GetActivity(), 16, false);
+                TextViewSet.setLayoutParams(TextViewSetParam);
+                TextViewSet.setGravity(Gravity.CENTER);
+                TextViewSet.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
+                TextViewSet.setText(GetActivity().getString(R.string.WriteUISet));
+                TextViewSet.setBackgroundColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+                TextViewSet.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        VoteTime = Integer.parseInt(EditTextTime.getText().toString()) * 3600;
+                        TextViewLength.setText((GetActivity().getString(R.string.WriteUILength) + ": " + String.valueOf(VoteTime / 3600) + GetActivity().getString(R.string.WriteUIHour)));
+                        DialogVote.dismiss();
+                    }
+                });
+
+                LinearLayoutMain.addView(TextViewSet);
+
+                DialogVote.setContentView(LinearLayoutMain);
+                DialogVote.show();
+            }
+        });
+
+        VoteTime = 43200;
+
+        TextViewLength.setText((GetActivity().getString(R.string.WriteUILength) + ": 12" + GetActivity().getString(R.string.WriteUIHour)));
+
+        RelativeLayoutVote.addView(TextViewLength);
+
+        RelativeLayout.LayoutParams ImageViewAddVoteParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewAddVoteParam.addRule(RelativeLayout.BELOW, EditTextVote1.getId());
+        ImageViewAddVoteParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageView ImageViewAddVote = new ImageView(GetActivity());
+        ImageViewAddVote.setLayoutParams(ImageViewAddVoteParam);
+        ImageViewAddVote.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewAddVote.setImageResource(R.drawable.ic_play);
+        ImageViewAddVote.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewAddVote.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ImageViewRemoveVote.setVisibility(View.VISIBLE);
+
+                if (EditTextVote3.getVisibility() != View.VISIBLE)
+                    EditTextVote3.setVisibility(View.VISIBLE);
+                else if (EditTextVote4.getVisibility() != View.VISIBLE)
+                    EditTextVote4.setVisibility(View.VISIBLE);
+                else if (EditTextVote5.getVisibility() != View.VISIBLE)
+                    EditTextVote5.setVisibility(View.VISIBLE);
+            }
+        });
+
+        RelativeLayoutVote.addView(ImageViewAddVote);
+
+        RelativeLayout.LayoutParams ImageViewRemoveVoteParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewRemoveVoteParam.addRule(RelativeLayout.BELOW, EditTextVote2.getId());
+        ImageViewRemoveVoteParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageViewRemoveVote.setLayoutParams(ImageViewRemoveVoteParam);
+        ImageViewRemoveVote.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewRemoveVote.setImageResource(R.drawable.ic_vote_gray);
+        ImageViewRemoveVote.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewRemoveVote.setVisibility(View.GONE);
+        ImageViewRemoveVote.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (EditTextVote5.getVisibility() == View.VISIBLE)
+                    EditTextVote5.setVisibility(View.GONE);
+                else if (EditTextVote4.getVisibility() == View.VISIBLE)
+                    EditTextVote4.setVisibility(View.GONE);
+                else if (EditTextVote3.getVisibility() == View.VISIBLE)
+                {
+                    view.setVisibility(View.GONE);
+                    EditTextVote3.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        RelativeLayoutVote.addView(ImageViewRemoveVote);
+
+        RelativeLayout.LayoutParams RelativeLayoutFileParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 70));
+        RelativeLayoutFileParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        RelativeLayoutFile.setLayoutParams(RelativeLayoutFileParam);
+        RelativeLayoutFile.setVisibility(View.GONE);
+
+        RelativeLayoutContent.addView(RelativeLayoutFile);
+
+        RelativeLayout.LayoutParams ImageViewFileParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        ImageViewFileParam.setMargins(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+        ImageViewFileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+        GradientDrawable DrawableFile = new GradientDrawable();
+        DrawableFile.setCornerRadius(Misc.ToDP(GetActivity(), 4));
+        DrawableFile.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+
+        ImageView ImageViewFile = new ImageView(GetActivity());
+        ImageViewFile.setLayoutParams(ImageViewFileParam);
+        ImageViewFile.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewFile.setImageResource(R.drawable.ic_download_white);
+        ImageViewFile.setId(Misc.GenerateViewID());
+        ImageViewFile.setBackground(DrawableFile);
+
+        RelativeLayoutFile.addView(ImageViewFile);
+
+        RelativeLayout.LayoutParams TextViewFileNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewFileNameParam.setMargins(0, Misc.ToDP(GetActivity(), 12), 0, 0);
+        TextViewFileNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewFile.getId());
+
+        TextViewFileName.setLayoutParams(TextViewFileNameParam);
+        TextViewFileName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewFileName.setId(Misc.GenerateViewID());
+
+        RelativeLayoutFile.addView(TextViewFileName);
+
+        RelativeLayout.LayoutParams TextViewFileDetailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewFileDetailParam.addRule(RelativeLayout.RIGHT_OF, ImageViewFile.getId());
+        TextViewFileDetailParam.addRule(RelativeLayout.BELOW, TextViewFileName.getId());
+
+        TextViewFileDetail.setLayoutParams(TextViewFileDetailParam);
+        TextViewFileDetail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray2));
+
+        RelativeLayoutFile.addView(TextViewFileDetail);
+
+        RelativeLayout.LayoutParams ImageViewRemoveFileParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 25), Misc.ToDP(GetActivity(), 25));
+        ImageViewRemoveFileParam.setMargins(0, Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), 0);
+        ImageViewRemoveFileParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        ImageView ImageViewRemoveFile = new ImageView(GetActivity());
+        ImageViewRemoveFile.setLayoutParams(ImageViewRemoveFileParam);
+        ImageViewRemoveFile.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageViewRemoveFile.setImageResource(R.drawable.ic_remove);
+        ImageViewRemoveFile.setAlpha(0.75f);
+        ImageViewRemoveFile.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ChangeType(0);
+                SelectFile = null;
+                RelativeLayoutFile.setVisibility(View.GONE);
+            }
+        });
+
+        RelativeLayoutFile.addView(ImageViewRemoveFile);
+
         ViewPagerImage = new ViewPager(GetActivity());
         ViewPagerImage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         ViewPagerImage.setAdapter(ViewPagerAdapterImage = new ViewPagerAdapter());
@@ -775,8 +1292,8 @@ class WriteUI extends FragmentBase
         RelativeLayoutContent.addView(RelativeLayoutVideo);
 
         ImageViewThumbVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        ImageViewThumbVideo.setScaleType(ImageView.ScaleType.CENTER_CROP);
         ImageViewThumbVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().GetManager().OpenView(new VideoPreviewUI(SelectVideo.getAbsolutePath(), true), R.id.ContainerFull, "VideoPreviewUI"); } });
+        ImageViewThumbVideo.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         RelativeLayoutVideo.addView(ImageViewThumbVideo);
 
@@ -819,7 +1336,98 @@ class WriteUI extends FragmentBase
             @Override
             public void onClick(View view)
             {
+                String OldPath = SelectVideo.getAbsolutePath();
+                File CacheFolder = CacheHandler.CacheDir(GetActivity());
 
+                SelectVideo = new File(CacheFolder, "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
+
+                final ProgressDialog Progress = new ProgressDialog(GetActivity());
+                Progress.setMessage(GetActivity().getString(R.string.WriteUICompress));
+                Progress.setIndeterminate(false);
+                Progress.setCancelable(false);
+                Progress.setMax(100);
+                Progress.setProgress(0);
+                Progress.show();
+
+                MediaTransCoder.Start(OldPath, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
+                {
+                    @Override
+                    public MediaFormat CreateVideo(MediaFormat Format)
+                    {
+                        int Frame = 30;
+                        int BitRate = 500000;
+                        int Width = Format.getInteger(MediaFormat.KEY_WIDTH);
+                        int Height = Format.getInteger(MediaFormat.KEY_HEIGHT);
+
+                        if (Width > 640 || Height > 640)
+                        {
+                            Width = Width / 2;
+                            Height = Height / 2;
+                        }
+
+                        try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) { /* */ }
+
+                        MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
+                        format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
+                        format.setInteger(MediaFormat.KEY_FRAME_RATE, Frame);
+                        format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
+                        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, 0x7F000789);
+                        return format;
+                    }
+
+                    @Override
+                    public MediaFormat CreateAudio(MediaFormat Format)
+                    {
+                        int Sample = 44100;
+                        int Channel = 1;
+
+                        try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { /* */ }
+                        try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) { /* */ }
+
+                        int Bitrate = Sample * Channel;
+
+                        MediaFormat format = MediaFormat.createAudioFormat("audio/mp4a-latm", Sample, Channel);
+                        format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
+                        format.setInteger(MediaFormat.KEY_BIT_RATE, Bitrate);
+                        return format;
+                    }
+                },
+                new MediaTransCoder.CallBack()
+                {
+                    @Override
+                    public void OnProgress(double progress)
+                    {
+                        Progress.setProgress((int) (((progress + 0.001) * 100) % 100));
+                    }
+
+                    @Override
+                    public void OnCompleted()
+                    {
+                        Misc.RunOnUIThread(GetActivity(), new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                Progress.cancel();
+
+                                MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
+                                Retriever.setDataSource(SelectVideo.getAbsolutePath());
+
+                                double Size = (double) SelectVideo.length() / 1048576.0;
+
+                                TextViewSizeVideo.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB)));
+                                ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                            }
+                        }, 1);
+                    }
+
+                    @Override
+                    public void OnFailed(Exception exception)
+                    {
+                        Misc.RunOnUIThread(GetActivity(), new Runnable() { @Override public void run() { Progress.cancel(); } }, 2);
+                        Misc.Debug("WriteUI-VideoCompress: " + exception.toString());
+                    }
+                });
             }
         });
 
@@ -859,6 +1467,118 @@ class WriteUI extends FragmentBase
 
         RelativeLayoutVideo.addView(ImageViewPlayVideo);
 
+        ImageViewSend.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (SelectCategory == 0)
+                {
+                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.WriteUIPickCategory));
+                    return;
+                }
+
+                if (EditTextMessage.getText().length() <= 30 && SelectType == 0)
+                {
+                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.WriteUIStatement));
+                    return;
+                }
+    
+                Map<String, File> UploadFile = new HashMap<>();
+                JSONObject Vote = new JSONObject();
+
+                if (SelectType == 1)
+                {
+                    for (int I = 0; I < SelectImage.size(); I++)
+                        UploadFile.put(("Image" + I), new File(SelectImage.get(I)));
+                }
+                else if (SelectType == 2)
+                    UploadFile.put("Video", SelectVideo);
+                else if (SelectType == 3)
+                {
+                    try
+                    {
+                        Vote.put("Vote1", EditTextVote1.getText().toString());
+                        Vote.put("Vote2", EditTextVote2.getText().toString());
+
+                        if (EditTextVote3.getVisibility() == View.VISIBLE)
+                            Vote.put("Vote3", EditTextVote3.getText().toString());
+
+                        if (EditTextVote4.getVisibility() == View.VISIBLE)
+                            Vote.put("Vote4", EditTextVote4.getText().toString());
+
+                        if (EditTextVote5.getVisibility() == View.VISIBLE)
+                            Vote.put("Vote5", EditTextVote5.getText().toString());
+                    }
+                    catch (Exception e)
+                    {
+                        //
+                    }
+                }
+                else if (SelectType == 4)
+                    UploadFile.put("File", SelectFile);
+                else
+                    UploadFile = null;
+
+                final ProgressDialog Progress = new ProgressDialog(GetActivity());
+                Progress.setMessage(GetActivity().getString(R.string.WriteUIUploading));
+                Progress.setIndeterminate(false);
+                Progress.setCancelable(false);
+                Progress.setMax(100);
+                Progress.setProgress(0);
+                Progress.show();
+
+                AndroidNetworking.upload(Misc.GetRandomServer("PostWrite"))
+                .addMultipartParameter("Message", EditTextMessage.getText().toString())
+                .addMultipartParameter("Category", String.valueOf(SelectCategory))
+                .addMultipartParameter("Type", String.valueOf(SelectType))
+                .addMultipartParameter("Vote", Vote.toString())
+                .addMultipartParameter("World", String.valueOf(IsWorld))
+                .addHeaders("Token", SharedHandler.GetString(GetActivity(), "Token"))
+                .addMultipartFile(UploadFile)
+                .setTag("WriteFragment")
+                .build()
+                .setUploadProgressListener(new UploadProgressListener()
+                {
+                    @Override
+                    public void onProgress(long bytesUploaded, long totalBytes)
+                    {
+                        Progress.setProgress((int) (100 * bytesUploaded / totalBytes));
+                    }
+                })
+                .getAsString(new StringRequestListener()
+                {
+                    @Override
+                    public void onResponse(String Response)
+                    {
+                        Progress.cancel();
+
+                        try
+                        {
+                            JSONObject Result = new JSONObject(Response);
+
+                            // Todo Update Inbox and Errors
+                            if (Result.getInt("Message") == 1000)
+                            {
+                                GetActivity().onBackPressed();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Misc.Debug("WriteUI-RequestPost: " + e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError e)
+                    {
+                        Progress.cancel();
+                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                    }
+                });
+            }
+        });
+
         ViewMain = RelativeLayoutMain;
     }
 
@@ -897,9 +1617,9 @@ class WriteUI extends FragmentBase
         ImageViewImage.setImageResource(R.drawable.ic_camera_gray);
         ImageViewVideo.setEnabled(false);
         ImageViewVideo.setImageResource(R.drawable.ic_vote_gray);
-        ImageViewVote.setEnabled(true);
+        ImageViewVote.setEnabled(false);
         ImageViewVote.setImageResource(R.drawable.ic_link);
-        ImageViewFile.setEnabled(true);
+        ImageViewFile.setEnabled(false);
         ImageViewFile.setImageResource(R.drawable.ic_link);
 
         switch (type)
@@ -1136,398 +1856,3 @@ class WriteUI extends FragmentBase
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        ImageViewSend.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (SelectCategory == 0)
-                {
-                    MiscHandler.Toast(context, getString(R.string.WriteFragmentChoiceCategory));
-                    return;
-                }
-
-                if (EditTextMessage.getText().length() <= 30 && SelectType == 0)
-                {
-                    MiscHandler.Toast(context, getString(R.string.WriteFragmentMoreContent));
-                    return;
-                }
-
-                Map<String, File> UploadFile = new HashMap<>();
-
-                if (SelectType == 1)
-                {
-                    try
-                    {
-                        for (int I = 0; I < SelectImage.size(); I++)
-                        {
-                            File CacheFolder = new File(context.getCacheDir(), "BioGram");
-
-                            if (CacheFolder.exists() || CacheFolder.mkdir())
-                            {
-                                ByteArrayOutputStream ByteArrayStream = new ByteArrayOutputStream();
-                                File ImageFile = new File(CacheFolder, "image." + String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-                                SelectImage.get(I).compress(Bitmap.CompressFormat.JPEG, 95, ByteArrayStream);
-
-                                FileOutputStream FileStream = new FileOutputStream(ImageFile);
-                                FileStream.write(ByteArrayStream.toByteArray());
-                                FileStream.flush();
-                                FileStream.close();
-
-                                UploadFile.put(("Image" + I), ImageFile);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        MiscHandler.Debug("WriteFragment-ImageCompress: " + e.toString());
-                    }
-                }
-                else if (SelectType == 2)
-                    UploadFile.put("Video", SelectVideo);
-                else
-                    UploadFile = null;
-
-                final ProgressDialog Progress = new ProgressDialog(getActivity());
-                Progress.setMessage(getString(R.string.WriteFragmentUpload));
-                Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                Progress.setIndeterminate(false);
-                Progress.setCancelable(false);
-                Progress.setMax(100);
-                Progress.setProgress(0);
-                Progress.show();
-
-                AndroidNetworking.upload(MiscHandler.GetRandomServer("PostWrite"))
-                        .addMultipartParameter("Message", EditTextMessage.getText().toString())
-                        .addMultipartParameter("Category", String.valueOf(SelectCategory))
-                        .addMultipartParameter("Type", String.valueOf(SelectType))
-                        .addMultipartParameter("Link", SelectLink)
-                        .addHeaders("TOKEN", SharedHandler.GetString(context, "TOKEN"))
-                        .addMultipartFile(UploadFile)
-                        .setTag("WriteFragment")
-                        .build()
-                        .setUploadProgressListener(new UploadProgressListener()
-                        {
-                            @Override
-                            public void onProgress(long bytesUploaded, long totalBytes)
-                            {
-                                Progress.setProgress((int) (100 * bytesUploaded / totalBytes));
-                            }
-                        })
-                        .getAsString(new StringRequestListener()
-                        {
-                            @Override
-                            public void onResponse(String Response)
-                            {
-                                Progress.cancel();
-
-                                try
-                                {
-                                    JSONObject Result = new JSONObject(Response);
-
-                                    if (Result.getInt("Message") == 1000)
-                                    {
-                                        MomentFragment momentFragment = (MomentFragment) getActivity().getSupportFragmentManager().findFragmentByTag("MomentFragment");
-
-                                        if (momentFragment != null)
-                                            momentFragment.Update(new JSONObject(Result.getString("Result")));
-
-                                        MiscHandler.Toast(context, getString(R.string.WriteFragmentUploadSuccess));
-                                        getActivity().onBackPressed();
-                                        return;
-                                    }
-
-                                    MiscHandler.Toast(context, getString(R.string.WriteFragmentUploadFailed));
-                                }
-                                catch (Exception e)
-                                {
-                                    MiscHandler.Debug("WriteFragment-RequestPost: " + e.toString());
-                                }
-                            }
-
-                            @Override
-                            public void onError(ANError anError)
-                            {
-                                Progress.cancel();
-                                MiscHandler.Toast(context, getString(R.string.NoInternet));
-                            }
-                        });
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-        return RelativeLayoutMain;
-    }
-
-
-
-    @Override
-    public void onRequestPermissionsResult(int RequestCode, @NonNull String[] Permissions, @NonNull int[] GrantResults)
-    {
-        super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
-
-        /*if (PermissionHandler != null)
-            PermissionHandler.GetRequestPermissionResult(RequestCode, Permissions, GrantResults);*
-    }
-
-    public void GetData(final String Path, boolean IsVideo)
-    {
-        if (IsVideo)
-        {
-            final Context context = getActivity();
-
-            /*PermissionHandler = new PermissionHandler(Manifest.permission.READ_EXTERNAL_STORAGE, 100, this, new PermissionHandler.PermissionEvent()
-            {
-                @Override
-                public void OnGranted()
-                {
-                    final MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                    Retriever.setDataSource(Path);
-                    int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
-
-                    if (Time > 240)
-                    {
-                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoLength));
-                        return;
-                    }
-
-                    SelectVideo = new File(Path);
-
-                    if (SelectVideo.length() < 3145728)
-                    {
-                        ChangeType(2);
-                        ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                        RelativeLayoutVideo.setVisibility(View.VISIBLE);
-                        return;
-                    }
-
-                    if (Build.VERSION.SDK_INT <= 17)
-                    {
-                        if (SelectVideo.length() > 3145728)
-                        {
-                            MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSupport));
-                            return;
-                        }
-
-                        ChangeType(2);
-                        ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                        RelativeLayoutVideo.setVisibility(View.VISIBLE);
-                        return;
-                    }
-
-                    if (SelectVideo.length() > 31452800)
-                    {
-                        MiscHandler.Toast(context, getString(R.string.WriteFragmentVideoSize));
-                        return;
-                    }
-
-                    File CacheFolder = new File(context.getCacheDir(), "BioGram");
-
-                    if (!CacheFolder.exists() && !CacheFolder.mkdir())
-                    {
-                        MiscHandler.Toast(context, getString(R.string.WriteFragmentWrong));
-                        return;
-                    }
-
-                    SelectVideo = new File(CacheFolder, "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
-
-                    final ProgressDialog Progress = new ProgressDialog(getActivity());
-                    Progress.setMessage(getString(R.string.WriteFragmentVideoCompress));
-                    Progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    Progress.setIndeterminate(false);
-                    Progress.setMax(100);
-                    Progress.setCancelable(false);
-                    Progress.setProgress(0);
-                    Progress.show();
-
-                    MediaTransCoder.Start(Path, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
-                    {
-                        @Override
-                        public MediaFormat CreateVideo(MediaFormat Format)
-                        {
-                            int Frame = 30;
-                            int BitRate = 450000;
-                            int Width = Format.getInteger(MediaFormat.KEY_WIDTH);
-                            int Height = Format.getInteger(MediaFormat.KEY_HEIGHT);
-
-                            if (Width > 640 || Height > 640)
-                            {
-                                Width = Width / 2;
-                                Height = Height / 2;
-                            }
-
-                            try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) {  }
-
-                            MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
-                            format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
-                            format.setInteger(MediaFormat.KEY_FRAME_RATE, Frame);
-                            format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
-                            format.setInteger(MediaFormat.KEY_COLOR_FORMAT, 0x7F000789);
-                            return format;
-                        }
-
-                        @Override
-                        public MediaFormat CreateAudio(MediaFormat Format)
-                        {
-                            int Sample = 44100;
-                            int Channel = 1;
-
-                            try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { }
-                            try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) {  }
-
-                            int Bitrate = Sample * Channel;
-
-                            MediaFormat format = MediaFormat.createAudioFormat("audio/mp4a-latm", Sample, Channel);
-                            format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
-                            format.setInteger(MediaFormat.KEY_BIT_RATE, Bitrate);
-                            return format;
-                        }
-                    },
-                    new MediaTransCoder.CallBack()
-                    {
-                        @Override
-                        public void OnProgress(double progress)
-                        {
-                            Progress.setProgress((int) (((progress + 0.001) * 100) % 100));
-                        }
-
-                        @Override
-                        public void OnCompleted()
-                        {
-                            getActivity().runOnUiThread(new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    Progress.cancel();
-                                    ChangeType(2);
-                                    ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                                    RelativeLayoutVideo.setVisibility(View.VISIBLE);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void OnFailed(Exception exception)
-                        {
-                            Progress.cancel();
-                            MiscHandler.Debug("WriteFragment-VideoCompress: " + exception.toString());
-                        }
-                    });
-                }
-
-                @Override
-                public void OnFailed()
-                {
-                    MiscHandler.Toast(context, getString(R.string.PermissionStorage));
-                }
-            });*
-        }
-        else
-        {
-            if (SelectImage.size() > 2)
-                return;
-
-            try
-            {
-                File ImageFile = new File(Path);
-                Bitmap ResizeBitmap;
-
-                if (ImageFile.length() > 66560)
-                {
-                    BitmapFactory.Options O = new BitmapFactory.Options();
-                    O.inJustDecodeBounds = true;
-
-                    BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
-
-                    int Scale = 1;
-                    int Height = O.outHeight;
-                    int Width = O.outWidth;
-
-                    if (Height > 500 || Width > 500)
-                    {
-                        int HalfHeight = Height / 2;
-                        int HalfWidth = Width / 2;
-
-                        while ((HalfHeight / Scale) >= 500 && (HalfWidth / Scale) >= 500)
-                        {
-                            Scale *= 2;
-                        }
-                    }
-
-                    O.inJustDecodeBounds = false;
-                    O.inSampleSize = Scale;
-
-                    ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath(), O);
-
-                    Matrix matrix = new Matrix();
-                    int Orientation = new ExifInterface(Path).getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
-
-                    if (Orientation == 6)
-                        matrix.postRotate(90);
-                    else if (Orientation == 3)
-                        matrix.postRotate(180);
-                    else if (Orientation == 8)
-                        matrix.postRotate(270);
-
-                    ResizeBitmap = Bitmap.createBitmap(ResizeBitmap, 0, 0, ResizeBitmap.getWidth(), ResizeBitmap.getHeight(), matrix, true);
-                }
-                else
-                    ResizeBitmap = BitmapFactory.decodeFile(ImageFile.getAbsolutePath());
-
-                ChangeType(1);
-                SelectImage.add(ResizeBitmap);
-                ViewPagerAdapterImage.notifyDataSetChanged();
-                ViewPagerImage.setCurrentItem(SelectImage.size());
-                ViewPagerImage.setVisibility(View.VISIBLE);
-            }
-            catch (Exception e)
-            {
-                MiscHandler.Debug("WriteFragment-ImageCompress: " + e.toString());
-            }
-        }
-    }
-
-
-}
-
-*/

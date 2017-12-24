@@ -149,6 +149,7 @@
     <string name="ImagePreviewUIDownloaded">Image saved on your download directory</string>
 
     <!-- Gallery View UI -->
+    <string name="GalleryViewUIStorage">Storage</string>
     <string name="GalleryViewUI">Gallery</string>
     <string name="GalleryViewUI2">Gallery</string>
     <string name="GalleryViewUIMaximum">Maximum selection is </string>
@@ -191,7 +192,15 @@
 
     <!-- Write UI -->
     <string name="WriteUI">Write</string>
+    <string name="WriteUIPickCategory">Choose a category please</string>
+    <string name="WriteUIStatement">Statement Must be higher than 30 characters</string>
+    <string name="WriteUIUploading">Uploading &#8230;</string>
     <string name="WriteUIMessage">Write Your Message</string>
+    <string name="WriteUIChoice1">Choice 1</string>
+    <string name="WriteUIChoice2">Choice 2</string>
+    <string name="WriteUIChoice3">Choice 3</string>
+    <string name="WriteUIChoice4">Choice 4</string>
+    <string name="WriteUIChoice5">Choice 5</string>
     <string name="WriteUIDelete">Delete</string>
     <string name="WriteUIPaste">Paste</string>
     <string name="WriteUICopy">Copy</string>
@@ -204,6 +213,11 @@
     <string name="WriteUIVideoLength">Video length is to high, maximum is 240 seconds</string>
     <string name="WriteUIMB">MB</string>
     <string name="WriteUISeconds">Seconds</string>
+    <string name="WriteUICompress">Seconds</string>
+    <string name="WriteUIHour">Hours</string>
+    <string name="WriteUILength">Vote Length</string>
+    <string name="WriteUITime">Set vote length, time in hours</string>
+    <string name="WriteUISet">Set Time</string>
 
     <!-- Post Adapter -->
     <string name="PostAdapterVote">Vote</string>

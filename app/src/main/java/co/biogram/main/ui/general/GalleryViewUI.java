@@ -5,9 +5,11 @@ import android.database.MergeCursor;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import co.biogram.main.R;
 
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.TextView;
 
 public class GalleryViewUI extends FragmentBase
@@ -33,13 +37,13 @@ public class GalleryViewUI extends FragmentBase
     private final List<String> FolderList = new ArrayList<>();
     private final GalleryListener Listener;
     private String Type = "Gallery";
-    private final boolean IsVideo;
+    private final int GalleryType;
     private final int Count;
 
-    public GalleryViewUI(int count, boolean isVideo, GalleryListener l)
+    public GalleryViewUI(int count, int type, GalleryListener l)
     {
         Count = count;
-        IsVideo = isVideo;
+        GalleryType = type;
         Listener = l;
     }
 
@@ -80,7 +84,7 @@ public class GalleryViewUI extends FragmentBase
         final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
-        TextViewTitle.setText(GetActivity().getString(R.string.GalleryViewUI));
+        TextViewTitle.setText(GalleryType == 3 ? GetActivity().getString(R.string.GalleryViewUIStorage) : GetActivity().getString(R.string.GalleryViewUI));
         TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
         TextViewTitle.setId(Misc.GenerateViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
@@ -88,6 +92,9 @@ public class GalleryViewUI extends FragmentBase
             @Override
             public void onClick(View v)
             {
+                if (GalleryType == 3)
+                    return;
+
                 PopupMenu PopMenu = new PopupMenu(GetActivity(), TextViewTitle);
                 PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.GalleryViewUI2));
 
@@ -127,7 +134,8 @@ public class GalleryViewUI extends FragmentBase
         ImageViewList.setPadding(Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3));
         ImageViewList.setImageResource(R.drawable.ic_arrow_down_blue);
 
-        RelativeLayoutHeader.addView(ImageViewList);
+        if (GalleryType != 3)
+            RelativeLayoutHeader.addView(ImageViewList);
 
         RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
         ImageViewSaveParam.addRule(Misc.Align("L"));
@@ -147,7 +155,8 @@ public class GalleryViewUI extends FragmentBase
             }
         });
 
-        RelativeLayoutHeader.addView(ImageViewSave);
+        if (GalleryType != 3)
+            RelativeLayoutHeader.addView(ImageViewSave);
 
         RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
@@ -164,15 +173,22 @@ public class GalleryViewUI extends FragmentBase
 
         RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
         RecyclerViewMain.setLayoutParams(RecyclerViewFollowersParam);
-        RecyclerViewMain.setLayoutManager(new GridLayoutManager(GetActivity(), 3));
+        RecyclerViewMain.setLayoutManager(GalleryType != 3 ? new GridLayoutManager(GetActivity(), 3) : new LinearLayoutManager(GetActivity()));
         RecyclerViewMain.setAdapter(Adapter);
-        RecyclerViewMain.addItemDecoration(new GridSpacingItemDecoration());
+
+        if (GalleryType != 3)
+            RecyclerViewMain.addItemDecoration(new GridSpacingItemDecoration());
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
         try
         {
-            if (IsVideo)
+            if (GalleryType == 3)
+            {
+                for (File file : Environment.getExternalStorageDirectory().listFiles())
+                    GalleryList.add(new Struct(file.getName(), file.getAbsolutePath(), true));
+            }
+            else if (GalleryType == 2)
             {
                 Cursor[] cursors = new Cursor[2];
 
@@ -195,14 +211,14 @@ public class GalleryViewUI extends FragmentBase
                         if (!FolderList.contains(Folder))
                             FolderList.add(Folder);
 
-                        GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
+                        GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), false));
                     }
                     while (cursor.moveToNext());
                 }
 
                 cursor.close();
             }
-            else
+            else if (GalleryType == 1)
             {
                 Cursor[] cursors = new Cursor[2];
 
@@ -225,7 +241,7 @@ public class GalleryViewUI extends FragmentBase
                         if (!FolderList.contains(Folder))
                             FolderList.add(Folder);
 
-                        GalleryList.add(new Struct(Folder, cursor.getString(PathColumn)));
+                        GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), false));
                     }
                     while (cursor.moveToNext());
                 }
@@ -256,6 +272,8 @@ public class GalleryViewUI extends FragmentBase
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
         private final List<Struct> FileList = new ArrayList<>();
+        private final int ID1_MAIN = Misc.GenerateViewID();
+        private final int ID1_NAME = Misc.GenerateViewID();
         private final int ID_MAIN = Misc.GenerateViewID();
         private final int ID_CIRCLE = Misc.GenerateViewID();
         private final GradientDrawable DrawableSelect;
@@ -276,14 +294,26 @@ public class GalleryViewUI extends FragmentBase
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
-            final ImageView ImageViewMain;
-            final View ViewCircle;
+            RelativeLayout RelativeLayoutMain;
+            TextView TextViewName;
 
-            ViewHolderMain(View view)
+            ImageView ImageViewMain;
+            View ViewCircle;
+
+            ViewHolderMain(View view, int Type)
             {
                 super(view);
-                ImageViewMain = view.findViewById(ID_MAIN);
-                ViewCircle = view.findViewById(ID_CIRCLE);
+
+                if (Type == 1)
+                {
+                    RelativeLayoutMain = view.findViewById(ID1_MAIN);
+                    TextViewName = view.findViewById(ID1_NAME);
+                }
+                else
+                {
+                    ImageViewMain = view.findViewById(ID_MAIN);
+                    ViewCircle = view.findViewById(ID_CIRCLE);
+                }
             }
         }
 
@@ -291,6 +321,37 @@ public class GalleryViewUI extends FragmentBase
         public void onBindViewHolder(final ViewHolderMain Holder, int position)
         {
             final int Position = Holder.getAdapterPosition();
+
+            if (Holder.getItemViewType() == 1)
+            {
+                Holder.TextViewName.setText(FileList.get(Position).Name);
+                Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        File Path = new File(FileList.get(Position).Path);
+
+                        if (Path.isDirectory())
+                        {
+                            FileList.clear();
+                            FileList.add(new Struct("...", Environment.getExternalStorageDirectory().getAbsolutePath(), true));
+
+                            for (File file : Path.listFiles())
+                                FileList.add(new Struct(file.getName(), file.getAbsolutePath(), true));
+
+                            notifyDataSetChanged();
+                        }
+                        else
+                        {
+                            Listener.OnSelection(Path.getAbsolutePath());
+                            GetActivity().onBackPressed();
+                        }
+                    }
+                });
+
+                return;
+            }
 
             Holder.ViewCircle.setOnClickListener(new View.OnClickListener()
             {
@@ -338,7 +399,7 @@ public class GalleryViewUI extends FragmentBase
                 @Override
                 public void onClick(View v)
                 {
-                    if (IsVideo)
+                    if (GalleryType == 2)
                     {
                         VideoPreviewUI vp = new VideoPreviewUI(FileList.get(Position).Path, true);
                         vp.SetType(FileList.get(Position).Selection, new VideoPreviewUI.OnSelectListener()
@@ -371,7 +432,7 @@ public class GalleryViewUI extends FragmentBase
 
                         GetActivity().GetManager().OpenView(vp, R.id.ContainerFull, "VideoPreviewUI");
                     }
-                    else
+                    else if (GalleryType == 1)
                     {
                         ImagePreviewUI ip = new ImagePreviewUI(FileList.get(Position).Path);
                         ip.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener()
@@ -411,31 +472,92 @@ public class GalleryViewUI extends FragmentBase
         @Override
         public ViewHolderMain onCreateViewHolder(ViewGroup parent, int ViewType)
         {
-            RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
-            RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 90)));
+            if (ViewType == 1)
+            {
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+                RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 57)));
+                RelativeLayoutMain.setId(ID1_MAIN);
 
-            ImageView ImageViewMain = new ImageView(GetActivity());
-            ImageViewMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
-            ImageViewMain.setId(ID_MAIN);
+                CircleImageView CircleImageViewIcon = new CircleImageView(GetActivity());
+                CircleImageViewIcon.setLayoutParams(new RecyclerView.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56)));
+                CircleImageViewIcon.setPadding(Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8));
+                CircleImageViewIcon.setImageResource(R.drawable.ic_comment);
+                CircleImageViewIcon.SetCircleBackgroundColor(R.color.Gray);
+                CircleImageViewIcon.setId(Misc.GenerateViewID());
+                CircleImageViewIcon.SetWidthPadding();
+                CircleImageViewIcon.SetBorderWidth(1);
 
-            RelativeLayoutMain.addView(ImageViewMain);
+                RelativeLayoutMain.addView(CircleImageViewIcon);
 
-            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 24), Misc.ToDP(GetActivity(), 24));
-            ViewCircleParam.setMargins(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), 0);
-            ViewCircleParam.addRule(Misc.Align("R"));
+                RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewNameParam.setMargins(0, Misc.ToDP(GetActivity(), 12), 0, 0);
+                TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, CircleImageViewIcon.getId());
 
-            View ViewCircle = new View(GetActivity());
-            ViewCircle.setLayoutParams(ViewCircleParam);
-            ViewCircle.setId(ID_CIRCLE);
+                TextView TextViewName = new TextView(GetActivity(), 14, true);
+                TextViewName.setLayoutParams(TextViewNameParam);
+                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewName.setId(ID1_NAME);
 
-            RelativeLayoutMain.addView(ViewCircle);
+                RelativeLayoutMain.addView(TextViewName);
 
-            return new ViewHolderMain(RelativeLayoutMain);
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, CircleImageViewIcon.getId());
+
+                View ViewLine = new View(GetActivity());
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.Gray);
+
+                RelativeLayoutMain.addView(ViewLine);
+
+                return new ViewHolderMain(RelativeLayoutMain, 1);
+            }
+            else
+            {
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+                RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 90)));
+
+                ImageView ImageViewMain = new ImageView(GetActivity());
+                ImageViewMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
+                ImageViewMain.setId(ID_MAIN);
+
+                RelativeLayoutMain.addView(ImageViewMain);
+
+                RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 24), Misc.ToDP(GetActivity(), 24));
+                ViewCircleParam.setMargins(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), 0);
+                ViewCircleParam.addRule(Misc.Align("R"));
+
+                View ViewCircle = new View(GetActivity());
+                ViewCircle.setLayoutParams(ViewCircleParam);
+                ViewCircle.setId(ID_CIRCLE);
+
+                RelativeLayoutMain.addView(ViewCircle);
+
+                return new ViewHolderMain(RelativeLayoutMain, 0);
+            }
+        }
+
+        @Override
+        public int getItemViewType(int Position)
+        {
+            if (GalleryType == 3)
+                return 1;
+
+            return 0;
         }
 
         @Override
         public int getItemCount()
         {
+            if (GalleryType == 3)
+            {
+                if (FileList.size() > 0)
+                    return FileList.size();
+
+                FileList.addAll(GalleryList);
+
+                return FileList.size();
+            }
+
             FileList.clear();
 
             if (Type.equals("Gallery"))
@@ -474,14 +596,23 @@ public class GalleryViewUI extends FragmentBase
 
     private class Struct
     {
-        final String Path;
-        final String Album;
+        String Name;
+        String Path;
+        String Album;
         boolean Selection = false;
 
-        Struct(String album, String path)
+        Struct(String p1, String p2, boolean isFolder)
         {
-            Album = album;
-            Path = path;
+            if (isFolder)
+            {
+                Name = p1;
+                Path = p2;
+            }
+            else
+            {
+                Album = p1;
+                Path = p2;
+            }
         }
     }
 

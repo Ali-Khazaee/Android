@@ -292,7 +292,7 @@ public class DescriptionUI extends FragmentBase
                         if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                         {
                             DialogProfile.dismiss();
-                            GetActivity().GetManager().OpenView(new GalleryViewUI(1, false, new GalleryViewUI.GalleryListener()
+                            GetActivity().GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
                             {
                                 String ImageURL;
 
@@ -318,8 +318,8 @@ public class DescriptionUI extends FragmentBase
                             return;
                         }
 
-                        PermissionDialog PermissionDialogCamera = new PermissionDialog(GetActivity());
-                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.DescriptionUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                        PermissionDialog PermissionDialogGallery = new PermissionDialog(GetActivity());
+                        PermissionDialogGallery.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.DescriptionUIPermissionStorage), new PermissionDialog.OnSelectedListener()
                         {
                             @Override
                             public void OnSelected(boolean Allow)
@@ -337,7 +337,7 @@ public class DescriptionUI extends FragmentBase
                                     public void OnGranted()
                                     {
                                         DialogProfile.dismiss();
-                                        GetActivity().GetManager().OpenView(new GalleryViewUI(1, false, new GalleryViewUI.GalleryListener()
+                                        GetActivity().GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
                                         {
                                             String ImageURL;
 

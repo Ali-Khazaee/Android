@@ -726,7 +726,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LoadingViewParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
             LoadingView LoadingViewFile = new LoadingView(Activity);
-            LoadingViewFile.setLayoutParams(ImageViewFileParam);
+            LoadingViewFile.setLayoutParams(LoadingViewParam);
             LoadingViewFile.setBackground(DrawableFile);
             LoadingViewFile.SetColor(R.color.White);
             LoadingViewFile.SetScale(1.90f);
