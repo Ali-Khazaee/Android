@@ -90,7 +90,7 @@ public class DescriptionUI extends FragmentBase
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
@@ -203,12 +203,12 @@ public class DescriptionUI extends FragmentBase
 
                 LinearLayout LinearLayoutMain = new LinearLayout(GetActivity());
                 LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setBackgroundResource(R.color.TextDark);
                 LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                 TextView TextViewTitle = new TextView(GetActivity(), 16, true);
                 TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewTitle.setText(GetActivity().getString(R.string.DescriptionUIProfile));
                 TextViewTitle.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
 
@@ -222,7 +222,7 @@ public class DescriptionUI extends FragmentBase
 
                 TextView TextViewCamera = new TextView(GetActivity(), 16, false);
                 TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewCamera.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewCamera.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewCamera.setText(GetActivity().getString(R.string.DescriptionUIProfileCamera));
                 TextViewCamera.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
                 TextViewCamera.setOnClickListener(new View.OnClickListener()
@@ -281,7 +281,7 @@ public class DescriptionUI extends FragmentBase
 
                 TextView TextViewGallery = new TextView(GetActivity(), 16, false);
                 TextViewGallery.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewGallery.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewGallery.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewGallery.setText(GetActivity().getString(R.string.DescriptionUIProfileGallery));
                 TextViewGallery.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
                 TextViewGallery.setOnClickListener(new View.OnClickListener()
@@ -384,7 +384,7 @@ public class DescriptionUI extends FragmentBase
 
                 TextView TextViewRemove = new TextView(GetActivity(), 16, false);
                 TextViewRemove.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewRemove.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewRemove.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewRemove.setText(GetActivity().getString(R.string.DescriptionUIProfileRemove));
                 TextViewRemove.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
                 TextViewRemove.setOnClickListener(new View.OnClickListener()
@@ -514,7 +514,7 @@ public class DescriptionUI extends FragmentBase
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setText(GetActivity().getString(R.string.DescriptionUIMessage));
         TextViewMessage.setId(Misc.GenerateViewID());
 
@@ -867,7 +867,7 @@ public class DescriptionUI extends FragmentBase
         LoadingViewFinishParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewFinish.setLayoutParams(LoadingViewFinishParam);
-        LoadingViewFinish.SetColor(R.color.White);
+        LoadingViewFinish.SetColor(R.color.TextDark);
 
         RelativeLayoutFinish.addView(LoadingViewFinish);
 
@@ -875,7 +875,7 @@ public class DescriptionUI extends FragmentBase
         CropImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         CropImageViewMain.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
         CropImageViewMain.setFixedAspectRatio(true);
-        CropImageViewMain.setBackgroundResource(R.color.Black);
+        CropImageViewMain.setBackgroundResource(R.color.TextWhite);
         CropImageViewMain.setAutoZoomEnabled(true);
         CropImageViewMain.setAspectRatio(1, 1);
         CropImageViewMain.setVisibility(View.GONE);
@@ -964,7 +964,7 @@ public class DescriptionUI extends FragmentBase
         if (Crop)
         {
             if (Build.VERSION.SDK_INT > 20)
-                GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
 
             CropImageViewMain.setVisibility(View.VISIBLE);
             CropImageViewMain.setImageUriAsync(Uri.fromFile(file));

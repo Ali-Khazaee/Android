@@ -33,7 +33,7 @@ public class TextView extends android.widget.TextView
             setTypeface(FontHandler.GetTypeface(context));
 
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
-        setTextColor(ContextCompat.getColor(context, R.color.White));
+        setTextColor(ContextCompat.getColor(context, R.color.TextDark));
     }
 
     @Override

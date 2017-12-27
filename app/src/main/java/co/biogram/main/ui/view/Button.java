@@ -28,7 +28,7 @@ public class Button extends android.widget.Button
 
         setAllCaps(false);
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
-        setTextColor(ContextCompat.getColor(context, R.color.White));
+        setTextColor(ContextCompat.getColor(context, R.color.TextDark));
         setPadding(0, Misc.IsFa() ? 0 : Misc.ToDP(context, 3), 0, 0);
     }
 }

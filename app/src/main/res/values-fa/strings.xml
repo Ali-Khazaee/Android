@@ -8,6 +8,8 @@
     <string name="DialogPermissionDecline">نه فعلا</string>
 
     <!-- General -->
+    <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
+
     <string name="GeneralNoInternet">اتصال اينترنت خود را چک کنيد</string>
 
     <string name="GeneralError1">لطفا مجددا تلاش کنید</string>
@@ -158,9 +160,71 @@
     <string name="InboxUIRating">رتبه بندی</string>
     <string name="InboxUIInfo">Your activities in biogram will result in users level increased and also rise in the users social rank, more information in</string>
     <string name="InboxUIInfo2">in biogram help center</string>
-    <string name="InboxUIJoin">Join</string>
-    <string name="InboxUIPopular">Popular</string>
-    <string name="InboxUIPoint">Point</string>
-    <string name="InboxUIMedal">Medal</string>
+    <string name="InboxUIJoin">پیوستن</string>
+    <string name="InboxUIPopular">محبوبیت</string>
+    <string name="InboxUIPoint">امتیاز</string>
+    <string name="InboxUIMedal">افتخار</string>
+
+    <!-- Category List -->
+    <string name="CategoryNews">اخبار</string>
+    <string name="CategoryFun">سرگرمی</string>
+    <string name="CategoryMusic">آهنگ</string>
+    <string name="CategorySport">ورزش</string>
+    <string name="CategoryFashion">سبک</string>
+    <string name="CategoryFood">غذا</string>
+    <string name="CategoryTechnology">فن آوری</string>
+    <string name="CategoryArt">هنر</string>
+    <string name="CategoryArtist">هنرمند</string>
+    <string name="CategoryMedia">رسانه ها</string>
+    <string name="CategoryBusiness">کسب و کار</string>
+    <string name="CategoryEconomy">اقتصاد</string>
+    <string name="CategoryLiterature">ادبیات</string>
+    <string name="CategoryTravel">مسافرت</string>
+    <string name="CategoryPolitics">سیاست</string>
+    <string name="CategoryHealth">سلامت</string>
+    <string name="CategoryReligious">دین</string>
+    <string name="CategoryKnowledge">دانش</string>
+    <string name="CategoryNature">طبیعت</string>
+    <string name="CategoryWeather">آب و هوا</string>
+    <string name="CategoryHistorical">تاریخی</string>
+    <string name="CategoryOther">دیگر</string>
+
+    <!-- Write UI -->
+    <string name="WriteUI">نوشتن</string>
+    <string name="WriteUISend">ارسال</string>
+    <string name="WriteUICantCompress">تلفن شما فشرده سازی را پشتیبانی نمی کند</string>
+    <string name="WriteUIPickCategory">لطفا یک دسته را انتخاب کنید</string>
+    <string name="WriteUIStatement">بیانیه باید بیش از 30 کاراکتر باشد</string>
+    <string name="WriteUIUploading">درحال ارسال ...</string>
+    <string name="WriteUIMessage">پیامتان را بنویسید</string>
+    <string name="WriteUIChoice1">انتخاب 1</string>
+    <string name="WriteUIChoice2">انتخاب 2</string>
+    <string name="WriteUIChoice3">انتخاب 3</string>
+    <string name="WriteUIChoice4">انتخاب 4</string>
+    <string name="WriteUIChoice5">انتخاب 5</string>
+    <string name="WriteUIDelete">حذف</string>
+    <string name="WriteUIPaste">چسباندن</string>
+    <string name="WriteUICopy">کپی کنید</string>
+    <string name="WriteUIClipboard">متن به کلیپبورد کپی شد</string>
+    <string name="WriteUICategory">دسته بندی</string>
+    <string name="WriteUICategory2">دسته بندی:</string>
+    <string name="WriteUICategoryNone">هیچ یک</string>
+    <string name="WriteUIMaximumImage">شما به حداکثر تصویر رسیده اید</string>
+    <string name="WriteUIPermissionStorage">Please allow biogram to access your Storage This will help to complete your mission</string>
+    <string name="WriteUIVideoLength">طول فیلم بالا است، حداکثر 240 ثانیه است</string>
+    <string name="WriteUIMB">MB</string>
+    <string name="WriteUISeconds">ثانیه</string>
+    <string name="WriteUICompress">لطفا صبر کنید، فشرده سازی ویدیو</string>
+    <string name="WriteUIHour">ساعت</string>
+    <string name="WriteUILength">زمان رأی دادن</string>
+    <string name="WriteUITime">تنظیم زمان رای، زمان در ساعت</string>
+    <string name="WriteUISet">تنظیم زمان</string>
+
+    <!-- Post Adapter -->
+    <string name="PostAdapterVote">رای</string>
+    <string name="PostAdapterVotes">رای ها</string>
+    <string name="PostAdapterVideo">فیلم</string>
+    <string name="PostAdapterVoteChoice">رای خود را ارسال کنید</string>
+    <string name="GalleryViewUIStorage">محل زخیره</string>
 
 </resources>

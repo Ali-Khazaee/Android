@@ -78,7 +78,7 @@ public class ProgressDialog extends AlertDialog
         TextView TextViewTitle = new TextView(getContext(), 14, false);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setId(Misc.GenerateViewID());
-        TextViewTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.Black));
+        TextViewTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.TextWhite));
 
         RelativeLayoutMain.addView(TextViewTitle);
 
@@ -101,7 +101,7 @@ public class ProgressDialog extends AlertDialog
         TextViewNumber = new TextView(getContext(), 14, false);
         TextViewNumber.setLayoutParams(TextViewNumberParam);
         TextViewNumber.setPadding(0, Misc.ToDP(getContext(), 10), 0, Misc.ToDP(getContext(), 10));
-        TextViewNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.Black));
+        TextViewNumber.setTextColor(ContextCompat.getColor(getContext(), R.color.TextWhite));
 
         RelativeLayoutMain.addView(TextViewNumber);
 
@@ -113,7 +113,7 @@ public class ProgressDialog extends AlertDialog
         TextViewPercent = new TextView(getContext(), 14, false);
         TextViewPercent.setLayoutParams(TextViewPercentParam);
         TextViewPercent.setPadding(0, Misc.ToDP(getContext(), 10), 0, Misc.ToDP(getContext(), 10));
-        TextViewPercent.setTextColor(ContextCompat.getColor(getContext(), R.color.Black));
+        TextViewPercent.setTextColor(ContextCompat.getColor(getContext(), R.color.TextWhite));
 
         RelativeLayoutMain.addView(TextViewPercent);
 

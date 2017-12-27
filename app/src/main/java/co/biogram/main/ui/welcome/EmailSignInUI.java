@@ -50,7 +50,7 @@ class EmailSignInUI extends FragmentBase
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayoutMainListener = new ViewTreeObserver.OnGlobalLayoutListener()
@@ -229,7 +229,7 @@ class EmailSignInUI extends FragmentBase
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setText(GetActivity().getString(R.string.EmailSignInUIMessage));
         TextViewMessage.setId(Misc.GenerateViewID());
         TextViewMessage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
@@ -386,7 +386,7 @@ class EmailSignInUI extends FragmentBase
         LoadingViewUsernameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewSignIn.setLayoutParams(LoadingViewUsernameParam);
-        LoadingViewSignIn.SetColor(R.color.White);
+        LoadingViewSignIn.SetColor(R.color.TextDark);
 
         RelativeLayoutSignIn.addView(LoadingViewSignIn);
 

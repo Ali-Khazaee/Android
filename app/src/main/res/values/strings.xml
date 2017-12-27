@@ -192,8 +192,10 @@
 
     <!-- Write UI -->
     <string name="WriteUI">Write</string>
+    <string name="WriteUISend">Send</string>
+    <string name="WriteUICantCompress">Your phone does not support compression</string>
     <string name="WriteUIPickCategory">Choose a category please</string>
-    <string name="WriteUIStatement">Statement Must be higher than 30 characters</string>
+    <string name="WriteUIStatement">Statement must be higher than 30 characters</string>
     <string name="WriteUIUploading">Uploading &#8230;</string>
     <string name="WriteUIMessage">Write Your Message</string>
     <string name="WriteUIChoice1">Choice 1</string>
@@ -204,16 +206,16 @@
     <string name="WriteUIDelete">Delete</string>
     <string name="WriteUIPaste">Paste</string>
     <string name="WriteUICopy">Copy</string>
-    <string name="WriteUIClipboard">Text copied yo clipboard</string>
+    <string name="WriteUIClipboard">Text copied to clipboard</string>
     <string name="WriteUICategory">Category</string>
     <string name="WriteUICategory2">Category:</string>
     <string name="WriteUICategoryNone">none</string>
-    <string name="WriteUIMaximumImage">You have reach to maximum image</string>
-    <string name="WriteUIPermissionStorage">Please allow biogram to access your Storage This will help to complete your mission</string>
+    <string name="WriteUIMaximumImage">You have reached to maximum image</string>
+    <string name="WriteUIPermissionStorage">Please allow biogram to access your storage, This will help to complete your request</string>
     <string name="WriteUIVideoLength">Video length is to high, maximum is 240 seconds</string>
     <string name="WriteUIMB">MB</string>
     <string name="WriteUISeconds">Seconds</string>
-    <string name="WriteUICompress">Seconds</string>
+    <string name="WriteUICompress">Please Wait, Compressing video</string>
     <string name="WriteUIHour">Hours</string>
     <string name="WriteUILength">Vote Length</string>
     <string name="WriteUITime">Set vote length, time in hours</string>

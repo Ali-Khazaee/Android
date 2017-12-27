@@ -51,7 +51,7 @@ public class PermissionDialog extends Dialog
 
         TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.Black));
+        TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.TextWhite));
         TextViewMessage.setId(Misc.GenerateViewID());
         TextViewMessage.setPadding(Misc.ToDP(context, 15), Misc.ToDP(context, 25), Misc.ToDP(context, 15), Misc.ToDP(context, 25));
         TextViewMessage.setText(Message);
