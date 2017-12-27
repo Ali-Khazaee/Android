@@ -115,7 +115,7 @@ public class ImagePreviewUI extends FragmentBase
     {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.Black);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
         RelativeLayoutMain.setClickable(true);
 
         if (bitmap != null)
@@ -447,7 +447,7 @@ public class ImagePreviewUI extends FragmentBase
 
             final LoadingView LoadingViewMain = new LoadingView(GetActivity());
             LoadingViewMain.setLayoutParams(LoadingViewMainParam);
-            LoadingViewMain.SetColor(R.color.White);
+            LoadingViewMain.SetColor(R.color.TextDark);
             LoadingViewMain.Start();
 
             RelativeLayoutMain.addView(LoadingViewMain);

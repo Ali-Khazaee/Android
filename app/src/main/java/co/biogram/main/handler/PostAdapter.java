@@ -291,7 +291,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewName = new TextView(Activity, 14, true);
             TextViewName.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-            TextViewName.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewName.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewName.setId(ID1_NAME);
 
             LinearLayoutProfile.addView(TextViewName);
@@ -339,7 +339,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewMessage = new TextView(Activity, 14, false);
             TextViewMessage.setLayoutParams(TextViewMessageParam);
-            TextViewMessage.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Black));
+            TextViewMessage.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.TextWhite));
             TextViewMessage.setPadding(0, 0, Misc.ToDP(Activity, 8), 0);
             TextViewMessage.setId(ID1_MESSAGE);
 
@@ -386,7 +386,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             View ViewLineDouble = new View(Activity);
             ViewLineDouble.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.03f));
-            ViewLineDouble.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.White);
+            ViewLineDouble.setBackgroundResource(Misc.IsDark(Activity) ? R.color.LineDark : R.color.LineWhite);
 
             LinearLayoutDouble.addView(ViewLineDouble);
 
@@ -412,7 +412,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             View ViewLineTriple = new View(Activity);
             ViewLineTriple.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.02f));
-            ViewLineTriple.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.White);
+            ViewLineTriple.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.GroundWhite);
 
             LinearLayoutTriple.addView(ViewLineTriple);
 
@@ -430,7 +430,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             View ViewLineTriple2 = new View(Activity);
             ViewLineTriple2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0.04f));
-            ViewLineTriple2.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.White);
+            ViewLineTriple2.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.GroundWhite);
 
             LinearLayoutDouble2.addView(ViewLineTriple2);
 
@@ -465,7 +465,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewDurotion = new TextView(Activity, 12, false);
             TextViewDurotion.setLayoutParams(TextViewDuritonParam);
-            TextViewDurotion.setTextColor(ContextCompat.getColor(Activity, R.color.White));
             TextViewDurotion.setBackground(DrawableVideo);
             TextViewDurotion.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
             TextViewDurotion.setId(ID1_VIDEO_DUROTION);
@@ -479,7 +478,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewVideo = new TextView(Activity, 12, false);
             TextViewVideo.setLayoutParams(TextViewVideoParam);
-            TextViewVideo.setTextColor(ContextCompat.getColor(Activity, R.color.White));
             TextViewVideo.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
             TextViewVideo.setBackground(DrawableVideo);
             TextViewVideo.setText(Activity.getString(R.string.PostAdapterVideo));
@@ -504,7 +502,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewVote1 = new TextView(Activity, 14, false);
             TextViewVote1.setLayoutParams(TextViewVote1Param);
-            TextViewVote1.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewVote1.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewVote1.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
             TextViewVote1.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
             TextViewVote1.setVisibility(View.GONE);
@@ -517,7 +515,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewPercent1 = new TextView(Activity, 14, false);
             TextViewPercent1.setLayoutParams(TextViewPercent1Param);
-            TextViewPercent1.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewPercent1.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewPercent1.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 5), 0, 0);
             TextViewPercent1.setGravity(Gravity.CENTER_VERTICAL);
             TextViewPercent1.setVisibility(View.GONE);
@@ -532,7 +530,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewVote2 = new TextView(Activity, 14, false);
             TextViewVote2.setLayoutParams(TextViewVote2Param);
-            TextViewVote2.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewVote2.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewVote2.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
             TextViewVote2.setGravity(Gravity.CENTER_VERTICAL);
             TextViewVote2.setVisibility(View.GONE);
@@ -546,7 +544,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewPercent2 = new TextView(Activity, 14, false);
             TextViewPercent2.setLayoutParams(TextViewPercent2Param);
-            TextViewPercent2.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewPercent2.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewPercent2.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
             TextViewPercent2.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
             TextViewPercent2.setVisibility(View.GONE);
@@ -561,7 +559,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewVote3 = new TextView(Activity, 14, false);
             TextViewVote3.setLayoutParams(TextViewVote3Param);
-            TextViewVote3.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewVote3.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewVote3.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
             TextViewVote3.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
             TextViewVote3.setVisibility(View.GONE);
@@ -575,7 +573,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewPercent3 = new TextView(Activity, 14, false);
             TextViewPercent3.setLayoutParams(TextViewPercent3Param);
-            TextViewPercent3.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewPercent3.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewPercent3.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
             TextViewPercent3.setGravity(Gravity.CENTER_VERTICAL);
             TextViewPercent3.setVisibility(View.GONE);
@@ -590,7 +588,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewVote4 = new TextView(Activity, 14, false);
             TextViewVote4.setLayoutParams(TextViewVote4Param);
-            TextViewVote4.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewVote4.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewVote4.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
             TextViewVote4.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
             TextViewVote4.setVisibility(View.GONE);
@@ -604,7 +602,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewPercent4 = new TextView(Activity, 14, false);
             TextViewPercent4.setLayoutParams(TextViewPercent4Param);
-            TextViewPercent4.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewPercent4.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewPercent4.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
             TextViewPercent4.setGravity(Gravity.CENTER_VERTICAL);
             TextViewPercent4.setVisibility(View.GONE);
@@ -619,7 +617,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewVote5 = new TextView(Activity, 14, false);
             TextViewVote5.setLayoutParams(TextViewVote5Param);
-            TextViewVote5.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewVote5.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewVote5.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
             TextViewVote5.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
             TextViewVote5.setVisibility(View.GONE);
@@ -633,7 +631,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewPercent5 = new TextView(Activity, 14, false);
             TextViewPercent5.setLayoutParams(TextViewPercent5Param);
-            TextViewPercent5.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewPercent5.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewPercent5.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
             TextViewPercent5.setGravity(Gravity.CENTER_VERTICAL);
             TextViewPercent5.setVisibility(View.GONE);
@@ -643,7 +641,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             GradientDrawable DrawableVote3 = new GradientDrawable();
             DrawableVote3.setCornerRadius(Misc.ToDP(Activity, 100));
-            DrawableVote3.setColor(ContextCompat.getColor(Activity, R.color.Black));
+            DrawableVote3.setColor(ContextCompat.getColor(Activity, R.color.TextWhite));
 
             View ViewVoteCircle = new View(Activity);
             ViewVoteCircle.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6)));
@@ -675,7 +673,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewVote = new TextView(Activity, 14, false);
             TextViewVote.setLayoutParams(TextViewVoteParam);
-            TextViewVote.setTextColor(ContextCompat.getColor(Activity, R.color.White));
             TextViewVote.setBackground(DrawableVote2);
             TextViewVote.setPadding(Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5));
             TextViewVote.setGravity(Gravity.CENTER_VERTICAL);
@@ -728,7 +725,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LoadingView LoadingViewFile = new LoadingView(Activity);
             LoadingViewFile.setLayoutParams(LoadingViewParam);
             LoadingViewFile.setBackground(DrawableFile);
-            LoadingViewFile.SetColor(R.color.White);
+            LoadingViewFile.SetColor(R.color.TextDark);
             LoadingViewFile.SetScale(1.90f);
             LoadingViewFile.SetSize(5);
             LoadingViewFile.setVisibility(View.VISIBLE);
@@ -743,7 +740,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewFileName = new TextView(Activity, 14, false);
             TextViewFileName.setLayoutParams(TextViewFileNameParam);
-            TextViewFileName.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+            TextViewFileName.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
             TextViewFileName.setId(ID1_FILE_NAME);
 
             RelativeLayoutFile.addView(TextViewFileName);
@@ -885,7 +882,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextView TextViewLevel = new TextView(Activity, 14, true);
             TextViewLevel.setLayoutParams(TextViewLevelParam);
             TextViewLevel.setText(Activity.getString(R.string.InboxUIUserLevel));
-            TextViewLevel.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextViewLevel.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray4));
             TextViewLevel.setId(Misc.GenerateViewID());
 
             RelativeLayoutInfo.addView(TextViewLevel);
@@ -901,7 +898,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleViewLevel.SetMessage("1");
             CircleViewLevel.SetMessageSize(35);
             CircleViewLevel.SetMessageColor(R.color.BlueLight);
-            CircleViewLevel.SetStrokeColor(Misc.IsDark(Activity) ? R.color.White : R.color.Gray2);
+            CircleViewLevel.SetStrokeColor(Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray2);
             CircleViewLevel.SetStrokeWidth(1);
             CircleViewLevel.SetProgressColor(R.color.BlueLight);
             CircleViewLevel.SetProgressWidth(4);
@@ -939,7 +936,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewNumber.setLayoutParams(TextViewNumberParam);
             TextViewNumber.setText(("10/60"));
             TextViewNumber.setId(ID2_NUMBER);
-            TextViewNumber.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextViewNumber.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :  R.color.Gray4));
 
             RelativeLayoutRating.addView(TextViewNumber);
 
@@ -951,7 +948,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LineView LineViewRating = new LineView(Activity);
             LineViewRating.setLayoutParams(LineViewRatingParam);
             LineViewRating.setId(ID2_RATING);
-            LineViewRating.SetStrokeColor(Misc.IsDark(Activity) ? R.color.White : R.color.Gray2);
+            LineViewRating.SetStrokeColor(Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray2);
             LineViewRating.SetStrokeWidth(7);
             LineViewRating.SetProgressColor(R.color.BlueLight);
             LineViewRating.SetProgressPercent(33);
@@ -968,7 +965,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewInfo.setLineSpacing(1.0f, 0.7f);
             TextViewInfo.setText((Activity.getString(R.string.InboxUIInfo) + " " + Activity.getString(R.string.InboxUIInfo2)), TextView.BufferType.SPANNABLE);
             TextViewInfo.setId(Misc.GenerateViewID());
-            TextViewInfo.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextViewInfo.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray4));
 
             Spannable Span = (Spannable) TextViewInfo.getText();
             ClickableSpan ClickableSpanMessage = new ClickableSpan()
@@ -1038,7 +1035,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleViewPoint.setId(ID2_POINT);
             CircleViewPoint.SetMessage("66K");
             CircleViewPoint.SetMessageSize(16);
-            CircleViewPoint.SetMessageColor(R.color.White);
+            CircleViewPoint.SetMessageColor(R.color.TextDark);
             CircleViewPoint.SetStrokeColor(R.color.BlueLight);
             CircleViewPoint.SetStrokeWidth(50);
             CircleViewPoint.InvalidateTextPaints();
@@ -1048,7 +1045,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleImageView CircleImageViewMedal = new CircleImageView(Activity);
             CircleImageViewMedal.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
             CircleImageViewMedal.setId(ID2_POINT);
-            CircleImageViewMedal.SetBorderColor(Misc.IsDark(Activity) ? R.color.White : R.color.Gray2);
+            CircleImageViewMedal.SetBorderColor(Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray2);
             CircleImageViewMedal.SetBorderWidth(1);
             CircleImageViewMedal.SetWidthPadding();
             CircleImageViewMedal.setPadding(Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10));
@@ -1069,7 +1066,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewJoin.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewJoin.setText(Activity.getString(R.string.InboxUIJoin));
             TextViewJoin.setGravity(Gravity.CENTER);
-            TextViewJoin.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextViewJoin.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewJoin);
 
@@ -1077,7 +1074,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewPopular.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewPopular.setText(Activity.getString(R.string.InboxUIPopular));
             TextViewPopular.setGravity(Gravity.CENTER);
-            TextViewPopular.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextViewPopular.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewPopular);
 
@@ -1085,7 +1082,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewPoint.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewPoint.setText(Activity.getString(R.string.InboxUIPoint));
             TextViewPoint.setGravity(Gravity.CENTER);
-            TextViewPoint.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextViewPoint.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :  R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewPoint);
 
@@ -1093,7 +1090,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewMedal.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewMedal.setText(Activity.getString(R.string.InboxUIMedal));
             TextViewMedal.setGravity(Gravity.CENTER);
-            TextViewMedal.setTextColor(Misc.IsDark(Activity) ? ContextCompat.getColor(Activity, R.color.White) : ContextCompat.getColor(Activity, R.color.Gray4));
+            TextViewMedal.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :  R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewMedal);
 
@@ -1303,7 +1300,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                 TextView TextViewTitle = new TextView(Activity, 16, false);
                                 TextViewTitle.setLayoutParams(TextViewTitleParam);
-                                TextViewTitle.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                                TextViewTitle.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                 TextViewTitle.setText(Activity.getString(R.string.PostAdapterVoteChoice));
                                 TextViewTitle.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
                                 TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
@@ -1336,7 +1333,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     {
                                         TextView TextViewVote1 = new TextView(Activity, 16, false);
                                         TextViewVote1.setLayoutParams(TextViewVoteParam);
-                                        TextViewVote1.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                                        TextViewVote1.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote1.setText(Vote.getString("V1"));
                                         TextViewVote1.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
                                         TextViewVote1.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
@@ -1358,7 +1355,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         TextView TextViewVote2 = new TextView(Activity, 16, false);
                                         TextViewVote2.setLayoutParams(TextViewVoteParam);
-                                        TextViewVote2.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                                        TextViewVote2.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote2.setText(Vote.getString("V2"));
                                         TextViewVote2.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
                                         TextViewVote2.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
@@ -1380,7 +1377,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         TextView TextViewVote3 = new TextView(Activity, 16, false);
                                         TextViewVote3.setLayoutParams(TextViewVoteParam);
-                                        TextViewVote3.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                                        TextViewVote3.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote3.setText(Vote.getString("V3"));
                                         TextViewVote3.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
                                         TextViewVote3.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
@@ -1402,7 +1399,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         TextView TextViewVote4 = new TextView(Activity, 16, false);
                                         TextViewVote4.setLayoutParams(TextViewVoteParam);
-                                        TextViewVote4.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                                        TextViewVote4.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote4.setText(Vote.getString("V4"));
                                         TextViewVote4.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
                                         TextViewVote4.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
@@ -1424,7 +1421,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         TextView TextViewVote5 = new TextView(Activity, 16, false);
                                         TextViewVote5.setLayoutParams(TextViewVoteParam);
-                                        TextViewVote5.setTextColor(ContextCompat.getColor(Activity, R.color.Black));
+                                        TextViewVote5.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote5.setText(Vote.getString("V5"));
                                         TextViewVote5.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
                                         TextViewVote5.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);

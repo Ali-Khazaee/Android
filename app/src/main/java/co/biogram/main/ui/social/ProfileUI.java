@@ -26,7 +26,7 @@ public class ProfileUI extends FragmentBase
     {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout.LayoutParams TextViewThemeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 50));

@@ -67,7 +67,7 @@ class PhoneUI extends FragmentBase
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
@@ -214,7 +214,7 @@ class PhoneUI extends FragmentBase
 
                 TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
-                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewTitle.setText(GetActivity().getString(R.string.PhoneUIPreCode));
                 TextViewTitle.setPadding(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
                 TextViewTitle.setGravity(Gravity.CENTER);
@@ -261,7 +261,7 @@ class PhoneUI extends FragmentBase
 
                 TextView TextViewIran = new TextView(GetActivity(), 16, false);
                 TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
-                TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewIran.setText(Iran);
                 TextViewIran.setPadding(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
                 TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
@@ -346,7 +346,7 @@ class PhoneUI extends FragmentBase
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setId(Misc.GenerateViewID());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
@@ -476,7 +476,7 @@ class PhoneUI extends FragmentBase
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);
-        LoadingViewNext.SetColor(R.color.White);
+        LoadingViewNext.SetColor(R.color.TextDark);
 
         RelativeLayoutNext.addView(LoadingViewNext);
 

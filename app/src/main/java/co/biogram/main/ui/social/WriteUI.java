@@ -5,13 +5,16 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -47,7 +50,9 @@ import com.androidnetworking.interfaces.UploadProgressListener;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,10 +63,12 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.handler.CacheHandler;
+import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnClickRecyclerView;
 import co.biogram.main.handler.SharedHandler;
+import co.biogram.main.ui.general.CropViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
@@ -94,7 +101,6 @@ class WriteUI extends FragmentBase
     {
         final TextView TextViewCategorySelect = new TextView(GetActivity(), 16, false);
         final TextView TextViewCount = new TextView(GetActivity(), 14, false);
-        final EditText EditTextMessage = new EditText(GetActivity());
         final ImageView ImageViewThumbVideo = new ImageView(GetActivity());
         final RelativeLayout RelativeLayoutVideo = new RelativeLayout(GetActivity());
         final TextView TextViewSizeVideo = new TextView(GetActivity(), 12, false);
@@ -107,7 +113,7 @@ class WriteUI extends FragmentBase
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.GroundDark : R.color.GroundWhite);
         RelativeLayoutMain.setClickable(true);
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
@@ -157,7 +163,7 @@ class WriteUI extends FragmentBase
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_blue_rtl : R.drawable.ic_back_blue);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.i_back_blue_rtl : R.drawable.i_back_blue);
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
@@ -169,7 +175,7 @@ class WriteUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
         TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.WriteUI));
 
@@ -182,7 +188,7 @@ class WriteUI extends FragmentBase
         ImageViewWorld.setLayoutParams(ImageViewWorldParam);
         ImageViewWorld.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewWorld.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
-        ImageViewWorld.setImageResource(R.drawable.i_global_gray);
+        ImageViewWorld.setImageResource(R.drawable.i_global_bluegray);
         ImageViewWorld.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -196,7 +202,7 @@ class WriteUI extends FragmentBase
                 else
                 {
                     IsWorld = 0;
-                    ImageViewWorld.setImageResource(R.drawable.i_global_gray);
+                    ImageViewWorld.setImageResource(R.drawable.i_global_bluegray);
                 }
             }
         });
@@ -216,6 +222,7 @@ class WriteUI extends FragmentBase
         RelativeLayout.LayoutParams EditTextMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         EditTextMessageParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
+        final EditText EditTextMessage = new EditText(GetActivity());
         EditTextMessage.setLayoutParams(EditTextMessageParam);
         EditTextMessage.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
         EditTextMessage.setId(Misc.GenerateViewID());
@@ -223,11 +230,12 @@ class WriteUI extends FragmentBase
         EditTextMessage.setHint(R.string.WriteUIMessage);
         EditTextMessage.setBackground(null);
         EditTextMessage.requestFocus();
+        EditTextMessage.setTypeface(FontHandler.GetTypeface(GetActivity()));
         EditTextMessage.setScroller(new Scroller(GetActivity()));
         EditTextMessage.setVerticalScrollBarEnabled(true);
         EditTextMessage.setMovementMethod(new ScrollingMovementMethod());
-        EditTextMessage.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
-        EditTextMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextMessage.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
+        EditTextMessage.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.RedLike));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(300) });
         EditTextMessage.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -260,12 +268,12 @@ class WriteUI extends FragmentBase
 
                 LinearLayout LinearLayoutMain = new LinearLayout(GetActivity());
                 LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.GroundDark : R.color.GroundWhite);
                 LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                 TextView TextViewDelete = new TextView(GetActivity(), 14, false);
                 TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewDelete.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewDelete.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
                 TextViewDelete.setText(GetActivity().getString(R.string.WriteUIDelete));
                 TextViewDelete.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
                 TextViewDelete.setOnClickListener(new View.OnClickListener()
@@ -288,7 +296,7 @@ class WriteUI extends FragmentBase
 
                 TextView TextViewPaste = new TextView(GetActivity(), 14, false);
                 TextViewPaste.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewPaste.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewPaste.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
                 TextViewPaste.setText(GetActivity().getString(R.string.WriteUIPaste));
                 TextViewPaste.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
                 TextViewPaste.setOnClickListener(new View.OnClickListener()
@@ -319,7 +327,7 @@ class WriteUI extends FragmentBase
 
                 TextView TextViewCopy = new TextView(GetActivity(), 14, false);
                 TextViewCopy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewCopy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewCopy.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
                 TextViewCopy.setText(GetActivity().getString(R.string.WriteUICopy));
                 TextViewCopy.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
                 TextViewCopy.setOnClickListener(new View.OnClickListener()
@@ -354,7 +362,7 @@ class WriteUI extends FragmentBase
         LinearLayout LinearLayoutBottom = new LinearLayout(GetActivity());
         LinearLayoutBottom.setLayoutParams(LinearLayoutBottomParam);
         LinearLayoutBottom.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutBottom.setBackgroundResource(R.color.ActionBarWhite);
+        LinearLayoutBottom.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.ActionBarDark : R.color.ActionBarWhite);
         LinearLayoutBottom.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(LinearLayoutBottom);
@@ -363,7 +371,7 @@ class WriteUI extends FragmentBase
         ImageViewImage.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(GetActivity(), 56), 1.0f));
         ImageViewImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewImage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
-        ImageViewImage.setImageResource(R.drawable.ic_camera);
+        ImageViewImage.setImageResource(R.drawable.i_camera_bluegray);
         ImageViewImage.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -375,39 +383,80 @@ class WriteUI extends FragmentBase
                     return;
                 }
 
+                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener()
+                {
+                    List<String> ImageURL = new ArrayList<>();
+
+                    @Override
+                    public void OnSelection(String URL)
+                    {
+                        ImageURL.add(URL);
+                    }
+
+                    @Override
+                    public void OnRemove(String URL)
+                    {
+                        ImageURL.remove(URL);
+                    }
+
+                    @Override
+                    public void OnSave()
+                    {
+                        if (ImageURL.size() <= 0)
+                            return;
+
+                        ChangeType(1);
+                        ViewPagerImage.setVisibility(View.VISIBLE);
+
+                        AsyncTask.execute(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                try
+                                {
+                                    int Size = Misc.ToDP(GetActivity(), 150);
+
+                                    for (String i : ImageURL)
+                                    {
+                                        BitmapFactory.Options O = new BitmapFactory.Options();
+                                        O.inJustDecodeBounds = true;
+
+                                        BitmapFactory.decodeFile(i, O);
+
+                                        O.inSampleSize = Misc.SampleSize(O, Size, Size);
+                                        O.inJustDecodeBounds = false;
+
+                                        Bitmap bitmap = BitmapFactory.decodeFile(i, O);
+
+                                        File file = new File(CacheHandler.CacheDir(GetActivity()), System.currentTimeMillis() + ".jpg");
+                                        file.createNewFile();
+
+                                        ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
+
+                                        FileOutputStream FOS = new FileOutputStream(file);
+                                        FOS.write(BAOS.toByteArray());
+                                        FOS.flush();
+                                        FOS.close();
+
+                                        SelectImage.add(file.getAbsolutePath());
+
+                                        Misc.RunOnUIThread(GetActivity(), new Runnable() { @Override public void run() { ViewPagerAdapterImage.notifyDataSetChanged(); } }, 0);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Misc.Debug("WriteUI-Compress: " + e.toString());
+                                }
+                            }
+                        });
+                    }
+                };
+
                 if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
-                    GetActivity().GetManager().OpenView(new GalleryViewUI(3, 1, new GalleryViewUI.GalleryListener()
-                    {
-                        List<String> IamgeURL = new ArrayList<>();
-
-                        @Override
-                        public void OnSelection(String URL)
-                        {
-                            IamgeURL.add(URL);
-                        }
-
-                        @Override
-                        public void OnRemove(String URL)
-                        {
-                            IamgeURL.remove(URL);
-                        }
-
-                        @Override
-                        public void OnSave()
-                        {
-                            if (IamgeURL.size() <= 0)
-                                return;
-
-                            for (String url : IamgeURL)
-                                if (SelectImage.size() < 3)
-                                    SelectImage.add(url);
-
-                            ChangeType(1);
-                            ViewPagerImage.setVisibility(View.VISIBLE);
-                            ViewPagerAdapterImage.notifyDataSetChanged();
-                        }
-                    }), R.id.ContainerFull, "GalleryViewUI");
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(3, 1, L), R.id.ContainerFull, "GalleryViewUI");
                     return;
                 }
 
@@ -428,34 +477,7 @@ class WriteUI extends FragmentBase
                             @Override
                             public void OnGranted()
                             {
-                                GetActivity().GetManager().OpenView(new GalleryViewUI(3, 1, new GalleryViewUI.GalleryListener()
-                                {
-                                    List<String> IamgeURL = new ArrayList<>();
-
-                                    @Override
-                                    public void OnSelection(String URL)
-                                    {
-                                        IamgeURL.add(URL);
-                                    }
-
-                                    @Override
-                                    public void OnRemove(String URL)
-                                    {
-                                        IamgeURL.remove(URL);
-                                    }
-
-                                    @Override
-                                    public void OnSave()
-                                    {
-                                        if (IamgeURL.size() <= 0)
-                                            return;
-
-                                        ChangeType(1);
-                                        SelectImage.addAll(IamgeURL);
-                                        ViewPagerImage.setVisibility(View.VISIBLE);
-                                        ViewPagerAdapterImage.notifyDataSetChanged();
-                                    }
-                                }), R.id.ContainerFull, "GalleryViewUI");
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(3, 1, L), R.id.ContainerFull, "GalleryViewUI");
                             }
 
                             @Override
@@ -469,63 +491,63 @@ class WriteUI extends FragmentBase
             }
         });
 
-        LinearLayoutBottom.addView(ImageViewImage);
-
         ImageViewVideo = new ImageView(GetActivity());
         ImageViewVideo.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(GetActivity(), 56), 1.0f));
         ImageViewVideo.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewVideo.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
-        ImageViewVideo.setImageResource(R.drawable.ic_comment);
+        ImageViewVideo.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewVideo.setImageResource(R.drawable.i_video_bluegray);
         ImageViewVideo.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener()
+                {
+                    String VideoURL;
+
+                    @Override
+                    public void OnSelection(String URL)
+                    {
+                        VideoURL = URL;
+                    }
+
+                    @Override
+                    public void OnRemove(String URL)
+                    {
+                        VideoURL = "";
+                    }
+
+                    @Override
+                    public void OnSave()
+                    {
+                        if (!VideoURL.equals(""))
+                        {
+                            MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
+                            Retriever.setDataSource(VideoURL);
+                            int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
+
+                            if (Time > 240)
+                            {
+                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.WriteUIVideoLength));
+                                return;
+                            }
+
+                            ChangeType(2);
+                            SelectVideo = new File(VideoURL);
+                            ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
+                            RelativeLayoutVideo.setVisibility(View.VISIBLE);
+
+                            double Size = (double) SelectVideo.length() / 1048576.0;
+
+                            TextViewSizeVideo.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB)));
+                            TextViewLengthVideo.setText((String.valueOf(Time) + " " + GetActivity().getString(R.string.WriteUISeconds)));
+                        }
+                    }
+                };
+
                 if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
-                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, 2, new GalleryViewUI.GalleryListener()
-                    {
-                        String VideoURL;
-
-                        @Override
-                        public void OnSelection(String URL)
-                        {
-                            VideoURL = URL;
-                        }
-
-                        @Override
-                        public void OnRemove(String URL)
-                        {
-                            VideoURL = "";
-                        }
-
-                        @Override
-                        public void OnSave()
-                        {
-                            if (!VideoURL.equals(""))
-                            {
-                                MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                                Retriever.setDataSource(VideoURL);
-                                int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
-
-                                if (Time > 240)
-                                {
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.WriteUIVideoLength));
-                                    return;
-                                }
-
-                                ChangeType(2);
-                                SelectVideo = new File(VideoURL);
-                                ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                                RelativeLayoutVideo.setVisibility(View.VISIBLE);
-
-                                double Size = (double) SelectVideo.length() / 1048576.0;
-
-                                TextViewSizeVideo.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB)));
-                                TextViewLengthVideo.setText((String.valueOf(Time) + " " + GetActivity().getString(R.string.WriteUISeconds)));
-                            }
-                        }
-                    }), R.id.ContainerFull, "GalleryViewUI");
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, 2, L), R.id.ContainerFull, "GalleryViewUI");
                     return;
                 }
 
@@ -546,49 +568,7 @@ class WriteUI extends FragmentBase
                             @Override
                             public void OnGranted()
                             {
-                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, 2, new GalleryViewUI.GalleryListener()
-                                {
-                                    String VideoURL;
-
-                                    @Override
-                                    public void OnSelection(String URL)
-                                    {
-                                        VideoURL = URL;
-                                    }
-
-                                    @Override
-                                    public void OnRemove(String URL)
-                                    {
-                                        VideoURL = "";
-                                    }
-
-                                    @Override
-                                    public void OnSave()
-                                    {
-                                        if (!VideoURL.equals(""))
-                                        {
-                                            MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                                            Retriever.setDataSource(VideoURL);
-                                            int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
-
-                                            if (Time > 240)
-                                            {
-                                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.WriteUIVideoLength));
-                                                return;
-                                            }
-
-                                            ChangeType(2);
-                                            SelectVideo = new File(VideoURL);
-                                            ImageViewThumbVideo.setImageBitmap(Retriever.getFrameAtTime(100));
-                                            RelativeLayoutVideo.setVisibility(View.VISIBLE);
-
-                                            double Size = (double) SelectVideo.length() / 1048576.0;
-
-                                            TextViewSizeVideo.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB)));
-                                            TextViewLengthVideo.setText((String.valueOf(Time) + " " + GetActivity().getString(R.string.WriteUISeconds)));
-                                        }
-                                    }
-                                }), R.id.ContainerFull, "GalleryViewUI");
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, 2, L), R.id.ContainerFull, "GalleryViewUI");
                             }
 
                             @Override
@@ -602,13 +582,11 @@ class WriteUI extends FragmentBase
             }
         });
 
-        LinearLayoutBottom.addView(ImageViewVideo);
-
         ImageViewVote = new ImageView(GetActivity());
         ImageViewVote.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(GetActivity(), 56), 1.0f));
         ImageViewVote.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewVote.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
-        ImageViewVote.setImageResource(R.drawable.ic_link);
+        ImageViewVote.setPadding(Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14));
+        ImageViewVote.setImageResource(R.drawable.i_vote_bluegray);
         ImageViewVote.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -619,37 +597,37 @@ class WriteUI extends FragmentBase
             }
         });
 
-        LinearLayoutBottom.addView(ImageViewVote);
-
         ImageViewFile = new ImageView(GetActivity());
         ImageViewFile.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(GetActivity(), 56), 1.0f));
         ImageViewFile.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewFile.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
-        ImageViewFile.setImageResource(R.drawable.ic_link);
+        ImageViewFile.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewFile.setImageResource(R.drawable.i_attach_bluegray);
         ImageViewFile.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener()
+                {
+                    @Override
+                    public void OnSelection(String URL)
+                    {
+                        SelectFile = new File(URL);
+                        double Size = (double) SelectFile.length() / 1048576.0;
+
+                        ChangeType(4);
+                        RelativeLayoutFile.setVisibility(View.VISIBLE);
+                        TextViewFileName.setText(SelectFile.getName());
+                        TextViewFileDetail.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
+                    }
+
+                    @Override public void OnRemove(String URL) { }
+                    @Override public void OnSave() { }
+                };
+
                 if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
-                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, 3, new GalleryViewUI.GalleryListener()
-                    {
-                        @Override
-                        public void OnSelection(String URL)
-                        {
-                            SelectFile = new File(URL);
-                            double Size = (double) SelectFile.length() / 1048576.0;
-
-                            RelativeLayoutFile.setVisibility(View.VISIBLE);
-                            TextViewFileName.setText(SelectFile.getName());
-                            TextViewFileDetail.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
-                        }
-
-                        @Override public void OnRemove(String URL) { }
-                        @Override public void OnSave() { }
-                    }), R.id.ContainerFull, "GalleryViewUI");
-
+                    GetActivity().GetManager().OpenView(new GalleryViewUI(1, 3, L), R.id.ContainerFull, "GalleryViewUI");
                     return;
                 }
 
@@ -670,22 +648,7 @@ class WriteUI extends FragmentBase
                             @Override
                             public void OnGranted()
                             {
-                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, 3, new GalleryViewUI.GalleryListener()
-                                {
-                                    @Override
-                                    public void OnSelection(String URL)
-                                    {
-                                        SelectFile = new File(URL);
-                                        double Size = (double) SelectFile.length() / 1048576.0;
-
-                                        RelativeLayoutFile.setVisibility(View.VISIBLE);
-                                        TextViewFileName.setText(SelectFile.getName());
-                                        TextViewFileDetail.setText((new DecimalFormat("#.##").format(Size) + " " + GetActivity().getString(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
-                                    }
-
-                                    @Override public void OnRemove(String URL) { }
-                                    @Override public void OnSave() { }
-                                }), R.id.ContainerFull, "GalleryViewUI");
+                                GetActivity().GetManager().OpenView(new GalleryViewUI(1, 3, L), R.id.ContainerFull, "GalleryViewUI");
                             }
 
                             @Override
@@ -699,42 +662,56 @@ class WriteUI extends FragmentBase
             }
         });
 
-        LinearLayoutBottom.addView(ImageViewFile);
-
         TextViewCount.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(GetActivity(), 56), 1.0f));
         TextViewCount.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
         TextViewCount.setGravity(Gravity.CENTER);
         TextViewCount.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
         TextViewCount.setText(("300"));
 
-        LinearLayoutBottom.addView(TextViewCount);
+        TextView TextViewSend = new TextView(GetActivity(), 14, false);
+        TextViewSend.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(GetActivity(), 56), 1.0f));
+        TextViewSend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewSend.setGravity(Gravity.CENTER);
+        TextViewSend.setText(GetActivity().getString(R.string.WriteUISend));
 
-        ImageView ImageViewSend = new ImageView(GetActivity());
-        ImageViewSend.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(GetActivity(), 56), 1.0f));
-        ImageViewSend.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewSend.setPadding(Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8));
-        ImageViewSend.setImageResource(R.drawable.ic_done_blue);
-
-        LinearLayoutBottom.addView(ImageViewSend);
+        if (Misc.IsRTL())
+        {
+            LinearLayoutBottom.addView(TextViewSend);
+            LinearLayoutBottom.addView(TextViewCount);
+            LinearLayoutBottom.addView(ImageViewFile);
+            LinearLayoutBottom.addView(ImageViewVote);
+            LinearLayoutBottom.addView(ImageViewVideo);
+            LinearLayoutBottom.addView(ImageViewImage);
+        }
+        else
+        {
+            LinearLayoutBottom.addView(ImageViewImage);
+            LinearLayoutBottom.addView(ImageViewVideo);
+            LinearLayoutBottom.addView(ImageViewVote);
+            LinearLayoutBottom.addView(ImageViewFile);
+            LinearLayoutBottom.addView(TextViewCount);
+            LinearLayoutBottom.addView(TextViewSend);
+        }
 
         RelativeLayout.LayoutParams ViewLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
         ViewLine2Param.addRule(RelativeLayout.ABOVE, LinearLayoutBottom.getId());
 
         View ViewLine2 = new View(GetActivity());
         ViewLine2.setLayoutParams(ViewLine2Param);
-        ViewLine2.setBackgroundResource(R.color.Gray2);
+        ViewLine2.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.LineDark : R.color.LineWhite);
         ViewLine2.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(ViewLine2);
 
         RelativeLayout.LayoutParams LinearLayoutCategoryParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 40));
-        LinearLayoutCategoryParam.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 3));
+        LinearLayoutCategoryParam.setMargins(Misc.ToDP(GetActivity(), 5), 0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 3));
         LinearLayoutCategoryParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
 
         LinearLayout LinearLayoutCategory = new LinearLayout(GetActivity());
         LinearLayoutCategory.setLayoutParams(LinearLayoutCategoryParam);
         LinearLayoutCategory.setId(Misc.GenerateViewID());
         LinearLayoutCategory.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayoutCategory.setGravity(Misc.IsRTL() ? Gravity.END : Gravity.START);
         LinearLayoutCategory.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -746,18 +723,18 @@ class WriteUI extends FragmentBase
 
                 RelativeLayout LinearLayoutMain = new RelativeLayout(GetActivity());
                 LinearLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.GroundDark : R.color.GroundWhite);
                 LinearLayoutMain.setClickable(true);
 
                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
                 RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
-                RelativeLayoutHeader.setBackgroundResource(R.color.ActionBarWhite);
+                RelativeLayoutHeader.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.ActionBarDark : R.color.ActionBarWhite);
                 RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
                 LinearLayoutMain.addView(RelativeLayoutHeader);
 
                 RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
-                ImageViewBackParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                ImageViewBackParam.addRule(Misc.Align("R"));
 
                 ImageView ImageViewBack = new ImageView(GetActivity());
                 ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
@@ -769,12 +746,12 @@ class WriteUI extends FragmentBase
                 RelativeLayoutHeader.addView(ImageViewBack);
 
                 RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewNameParam.addRule(RelativeLayout.CENTER_VERTICAL);
-                TextViewNameParam.setMargins(Misc.ToDP(GetActivity(), 15), 0, 0, 0);
+                TextViewNameParam.addRule(Misc.Align("L"));
+                TextViewNameParam.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 15), 0);
 
-                TextView TextViewName = new TextView(GetActivity(), 18, true);
+                TextView TextViewName = new TextView(GetActivity(), 16, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
                 TextViewName.setText(GetActivity().getString(R.string.WriteUICategory));
 
                 RelativeLayoutHeader.addView(TextViewName);
@@ -784,7 +761,7 @@ class WriteUI extends FragmentBase
 
                 View ViewLine = new View(GetActivity());
                 ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundResource(R.color.Gray2);
+                ViewLine.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.LineDark : R.color.LineWhite);
                 ViewLine.setId(Misc.GenerateViewID());
 
                 LinearLayoutMain.addView(ViewLine);
@@ -841,10 +818,8 @@ class WriteUI extends FragmentBase
         RelativeLayoutMain.addView(LinearLayoutCategory);
 
         ImageView ImageViewCategory = new ImageView(GetActivity());
-        ImageViewCategory.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 40), Misc.ToDP(GetActivity(), 40)));
-        ImageViewCategory.setImageResource(R.drawable.ic_category_blue);
-
-        LinearLayoutCategory.addView(ImageViewCategory);
+        ImageViewCategory.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 40), RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageViewCategory.setImageResource(R.drawable.i_category_blue);
 
         TextView TextViewCategory = new TextView(GetActivity(), 16, false);
         TextViewCategory.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -853,21 +828,30 @@ class WriteUI extends FragmentBase
         TextViewCategory.setPadding(0, Misc.ToDP(GetActivity(), 5), 0, 0);
         TextViewCategory.setGravity(Gravity.CENTER);
 
-        LinearLayoutCategory.addView(TextViewCategory);
-
-        TextViewCategorySelect.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        TextViewCategorySelect.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         TextViewCategorySelect.setText(GetActivity().getString(R.string.WriteUICategoryNone));
         TextViewCategorySelect.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewCategorySelect.setPadding(Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 5), 0);
         TextViewCategorySelect.setGravity(Gravity.CENTER);
 
-        LinearLayoutCategory.addView(TextViewCategorySelect);
-
         ImageView ImageViewArrow = new ImageView(GetActivity());
         ImageViewArrow.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 20), RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewArrow.setImageResource(R.drawable.ic_arrow_down_blue);
 
-        LinearLayoutCategory.addView(ImageViewArrow);
+        if (Misc.IsRTL())
+        {
+            LinearLayoutCategory.addView(ImageViewArrow);
+            LinearLayoutCategory.addView(TextViewCategorySelect);
+            LinearLayoutCategory.addView(TextViewCategory);
+            LinearLayoutCategory.addView(ImageViewCategory);
+        }
+        else
+        {
+            LinearLayoutCategory.addView(ImageViewCategory);
+            LinearLayoutCategory.addView(TextViewCategory);
+            LinearLayoutCategory.addView(TextViewCategorySelect);
+            LinearLayoutCategory.addView(ImageViewArrow);
+        }
 
         RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayoutContentParam.addRule(RelativeLayout.ABOVE, LinearLayoutCategory.getId());
@@ -931,7 +915,7 @@ class WriteUI extends FragmentBase
         EditTextVote1.setHint(R.string.WriteUIChoice1);
         EditTextVote1.setBackground(DrawableDisable);
         EditTextVote1.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
-        EditTextVote1.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote1.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         EditTextVote1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
         EditTextVote1.setOnFocusChangeListener(OnFocus);
@@ -950,7 +934,7 @@ class WriteUI extends FragmentBase
         EditTextVote2.setHint(R.string.WriteUIChoice2);
         EditTextVote2.setBackground(DrawableDisable);
         EditTextVote2.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
-        EditTextVote2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         EditTextVote2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
         EditTextVote2.setOnFocusChangeListener(OnFocus);
@@ -969,7 +953,7 @@ class WriteUI extends FragmentBase
         EditTextVote3.setHint(R.string.WriteUIChoice3);
         EditTextVote3.setBackground(DrawableDisable);
         EditTextVote3.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
-        EditTextVote3.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote3.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         EditTextVote3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
         EditTextVote3.setOnFocusChangeListener(OnFocus);
@@ -989,7 +973,7 @@ class WriteUI extends FragmentBase
         EditTextVote4.setHint(R.string.WriteUIChoice4);
         EditTextVote4.setBackground(DrawableDisable);
         EditTextVote4.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
-        EditTextVote4.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote4.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         EditTextVote4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
         EditTextVote4.setOnFocusChangeListener(OnFocus);
@@ -1008,7 +992,7 @@ class WriteUI extends FragmentBase
         EditTextVote5.setHint(R.string.WriteUIChoice5);
         EditTextVote5.setBackground(DrawableDisable);
         EditTextVote5.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
-        EditTextVote5.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        EditTextVote5.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         EditTextVote5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
         EditTextVote5.setOnFocusChangeListener(OnFocus);
@@ -1023,7 +1007,7 @@ class WriteUI extends FragmentBase
 
         final TextView TextViewLength = new TextView(GetActivity(), 14, false);
         TextViewLength.setLayoutParams(TextViewLengthParam);
-        TextViewLength.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewLength.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewLength.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -1035,7 +1019,7 @@ class WriteUI extends FragmentBase
 
                 RelativeLayout LinearLayoutMain = new RelativeLayout(GetActivity());
                 LinearLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-                LinearLayoutMain.setBackgroundResource(R.color.White);
+                LinearLayoutMain.setBackgroundResource(R.color.TextDark);
                 LinearLayoutMain.setClickable(true);
 
                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
@@ -1063,7 +1047,7 @@ class WriteUI extends FragmentBase
 
                 TextView TextViewName = new TextView(GetActivity(), 16, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewName.setText(GetActivity().getString(R.string.WriteUILength));
 
                 RelativeLayoutHeader.addView(TextViewName);
@@ -1088,7 +1072,7 @@ class WriteUI extends FragmentBase
                 EditTextTime.setBackground(null);
                 EditTextTime.setGravity(Gravity.CENTER);
                 EditTextTime.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
-                EditTextTime.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                EditTextTime.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 EditTextTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 EditTextTime.setId(Misc.GenerateViewID());
                 EditTextTime.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -1126,7 +1110,7 @@ class WriteUI extends FragmentBase
                 TextView TextViewSet = new TextView(GetActivity(), 16, false);
                 TextViewSet.setLayoutParams(TextViewSetParam);
                 TextViewSet.setGravity(Gravity.CENTER);
-                TextViewSet.setTextColor(ContextCompat.getColor(GetActivity(), R.color.White));
+                TextViewSet.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextDark));
                 TextViewSet.setText(GetActivity().getString(R.string.WriteUISet));
                 TextViewSet.setBackgroundColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
                 TextViewSet.setOnClickListener(new View.OnClickListener()
@@ -1160,7 +1144,7 @@ class WriteUI extends FragmentBase
         ImageView ImageViewAddVote = new ImageView(GetActivity());
         ImageViewAddVote.setLayoutParams(ImageViewAddVoteParam);
         ImageViewAddVote.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewAddVote.setImageResource(R.drawable.ic_play);
+        ImageViewAddVote.setImageResource(R.drawable.i_plus_blue);
         ImageViewAddVote.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
         ImageViewAddVote.setOnClickListener(new View.OnClickListener()
         {
@@ -1186,7 +1170,7 @@ class WriteUI extends FragmentBase
 
         ImageViewRemoveVote.setLayoutParams(ImageViewRemoveVoteParam);
         ImageViewRemoveVote.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewRemoveVote.setImageResource(R.drawable.ic_vote_gray);
+        ImageViewRemoveVote.setImageResource(R.drawable.i_x_bluegray);
         ImageViewRemoveVote.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
         ImageViewRemoveVote.setVisibility(View.GONE);
         ImageViewRemoveVote.setOnClickListener(new View.OnClickListener()
@@ -1238,7 +1222,7 @@ class WriteUI extends FragmentBase
         TextViewFileNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewFile.getId());
 
         TextViewFileName.setLayoutParams(TextViewFileNameParam);
-        TextViewFileName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewFileName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewFileName.setId(Misc.GenerateViewID());
 
         RelativeLayoutFile.addView(TextViewFileName);
@@ -1286,7 +1270,7 @@ class WriteUI extends FragmentBase
         RelativeLayoutVideoParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         RelativeLayoutVideo.setLayoutParams(RelativeLayoutVideoParam);
-        RelativeLayoutVideo.setBackgroundResource(R.color.Black);
+        RelativeLayoutVideo.setBackgroundResource(R.color.TextWhite);
         RelativeLayoutVideo.setVisibility(View.GONE);
 
         RelativeLayoutContent.addView(RelativeLayoutVideo);
@@ -1329,13 +1313,18 @@ class WriteUI extends FragmentBase
         ImageView ImageViewEditVideo = new ImageView(GetActivity());
         ImageViewEditVideo.setLayoutParams(ImageViewEditVideoParam);
         ImageViewEditVideo.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewEditVideo.setImageResource(R.drawable.ic_remove);
-        ImageViewEditVideo.setAlpha(0.75f);
+        ImageViewEditVideo.setImageResource(R.drawable.i_compress_white);
         ImageViewEditVideo.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                if (Build.VERSION.SDK_INT < 18)
+                {
+                    Misc.Toast(GetActivity(),  GetActivity().getString(R.string.WriteUICantCompress));
+                    return;
+                }
+
                 String OldPath = SelectVideo.getAbsolutePath();
                 File CacheFolder = CacheHandler.CacheDir(GetActivity());
 
@@ -1467,7 +1456,7 @@ class WriteUI extends FragmentBase
 
         RelativeLayoutVideo.addView(ImageViewPlayVideo);
 
-        ImageViewSend.setOnClickListener(new View.OnClickListener()
+        TextViewSend.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -1534,7 +1523,7 @@ class WriteUI extends FragmentBase
                 .addMultipartParameter("Type", String.valueOf(SelectType))
                 .addMultipartParameter("Vote", Vote.toString())
                 .addMultipartParameter("World", String.valueOf(IsWorld))
-                .addHeaders("Token", SharedHandler.GetString(GetActivity(), "Token"))
+                .addHeaders("token", SharedHandler.GetString(GetActivity(), "Token"))
                 .addMultipartFile(UploadFile)
                 .setTag("WriteFragment")
                 .build()
@@ -1552,6 +1541,8 @@ class WriteUI extends FragmentBase
                     public void onResponse(String Response)
                     {
                         Progress.cancel();
+
+                        Misc.Debug("WriteUI-RequestPost: " + Response);
 
                         try
                         {
@@ -1603,46 +1594,46 @@ class WriteUI extends FragmentBase
         {
             SelectType = 0;
             ImageViewImage.setEnabled(true);
-            ImageViewImage.setImageResource(R.drawable.ic_camera);
+            ImageViewImage.setImageResource(R.drawable.i_camera_bluegray);
             ImageViewVideo.setEnabled(true);
-            ImageViewVideo.setImageResource(R.drawable.ic_vote);
+            ImageViewVideo.setImageResource(R.drawable.i_video_bluegray);
             ImageViewVote.setEnabled(true);
-            ImageViewVote.setImageResource(R.drawable.ic_link);
+            ImageViewVote.setImageResource(R.drawable.i_vote_bluegray);
             ImageViewFile.setEnabled(true);
-            ImageViewFile.setImageResource(R.drawable.ic_link);
+            ImageViewFile.setImageResource(R.drawable.i_attach_bluegray);
             return;
         }
 
         ImageViewImage.setEnabled(false);
-        ImageViewImage.setImageResource(R.drawable.ic_camera_gray);
+        ImageViewImage.setImageResource(R.drawable.i_camera_gray);
         ImageViewVideo.setEnabled(false);
-        ImageViewVideo.setImageResource(R.drawable.ic_vote_gray);
+        ImageViewVideo.setImageResource(R.drawable.i_video_gray);
         ImageViewVote.setEnabled(false);
-        ImageViewVote.setImageResource(R.drawable.ic_link);
+        ImageViewVote.setImageResource(R.drawable.i_vote_gray);
         ImageViewFile.setEnabled(false);
-        ImageViewFile.setImageResource(R.drawable.ic_link);
+        ImageViewFile.setImageResource(R.drawable.i_attach_gray);
 
         switch (type)
         {
             case 1:
                 SelectType = 1;
                 ImageViewImage.setEnabled(true);
-                ImageViewImage.setImageResource(R.drawable.ic_camera);
+                ImageViewImage.setImageResource(R.drawable.i_camera_bluegray);
             break;
             case 2:
                 SelectType = 2;
                 ImageViewVideo.setEnabled(true);
-                ImageViewVideo.setImageResource(R.drawable.ic_camera);
+                ImageViewVideo.setImageResource(R.drawable.i_video_bluegray);
             break;
             case 3:
                 SelectType = 3;
                 ImageViewVote.setEnabled(true);
-                ImageViewVote.setImageResource(R.drawable.ic_link);
+                ImageViewVote.setImageResource(R.drawable.i_vote_bluegray);
             break;
             case 4:
                 SelectType = 4;
                 ImageViewFile.setEnabled(true);
-                ImageViewFile.setImageResource(R.drawable.ic_link);
+                ImageViewFile.setImageResource(R.drawable.i_attach_bluegray);
             break;
         }
     }
@@ -1662,7 +1653,6 @@ class WriteUI extends FragmentBase
             ImageView ImageViewImage = new ImageView(GetActivity());
             ImageViewImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             ImageViewImage.setLayoutParams(ImageViewImageParam);
-            ImageViewImage.setImageURI(Uri.parse(SelectImage.get(Position)));
             ImageViewImage.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -1675,6 +1665,8 @@ class WriteUI extends FragmentBase
 
             RelativeLayoutMain.addView(ImageViewImage);
 
+            GlideApp.with(GetActivity()).load(SelectImage.get(Position)).centerCrop().thumbnail(0.1f).into(ImageViewImage);
+
             RelativeLayout.LayoutParams ImageViewRemoveParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 30), Misc.ToDP(GetActivity(), 30));
             ImageViewRemoveParam.setMargins(0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 20), 0);
             ImageViewRemoveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -1684,6 +1676,7 @@ class WriteUI extends FragmentBase
             ImageViewRemove.setLayoutParams(ImageViewRemoveParam);
             ImageViewRemove.setAlpha(0.75f);
             ImageViewRemove.setImageResource(R.drawable.ic_remove);
+            ImageViewRemove.setId(Misc.GenerateViewID());
             ImageViewRemove.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -1701,6 +1694,35 @@ class WriteUI extends FragmentBase
             });
 
             RelativeLayoutMain.addView(ImageViewRemove);
+
+            RelativeLayout.LayoutParams ImageViewCropParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 34), Misc.ToDP(GetActivity(), 34));
+            ImageViewCropParam.setMargins(0, Misc.ToDP(GetActivity(), 5), Misc.ToDP(GetActivity(), 20), 0);
+            ImageViewCropParam.addRule(RelativeLayout.BELOW, ImageViewRemove.getId());
+            ImageViewCropParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+            ImageView ImageViewCrop = new ImageView(GetActivity());
+            ImageViewCrop.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageViewCrop.setLayoutParams(ImageViewCropParam);
+            ImageViewCrop.setImageResource(R.drawable.i_crop);
+            ImageViewCrop.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    GetActivity().GetManager().OpenView(new CropViewUI(SelectImage.get(Position), new CropViewUI.OnCropListener()
+                    {
+                        @Override
+                        public void OnCrop(String Path)
+                        {
+                            SelectImage.remove(Position);
+                            SelectImage.add(Path);
+                            ViewPagerAdapterImage.notifyDataSetChanged();
+                        }
+                    }), R.id.ContainerFull, "CropViewUI");
+                }
+            });
+
+            RelativeLayoutMain.addView(ImageViewCrop);
 
             Container.addView(RelativeLayoutMain);
 
@@ -1804,22 +1826,24 @@ class WriteUI extends FragmentBase
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
             RelativeLayoutMain.setClickable(true);
 
+            RelativeLayout.LayoutParams ImageViewIconParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 45), Misc.ToDP(GetActivity(), 45));
+            ImageViewIconParam.addRule(Misc.Align("R"));
+
             ImageView ImageViewIcon = new ImageView(GetActivity());
             ImageViewIcon.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
             ImageViewIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewIcon.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 45), Misc.ToDP(GetActivity(), 45)));
+            ImageViewIcon.setLayoutParams(ImageViewIconParam);
             ImageViewIcon.setId(ID_ICON);
 
             RelativeLayoutMain.addView(ImageViewIcon);
 
             RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ID_ICON);
-            TextViewNameParam.setMargins(Misc.ToDP(GetActivity(), 15), 0, 0, 0);
+            TextViewNameParam.addRule(Misc.AlignTo("R"), ID_ICON);
             TextViewNameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
             TextView TextViewName = new TextView(GetActivity(), 16, false);
             TextViewName.setLayoutParams(TextViewNameParam);
-            TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+            TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextWhite : R.color.TextDark));
             TextViewName.setId(ID_NAME);
 
             RelativeLayoutMain.addView(TextViewName);
@@ -1829,7 +1853,7 @@ class WriteUI extends FragmentBase
 
             View ViewLine = new View(GetActivity());
             ViewLine.setLayoutParams(ViewLineParam);
-            ViewLine.setBackgroundResource(R.color.Gray);
+            ViewLine.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.LineDark : R.color.LineWhite);
             ViewLine.setId(ID_LINE);
 
             RelativeLayoutMain.addView(ViewLine);

@@ -78,7 +78,7 @@ public class VideoPreviewUI extends FragmentBase
     {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.Black);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
         RelativeLayoutMain.setClickable(true);
 
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
@@ -227,7 +227,7 @@ public class VideoPreviewUI extends FragmentBase
 
         final LoadingView LoadingViewMain = new LoadingView(GetActivity());
         LoadingViewMain.setLayoutParams(LoadingViewMainParam);
-        LoadingViewMain.SetColor(R.color.White);
+        LoadingViewMain.SetColor(R.color.TextDark);
         LoadingViewMain.SetScale(1.7f);
         LoadingViewMain.SetSize(5);
 
@@ -268,7 +268,7 @@ public class VideoPreviewUI extends FragmentBase
 
         final SeekBar SeekBarMain = new SeekBar(GetActivity(), null, android.R.attr.progressBarStyleHorizontal);
         SeekBarMain.setLayoutParams(SeekBarMainParam);
-        SeekBarMain.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(GetActivity(), R.color.White), PorterDuff.Mode.MULTIPLY));
+        SeekBarMain.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(GetActivity(), R.color.TextDark), PorterDuff.Mode.MULTIPLY));
         SeekBarMain.setMax(1000);
         SeekBarMain.setProgress(1);
 

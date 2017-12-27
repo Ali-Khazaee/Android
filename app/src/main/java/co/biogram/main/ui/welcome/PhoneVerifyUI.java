@@ -81,7 +81,7 @@ class PhoneVerifyUI extends FragmentBase
 
         RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setFocusableInTouchMode(true);
         RelativeLayoutMain.setFocusable(true);
         RelativeLayoutMain.setClickable(true);
@@ -440,7 +440,7 @@ class PhoneVerifyUI extends FragmentBase
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setId(Misc.GenerateViewID());
         TextViewMessage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
@@ -843,7 +843,7 @@ class PhoneVerifyUI extends FragmentBase
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);
-        LoadingViewNext.SetColor(R.color.White);
+        LoadingViewNext.SetColor(R.color.TextDark);
 
         RelativeLayoutNext.addView(LoadingViewNext);
 

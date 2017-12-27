@@ -54,7 +54,7 @@ public class GalleryViewUI extends FragmentBase
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
@@ -71,7 +71,7 @@ public class GalleryViewUI extends FragmentBase
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_blue_rtl : R.drawable.ic_back_blue);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.i_back_blue_rtl : R.drawable.i_back_blue);
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
@@ -495,7 +495,7 @@ public class GalleryViewUI extends FragmentBase
 
                 TextView TextViewName = new TextView(GetActivity(), 14, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Black));
+                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewName.setId(ID1_NAME);
 
                 RelativeLayoutMain.addView(TextViewName);

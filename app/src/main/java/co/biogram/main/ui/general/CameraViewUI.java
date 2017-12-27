@@ -22,7 +22,7 @@ public class CameraViewUI extends FragmentBase
     {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.Black);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
 
         FrameLayout FrameLayoutMain = new FrameLayout(GetActivity());
         FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
