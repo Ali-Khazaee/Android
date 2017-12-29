@@ -54,7 +54,7 @@ public class CropViewUI extends FragmentBase
         ImageViewDone.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
         ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
-        ImageViewDone.setImageResource(R.drawable.ic_done_white);
+        ImageViewDone.setImageResource(R.drawable.done_white);
         ImageViewDone.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -93,7 +93,7 @@ public class CropViewUI extends FragmentBase
         ImageViewClose.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
         ImageViewClose.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewClose.setLayoutParams(ImageViewCloseParam);
-        ImageViewClose.setImageResource(R.drawable.ic_close_white);
+        ImageViewClose.setImageResource(R.drawable.close_white);
         ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutMain.addView(ImageViewClose);

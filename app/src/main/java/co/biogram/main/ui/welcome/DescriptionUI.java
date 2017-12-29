@@ -140,7 +140,7 @@ public class DescriptionUI extends FragmentBase
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.GenerateViewID());
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
@@ -188,7 +188,7 @@ public class DescriptionUI extends FragmentBase
         CircleImageViewProfile = new CircleImageView(GetActivity());
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.setId(Misc.GenerateViewID());
-        CircleImageViewProfile.setImageResource(R.drawable.ic_person_blue);
+        CircleImageViewProfile.setImageResource(R.drawable.person_blue);
         CircleImageViewProfile.SetBorderColor(R.color.Gray);
         CircleImageViewProfile.SetBorderWidth(2);
         CircleImageViewProfile.setPadding(Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 2));
@@ -238,7 +238,7 @@ public class DescriptionUI extends FragmentBase
                         }
 
                         PermissionDialog PermissionDialogCamera = new PermissionDialog(GetActivity());
-                        PermissionDialogCamera.SetContentView(R.drawable.ic_permission_camera, GetActivity().getString(R.string.DescriptionUIPermissionCamera), new PermissionDialog.OnSelectedListener()
+                        PermissionDialogCamera.SetContentView(R.drawable.permission_camera_white, GetActivity().getString(R.string.DescriptionUIPermissionCamera), new PermissionDialog.OnSelectedListener()
                         {
                             @Override
                             public void OnSelected(boolean Allow)
@@ -319,7 +319,7 @@ public class DescriptionUI extends FragmentBase
                         }
 
                         PermissionDialog PermissionDialogGallery = new PermissionDialog(GetActivity());
-                        PermissionDialogGallery.SetContentView(R.drawable.ic_permission_storage, GetActivity().getString(R.string.DescriptionUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                        PermissionDialogGallery.SetContentView(R.drawable.permission_storage_white, GetActivity().getString(R.string.DescriptionUIPermissionStorage), new PermissionDialog.OnSelectedListener()
                         {
                             @Override
                             public void OnSelected(boolean Allow)
@@ -392,7 +392,7 @@ public class DescriptionUI extends FragmentBase
                     @Override
                     public void onClick(View v)
                     {
-                        CircleImageViewProfile.setImageResource(R.drawable.ic_person_blue);
+                        CircleImageViewProfile.setImageResource(R.drawable.person_blue);
                         DialogProfile.dismiss();
                         ProfileFile = null;
                     }
@@ -894,7 +894,7 @@ public class DescriptionUI extends FragmentBase
         ImageViewDone.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
         ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
-        ImageViewDone.setImageResource(R.drawable.ic_done_white);
+        ImageViewDone.setImageResource(R.drawable.done_white);
         ImageViewDone.setOnClickListener(new View.OnClickListener()
         {
             @Override

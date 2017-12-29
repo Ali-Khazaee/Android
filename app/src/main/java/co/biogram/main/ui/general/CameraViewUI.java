@@ -47,7 +47,7 @@ public class CameraViewUI extends FragmentBase
 
         final ImageView ImageViewPick = new ImageView(GetActivity());
         ImageViewPick.setLayoutParams(ImageViewPickParam);
-        ImageViewPick.setImageResource(R.drawable.ic_camera_pick);
+        ImageViewPick.setImageResource(R.drawable.camera_pick_white);
         ImageViewPick.setId(Misc.GenerateViewID());
         ImageViewPick.setOnClickListener(new View.OnClickListener()
         {
@@ -105,7 +105,7 @@ public class CameraViewUI extends FragmentBase
 
         final ImageView ImageViewFlash = new ImageView(GetActivity());
         ImageViewFlash.setLayoutParams(ImageViewFlashParam);
-        ImageViewFlash.setImageResource(R.drawable.ic_camera_flash_auto);
+        ImageViewFlash.setImageResource(R.drawable.flash_auto_white);
         ImageViewFlash.setPadding(Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14));
         ImageViewFlash.setOnClickListener(new View.OnClickListener()
         {
@@ -114,9 +114,9 @@ public class CameraViewUI extends FragmentBase
             {
                 switch (Camera.SwitchFlash())
                 {
-                    case 0: ImageViewFlash.setImageResource(R.drawable.ic_camera_flash_auto); break;
-                    case 1: ImageViewFlash.setImageResource(R.drawable.ic_camera_flash_on); break;
-                    case 2: ImageViewFlash.setImageResource(R.drawable.ic_camera_flash_off); break;
+                    case 0: ImageViewFlash.setImageResource(R.drawable.flash_auto_white); break;
+                    case 1: ImageViewFlash.setImageResource(R.drawable.flash_on_white); break;
+                    case 2: ImageViewFlash.setImageResource(R.drawable.flash_off_white); break;
                 }
             }
         });
@@ -129,7 +129,7 @@ public class CameraViewUI extends FragmentBase
 
         ImageView ImageViewSwitch = new ImageView(GetActivity());
         ImageViewSwitch.setLayoutParams(ImageViewSwitchParam);
-        ImageViewSwitch.setImageResource(R.drawable.ic_camera_switch);
+        ImageViewSwitch.setImageResource(R.drawable.camera_switch_white);
         ImageViewSwitch.setPadding(Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14));
         ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Camera.SwitchCamera(); } });
 

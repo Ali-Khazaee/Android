@@ -54,7 +54,7 @@ public class GalleryViewUI extends FragmentBase
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.GroundDark : R.color.GroundWhite);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
@@ -71,7 +71,7 @@ public class GalleryViewUI extends FragmentBase
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.i_back_blue_rtl : R.drawable.i_back_blue);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
@@ -132,7 +132,7 @@ public class GalleryViewUI extends FragmentBase
         ImageViewList.setLayoutParams(ImageViewListParam);
         ImageViewList.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewList.setPadding(Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 3));
-        ImageViewList.setImageResource(R.drawable.ic_arrow_down_blue);
+        ImageViewList.setImageResource(R.drawable.arrow_down_blue);
 
         if (GalleryType != 3)
             RelativeLayoutHeader.addView(ImageViewList);
@@ -144,7 +144,7 @@ public class GalleryViewUI extends FragmentBase
         ImageViewSave.setLayoutParams(ImageViewSaveParam);
         ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSave.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
-        ImageViewSave.setImageResource(R.drawable.ic_done_blue);
+        ImageViewSave.setImageResource(R.drawable.done_blue);
         ImageViewSave.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -163,7 +163,7 @@ public class GalleryViewUI extends FragmentBase
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.LineDark : R.color.LineWhite);
         ViewLine.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -476,16 +476,16 @@ public class GalleryViewUI extends FragmentBase
             {
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
                 RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 57)));
+                RelativeLayoutMain.setBackgroundResource(Misc.IsDark(GetActivity()) ? R.color.GroundDark : R.color.GroundWhite);
                 RelativeLayoutMain.setId(ID1_MAIN);
 
                 CircleImageView CircleImageViewIcon = new CircleImageView(GetActivity());
                 CircleImageViewIcon.setLayoutParams(new RecyclerView.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56)));
                 CircleImageViewIcon.setPadding(Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 8));
-                CircleImageViewIcon.setImageResource(R.drawable.ic_comment);
+                CircleImageViewIcon.setImageResource(R.drawable.comment_bluegray);
                 CircleImageViewIcon.SetCircleBackgroundColor(R.color.Gray);
                 CircleImageViewIcon.setId(Misc.GenerateViewID());
                 CircleImageViewIcon.SetWidthPadding();
-                CircleImageViewIcon.SetBorderWidth(1);
 
                 RelativeLayoutMain.addView(CircleImageViewIcon);
 
@@ -495,7 +495,7 @@ public class GalleryViewUI extends FragmentBase
 
                 TextView TextViewName = new TextView(GetActivity(), 14, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.TextDark : R.color.TextWhite));
                 TextViewName.setId(ID1_NAME);
 
                 RelativeLayoutMain.addView(TextViewName);
@@ -505,7 +505,7 @@ public class GalleryViewUI extends FragmentBase
 
                 View ViewLine = new View(GetActivity());
                 ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundResource(R.color.Gray);
+                ViewLine.setBackgroundResource( Misc.IsDark(GetActivity()) ? R.color.LineDark : R.color.LineWhite);
 
                 RelativeLayoutMain.addView(ViewLine);
 

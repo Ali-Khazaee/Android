@@ -64,7 +64,7 @@ public class SocialActivity extends FragmentActivity
         ImageView ImageViewChat = new ImageView(this);
         ImageViewChat.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
         ImageViewChat.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewChat.setImageResource(R.drawable.ic_chat_gray);
+        ImageViewChat.setImageResource(R.drawable.chat_gray);
         ImageViewChat.setPadding(Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15), Misc.ToDP(this, 15));
         ImageViewChat.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { /* TODO Change Activity To Chat */ } });
 
@@ -143,10 +143,10 @@ public class SocialActivity extends FragmentActivity
 
     private void ChangePage(int Page)
     {
-        ImageViewInbox.setImageResource(R.drawable.ic_inbox_gray);
-        ImageViewMoment.setImageResource(R.drawable.ic_moment_gray);
-        ImageViewNotification.setImageResource(NotificationEnable ? R.drawable.ic_notification_gray2 : R.drawable.ic_notification_gray);
-        ImageViewProfile.setImageResource(R.drawable.ic_profile_gray);
+        ImageViewInbox.setImageResource(R.drawable.inbox_gray);
+        ImageViewMoment.setImageResource(R.drawable.moment_gray);
+        ImageViewNotification.setImageResource(NotificationEnable ? R.drawable.notification_dot_gray : R.drawable.notification_gray);
+        ImageViewProfile.setImageResource(R.drawable.profile_gray);
 
         String Tag;
         FragmentBase Fragment;
@@ -156,23 +156,23 @@ public class SocialActivity extends FragmentActivity
             default:
                 Tag = "InboxUI";
                 Fragment = new InboxUI();
-                ImageViewInbox.setImageResource(R.drawable.ic_inbox_blue);
+                ImageViewInbox.setImageResource(R.drawable.inbox_blue);
                 break;
             case 2:
                 Tag = "MomentUI";
                 Fragment = new MomentUI();
-                ImageViewMoment.setImageResource(R.drawable.ic_moment_blue);
+                ImageViewMoment.setImageResource(R.drawable.moment_blue);
                 break;
             case 3:
                 Tag = "NotificationUI";
                 Fragment = new NotificationUI();
                 NotificationEnable = false;
-                ImageViewNotification.setImageResource(R.drawable.ic_notification_gray);
+                ImageViewNotification.setImageResource(R.drawable.notification_gray);
                 break;
             case 4:
                 Tag = "ProfileUI";
                 Fragment = new ProfileUI();
-                ImageViewProfile.setImageResource(R.drawable.ic_profile_blue);
+                ImageViewProfile.setImageResource(R.drawable.profile_blue);
                 break;
         }
 

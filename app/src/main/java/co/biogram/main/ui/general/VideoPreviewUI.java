@@ -95,7 +95,7 @@ public class VideoPreviewUI extends FragmentBase
         ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().onBackPressed(); } });
 
@@ -120,7 +120,7 @@ public class VideoPreviewUI extends FragmentBase
         ImageViewDownload.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDownload.setId(Misc.GenerateViewID());
         ImageViewDownload.setLayoutParams(ImageViewDownloadParam);
-        ImageViewDownload.setImageResource(R.drawable.ic_download_white);
+        ImageViewDownload.setImageResource(R.drawable.download_white);
         ImageViewDownload.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -133,7 +133,7 @@ public class VideoPreviewUI extends FragmentBase
                 CharSequence Name = DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime());
                 final NotificationManager NotifyManager = (NotificationManager) GetActivity().getSystemService(Context.NOTIFICATION_SERVICE);
                 final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(GetActivity(), "BiogramVideo");
-                NotifyBuilder.setContentTitle("Biogram Video Download").setContentText("Download in progress").setSmallIcon(R.drawable.ic_download_white);
+                NotifyBuilder.setContentTitle("Biogram Video Download").setContentText("Download in progress").setSmallIcon(R.drawable.download_white);
 
                 File Download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                 Download.mkdir();
@@ -244,7 +244,7 @@ public class VideoPreviewUI extends FragmentBase
         ImageViewPlay.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
         ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewPlay.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56)));
-        ImageViewPlay.setImageResource(R.drawable.ic_pause);
+        ImageViewPlay.setImageResource(R.drawable.pause_white);
         ImageViewPlay.setId(Misc.GenerateViewID());
 
         RelativeLayoutControl.addView(ImageViewPlay);
@@ -299,7 +299,7 @@ public class VideoPreviewUI extends FragmentBase
                 {
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     RelativeLayoutControl.setVisibility(View.VISIBLE);
-                    ImageViewPlay.setImageResource(R.drawable.ic_play_white);
+                    ImageViewPlay.setImageResource(R.drawable.play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
                     SimpleExoPlayerViewMain.removeCallbacks(runnable);
                 }
@@ -307,7 +307,7 @@ public class VideoPreviewUI extends FragmentBase
                 {
                     RelativeLayoutHeader.setVisibility(View.GONE);
                     RelativeLayoutControl.setVisibility(View.GONE);
-                    ImageViewPlay.setImageResource(R.drawable.ic_pause);
+                    ImageViewPlay.setImageResource(R.drawable.pause_white);
                     SimpleExoPlayerMain.setPlayWhenReady(true);
                     SimpleExoPlayerViewMain.post(runnable);
                 }
@@ -375,7 +375,7 @@ public class VideoPreviewUI extends FragmentBase
                     SeekBarMain.setProgress(1000);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     RelativeLayoutControl.setVisibility(View.VISIBLE);
-                    ImageViewPlay.setImageResource(R.drawable.ic_play_white);
+                    ImageViewPlay.setImageResource(R.drawable.play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
                     SeekBarMain.setProgress(0);
                     SimpleExoPlayerMain.seekTo(0);
@@ -423,7 +423,7 @@ public class VideoPreviewUI extends FragmentBase
                 {
                     RelativeLayoutControl.setVisibility(View.VISIBLE);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
-                    ImageViewPlay.setImageResource(R.drawable.ic_play_white);
+                    ImageViewPlay.setImageResource(R.drawable.play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
                     SimpleExoPlayerViewMain.removeCallbacks(runnable);
                 }
@@ -431,7 +431,7 @@ public class VideoPreviewUI extends FragmentBase
                 {
                     RelativeLayoutControl.setVisibility(View.GONE);
                     RelativeLayoutHeader.setVisibility(View.GONE);
-                    ImageViewPlay.setImageResource(R.drawable.ic_pause);
+                    ImageViewPlay.setImageResource(R.drawable.pause_white);
                     SimpleExoPlayerMain.setPlayWhenReady(true);
                     SimpleExoPlayerViewMain.post(runnable);
                 }

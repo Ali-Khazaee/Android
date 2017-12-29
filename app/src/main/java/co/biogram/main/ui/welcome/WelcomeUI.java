@@ -116,7 +116,7 @@ public class WelcomeUI extends FragmentBase
 
                 ImageView ImageViewClose = new ImageView(GetActivity());
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
-                ImageViewClose.setImageResource(R.drawable.ic_close_blue);
+                ImageViewClose.setImageResource(R.drawable.close_blue);
                 ImageViewClose.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); } });
 
@@ -174,7 +174,7 @@ public class WelcomeUI extends FragmentBase
 
         ImageView ImageViewLanguage = new ImageView(GetActivity());
         ImageViewLanguage.setLayoutParams(ImageViewLanguageParam);
-        ImageViewLanguage.setImageResource(R.drawable.ic_option_white);
+        ImageViewLanguage.setImageResource(R.drawable.option_white);
 
         RelativeLayoutLanguage.addView(ImageViewLanguage);
 
@@ -303,7 +303,7 @@ public class WelcomeUI extends FragmentBase
 
         ImageView ImageViewGoogle = new ImageView(GetActivity());
         ImageViewGoogle.setLayoutParams(ImageViewGoogleParam);
-        ImageViewGoogle.setBackgroundResource(R.drawable.ic_google);
+        ImageViewGoogle.setBackgroundResource(R.drawable.google);
 
         LinearLayoutGoogle.addView(ImageViewGoogle);
 

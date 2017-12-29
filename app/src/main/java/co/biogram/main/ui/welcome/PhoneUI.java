@@ -119,7 +119,7 @@ class PhoneUI extends FragmentBase
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -226,7 +226,7 @@ class PhoneUI extends FragmentBase
 
                 ImageView ImageViewClose = new ImageView(GetActivity());
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
-                ImageViewClose.setImageResource(R.drawable.ic_close_blue);
+                ImageViewClose.setImageResource(R.drawable.close_blue);
                 ImageViewClose.setPadding(Misc.ToDP(GetActivity(), 9), Misc.ToDP(GetActivity(), 9), Misc.ToDP(GetActivity(), 9), Misc.ToDP(GetActivity(), 9));
                 ImageViewClose.setId(Misc.GenerateViewID());
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
@@ -440,7 +440,7 @@ class PhoneUI extends FragmentBase
                 }
 
                 PermissionDialog PermissionDialogSMS = new PermissionDialog(GetActivity());
-                PermissionDialogSMS.SetContentView(R.drawable.ic_permission_sms, GetActivity().getString(R.string.PhoneUIPermission), new PermissionDialog.OnSelectedListener()
+                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, GetActivity().getString(R.string.PhoneUIPermission), new PermissionDialog.OnSelectedListener()
                 {
                     @Override
                     public void OnSelected(boolean Allow)

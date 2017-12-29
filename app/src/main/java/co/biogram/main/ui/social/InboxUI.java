@@ -46,7 +46,7 @@ public class InboxUI extends FragmentBase
         ImageViewWrite.setLayoutParams(ImageViewAddParam);
         ImageViewWrite.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewWrite.setId(Misc.GenerateViewID());
-        ImageViewWrite.setImageResource(R.drawable.ic_write_plus);
+        ImageViewWrite.setImageResource(R.drawable.write_plus_blue);
         ImageViewWrite.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
         ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new WriteUI(), R.id.ContainerFull, "WriteUI"); } });
 
@@ -84,7 +84,7 @@ public class InboxUI extends FragmentBase
         ImageViewBookmark.setLayoutParams(ImageViewBookmarkParam);
         ImageViewBookmark.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBookmark.setId(Misc.GenerateViewID());
-        ImageViewBookmark.setImageResource(R.drawable.ic_bookmark_blue);
+        ImageViewBookmark.setImageResource(R.drawable.bookmark_blue);
         ImageViewBookmark.setPadding(Misc.ToDP(GetActivity(), 16), Misc.ToDP(GetActivity(), 16), Misc.ToDP(GetActivity(), 16), Misc.ToDP(GetActivity(), 16));
         ImageViewBookmark.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  } });
 

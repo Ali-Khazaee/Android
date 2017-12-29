@@ -186,7 +186,7 @@ public class ImagePreviewUI extends FragmentBase
         ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.ic_back_white_rtl : R.drawable.ic_back_white);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().onBackPressed(); } });
 
@@ -214,7 +214,7 @@ public class ImagePreviewUI extends FragmentBase
             ImageViewDone.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
             ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone.setLayoutParams(ImageViewDoneParam);
-            ImageViewDone.setImageResource(R.drawable.ic_done_white);
+            ImageViewDone.setImageResource(R.drawable.done_white);
             ImageViewDone.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -248,7 +248,7 @@ public class ImagePreviewUI extends FragmentBase
             ImageViewDone2.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
             ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone2.setLayoutParams(ImageViewDone2Param);
-            ImageViewDone2.setImageResource(R.drawable.ic_done_white);
+            ImageViewDone2.setImageResource(R.drawable.done_white);
             ImageViewDone2.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -345,7 +345,7 @@ public class ImagePreviewUI extends FragmentBase
             ImageViewOption.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
             ImageViewOption.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewOption.setLayoutParams(ImageViewOptionParam);
-            ImageViewOption.setImageResource(R.drawable.ic_more_white);
+            ImageViewOption.setImageResource(R.drawable.more_white);
             ImageViewOption.setOnClickListener(new View.OnClickListener()
             {
                 @Override

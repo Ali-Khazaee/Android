@@ -318,7 +318,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageiewOption.setLayoutParams(ImageiewOptionParam);
             ImageiewOption.setId(ID1_OPTION);
             ImageiewOption.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 5),  Misc.ToDP(Activity, 5));
-            ImageiewOption.setImageResource(R.drawable.ic_option_gray);
+            ImageiewOption.setImageResource(R.drawable.option_bluegray);
 
             RelativeLayoutMain.addView(ImageiewOption);
 
@@ -712,7 +712,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewFile = new ImageView(Activity);
             ImageViewFile.setLayoutParams(ImageViewFileParam);
             ImageViewFile.setPadding(Misc.ToDP(Activity, 12), Misc.ToDP(Activity, 12), Misc.ToDP(Activity, 12), Misc.ToDP(Activity, 12));
-            ImageViewFile.setImageResource(R.drawable.ic_download_white);
+            ImageViewFile.setImageResource(R.drawable.download_white);
             ImageViewFile.setId(Misc.GenerateViewID());
             ImageViewFile.setBackground(DrawableFile);
             ImageViewFile.setId(ID1_FILE_DOWNLOAD);
@@ -772,7 +772,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewLike = new ImageView(Activity);
             ImageViewLike.setLayoutParams(ImageViewLikeParam);
             ImageViewLike.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3));
-            ImageViewLike.setImageResource(R.drawable.ic_like);
+            ImageViewLike.setImageResource(R.drawable.like_bluegray);
             ImageViewLike.setId(ID1_LIKE);
 
             RelativeLayoutTool.addView(ImageViewLike);
@@ -797,7 +797,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewReplay = new ImageView(Activity);
             ImageViewReplay.setLayoutParams(ImageViewReplayParam);
             ImageViewReplay.setPadding(Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4));
-            ImageViewReplay.setImageResource(R.drawable.ic_replay);
+            ImageViewReplay.setImageResource(R.drawable.replay_bluegray);
             ImageViewReplay.setId(ID1_REPLAY);
 
             RelativeLayoutTool.addView(ImageViewReplay);
@@ -808,7 +808,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewComment = new ImageView(Activity);
             ImageViewComment.setLayoutParams(ImageViewCommentParam);
             ImageViewComment.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3));
-            ImageViewComment.setImageResource(R.drawable.ic_comment);
+            ImageViewComment.setImageResource(R.drawable.comment_bluegray);
             ImageViewComment.setId(ID1_COMMENT);
 
             RelativeLayoutTool.addView(ImageViewComment);
@@ -832,7 +832,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewForward = new ImageView(Activity);
             ImageViewForward.setLayoutParams(ImageViewForwardParam);
             ImageViewForward.setPadding(Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4));
-            ImageViewForward.setImageResource(R.drawable.ic_chat);
+            ImageViewForward.setImageResource(R.drawable.chat_bluegray);
             ImageViewForward.setId(ID1_FORWARD);
 
             RelativeLayoutTool.addView(ImageViewForward);
@@ -868,7 +868,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewClose = new ImageView(Activity);
             ImageViewClose.setLayoutParams(ImageViewCloseParam);
             ImageViewClose.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ImageViewClose.setImageResource(Misc.IsDark(Activity) ? R.drawable.ic_option_white : R.drawable.ic_option_gray);
+            ImageViewClose.setImageResource(Misc.IsDark(Activity) ? R.drawable.option_white : R.drawable.option_bluegray);
             ImageViewClose.setPadding(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8) , Misc.ToDP(Activity, 8));
             ImageViewClose.setId(ID2_CLOSE);
 
@@ -1025,7 +1025,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleViewPopular.SetMessageColor(R.color.BlueLight);
             CircleViewPopular.SetStrokeColor(R.color.BlueLight);
             CircleViewPopular.SetStrokeWidth(1);
-            CircleViewPopular.SetBitmap(R.drawable.ic_popular_blue, 24);
+            CircleViewPopular.SetBitmap(R.drawable.popular_blue, 24);
             CircleViewPopular.InvalidateTextPaints();
 
             LinearLayoutMore.addView(CircleViewPopular);
@@ -1049,7 +1049,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleImageViewMedal.SetBorderWidth(1);
             CircleImageViewMedal.SetWidthPadding();
             CircleImageViewMedal.setPadding(Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10));
-            CircleImageViewMedal.setImageResource(R.drawable.ic_write_plus);
+            CircleImageViewMedal.setImageResource(R.drawable.write_plus_blue);
 
             LinearLayoutMore.addView(CircleImageViewMedal);
 
@@ -1312,7 +1312,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                 ImageView ImageViewClose = new ImageView(Activity);
                                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
-                                ImageViewClose.setImageResource(R.drawable.ic_close_blue);
+                                ImageViewClose.setImageResource(R.drawable.close_blue);
                                 ImageViewClose.setPadding(Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6));
                                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); } });
 
@@ -1457,12 +1457,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 if (PostList.get(Position).IsLike)
                 {
                     Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.RedLike));
-                    GlideApp.with(Activity).load(R.drawable.ic_like_red).into(Holder.ImageViewLike);
+                    GlideApp.with(Activity).load(R.drawable.like_red).into(Holder.ImageViewLike);
                 }
                 else
                 {
                     Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray));
-                    GlideApp.with(Activity).load(R.drawable.ic_like).into(Holder.ImageViewLike);
+                    GlideApp.with(Activity).load(R.drawable.like_bluegray).into(Holder.ImageViewLike);
                 }
 
                 Holder.ImageViewLike.setOnClickListener(new View.OnClickListener()
@@ -1473,7 +1473,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         if (PostList.get(Position).IsLike)
                         {
                             Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray));
-                            Holder.ImageViewLike.setImageResource(R.drawable.ic_like);
+                            Holder.ImageViewLike.setImageResource(R.drawable.like_bluegray);
 
                             ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
                             Fade.setDuration(200);
@@ -1490,7 +1490,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         else
                         {
                             Holder.TextViewLikeCount.setTextColor(ContextCompat.getColor(Activity, R.color.RedLike));
-                            Holder.ImageViewLike.setImageResource(R.drawable.ic_like_red);
+                            Holder.ImageViewLike.setImageResource(R.drawable.like_red);
 
                             ObjectAnimator SizeX = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1.5f);
                             SizeX.setDuration(200);
@@ -1585,7 +1585,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         Anim.start();
 
                         IsMore = false;
-                        Holder.ImageViewClose.setImageResource(Misc.IsDark(Activity) ? R.drawable.ic_close_white : R.drawable.ic_close_gray);
+                        Holder.ImageViewClose.setImageResource(Misc.IsDark(Activity) ? R.drawable.close_white : R.drawable.close_gray);
                         Holder.ImageViewClose.setPadding(0, 0, 0, 0);
                     }
                     else
