@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.CacheHandler;
+import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.service.SocketService;
 
@@ -34,6 +35,8 @@ public class App extends Application
         LeakCanary.install(this);
 
         Context context = getApplicationContext();
+
+        Misc.SetUp(context);
 
         startService(new Intent(context, SocketService.class));
 

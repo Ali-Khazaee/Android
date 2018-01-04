@@ -9,7 +9,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import co.biogram.main.R;
@@ -17,6 +27,7 @@ import co.biogram.main.fragment.FragmentBase;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.PostAdapter;
 import co.biogram.main.handler.OnScrollRecyclerView;
+import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.TextView;
 
 public class InboxUI extends FragmentBase
@@ -105,28 +116,12 @@ public class InboxUI extends FragmentBase
 
         LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
 
-        String I1 = "[ \"http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg\" ]";
-        String I2 = "[ \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg\" ]";
-        String I3 = "[ \"http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg\", \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg\" ]";
-        String I4 = "[ \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"152\", \"http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_1mb.mp4\" ]";
-        String I6 = "{ \"File\": \"http://www.sample-videos.com/img/Sample-png-image-100kb.png\", \"Name\" : \"ali_pdf.zip\", \"Detail\": \"13MB / ZIP\" }";
-        String I5 = "{ \"Vote\" : \"1\", \"Total\" : \"67\", \"V1\" : \"Ali Khobe ?\", \"V2\" : \"Ali Bade ?\" , \"V3\" : \"Ali Gav e ?\", \"V1V\" : \"22\", \"V2V\" : \"34\" , \"V3V\" : \"11\" }";
-
         PostList.add(new PostAdapter.PostStruct(0));
-        PostList.add(new PostAdapter.PostStruct(2));
-        PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@mohammad", 1512525803, "Post e Jadid e Man\n #NewPost\n#GoodLuck", 1, I1, true, 100, true, 341));
-        PostList.add(new PostAdapter.PostStruct("https://image.flaticon.com/icons/png/128/310/310831.png", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@ali", 1512325803, "پوست جدید من \n #NewPost\n#GoodLuck", 1,I2, false, 521, true, 18));
-        PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@alireza", 1512125803, "  \n #News \n #Good پوست جدید من", 1, I3, false, 521, false, 18));
-        PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "", "@alireza", 1511525803, "با سلام\nدوستان گلم #Ali هشتگ #علی سلام", 2, I4, false, 231, true, 412));
-        PostList.add(new PostAdapter.PostStruct("http://www.sample-videos.com/img/Sample-jpg-image-50kb.jpg", "File Am", "https://image.flaticon.com/icons/png/128/310/310831.png", "@manfileam", 1511525803, "#File_To_File", 4, I6, false, 6812, true, 8541));
-        PostList.add(new PostAdapter.PostStruct("", "Ali Khazaee", "https://image.flaticon.com/icons/png/128/310/310831.png", "@alireza", 1511525803, "با سلام\nدوستان گلم #Ali هشتگ #علی سلام", 3, I5, false, 231, true, 412));
-
         AdapterMain = new PostAdapter(GetActivity(), PostList, new PostAdapter.PullToRefreshListener()
         {
             @Override
             public void OnRefresh()
             {
-                PostList.add(new PostAdapter.PostStruct(2));
                 AdapterMain.SetRefreshComplete();
             }
         });
@@ -136,7 +131,7 @@ public class InboxUI extends FragmentBase
             @Override
             public boolean onTouchEvent(MotionEvent e)
             {
-                AdapterMain.GetPullToRefreshView().onTouchEvent(e);
+                //AdapterMain.GetPullToRefreshView().onTouchEvent(e);
                 return super.onTouchEvent(e);
             }
         };
@@ -149,10 +144,13 @@ public class InboxUI extends FragmentBase
             public void OnLoadMore()
             {
                 Misc.Debug("OnLoadMore Called");
+                UpdatePost();
             }
         });
 
         RelativeLayoutMain.addView(RecyclerViewMain);
+
+        UpdatePost();
 
         ViewMain = RelativeLayoutMain;
     }
@@ -162,5 +160,150 @@ public class InboxUI extends FragmentBase
     {
         if (Build.VERSION.SDK_INT > 20)
             GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), Misc.IsDark(GetActivity()) ? R.color.StatusBarDark : R.color.StatusBarWhite));
+    }
+
+    @Override
+    public void OnPause()
+    {
+        AndroidNetworking.forceCancel("InboxUI");
+    }
+
+    private void UpdatePost()
+    {
+        AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
+        .addBodyParameter("Skip", String.valueOf(PostAdapter.Size(PostList)))
+        .addHeaders("Token", SharedHandler.GetString(GetActivity(), "Token"))
+        .setTag("InboxUI")
+        .build()
+        .getAsString(new StringRequestListener()
+        {
+            @Override
+            public void onResponse(String Response)
+            {
+                Misc.Debug(Response);
+                try
+                {
+                    JSONObject Result = new JSONObject(Response);
+
+                    if (Result.getInt("Message") == 0)
+                    {
+                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                        for (int K = 0; K < ResultList.length(); K++)
+                        {
+                            JSONObject D = ResultList.getJSONObject(K);
+
+                            PostAdapter.PostStruct P = new PostAdapter.PostStruct();
+                            P.ID = D.getString("ID");
+
+                            if (!D.isNull("Profile"))
+                                P.Profile = D.getString("Profile");
+
+                            P.Name = D.getString("Name");
+
+                            if (!D.isNull("Medal"))
+                                P.Medal = D.getString("Medal");
+
+                            P.Username = D.getString("Username");
+                            P.Time = D.getInt("Time");
+
+                            if (!D.isNull("Message"))
+                                P.Message = D.getString("Message");
+
+                            if (D.getInt("Type") != 0)
+                            {
+                                P.DataType = D.getInt("Type");
+                                P.Data = D.getString("Data");
+                            }
+
+                            P.Owner = D.getString("Owner");
+
+                            if (!D.isNull("View"))
+                                P.View = D.getInt("View");
+
+                            P.Category = D.getInt("Category");
+                            P.LikeCount = D.getInt("LikeCount");
+                            P.CommentCount = D.getInt("CommentCount");
+                            P.IsLike = D.getInt("Like") != 0;
+                            P.IsFollow = D.getInt("Follow") != 0;
+
+                            if (!D.isNull("Comment"))
+                                P.IsComment = D.getInt("Comment") != 0;
+
+                            P.IsBookmark = D.getInt("Bookmark") != 0;
+
+                            PostList.add(P);
+                        }
+
+                        Collections.sort(PostList, new Comparator<PostAdapter.PostStruct>()
+                        {
+                            @Override
+                            public int compare(PostAdapter.PostStruct P1, PostAdapter.PostStruct P2)
+                            {
+                                int V = 0;
+
+                                if (P1.Time < P2.Time)
+                                    V = 1;
+                                else if (P1.Time > P2.Time)
+                                    V = -1;
+
+                                return V;
+                            }
+                        });
+
+                        AdapterMain.notifyDataSetChanged();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Misc.Debug("InboxUI-UpdateList: " + e.toString());
+                }
+            }
+
+            @Override
+            public void onError(ANError e)
+            {
+                Misc.Debug("InboxUI-UpdateList: " + e.toString());
+            }
+        });
+    }
+
+    void Update(JSONObject D)
+    {
+        try
+        {
+            PostAdapter.PostStruct P = new PostAdapter.PostStruct();
+            P.ID = D.getString("_id");
+            P.Profile = SharedHandler.GetString(GetActivity(), "Avatar");
+            P.Name = SharedHandler.GetString(GetActivity(), "Name");
+            P.Medal = SharedHandler.GetString(GetActivity(), "Medal");
+            P.Username = SharedHandler.GetString(GetActivity(), "Username");
+            P.Time = D.getInt("Time");
+
+            if (!D.isNull("Message"))
+                P.Message = D.getString("Message");
+
+            if (D.getInt("Type") != 0)
+            {
+                P.DataType = D.getInt("Type");
+                P.Data = D.getString("Data");
+            }
+
+            P.Owner = D.getString("Owner");
+            P.View = 0;
+            P.Category = D.getInt("Category");
+            P.LikeCount = 0;
+            P.CommentCount = 0;
+            P.IsLike = false;
+            P.IsFollow = false;
+            P.IsComment = false;
+            P.IsBookmark = false;
+
+            PostList.add(1, P);
+        }
+        catch (Exception e)
+        {
+            Misc.Debug("InboxUI-Update: " + e.toString());
+        }
     }
 }

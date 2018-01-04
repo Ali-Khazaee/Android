@@ -226,5 +226,6 @@
     <string name="PostAdapterVotes">Votes</string>
     <string name="PostAdapterVideo">Video</string>
     <string name="PostAdapterVoteChoice">Submit your vote</string>
+    <string name="PostAdapterMB">MB</string>
 
 </resources>

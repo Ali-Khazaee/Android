@@ -1,5 +1,6 @@
 package co.biogram.main.handler;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -32,6 +33,14 @@ import co.biogram.main.ui.view.TextView;
 public class Misc
 {
     private static final AtomicInteger NextGeneratedID = new AtomicInteger(1);
+
+    @SuppressLint("StaticFieldLeak")
+    private static volatile Context context;
+
+    public static void SetUp(Context c)
+    {
+        context = c;
+    }
 
     public static int GenerateViewID()
     {
@@ -116,17 +125,17 @@ public class Misc
             return IsRTL() ? Gravity.END : Gravity.START;
     }
 
-    public static int ToDP(Context context, float Value)
+    public static int ToDP(float Value)
     {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
     }
 
-    public static void Toast(Context context, String Message)
+    public static void Toast(String Message)
     {
         GradientDrawable DrawableToast = new GradientDrawable();
         DrawableToast.setColor(ContextCompat.getColor(context, R.color.Toast));
         DrawableToast.setCornerRadius(10.0f);
-        DrawableToast.setStroke(ToDP(context, 1), ContextCompat.getColor(context, R.color.ToastLine));
+        DrawableToast.setStroke(ToDP(1), ContextCompat.getColor(context, R.color.ToastLine));
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -137,13 +146,13 @@ public class Misc
 
         TextView TextViewMessage = new TextView(context, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setPadding(ToDP(context, 15), ToDP(context, 15), ToDP(context, 15), ToDP(context, 15));
+        TextViewMessage.setPadding(ToDP(15), ToDP(15), ToDP(15), ToDP(15));
         TextViewMessage.setText(Message);
 
         RelativeLayoutMain.addView(TextViewMessage);
 
         Toast ToastMain = new Toast(context);
-        ToastMain.setGravity(Gravity.BOTTOM, 0, ToDP(context, 65));
+        ToastMain.setGravity(Gravity.BOTTOM, 0, ToDP(65));
         ToastMain.setDuration(Toast.LENGTH_SHORT);
         ToastMain.setView(RelativeLayoutMain);
         ToastMain.show();
@@ -230,20 +239,20 @@ public class Misc
         System.exit(0);
     }
 
-    public static void GeneralError(Context c, int Error)
+    public static void GeneralError(int Error)
     {
         switch (Error)
         {
-            case -1: Toast(c, c.getString(R.string.GeneralError1)); break;
-            case -2: Toast(c, c.getString(R.string.GeneralError2)); break;
-            case -3: Toast(c, c.getString(R.string.GeneralError3)); break;
-            case -4: Toast(c, c.getString(R.string.GeneralError4)); break;
-            case -6: Toast(c, c.getString(R.string.GeneralError6)); break;
-            case -7: Toast(c, c.getString(R.string.GeneralError7)); break;
+            case -1: Toast(context.getString(R.string.GeneralError1)); break;
+            case -2: Toast(context.getString(R.string.GeneralError2)); break;
+            case -3: Toast(context.getString(R.string.GeneralError3)); break;
+            case -4: Toast(context.getString(R.string.GeneralError4)); break;
+            case -6: Toast(context.getString(R.string.GeneralError6)); break;
+            case -7: Toast(context.getString(R.string.GeneralError7)); break;
         }
     }
 
-    public static void ChangeTheme(Context context, boolean IsDark)
+    public static void ChangeTheme(boolean IsDark)
     {
         if (SharedHandler.GetBoolean(context, "IsDark") == IsDark)
             return;
@@ -262,9 +271,9 @@ public class Misc
         System.exit(0);
     }
 
-    public static boolean IsDark(Context c)
+    public static boolean IsDark()
     {
-        return SharedHandler.GetBoolean(c, "IsDark");
+        return SharedHandler.GetBoolean(context, "IsDark");
     }
 
     public static String GetRandomServer(String URL)

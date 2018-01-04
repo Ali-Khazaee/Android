@@ -149,6 +149,7 @@
     <string name="ImagePreviewUIDownloaded">عکس در محل دنلود ها ذخیره شد</string>
 
     <!-- Gallery View UI -->
+    <string name="GalleryViewUIStorage">محل زخیره</string>
     <string name="GalleryViewUI">گالری</string>
     <string name="GalleryViewUI2">Gallery</string>
     <string name="GalleryViewUIMaximum">حداکثر تعداد انتخاب عکس ها </string>
@@ -195,7 +196,7 @@
     <string name="WriteUICantCompress">تلفن شما فشرده سازی را پشتیبانی نمی کند</string>
     <string name="WriteUIPickCategory">لطفا یک دسته را انتخاب کنید</string>
     <string name="WriteUIStatement">بیانیه باید بیش از 30 کاراکتر باشد</string>
-    <string name="WriteUIUploading">درحال ارسال ...</string>
+    <string name="WriteUIUploading"> درحال ارسال&#8230;</string>
     <string name="WriteUIMessage">پیامتان را بنویسید</string>
     <string name="WriteUIChoice1">انتخاب 1</string>
     <string name="WriteUIChoice2">انتخاب 2</string>
@@ -225,6 +226,6 @@
     <string name="PostAdapterVotes">رای ها</string>
     <string name="PostAdapterVideo">فیلم</string>
     <string name="PostAdapterVoteChoice">رای خود را ارسال کنید</string>
-    <string name="GalleryViewUIStorage">محل زخیره</string>
+    <string name="PostAdapterMB">MB</string>
 
 </resources>
