@@ -103,13 +103,13 @@ public class CircleView extends View
             canvas.drawText(SubMessage, XPos, YPos + SubMessageSpace, SubMessagePaint);
 
         if (bitmap != null)
-            canvas.drawBitmap(bitmap, XPos - Misc.ToDP(getContext(), 10), YPos, null);
+            canvas.drawBitmap(bitmap, XPos - Misc.ToDP(10), YPos, null);
     }
 
     public void SetBitmap(int resource, int size)
     {
         bitmap = BitmapFactory.decodeResource(getContext().getResources(), resource);
-        bitmap = Bitmap.createScaledBitmap(bitmap, Misc.ToDP(getContext(), size), Misc.ToDP(getContext(), size), true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, Misc.ToDP(size), Misc.ToDP(size), true);
     }
 
     public void SetMessage(String message)
@@ -124,7 +124,7 @@ public class CircleView extends View
 
     public void SetMessageSize(int size)
     {
-        MessageSize = Misc.ToDP(getContext(), size);
+        MessageSize = Misc.ToDP(size);
     }
 
     public void SetMessageColor(int color)
@@ -139,7 +139,7 @@ public class CircleView extends View
 
     public void SetSubMessageSize(int size)
     {
-        SubMessageSize = Misc.ToDP(getContext(), size);
+        SubMessageSize = Misc.ToDP(size);
     }
 
     public void SetSubMessageColor(int color)
@@ -149,7 +149,7 @@ public class CircleView extends View
 
     public void SetSubMessageSpace(int size)
     {
-        SubMessageSpace = Misc.ToDP(getContext(), size);
+        SubMessageSpace = Misc.ToDP(size);
     }
 
     public void SetStrokeColor(int color)
@@ -159,7 +159,7 @@ public class CircleView extends View
 
     public void SetStrokeWidth(int width)
     {
-        StrokeWidth = Misc.ToDP(getContext(), width);
+        StrokeWidth = Misc.ToDP(width);
     }
 
     public void SetProgressColor(int color)
@@ -169,7 +169,7 @@ public class CircleView extends View
 
     public void SetProgressWidth(int width)
     {
-        ProgressWidth = Misc.ToDP(getContext(), width);
+        ProgressWidth = Misc.ToDP(width);
     }
 
     public void SetProgressPercentage(int percent)

@@ -1,37 +1,43 @@
 package co.biogram.main.fragment;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.handler.Misc;
-
 public class FragmentManager
 {
-    final private List<FragmentBase> FragmentList = new ArrayList<>();
-    final private FragmentActivity Activity;
-
-    private FragmentBase Fragment;
+    private List<FragmentView> FragmentList = new ArrayList<>();
+    private FragmentActivity Activity;
+    private FragmentView Fragment;
 
     FragmentManager(FragmentActivity a)
     {
         Activity = a;
     }
 
-    public void OpenView(FragmentBase fragment, int ID, String Tag)
+    public void OpenView(FragmentView Frag, int ID, String Tag)
     {
-        if (FragmentList.size() > 0)
+        if (FindByTag(Tag) != null)
         {
-            if (FragmentList.get(FragmentList.size() - 1).ViewMain != null)
-                FragmentList.get(FragmentList.size() - 1).ViewMain.setVisibility(View.GONE);
-
-            FragmentList.get(FragmentList.size() - 1).OnPause();
+            Fragment.OnOpen();
+            return;
         }
 
-        Fragment = fragment;
+        if (FragmentList.size() > 0)
+        {
+            int I = FragmentList.size() - 1;
+
+            if (FragmentList.get(I).ViewMain != null)
+                FragmentList.get(I).ViewMain.setVisibility(View.GONE);
+
+            FragmentList.get(I).OnPause();
+        }
+
+        Fragment = Frag;
         Fragment.Tag = Tag;
         Fragment.Activity = Activity;
         Fragment.OnCreate();
@@ -59,7 +65,7 @@ public class FragmentManager
             Fragment = FragmentList.get(FragmentList.size() - 1);
             Fragment.OnResume();
 
-            if (Fragment.ViewMain != null)
+            if (Fragment.ViewMain != null && Fragment.ViewMain.getVisibility() == View.GONE)
                 Fragment.ViewMain.setVisibility(View.VISIBLE);
 
             return false;
@@ -68,9 +74,10 @@ public class FragmentManager
         return true;
     }
 
-    public FragmentBase FindByTag(String Tag)
+    @Nullable
+    public FragmentView FindByTag(String Tag)
     {
-        for (FragmentBase Fragment : FragmentList)
+        for (FragmentView Fragment : FragmentList)
             if (Fragment.Tag.equals(Tag))
                 return Fragment;
 
@@ -81,7 +88,7 @@ public class FragmentManager
     {
         if (Fragment != null)
         {
-            if (Fragment.ViewMain != null)
+            if (Fragment.ViewMain != null && Fragment.ViewMain.getVisibility() == View.GONE)
                 Fragment.ViewMain.setVisibility(View.VISIBLE);
 
             Fragment.OnResume();
@@ -91,12 +98,7 @@ public class FragmentManager
     void OnPause()
     {
         if (Fragment != null)
-        {
-            if (Fragment.ViewMain != null)
-                Fragment.ViewMain.setVisibility(View.GONE);
-
             Fragment.OnPause();
-        }
     }
 
     void OnActivityResult(int RequestCode, int ResultCode, Intent intent)

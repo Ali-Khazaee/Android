@@ -43,7 +43,7 @@ public class TextView extends android.widget.TextView
         {
             // noinspection all
             RectF RectRound = new RectF(0, 0, (getWidth() * Width / 100), getHeight());
-            canvas.drawRoundRect(RectRound, Misc.ToDP(getContext(), 5), Misc.ToDP(getContext(), 5), PaintFill);
+            canvas.drawRoundRect(RectRound, Misc.ToDP(5), Misc.ToDP(5), PaintFill);
         }
 
         super.onDraw(canvas);

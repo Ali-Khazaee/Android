@@ -8,12 +8,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.handler.CameraHandler;
 import co.biogram.main.handler.Misc;
 
-public class CameraViewUI extends FragmentBase
+public class CameraViewUI extends FragmentView
 {
     private CameraHandler Camera;
 
@@ -33,7 +33,7 @@ public class CameraViewUI extends FragmentBase
 
         FrameLayoutMain.addView(Camera);
 
-        RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 75));
+        RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(75));
         RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         RelativeLayout RelativeLayoutBottom = new RelativeLayout(GetActivity());
@@ -41,8 +41,8 @@ public class CameraViewUI extends FragmentBase
 
         RelativeLayoutMain.addView(RelativeLayoutBottom);
 
-        RelativeLayout.LayoutParams ImageViewPickParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 50), Misc.ToDP(GetActivity(), 50));
-        ImageViewPickParam.setMargins(Misc.ToDP(GetActivity(), 50), 0, Misc.ToDP(GetActivity(), 50), 0);
+        RelativeLayout.LayoutParams ImageViewPickParam = new RelativeLayout.LayoutParams(Misc.ToDP(50), Misc.ToDP(50));
+        ImageViewPickParam.setMargins(Misc.ToDP(50), 0, Misc.ToDP(50), 0);
         ImageViewPickParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         final ImageView ImageViewPick = new ImageView(GetActivity());
@@ -99,14 +99,14 @@ public class CameraViewUI extends FragmentBase
 
         RelativeLayoutBottom.addView(ImageViewPick);
 
-        RelativeLayout.LayoutParams ImageViewFlashParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 50), Misc.ToDP(GetActivity(), 50));
+        RelativeLayout.LayoutParams ImageViewFlashParam = new RelativeLayout.LayoutParams(Misc.ToDP(50), Misc.ToDP(50));
         ImageViewFlashParam.addRule(RelativeLayout.LEFT_OF, ImageViewPick.getId());
         ImageViewFlashParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         final ImageView ImageViewFlash = new ImageView(GetActivity());
         ImageViewFlash.setLayoutParams(ImageViewFlashParam);
         ImageViewFlash.setImageResource(R.drawable.flash_auto_white);
-        ImageViewFlash.setPadding(Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14));
+        ImageViewFlash.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
         ImageViewFlash.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -123,14 +123,14 @@ public class CameraViewUI extends FragmentBase
 
         RelativeLayoutBottom.addView(ImageViewFlash);
 
-        RelativeLayout.LayoutParams ImageViewSwitchParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 50), Misc.ToDP(GetActivity(), 50));
+        RelativeLayout.LayoutParams ImageViewSwitchParam = new RelativeLayout.LayoutParams(Misc.ToDP(50), Misc.ToDP(50));
         ImageViewSwitchParam.addRule(RelativeLayout.RIGHT_OF, ImageViewPick.getId());
         ImageViewSwitchParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         ImageView ImageViewSwitch = new ImageView(GetActivity());
         ImageViewSwitch.setLayoutParams(ImageViewSwitchParam);
         ImageViewSwitch.setImageResource(R.drawable.camera_switch_white);
-        ImageViewSwitch.setPadding(Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14), Misc.ToDP(GetActivity(), 14));
+        ImageViewSwitch.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
         ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Camera.SwitchCamera(); } });
 
         RelativeLayoutBottom.addView(ImageViewSwitch);

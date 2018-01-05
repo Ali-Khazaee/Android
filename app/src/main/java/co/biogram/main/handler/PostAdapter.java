@@ -21,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
@@ -29,6 +32,8 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import co.biogram.main.R;
@@ -46,8 +51,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 {
     private List<PostStruct> PostList = new ArrayList<>();
     private PullToRefreshView PullToRefreshViewMain;
-    private final PullToRefreshListener Listener;
-    private final FragmentActivity Activity;
+    private FragmentActivity Activity;
+    private RecyclerView Recycler;
+    private String Tag;
 
     // ViewType 1
     private final int ID1_PROFILE = Misc.GenerateViewID();
@@ -109,11 +115,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID2_MORE = Misc.GenerateViewID();
     private final int ID2_MORE2 = Misc.GenerateViewID();
 
-    public PostAdapter(FragmentActivity a, List<PostStruct> p, PullToRefreshListener l)
+    public PostAdapter(FragmentActivity a, RecyclerView r, String t)
     {
-        Listener = l;
         Activity = a;
-        PostList = p;
+        Recycler = r;
+        Tag = t;
+
+        Recycler.addOnScrollListener(new OnScrollRecyclerView(Recycler.getLayoutManager()) { @Override public void OnLoadMore() { Update(); } });
+
+        PostList.add(new PostStruct(0));
     }
 
     class ViewHolderMain extends RecyclerView.ViewHolder
@@ -247,16 +257,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         }
     }
 
-    public View GetPullToRefreshView()
-    {
-        return PullToRefreshViewMain;
-    }
-
-    public void SetRefreshComplete()
-    {
-        PullToRefreshViewMain.SetRefreshComplete();
-    }
-
     @Override
     public PostAdapter.ViewHolderMain onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -264,7 +264,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         {
             PullToRefreshViewMain = new PullToRefreshView(Activity);
             PullToRefreshViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-            PullToRefreshViewMain.SetPullToRefreshListener(Listener);
+            PullToRefreshViewMain.SetPullToRefreshListener(new PullToRefreshListener()
+            {
+                @Override
+                public void OnRefresh()
+                {
+                    // TODO Refresh
+                    PullToRefreshViewMain.SetRefreshComplete();
+                }
+            });
 
             return new ViewHolderMain(PullToRefreshViewMain, viewType);
         }
@@ -273,8 +281,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-            RelativeLayout.LayoutParams CircleImageViewProfileParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 50), Misc.ToDP(Activity, 50));
-            CircleImageViewProfileParam.setMargins(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            RelativeLayout.LayoutParams CircleImageViewProfileParam = new RelativeLayout.LayoutParams(Misc.ToDP(50), Misc.ToDP(50));
+            CircleImageViewProfileParam.setMargins(Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(8));
             CircleImageViewProfileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
             CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
@@ -285,8 +293,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutMain.addView(CircleImageViewProfile);
 
-            RelativeLayout.LayoutParams LinearLayoutProfileParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 24));
-            LinearLayoutProfileParam.setMargins(0, Misc.ToDP(Activity, 12), 0, 0);
+            RelativeLayout.LayoutParams LinearLayoutProfileParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(24));
+            LinearLayoutProfileParam.setMargins(0, Misc.ToDP(12), 0, 0);
             LinearLayoutProfileParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);
             LinearLayoutProfileParam.addRule(RelativeLayout.LEFT_OF, ID1_TIME);
 
@@ -304,7 +312,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LinearLayoutProfile.addView(TextViewName);
 
             ImageView ImageiewMedal = new ImageView(Activity);
-            ImageiewMedal.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 24), Misc.ToDP(Activity, 24)));
+            ImageiewMedal.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(24), Misc.ToDP(24)));
             ImageiewMedal.setId(ID1_MEDAL);
 
             LinearLayoutProfile.addView(ImageiewMedal);
@@ -317,20 +325,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             LinearLayoutProfile.addView(TextViewUsername);
 
-            RelativeLayout.LayoutParams ImageiewOptionParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), Misc.ToDP(Activity, 32));
-            ImageiewOptionParam.setMargins(0, Misc.ToDP(Activity, 6), 0, 0);
+            RelativeLayout.LayoutParams ImageiewOptionParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32));
+            ImageiewOptionParam.setMargins(0, Misc.ToDP(6), 0, 0);
             ImageiewOptionParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
             ImageView ImageiewOption = new ImageView(Activity);
             ImageiewOption.setLayoutParams(ImageiewOptionParam);
             ImageiewOption.setId(ID1_OPTION);
-            ImageiewOption.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 5),  Misc.ToDP(Activity, 5));
+            ImageiewOption.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5),  Misc.ToDP(5));
             ImageiewOption.setImageResource(R.drawable.option_bluegray);
 
             RelativeLayoutMain.addView(ImageiewOption);
 
             RelativeLayout.LayoutParams TextViewTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewTimeParam.setMargins(0, Misc.ToDP(Activity, 14), 0, 0);
+            TextViewTimeParam.setMargins(0, Misc.ToDP(14), 0, 0);
             TextViewTimeParam.addRule(RelativeLayout.LEFT_OF, ID1_OPTION);
 
             TextView TextViewTime = new TextView(Activity, 12, false);
@@ -346,14 +354,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewMessage = new TextView(Activity, 14, false);
             TextViewMessage.setLayoutParams(TextViewMessageParam);
-            TextViewMessage.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.TextWhite));
-            TextViewMessage.setPadding(0, 0, Misc.ToDP(Activity, 8), 0);
+            TextViewMessage.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+            TextViewMessage.setPadding(0, 0, Misc.ToDP(8), 0);
             TextViewMessage.setId(ID1_MESSAGE);
 
             RelativeLayoutMain.addView(TextViewMessage);
 
             RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            RelativeLayoutContentParam.setMargins(0, 0, Misc.ToDP(Activity, 5), 0);
+            RelativeLayoutContentParam.setMargins(0, 0, Misc.ToDP(5), 0);
             RelativeLayoutContentParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);
             RelativeLayoutContentParam.addRule(RelativeLayout.BELOW, ID1_MESSAGE);
 
@@ -364,7 +372,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutMain.addView(RelativeLayoutContent);
 
             RelativeLayout RelativeLayoutImage = new RelativeLayout(Activity);
-            RelativeLayoutImage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 150)));
+            RelativeLayoutImage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(150)));
             RelativeLayoutImage.setId(ID1_IMAGE_LAYOUT);
             RelativeLayoutImage.setVisibility(View.GONE);
 
@@ -393,7 +401,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             View ViewLineDouble = new View(Activity);
             ViewLineDouble.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.03f));
-            ViewLineDouble.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.GroundWhite);
+            ViewLineDouble.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
 
             LinearLayoutDouble.addView(ViewLineDouble);
 
@@ -419,7 +427,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             View ViewLineTriple = new View(Activity);
             ViewLineTriple.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.02f));
-            ViewLineTriple.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.GroundWhite);
+            ViewLineTriple.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
 
             LinearLayoutTriple.addView(ViewLineTriple);
 
@@ -437,7 +445,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             View ViewLineTriple2 = new View(Activity);
             ViewLineTriple2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 0.04f));
-            ViewLineTriple2.setBackgroundResource(Misc.IsDark(Activity) ? R.color.GroundDark : R.color.GroundWhite);
+            ViewLineTriple2.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
 
             LinearLayoutDouble2.addView(ViewLineTriple2);
 
@@ -448,7 +456,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LinearLayoutDouble2.addView(ImageiewTriple3);
 
             RelativeLayout RelativeLayoutVideo = new RelativeLayout(Activity);
-            RelativeLayoutVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 150)));
+            RelativeLayoutVideo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(150)));
             RelativeLayoutVideo.setVisibility(View.GONE);
             RelativeLayoutVideo.setId(ID1_VIDEO_LAYOUT);
 
@@ -463,196 +471,196 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             GradientDrawable DrawableVideo = new GradientDrawable();
             DrawableVideo.setColor(Color.parseColor("#65000000"));
-            DrawableVideo.setCornerRadius(Misc.ToDP(Activity, 4));
+            DrawableVideo.setCornerRadius(Misc.ToDP(4));
 
             RelativeLayout.LayoutParams TextViewDuritonParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewDuritonParam.setMargins(Misc.ToDP(Activity, 8), 0, Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            TextViewDuritonParam.setMargins(Misc.ToDP(8), 0, Misc.ToDP(8), Misc.ToDP(8));
             TextViewDuritonParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             TextViewDuritonParam.addRule(Misc.Align("L"));
 
             TextView TextViewDurotion = new TextView(Activity, 12, false);
             TextViewDurotion.setLayoutParams(TextViewDuritonParam);
             TextViewDurotion.setBackground(DrawableVideo);
-            TextViewDurotion.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
+            TextViewDurotion.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), 0);
             TextViewDurotion.setId(ID1_VIDEO_DUROTION);
 
             RelativeLayoutVideo.addView(TextViewDurotion);
 
             RelativeLayout.LayoutParams TextViewSizeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewSizeParam.setMargins(Misc.ToDP(Activity, 8), 0, Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            TextViewSizeParam.setMargins(Misc.ToDP(8), 0, Misc.ToDP(8), Misc.ToDP(8));
             TextViewSizeParam.addRule(RelativeLayout.ABOVE, ID1_VIDEO_DUROTION);
             TextViewSizeParam.addRule(Misc.Align("L"));
 
             TextView TextViewSize = new TextView(Activity, 12, false);
             TextViewSize.setLayoutParams(TextViewSizeParam);
             TextViewSize.setBackground(DrawableVideo);
-            TextViewSize.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
+            TextViewSize.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), 0);
             TextViewSize.setId(ID1_VIDEO_SIZE);
 
             RelativeLayoutVideo.addView(TextViewSize);
 
             RelativeLayout.LayoutParams TextViewVideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewVideoParam.setMargins(Misc.ToDP(Activity, 8), 0, Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8));
+            TextViewVideoParam.setMargins(Misc.ToDP(8), 0, Misc.ToDP(8), Misc.ToDP(8));
             TextViewVideoParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             TextViewVideoParam.addRule(Misc.Align("R"));
 
             TextView TextViewVideo = new TextView(Activity, 12, false);
             TextViewVideo.setLayoutParams(TextViewVideoParam);
-            TextViewVideo.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0);
+            TextViewVideo.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), 0);
             TextViewVideo.setBackground(DrawableVideo);
             TextViewVideo.setText(Activity.getString(R.string.PostAdapterVideo));
 
             RelativeLayoutVideo.addView(TextViewVideo);
 
             GradientDrawable DrawableRounded = new GradientDrawable();
-            DrawableRounded.setCornerRadius(Misc.ToDP(Activity, 4));
-            DrawableRounded.setStroke(Misc.ToDP(Activity, 1), ContextCompat.getColor(Activity, R.color.BlueGray));
+            DrawableRounded.setCornerRadius(Misc.ToDP(4));
+            DrawableRounded.setStroke(Misc.ToDP(1), ContextCompat.getColor(Activity, R.color.BlueGray));
 
             RelativeLayout RelativeLayoutVote = new RelativeLayout(Activity);
             RelativeLayoutVote.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-            RelativeLayoutVote.setPadding(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 8));
+            RelativeLayoutVote.setPadding(Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(10), Misc.ToDP(8));
             RelativeLayoutVote.setBackground(DrawableRounded);
             RelativeLayoutVote.setVisibility(View.GONE);
             RelativeLayoutVote.setId(ID1_VOTE_LAYOUT);
 
             RelativeLayoutContent.addView(RelativeLayoutVote);
 
-            RelativeLayout.LayoutParams TextViewVote1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 30));
+            RelativeLayout.LayoutParams TextViewVote1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30));
             TextViewVote1Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_PER1);
 
             TextView TextViewVote1 = new TextView(Activity, 14, false);
             TextViewVote1.setLayoutParams(TextViewVote1Param);
             TextViewVote1.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewVote1.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
+            TextViewVote1.setPadding(Misc.ToDP(3), Misc.ToDP(3), 0, 0);
             TextViewVote1.setGravity(Gravity.LEFT);
             TextViewVote1.setVisibility(View.GONE);
             TextViewVote1.setId(ID1_VOTE1);
 
             RelativeLayoutVote.addView(TextViewVote1);
 
-            RelativeLayout.LayoutParams TextViewPercent1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
+            RelativeLayout.LayoutParams TextViewPercent1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
             TextViewPercent1Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
             TextView TextViewPercent1 = new TextView(Activity, 14, false);
             TextViewPercent1.setLayoutParams(TextViewPercent1Param);
             TextViewPercent1.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewPercent1.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 5), 0, 0);
+            TextViewPercent1.setPadding(Misc.ToDP(5), Misc.ToDP(5), 0, 0);
             TextViewPercent1.setGravity(Gravity.CENTER);
             TextViewPercent1.setVisibility(View.GONE);
             TextViewPercent1.setId(ID1_VOTE_PER1);
 
             RelativeLayoutVote.addView(TextViewPercent1);
 
-            RelativeLayout.LayoutParams TextViewVote2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 30));
-            TextViewVote2Param.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
+            RelativeLayout.LayoutParams TextViewVote2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30));
+            TextViewVote2Param.setMargins(0, Misc.ToDP(5), 0, 0);
             TextViewVote2Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_PER2);
             TextViewVote2Param.addRule(RelativeLayout.BELOW, ID1_VOTE1);
 
             TextView TextViewVote2 = new TextView(Activity, 14, false);
             TextViewVote2.setLayoutParams(TextViewVote2Param);
             TextViewVote2.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewVote2.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
+            TextViewVote2.setPadding(Misc.ToDP(3), Misc.ToDP(3), 0, 0);
             TextViewVote2.setGravity(Gravity.LEFT);
             TextViewVote2.setVisibility(View.GONE);
             TextViewVote2.setId(ID1_VOTE2);
 
             RelativeLayoutVote.addView(TextViewVote2);
 
-            RelativeLayout.LayoutParams TextViewPercent2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
+            RelativeLayout.LayoutParams TextViewPercent2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
             TextViewPercent2Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             TextViewPercent2Param.addRule(RelativeLayout.BELOW, ID1_VOTE1);
 
             TextView TextViewPercent2 = new TextView(Activity, 14, false);
             TextViewPercent2.setLayoutParams(TextViewPercent2Param);
             TextViewPercent2.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewPercent2.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
+            TextViewPercent2.setPadding(Misc.ToDP(5), Misc.ToDP(10), 0, 0);
             TextViewPercent2.setGravity(Gravity.CENTER);
             TextViewPercent2.setVisibility(View.GONE);
             TextViewPercent2.setId(ID1_VOTE_PER2);
 
             RelativeLayoutVote.addView(TextViewPercent2);
 
-            RelativeLayout.LayoutParams TextViewVote3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 30));
-            TextViewVote3Param.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
+            RelativeLayout.LayoutParams TextViewVote3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30));
+            TextViewVote3Param.setMargins(0, Misc.ToDP(5), 0, 0);
             TextViewVote3Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_PER3);
             TextViewVote3Param.addRule(RelativeLayout.BELOW, ID1_VOTE2);
 
             TextView TextViewVote3 = new TextView(Activity, 14, false);
             TextViewVote3.setLayoutParams(TextViewVote3Param);
             TextViewVote3.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewVote3.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
+            TextViewVote3.setPadding(Misc.ToDP(3), Misc.ToDP(3), 0, 0);
             TextViewVote3.setGravity(Gravity.LEFT);
             TextViewVote3.setVisibility(View.GONE);
             TextViewVote3.setId(ID1_VOTE3);
 
             RelativeLayoutVote.addView(TextViewVote3);
 
-            RelativeLayout.LayoutParams TextViewPercent3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
+            RelativeLayout.LayoutParams TextViewPercent3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
             TextViewPercent3Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             TextViewPercent3Param.addRule(RelativeLayout.BELOW, ID1_VOTE2);
 
             TextView TextViewPercent3 = new TextView(Activity, 14, false);
             TextViewPercent3.setLayoutParams(TextViewPercent3Param);
             TextViewPercent3.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewPercent3.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
+            TextViewPercent3.setPadding(Misc.ToDP(5), Misc.ToDP(10), 0, 0);
             TextViewPercent3.setGravity(Gravity.CENTER);
             TextViewPercent3.setVisibility(View.GONE);
             TextViewPercent3.setId(ID1_VOTE_PER3);
 
             RelativeLayoutVote.addView(TextViewPercent3);
 
-            RelativeLayout.LayoutParams TextViewVote4Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 30));
-            TextViewVote4Param.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
+            RelativeLayout.LayoutParams TextViewVote4Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30));
+            TextViewVote4Param.setMargins(0, Misc.ToDP(5), 0, 0);
             TextViewVote4Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_PER4);
             TextViewVote4Param.addRule(RelativeLayout.BELOW, ID1_VOTE3);
 
             TextView TextViewVote4 = new TextView(Activity, 14, false);
             TextViewVote4.setLayoutParams(TextViewVote4Param);
             TextViewVote4.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewVote4.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
+            TextViewVote4.setPadding(Misc.ToDP(3), Misc.ToDP(3), 0, 0);
             TextViewVote4.setGravity(Gravity.LEFT);
             TextViewVote4.setVisibility(View.GONE);
             TextViewVote4.setId(ID1_VOTE4);
 
             RelativeLayoutVote.addView(TextViewVote4);
 
-            RelativeLayout.LayoutParams TextViewPercent4Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
+            RelativeLayout.LayoutParams TextViewPercent4Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
             TextViewPercent4Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             TextViewPercent4Param.addRule(RelativeLayout.BELOW, ID1_VOTE3);
 
             TextView TextViewPercent4 = new TextView(Activity, 14, false);
             TextViewPercent4.setLayoutParams(TextViewPercent4Param);
             TextViewPercent4.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewPercent4.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
+            TextViewPercent4.setPadding(Misc.ToDP(5), Misc.ToDP(10), 0, 0);
             TextViewPercent4.setGravity(Gravity.CENTER);
             TextViewPercent4.setVisibility(View.GONE);
             TextViewPercent4.setId(ID1_VOTE_PER4);
 
             RelativeLayoutVote.addView(TextViewPercent4);
 
-            RelativeLayout.LayoutParams TextViewVote5Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 30));
-            TextViewVote5Param.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
+            RelativeLayout.LayoutParams TextViewVote5Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30));
+            TextViewVote5Param.setMargins(0, Misc.ToDP(5), 0, 0);
             TextViewVote5Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_PER5);
             TextViewVote5Param.addRule(RelativeLayout.BELOW, ID1_VOTE4);
 
             TextView TextViewVote5 = new TextView(Activity, 14, false);
             TextViewVote5.setLayoutParams(TextViewVote5Param);
             TextViewVote5.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewVote5.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), 0, 0);
+            TextViewVote5.setPadding(Misc.ToDP(3), Misc.ToDP(3), 0, 0);
             TextViewVote5.setGravity(Gravity.LEFT);
             TextViewVote5.setVisibility(View.GONE);
             TextViewVote5.setId(ID1_VOTE5);
 
             RelativeLayoutVote.addView(TextViewVote5);
 
-            RelativeLayout.LayoutParams TextViewPercent5Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
+            RelativeLayout.LayoutParams TextViewPercent5Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
             TextViewPercent5Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             TextViewPercent5Param.addRule(RelativeLayout.BELOW, ID1_VOTE4);
 
             TextView TextViewPercent5 = new TextView(Activity, 14, false);
             TextViewPercent5.setLayoutParams(TextViewPercent5Param);
             TextViewPercent5.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
-            TextViewPercent5.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), 0, 0);
+            TextViewPercent5.setPadding(Misc.ToDP(5), Misc.ToDP(10), 0, 0);
             TextViewPercent5.setGravity(Gravity.CENTER);
             TextViewPercent5.setVisibility(View.GONE);
             TextViewPercent5.setId(ID1_VOTE_PER5);
@@ -660,19 +668,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutVote.addView(TextViewPercent5);
 
             GradientDrawable DrawableVote3 = new GradientDrawable();
-            DrawableVote3.setCornerRadius(Misc.ToDP(Activity, 100));
+            DrawableVote3.setCornerRadius(Misc.ToDP(100));
             DrawableVote3.setColor(ContextCompat.getColor(Activity, R.color.TextWhite));
 
             View ViewVoteCircle = new View(Activity);
-            ViewVoteCircle.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6)));
+            ViewVoteCircle.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(6), Misc.ToDP(6)));
             ViewVoteCircle.setBackground(DrawableVote3);
             ViewVoteCircle.setVisibility(View.GONE);
             ViewVoteCircle.setId(ID1_VOTE_CIRCLE);
 
             RelativeLayoutVote.addView(ViewVoteCircle);
 
-            RelativeLayout.LayoutParams ViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1));
-            ViewVoteParam.setMargins(0, Misc.ToDP(Activity, 15), 0, 0);
+            RelativeLayout.LayoutParams ViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
+            ViewVoteParam.setMargins(0, Misc.ToDP(15), 0, 0);
             ViewVoteParam.addRule(RelativeLayout.BELOW, ID1_VOTE5);
 
             View ViewVote = new View(Activity);
@@ -682,19 +690,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutVote.addView(ViewVote);
 
-            RelativeLayout.LayoutParams TextViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 30));
-            TextViewVoteParam.setMargins(0, Misc.ToDP(Activity, 8), 0, 0);
+            RelativeLayout.LayoutParams TextViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
+            TextViewVoteParam.setMargins(0, Misc.ToDP(8), 0, 0);
             TextViewVoteParam.addRule(RelativeLayout.BELOW, ViewVote.getId());
 
             GradientDrawable DrawableVote2 = new GradientDrawable();
-            DrawableVote2.setCornerRadius(Misc.ToDP(Activity, 2));
+            DrawableVote2.setCornerRadius(Misc.ToDP(2));
             DrawableVote2.setColor(ContextCompat.getColor(Activity, R.color.BlueLight));
-            DrawableVote2.setStroke(Misc.ToDP(Activity, 1), ContextCompat.getColor(Activity, R.color.BlueLight));
+            DrawableVote2.setStroke(Misc.ToDP(1), ContextCompat.getColor(Activity, R.color.BlueLight));
 
             TextView TextViewVote = new TextView(Activity, 14, false);
             TextViewVote.setLayoutParams(TextViewVoteParam);
             TextViewVote.setBackground(DrawableVote2);
-            TextViewVote.setPadding(Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 5));
+            TextViewVote.setPadding(Misc.ToDP(10), Misc.ToDP(5), Misc.ToDP(10), Misc.ToDP(5));
             TextViewVote.setGravity(Gravity.CENTER_VERTICAL);
             TextViewVote.setText(Activity.getString(R.string.PostAdapterVote));
             TextViewVote.setId(ID1_VOTE);
@@ -708,30 +716,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextView TextViewResult = new TextView(Activity, 14, false);
             TextViewResult.setLayoutParams(TextViewResultParam);
             TextViewResult.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray2));
-            TextViewResult.setPadding(Misc.ToDP(Activity, 5), Misc.ToDP(Activity, 14), 0, 0);
+            TextViewResult.setPadding(Misc.ToDP(5), Misc.ToDP(14), 0, 0);
             TextViewResult.setGravity(Gravity.CENTER_VERTICAL);
             TextViewResult.setId(ID1_VOTE_RESULT);
 
             RelativeLayoutVote.addView(TextViewResult);
 
             RelativeLayout RelativeLayoutFile = new RelativeLayout(Activity);
-            RelativeLayoutFile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 70)));
-            RelativeLayoutFile.setPadding(0, Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10));
+            RelativeLayoutFile.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(70)));
+            RelativeLayoutFile.setPadding(0, Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
             RelativeLayoutFile.setVisibility(View.GONE);
             RelativeLayoutFile.setId(ID1_FILE_LAYOUT);
 
             RelativeLayoutContent.addView(RelativeLayoutFile);
 
-            RelativeLayout.LayoutParams ImageViewFileParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 50), Misc.ToDP(Activity, 50));
+            RelativeLayout.LayoutParams ImageViewFileParam = new RelativeLayout.LayoutParams(Misc.ToDP(50), Misc.ToDP(50));
             ImageViewFileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
             GradientDrawable DrawableFile = new GradientDrawable();
-            DrawableFile.setCornerRadius(Misc.ToDP(Activity, 4));
+            DrawableFile.setCornerRadius(Misc.ToDP(4));
             DrawableFile.setColor(ContextCompat.getColor(Activity, R.color.BlueLight));
 
             ImageView ImageViewFile = new ImageView(Activity);
             ImageViewFile.setLayoutParams(ImageViewFileParam);
-            ImageViewFile.setPadding(Misc.ToDP(Activity, 12), Misc.ToDP(Activity, 12), Misc.ToDP(Activity, 12), Misc.ToDP(Activity, 12));
+            ImageViewFile.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
             ImageViewFile.setImageResource(R.drawable.download_white);
             ImageViewFile.setId(Misc.GenerateViewID());
             ImageViewFile.setBackground(DrawableFile);
@@ -739,7 +747,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutFile.addView(ImageViewFile);
 
-            RelativeLayout.LayoutParams LoadingViewParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 50), Misc.ToDP(Activity, 50));
+            RelativeLayout.LayoutParams LoadingViewParam = new RelativeLayout.LayoutParams(Misc.ToDP(50), Misc.ToDP(50));
             LoadingViewParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
             LoadingView LoadingViewFile = new LoadingView(Activity);
@@ -756,7 +764,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayout.LayoutParams TextViewFileNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewFileNameParam.addRule(RelativeLayout.RIGHT_OF, ID1_FILE_DOWNLOAD);
-            TextViewFileNameParam.setMargins(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 2), 0, 0);
+            TextViewFileNameParam.setMargins(Misc.ToDP(8), Misc.ToDP(2), 0, 0);
 
             TextView TextViewFileName = new TextView(Activity, 14, false);
             TextViewFileName.setLayoutParams(TextViewFileNameParam);
@@ -768,7 +776,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayout.LayoutParams TextViewFileDetailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewFileDetailParam.addRule(RelativeLayout.RIGHT_OF, ID1_FILE_DOWNLOAD);
             TextViewFileDetailParam.addRule(RelativeLayout.BELOW, ID1_FILE_NAME);
-            TextViewFileDetailParam.setMargins(Misc.ToDP(Activity, 8),0, 0, 0);
+            TextViewFileDetailParam.setMargins(Misc.ToDP(8),0, 0, 0);
 
             TextView TextViewFileDetail = new TextView(Activity, 12, false);
             TextViewFileDetail.setLayoutParams(TextViewFileDetailParam);
@@ -777,7 +785,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutFile.addView(TextViewFileDetail);
 
-            RelativeLayout.LayoutParams RelativeLayoutToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 40));
+            RelativeLayout.LayoutParams RelativeLayoutToolParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(40));
             RelativeLayoutToolParam.addRule(RelativeLayout.BELOW, RelativeLayoutContent.getId());
             RelativeLayoutToolParam.addRule(RelativeLayout.RIGHT_OF, ID1_PROFILE);
 
@@ -786,84 +794,84 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayoutMain.addView(RelativeLayoutTool);
 
-            RelativeLayout.LayoutParams ImageViewLikeParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams ImageViewLikeParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewLikeParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
             ImageView ImageViewLike = new ImageView(Activity);
             ImageViewLike.setLayoutParams(ImageViewLikeParam);
-            ImageViewLike.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3));
+            ImageViewLike.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3));
             ImageViewLike.setImageResource(R.drawable.like_bluegray);
             ImageViewLike.setId(ID1_LIKE);
 
             RelativeLayoutTool.addView(ImageViewLike);
 
             RelativeLayout.LayoutParams TextViewLikeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            TextViewLikeParam.setMargins(0, 0, Misc.ToDP(Activity, 30), 0);
+            TextViewLikeParam.setMargins(0, 0, Misc.ToDP(30), 0);
             TextViewLikeParam.addRule(RelativeLayout.RIGHT_OF, ID1_LIKE);
 
             TextView TextViewLike = new TextView(Activity, 12, false);
             TextViewLike.setLayoutParams(TextViewLikeParam);
             TextViewLike.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray2));
-            TextViewLike.setPadding(0, Misc.ToDP(Activity, 4), 0, 0);
+            TextViewLike.setPadding(0, Misc.ToDP(4), 0, 0);
             TextViewLike.setGravity(Gravity.CENTER_VERTICAL);
             TextViewLike.setId(ID1_LIKE_COUNT);
 
             RelativeLayoutTool.addView(TextViewLike);
 
-            RelativeLayout.LayoutParams ImageViewReplayParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
-            ImageViewReplayParam.setMargins(0, 0, Misc.ToDP(Activity, 30), 0);
+            RelativeLayout.LayoutParams ImageViewReplayParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), RelativeLayout.LayoutParams.MATCH_PARENT);
+            ImageViewReplayParam.setMargins(0, 0, Misc.ToDP(30), 0);
             ImageViewReplayParam.addRule(RelativeLayout.RIGHT_OF, ID1_LIKE_COUNT);
 
             ImageView ImageViewReplay = new ImageView(Activity);
             ImageViewReplay.setLayoutParams(ImageViewReplayParam);
-            ImageViewReplay.setPadding(Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4));
+            ImageViewReplay.setPadding(Misc.ToDP(4), Misc.ToDP(4), Misc.ToDP(4), Misc.ToDP(4));
             ImageViewReplay.setImageResource(R.drawable.replay_bluegray);
             ImageViewReplay.setId(ID1_REPLAY);
 
             RelativeLayoutTool.addView(ImageViewReplay);
 
-            RelativeLayout.LayoutParams ImageViewCommentParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams ImageViewCommentParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID1_REPLAY);
 
             ImageView ImageViewComment = new ImageView(Activity);
             ImageViewComment.setLayoutParams(ImageViewCommentParam);
-            ImageViewComment.setPadding(Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3), Misc.ToDP(Activity, 3));
+            ImageViewComment.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3));
             ImageViewComment.setImageResource(R.drawable.comment_bluegray);
             ImageViewComment.setId(ID1_COMMENT);
 
             RelativeLayoutTool.addView(ImageViewComment);
 
             RelativeLayout.LayoutParams TextViewCommentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            TextViewCommentParam.setMargins(0, 0, Misc.ToDP(Activity, 30), 0);
+            TextViewCommentParam.setMargins(0, 0, Misc.ToDP(30), 0);
             TextViewCommentParam.addRule(RelativeLayout.RIGHT_OF, ID1_COMMENT);
 
             TextView TextViewComment = new TextView(Activity, 12, false);
             TextViewComment.setLayoutParams(TextViewCommentParam);
             TextViewComment.setTextColor(ContextCompat.getColor(Activity, R.color.BlueGray2));
-            TextViewComment.setPadding(0, Misc.ToDP(Activity, 5), 0, 0);
+            TextViewComment.setPadding(0, Misc.ToDP(5), 0, 0);
             TextViewComment.setGravity(Gravity.CENTER_VERTICAL);
             TextViewComment.setId(ID1_COMMENT_COUNT);
 
             RelativeLayoutTool.addView(TextViewComment);
 
-            RelativeLayout.LayoutParams ImageViewForwardParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 32), RelativeLayout.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams ImageViewForwardParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), RelativeLayout.LayoutParams.MATCH_PARENT);
             ImageViewForwardParam.addRule(RelativeLayout.RIGHT_OF, ID1_COMMENT_COUNT);
 
             ImageView ImageViewForward = new ImageView(Activity);
             ImageViewForward.setLayoutParams(ImageViewForwardParam);
-            ImageViewForward.setPadding(Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4), Misc.ToDP(Activity, 4));
+            ImageViewForward.setPadding(Misc.ToDP(4), Misc.ToDP(4), Misc.ToDP(4), Misc.ToDP(4));
             ImageViewForward.setImageResource(R.drawable.chat_bluegray);
             ImageViewForward.setId(ID1_FORWARD);
 
             RelativeLayoutTool.addView(ImageViewForward);
 
-            RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1));
-            ViewLineParam.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
+            RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
+            ViewLineParam.setMargins(0, Misc.ToDP(5), 0, 0);
             ViewLineParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
             View ViewLine = new View(Activity);
             ViewLine.setLayoutParams(ViewLineParam);
-            ViewLine.setBackgroundResource(Misc.IsDark(Activity) ? R.color.LineDark : R.color.LineWhite);
+            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
             ViewLine.setId(ID1_VIEW_LINE);
 
             RelativeLayoutMain.addView(ViewLine);
@@ -876,41 +884,41 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutInfo.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
             View ViewLine = new View(Activity);
-            ViewLine.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 5)));
-            ViewLine.setBackgroundResource(Misc.IsDark(Activity) ? R.color.LineDark : R.color.Gray);
+            ViewLine.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(5)));
+            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.Gray);
             ViewLine.setId(Misc.GenerateViewID());
 
             RelativeLayoutInfo.addView(ViewLine);
 
-            RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 48), Misc.ToDP(Activity, 48));
+            RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(48), Misc.ToDP(48));
             ImageViewCloseParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
             ImageViewCloseParam.addRule(Misc.Align("L"));
 
             ImageView ImageViewClose = new ImageView(Activity);
             ImageViewClose.setLayoutParams(ImageViewCloseParam);
             ImageViewClose.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ImageViewClose.setImageResource(Misc.IsDark(Activity) ? R.drawable.option_white : R.drawable.option_bluegray);
-            ImageViewClose.setPadding(Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8), Misc.ToDP(Activity, 8) , Misc.ToDP(Activity, 8));
+            ImageViewClose.setImageResource(Misc.IsDark() ? R.drawable.option_white : R.drawable.option_bluegray);
+            ImageViewClose.setPadding(Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(8) , Misc.ToDP(8));
             ImageViewClose.setId(ID2_CLOSE);
 
             RelativeLayoutInfo.addView(ImageViewClose);
 
             RelativeLayout.LayoutParams TextViewLevelParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewLevelParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
-            TextViewLevelParam.setMargins(Misc.ToDP(Activity, 15), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 15), Misc.ToDP(Activity, 10));
+            TextViewLevelParam.setMargins(Misc.ToDP(15), Misc.ToDP(10), Misc.ToDP(15), Misc.ToDP(10));
             TextViewLevelParam.addRule(Misc.Align("R"));
 
             TextView TextViewLevel = new TextView(Activity, 14, true);
             TextViewLevel.setLayoutParams(TextViewLevelParam);
             TextViewLevel.setText(Activity.getString(R.string.InboxUIUserLevel));
-            TextViewLevel.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray4));
+            TextViewLevel.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark : R.color.Gray4));
             TextViewLevel.setId(Misc.GenerateViewID());
 
             RelativeLayoutInfo.addView(TextViewLevel);
 
-            RelativeLayout.LayoutParams CircleViewLevelParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 75), Misc.ToDP(Activity, 75));
+            RelativeLayout.LayoutParams CircleViewLevelParam = new RelativeLayout.LayoutParams(Misc.ToDP(75), Misc.ToDP(75));
             CircleViewLevelParam.addRule(RelativeLayout.BELOW, TextViewLevel.getId());
-            CircleViewLevelParam.setMargins(Misc.ToDP(Activity, 15), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 15), 0);
+            CircleViewLevelParam.setMargins(Misc.ToDP(15), Misc.ToDP(10), Misc.ToDP(15), 0);
             CircleViewLevelParam.addRule(Misc.Align("R"));
 
             CircleView CircleViewLevel = new CircleView(Activity);
@@ -919,7 +927,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleViewLevel.SetMessage("1");
             CircleViewLevel.SetMessageSize(35);
             CircleViewLevel.SetMessageColor(R.color.BlueLight);
-            CircleViewLevel.SetStrokeColor(Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray2);
+            CircleViewLevel.SetStrokeColor(Misc.IsDark() ? R.color.TextDark : R.color.Gray2);
             CircleViewLevel.SetStrokeWidth(1);
             CircleViewLevel.SetProgressColor(R.color.BlueLight);
             CircleViewLevel.SetProgressWidth(4);
@@ -929,7 +937,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutInfo.addView(CircleViewLevel);
 
             RelativeLayout.LayoutParams RelativeLayoutRatingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            RelativeLayoutRatingParam.setMargins(Misc.ToDP(Activity, Misc.IsRTL() ? 15 : 5), Misc.ToDP(Activity, 5), Misc.ToDP(Activity, !Misc.IsRTL() ? 15 : 5), 0);
+            RelativeLayoutRatingParam.setMargins(Misc.ToDP(Misc.IsRTL() ? 15 : 5), Misc.ToDP(5), Misc.ToDP(!Misc.IsRTL() ? 15 : 5), 0);
             RelativeLayoutRatingParam.addRule(Misc.AlignTo("R"), CircleViewLevel.getId());
             RelativeLayoutRatingParam.addRule(RelativeLayout.BELOW, TextViewLevel.getId());
 
@@ -950,26 +958,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutRating.addView(TextViewRating);
 
             RelativeLayout.LayoutParams TextViewNumberParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            TextViewNumberParam.setMargins(0, Misc.ToDP(Activity, 2), 0, 0);
+            TextViewNumberParam.setMargins(0, Misc.ToDP(2), 0, 0);
             TextViewNumberParam.addRule(Misc.Align("L"));
 
             TextView TextViewNumber = new TextView(Activity, 12, false);
             TextViewNumber.setLayoutParams(TextViewNumberParam);
             TextViewNumber.setText(("10/60"));
             TextViewNumber.setId(ID2_NUMBER);
-            TextViewNumber.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :  R.color.Gray4));
+            TextViewNumber.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark :  R.color.Gray4));
 
             RelativeLayoutRating.addView(TextViewNumber);
 
-            RelativeLayout.LayoutParams LineViewRatingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 10));
-            LineViewRatingParam.setMargins(0, Misc.ToDP(Activity, 3), 0, 0);
+            RelativeLayout.LayoutParams LineViewRatingParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(10));
+            LineViewRatingParam.setMargins(0, Misc.ToDP(3), 0, 0);
             LineViewRatingParam.addRule(Misc.AlignTo("R"), CircleViewLevel.getId());
             LineViewRatingParam.addRule(RelativeLayout.BELOW, TextViewNumber.getId());
 
             LineView LineViewRating = new LineView(Activity);
             LineViewRating.setLayoutParams(LineViewRatingParam);
             LineViewRating.setId(ID2_RATING);
-            LineViewRating.SetStrokeColor(Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray2);
+            LineViewRating.SetStrokeColor(Misc.IsDark() ? R.color.TextDark : R.color.Gray2);
             LineViewRating.SetStrokeWidth(7);
             LineViewRating.SetProgressColor(R.color.BlueLight);
             LineViewRating.SetProgressPercent(33);
@@ -986,7 +994,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewInfo.setLineSpacing(1.0f, 0.7f);
             TextViewInfo.setText((Activity.getString(R.string.InboxUIInfo) + " " + Activity.getString(R.string.InboxUIInfo2)), TextView.BufferType.SPANNABLE);
             TextViewInfo.setId(Misc.GenerateViewID());
-            TextViewInfo.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray4));
+            TextViewInfo.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark : R.color.Gray4));
 
             Spannable Span = (Spannable) TextViewInfo.getText();
             ClickableSpan ClickableSpanMessage = new ClickableSpan()
@@ -1010,7 +1018,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutRating.addView(TextViewInfo);
 
             RelativeLayout.LayoutParams LinearLayoutMoreParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
-            LinearLayoutMoreParam.setMargins(0, Misc.ToDP(Activity, 5), 0, 0);
+            LinearLayoutMoreParam.setMargins(0, Misc.ToDP(5), 0, 0);
             LinearLayoutMoreParam.addRule(RelativeLayout.BELOW, RelativeLayoutRating.getId());
 
             LinearLayout LinearLayoutMore = new LinearLayout(Activity);
@@ -1020,7 +1028,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutInfo.addView(LinearLayoutMore);
 
             CircleView CircleViewJoin = new CircleView(Activity);
-            CircleViewJoin.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
+            CircleViewJoin.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(60), 1));
             CircleViewJoin.setId(ID2_JOIN);
             CircleViewJoin.SetMessage("2");
             CircleViewJoin.SetMessageSize(17);
@@ -1037,7 +1045,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LinearLayoutMore.addView(CircleViewJoin);
 
             CircleView CircleViewPopular = new CircleView(Activity);
-            CircleViewPopular.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
+            CircleViewPopular.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(60), 1));
             CircleViewPopular.setId(ID2_POPULAR);
             CircleViewPopular.SetMessage("4.5");
             CircleViewPopular.SetMessageSize(17);
@@ -1052,7 +1060,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LinearLayoutMore.addView(CircleViewPopular);
 
             CircleView CircleViewPoint = new CircleView(Activity);
-            CircleViewPoint.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
+            CircleViewPoint.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(60), 1));
             CircleViewPoint.setId(ID2_POINT);
             CircleViewPoint.SetMessage("66K");
             CircleViewPoint.SetMessageSize(16);
@@ -1064,12 +1072,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             LinearLayoutMore.addView(CircleViewPoint);
 
             CircleImageView CircleImageViewMedal = new CircleImageView(Activity);
-            CircleImageViewMedal.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(Activity, 60), 1));
+            CircleImageViewMedal.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(60), 1));
             CircleImageViewMedal.setId(ID2_POINT);
-            CircleImageViewMedal.SetBorderColor(Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray2);
+            CircleImageViewMedal.SetBorderColor(Misc.IsDark() ? R.color.TextDark : R.color.Gray2);
             CircleImageViewMedal.SetBorderWidth(1);
             CircleImageViewMedal.SetWidthPadding();
-            CircleImageViewMedal.setPadding(Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10), Misc.ToDP(Activity, 10));
+            CircleImageViewMedal.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
             CircleImageViewMedal.setImageResource(R.drawable.write_plus_blue);
 
             LinearLayoutMore.addView(CircleImageViewMedal);
@@ -1087,7 +1095,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewJoin.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewJoin.setText(Activity.getString(R.string.InboxUIJoin));
             TextViewJoin.setGravity(Gravity.CENTER);
-            TextViewJoin.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :R.color.Gray4));
+            TextViewJoin.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark :R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewJoin);
 
@@ -1095,7 +1103,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewPopular.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewPopular.setText(Activity.getString(R.string.InboxUIPopular));
             TextViewPopular.setGravity(Gravity.CENTER);
-            TextViewPopular.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark : R.color.Gray4));
+            TextViewPopular.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark : R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewPopular);
 
@@ -1103,7 +1111,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewPoint.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewPoint.setText(Activity.getString(R.string.InboxUIPoint));
             TextViewPoint.setGravity(Gravity.CENTER);
-            TextViewPoint.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :  R.color.Gray4));
+            TextViewPoint.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark :  R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewPoint);
 
@@ -1111,17 +1119,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewMedal.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             TextViewMedal.setText(Activity.getString(R.string.InboxUIMedal));
             TextViewMedal.setGravity(Gravity.CENTER);
-            TextViewMedal.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark(Activity) ? R.color.TextDark :  R.color.Gray4));
+            TextViewMedal.setTextColor(ContextCompat.getColor(Activity, Misc.IsDark() ? R.color.TextDark :  R.color.Gray4));
 
             LinearLayoutMore2.addView(TextViewMedal);
 
-            RelativeLayout.LayoutParams ViewLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 5));
-            ViewLine2Param.setMargins(0, Misc.ToDP(Activity, 9), 0, 0);
+            RelativeLayout.LayoutParams ViewLine2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(5));
+            ViewLine2Param.setMargins(0, Misc.ToDP(9), 0, 0);
             ViewLine2Param.addRule(RelativeLayout.BELOW, LinearLayoutMore2.getId());
 
             View ViewLine2 = new View(Activity);
             ViewLine2.setLayoutParams(ViewLine2Param);
-            ViewLine2.setBackgroundResource(Misc.IsDark(Activity) ? R.color.LineDark : R.color.Gray);
+            ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.Gray);
 
             RelativeLayoutInfo.addView(ViewLine2);
 
@@ -1180,16 +1188,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             case 1:
                                 final String URL1 = URL.get(0).toString();
                                 Holder.ImageViewSingle.setVisibility(View.VISIBLE);
-                                GlideApp.with(Activity).load(URL1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 4))).into(Holder.ImageViewSingle);
+                                GlideApp.with(Activity).load(URL1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(4))).into(Holder.ImageViewSingle);
                                 Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1), R.id.ContainerFull, "ImagePreviewUI");  } });
                             break;
                             case 2:
                                 final String URLD1 = URL.get(0).toString();
                                 final String URLD2 = URL.get(1).toString();
                                 Holder.LinearLayoutDouble.setVisibility(View.VISIBLE);
-                                GlideApp.with(Activity).load(URLD1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 4))).into(Holder.ImageViewDouble1);
+                                GlideApp.with(Activity).load(URLD1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(4))).into(Holder.ImageViewDouble1);
                                 Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD1, URLD2), R.id.ContainerFull, "ImagePreviewUI"); } });
-                                GlideApp.with(Activity).load(URLD2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 4))).into(Holder.ImageViewDouble2);
+                                GlideApp.with(Activity).load(URLD2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(4))).into(Holder.ImageViewDouble2);
                                 Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLD2, URLD1), R.id.ContainerFull, "ImagePreviewUI"); } });
                             break;
                             case 3:
@@ -1197,11 +1205,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 final String URLT2 = URL.get(1).toString();
                                 final String URLT3 = URL.get(2).toString();
                                 Holder.LinearLayoutTriple.setVisibility(View.VISIBLE);
-                                GlideApp.with(Activity).load(URLT1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 4))).into(Holder.ImageViewTriple1);
+                                GlideApp.with(Activity).load(URLT1).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(4))).into(Holder.ImageViewTriple1);
                                 Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT1, URLT2, URLT3), R.id.ContainerFull, "ImagePreviewUI"); } });
-                                GlideApp.with(Activity).load(URLT2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 4))).into(Holder.ImageViewTriple2);
+                                GlideApp.with(Activity).load(URLT2).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(4))).into(Holder.ImageViewTriple2);
                                 Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT2, URLT3, URLT1), R.id.ContainerFull, "ImagePreviewUI"); } });
-                                GlideApp.with(Activity).load(URLT3).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(Activity, 4))).into(Holder.ImageViewTriple3);
+                                GlideApp.with(Activity).load(URLT3).placeholder(R.color.BlueGray2).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(4))).into(Holder.ImageViewTriple3);
                                 Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URLT3, URLT1, URLT2), R.id.ContainerFull, "ImagePreviewUI"); } });
                             break;
                         }
@@ -1301,7 +1309,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             }
 
                             RelativeLayout.LayoutParams Param = (RelativeLayout.LayoutParams) Holder.VoteCircle.getLayoutParams();
-                            Param.setMargins(0, Misc.ToDP(Activity, Top), Misc.ToDP(Activity, 10), 0);
+                            Param.setMargins(0, Misc.ToDP(Top), Misc.ToDP(10), 0);
                             Param.addRule(RelativeLayout.LEFT_OF, Holder.TextViewPercent1.getId());
 
                             if (ID != 0)
@@ -1326,42 +1334,42 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 LinearLayoutVote.setOrientation(LinearLayout.VERTICAL);
 
                                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
-                                RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 56)));
+                                RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
 
                                 LinearLayoutVote.addView(RelativeLayoutHeader);
 
-                                RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(Activity, 56));
+                                RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(56));
                                 TextViewTitleParam.addRule(Misc.Align("R"));
 
                                 TextView TextViewTitle = new TextView(Activity, 16, false);
                                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                                 TextViewTitle.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                 TextViewTitle.setText(Activity.getString(R.string.PostAdapterVoteChoice));
-                                TextViewTitle.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
+                                TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                 TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
 
                                 RelativeLayoutHeader.addView(TextViewTitle);
 
-                                RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(Activity, 56), Misc.ToDP(Activity, 56));
+                                RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
                                 ImageViewCloseParam.addRule(Misc.Align("L"));
 
                                 ImageView ImageViewClose = new ImageView(Activity);
                                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                                 ImageViewClose.setImageResource(R.drawable.close_blue);
-                                ImageViewClose.setPadding(Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6), Misc.ToDP(Activity, 6));
+                                ImageViewClose.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
                                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); } });
 
                                 RelativeLayoutHeader.addView(ImageViewClose);
 
                                 View ViewLine = new View(Activity);
-                                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1)));
+                                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                                 ViewLine.setBackgroundResource(R.color.Gray2);
 
                                 LinearLayoutVote.addView(ViewLine);
 
                                 try
                                 {
-                                    RelativeLayout.LayoutParams TextViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 56));
+                                    RelativeLayout.LayoutParams TextViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
                                     TextViewVoteParam.addRule(Misc.Align("R"));
 
                                     if (!Vote.isNull("V1"))
@@ -1370,9 +1378,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         TextViewVote1.setLayoutParams(TextViewVoteParam);
                                         TextViewVote1.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote1.setText(Vote.getString("V1"));
-                                        TextViewVote1.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
+                                        TextViewVote1.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                         TextViewVote1.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
-                                        TextViewVote1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); Misc.ChangeLanguage(Activity, "en"); } });
+                                        TextViewVote1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); } });
 
                                         if (Vote.getInt("Vote") == 1)
                                             TextViewVote1.setBackgroundResource(R.color.BlueGray);
@@ -1383,7 +1391,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     if (!Vote.isNull("V2"))
                                     {
                                         View ViewVote1 = new View(Activity);
-                                        ViewVote1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1)));
+                                        ViewVote1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                                         ViewVote1.setBackgroundResource(R.color.Gray);
 
                                         LinearLayoutVote.addView(ViewVote1);
@@ -1392,9 +1400,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         TextViewVote2.setLayoutParams(TextViewVoteParam);
                                         TextViewVote2.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote2.setText(Vote.getString("V2"));
-                                        TextViewVote2.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
+                                        TextViewVote2.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                         TextViewVote2.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
-                                        TextViewVote2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); Misc.ChangeLanguage(Activity, "en"); } });
+                                        TextViewVote2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); } });
 
                                         if (Vote.getInt("Vote") == 2)
                                             TextViewVote2.setBackgroundResource(R.color.BlueGray);
@@ -1405,7 +1413,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     if (!Vote.isNull("V3"))
                                     {
                                         View ViewVote2 = new View(Activity);
-                                        ViewVote2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1)));
+                                        ViewVote2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                                         ViewVote2.setBackgroundResource(R.color.Gray);
 
                                         LinearLayoutVote.addView(ViewVote2);
@@ -1414,9 +1422,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         TextViewVote3.setLayoutParams(TextViewVoteParam);
                                         TextViewVote3.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote3.setText(Vote.getString("V3"));
-                                        TextViewVote3.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
+                                        TextViewVote3.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                         TextViewVote3.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
-                                        TextViewVote3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); Misc.ChangeLanguage(Activity, "en"); } });
+                                        TextViewVote3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); } });
 
                                         if (Vote.getInt("Vote") == 3)
                                             TextViewVote3.setBackgroundResource(R.color.BlueGray);
@@ -1427,7 +1435,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     if (!Vote.isNull("V4"))
                                     {
                                         View ViewVote3 = new View(Activity);
-                                        ViewVote3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1)));
+                                        ViewVote3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                                         ViewVote3.setBackgroundResource(R.color.Gray);
 
                                         LinearLayoutVote.addView(ViewVote3);
@@ -1436,9 +1444,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         TextViewVote4.setLayoutParams(TextViewVoteParam);
                                         TextViewVote4.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote4.setText(Vote.getString("V4"));
-                                        TextViewVote4.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
+                                        TextViewVote4.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                         TextViewVote4.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
-                                        TextViewVote4.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); Misc.ChangeLanguage(Activity, "en"); } });
+                                        TextViewVote4.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); } });
 
                                         if (Vote.getInt("Vote") == 4)
                                             TextViewVote4.setBackgroundResource(R.color.BlueGray);
@@ -1449,7 +1457,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     if (!Vote.isNull("V5"))
                                     {
                                         View ViewVote4 = new View(Activity);
-                                        ViewVote4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(Activity, 1)));
+                                        ViewVote4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                                         ViewVote4.setBackgroundResource(R.color.Gray);
 
                                         LinearLayoutVote.addView(ViewVote4);
@@ -1458,9 +1466,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         TextViewVote5.setLayoutParams(TextViewVoteParam);
                                         TextViewVote5.setTextColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                                         TextViewVote5.setText(Vote.getString("V5"));
-                                        TextViewVote5.setPadding(Misc.ToDP(Activity, 15), 0, Misc.ToDP(Activity, 15), 0);
+                                        TextViewVote5.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                         TextViewVote5.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
-                                        TextViewVote5.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); Misc.ChangeLanguage(Activity, "en"); } });
+                                        TextViewVote5.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogVote.dismiss(); } });
 
                                         if (Vote.getInt("Vote") == 5)
                                             TextViewVote5.setBackgroundResource(R.color.BlueGray);
@@ -1584,7 +1592,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                     Holder.TextViewCommentCount.setVisibility(View.GONE);
                 }
 
-                if (Position == Size(PostList) - 1)
+                if (Position == GetSize() - 1)
                     Holder.ViewLine.setVisibility(View.GONE);
                 else
                     Holder.ViewLine.setVisibility(View.VISIBLE);
@@ -1605,7 +1613,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 {
                     if (IsMore)
                     {
-                        ValueAnimator Anim = ValueAnimator.ofInt(Holder.LinearLayoutMore.getMeasuredHeight(), Misc.ToDP(Activity, 90));
+                        ValueAnimator Anim = ValueAnimator.ofInt(Holder.LinearLayoutMore.getMeasuredHeight(), Misc.ToDP(90));
                         Anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
                         {
                             @Override
@@ -1614,12 +1622,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 int Height = (int) va.getAnimatedValue();
 
                                 ViewGroup.LayoutParams Param = Holder.LinearLayoutMore.getLayoutParams();
-                                Param.height = Math.min(Height, Misc.ToDP(Activity, 65));
+                                Param.height = Math.min(Height, Misc.ToDP(65));
 
                                 Holder.LinearLayoutMore.setLayoutParams(Param);
 
                                 ViewGroup.LayoutParams Param2 = Holder.LinearLayoutMore2.getLayoutParams();
-                                Param2.height = Math.min(Height, Misc.ToDP(Activity, 20));
+                                Param2.height = Math.min(Height, Misc.ToDP(20));
 
                                 Holder.LinearLayoutMore2.setLayoutParams(Param2);
                             }
@@ -1628,7 +1636,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         Anim.start();
 
                         IsMore = false;
-                        Holder.ImageViewClose.setImageResource(Misc.IsDark(Activity) ? R.drawable.close_white : R.drawable.close_gray);
+                        Holder.ImageViewClose.setImageResource(Misc.IsDark() ? R.drawable.close_white : R.drawable.close_gray);
                         Holder.ImageViewClose.setPadding(0, 0, 0, 0);
                     }
                     else
@@ -1653,11 +1661,149 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         return PostList.size();
     }
 
-    public static int Size(List<PostStruct> pl)
+    public void Update()
+    {
+        AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
+        .addBodyParameter("Skip", String.valueOf(GetSize()))
+        .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+        .setTag(Tag)
+        .build()
+        .getAsString(new StringRequestListener()
+        {
+            @Override
+            public void onResponse(String Response)
+            {
+                try
+                {
+                    JSONObject Result = new JSONObject(Response);
+
+                    if (Result.getInt("Message") == 0)
+                    {
+                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                        for (int K = 0; K < ResultList.length(); K++)
+                        {
+                            JSONObject D = ResultList.getJSONObject(K);
+
+                            PostAdapter.PostStruct P = new PostAdapter.PostStruct();
+                            P.ID = D.getString("ID");
+
+                            if (!D.isNull("Profile"))
+                                P.Profile = D.getString("Profile");
+
+                            P.Name = D.getString("Name");
+
+                            if (!D.isNull("Medal"))
+                                P.Medal = D.getString("Medal");
+
+                            P.Username = D.getString("Username");
+                            P.Time = D.getInt("Time");
+
+                            if (!D.isNull("Message"))
+                                P.Message = D.getString("Message");
+
+                            if (D.getInt("Type") != 0)
+                            {
+                                P.DataType = D.getInt("Type");
+                                P.Data = D.getString("Data");
+                            }
+
+                            P.Owner = D.getString("Owner");
+
+                            if (!D.isNull("View"))
+                                P.View = D.getInt("View");
+
+                            P.Category = D.getInt("Category");
+                            P.LikeCount = D.getInt("LikeCount");
+                            P.CommentCount = D.getInt("CommentCount");
+                            P.IsLike = D.getInt("Like") != 0;
+                            P.IsFollow = D.getInt("Follow") != 0;
+
+                            if (!D.isNull("Comment"))
+                                P.IsComment = D.getInt("Comment") != 0;
+
+                            P.IsBookmark = D.getInt("Bookmark") != 0;
+
+                            PostList.add(P);
+                        }
+
+                        Collections.sort(PostList, new Comparator<PostStruct>()
+                        {
+                            @Override
+                            public int compare(PostAdapter.PostStruct P1, PostAdapter.PostStruct P2)
+                            {
+                                int V = 0;
+
+                                if (P1.Time < P2.Time)
+                                    V = 1;
+                                else if (P1.Time > P2.Time)
+                                    V = -1;
+
+                                return V;
+                            }
+                        });
+
+                        notifyDataSetChanged();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Misc.Debug("PostAdapter-Update: " + e.toString());
+                }
+            }
+
+            @Override
+            public void onError(ANError e)
+            {
+                Misc.Debug("PostAdapter-Update: " + e.toString());
+            }
+        });
+    }
+
+    public void Update(JSONObject D)
+    {
+        try
+        {
+            PostAdapter.PostStruct P = new PostAdapter.PostStruct();
+            P.ID = D.getString("_id");
+            P.Profile = SharedHandler.GetString(Activity, "Avatar");
+            P.Name = SharedHandler.GetString(Activity, "Name");
+            P.Medal = SharedHandler.GetString(Activity, "Medal");
+            P.Username = SharedHandler.GetString(Activity, "Username");
+            P.Time = D.getInt("Time");
+
+            if (!D.isNull("Message"))
+                P.Message = D.getString("Message");
+
+            if (D.getInt("Type") != 0)
+            {
+                P.DataType = D.getInt("Type");
+                P.Data = D.getString("Data");
+            }
+
+            P.Owner = D.getString("Owner");
+            P.View = 0;
+            P.Category = D.getInt("Category");
+            P.LikeCount = 0;
+            P.CommentCount = 0;
+            P.IsLike = false;
+            P.IsFollow = false;
+            P.IsComment = false;
+            P.IsBookmark = false;
+
+            PostList.add(1, P);
+        }
+        catch (Exception e)
+        {
+            Misc.Debug("PostAdapter-Update2: " + e.toString());
+        }
+    }
+
+    private int GetSize()
     {
         int Size = 0;
 
-        for (PostAdapter.PostStruct P : pl)
+        for (PostAdapter.PostStruct P : PostList)
             if (P.ViewType == 1)
                 Size++;
 

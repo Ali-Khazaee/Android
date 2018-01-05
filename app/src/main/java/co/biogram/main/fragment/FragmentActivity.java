@@ -11,7 +11,6 @@ import co.biogram.main.handler.Misc;
 public abstract class FragmentActivity extends Activity
 {
     private OnPermissionListener PermissionListener;
-    private boolean FirstResume = true;
     private FragmentManager Manager;
     private String Permission;
 
@@ -41,13 +40,6 @@ public abstract class FragmentActivity extends Activity
     public void onResume()
     {
         super.onResume();
-
-        if (FirstResume)
-        {
-            FirstResume = false;
-            return;
-        }
-
         GetManager().OnResume();
     }
 
@@ -63,38 +55,27 @@ public abstract class FragmentActivity extends Activity
     {
         super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
-        if (PermissionListener == null)
-            return;
-
         for (int I = 0; I < Permissions.length; I++)
-        {
-            if (Permissions[I].equals(Permission))
-            {
-                if (GrantResults[I] == PackageManager.PERMISSION_GRANTED)
-                    PermissionListener.OnGranted();
-                else
-                    PermissionListener.OnDenied();
-            }
-        }
+            if (PermissionListener != null && Permissions[I].equals(Permission))
+                PermissionListener.OnResult(GrantResults[I] == PackageManager.PERMISSION_GRANTED);
     }
 
-    public void RequestPermission(String permission, OnPermissionListener Listener)
+    public void RequestPermission(@NonNull String permission, @NonNull OnPermissionListener listener)
     {
-        Permission = permission;
-        PermissionListener = Listener;
-
-        if (Misc.HasPermission(this, Permission))
+        if (Misc.HasPermission(permission))
         {
-            PermissionListener.OnGranted();
+            listener.OnResult(true);
             return;
         }
+
+        Permission = permission;
+        PermissionListener = listener;
 
         ActivityCompat.requestPermissions(this, new String[] { Permission }, 555);
     }
 
     public interface OnPermissionListener
     {
-        void OnGranted();
-        void OnDenied();
+        void OnResult(boolean Granted);
     }
 }

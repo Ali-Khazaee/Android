@@ -37,7 +37,7 @@ public class PullToRefreshView extends LinearLayout
         RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-        RelativeLayout.LayoutParams LinearLayoutMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(context, 120));
+        RelativeLayout.LayoutParams LinearLayoutMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(120));
         LinearLayoutMainParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         LinearLayout LinearLayoutMain = new LinearLayout(context);
@@ -47,14 +47,14 @@ public class PullToRefreshView extends LinearLayout
         RelativeLayoutMain.addView(LinearLayoutMain);
 
         LoadingViewMain = new LoadingView(context);
-        LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(context, 56), Misc.ToDP(context, 56)));
+        LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
         LoadingViewMain.SetColor(R.color.BlueGray2);
         LoadingViewMain.setVisibility(GONE);
 
         LinearLayoutMain.addView(LoadingViewMain);
 
         CircleViewMain = new CircleView(context);
-        CircleViewMain.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(getContext(), 40), Misc.ToDP(getContext(), 40)));
+        CircleViewMain.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(40), Misc.ToDP(40)));
         CircleViewMain.SetProgressColor(R.color.BlueGray2);
         CircleViewMain.SetProgressWidth(2);
         CircleViewMain.InvalidateTextPaints();

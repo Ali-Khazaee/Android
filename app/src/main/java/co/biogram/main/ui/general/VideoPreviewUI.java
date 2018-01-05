@@ -51,13 +51,13 @@ import java.io.File;
 import java.util.Date;
 
 import co.biogram.main.App;
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class VideoPreviewUI extends FragmentBase
+public class VideoPreviewUI extends FragmentView
 {
     private SimpleExoPlayerView SimpleExoPlayerViewMain;
     private SimpleExoPlayer SimpleExoPlayerMain;
@@ -82,17 +82,17 @@ public class VideoPreviewUI extends FragmentBase
         RelativeLayoutMain.setClickable(true);
 
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20ffffff"));
         RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
-        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
+        ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
@@ -107,16 +107,16 @@ public class VideoPreviewUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
+        TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.VideoPreviewUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ImageViewDownloadParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewDownloadParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewDownloadParam.addRule(Misc.Align("L"));
 
         ImageView ImageViewDownload = new ImageView(GetActivity());
-        ImageViewDownload.setPadding(Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13), Misc.ToDP(GetActivity(), 13));
+        ImageViewDownload.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewDownload.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDownload.setId(Misc.GenerateViewID());
         ImageViewDownload.setLayoutParams(ImageViewDownloadParam);
@@ -177,15 +177,15 @@ public class VideoPreviewUI extends FragmentBase
         {
             final GradientDrawable DrawableSelect = new GradientDrawable();
             DrawableSelect.setShape(GradientDrawable.OVAL);
-            DrawableSelect.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
+            DrawableSelect.setStroke(Misc.ToDP(2), Color.WHITE);
 
             final GradientDrawable DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
             DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-            DrawableSelected.setStroke(Misc.ToDP(GetActivity(), 2), Color.WHITE);
+            DrawableSelected.setStroke(Misc.ToDP(2), Color.WHITE);
 
-            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 24), Misc.ToDP(GetActivity(), 24));
-            ViewCircleParam.setMargins(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 15), 0);
+            RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(24), Misc.ToDP(24));
+            ViewCircleParam.setMargins(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
             ViewCircleParam.addRule(RelativeLayout.CENTER_VERTICAL);
             ViewCircleParam.addRule(Misc.Align("L"));
 
@@ -221,7 +221,7 @@ public class VideoPreviewUI extends FragmentBase
             RelativeLayoutHeader.addView(ViewCircle);
         }
 
-        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         LoadingViewMainParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
         LoadingViewMainParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
@@ -231,7 +231,7 @@ public class VideoPreviewUI extends FragmentBase
         LoadingViewMain.SetScale(1.7f);
         LoadingViewMain.SetSize(5);
 
-        RelativeLayout.LayoutParams RelativeLayoutControlParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams RelativeLayoutControlParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
         RelativeLayoutControlParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         final RelativeLayout RelativeLayoutControl = new RelativeLayout(GetActivity());
@@ -241,9 +241,9 @@ public class VideoPreviewUI extends FragmentBase
         RelativeLayoutMain.addView(RelativeLayoutControl);
 
         final ImageView ImageViewPlay = new ImageView(GetActivity());
-        ImageViewPlay.setPadding(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 10));
+        ImageViewPlay.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
         ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewPlay.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56)));
+        ImageViewPlay.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
         ImageViewPlay.setImageResource(R.drawable.pause_white);
         ImageViewPlay.setId(Misc.GenerateViewID());
 
@@ -252,7 +252,7 @@ public class VideoPreviewUI extends FragmentBase
         RelativeLayout.LayoutParams TextViewTimeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewTimeParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         TextViewTimeParam.addRule(RelativeLayout.CENTER_VERTICAL);
-        TextViewTimeParam.setMargins(Misc.ToDP(GetActivity(), 10), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 10), 0);
+        TextViewTimeParam.setMargins(Misc.ToDP(10), Misc.ToDP(3), Misc.ToDP(10), 0);
 
         final TextView TextViewTime = new TextView(GetActivity(), 14, false);
         TextViewTime.setLayoutParams(TextViewTimeParam);
@@ -356,7 +356,7 @@ public class VideoPreviewUI extends FragmentBase
             {
                 IsLoading = isLoading;
 
-                Misc.RunOnUIThread(GetActivity(), new Runnable()
+                Misc.RunOnUIThread(new Runnable()
                 {
                     @Override
                     public void run()

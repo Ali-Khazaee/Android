@@ -34,14 +34,14 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.R;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class EmailVerifyUI extends FragmentBase
+class EmailVerifyUI extends FragmentView
 {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
@@ -114,20 +114,20 @@ class EmailVerifyUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.GenerateViewID());
-        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
+        ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
 
@@ -139,7 +139,7 @@ class EmailVerifyUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
+        TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.EmailVerifyUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -150,11 +150,11 @@ class EmailVerifyUI extends FragmentBase
 
         final TextView TextViewTime = new TextView(GetActivity(), 16, false);
         TextViewTime.setLayoutParams(TextViewTimeParam);
-        TextViewTime.setPadding(Misc.ToDP(GetActivity(), 15), 0, Misc.ToDP(GetActivity(), 15), 0);
+        TextViewTime.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
 
         RelativeLayoutHeader.addView(TextViewTime);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(GetActivity());
@@ -183,7 +183,7 @@ class EmailVerifyUI extends FragmentBase
 
         TextView TextViewVerificationCode = new TextView(GetActivity(), 16, false);
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
-        TextViewVerificationCode.setPadding(Misc.ToDP(GetActivity(), 20), Misc.ToDP(GetActivity(), 40), Misc.ToDP(GetActivity(), 20), Misc.ToDP(GetActivity(), 15));
+        TextViewVerificationCode.setPadding(Misc.ToDP(20), Misc.ToDP(40), Misc.ToDP(20), Misc.ToDP(15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewVerificationCode.setText(GetActivity().getString(R.string.EmailVerifyUICode));
         TextViewVerificationCode.setId(Misc.GenerateViewID());
@@ -201,7 +201,7 @@ class EmailVerifyUI extends FragmentBase
         RelativeLayoutScroll.addView(LinearLayoutVerificationCode);
 
         LinearLayout.LayoutParams EditTextVerificationCode1Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-        EditTextVerificationCode1Param.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+        EditTextVerificationCode1Param.setMargins(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
 
         EditTextCode1 = new EditText(GetActivity());
         EditTextCode1.setLayoutParams(EditTextVerificationCode1Param);
@@ -235,7 +235,7 @@ class EmailVerifyUI extends FragmentBase
         LinearLayoutVerificationCode.addView(EditTextCode1);
 
         LinearLayout.LayoutParams EditTextVerificationCode2Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-        EditTextVerificationCode2Param.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+        EditTextVerificationCode2Param.setMargins(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
 
         EditTextCode2 = new EditText(GetActivity());
         EditTextCode2.setLayoutParams(EditTextVerificationCode2Param);
@@ -284,7 +284,7 @@ class EmailVerifyUI extends FragmentBase
         LinearLayoutVerificationCode.addView(EditTextCode2);
 
         LinearLayout.LayoutParams EditTextVerificationCode3Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-        EditTextVerificationCode3Param.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+        EditTextVerificationCode3Param.setMargins(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
 
         EditTextCode3 = new EditText(GetActivity());
         EditTextCode3.setLayoutParams(EditTextVerificationCode3Param);
@@ -333,7 +333,7 @@ class EmailVerifyUI extends FragmentBase
         LinearLayoutVerificationCode.addView(EditTextCode3);
 
         LinearLayout.LayoutParams EditTextVerificationCode4Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-        EditTextVerificationCode4Param.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+        EditTextVerificationCode4Param.setMargins(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
 
         EditTextCode4 = new EditText(GetActivity());
         EditTextCode4.setLayoutParams(EditTextVerificationCode4Param);
@@ -382,7 +382,7 @@ class EmailVerifyUI extends FragmentBase
         LinearLayoutVerificationCode.addView(EditTextCode4);
 
         LinearLayout.LayoutParams EditTextVerificationCode5Param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-        EditTextVerificationCode5Param.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+        EditTextVerificationCode5Param.setMargins(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
 
         EditTextCode5 = new EditText(GetActivity());
         EditTextCode5.setLayoutParams(EditTextVerificationCode5Param);
@@ -436,7 +436,7 @@ class EmailVerifyUI extends FragmentBase
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setId(Misc.GenerateViewID());
-        TextViewMessage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
         TextViewMessage.setText((GetActivity().getString(R.string.EmailVerifyUIMessage) + " " + Email), TextView.BufferType.SPANNABLE);
 
@@ -462,7 +462,7 @@ class EmailVerifyUI extends FragmentBase
 
         RelativeLayoutScroll.addView(RelativeLayoutBottom);
 
-        RelativeLayout.LayoutParams LoadingViewResendParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams LoadingViewResendParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         LoadingViewResendParam.addRule(Misc.Align("R"));
 
         final LoadingView LoadingViewResend = new LoadingView(GetActivity());
@@ -478,7 +478,7 @@ class EmailVerifyUI extends FragmentBase
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
         TextViewResend.setText(GetActivity().getString(R.string.EmailVerifyUIResend));
-        TextViewResend.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewResend.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -512,28 +512,28 @@ class EmailVerifyUI extends FragmentBase
                             {
                                 case 0:
                                     CountDownTimerResend.start();
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailVerifyUIResendDone));
+                                    Misc.Toast( GetActivity().getString(R.string.EmailVerifyUIResendDone));
                                     break;
                                 case 1:
                                 case 2:
                                 case 3:
                                 case 4:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError1));
+                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError1));
                                     break;
                                 case 5:
                                 case 6:
                                 case 7:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError2));
+                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError2));
                                     break;
                                 case 8:
                                 case 9:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError3));
+                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError3));
                                     break;
                                 case 10:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailUIError4));
+                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError4));
                                     break;
                                 default:
-                                    Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                    Misc.GeneralError(Result.getInt("Message"));
                                     break;
                             }
                         }
@@ -548,7 +548,7 @@ class EmailVerifyUI extends FragmentBase
                     {
                         LoadingViewResend.Stop();
                         TextViewResend.setVisibility(View.VISIBLE);
-                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                     }
                 });
             }
@@ -593,18 +593,18 @@ class EmailVerifyUI extends FragmentBase
 
         GradientDrawable DrawableEnable = new GradientDrawable();
         DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableEnable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
-        DrawableDisable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableDisable.setCornerRadius(Misc.ToDP(7));
         DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable StateListNext = new StateListDrawable();
         StateListNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
         StateListNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
 
-        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
-        RelativeLayoutNextParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
+        RelativeLayoutNextParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         RelativeLayoutNextParam.addRule(Misc.Align("L"));
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(GetActivity());
@@ -613,7 +613,7 @@ class EmailVerifyUI extends FragmentBase
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
-        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35)));
+        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
         ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
         ButtonNext.setBackground(StateListNext);
         ButtonNext.setEnabled(false);
@@ -655,13 +655,13 @@ class EmailVerifyUI extends FragmentBase
                                     break;
                                 case 1:
                                 case 2:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailVerifyUICodeCount));
+                                    Misc.Toast( GetActivity().getString(R.string.EmailVerifyUICodeCount));
                                     break;
                                 case 3:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.EmailVerifyUICodeWrong));
+                                    Misc.Toast( GetActivity().getString(R.string.EmailVerifyUICodeWrong));
                                     break;
                                 default:
-                                    Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                    Misc.GeneralError(Result.getInt("Message"));
                                     break;
                             }
                         }
@@ -676,7 +676,7 @@ class EmailVerifyUI extends FragmentBase
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                     }
                 });
             }
@@ -684,7 +684,7 @@ class EmailVerifyUI extends FragmentBase
 
         RelativeLayoutNext.addView(ButtonNext);
 
-        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
+        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);

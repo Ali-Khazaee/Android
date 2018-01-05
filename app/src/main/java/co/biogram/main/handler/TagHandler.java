@@ -101,7 +101,7 @@ class TagHandler
 
             if (Type == 1)
             {
-                Misc.Toast(context, Message + " - HashTag Clicked");
+                Misc.Toast(Message + " - HashTag Clicked");
 
                 // TODO Open View
             }
@@ -110,7 +110,7 @@ class TagHandler
                 if (SharedHandler.GetString(context, "Username").equalsIgnoreCase(Message))
                     return;
 
-                Misc.Toast(context, Message + " - ID Clicked");
+                Misc.Toast(Message + " - ID Clicked");
 
                 // TODO Open View
             }

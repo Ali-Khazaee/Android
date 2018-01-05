@@ -2,7 +2,6 @@ package co.biogram.main.ui.general;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,12 +13,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.Misc;
 
-public class CropViewUI extends FragmentBase
+public class CropViewUI extends FragmentView
 {
     private String Path;
     private OnCropListener Crop;
@@ -47,11 +46,11 @@ public class CropViewUI extends FragmentBase
 
         RelativeLayoutMain.addView(CropImageViewMain);
 
-        RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewDoneParam.addRule(Misc.Align("L"));
 
         ImageView ImageViewDone = new ImageView(GetActivity());
-        ImageViewDone.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
+        ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
         ImageViewDone.setImageResource(R.drawable.done_white);
@@ -86,11 +85,11 @@ public class CropViewUI extends FragmentBase
 
         RelativeLayoutMain.addView(ImageViewDone);
 
-        RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewCloseParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewClose = new ImageView(GetActivity());
-        ImageViewClose.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
+        ImageViewClose.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewClose.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewClose.setLayoutParams(ImageViewCloseParam);
         ImageViewClose.setImageResource(R.drawable.close_white);

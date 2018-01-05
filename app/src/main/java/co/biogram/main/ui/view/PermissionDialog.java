@@ -30,13 +30,13 @@ public class PermissionDialog extends Dialog
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(context, 125)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(125)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(context, 32), Misc.ToDP(context, 32));
+        RelativeLayout.LayoutParams ImageViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32));
         ImageViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         ImageView ImageViewMain = new ImageView(context);
@@ -53,7 +53,7 @@ public class PermissionDialog extends Dialog
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(context, R.color.TextWhite));
         TextViewMessage.setId(Misc.GenerateViewID());
-        TextViewMessage.setPadding(Misc.ToDP(context, 15), Misc.ToDP(context, 25), Misc.ToDP(context, 15), Misc.ToDP(context, 25));
+        TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(25), Misc.ToDP(15), Misc.ToDP(25));
         TextViewMessage.setText(Message);
 
         RelativeLayoutMain.addView(TextViewMessage);
@@ -71,7 +71,7 @@ public class PermissionDialog extends Dialog
         TextView TextViewDecline = new TextView(context, 14, true);
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.setTextColor(ContextCompat.getColor(context, R.color.Gray5));
-        TextViewDecline.setPadding(Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15));
+        TextViewDecline.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewDecline.setText(context.getString(R.string.DialogPermissionDecline));
         TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
 
@@ -80,7 +80,7 @@ public class PermissionDialog extends Dialog
         TextView TextViewContinue = new TextView(context, 14, true);
         TextViewContinue.setLayoutParams(TextViewMessageParam);
         TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.BlueLight));
-        TextViewContinue.setPadding(Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15), Misc.ToDP(context, 15));
+        TextViewContinue.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
         TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
 

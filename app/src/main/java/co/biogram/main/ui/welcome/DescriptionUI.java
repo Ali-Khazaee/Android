@@ -42,7 +42,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import co.biogram.main.fragment.FragmentActivity;
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.handler.CacheHandler;
@@ -58,7 +58,7 @@ import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.ProgressDialog;
 import co.biogram.main.ui.view.TextView;
 
-public class DescriptionUI extends FragmentBase
+public class DescriptionUI extends FragmentView
 {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private CircleImageView CircleImageViewProfile;
@@ -127,13 +127,13 @@ public class DescriptionUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -141,7 +141,7 @@ public class DescriptionUI extends FragmentBase
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
-        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
+        ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -152,12 +152,12 @@ public class DescriptionUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
+        TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.DescriptionUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(GetActivity());
@@ -181,8 +181,8 @@ public class DescriptionUI extends FragmentBase
 
         ScrollViewMain.addView(RelativeLayoutScroll);
 
-        RelativeLayout.LayoutParams CircleImageViewProfileParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 75), Misc.ToDP(GetActivity(), 75));
-        CircleImageViewProfileParam.setMargins(Misc.ToDP(GetActivity(), 25), Misc.ToDP(GetActivity(), 25), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 25));
+        RelativeLayout.LayoutParams CircleImageViewProfileParam = new RelativeLayout.LayoutParams(Misc.ToDP(75), Misc.ToDP(75));
+        CircleImageViewProfileParam.setMargins(Misc.ToDP(25), Misc.ToDP(25), Misc.ToDP(15), Misc.ToDP(25));
         CircleImageViewProfileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
         CircleImageViewProfile = new CircleImageView(GetActivity());
@@ -191,7 +191,7 @@ public class DescriptionUI extends FragmentBase
         CircleImageViewProfile.setImageResource(R.drawable.person_blue);
         CircleImageViewProfile.SetBorderColor(R.color.Gray);
         CircleImageViewProfile.SetBorderWidth(2);
-        CircleImageViewProfile.setPadding(Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 2));
+        CircleImageViewProfile.setPadding(Misc.ToDP(2), Misc.ToDP(2), Misc.ToDP(2), Misc.ToDP(2));
         CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -210,12 +210,12 @@ public class DescriptionUI extends FragmentBase
                 TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewTitle.setText(GetActivity().getString(R.string.DescriptionUIProfile));
-                TextViewTitle.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+                TextViewTitle.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
                 LinearLayoutMain.addView(TextViewTitle);
 
                 View ViewLine = new View(GetActivity());
-                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1)));
+                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                 ViewLine.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(ViewLine);
@@ -224,13 +224,13 @@ public class DescriptionUI extends FragmentBase
                 TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewCamera.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewCamera.setText(GetActivity().getString(R.string.DescriptionUIProfileCamera));
-                TextViewCamera.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+                TextViewCamera.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewCamera.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        if (Misc.HasPermission(GetActivity(), Manifest.permission.CAMERA))
+                        if (Misc.HasPermission(Manifest.permission.CAMERA))
                         {
                             DialogProfile.dismiss();
                             GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
@@ -246,24 +246,21 @@ public class DescriptionUI extends FragmentBase
                                 if (!Allow)
                                 {
                                     DialogProfile.dismiss();
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIPermissionCamera));
+                                    Misc.Toast( GetActivity().getString(R.string.DescriptionUIPermissionCamera));
                                     return;
                                 }
 
                                 GetActivity().RequestPermission(Manifest.permission.CAMERA, new FragmentActivity.OnPermissionListener()
                                 {
                                     @Override
-                                    public void OnGranted()
+                                    public void OnResult(boolean Granted)
                                     {
                                         DialogProfile.dismiss();
-                                        GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
-                                    }
 
-                                    @Override
-                                    public void OnDenied()
-                                    {
-                                        DialogProfile.dismiss();
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIPermissionCamera));
+                                        if (Granted)
+                                            GetActivity().GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
+                                        else
+                                            Misc.Toast( GetActivity().getString(R.string.DescriptionUIPermissionCamera));
                                     }
                                 });
                             }
@@ -274,7 +271,7 @@ public class DescriptionUI extends FragmentBase
                 LinearLayoutMain.addView(TextViewCamera);
 
                 View ViewLine2 = new View(GetActivity());
-                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1)));
+                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                 ViewLine2.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(ViewLine2);
@@ -283,15 +280,16 @@ public class DescriptionUI extends FragmentBase
                 TextViewGallery.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewGallery.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewGallery.setText(GetActivity().getString(R.string.DescriptionUIProfileGallery));
-                TextViewGallery.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+                TextViewGallery.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewGallery.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        if (Misc.HasPermission(GetActivity(), Manifest.permission.READ_EXTERNAL_STORAGE))
+                        if (Misc.HasPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                         {
                             DialogProfile.dismiss();
+
                             GetActivity().GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
                             {
                                 String ImageURL;
@@ -327,16 +325,23 @@ public class DescriptionUI extends FragmentBase
                                 if (!Allow)
                                 {
                                     DialogProfile.dismiss();
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIPermissionStorage));
+                                    Misc.Toast( GetActivity().getString(R.string.DescriptionUIPermissionStorage));
                                     return;
                                 }
 
                                 GetActivity().RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
                                 {
                                     @Override
-                                    public void OnGranted()
+                                    public void OnResult(boolean Granted)
                                     {
                                         DialogProfile.dismiss();
+
+                                        if (!Granted)
+                                        {
+                                            Misc.Toast(GetActivity().getString(R.string.DescriptionUIPermissionStorage));
+                                            return;
+                                        }
+
                                         GetActivity().GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
                                         {
                                             String ImageURL;
@@ -361,13 +366,6 @@ public class DescriptionUI extends FragmentBase
                                             }
                                         }), R.id.ContainerFull, "GalleryViewUI");
                                     }
-
-                                    @Override
-                                    public void OnDenied()
-                                    {
-                                        DialogProfile.dismiss();
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIPermissionStorage));
-                                    }
                                 });
                             }
                         });
@@ -377,7 +375,7 @@ public class DescriptionUI extends FragmentBase
                 LinearLayoutMain.addView(TextViewGallery);
 
                 View ViewLine3 = new View(GetActivity());
-                ViewLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1)));
+                ViewLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                 ViewLine3.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(ViewLine3);
@@ -386,7 +384,7 @@ public class DescriptionUI extends FragmentBase
                 TextViewRemove.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextViewRemove.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewRemove.setText(GetActivity().getString(R.string.DescriptionUIProfileRemove));
-                TextViewRemove.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+                TextViewRemove.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewRemove.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -408,7 +406,7 @@ public class DescriptionUI extends FragmentBase
         RelativeLayoutScroll.addView(CircleImageViewProfile);
 
         RelativeLayout.LayoutParams LinearLayoutNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayoutNameParam.setMargins(0, Misc.ToDP(GetActivity(), 30), Misc.ToDP(GetActivity(), 15), 0);
+        LinearLayoutNameParam.setMargins(0, Misc.ToDP(30), Misc.ToDP(15), 0);
         LinearLayoutNameParam.addRule(RelativeLayout.RIGHT_OF, CircleImageViewProfile.getId());
 
         LinearLayout LinearLayoutName = new LinearLayout(GetActivity());
@@ -453,7 +451,7 @@ public class DescriptionUI extends FragmentBase
         EditTextName.setInputType(InputType.TYPE_CLASS_TEXT);
         EditTextName.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextName.requestFocus();
-        EditTextName.setPadding(0, -Misc.ToDP(GetActivity(), 2), 0, Misc.ToDP(GetActivity(), 5));
+        EditTextName.setPadding(0, -Misc.ToDP(2), 0, Misc.ToDP(5));
         EditTextName.setTypeface(FontHandler.GetTypeface(GetActivity()));
         EditTextName.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray3));
         EditTextName.setHint(GetActivity().getString(R.string.DescriptionUIEditName));
@@ -475,7 +473,7 @@ public class DescriptionUI extends FragmentBase
         LinearLayoutName.addView(EditTextName);
 
         RelativeLayout.LayoutParams TextViewDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewDescriptionParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), 0);
+        TextViewDescriptionParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), 0);
         TextViewDescriptionParam.addRule(RelativeLayout.BELOW, LinearLayoutName.getId());
         TextViewDescriptionParam.addRule(Misc.Align("R"));
 
@@ -488,7 +486,7 @@ public class DescriptionUI extends FragmentBase
         RelativeLayoutScroll.addView(TextViewDescription);
 
         RelativeLayout.LayoutParams EditTextDescriptionParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextDescriptionParam.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+        EditTextDescriptionParam.setMargins(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
         EditTextDescriptionParam.addRule(RelativeLayout.BELOW, TextViewDescription.getId());
 
         final EditText EditTextDescription = new EditText(GetActivity());
@@ -499,8 +497,8 @@ public class DescriptionUI extends FragmentBase
         EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextDescription.setHint(GetActivity().getString(R.string.DescriptionUIEditDescription));
         EditTextDescription.setMaxLines(5);
-        EditTextDescription.setMaxHeight(Misc.ToDP(GetActivity(), 100));
-        EditTextDescription.setPadding(Misc.ToDP(GetActivity(), 3), -Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 3), Misc.ToDP(GetActivity(), 5));
+        EditTextDescription.setMaxHeight(Misc.ToDP(100));
+        EditTextDescription.setPadding(Misc.ToDP(3), -Misc.ToDP(2), Misc.ToDP(3), Misc.ToDP(5));
         EditTextDescription.setTypeface(FontHandler.GetTypeface(GetActivity()));
         EditTextDescription.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray3));
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -508,7 +506,7 @@ public class DescriptionUI extends FragmentBase
         RelativeLayoutScroll.addView(EditTextDescription);
 
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), 0);
+        TextViewMessageParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), 0);
         TextViewMessageParam.addRule(RelativeLayout.BELOW, EditTextDescription.getId());
         TextViewMessageParam.addRule(Misc.Align("R"));
 
@@ -536,21 +534,21 @@ public class DescriptionUI extends FragmentBase
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
-        TextViewPrivacy.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        RelativeLayout.LayoutParams RelativeLayoutFinishParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
-        RelativeLayoutFinishParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        RelativeLayout.LayoutParams RelativeLayoutFinishParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
+        RelativeLayoutFinishParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         RelativeLayoutFinishParam.addRule(Misc.Align("L"));
 
         GradientDrawable DrawableEnable = new GradientDrawable();
         DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableEnable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
-        DrawableDisable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableDisable.setCornerRadius(Misc.ToDP(7));
         DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable ListDrawableFinish = new StateListDrawable();
@@ -563,7 +561,7 @@ public class DescriptionUI extends FragmentBase
 
         RelativeLayoutBottom.addView(RelativeLayoutFinish);
 
-        ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35)));
+        ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
         ButtonFinish.setText(GetActivity().getString(R.string.DescriptionUIFinish));
         ButtonFinish.setBackground(ListDrawableFinish);
         ButtonFinish.setEnabled(false);
@@ -638,26 +636,26 @@ public class DescriptionUI extends FragmentBase
                                      case 3:
                                      case 4:
                                      case 5:
-                                         Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
+                                         Misc.Toast( GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
                                          break;
                                      case 6:
-                                         Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameEmpty));
+                                         Misc.Toast( GetActivity().getString(R.string.DescriptionUINameEmpty));
                                          break;
                                      case 7:
-                                         Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameLess));
+                                         Misc.Toast( GetActivity().getString(R.string.DescriptionUINameLess));
                                          break;
                                      case 8:
-                                         Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameGreater));
+                                         Misc.Toast( GetActivity().getString(R.string.DescriptionUINameGreater));
                                          break;
                                      case 1:
                                      case 9:
                                      case 10:
                                      case 11:
                                      case 12:
-                                         Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUICode));
+                                         Misc.Toast( GetActivity().getString(R.string.DescriptionUICode));
                                          break;
                                      default:
-                                         Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                         Misc.GeneralError(Result.getInt("Message"));
                                          break;
                                  }
                              }
@@ -673,7 +671,7 @@ public class DescriptionUI extends FragmentBase
                              Progress.dismiss();
                              LoadingViewFinish.Stop();
                              ButtonFinish.setVisibility(View.VISIBLE);
-                             Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                             Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                          }
                      });
                  }
@@ -729,26 +727,26 @@ public class DescriptionUI extends FragmentBase
                                         break;
                                     case 1:
                                     case 9:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUICode));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUICode));
                                         break;
                                     case 2:
                                     case 3:
                                     case 4:
                                     case 5:
                                     case 10:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
                                         break;
                                     case 6:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameEmpty));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUINameEmpty));
                                         break;
                                     case 7:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameLess));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUINameLess));
                                         break;
                                     case 8:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameGreater));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUINameGreater));
                                         break;
                                     default:
-                                        Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                        Misc.GeneralError(Result.getInt("Message"));
                                         break;
                                 }
                             }
@@ -764,7 +762,7 @@ public class DescriptionUI extends FragmentBase
                             Progress.dismiss();
                             LoadingViewFinish.Stop();
                             ButtonFinish.setVisibility(View.VISIBLE);
-                            Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                            Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                         }
                     });
                 }
@@ -819,26 +817,26 @@ public class DescriptionUI extends FragmentBase
                                         break;
                                     case 1:
                                     case 9:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUICode));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUICode));
                                         break;
                                     case 2:
                                     case 3:
                                     case 4:
                                     case 5:
                                     case 10:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUIUsernameUnavailable));
                                         break;
                                     case 6:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameEmpty));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUINameEmpty));
                                         break;
                                     case 7:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameLess));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUINameLess));
                                         break;
                                     case 8:
-                                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.DescriptionUINameGreater));
+                                        Misc.Toast( GetActivity().getString(R.string.DescriptionUINameGreater));
                                         break;
                                     default:
-                                        Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                        Misc.GeneralError(Result.getInt("Message"));
                                         break;
                                 }
                             }
@@ -854,7 +852,7 @@ public class DescriptionUI extends FragmentBase
                             Progress.dismiss();
                             LoadingViewFinish.Stop();
                             ButtonFinish.setVisibility(View.VISIBLE);
-                            Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                            Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                         }
                     });
                 }
@@ -863,7 +861,7 @@ public class DescriptionUI extends FragmentBase
 
         RelativeLayoutFinish.addView(ButtonFinish);
 
-        RelativeLayout.LayoutParams LoadingViewFinishParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
+        RelativeLayout.LayoutParams LoadingViewFinishParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
         LoadingViewFinishParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewFinish.setLayoutParams(LoadingViewFinishParam);
@@ -883,15 +881,15 @@ public class DescriptionUI extends FragmentBase
         RelativeLayoutMain.addView(CropImageViewMain);
 
         RelativeLayout RelativeLayoutCrop = new RelativeLayout(GetActivity());
-        RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+        RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
 
         CropImageViewMain.addView(RelativeLayoutCrop);
 
-        RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewDoneParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         ImageView ImageViewDone = new ImageView(GetActivity());
-        ImageViewDone.setPadding(Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6), Misc.ToDP(GetActivity(), 6));
+        ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
         ImageViewDone.setImageResource(R.drawable.done_white);

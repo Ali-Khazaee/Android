@@ -170,7 +170,7 @@ public class CircleImageView extends ImageView
 
     public void SetBorderWidth(int Width)
     {
-        BorderWidth = Misc.ToDP(getContext(), Width);
+        BorderWidth = Misc.ToDP(Width);
         Setup();
     }
 

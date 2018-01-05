@@ -4,12 +4,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.TextView;
 
-public class ProfileUI extends FragmentBase
+public class ProfileUI extends FragmentView
 {
     public ProfileUI()
     {
@@ -29,7 +29,7 @@ public class ProfileUI extends FragmentBase
         RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayout.LayoutParams TextViewThemeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 50));
+        RelativeLayout.LayoutParams TextViewThemeParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(50));
         TextViewThemeParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         TextView TextViewTheme = new TextView(GetActivity() , 16, false);
@@ -42,16 +42,13 @@ public class ProfileUI extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                if (SharedHandler.GetBoolean(GetActivity(), "IsDark"))
-                    Misc.ChangeTheme(GetActivity(), false);
-                else
-                    Misc.ChangeTheme(GetActivity(), true);
+                Misc.ChangeTheme();
             }
         });
 
         RelativeLayoutMain.addView(TextViewTheme);
 
-        RelativeLayout.LayoutParams TextViewLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 50));
+        RelativeLayout.LayoutParams TextViewLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(50));
         TextViewLanguageParam.addRule(RelativeLayout.BELOW, TextViewTheme.getId());
 
         TextView TextViewLanguage = new TextView(GetActivity() , 16, false);
@@ -64,9 +61,9 @@ public class ProfileUI extends FragmentBase
             public void onClick(View v)
             {
                 if (SharedHandler.GetString(GetActivity(), "Language").equals("fa"))
-                    Misc.ChangeLanguage(GetActivity(), "en");
+                    Misc.ChangeLanguage("en");
                 else
-                    Misc.ChangeLanguage(GetActivity(), "fa");
+                    Misc.ChangeLanguage("fa");
             }
         });
 

@@ -34,7 +34,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.Misc;
@@ -42,7 +42,7 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class UsernameUI extends FragmentBase
+class UsernameUI extends FragmentView
 {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
@@ -105,13 +105,13 @@ class UsernameUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
@@ -119,7 +119,7 @@ class UsernameUI extends FragmentBase
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.GenerateViewID());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
-        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
+        ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -130,12 +130,12 @@ class UsernameUI extends FragmentBase
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
+        TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setText(GetActivity().getString(R.string.GeneralUsername));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(GetActivity());
@@ -160,7 +160,7 @@ class UsernameUI extends FragmentBase
         ScrollViewMain.addView(RelativeLayoutScroll);
 
         RelativeLayout.LayoutParams TextViewUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewUsernameParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewUsernameParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewUsernameParam.addRule(Misc.Align("R"));
 
         TextView TextViewUsername = new TextView(GetActivity(), 16, false);
@@ -172,7 +172,7 @@ class UsernameUI extends FragmentBase
         RelativeLayoutScroll.addView(TextViewUsername);
 
         RelativeLayout.LayoutParams EditTextUsernameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        EditTextUsernameParam.setMargins(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+        EditTextUsernameParam.setMargins(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
         EditTextUsernameParam.addRule(RelativeLayout.BELOW, TextViewUsername.getId());
 
         final EditText EditTextUsername = new EditText(GetActivity());
@@ -206,7 +206,7 @@ class UsernameUI extends FragmentBase
         EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextUsername.requestFocus();
-        EditTextUsername.setPadding(0, -Misc.ToDP(GetActivity(), 2), Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 5));
+        EditTextUsername.setPadding(0, -Misc.ToDP(2), Misc.ToDP(8), Misc.ToDP(5));
         EditTextUsername.setTypeface(FontHandler.GetTypeface(GetActivity()));
         EditTextUsername.setHint(GetActivity().getString(R.string.UsernameUIHint));
         EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
@@ -216,7 +216,7 @@ class UsernameUI extends FragmentBase
             {
                 paint = new Paint();
                 paint.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
-                paint.setTextSize(Misc.ToDP(GetActivity(), 18));
+                paint.setTextSize(Misc.ToDP(18));
                 paint.setAntiAlias(true);
                 paint.setTextAlign(Paint.Align.LEFT);
             }
@@ -224,7 +224,7 @@ class UsernameUI extends FragmentBase
             @Override
             public void draw(@NonNull Canvas canvas)
             {
-                canvas.drawText("@", Misc.ToDP(GetActivity(), 8), Misc.ToDP(GetActivity(), 2), paint);
+                canvas.drawText("@", Misc.ToDP(8), Misc.ToDP(2), paint);
             }
 
             @Override
@@ -245,7 +245,7 @@ class UsernameUI extends FragmentBase
                 return PixelFormat.TRANSLUCENT;
             }
         }, null, null, null);
-        EditTextUsername.setCompoundDrawablePadding(Misc.ToDP(GetActivity(), 27));
+        EditTextUsername.setCompoundDrawablePadding(Misc.ToDP(27));
         EditTextUsername.addTextChangedListener(new TextWatcher()
         {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -268,7 +268,7 @@ class UsernameUI extends FragmentBase
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setText(GetActivity().getString(R.string.UsernameUIMessage));
         TextViewMessage.setId(Misc.GenerateViewID());
-        TextViewMessage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -288,21 +288,21 @@ class UsernameUI extends FragmentBase
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
-        TextViewPrivacy.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
-        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
-        RelativeLayoutNextParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
+        RelativeLayoutNextParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         RelativeLayoutNextParam.addRule(Misc.Align("L"));
 
         GradientDrawable DrawableEnable = new GradientDrawable();
         DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableEnable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
-        DrawableDisable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableDisable.setCornerRadius(Misc.ToDP(7));
         DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
@@ -315,7 +315,7 @@ class UsernameUI extends FragmentBase
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
-        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35)));
+        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
         ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
@@ -359,22 +359,22 @@ class UsernameUI extends FragmentBase
                                         GetActivity().GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), R.id.ContainerFull, "PasswordUI");
                                     break;
                                 case 1:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError1));
+                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError1));
                                     break;
                                 case 2:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError2));
+                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError2));
                                     break;
                                 case 3:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError3));
+                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError3));
                                     break;
                                 case 4:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError4));
+                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError4));
                                     break;
                                 case 5:
-                                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.UsernameUIError5));
+                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError5));
                                     break;
                                 default:
-                                    Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                    Misc.GeneralError(Result.getInt("Message"));
                             }
                         }
                         catch (Exception e)
@@ -388,7 +388,7 @@ class UsernameUI extends FragmentBase
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                     }
                 });
             }
@@ -396,7 +396,7 @@ class UsernameUI extends FragmentBase
 
         RelativeLayoutNext.addView(ButtonNext);
 
-        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
+        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);

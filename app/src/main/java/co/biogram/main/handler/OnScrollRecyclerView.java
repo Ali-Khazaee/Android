@@ -5,13 +5,13 @@ import android.support.v7.widget.RecyclerView;
 
 public abstract class OnScrollRecyclerView extends RecyclerView.OnScrollListener
 {
-    private final LinearLayoutManager LinearLayoutManagerMain;
-    private int PreviousTotalItemCount = 0;
+    private LinearLayoutManager LayoutManager;
+    private int PreviousTotalCount = 0;
     private boolean IsLoading = true;
 
-    protected OnScrollRecyclerView(LinearLayoutManager linearLayoutManager)
+    OnScrollRecyclerView(RecyclerView.LayoutManager lm)
     {
-        LinearLayoutManagerMain = linearLayoutManager;
+        LayoutManager = (LinearLayoutManager) lm;
     }
 
     @Override
@@ -20,20 +20,19 @@ public abstract class OnScrollRecyclerView extends RecyclerView.OnScrollListener
         if (X == 0 && Y == 0)
             return;
 
-        final int TotalItemCount = LinearLayoutManagerMain.getItemCount();
-        final int LastVisibleItemPosition = LinearLayoutManagerMain.findLastVisibleItemPosition() + 5;
+        int TotalCount = LayoutManager.getItemCount();
 
-        if (IsLoading && (TotalItemCount > PreviousTotalItemCount))
+        if (IsLoading && (TotalCount > PreviousTotalCount))
         {
             IsLoading = false;
-            PreviousTotalItemCount = TotalItemCount;
+            PreviousTotalCount = TotalCount;
         }
 
-        if (!IsLoading && LastVisibleItemPosition > TotalItemCount)
+        if (!IsLoading && (LayoutManager.findLastVisibleItemPosition() + 5) > TotalCount)
         {
             OnLoadMore();
             IsLoading = true;
-            PreviousTotalItemCount++;
+            PreviousTotalCount++;
         }
     }
 
@@ -42,7 +41,7 @@ public abstract class OnScrollRecyclerView extends RecyclerView.OnScrollListener
         IsLoading = false;
 
         if (Full)
-            PreviousTotalItemCount = 0;
+            PreviousTotalCount = 0;
     }
 
     public abstract void OnLoadMore();

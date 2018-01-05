@@ -40,7 +40,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import org.json.JSONObject;
 
 import co.biogram.main.fragment.FragmentActivity;
-import co.biogram.main.fragment.FragmentBase;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.R;
 import co.biogram.main.ui.view.Button;
@@ -48,7 +48,7 @@ import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.TextView;
 
-class PhoneUI extends FragmentBase
+class PhoneUI extends FragmentView
 {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
@@ -104,20 +104,20 @@ class PhoneUI extends FragmentBase
         };
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
         RelativeLayoutHeader.setId(Misc.GenerateViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
         ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.GenerateViewID());
-        ImageViewBack.setPadding(Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12), Misc.ToDP(GetActivity(), 12));
+        ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
 
@@ -130,11 +130,11 @@ class PhoneUI extends FragmentBase
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setText(GetActivity().getString(IsSignUp ? R.string.GeneralSignUp : R.string.GeneralSignIn));
-        TextViewTitle.setPadding(0, Misc.ToDP(GetActivity(), 6), 0, 0);
+        TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
+        RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
         View ViewLine = new View(GetActivity());
@@ -159,7 +159,7 @@ class PhoneUI extends FragmentBase
         ScrollViewMain.addView(RelativeLayoutScroll);
 
         LinearLayout LinearLayoutCode = new LinearLayout(GetActivity());
-        LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(90), LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayoutCode.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutCode.setGravity(Gravity.CENTER_HORIZONTAL);
         LinearLayoutCode.setId(Misc.GenerateViewID());
@@ -168,7 +168,7 @@ class PhoneUI extends FragmentBase
 
         TextView TextViewPhoneCode = new TextView(GetActivity(), 14, false);
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewPhoneCode.setPadding(0, Misc.ToDP(GetActivity(), 20), 0, 0);
+        TextViewPhoneCode.setPadding(0, Misc.ToDP(20), 0, 0);
         TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewPhoneCode.setText(GetActivity().getString(R.string.PhoneUICode));
 
@@ -191,7 +191,7 @@ class PhoneUI extends FragmentBase
         }
 
         final EditText EditTextPhoneCode = new EditText(GetActivity());
-        EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(GetActivity(), 70), LinearLayout.LayoutParams.WRAP_CONTENT));
+        EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(70), LinearLayout.LayoutParams.WRAP_CONTENT));
         EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
         EditTextPhoneCode.setFocusable(false);
@@ -209,31 +209,31 @@ class PhoneUI extends FragmentBase
                 RelativeLayout RelativeLayoutCode = new RelativeLayout(GetActivity());
                 RelativeLayoutCode.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
 
-                RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(GetActivity(), 56));
+                RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(56));
                 TextViewTitleParam.addRule(Misc.Align("R"));
 
                 TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewTitle.setText(GetActivity().getString(R.string.PhoneUIPreCode));
-                TextViewTitle.setPadding(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+                TextViewTitle.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewTitle.setGravity(Gravity.CENTER);
 
                 RelativeLayoutCode.addView(TextViewTitle);
 
-                RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 56), Misc.ToDP(GetActivity(), 56));
+                RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
                 ImageViewCloseParam.addRule(Misc.Align("L"));
 
                 ImageView ImageViewClose = new ImageView(GetActivity());
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                 ImageViewClose.setImageResource(R.drawable.close_blue);
-                ImageViewClose.setPadding(Misc.ToDP(GetActivity(), 9), Misc.ToDP(GetActivity(), 9), Misc.ToDP(GetActivity(), 9), Misc.ToDP(GetActivity(), 9));
+                ImageViewClose.setPadding(Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9));
                 ImageViewClose.setId(Misc.GenerateViewID());
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
 
                 RelativeLayoutCode.addView(ImageViewClose);
 
-                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 1));
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
                 ViewLineParam.addRule(RelativeLayout.BELOW, ImageViewClose.getId());
 
                 View ViewLine = new View(GetActivity());
@@ -260,10 +260,10 @@ class PhoneUI extends FragmentBase
                 String Iran = "( 98+ ) ایران";
 
                 TextView TextViewIran = new TextView(GetActivity(), 16, false);
-                TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(GetActivity(), 56)));
+                TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
                 TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
                 TextViewIran.setText(Iran);
-                TextViewIran.setPadding(Misc.ToDP(GetActivity(), 10), 0, Misc.ToDP(GetActivity(), 10), 0);
+                TextViewIran.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
                 TextViewIran.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
 
@@ -287,14 +287,14 @@ class PhoneUI extends FragmentBase
 
         TextView TextViewPhone = new TextView(GetActivity(), 14, false);
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewPhone.setPadding(0, Misc.ToDP(GetActivity(), 20), 0, 0);
+        TextViewPhone.setPadding(0, Misc.ToDP(20), 0, 0);
         TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewPhone.setText(GetActivity().getString(R.string.PhoneUINumber));
 
         LinearLayoutPhone.addView(TextViewPhone);
 
         LinearLayout.LayoutParams EditTextPhoneParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        EditTextPhoneParam.setMargins(0, 0 , Misc.ToDP(GetActivity(), 15), 0);
+        EditTextPhoneParam.setMargins(0, 0 , Misc.ToDP(15), 0);
 
         final EditText EditTextPhone = new EditText(GetActivity());
         EditTextPhone.setLayoutParams(EditTextPhoneParam);
@@ -349,7 +349,7 @@ class PhoneUI extends FragmentBase
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setId(Misc.GenerateViewID());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
-        TextViewMessage.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setText((GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
@@ -397,25 +397,25 @@ class PhoneUI extends FragmentBase
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
-        TextViewPrivacy.setPadding(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
         GradientDrawable DrawableEnable = new GradientDrawable();
         DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
-        DrawableEnable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
-        DrawableDisable.setCornerRadius(Misc.ToDP(GetActivity(), 7));
+        DrawableDisable.setCornerRadius(Misc.ToDP(7));
         DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
 
         StateListDrawable DrawableStateNext = new StateListDrawable();
         DrawableStateNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
         DrawableStateNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
 
-        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
-        RelativeLayoutNextParam.setMargins(Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15), Misc.ToDP(GetActivity(), 15));
+        RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
+        RelativeLayoutNextParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         RelativeLayoutNextParam.addRule(Misc.Align("L"));
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(GetActivity());
@@ -424,7 +424,7 @@ class PhoneUI extends FragmentBase
 
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
-        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35)));
+        ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
         ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
         ButtonNext.setBackground(DrawableStateNext);
         ButtonNext.setEnabled(false);
@@ -433,7 +433,7 @@ class PhoneUI extends FragmentBase
             @Override
             public void onClick(View v)
             {
-                if (Misc.HasPermission(GetActivity(), Manifest.permission.RECEIVE_SMS))
+                if (Misc.HasPermission(Manifest.permission.RECEIVE_SMS))
                 {
                     SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                     return;
@@ -454,13 +454,7 @@ class PhoneUI extends FragmentBase
                         GetActivity().RequestPermission(Manifest.permission.RECEIVE_SMS, new FragmentActivity.OnPermissionListener()
                         {
                             @Override
-                            public void OnGranted()
-                            {
-                                SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
-                            }
-
-                            @Override
-                            public void OnDenied()
+                            public void OnResult(boolean Granted)
                             {
                                 SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                             }
@@ -472,7 +466,7 @@ class PhoneUI extends FragmentBase
 
         RelativeLayoutNext.addView(ButtonNext);
 
-        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(GetActivity(), 90), Misc.ToDP(GetActivity(), 35));
+        RelativeLayout.LayoutParams LoadingViewNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);
@@ -550,18 +544,18 @@ class PhoneUI extends FragmentBase
                             case 1:
                             case 2:
                             case 3:
-                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralPhoneCode));
+                                Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
                                 break;
                             case 4:
                             case 5:
                             case 6:
-                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralPhone));
+                                Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
                                 break;
                             case 7:
-                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.PhoneUIError));
+                                Misc.Toast( GetActivity().getString(R.string.PhoneUIError));
                                 break;
                             default:
-                                Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                Misc.GeneralError(Result.getInt("Message"));
                                 break;
                         }
                     }
@@ -576,7 +570,7 @@ class PhoneUI extends FragmentBase
                 {
                     LoadingViewNext.Stop();
                     ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                    Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                 }
             });
         }
@@ -617,18 +611,18 @@ class PhoneUI extends FragmentBase
                             case 1:
                             case 2:
                             case 3:
-                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralPhoneCode));
+                                Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
                                 break;
                             case 4:
                             case 5:
                             case 6:
-                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralPhone));
+                                Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
                                 break;
                             case 7:
-                                Misc.Toast(GetActivity(), GetActivity().getString(R.string.PhoneUIError2));
+                                Misc.Toast( GetActivity().getString(R.string.PhoneUIError2));
                                 break;
                             default:
-                                Misc.GeneralError(GetActivity(), Result.getInt("Message"));
+                                Misc.GeneralError(Result.getInt("Message"));
                                 break;
                         }
                     }
@@ -643,7 +637,7 @@ class PhoneUI extends FragmentBase
                 {
                     LoadingViewNext.Stop();
                     ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.Toast(GetActivity(), GetActivity().getString(R.string.GeneralNoInternet));
+                    Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
                 }
             });
         }

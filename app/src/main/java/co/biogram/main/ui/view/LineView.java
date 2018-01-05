@@ -54,7 +54,7 @@ public class LineView extends View
 
     public void SetStrokeWidth(int width)
     {
-        StrokeWidth = Misc.ToDP(getContext(), width);
+        StrokeWidth = Misc.ToDP(width);
     }
 
     public void SetProgressColor(int color)

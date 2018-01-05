@@ -32,7 +32,7 @@ import co.biogram.main.ui.view.TextView;
 
 public class Misc
 {
-    private static final AtomicInteger NextGeneratedID = new AtomicInteger(1);
+    private static AtomicInteger NextGeneratedID = new AtomicInteger(1);
 
     @SuppressLint("StaticFieldLeak")
     private static volatile Context context;
@@ -168,14 +168,14 @@ public class Misc
         IMM.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public static void HideSoftKey(Activity activity)
+    public static void HideSoftKey(Activity a)
     {
-        View view = activity.getCurrentFocus();
+        View view = a.getCurrentFocus();
 
         if (view != null)
             view.clearFocus();
 
-        InputMethodManager IMM = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager IMM = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (IMM == null)
             return;
@@ -183,19 +183,14 @@ public class Misc
         IMM.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
-    public static boolean HasPermission(Context context, String Permission)
+    public static boolean HasPermission(String p)
     {
-        return ContextCompat.checkSelfPermission(context, Permission) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void RunOnUIThread(Context context, Runnable runnable, long Delay)
+    public static void RunOnUIThread(Runnable r, long d)
     {
-        Handler handler = new Handler(context.getApplicationContext().getMainLooper());
-
-        if (Delay == 0)
-            handler.post(runnable);
-        else
-            handler.postDelayed(runnable, Delay);
+        new Handler(context.getApplicationContext().getMainLooper()).postDelayed(r, d);
     }
 
     public static int SampleSize(BitmapFactory.Options o, int RW, int RH)
@@ -220,21 +215,17 @@ public class Misc
         return S;
     }
 
-    public static void ChangeLanguage(Context c, String Language)
+    public static void ChangeLanguage(String Language)
     {
-        if (SharedHandler.GetString(c, "Language").equals(Language))
-            return;
-
-        SharedPreferences Shared = c.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
-        SharedPreferences.Editor Editor = Shared.edit();
+        SharedPreferences.Editor Editor = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit();
         Editor.putString("Language", Language);
         // noinspection all
         Editor.commit();
 
-        AlarmManager alarmManager = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (alarmManager != null)
-            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(c, 123456, new Intent(c, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, new Intent(context, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
 
         System.exit(0);
     }
@@ -252,14 +243,10 @@ public class Misc
         }
     }
 
-    public static void ChangeTheme(boolean IsDark)
+    public static void ChangeTheme()
     {
-        if (SharedHandler.GetBoolean(context, "IsDark") == IsDark)
-            return;
-
-        SharedPreferences Shared = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE);
-        SharedPreferences.Editor Editor = Shared.edit();
-        Editor.putBoolean("IsDark", IsDark);
+        SharedPreferences.Editor Editor = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit();
+        Editor.putBoolean("IsDark", !SharedHandler.GetBoolean(context, "IsDark"));
         // noinspection all
         Editor.commit();
 

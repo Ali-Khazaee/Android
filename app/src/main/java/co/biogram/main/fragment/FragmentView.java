@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentBase
+public class FragmentView
 {
     FragmentActivity Activity;
     public View ViewMain;
     String Tag;
 
-    protected FragmentActivity GetActivity()
+    public FragmentActivity GetActivity()
     {
         return Activity;
     }
@@ -27,6 +27,8 @@ public class FragmentBase
             ViewMain = null;
         }
     }
+
+    public void OnOpen() { }
 
     public void OnCreate() { }
 
