@@ -101,10 +101,12 @@ public class InboxUI extends FragmentView
         RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
+
         RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
-        RecyclerViewMain.setAdapter(Adapter = new PostAdapter(GetActivity(), RecyclerViewMain, "InboxUI"));
-        RecyclerViewMain.setLayoutManager(new LinearLayoutManager(GetActivity()));
+        RecyclerViewMain.setAdapter(Adapter = new PostAdapter(GetActivity(), RecyclerViewMain, LinearLayoutManagerMain, "InboxUI"));
+        RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 

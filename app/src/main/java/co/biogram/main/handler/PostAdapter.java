@@ -9,11 +9,13 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -50,7 +52,7 @@ import co.biogram.main.ui.view.TextView;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain>
 {
     private List<PostStruct> PostList = new ArrayList<>();
-    private PullToRefreshView PullToRefreshViewMain;
+    private PullToRefreshView RefreshView;
     private FragmentActivity Activity;
     private RecyclerView Recycler;
     private String Tag;
@@ -115,15 +117,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID2_MORE = Misc.GenerateViewID();
     private final int ID2_MORE2 = Misc.GenerateViewID();
 
-    public PostAdapter(FragmentActivity a, RecyclerView r, String t)
+    public PostAdapter(FragmentActivity a, RecyclerView r, LinearLayoutManager llm, String t)
     {
         Activity = a;
         Recycler = r;
         Tag = t;
 
-        Recycler.addOnScrollListener(new OnScrollRecyclerView(Recycler.getLayoutManager()) { @Override public void OnLoadMore() { Update(); } });
-
         PostList.add(new PostStruct(0));
+        Recycler.addOnScrollListener(new OnScrollRecyclerView(llm) { @Override public void OnLoadMore() { Update(); } });
+        Recycler.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent e)
+            {
+                if (RefreshView != null)
+                    RefreshView.onTouchEvent(e);
+
+                return true;
+            }
+        });
     }
 
     class ViewHolderMain extends RecyclerView.ViewHolder
@@ -262,19 +274,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     {
         if (viewType == 0)
         {
-            PullToRefreshViewMain = new PullToRefreshView(Activity);
-            PullToRefreshViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-            PullToRefreshViewMain.SetPullToRefreshListener(new PullToRefreshListener()
+            RefreshView = new PullToRefreshView(Activity);
+            RefreshView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+            RefreshView.setBackgroundResource(R.color.RedLike);
+            RefreshView.SetPullToRefreshListener(new PullToRefreshListener()
             {
                 @Override
                 public void OnRefresh()
                 {
                     // TODO Refresh
-                    PullToRefreshViewMain.SetRefreshComplete();
+                    RefreshView.SetRefreshComplete();
                 }
             });
 
-            return new ViewHolderMain(PullToRefreshViewMain, viewType);
+            return new ViewHolderMain(RefreshView, viewType);
         }
         else if (viewType == 1)
         {
@@ -1727,7 +1740,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             PostList.add(P);
                         }
 
-                        Collections.sort(PostList, new Comparator<PostStruct>()
+                        /*Collections.sort(PostList, new Comparator<PostStruct>()
                         {
                             @Override
                             public int compare(PostAdapter.PostStruct P1, PostAdapter.PostStruct P2)
@@ -1741,7 +1754,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                 return V;
                             }
-                        });
+                        });*/
 
                         notifyDataSetChanged();
                     }

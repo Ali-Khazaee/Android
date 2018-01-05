@@ -4,65 +4,56 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.MotionEvent;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.PostAdapter;
 
-public class PullToRefreshView extends LinearLayout
+public class PullToRefreshView extends RelativeLayout
 {
     private static final int STATE_NORMAL = 0;
     private static final int STATE_RELEASE = 1;
-    public  static final int STATE_REFRESHING = 2;
+    private static final int STATE_REFRESHING = 2;
     private static final int STATE_DONE = 3;
 
     private PostAdapter.PullToRefreshListener Listener;
-    private final RelativeLayout RelativeLayoutMain;
-    private final LoadingView LoadingViewMain;
-    private final CircleView CircleViewMain;
+    private LoadingView LoadingViewMain;
+    private CircleView CircleViewMain;
 
-    private final int RefreshHeight;
     private int RefreshState = 0;
+    private int RefreshHeight;
     private float LastY = -1;
 
     public PullToRefreshView(Context context)
     {
         super(context);
-        RefreshHeight = GetScreenHeight() / 6;
 
-        RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-
-        RelativeLayout.LayoutParams LinearLayoutMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(120));
-        LinearLayoutMainParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
-        LinearLayout LinearLayoutMain = new LinearLayout(context);
-        LinearLayoutMain.setLayoutParams(LinearLayoutMainParam);
-        LinearLayoutMain.setGravity(Gravity.CENTER);
-
-        RelativeLayoutMain.addView(LinearLayoutMain);
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewMain = new LoadingView(context);
-        LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
         LoadingViewMain.SetColor(R.color.BlueGray2);
         LoadingViewMain.setVisibility(GONE);
 
-        LinearLayoutMain.addView(LoadingViewMain);
+        addView(LoadingViewMain);
+
+        RelativeLayout.LayoutParams CircleViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(40), Misc.ToDP(40));
+        CircleViewMainParam.setMargins(0, Misc.ToDP(8), 0, Misc.ToDP(8));
+        CircleViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         CircleViewMain = new CircleView(context);
-        CircleViewMain.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(40), Misc.ToDP(40)));
+        CircleViewMain.setLayoutParams(CircleViewMainParam);
         CircleViewMain.SetProgressColor(R.color.BlueGray2);
         CircleViewMain.SetProgressWidth(2);
         CircleViewMain.InvalidateTextPaints();
 
-        LinearLayoutMain.addView(CircleViewMain);
+        addView(CircleViewMain);
 
-        addView(RelativeLayoutMain);
-        SetVisibleHeight(0);
+        RefreshHeight = GetScreenHeight() / 6;
     }
 
     @Override
@@ -72,24 +63,31 @@ public class PullToRefreshView extends LinearLayout
         {
             case MotionEvent.ACTION_DOWN:
                 LastY = e.getRawY();
-                break;
+            break;
             case MotionEvent.ACTION_MOVE:
-                boolean IsUp = LastY < e.getRawY();
                 float MoveY = e.getRawY() - LastY;
                 LastY = e.getRawY();
 
-                if (GetVisibleHeight() == 0 && MoveY < 0)
+                if (MoveY > 80.0f || (getHeight() == 0 && MoveY < 0))
                     return super.onTouchEvent(e);
 
                 if (RefreshState != PullToRefreshView.STATE_REFRESHING)
                 {
-                    OnScroll((int) (MoveY / 2), IsUp);
-                    return super.onTouchEvent(e);
+                    int Y = (int) (MoveY / 2);
+                    int NewVisibleHeight = getHeight() + Y;
+
+                    if (NewVisibleHeight >= RefreshHeight && RefreshState != STATE_RELEASE)
+                        RefreshState = STATE_RELEASE;
+                    else if (NewVisibleHeight < RefreshHeight && RefreshState != STATE_NORMAL)
+                        RefreshState = STATE_NORMAL;
+
+                    CircleViewMain.SetProgressPercentage(Math.min(Math.max(1, NewVisibleHeight) / (RefreshHeight / 100), 100));
+
+                    SetVisibleHeight(NewVisibleHeight);
                 }
-                break;
+            break;
             case MotionEvent.ACTION_UP:
-            {
-                if (GetVisibleHeight() <= 0)
+                if (getHeight() <= 0)
                     super.onTouchEvent(e);
 
                 if (RefreshState == STATE_NORMAL)
@@ -106,30 +104,10 @@ public class PullToRefreshView extends LinearLayout
                     SmoothScrollTo(GetScreenHeight() / 9);
                     Listener.OnRefresh();
                 }
-
-                break;
-            }
+            break;
         }
 
         return super.onTouchEvent(e);
-    }
-
-    public void OnScroll(int Y, boolean IsUp)
-    {
-        if (Y == 0)
-            Y = IsUp ? 1 : -2;
-
-        int NewVisibleHeight = GetVisibleHeight() + Y;
-
-        if (NewVisibleHeight >= RefreshHeight && RefreshState != STATE_RELEASE)
-            RefreshState = STATE_RELEASE;
-        else if (NewVisibleHeight < RefreshHeight && RefreshState != STATE_NORMAL)
-            RefreshState = STATE_NORMAL;
-
-        SetVisibleHeight(GetVisibleHeight() + Y);
-
-        int Percentage = Math.max(1, GetVisibleHeight()) / (RefreshHeight / 100);
-        CircleViewMain.SetProgressPercentage(Math.min(Percentage, 100));
     }
 
     private void SetVisibleHeight(int Height)
@@ -139,10 +117,13 @@ public class PullToRefreshView extends LinearLayout
         else if (Height < 0)
             Height = 0;
 
-        LayoutParams LayoutParam = (LayoutParams) RelativeLayoutMain.getLayoutParams();
-        LayoutParam.height = Height;
+        ViewGroup.LayoutParams LayoutParam = getLayoutParams();
 
-        RelativeLayoutMain.setLayoutParams(LayoutParam);
+        if (LayoutParam != null)
+        {
+            LayoutParam.height = Height;
+            setLayoutParams(LayoutParam);
+        }
     }
 
     public void SetRefreshComplete()
@@ -157,12 +138,6 @@ public class PullToRefreshView extends LinearLayout
         }
     }
 
-    public int GetVisibleHeight()
-    {
-        LayoutParams LayoutParam = (LayoutParams) RelativeLayoutMain.getLayoutParams();
-        return LayoutParam.height;
-    }
-
     private int GetScreenHeight()
     {
         DisplayMetrics DisplayMetric = new DisplayMetrics();
@@ -173,14 +148,14 @@ public class PullToRefreshView extends LinearLayout
 
     private void SmoothScrollTo(int Dest)
     {
-        ValueAnimator Anim = ValueAnimator.ofInt(GetVisibleHeight(), Dest);
+        ValueAnimator Anim = ValueAnimator.ofInt(getHeight(), Dest);
         Anim.setDuration(300).start();
         Anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
         {
             @Override
             public void onAnimationUpdate(ValueAnimator a)
             {
-                CircleViewMain.SetProgressPercentage(Math.max(1, GetVisibleHeight()) / (RefreshHeight / 100));
+                CircleViewMain.SetProgressPercentage(Math.max(1, getHeight()) / (RefreshHeight / 100));
                 SetVisibleHeight((int) a.getAnimatedValue());
             }
         });

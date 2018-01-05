@@ -21,7 +21,7 @@ public class FragmentManager
 
     public void OpenView(FragmentView Frag, int ID, String Tag)
     {
-        if (FindByTag(Tag) != null)
+        if (Fragment != null && Tag.equals(Fragment.Tag))
         {
             Fragment.OnOpen();
             return;
