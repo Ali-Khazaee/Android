@@ -54,7 +54,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private List<PostStruct> PostList = new ArrayList<>();
     private PullToRefreshView RefreshView;
     private FragmentActivity Activity;
-    private RecyclerView Recycler;
     private String Tag;
 
     // ViewType 1
@@ -117,13 +116,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private final int ID2_MORE = Misc.GenerateViewID();
     private final int ID2_MORE2 = Misc.GenerateViewID();
 
-    public PostAdapter(FragmentActivity a, RecyclerView r, LinearLayoutManager llm, String t)
+    public PostAdapter(FragmentActivity a, RecyclerView Recycler, LinearLayoutManager llm, final String t)
     {
         Activity = a;
-        Recycler = r;
         Tag = t;
 
         PostList.add(new PostStruct(0));
+
         Recycler.addOnScrollListener(new OnScrollRecyclerView(llm) { @Override public void OnLoadMore() { Update(); } });
         Recycler.setOnTouchListener(new View.OnTouchListener()
         {
@@ -133,7 +132,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 if (RefreshView != null)
                     RefreshView.onTouchEvent(e);
 
-                return true;
+                return false;
             }
         });
     }
@@ -276,8 +275,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         {
             RefreshView = new PullToRefreshView(Activity);
             RefreshView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
-            RefreshView.setBackgroundResource(R.color.RedLike);
-            RefreshView.SetPullToRefreshListener(new PullToRefreshListener()
+            RefreshView.SetOnRefreshListener(new PullToRefreshView.OnRefreshListener()
             {
                 @Override
                 public void OnRefresh()
@@ -1853,10 +1851,5 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         void RevLike() { IsLike = !IsLike; }
         void InsLike() { LikeCount++; }
         void DesLike() { LikeCount--; }
-    }
-
-    public interface PullToRefreshListener
-    {
-        void OnRefresh();
     }
 }

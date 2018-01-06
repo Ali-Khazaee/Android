@@ -10,7 +10,8 @@ import android.widget.RelativeLayout;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.PostAdapter;
+
+// TODO: Scroll B Samte Bala Bug e, Nabayad Scroll She Ta Vaghti k Pull View Hanoz Height esh 0 Nashode
 
 public class PullToRefreshView extends RelativeLayout
 {
@@ -19,7 +20,7 @@ public class PullToRefreshView extends RelativeLayout
     private static final int STATE_REFRESHING = 2;
     private static final int STATE_DONE = 3;
 
-    private PostAdapter.PullToRefreshListener Listener;
+    private OnRefreshListener Listener;
     private LoadingView LoadingViewMain;
     private CircleView CircleViewMain;
 
@@ -27,14 +28,14 @@ public class PullToRefreshView extends RelativeLayout
     private int RefreshHeight;
     private float LastY = -1;
 
-    public PullToRefreshView(Context context)
+    public PullToRefreshView(Context c)
     {
-        super(context);
+        super(c);
 
         RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewMain = new LoadingView(context);
+        LoadingViewMain = new LoadingView(c);
         LoadingViewMain.setLayoutParams(LoadingViewMainParam);
         LoadingViewMain.SetColor(R.color.BlueGray2);
         LoadingViewMain.setVisibility(GONE);
@@ -45,7 +46,7 @@ public class PullToRefreshView extends RelativeLayout
         CircleViewMainParam.setMargins(0, Misc.ToDP(8), 0, Misc.ToDP(8));
         CircleViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        CircleViewMain = new CircleView(context);
+        CircleViewMain = new CircleView(c);
         CircleViewMain.setLayoutParams(CircleViewMainParam);
         CircleViewMain.SetProgressColor(R.color.BlueGray2);
         CircleViewMain.SetProgressWidth(2);
@@ -71,7 +72,7 @@ public class PullToRefreshView extends RelativeLayout
                 if (MoveY > 80.0f || (getHeight() == 0 && MoveY < 0))
                     return super.onTouchEvent(e);
 
-                if (RefreshState != PullToRefreshView.STATE_REFRESHING)
+                if (RefreshState != STATE_REFRESHING)
                 {
                     int Y = (int) (MoveY / 2);
                     int NewVisibleHeight = getHeight() + Y;
@@ -108,6 +109,11 @@ public class PullToRefreshView extends RelativeLayout
         }
 
         return super.onTouchEvent(e);
+    }
+
+    public void SetOnRefreshListener(OnRefreshListener l)
+    {
+        Listener = l;
     }
 
     private void SetVisibleHeight(int Height)
@@ -162,8 +168,8 @@ public class PullToRefreshView extends RelativeLayout
         Anim.start();
     }
 
-    public void SetPullToRefreshListener(PostAdapter.PullToRefreshListener l)
+    public interface OnRefreshListener
     {
-        Listener = l;
+        void OnRefresh();
     }
 }
