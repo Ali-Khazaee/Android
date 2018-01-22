@@ -221,6 +221,15 @@
     <string name="WriteUITime">تنظیم زمان رای، زمان در ساعت</string>
     <string name="WriteUISet">تنظیم زمان</string>
 
+    <!-- Time Ago -->
+    <string name="TimeAgoNow">just now</string>
+    <string name="TimeAgoMin">a minute ago</string>
+    <string name="TimeAgoMins">  minutes ago</string>
+    <string name="TimeAgoHour">a hour ago</string>
+    <string name="TimeAgoHours">hours ago</string>
+    <string name="TimeAgoYes">yesterday</string>
+    <string name="TimeAgoDay">days ago</string>
+
     <!-- Post Adapter -->
     <string name="PostAdapterVote">رای</string>
     <string name="PostAdapterVotes">رای ها</string>

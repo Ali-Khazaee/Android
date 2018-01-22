@@ -12,6 +12,7 @@ public abstract class FragmentActivity extends Activity
 {
     private OnPermissionListener PermissionListener;
     private FragmentManager Manager;
+    private boolean Resume = true;
     private String Permission;
 
     public FragmentManager GetManager()
@@ -40,6 +41,13 @@ public abstract class FragmentActivity extends Activity
     public void onResume()
     {
         super.onResume();
+
+        if (Resume)
+        {
+            Resume = false;
+            return;
+        }
+
         GetManager().OnResume();
     }
 

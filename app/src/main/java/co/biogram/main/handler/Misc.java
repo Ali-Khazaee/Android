@@ -18,6 +18,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -258,9 +259,22 @@ public class Misc
         System.exit(0);
     }
 
+    public static int Color(int C)
+    {
+        return ContextCompat.getColor(context, C);
+    }
+
     public static boolean IsDark()
     {
         return SharedHandler.GetBoolean(context, "IsDark");
+    }
+
+    public static void IsFullScreen(Activity activity, boolean Show)
+    {
+        if (Show && SharedHandler.GetBoolean(context, "IsFullScreen"))
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        else if (!Show && !SharedHandler.GetBoolean(context, "IsFullScreen"))
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public static String GetRandomServer(String URL)
@@ -273,32 +287,31 @@ public class Misc
         return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
     }
 
-    public static String GetTime(long T)
+    static String TimeAgo(long Time)
     {
-        long Time = ((System.currentTimeMillis() - (T * 1000)) / 1000);
+        
 
-        long SEC = (long) Math.round(Time % 60);
-        Time /= 60;
-        long MIN = (long) Math.round(Time % 60);
-        Time /= 60;
-        long HOUR = (long) Math.round(Time % 24);
-        Time /= 24;
-        long DAY = (long) Math.round(Time % 24);
-        Time /= 7;
-        long WEEK = (long) Math.round(Time % 7);
+        long Now = System.currentTimeMillis();
 
-        if (WEEK > 0)
-            return WEEK + "w";
-        else if (DAY > 0)
-            return DAY + "d";
-        else if (HOUR > 0)
-            return HOUR + "h";
-        else if (MIN > 0)
-            return MIN + "m";
-        else if (SEC > 0)
-            return SEC + "s";
+        if (Time > Now || Time <= 0)
+            return "";
 
-        return "";
+        long Diff = Now - Time;
+
+        if (Diff < 60 * 1000)
+            return context.getString(R.string.TimeAgoNow);
+        else if (Diff < 2 * 60 * 1000)
+            return context.getString(R.string.TimeAgoMin);
+        else if (Diff < 50 * 60 * 1000)
+            return Diff / 60 * 1000 + context.getString(R.string.TimeAgoMins);
+        else if (Diff < 90 * 60 * 1000)
+            return context.getString(R.string.TimeAgoHour);
+        else if (Diff < 24 * 60 * 60 * 1000)
+            return Diff / 60 * 60 * 1000 + context.getString(R.string.TimeAgoHours);
+        else if (Diff < 48 * 60 * 60 * 1000)
+            return context.getString(R.string.TimeAgoYes);
+
+        return Diff / 24 * 60 * 60 * 1000 + context.getString(R.string.TimeAgoDay);
     }
 
     public static void Debug(String Message)

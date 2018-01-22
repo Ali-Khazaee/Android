@@ -1543,7 +1543,9 @@ class WriteUI extends FragmentView
                             {
                                 case 0:
                                     InboxUI inboxUI = (InboxUI) GetActivity().GetManager().FindByTag("InboxUI");
-                                    inboxUI.Update(Result.getJSONObject("Result"));
+
+                                    if (inboxUI != null)
+                                        inboxUI.Update(Result.getJSONObject("Result"));
 
                                     GetActivity().onBackPressed();
                                 break;

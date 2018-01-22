@@ -9,7 +9,7 @@ public abstract class OnScrollRecyclerView extends RecyclerView.OnScrollListener
     private int PreviousTotalCount = 0;
     private boolean IsLoading = true;
 
-    OnScrollRecyclerView(LinearLayoutManager llm)
+    protected OnScrollRecyclerView(LinearLayoutManager llm)
     {
         LayoutManager = llm;
     }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="TextWhite">#000</color>
-    <color name="LineWhite">#ccc</color>
+    <color name="LineWhite">#eee</color>
     <color name="GroundWhite">#fff</color>
-    <color name="ActionBarWhite">#fafafa</color>
-    <color name="StatusBarWhite">#ccc</color>
+    <color name="ActionBarWhite">#fff</color>
+    <color name="StatusBarWhite">#ddd</color>
 
     <color name="TextDark">#fff</color>
     <color name="LineDark">#2b4159</color>
