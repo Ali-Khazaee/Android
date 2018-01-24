@@ -107,7 +107,7 @@ class UsernameUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
-        RelativeLayoutHeader.setId(Misc.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -117,7 +117,7 @@ class UsernameUI extends FragmentView
         ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.GenerateViewID());
+        ImageViewBack.setId(Misc.ViewID());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
@@ -141,7 +141,7 @@ class UsernameUI extends FragmentView
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
-        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -167,7 +167,7 @@ class UsernameUI extends FragmentView
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewUsername.setText(GetActivity().getString(R.string.GeneralUsername));
-        TextViewUsername.setId(Misc.GenerateViewID());
+        TextViewUsername.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewUsername);
 
@@ -177,7 +177,7 @@ class UsernameUI extends FragmentView
 
         final EditText EditTextUsername = new EditText(GetActivity());
         EditTextUsername.setLayoutParams(EditTextUsernameParam);
-        EditTextUsername.setId(Misc.GenerateViewID());
+        EditTextUsername.setId(Misc.ViewID());
         EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextUsername.setFilters(new InputFilter[]
         {
@@ -267,7 +267,7 @@ class UsernameUI extends FragmentView
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setText(GetActivity().getString(R.string.UsernameUIMessage));
-        TextViewMessage.setId(Misc.GenerateViewID());
+        TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
         RelativeLayoutScroll.addView(TextViewMessage);

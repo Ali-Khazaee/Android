@@ -223,12 +223,12 @@
 
     <!-- Time Ago -->
     <string name="TimeAgoNow">just now</string>
-    <string name="TimeAgoMin">a minute ago</string>
-    <string name="TimeAgoMins"> minutes ago</string>
-    <string name="TimeAgoHour">a hour ago</string>
-    <string name="TimeAgoHours"> hours ago</string>
-    <string name="TimeAgoYes">yesterday</string>
-    <string name="TimeAgoDay"> days ago</string>
+    <string name="TimeAgoMin">a min ago</string>
+    <string name="TimeAgoMins">mins ago</string>
+    <string name="TimeAgoHour">an hour ago</string>
+    <string name="TimeAgoHours">hours ago</string>
+    <string name="TimeAgoDay">a day ago</string>
+    <string name="TimeAgoDays">days ago</string>
 
     <!-- Post Adapter -->
     <string name="PostAdapterVote">Vote</string>

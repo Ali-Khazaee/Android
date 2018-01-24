@@ -84,7 +84,7 @@ public class VideoPreviewUI extends FragmentView
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20ffffff"));
-        RelativeLayoutHeader.setId(Misc.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -96,7 +96,7 @@ public class VideoPreviewUI extends FragmentView
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
-        ImageViewBack.setId(Misc.GenerateViewID());
+        ImageViewBack.setId(Misc.ViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -118,7 +118,7 @@ public class VideoPreviewUI extends FragmentView
         ImageView ImageViewDownload = new ImageView(GetActivity());
         ImageViewDownload.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewDownload.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewDownload.setId(Misc.GenerateViewID());
+        ImageViewDownload.setId(Misc.ViewID());
         ImageViewDownload.setLayoutParams(ImageViewDownloadParam);
         ImageViewDownload.setImageResource(R.drawable.download_white);
         ImageViewDownload.setOnClickListener(new View.OnClickListener()
@@ -245,7 +245,7 @@ public class VideoPreviewUI extends FragmentView
         ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewPlay.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
         ImageViewPlay.setImageResource(R.drawable.pause_white);
-        ImageViewPlay.setId(Misc.GenerateViewID());
+        ImageViewPlay.setId(Misc.ViewID());
 
         RelativeLayoutControl.addView(ImageViewPlay);
 
@@ -256,7 +256,7 @@ public class VideoPreviewUI extends FragmentView
 
         final TextView TextViewTime = new TextView(GetActivity(), 14, false);
         TextViewTime.setLayoutParams(TextViewTimeParam);
-        TextViewTime.setId(Misc.GenerateViewID());
+        TextViewTime.setId(Misc.ViewID());
         TextViewTime.setText((StringForTime(0) + " / " + StringForTime(0)));
 
         RelativeLayoutControl.addView(TextViewTime);

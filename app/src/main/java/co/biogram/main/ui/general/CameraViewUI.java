@@ -48,7 +48,7 @@ public class CameraViewUI extends FragmentView
         final ImageView ImageViewPick = new ImageView(GetActivity());
         ImageViewPick.setLayoutParams(ImageViewPickParam);
         ImageViewPick.setImageResource(R.drawable.camera_pick_white);
-        ImageViewPick.setId(Misc.GenerateViewID());
+        ImageViewPick.setId(Misc.ViewID());
         ImageViewPick.setOnClickListener(new View.OnClickListener()
         {
             boolean IsClicked = false;

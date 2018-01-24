@@ -60,7 +60,7 @@ public class GalleryViewUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -72,7 +72,7 @@ public class GalleryViewUI extends FragmentView
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
-        ImageViewBack.setId(Misc.GenerateViewID());
+        ImageViewBack.setId(Misc.ViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -86,7 +86,7 @@ public class GalleryViewUI extends FragmentView
         TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         TextViewTitle.setText(GalleryType == 3 ? GetActivity().getString(R.string.GalleryViewUIStorage) : GetActivity().getString(R.string.GalleryViewUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setId(Misc.GenerateViewID());
+        TextViewTitle.setId(Misc.ViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -164,7 +164,7 @@ public class GalleryViewUI extends FragmentView
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -272,10 +272,10 @@ public class GalleryViewUI extends FragmentView
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
         private final List<Struct> FileList = new ArrayList<>();
-        private final int ID1_MAIN = Misc.GenerateViewID();
-        private final int ID1_NAME = Misc.GenerateViewID();
-        private final int ID_MAIN = Misc.GenerateViewID();
-        private final int ID_CIRCLE = Misc.GenerateViewID();
+        private final int ID1_MAIN = Misc.ViewID();
+        private final int ID1_NAME = Misc.ViewID();
+        private final int ID_MAIN = Misc.ViewID();
+        private final int ID_CIRCLE = Misc.ViewID();
         private final GradientDrawable DrawableSelect;
         private final GradientDrawable DrawableSelected;
         private int Selection = 0;
@@ -484,7 +484,7 @@ public class GalleryViewUI extends FragmentView
                 CircleImageViewIcon.setPadding(Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(8));
                 CircleImageViewIcon.setImageResource(R.drawable.comment_bluegray);
                 CircleImageViewIcon.SetCircleBackgroundColor(R.color.Gray);
-                CircleImageViewIcon.setId(Misc.GenerateViewID());
+                CircleImageViewIcon.setId(Misc.ViewID());
                 CircleImageViewIcon.SetWidthPadding();
 
                 RelativeLayoutMain.addView(CircleImageViewIcon);

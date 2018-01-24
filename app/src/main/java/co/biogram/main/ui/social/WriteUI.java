@@ -152,7 +152,7 @@ class WriteUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -164,7 +164,7 @@ class WriteUI extends FragmentView
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
-        ImageViewBack.setId(Misc.GenerateViewID());
+        ImageViewBack.setId(Misc.ViewID());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -215,7 +215,7 @@ class WriteUI extends FragmentView
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -225,7 +225,7 @@ class WriteUI extends FragmentView
         final EditText EditTextMessage = new EditText(GetActivity());
         EditTextMessage.setLayoutParams(EditTextMessageParam);
         EditTextMessage.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextMessage.setId(Misc.GenerateViewID());
+        EditTextMessage.setId(Misc.ViewID());
         EditTextMessage.setMaxLines(5);
         EditTextMessage.setHint(R.string.WriteUIMessage);
         EditTextMessage.setBackground(null);
@@ -363,7 +363,7 @@ class WriteUI extends FragmentView
         LinearLayoutBottom.setLayoutParams(LinearLayoutBottomParam);
         LinearLayoutBottom.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutBottom.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        LinearLayoutBottom.setId(Misc.GenerateViewID());
+        LinearLayoutBottom.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(LinearLayoutBottom);
 
@@ -690,7 +690,7 @@ class WriteUI extends FragmentView
         View ViewLine2 = new View(GetActivity());
         ViewLine2.setLayoutParams(ViewLine2Param);
         ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine2.setId(Misc.GenerateViewID());
+        ViewLine2.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine2);
 
@@ -700,7 +700,7 @@ class WriteUI extends FragmentView
 
         LinearLayout LinearLayoutCategory = new LinearLayout(GetActivity());
         LinearLayoutCategory.setLayoutParams(LinearLayoutCategoryParam);
-        LinearLayoutCategory.setId(Misc.GenerateViewID());
+        LinearLayoutCategory.setId(Misc.ViewID());
         LinearLayoutCategory.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutCategory.setGravity(Misc.IsRTL() ? Gravity.END : Gravity.START);
         LinearLayoutCategory.setOnClickListener(new View.OnClickListener()
@@ -720,7 +720,7 @@ class WriteUI extends FragmentView
                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
                 RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
                 RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-                RelativeLayoutHeader.setId(Misc.GenerateViewID());
+                RelativeLayoutHeader.setId(Misc.ViewID());
 
                 LinearLayoutMain.addView(RelativeLayoutHeader);
 
@@ -754,7 +754,7 @@ class WriteUI extends FragmentView
                 View ViewLine = new View(GetActivity());
                 ViewLine.setLayoutParams(ViewLineParam);
                 ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-                ViewLine.setId(Misc.GenerateViewID());
+                ViewLine.setId(Misc.ViewID());
 
                 LinearLayoutMain.addView(ViewLine);
 
@@ -872,7 +872,7 @@ class WriteUI extends FragmentView
         ImageViewCloseVote.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewCloseVote.setImageResource(R.drawable.close_black);
         ImageViewCloseVote.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
-        ImageViewCloseVote.setId(Misc.GenerateViewID());
+        ImageViewCloseVote.setId(Misc.ViewID());
         ImageViewCloseVote.setAlpha(0.75f);
         ImageViewCloseVote.setOnClickListener(new View.OnClickListener()
         {
@@ -903,7 +903,7 @@ class WriteUI extends FragmentView
         final EditText EditTextVote1 = new EditText(GetActivity());
         EditTextVote1.setLayoutParams(EditTextVote1Param);
         EditTextVote1.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextVote1.setId(Misc.GenerateViewID());
+        EditTextVote1.setId(Misc.ViewID());
         EditTextVote1.setHint(R.string.WriteUIChoice1);
         EditTextVote1.setBackground(DrawableDisable);
         EditTextVote1.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -922,7 +922,7 @@ class WriteUI extends FragmentView
         final EditText EditTextVote2 = new EditText(GetActivity());
         EditTextVote2.setLayoutParams(EditTextVote2Param);
         EditTextVote2.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextVote2.setId(Misc.GenerateViewID());
+        EditTextVote2.setId(Misc.ViewID());
         EditTextVote2.setHint(R.string.WriteUIChoice2);
         EditTextVote2.setBackground(DrawableDisable);
         EditTextVote2.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -941,7 +941,7 @@ class WriteUI extends FragmentView
         final EditText EditTextVote3 = new EditText(GetActivity());
         EditTextVote3.setLayoutParams(EditTextVote3Param);
         EditTextVote3.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextVote3.setId(Misc.GenerateViewID());
+        EditTextVote3.setId(Misc.ViewID());
         EditTextVote3.setHint(R.string.WriteUIChoice3);
         EditTextVote3.setBackground(DrawableDisable);
         EditTextVote3.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -961,7 +961,7 @@ class WriteUI extends FragmentView
         final EditText EditTextVote4 = new EditText(GetActivity());
         EditTextVote4.setLayoutParams(EditTextVote4Param);
         EditTextVote4.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextVote4.setId(Misc.GenerateViewID());
+        EditTextVote4.setId(Misc.ViewID());
         EditTextVote4.setHint(R.string.WriteUIChoice4);
         EditTextVote4.setBackground(DrawableDisable);
         EditTextVote4.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
@@ -989,7 +989,7 @@ class WriteUI extends FragmentView
         EditTextVote5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
         EditTextVote5.setOnFocusChangeListener(OnFocus);
         EditTextVote5.setVisibility(View.GONE);
-        EditTextVote5.setId(Misc.GenerateViewID());
+        EditTextVote5.setId(Misc.ViewID());
 
         RelativeLayoutVote.addView(EditTextVote5);
 
@@ -1017,7 +1017,7 @@ class WriteUI extends FragmentView
                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
                 RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
                 RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-                RelativeLayoutHeader.setId(Misc.GenerateViewID());
+                RelativeLayoutHeader.setId(Misc.ViewID());
 
                 LinearLayoutMain.addView(RelativeLayoutHeader);
 
@@ -1051,7 +1051,7 @@ class WriteUI extends FragmentView
                 View ViewLine = new View(GetActivity());
                 ViewLine.setLayoutParams(ViewLineParam);
                 ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-                ViewLine.setId(Misc.GenerateViewID());
+                ViewLine.setId(Misc.ViewID());
 
                 LinearLayoutMain.addView(ViewLine);
 
@@ -1067,7 +1067,7 @@ class WriteUI extends FragmentView
                 EditTextTime.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
                 EditTextTime.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
                 EditTextTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                EditTextTime.setId(Misc.GenerateViewID());
+                EditTextTime.setId(Misc.ViewID());
                 EditTextTime.setInputType(InputType.TYPE_CLASS_PHONE);
                 EditTextTime.requestFocus();
                 EditTextTime.setFilters(new InputFilter[]
@@ -1205,7 +1205,7 @@ class WriteUI extends FragmentView
         ImageViewFile.setLayoutParams(ImageViewFileParam);
         ImageViewFile.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewFile.setImageResource(R.drawable.download_white);
-        ImageViewFile.setId(Misc.GenerateViewID());
+        ImageViewFile.setId(Misc.ViewID());
         ImageViewFile.setBackground(DrawableFile);
 
         RelativeLayoutFile.addView(ImageViewFile);
@@ -1216,7 +1216,7 @@ class WriteUI extends FragmentView
 
         TextViewFileName.setLayoutParams(TextViewFileNameParam);
         TextViewFileName.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
-        TextViewFileName.setId(Misc.GenerateViewID());
+        TextViewFileName.setId(Misc.ViewID());
 
         RelativeLayoutFile.addView(TextViewFileName);
 
@@ -1282,7 +1282,7 @@ class WriteUI extends FragmentView
         ImageViewRemoveVideo.setLayoutParams(ImageViewRemoveVideoParam);
         ImageViewRemoveVideo.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewRemoveVideo.setImageResource(R.drawable.close_black);
-        ImageViewRemoveVideo.setId(Misc.GenerateViewID());
+        ImageViewRemoveVideo.setId(Misc.ViewID());
         ImageViewRemoveVideo.setAlpha(0.75f);
         ImageViewRemoveVideo.setOnClickListener(new View.OnClickListener()
         {
@@ -1426,7 +1426,7 @@ class WriteUI extends FragmentView
         TextViewSizeVideo.setLayoutParams(TextViewSizeVideoParam);
         TextViewSizeVideo.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), 0);
         TextViewSizeVideo.setBackground(DrawableVideoSize);
-        TextViewSizeVideo.setId(Misc.GenerateViewID());
+        TextViewSizeVideo.setId(Misc.ViewID());
 
         RelativeLayoutVideo.addView(TextViewSizeVideo);
 
@@ -1677,7 +1677,7 @@ class WriteUI extends FragmentView
             ImageViewRemove.setLayoutParams(ImageViewRemoveParam);
             ImageViewRemove.setAlpha(0.75f);
             ImageViewRemove.setImageResource(R.drawable.close_bluegray);
-            ImageViewRemove.setId(Misc.GenerateViewID());
+            ImageViewRemove.setId(Misc.ViewID());
             ImageViewRemove.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -1758,9 +1758,9 @@ class WriteUI extends FragmentView
     private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderMain>
     {
         private final List<Struct> CategoryList = new ArrayList<>();
-        private final int ID_ICON = Misc.GenerateViewID();
-        private final int ID_NAME = Misc.GenerateViewID();
-        private final int ID_LINE = Misc.GenerateViewID();
+        private final int ID_ICON = Misc.ViewID();
+        private final int ID_NAME = Misc.ViewID();
+        private final int ID_LINE = Misc.ViewID();
 
         AdapterCategory()
         {

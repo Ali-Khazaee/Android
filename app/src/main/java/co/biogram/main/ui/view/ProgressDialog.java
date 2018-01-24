@@ -77,7 +77,7 @@ public class ProgressDialog extends AlertDialog
 
         TextView TextViewTitle = new TextView(getContext(), 14, false);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setId(Misc.GenerateViewID());
+        TextViewTitle.setId(Misc.ViewID());
         TextViewTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.TextWhite));
 
         RelativeLayoutMain.addView(TextViewTitle);
@@ -89,7 +89,7 @@ public class ProgressDialog extends AlertDialog
 
         ProgressBarMain = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleHorizontal);
         ProgressBarMain.setLayoutParams(ProgressBarMainParam);
-        ProgressBarMain.setId(Misc.GenerateViewID());
+        ProgressBarMain.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ProgressBarMain);
 

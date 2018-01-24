@@ -43,7 +43,7 @@ public class Misc
         context = c;
     }
 
-    public static int GenerateViewID()
+    public static int ViewID()
     {
         if (Build.VERSION.SDK_INT > 16)
             return View.generateViewId();
@@ -289,29 +289,28 @@ public class Misc
 
     static String TimeAgo(long Time)
     {
-        
-
+        Time = Time * 1000;
         long Now = System.currentTimeMillis();
 
         if (Time > Now || Time <= 0)
             return "";
 
-        long Diff = Now - Time;
+        int Diff = Math.round((Math.abs(Now - Time) / 1000) / 60);
 
-        if (Diff < 60 * 1000)
+        if (Diff == 0)
             return context.getString(R.string.TimeAgoNow);
-        else if (Diff < 2 * 60 * 1000)
+        else if (Diff == 1)
             return context.getString(R.string.TimeAgoMin);
-        else if (Diff < 50 * 60 * 1000)
-            return Diff / 60 * 1000 + context.getString(R.string.TimeAgoMins);
-        else if (Diff < 90 * 60 * 1000)
+        else if (Diff >= 2 && Diff <= 59)
+            return Diff + " " + context.getString(R.string.TimeAgoMins);
+        else if (Diff >= 60 && Diff <= 90)
             return context.getString(R.string.TimeAgoHour);
-        else if (Diff < 24 * 60 * 60 * 1000)
-            return Diff / 60 * 60 * 1000 + context.getString(R.string.TimeAgoHours);
-        else if (Diff < 48 * 60 * 60 * 1000)
-            return context.getString(R.string.TimeAgoYes);
+        else if (Diff >= 90 && Diff <= 1439)
+            return (Math.round(Diff / 60)) + " " + context.getString(R.string.TimeAgoHours);
+        else if (Diff >= 1440 && Diff <= 2519)
+            return context.getString(R.string.TimeAgoDay);
 
-        return Diff / 24 * 60 * 60 * 1000 + context.getString(R.string.TimeAgoDay);
+        return (Math.round(Diff / 1440)) + " " + context.getString(R.string.TimeAgoDays);
     }
 
     public static void Debug(String Message)

@@ -41,7 +41,7 @@ public class SocialActivity extends FragmentActivity
         LinearLayoutMenu.setLayoutParams(LinearLayoutMenuParam);
         LinearLayoutMenu.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
         LinearLayoutMenu.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutMenu.setId(Misc.GenerateViewID());
+        LinearLayoutMenu.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(LinearLayoutMenu);
 
@@ -91,7 +91,7 @@ public class SocialActivity extends FragmentActivity
 
         View ViewLine = new View(this);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setId(Misc.ViewID());
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
 
         RelativeLayoutMain.addView(ViewLine);

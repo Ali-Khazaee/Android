@@ -34,7 +34,7 @@ public class InboxUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -56,8 +56,8 @@ public class InboxUI extends FragmentView
 
         ImageView ImageViewSearch = new ImageView(GetActivity());
         ImageViewSearch.setLayoutParams(ImageViewSearchParam);
-        ImageViewSearch.setId(Misc.GenerateViewID());
-        ImageViewSearch.setImageResource(R.drawable.ic_search_blue);
+        ImageViewSearch.setId(Misc.ViewID());
+        ImageViewSearch.setImageResource(R.drawable._inbox_search);
         ImageViewSearch.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Search */  } });
 
@@ -68,9 +68,9 @@ public class InboxUI extends FragmentView
 
         ImageView ImageViewWrite = new ImageView(GetActivity());
         ImageViewWrite.setLayoutParams(ImageViewWriteParam);
-        ImageViewWrite.setId(Misc.GenerateViewID());
-        ImageViewWrite.setImageResource(R.drawable.write_plus_blue);
-        ImageViewWrite.setPadding(Misc.ToDP(16), Misc.ToDP(16), Misc.ToDP(16), Misc.ToDP(16));
+        ImageViewWrite.setId(Misc.ViewID());
+        ImageViewWrite.setImageResource(R.drawable._inbox_write);
+        ImageViewWrite.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new WriteUI(), R.id.ContainerFull, "WriteUI");  } });
 
         RelativeLayoutHeader.addView(ImageViewWrite);
@@ -81,7 +81,7 @@ public class InboxUI extends FragmentView
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 

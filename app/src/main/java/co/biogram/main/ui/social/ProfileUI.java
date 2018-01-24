@@ -35,7 +35,7 @@ public class ProfileUI extends FragmentView
         TextView TextViewTheme = new TextView(GetActivity() , 16, false);
         TextViewTheme.setLayoutParams(TextViewThemeParam);
         TextViewTheme.setText(("Theme"));
-        TextViewTheme.setId(Misc.GenerateViewID());
+        TextViewTheme.setId(Misc.ViewID());
         TextViewTheme.setBackgroundResource(R.color.BlueGray2);
         TextViewTheme.setOnClickListener(new View.OnClickListener()
         {

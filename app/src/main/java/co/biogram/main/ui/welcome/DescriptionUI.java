@@ -129,7 +129,7 @@ public class DescriptionUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
-        RelativeLayoutHeader.setId(Misc.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -139,7 +139,7 @@ public class DescriptionUI extends FragmentView
         ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.GenerateViewID());
+        ImageViewBack.setId(Misc.ViewID());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
@@ -163,7 +163,7 @@ public class DescriptionUI extends FragmentView
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
-        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -187,7 +187,7 @@ public class DescriptionUI extends FragmentView
 
         CircleImageViewProfile = new CircleImageView(GetActivity());
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
-        CircleImageViewProfile.setId(Misc.GenerateViewID());
+        CircleImageViewProfile.setId(Misc.ViewID());
         CircleImageViewProfile.setImageResource(R.drawable.person_blue);
         CircleImageViewProfile.SetBorderColor(R.color.Gray);
         CircleImageViewProfile.SetBorderWidth(2);
@@ -412,7 +412,7 @@ public class DescriptionUI extends FragmentView
         LinearLayout LinearLayoutName = new LinearLayout(GetActivity());
         LinearLayoutName.setLayoutParams(LinearLayoutNameParam);
         LinearLayoutName.setOrientation(LinearLayout.VERTICAL);
-        LinearLayoutName.setId(Misc.GenerateViewID());
+        LinearLayoutName.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(LinearLayoutName);
 
@@ -481,7 +481,7 @@ public class DescriptionUI extends FragmentView
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
         TextViewDescription.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewDescription.setText(GetActivity().getString(R.string.GeneralDescription));
-        TextViewDescription.setId(Misc.GenerateViewID());
+        TextViewDescription.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewDescription);
 
@@ -491,7 +491,7 @@ public class DescriptionUI extends FragmentView
 
         final EditText EditTextDescription = new EditText(GetActivity());
         EditTextDescription.setLayoutParams(EditTextDescriptionParam);
-        EditTextDescription.setId(Misc.GenerateViewID());
+        EditTextDescription.setId(Misc.ViewID());
         EditTextDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
         EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
@@ -514,7 +514,7 @@ public class DescriptionUI extends FragmentView
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
         TextViewMessage.setText(GetActivity().getString(R.string.DescriptionUIMessage));
-        TextViewMessage.setId(Misc.GenerateViewID());
+        TextViewMessage.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewMessage);
 

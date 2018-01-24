@@ -122,7 +122,7 @@ class PhoneVerifyUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
-        RelativeLayoutHeader.setId(Misc.GenerateViewID());
+        RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -132,7 +132,7 @@ class PhoneVerifyUI extends FragmentView
         ImageView ImageViewBack = new ImageView(GetActivity());
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.GenerateViewID());
+        ImageViewBack.setId(Misc.ViewID());
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
@@ -166,7 +166,7 @@ class PhoneVerifyUI extends FragmentView
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray2);
-        ViewLine.setId(Misc.GenerateViewID());
+        ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -192,7 +192,7 @@ class PhoneVerifyUI extends FragmentView
         TextViewVerificationCode.setPadding(Misc.ToDP(20), Misc.ToDP(40), Misc.ToDP(20), Misc.ToDP(15));
         TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
         TextViewVerificationCode.setText(GetActivity().getString(R.string.PhoneVerifyUICode));
-        TextViewVerificationCode.setId(Misc.GenerateViewID());
+        TextViewVerificationCode.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewVerificationCode);
 
@@ -202,7 +202,7 @@ class PhoneVerifyUI extends FragmentView
         LinearLayout LinearLayoutVerificationCode = new LinearLayout(GetActivity());
         LinearLayoutVerificationCode.setLayoutParams(LinearLayoutVerificationCodeParam);
         LinearLayoutVerificationCode.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutVerificationCode.setId(Misc.GenerateViewID());
+        LinearLayoutVerificationCode.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(LinearLayoutVerificationCode);
 
@@ -441,7 +441,7 @@ class PhoneVerifyUI extends FragmentView
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
-        TextViewMessage.setId(Misc.GenerateViewID());
+        TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
         TextViewMessage.setText((GetActivity().getString(R.string.PhoneVerifyUIMessage) + " " + (Code + Phone)), TextView.BufferType.SPANNABLE);
