@@ -288,7 +288,7 @@ public class GalleryViewUI extends FragmentView
 
             DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
-            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
             DrawableSelected.setStroke(Misc.ToDP(2), Color.WHITE);
         }
 
@@ -389,7 +389,7 @@ public class GalleryViewUI extends FragmentView
             GlideApp.with(GetActivity())
             .load(FileList.get(Position).Path)
             .thumbnail(0.1f)
-            .placeholder(R.color.BlueGray2)
+            .placeholder(R.color.Gray)
             .centerCrop()
             .dontAnimate()
             .into(Holder.ImageViewMain);

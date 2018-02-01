@@ -224,7 +224,7 @@
     <!-- Time Ago -->
     <string name="TimeAgoNow">just now</string>
     <string name="TimeAgoMin">a minute ago</string>
-    <string name="TimeAgoMins">  minutes ago</string>
+    <string name="TimeAgoMins"> minutes ago</string>
     <string name="TimeAgoHour">a hour ago</string>
     <string name="TimeAgoHours">hours ago</string>
     <string name="TimeAgoYes">yesterday</string>

@@ -230,11 +230,25 @@
     <string name="TimeAgoDay">a day ago</string>
     <string name="TimeAgoDays">days ago</string>
 
+    <!-- Time Left -->
+    <string name="TimeLeftNow">just now</string>
+    <string name="TimeLeftMin">a min left</string>
+    <string name="TimeLeftMins">mins left</string>
+    <string name="TimeLeftHour">an hour left</string>
+    <string name="TimeLeftHours">hours left</string>
+    <string name="TimeLeftDay">a day left</string>
+    <string name="TimeLeftDays">days left</string>
+
     <!-- Post Adapter -->
-    <string name="PostAdapterVote">Vote</string>
+    <string name="PostAdapterSubmit">Submit</string>
     <string name="PostAdapterVotes">Votes</string>
     <string name="PostAdapterVideo">Video</string>
     <string name="PostAdapterVoteChoice">Submit your vote</string>
     <string name="PostAdapterMB">MB</string>
+    <string name="PostAdapterDownload">Download in progress &#8230;</string>
+    <string name="PostAdapterComplete">Download Complete</string>
+    <string name="PostAdapterCancel">Cancel the download process ?</string>
+    <string name="PostAdapterYes">Yes</string>
+    <string name="PostAdapterNo">No</string>
 
 </resources>

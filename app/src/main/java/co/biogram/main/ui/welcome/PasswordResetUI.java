@@ -86,7 +86,7 @@ class PasswordResetUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -120,7 +120,7 @@ class PasswordResetUI extends FragmentView
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -145,7 +145,7 @@ class PasswordResetUI extends FragmentView
 
         TextView TextViewEmail = new TextView(GetActivity(), 16, false);
         TextViewEmail.setLayoutParams(TextViewUsernameParam);
-        TextViewEmail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewEmail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewEmail.setText(GetActivity().getString(R.string.GeneralEmailAddress));
         TextViewEmail.setId(Misc.ViewID());
 
@@ -161,7 +161,7 @@ class PasswordResetUI extends FragmentView
         EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(128) });
         EditTextEmailOrUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        EditTextEmailOrUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextEmailOrUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextEmailOrUsername.requestFocus();
         EditTextEmailOrUsername.addTextChangedListener(new TextWatcher()
         {
@@ -203,7 +203,7 @@ class PasswordResetUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
@@ -215,12 +215,12 @@ class PasswordResetUI extends FragmentView
         RelativeLayoutNextParam.addRule(Misc.Align("L"));
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(7));
-        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
         ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);

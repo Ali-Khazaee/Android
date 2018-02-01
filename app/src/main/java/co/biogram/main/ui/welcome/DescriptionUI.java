@@ -128,7 +128,7 @@ public class DescriptionUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -162,7 +162,7 @@ public class DescriptionUI extends FragmentView
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -421,7 +421,7 @@ public class DescriptionUI extends FragmentView
 
         TextView TextViewName = new TextView(GetActivity(), 16, false);
         TextViewName.setLayoutParams(TextViewNameParam);
-        TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewName.setText(GetActivity().getString(R.string.DescriptionUIName));
 
         LinearLayoutName.addView(TextViewName);
@@ -449,11 +449,11 @@ public class DescriptionUI extends FragmentView
             }
         });
         EditTextName.setInputType(InputType.TYPE_CLASS_TEXT);
-        EditTextName.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextName.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextName.requestFocus();
         EditTextName.setPadding(0, -Misc.ToDP(2), 0, Misc.ToDP(5));
         EditTextName.setTypeface(FontHandler.GetTypeface(GetActivity()));
-        EditTextName.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray3));
+        EditTextName.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         EditTextName.setHint(GetActivity().getString(R.string.DescriptionUIEditName));
         EditTextName.addTextChangedListener(new TextWatcher()
         {
@@ -479,7 +479,7 @@ public class DescriptionUI extends FragmentView
 
         TextView TextViewDescription = new TextView(GetActivity(), 16, false);
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
-        TextViewDescription.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewDescription.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewDescription.setText(GetActivity().getString(R.string.GeneralDescription));
         TextViewDescription.setId(Misc.ViewID());
 
@@ -494,13 +494,13 @@ public class DescriptionUI extends FragmentView
         EditTextDescription.setId(Misc.ViewID());
         EditTextDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
-        EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextDescription.setHint(GetActivity().getString(R.string.DescriptionUIEditDescription));
         EditTextDescription.setMaxLines(5);
         EditTextDescription.setMaxHeight(Misc.ToDP(100));
         EditTextDescription.setPadding(Misc.ToDP(3), -Misc.ToDP(2), Misc.ToDP(3), Misc.ToDP(5));
         EditTextDescription.setTypeface(FontHandler.GetTypeface(GetActivity()));
-        EditTextDescription.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray3));
+        EditTextDescription.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
         RelativeLayoutScroll.addView(EditTextDescription);
@@ -532,7 +532,7 @@ public class DescriptionUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
@@ -544,12 +544,12 @@ public class DescriptionUI extends FragmentView
         RelativeLayoutFinishParam.addRule(Misc.Align("L"));
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(7));
-        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         StateListDrawable ListDrawableFinish = new StateListDrawable();
         ListDrawableFinish.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
@@ -899,7 +899,7 @@ public class DescriptionUI extends FragmentView
             public void onClick(View v)
             {
                 if (Build.VERSION.SDK_INT > 20)
-                    GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+                    GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
 
                 try
                 {

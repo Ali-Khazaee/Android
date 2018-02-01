@@ -81,7 +81,7 @@ class TagHandler
         {
             Type = type;
             context = c;
-            TagColor = ContextCompat.getColor(c, R.color.BlueLight);
+            TagColor = ContextCompat.getColor(c, R.color.PrimaryColor);
         }
 
         @Override

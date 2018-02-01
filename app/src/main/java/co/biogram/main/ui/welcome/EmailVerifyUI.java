@@ -115,7 +115,7 @@ class EmailVerifyUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -159,7 +159,7 @@ class EmailVerifyUI extends FragmentView
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -184,7 +184,7 @@ class EmailVerifyUI extends FragmentView
         TextView TextViewVerificationCode = new TextView(GetActivity(), 16, false);
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(Misc.ToDP(20), Misc.ToDP(40), Misc.ToDP(20), Misc.ToDP(15));
-        TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewVerificationCode.setText(GetActivity().getString(R.string.EmailVerifyUICode));
         TextViewVerificationCode.setId(Misc.ViewID());
 
@@ -207,7 +207,7 @@ class EmailVerifyUI extends FragmentView
         EditTextCode1.setLayoutParams(EditTextVerificationCode1Param);
         EditTextCode1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         EditTextCode1.setTypeface(null, Typeface.BOLD);
-        EditTextCode1.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode1.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextCode1.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode1.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextCode1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
@@ -241,7 +241,7 @@ class EmailVerifyUI extends FragmentView
         EditTextCode2.setLayoutParams(EditTextVerificationCode2Param);
         EditTextCode2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         EditTextCode2.setTypeface(null, Typeface.BOLD);
-        EditTextCode2.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode2.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextCode2.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode2.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextCode2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
@@ -290,7 +290,7 @@ class EmailVerifyUI extends FragmentView
         EditTextCode3.setLayoutParams(EditTextVerificationCode3Param);
         EditTextCode3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         EditTextCode3.setTypeface(null, Typeface.BOLD);
-        EditTextCode3.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode3.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextCode3.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode3.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextCode3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
@@ -339,7 +339,7 @@ class EmailVerifyUI extends FragmentView
         EditTextCode4.setLayoutParams(EditTextVerificationCode4Param);
         EditTextCode4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         EditTextCode4.setTypeface(null, Typeface.BOLD);
-        EditTextCode4.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode4.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextCode4.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode4.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextCode4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
@@ -388,7 +388,7 @@ class EmailVerifyUI extends FragmentView
         EditTextCode5.setLayoutParams(EditTextVerificationCode5Param);
         EditTextCode5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         EditTextCode5.setTypeface(null, Typeface.BOLD);
-        EditTextCode5.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextCode5.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextCode5.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode5.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextCode5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
@@ -446,7 +446,7 @@ class EmailVerifyUI extends FragmentView
             @Override
             public void updateDrawState(TextPaint t)
             {
-                t.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
+                t.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
                 t.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             }
         };
@@ -476,7 +476,7 @@ class EmailVerifyUI extends FragmentView
 
         final TextView TextViewResend = new TextView(GetActivity(), 14, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
-        TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
+        TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewResend.setText(GetActivity().getString(R.string.EmailVerifyUIResend));
         TextViewResend.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
@@ -571,7 +571,7 @@ class EmailVerifyUI extends FragmentView
                 {
                     Enabled = false;
                     TextViewResend.setEnabled(false);
-                    TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray7));
+                    TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
                 }
             }
 
@@ -583,7 +583,7 @@ class EmailVerifyUI extends FragmentView
                 Enabled = true;
 
                 TextViewResend.setEnabled(true);
-                TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+                TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
                 TextViewTime.setText("");
             }
         };
@@ -592,12 +592,12 @@ class EmailVerifyUI extends FragmentView
         RelativeLayoutBottom.addView(TextViewResend);
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(7));
-        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         StateListDrawable StateListNext = new StateListDrawable();
         StateListNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);

@@ -106,7 +106,7 @@ class UsernameUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -140,7 +140,7 @@ class UsernameUI extends FragmentView
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -165,7 +165,7 @@ class UsernameUI extends FragmentView
 
         TextView TextViewUsername = new TextView(GetActivity(), 16, false);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
-        TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewUsername.setText(GetActivity().getString(R.string.GeneralUsername));
         TextViewUsername.setId(Misc.ViewID());
 
@@ -204,7 +204,7 @@ class UsernameUI extends FragmentView
             }
         });
         EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextUsername.requestFocus();
         EditTextUsername.setPadding(0, -Misc.ToDP(2), Misc.ToDP(8), Misc.ToDP(5));
         EditTextUsername.setTypeface(FontHandler.GetTypeface(GetActivity()));
@@ -215,7 +215,7 @@ class UsernameUI extends FragmentView
 
             {
                 paint = new Paint();
-                paint.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+                paint.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
                 paint.setTextSize(Misc.ToDP(18));
                 paint.setAntiAlias(true);
                 paint.setTextAlign(Paint.Align.LEFT);
@@ -286,7 +286,7 @@ class UsernameUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
@@ -298,12 +298,12 @@ class UsernameUI extends FragmentView
         RelativeLayoutNextParam.addRule(Misc.Align("L"));
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(7));
-        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
         ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);

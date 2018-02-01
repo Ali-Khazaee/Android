@@ -83,7 +83,7 @@ class PasswordUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -117,7 +117,7 @@ class PasswordUI extends FragmentView
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -141,7 +141,7 @@ class PasswordUI extends FragmentView
 
         TextView TextViewPassword = new TextView(GetActivity(), 16, false);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
-        TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewPassword.setText(GetActivity().getString(R.string.GeneralPassword));
         TextViewPassword.setId(Misc.ViewID());
 
@@ -157,7 +157,7 @@ class PasswordUI extends FragmentView
         EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
         EditTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextPassword.requestFocus();
         EditTextPassword.addTextChangedListener(new TextWatcher()
         {
@@ -202,7 +202,7 @@ class PasswordUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
@@ -214,12 +214,12 @@ class PasswordUI extends FragmentView
         RelativeLayoutNextParam.addRule(Misc.Align("L"));
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(7));
-        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
         ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);

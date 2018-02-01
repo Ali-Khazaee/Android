@@ -62,7 +62,7 @@ public class WelcomeUI extends FragmentView
 
         LinearLayout LinearLayoutHeader = new LinearLayout(GetActivity());
         LinearLayoutHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(200)));
-        LinearLayoutHeader.setBackgroundResource(R.color.BlueLight);
+        LinearLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
         LinearLayoutHeader.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutHeader.setGravity(Gravity.CENTER_HORIZONTAL);
         LinearLayoutHeader.setId(Misc.ViewID());
@@ -124,7 +124,7 @@ public class WelcomeUI extends FragmentView
 
                 View ViewLine = new View(GetActivity());
                 ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                ViewLine.setBackgroundResource(R.color.Gray2);
+                ViewLine.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutLanguage.addView(ViewLine);
 
@@ -205,7 +205,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayoutSignUpParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
         GradientDrawable DrawableSignUp = new GradientDrawable();
-        DrawableSignUp.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableSignUp.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         DrawableSignUp.setCornerRadius(Misc.ToDP(7));
 
         Button ButtonSignUp = new Button(GetActivity(), 16, true);
@@ -250,7 +250,7 @@ public class WelcomeUI extends FragmentView
         TextViewOR.setText(GetActivity().getString(R.string.WelcomeUIOR));
         TextViewOR.setId(Misc.ViewID());
         TextViewOR.setGravity(Gravity.CENTER);
-        TextViewOR.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray));
+        TextViewOR.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         RelativeLayoutOR.addView(TextViewOR);
 
@@ -260,7 +260,7 @@ public class WelcomeUI extends FragmentView
 
         View ViewOrLine1 = new View(GetActivity());
         ViewOrLine1.setLayoutParams(ViewOrLine1Param);
-        ViewOrLine1.setBackgroundResource(R.color.BlueGray);
+        ViewOrLine1.setBackgroundResource(R.color.Gray);
 
         RelativeLayoutOR.addView(ViewOrLine1);
 
@@ -270,7 +270,7 @@ public class WelcomeUI extends FragmentView
 
         View ViewOrLine2 = new View(GetActivity());
         ViewOrLine2.setLayoutParams(ViewOrLine2Param);
-        ViewOrLine2.setBackgroundResource(R.color.BlueGray);
+        ViewOrLine2.setBackgroundResource(R.color.Gray);
 
         RelativeLayoutOR.addView(ViewOrLine2);
 
@@ -309,7 +309,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewGoogle = new TextView(GetActivity(), 16, true);
         TextViewGoogle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewGoogle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewGoogle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewGoogle.setText(GetActivity().getString(R.string.WelcomeUISignInGoogle));
         TextViewGoogle.setPadding(0, Misc.ToDP(Misc.IsFa() ? 3 : 5), 0, 0);
         TextViewGoogle.setGravity(Gravity.CENTER_VERTICAL);
@@ -345,7 +345,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewSignIn = new TextView(GetActivity(), 14, false);
         TextViewSignIn.setLayoutParams(TextViewSignInParam);
-        TextViewSignIn.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewSignIn.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewSignIn.setText(GetActivity().getString(R.string.WelcomeUISignIn));
         TextViewSignIn.setId(Misc.ViewID());
 
@@ -357,7 +357,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewSignIn2 = new TextView(GetActivity(), 14, false);
         TextViewSignIn2.setLayoutParams(TextViewSignIn2Param);
-        TextViewSignIn2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewSignIn2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewSignIn2.setText(GetActivity().getString(R.string.GeneralSignIn));
 
         RelativeLayoutSignIn.addView(TextViewSignIn2);
@@ -367,7 +367,7 @@ public class WelcomeUI extends FragmentView
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -379,7 +379,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewTerm2 = new TextView(GetActivity(), 14, false);
         TextViewTerm2.setLayoutParams(TextViewTerm2Param);
-        TextViewTerm2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray2));
+        TextViewTerm2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewTerm2.setText(GetActivity().getString(R.string.WelcomeUITerm2));
         TextViewTerm2.setId(Misc.ViewID());
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
@@ -392,7 +392,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewTerm = new TextView(GetActivity(), 14, false);
         TextViewTerm.setLayoutParams(TextViewTermParam);
-        TextViewTerm.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray));
+        TextViewTerm.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewTerm.setText(GetActivity().getString(R.string.WelcomeUITerm));
 
         RelativeLayoutMain.addView(TextViewTerm);
@@ -546,7 +546,7 @@ public class WelcomeUI extends FragmentView
     private void HideGoogleLoading()
     {
         if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
 
         LoadingViewGoogle.Stop();
         RelativeLayoutGoogle.setVisibility(View.GONE);

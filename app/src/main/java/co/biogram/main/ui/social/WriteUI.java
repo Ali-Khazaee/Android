@@ -235,7 +235,7 @@ class WriteUI extends FragmentView
         EditTextMessage.setVerticalScrollBarEnabled(true);
         EditTextMessage.setMovementMethod(new ScrollingMovementMethod());
         EditTextMessage.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
-        EditTextMessage.setHintTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.Gray4 : R.color.Gray3));
+        EditTextMessage.setHintTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.Gray : R.color.Gray));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(300) });
         EditTextMessage.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -290,7 +290,7 @@ class WriteUI extends FragmentView
 
                 View DeleteLine = new View(GetActivity());
                 DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                DeleteLine.setBackgroundResource(R.color.Gray2);
+                DeleteLine.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(DeleteLine);
 
@@ -321,7 +321,7 @@ class WriteUI extends FragmentView
 
                 View PasteLine = new View(GetActivity());
                 PasteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                PasteLine.setBackgroundResource(R.color.Gray2);
+                PasteLine.setBackgroundResource(R.color.Gray);
 
                 LinearLayoutMain.addView(PasteLine);
 
@@ -654,14 +654,14 @@ class WriteUI extends FragmentView
         });
 
         TextViewCount.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
-        TextViewCount.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        TextViewCount.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewCount.setGravity(Gravity.CENTER);
         TextViewCount.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewCount.setText(("300"));
 
         TextView TextViewSend = new TextView(GetActivity(), 14, false);
         TextViewSend.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
-        TextViewSend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewSend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewSend.setGravity(Gravity.CENTER);
         TextViewSend.setText(GetActivity().getString(R.string.WriteUISend));
 
@@ -816,13 +816,13 @@ class WriteUI extends FragmentView
         TextView TextViewCategory = new TextView(GetActivity(), 16, false);
         TextViewCategory.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         TextViewCategory.setText(GetActivity().getString(R.string.WriteUICategory2));
-        TextViewCategory.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewCategory.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewCategory.setPadding(0, Misc.ToDP(5), 0, 0);
         TextViewCategory.setGravity(Gravity.CENTER);
 
         TextViewCategorySelect.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         TextViewCategorySelect.setText(GetActivity().getString(R.string.WriteUICategoryNone));
-        TextViewCategorySelect.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewCategorySelect.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewCategorySelect.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), 0);
         TextViewCategorySelect.setGravity(Gravity.CENTER);
 
@@ -888,11 +888,11 @@ class WriteUI extends FragmentView
 
         final GradientDrawable DrawableEnable = new GradientDrawable();
         DrawableEnable.setCornerRadius(Misc.ToDP(4));
-        DrawableEnable.setStroke(Misc.ToDP(1), ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setStroke(Misc.ToDP(1), ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
 
         final GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(4));
-        DrawableDisable.setStroke(Misc.ToDP(1), ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        DrawableDisable.setStroke(Misc.ToDP(1), ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         View.OnFocusChangeListener OnFocus = new View.OnFocusChangeListener() { @Override public void onFocusChange(View view, boolean hasFocus) { view.setBackground(hasFocus ? DrawableEnable : DrawableDisable); } };
 
@@ -906,7 +906,7 @@ class WriteUI extends FragmentView
         EditTextVote1.setId(Misc.ViewID());
         EditTextVote1.setHint(R.string.WriteUIChoice1);
         EditTextVote1.setBackground(DrawableDisable);
-        EditTextVote1.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        EditTextVote1.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         EditTextVote1.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
@@ -925,7 +925,7 @@ class WriteUI extends FragmentView
         EditTextVote2.setId(Misc.ViewID());
         EditTextVote2.setHint(R.string.WriteUIChoice2);
         EditTextVote2.setBackground(DrawableDisable);
-        EditTextVote2.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        EditTextVote2.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         EditTextVote2.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
@@ -944,7 +944,7 @@ class WriteUI extends FragmentView
         EditTextVote3.setId(Misc.ViewID());
         EditTextVote3.setHint(R.string.WriteUIChoice3);
         EditTextVote3.setBackground(DrawableDisable);
-        EditTextVote3.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        EditTextVote3.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         EditTextVote3.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
@@ -964,7 +964,7 @@ class WriteUI extends FragmentView
         EditTextVote4.setId(Misc.ViewID());
         EditTextVote4.setHint(R.string.WriteUIChoice4);
         EditTextVote4.setBackground(DrawableDisable);
-        EditTextVote4.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        EditTextVote4.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         EditTextVote4.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
@@ -983,7 +983,7 @@ class WriteUI extends FragmentView
         EditTextVote5.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
         EditTextVote5.setHint(R.string.WriteUIChoice5);
         EditTextVote5.setBackground(DrawableDisable);
-        EditTextVote5.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        EditTextVote5.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         EditTextVote5.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
@@ -1064,7 +1064,7 @@ class WriteUI extends FragmentView
                 EditTextTime.setHint(R.string.WriteUITime);
                 EditTextTime.setBackground(null);
                 EditTextTime.setGravity(Gravity.CENTER);
-                EditTextTime.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+                EditTextTime.setHintTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
                 EditTextTime.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
                 EditTextTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 EditTextTime.setId(Misc.ViewID());
@@ -1105,7 +1105,7 @@ class WriteUI extends FragmentView
                 TextViewSet.setGravity(Gravity.CENTER);
                 TextViewSet.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextDark));
                 TextViewSet.setText(GetActivity().getString(R.string.WriteUISet));
-                TextViewSet.setBackgroundColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+                TextViewSet.setBackgroundColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
                 TextViewSet.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -1199,7 +1199,7 @@ class WriteUI extends FragmentView
 
         GradientDrawable DrawableFile = new GradientDrawable();
         DrawableFile.setCornerRadius(Misc.ToDP(4));
-        DrawableFile.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableFile.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
 
         ImageView ImageViewFile = new ImageView(GetActivity());
         ImageViewFile.setLayoutParams(ImageViewFileParam);
@@ -1225,7 +1225,7 @@ class WriteUI extends FragmentView
         TextViewFileDetailParam.addRule(RelativeLayout.BELOW, TextViewFileName.getId());
 
         TextViewFileDetail.setLayoutParams(TextViewFileDetailParam);
-        TextViewFileDetail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueGray2));
+        TextViewFileDetail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         RelativeLayoutFile.addView(TextViewFileDetail);
 
@@ -1491,6 +1491,8 @@ class WriteUI extends FragmentView
 
                         if (EditTextVote5.getVisibility() == View.VISIBLE)
                             Vote.put("Vote5", EditTextVote5.getText().toString());
+
+                        Vote.put("Time", VoteTime);
                     }
                     catch (Exception e)
                     {

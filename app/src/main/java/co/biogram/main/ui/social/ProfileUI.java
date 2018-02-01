@@ -36,7 +36,7 @@ public class ProfileUI extends FragmentView
         TextViewTheme.setLayoutParams(TextViewThemeParam);
         TextViewTheme.setText(("Theme"));
         TextViewTheme.setId(Misc.ViewID());
-        TextViewTheme.setBackgroundResource(R.color.BlueGray2);
+        TextViewTheme.setBackgroundResource(R.color.Gray);
         TextViewTheme.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -54,7 +54,7 @@ public class ProfileUI extends FragmentView
         TextView TextViewLanguage = new TextView(GetActivity() , 16, false);
         TextViewLanguage.setLayoutParams(TextViewLanguageParam);
         TextViewLanguage.setText(("Language"));
-        TextViewLanguage.setBackgroundResource(R.color.BlueGray);
+        TextViewLanguage.setBackgroundResource(R.color.Gray);
         TextViewLanguage.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -105,7 +105,7 @@ class PhoneUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.BlueLight);
+        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -139,7 +139,7 @@ class PhoneUI extends FragmentView
 
         View ViewLine = new View(GetActivity());
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(R.color.Gray2);
+        ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -169,7 +169,7 @@ class PhoneUI extends FragmentView
         TextView TextViewPhoneCode = new TextView(GetActivity(), 14, false);
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhoneCode.setPadding(0, Misc.ToDP(20), 0, 0);
-        TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewPhoneCode.setText(GetActivity().getString(R.string.PhoneUICode));
 
         LinearLayoutCode.addView(TextViewPhoneCode);
@@ -193,7 +193,7 @@ class PhoneUI extends FragmentView
         final EditText EditTextPhoneCode = new EditText(GetActivity());
         EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(70), LinearLayout.LayoutParams.WRAP_CONTENT));
         EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextPhoneCode.setFocusable(false);
         EditTextPhoneCode.setText(CountryCode);
         EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -239,7 +239,7 @@ class PhoneUI extends FragmentView
                 View ViewLine = new View(GetActivity());
                 ViewLine.setLayoutParams(ViewLineParam);
                 ViewLine.setId(Misc.ViewID());
-                ViewLine.setBackgroundResource(R.color.Gray2);
+                ViewLine.setBackgroundResource(R.color.Gray);
 
                 RelativeLayoutCode.addView(ViewLine);
 
@@ -288,7 +288,7 @@ class PhoneUI extends FragmentView
         TextView TextViewPhone = new TextView(GetActivity(), 14, false);
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhone.setPadding(0, Misc.ToDP(20), 0, 0);
-        TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray4));
+        TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
         TextViewPhone.setText(GetActivity().getString(R.string.PhoneUINumber));
 
         LinearLayoutPhone.addView(TextViewPhone);
@@ -299,7 +299,7 @@ class PhoneUI extends FragmentView
         final EditText EditTextPhone = new EditText(GetActivity());
         EditTextPhone.setLayoutParams(EditTextPhoneParam);
         EditTextPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.BlueLight), PorterDuff.Mode.SRC_ATOP);
+        EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
         EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextPhone.requestFocus();
         EditTextPhone.setFilters(new InputFilter[]
@@ -373,7 +373,7 @@ class PhoneUI extends FragmentView
             public void updateDrawState(TextPaint t)
             {
                 super.updateDrawState(t);
-                t.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+                t.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
                 t.setUnderlineText(false);
             }
         };
@@ -395,7 +395,7 @@ class PhoneUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
@@ -403,12 +403,12 @@ class PhoneUI extends FragmentView
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.BlueLight));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(7));
-        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray2));
+        DrawableDisable.setColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
 
         StateListDrawable DrawableStateNext = new StateListDrawable();
         DrawableStateNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);

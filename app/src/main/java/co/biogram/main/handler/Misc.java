@@ -313,6 +313,32 @@ public class Misc
         return (Math.round(Diff / 1440)) + " " + context.getString(R.string.TimeAgoDays);
     }
 
+    static String TimeLeft(long Time)
+    {
+        Time = Time * 1000;
+        long Now = System.currentTimeMillis();
+
+        if (Time > Now || Time <= 0)
+            return "";
+
+        int Diff = Math.round((Math.abs(Now - Time) / 1000) / 60);
+
+        if (Diff == 0)
+            return context.getString(R.string.TimeLeftNow);
+        else if (Diff == 1)
+            return context.getString(R.string.TimeLeftMin);
+        else if (Diff >= 2 && Diff <= 59)
+            return Diff + " " + context.getString(R.string.TimeLeftMins);
+        else if (Diff >= 60 && Diff <= 90)
+            return context.getString(R.string.TimeLeftHour);
+        else if (Diff >= 90 && Diff <= 1439)
+            return (Math.round(Diff / 60)) + " " + context.getString(R.string.TimeLeftHours);
+        else if (Diff >= 1440 && Diff <= 2519)
+            return context.getString(R.string.TimeLeftDay);
+
+        return (Math.round(Diff / 1440)) + " " + context.getString(R.string.TimeLeftDays);
+    }
+
     public static void Debug(String Message)
     {
         Log.e("Debug", Message);

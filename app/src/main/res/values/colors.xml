@@ -15,16 +15,7 @@
     <color name="Toast">#144766</color>
     <color name="ToastLine">#0a3148</color>
 
-    <color name="RedLike">#de1e5a</color>
-    <color name="BlueLight">#1da1f2</color>
-    <color name="BlueLight2">#187bb9</color>
-    <color name="BlueGray">#cbd6dc</color>
-    <color name="BlueGray2">#a9bac4</color>
-
-    <color name="Gray7">#777</color>
-    <color name="Gray5">#999</color>
-    <color name="Gray4">#aaa</color>
-    <color name="Gray3">#bbb</color>
-    <color name="Gray2">#ccc</color>
-    <color name="Gray">#eee</color>
+    <color name="PrimaryColor">#1fd860</color>
+    <color name="Gray">#ababab</color>
+    <color name="Red">#de1e5a</color>
 </resources>

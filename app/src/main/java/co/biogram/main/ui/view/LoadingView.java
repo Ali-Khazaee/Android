@@ -34,7 +34,7 @@ public class LoadingView extends LinearLayout
 
         BounceScale = 2.0f;
         BounceSize = Misc.ToDP(6);
-        BounceColor = ContextCompat.getColor(context, R.color.BlueGray2);
+        BounceColor = ContextCompat.getColor(context, R.color.Gray);
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);

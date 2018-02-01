@@ -37,7 +37,7 @@ public class PullToRefreshView extends RelativeLayout
 
         LoadingViewMain = new LoadingView(c);
         LoadingViewMain.setLayoutParams(LoadingViewMainParam);
-        LoadingViewMain.SetColor(R.color.BlueGray2);
+        LoadingViewMain.SetColor(R.color.Gray);
         LoadingViewMain.setVisibility(GONE);
 
         addView(LoadingViewMain);
@@ -48,7 +48,7 @@ public class PullToRefreshView extends RelativeLayout
 
         CircleViewMain = new CircleView(c);
         CircleViewMain.setLayoutParams(CircleViewMainParam);
-        CircleViewMain.SetProgressColor(R.color.BlueGray2);
+        CircleViewMain.SetProgressColor(R.color.Gray);
         CircleViewMain.SetProgressWidth(2);
         CircleViewMain.InvalidateTextPaints();
 
