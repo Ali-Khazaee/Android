@@ -105,7 +105,7 @@ class PhoneUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
+        RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -193,7 +193,7 @@ class PhoneUI extends FragmentView
         final EditText EditTextPhoneCode = new EditText(GetActivity());
         EditTextPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(70), LinearLayout.LayoutParams.WRAP_CONTENT));
         EditTextPhoneCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
+        EditTextPhoneCode.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextPhoneCode.setFocusable(false);
         EditTextPhoneCode.setText(CountryCode);
         EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -299,7 +299,7 @@ class PhoneUI extends FragmentView
         final EditText EditTextPhone = new EditText(GetActivity());
         EditTextPhone.setLayoutParams(EditTextPhoneParam);
         EditTextPhone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
+        EditTextPhone.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextPhone.requestFocus();
         EditTextPhone.setFilters(new InputFilter[]
@@ -373,7 +373,7 @@ class PhoneUI extends FragmentView
             public void updateDrawState(TextPaint t)
             {
                 super.updateDrawState(t);
-                t.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+                t.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
                 t.setUnderlineText(false);
             }
         };
@@ -395,7 +395,7 @@ class PhoneUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
@@ -403,7 +403,7 @@ class PhoneUI extends FragmentView
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();

@@ -88,7 +88,7 @@ class EmailSignInUI extends FragmentView
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
+        RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -162,7 +162,7 @@ class EmailSignInUI extends FragmentView
         EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
         EditTextEmailOrUsername.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        EditTextEmailOrUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
+        EditTextEmailOrUsername.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextEmailOrUsername.requestFocus();
         EditTextEmailOrUsername.addTextChangedListener(new TextWatcher()
         {
@@ -205,7 +205,7 @@ class EmailSignInUI extends FragmentView
         EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
         EditTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor), PorterDuff.Mode.SRC_ATOP);
+        EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(GetActivity(), R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextPassword.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -250,7 +250,7 @@ class EmailSignInUI extends FragmentView
 
         TextView TextViewReset = new TextView(GetActivity(), 14, false);
         TextViewReset.setLayoutParams(TextViewResetParam);
-        TextViewReset.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        TextViewReset.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
         TextViewReset.setText(GetActivity().getString(R.string.EmailSignInUIForgot));
         TextViewReset.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewReset.setOnClickListener(new View.OnClickListener()
@@ -270,7 +270,7 @@ class EmailSignInUI extends FragmentView
         RelativeLayoutBottom.addView(TextViewReset);
 
         GradientDrawable DrawableEnable = new GradientDrawable();
-        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        DrawableEnable.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
         DrawableEnable.setCornerRadius(Misc.ToDP(7));
 
         GradientDrawable DrawableDisable = new GradientDrawable();

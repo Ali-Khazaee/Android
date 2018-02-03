@@ -291,7 +291,7 @@ public class ImagePreviewUI extends FragmentView
 
             final GradientDrawable DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
-            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
             DrawableSelected.setStroke(Misc.ToDP(2), Color.WHITE);
 
             RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(24), Misc.ToDP(24));

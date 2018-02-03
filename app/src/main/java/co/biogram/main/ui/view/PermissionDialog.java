@@ -31,7 +31,7 @@ public class PermissionDialog extends Dialog
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(125)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.PrimaryColor);
+        RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -79,7 +79,7 @@ public class PermissionDialog extends Dialog
 
         TextView TextViewContinue = new TextView(context, 14, true);
         TextViewContinue.setLayoutParams(TextViewMessageParam);
-        TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.PrimaryColor));
+        TextViewContinue.setTextColor(ContextCompat.getColor(context, R.color.Primary));
         TextViewContinue.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
         TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });

@@ -661,7 +661,7 @@ class WriteUI extends FragmentView
 
         TextView TextViewSend = new TextView(GetActivity(), 14, false);
         TextViewSend.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
-        TextViewSend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        TextViewSend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
         TextViewSend.setGravity(Gravity.CENTER);
         TextViewSend.setText(GetActivity().getString(R.string.WriteUISend));
 
@@ -816,13 +816,13 @@ class WriteUI extends FragmentView
         TextView TextViewCategory = new TextView(GetActivity(), 16, false);
         TextViewCategory.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         TextViewCategory.setText(GetActivity().getString(R.string.WriteUICategory2));
-        TextViewCategory.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        TextViewCategory.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
         TextViewCategory.setPadding(0, Misc.ToDP(5), 0, 0);
         TextViewCategory.setGravity(Gravity.CENTER);
 
         TextViewCategorySelect.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         TextViewCategorySelect.setText(GetActivity().getString(R.string.WriteUICategoryNone));
-        TextViewCategorySelect.setTextColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        TextViewCategorySelect.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
         TextViewCategorySelect.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), 0);
         TextViewCategorySelect.setGravity(Gravity.CENTER);
 
@@ -888,7 +888,7 @@ class WriteUI extends FragmentView
 
         final GradientDrawable DrawableEnable = new GradientDrawable();
         DrawableEnable.setCornerRadius(Misc.ToDP(4));
-        DrawableEnable.setStroke(Misc.ToDP(1), ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        DrawableEnable.setStroke(Misc.ToDP(1), ContextCompat.getColor(GetActivity(), R.color.Primary));
 
         final GradientDrawable DrawableDisable = new GradientDrawable();
         DrawableDisable.setCornerRadius(Misc.ToDP(4));
@@ -1105,7 +1105,7 @@ class WriteUI extends FragmentView
                 TextViewSet.setGravity(Gravity.CENTER);
                 TextViewSet.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextDark));
                 TextViewSet.setText(GetActivity().getString(R.string.WriteUISet));
-                TextViewSet.setBackgroundColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+                TextViewSet.setBackgroundColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
                 TextViewSet.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -1199,7 +1199,7 @@ class WriteUI extends FragmentView
 
         GradientDrawable DrawableFile = new GradientDrawable();
         DrawableFile.setCornerRadius(Misc.ToDP(4));
-        DrawableFile.setColor(ContextCompat.getColor(GetActivity(), R.color.PrimaryColor));
+        DrawableFile.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
 
         ImageView ImageViewFile = new ImageView(GetActivity());
         ImageViewFile.setLayoutParams(ImageViewFileParam);

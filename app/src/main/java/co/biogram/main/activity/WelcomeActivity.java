@@ -31,7 +31,7 @@ public class WelcomeActivity extends FragmentActivity
         }
 
         if (Build.VERSION.SDK_INT > 20)
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.PrimaryColor));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.Primary));
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 

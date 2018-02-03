@@ -2,7 +2,6 @@ package co.biogram.main.handler;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -17,41 +16,41 @@ import co.biogram.main.R;
 
 class TagHandler
 {
-    public static void Show(TextView textView)
+    static void Show(TextView tv)
     {
-        if (textView.getText().length() <= 2)
+        if (tv.getText().length() <= 2)
             return;
 
-        textView.setText(textView.getText(), TextView.BufferType.SPANNABLE);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-        textView.setHighlightColor(Color.TRANSPARENT);
+        tv.setText(tv.getText(), TextView.BufferType.SPANNABLE);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        tv.setHighlightColor(Color.TRANSPARENT);
 
         int Index = 0;
-        CharSequence Text = textView.getText();
+        CharSequence Text = tv.getText();
 
         while (Index < Text.length() - 1)
         {
             char Sign = Text.charAt(Index);
             char NextSign = Text.charAt(Index + 1);
-            int NextNotLetterDigitCharIndex = Index + 1;
+            int NextChar = Index + 1;
 
             if ((Sign == '#' || Sign == '@') && (NextSign != '#' && NextSign != '@'))
             {
-                NextNotLetterDigitCharIndex = FindNextValidTagChar(Text, Index);
+                NextChar = NextValidChar(Text, Index);
 
-                Spannable Span = (Spannable) textView.getText();
-                CharacterStyle TagChar = new HashTagSpan(Sign == '@' ? 2 : 1, textView.getContext());
+                Spannable Span = (Spannable) Text;
+                CharacterStyle TagChar = new HashTagSpan(Sign == '@' ? 2 : 1, tv.getContext());
 
-                Span.setSpan(TagChar, Index, NextNotLetterDigitCharIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                Span.setSpan(TagChar, Index, NextChar, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
-            Index = NextNotLetterDigitCharIndex;
+            Index = NextChar;
         }
     }
 
-    private static int FindNextValidTagChar(CharSequence Text, int Start)
+    private static int NextValidChar(CharSequence Text, int Start)
     {
-        int NonLetterDigitCharIndex = -1;
+        int CharIndex = -1;
 
         for (int I = Start + 1; I < Text.length(); I++)
         {
@@ -60,40 +59,38 @@ class TagHandler
 
             if (!IsValidSign)
             {
-                NonLetterDigitCharIndex = I;
+                CharIndex = I;
                 break;
             }
         }
 
-        if (NonLetterDigitCharIndex == -1)
-            NonLetterDigitCharIndex = Text.length();
+        if (CharIndex == -1)
+            CharIndex = Text.length();
 
-        return NonLetterDigitCharIndex;
+        return CharIndex;
     }
 
     private static class HashTagSpan extends ClickableSpan
     {
-        private final Context context;
-        private final int TagColor;
-        private final int Type;
+        private Context context;
+        private int Type;
 
-        HashTagSpan(int type, Context c)
+        HashTagSpan(int t, Context c)
         {
-            Type = type;
+            Type = t;
             context = c;
-            TagColor = ContextCompat.getColor(c, R.color.PrimaryColor);
         }
 
         @Override
-        public void updateDrawState(TextPaint textpaint)
+        public void updateDrawState(TextPaint tp)
         {
-            textpaint.setColor(TagColor);
+            tp.setColor(Misc.Color(R.color.HashTag));
         }
 
         @Override
-        public void onClick(View Widget)
+        public void onClick(View v)
         {
-            CharSequence Text = ((TextView) Widget).getText();
+            CharSequence Text = ((TextView) v).getText();
             Spanned Span = (Spanned) Text;
             int Start = Span.getSpanStart(this);
             int End = Span.getSpanEnd(this);
