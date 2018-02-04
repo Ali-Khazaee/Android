@@ -208,7 +208,7 @@ public class DescriptionUI extends FragmentView
 
                 TextView TextViewTitle = new TextView(GetActivity(), 16, true);
                 TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewTitle.SetColor(R.color.TextWhite);
                 TextViewTitle.setText(GetActivity().getString(R.string.DescriptionUIProfile));
                 TextViewTitle.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
@@ -222,7 +222,7 @@ public class DescriptionUI extends FragmentView
 
                 TextView TextViewCamera = new TextView(GetActivity(), 16, false);
                 TextViewCamera.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewCamera.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewCamera.SetColor(R.color.TextWhite);
                 TextViewCamera.setText(GetActivity().getString(R.string.DescriptionUIProfileCamera));
                 TextViewCamera.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewCamera.setOnClickListener(new View.OnClickListener()
@@ -278,7 +278,7 @@ public class DescriptionUI extends FragmentView
 
                 TextView TextViewGallery = new TextView(GetActivity(), 16, false);
                 TextViewGallery.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewGallery.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewGallery.SetColor(R.color.TextWhite);
                 TextViewGallery.setText(GetActivity().getString(R.string.DescriptionUIProfileGallery));
                 TextViewGallery.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewGallery.setOnClickListener(new View.OnClickListener()
@@ -382,7 +382,7 @@ public class DescriptionUI extends FragmentView
 
                 TextView TextViewRemove = new TextView(GetActivity(), 16, false);
                 TextViewRemove.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewRemove.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewRemove.SetColor(R.color.TextWhite);
                 TextViewRemove.setText(GetActivity().getString(R.string.DescriptionUIProfileRemove));
                 TextViewRemove.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewRemove.setOnClickListener(new View.OnClickListener()
@@ -421,7 +421,7 @@ public class DescriptionUI extends FragmentView
 
         TextView TextViewName = new TextView(GetActivity(), 16, false);
         TextViewName.setLayoutParams(TextViewNameParam);
-        TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewName.SetColor(R.color.Gray);
         TextViewName.setText(GetActivity().getString(R.string.DescriptionUIName));
 
         LinearLayoutName.addView(TextViewName);
@@ -479,7 +479,7 @@ public class DescriptionUI extends FragmentView
 
         TextView TextViewDescription = new TextView(GetActivity(), 16, false);
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
-        TextViewDescription.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewDescription.SetColor(R.color.Gray);
         TextViewDescription.setText(GetActivity().getString(R.string.GeneralDescription));
         TextViewDescription.setId(Misc.ViewID());
 
@@ -512,7 +512,7 @@ public class DescriptionUI extends FragmentView
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+        TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(GetActivity().getString(R.string.DescriptionUIMessage));
         TextViewMessage.setId(Misc.ViewID());
 
@@ -532,7 +532,7 @@ public class DescriptionUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });

@@ -165,7 +165,7 @@ class UsernameUI extends FragmentView
 
         TextView TextViewUsername = new TextView(GetActivity(), 16, false);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
-        TextViewUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewUsername.SetColor(R.color.Gray);
         TextViewUsername.setText(GetActivity().getString(R.string.GeneralUsername));
         TextViewUsername.setId(Misc.ViewID());
 
@@ -265,7 +265,7 @@ class UsernameUI extends FragmentView
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+        TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(GetActivity().getString(R.string.UsernameUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -286,7 +286,7 @@ class UsernameUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });

@@ -152,7 +152,7 @@ class EmailUI extends FragmentView
 
         TextView TextViewEmail = new TextView(GetActivity(), 14, false);
         TextViewEmail.setLayoutParams(TextViewEmailParam);
-        TextViewEmail.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewEmail.SetColor(R.color.Gray);
         TextViewEmail.setText(GetActivity().getString(R.string.GeneralEmailAddress));
         TextViewEmail.setId(Misc.ViewID());
 
@@ -192,7 +192,7 @@ class EmailUI extends FragmentView
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+        TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(GetActivity().getString(R.string.EmailUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -213,7 +213,7 @@ class EmailUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });

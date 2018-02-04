@@ -83,7 +83,7 @@ public class GalleryViewUI extends FragmentView
 
         final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
         TextViewTitle.setText(GalleryType == 3 ? GetActivity().getString(R.string.GalleryViewUIStorage) : GetActivity().getString(R.string.GalleryViewUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setId(Misc.ViewID());
@@ -495,7 +495,7 @@ public class GalleryViewUI extends FragmentView
 
                 TextView TextViewName = new TextView(GetActivity(), 14, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.setTextColor(ContextCompat.getColor(GetActivity(), Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+                TextViewName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                 TextViewName.setId(ID1_NAME);
 
                 RelativeLayoutMain.addView(TextViewName);

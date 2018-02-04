@@ -146,7 +146,7 @@ class EmailSignInUI extends FragmentView
 
         TextView TextViewEmailOrUsername = new TextView(GetActivity(), 14, false);
         TextViewEmailOrUsername.setLayoutParams(TextViewEmailOrUsernameParam);
-        TextViewEmailOrUsername.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewEmailOrUsername.SetColor(R.color.Gray);
         TextViewEmailOrUsername.setText(GetActivity().getString(R.string.EmailSignInUIOrUsername));
         TextViewEmailOrUsername.setId(Misc.ViewID());
 
@@ -188,7 +188,7 @@ class EmailSignInUI extends FragmentView
 
         TextView TextViewPassword = new TextView(GetActivity(), 14, false);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
-        TextViewPassword.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewPassword.SetColor(R.color.Gray);
         TextViewPassword.setText(GetActivity().getString(R.string.GeneralPassword));
         TextViewPassword.setId(Misc.ViewID());
         TextViewPassword.setGravity(Misc.Gravity("R"));
@@ -229,7 +229,7 @@ class EmailSignInUI extends FragmentView
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+        TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(GetActivity().getString(R.string.EmailSignInUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -250,7 +250,7 @@ class EmailSignInUI extends FragmentView
 
         TextView TextViewReset = new TextView(GetActivity(), 14, false);
         TextViewReset.setLayoutParams(TextViewResetParam);
-        TextViewReset.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        TextViewReset.SetColor(R.color.Primary);
         TextViewReset.setText(GetActivity().getString(R.string.EmailSignInUIForgot));
         TextViewReset.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewReset.setOnClickListener(new View.OnClickListener()

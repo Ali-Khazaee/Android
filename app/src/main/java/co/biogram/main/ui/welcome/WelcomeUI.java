@@ -104,7 +104,7 @@ public class WelcomeUI extends FragmentView
 
                 TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
-                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewTitle.SetColor(R.color.TextWhite);
                 TextViewTitle.setText(GetActivity().getString(R.string.WelcomeUILanguageSelect));
                 TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
@@ -133,7 +133,7 @@ public class WelcomeUI extends FragmentView
 
                 TextView TextViewEnglish = new TextView(GetActivity(), 16, false);
                 TextViewEnglish.setLayoutParams(TextViewEnglishParam);
-                TextViewEnglish.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewEnglish.SetColor(R.color.TextWhite);
                 TextViewEnglish.setText(GetActivity().getString(R.string.WelcomeUILanguageEnglish));
                 TextViewEnglish.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewEnglish.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
@@ -152,7 +152,7 @@ public class WelcomeUI extends FragmentView
 
                 TextView TextViewPersian = new TextView(GetActivity(), 16, false);
                 TextViewPersian.setLayoutParams(TextViewPersianParam);
-                TextViewPersian.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewPersian.SetColor(R.color.TextWhite);
                 TextViewPersian.setText(GetActivity().getString(R.string.WelcomeUILanguagePersian));
                 TextViewPersian.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewPersian.setGravity(Misc.Gravity("R") | Gravity.CENTER_VERTICAL);
@@ -250,7 +250,7 @@ public class WelcomeUI extends FragmentView
         TextViewOR.setText(GetActivity().getString(R.string.WelcomeUIOR));
         TextViewOR.setId(Misc.ViewID());
         TextViewOR.setGravity(Gravity.CENTER);
-        TextViewOR.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewOR.SetColor(R.color.Gray);
 
         RelativeLayoutOR.addView(TextViewOR);
 
@@ -309,7 +309,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewGoogle = new TextView(GetActivity(), 16, true);
         TextViewGoogle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewGoogle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        TextViewGoogle.SetColor(R.color.Primary);
         TextViewGoogle.setText(GetActivity().getString(R.string.WelcomeUISignInGoogle));
         TextViewGoogle.setPadding(0, Misc.ToDP(Misc.IsFa() ? 3 : 5), 0, 0);
         TextViewGoogle.setGravity(Gravity.CENTER_VERTICAL);
@@ -345,7 +345,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewSignIn = new TextView(GetActivity(), 14, false);
         TextViewSignIn.setLayoutParams(TextViewSignInParam);
-        TextViewSignIn.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewSignIn.SetColor(R.color.Gray);
         TextViewSignIn.setText(GetActivity().getString(R.string.WelcomeUISignIn));
         TextViewSignIn.setId(Misc.ViewID());
 
@@ -357,7 +357,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewSignIn2 = new TextView(GetActivity(), 14, false);
         TextViewSignIn2.setLayoutParams(TextViewSignIn2Param);
-        TextViewSignIn2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        TextViewSignIn2.SetColor(R.color.Primary);
         TextViewSignIn2.setText(GetActivity().getString(R.string.GeneralSignIn));
 
         RelativeLayoutSignIn.addView(TextViewSignIn2);
@@ -379,7 +379,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewTerm2 = new TextView(GetActivity(), 14, false);
         TextViewTerm2.setLayoutParams(TextViewTerm2Param);
-        TextViewTerm2.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewTerm2.SetColor(R.color.Gray);
         TextViewTerm2.setText(GetActivity().getString(R.string.WelcomeUITerm2));
         TextViewTerm2.setId(Misc.ViewID());
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
@@ -392,7 +392,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewTerm = new TextView(GetActivity(), 14, false);
         TextViewTerm.setLayoutParams(TextViewTermParam);
-        TextViewTerm.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewTerm.SetColor(R.color.Gray);
         TextViewTerm.setText(GetActivity().getString(R.string.WelcomeUITerm));
 
         RelativeLayoutMain.addView(TextViewTerm);

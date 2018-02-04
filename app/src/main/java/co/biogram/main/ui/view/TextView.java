@@ -15,7 +15,7 @@ import co.biogram.main.handler.Misc;
 
 public class TextView extends android.widget.TextView
 {
-    private int Width = 0;
+    private int Width;
     private Paint PaintFill;
 
     private TextView(Context context)
@@ -49,31 +49,36 @@ public class TextView extends android.widget.TextView
         super.onDraw(canvas);
     }
 
+    public void SetColor(int C)
+    {
+        setTextColor(Misc.Color(C));
+    }
+
     public void FillBackground(int width)
     {
         Width = width;
-        String FillColor = "#101da1f2";
+        String FillColor = "#8ff9b1";
 
-        if (width >= 100)
-            FillColor = "#b01da1f2";
+        /*if (width >= 100)
+            FillColor = "#b01fd860";
         else if (width >= 90)
-            FillColor = "#a01da1f2";
+            FillColor = "#a01fd860";
         else if (width >= 80)
-            FillColor = "#901da1f2";
+            FillColor = "#901fd860";
         else if (width >= 70)
-            FillColor = "#901da1f2";
+            FillColor = "#901fd860";
         else if (width >= 60)
-            FillColor = "#701da1f2";
+            FillColor = "#701fd860";
         else if (width >= 50)
-            FillColor = "#601da1f2";
+            FillColor = "#601fd860";
         else if (width >= 40)
-            FillColor = "#501da1f2";
+            FillColor = "#501fd860";
         else if (width >= 30)
-            FillColor = "#401da1f2";
+            FillColor = "#401fd860";
         else if (width >= 20)
-            FillColor = "#301da1f2";
+            FillColor = "#301fd860";
         else if (width >= 10)
-            FillColor = "#201da1f2";
+            FillColor = "#201fd860";*/
 
         PaintFill = new Paint();
         PaintFill.setAntiAlias(true);

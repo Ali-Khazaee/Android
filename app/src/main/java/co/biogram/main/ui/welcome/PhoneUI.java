@@ -169,7 +169,7 @@ class PhoneUI extends FragmentView
         TextView TextViewPhoneCode = new TextView(GetActivity(), 14, false);
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhoneCode.setPadding(0, Misc.ToDP(20), 0, 0);
-        TextViewPhoneCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewPhoneCode.SetColor(R.color.Gray);
         TextViewPhoneCode.setText(GetActivity().getString(R.string.PhoneUICode));
 
         LinearLayoutCode.addView(TextViewPhoneCode);
@@ -214,7 +214,7 @@ class PhoneUI extends FragmentView
 
                 TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
-                TextViewTitle.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewTitle.SetColor(R.color.TextWhite);
                 TextViewTitle.setText(GetActivity().getString(R.string.PhoneUIPreCode));
                 TextViewTitle.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewTitle.setGravity(Gravity.CENTER);
@@ -261,7 +261,7 @@ class PhoneUI extends FragmentView
 
                 TextView TextViewIran = new TextView(GetActivity(), 16, false);
                 TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                TextViewIran.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                TextViewIran.SetColor(R.color.TextWhite);
                 TextViewIran.setText(Iran);
                 TextViewIran.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
@@ -288,7 +288,7 @@ class PhoneUI extends FragmentView
         TextView TextViewPhone = new TextView(GetActivity(), 14, false);
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhone.setPadding(0, Misc.ToDP(20), 0, 0);
-        TextViewPhone.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewPhone.SetColor(R.color.Gray);
         TextViewPhone.setText(GetActivity().getString(R.string.PhoneUINumber));
 
         LinearLayoutPhone.addView(TextViewPhone);
@@ -346,7 +346,7 @@ class PhoneUI extends FragmentView
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+        TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -395,7 +395,7 @@ class PhoneUI extends FragmentView
 
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
-        TextViewPrivacy.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });

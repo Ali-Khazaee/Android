@@ -190,7 +190,7 @@ class PhoneVerifyUI extends FragmentView
         TextView TextViewVerificationCode = new TextView(GetActivity(), 16, false);
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(Misc.ToDP(20), Misc.ToDP(40), Misc.ToDP(20), Misc.ToDP(15));
-        TextViewVerificationCode.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewVerificationCode.SetColor(R.color.Gray);
         TextViewVerificationCode.setText(GetActivity().getString(R.string.PhoneVerifyUICode));
         TextViewVerificationCode.setId(Misc.ViewID());
 
@@ -440,7 +440,7 @@ class PhoneVerifyUI extends FragmentView
 
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setTextColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+        TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
@@ -482,7 +482,7 @@ class PhoneVerifyUI extends FragmentView
 
         final TextView TextViewResend = new TextView(GetActivity(), 14, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
-        TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+        TextViewResend.SetColor(R.color.Gray);
         TextViewResend.setText(GetActivity().getString(R.string.PhoneVerifyUIResend));
         TextViewResend.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
@@ -632,7 +632,7 @@ class PhoneVerifyUI extends FragmentView
                 {
                     Enabled = false;
                     TextViewResend.setEnabled(false);
-                    TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Gray));
+                    TextViewResend.SetColor(R.color.Gray);
                 }
             }
 
@@ -644,7 +644,7 @@ class PhoneVerifyUI extends FragmentView
                 Enabled = true;
 
                 TextViewResend.setEnabled(true);
-                TextViewResend.setTextColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+                TextViewResend.SetColor(R.color.Primary);
                 TextViewTime.setText("");
             }
         };
