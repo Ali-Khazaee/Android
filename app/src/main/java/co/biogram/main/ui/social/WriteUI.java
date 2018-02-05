@@ -1204,7 +1204,7 @@ class WriteUI extends FragmentView
         ImageView ImageViewFile = new ImageView(GetActivity());
         ImageViewFile.setLayoutParams(ImageViewFileParam);
         ImageViewFile.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
-        ImageViewFile.setImageResource(R.drawable.download_white);
+        ImageViewFile.setImageResource(R.drawable._inbox_download);
         ImageViewFile.setId(Misc.ViewID());
         ImageViewFile.setBackground(DrawableFile);
 
@@ -1445,7 +1445,7 @@ class WriteUI extends FragmentView
 
         ImageView ImageViewPlayVideo = new ImageView(GetActivity());
         ImageViewPlayVideo.setLayoutParams(ImageViewPlayVideoParam);
-        ImageViewPlayVideo.setImageResource(R.drawable.play);
+        ImageViewPlayVideo.setImageResource(R.drawable._general_play);
 
         RelativeLayoutVideo.addView(ImageViewPlayVideo);
 

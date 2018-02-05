@@ -250,5 +250,6 @@
     <string name="PostAdapterCancel">Cancel the download process ?</string>
     <string name="PostAdapterYes">Yes</string>
     <string name="PostAdapterNo">No</string>
+    <string name="PostAdapterNoApp">No</string>
 
 </resources>

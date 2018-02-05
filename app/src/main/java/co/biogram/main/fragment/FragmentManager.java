@@ -28,14 +28,7 @@ public class FragmentManager
         }
 
         if (FragmentList.size() > 0)
-        {
-            int I = FragmentList.size() - 1;
-
-            if (FragmentList.get(I).ViewMain != null)
-                FragmentList.get(I).ViewMain.setVisibility(View.GONE);
-
-            FragmentList.get(I).OnPause();
-        }
+            FragmentList.get(FragmentList.size() - 1).OnPause();
 
         Fragment = Frag;
         Fragment.Tag = Tag;

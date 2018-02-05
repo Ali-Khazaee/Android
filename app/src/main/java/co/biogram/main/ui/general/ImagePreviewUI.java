@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
@@ -402,13 +403,18 @@ public class ImagePreviewUI extends FragmentView
             RelativeLayoutHeader.addView(ImageViewOption);
         }
 
+        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
+        Anim.setDuration(200);
+
+        RelativeLayoutMain.startAnimation(Anim);
+
         ViewMain = RelativeLayoutMain;
     }
 
     @Override
     public void OnResume()
     {
-        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Misc.RunOnUIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
     }
 
     @Override

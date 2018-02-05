@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -120,7 +121,7 @@ public class VideoPreviewUI extends FragmentView
         ImageViewDownload.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDownload.setId(Misc.ViewID());
         ImageViewDownload.setLayoutParams(ImageViewDownloadParam);
-        ImageViewDownload.setImageResource(R.drawable.download_white);
+        ImageViewDownload.setImageResource(R.drawable._inbox_download);
         ImageViewDownload.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -133,7 +134,7 @@ public class VideoPreviewUI extends FragmentView
                 CharSequence Name = DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime());
                 final NotificationManager NotifyManager = (NotificationManager) GetActivity().getSystemService(Context.NOTIFICATION_SERVICE);
                 final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(GetActivity(), "BiogramVideo");
-                NotifyBuilder.setContentTitle("Biogram Video Download").setContentText("Download in progress").setSmallIcon(R.drawable.download_white);
+                NotifyBuilder.setContentTitle("Biogram Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._inbox_download);
 
                 File Download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                 Download.mkdir();
@@ -468,6 +469,11 @@ public class VideoPreviewUI extends FragmentView
         RelativeLayoutHeader.bringToFront();
         RelativeLayoutControl.bringToFront();
 
+        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
+        Anim.setDuration(200);
+
+        RelativeLayoutMain.startAnimation(Anim);
+
         ViewMain = RelativeLayoutMain;
     }
 
@@ -475,9 +481,11 @@ public class VideoPreviewUI extends FragmentView
     public void OnResume()
     {
         SimpleExoPlayerViewMain.postDelayed(runnable, 500);
+
         GetActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
         GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        Misc.RunOnUIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
     }
 
     @Override
