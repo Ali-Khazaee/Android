@@ -130,6 +130,6 @@ public class InboxUI extends FragmentView
 
     void Update(JSONObject post)
     {
-        Adapter.Update(post);
+        Adapter.Insert(post);
     }
 }

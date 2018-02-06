@@ -2,7 +2,6 @@ package co.biogram.main.handler;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,9 +13,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.TextPaint;
-import android.text.style.ClickableSpan;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -424,7 +420,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         @Override
                         public void onError(ANError e)
                         {
-                            Misc.Debug("PostAdapter-Refresh: " + e.toString());
                             RefreshView.SetRefreshComplete();
                         }
                     });
@@ -672,17 +667,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutContent.addView(RelativeLayoutVote);
 
             {
-                LinearLayout LinearLayoutVoteType1 = new LinearLayout(Activity);
-                LinearLayoutVoteType1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                LinearLayoutVoteType1.setOrientation(LinearLayout.VERTICAL);
-                LinearLayoutVoteType1.setVisibility(View.GONE);
-                LinearLayoutVoteType1.setId(ID1_VOTE_TYPE1);
+                LinearLayout LinearLayoutType1 = new LinearLayout(Activity);
+                LinearLayoutType1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayoutType1.setOrientation(LinearLayout.VERTICAL);
+                LinearLayoutType1.setVisibility(View.GONE);
+                LinearLayoutType1.setId(ID1_VOTE_TYPE1);
 
-                RelativeLayoutVote.addView(LinearLayoutVoteType1);
-
-                GradientDrawable DrawableSelect = new GradientDrawable();
-                DrawableSelect.setStroke(Misc.ToDP(1), Misc.Color(R.color.Gray));
-                DrawableSelect.setShape(GradientDrawable.OVAL);
+                RelativeLayoutVote.addView(LinearLayoutType1);
 
                 LinearLayout LinearLayoutVote1 = new LinearLayout(Activity);
                 LinearLayoutVote1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30)));
@@ -690,7 +681,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 LinearLayoutVote1.setGravity(Gravity.CENTER_VERTICAL);
                 LinearLayoutVote1.setId(ID1_VOTE_TYPE1_LIN1);
 
-                LinearLayoutVoteType1.addView(LinearLayoutVote1);
+                LinearLayoutType1.addView(LinearLayoutVote1);
 
                 LinearLayout LinearLayoutVote2 = new LinearLayout(Activity);
                 LinearLayoutVote2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30)));
@@ -698,7 +689,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 LinearLayoutVote2.setGravity(Gravity.CENTER_VERTICAL);
                 LinearLayoutVote2.setId(ID1_VOTE_TYPE1_LIN2);
 
-                LinearLayoutVoteType1.addView(LinearLayoutVote2);
+                LinearLayoutType1.addView(LinearLayoutVote2);
 
                 LinearLayout LinearLayoutVote3 = new LinearLayout(Activity);
                 LinearLayoutVote3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30)));
@@ -707,7 +698,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 LinearLayoutVote3.setVisibility(View.GONE);
                 LinearLayoutVote3.setId(ID1_VOTE_TYPE1_LIN3);
 
-                LinearLayoutVoteType1.addView(LinearLayoutVote3);
+                LinearLayoutType1.addView(LinearLayoutVote3);
 
                 LinearLayout LinearLayoutVote4 = new LinearLayout(Activity);
                 LinearLayoutVote4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30)));
@@ -716,7 +707,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 LinearLayoutVote4.setVisibility(View.GONE);
                 LinearLayoutVote4.setId(ID1_VOTE_TYPE1_LIN4);
 
-                LinearLayoutVoteType1.addView(LinearLayoutVote4);
+                LinearLayoutType1.addView(LinearLayoutVote4);
 
                 LinearLayout LinearLayoutVote5 = new LinearLayout(Activity);
                 LinearLayoutVote5.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30)));
@@ -725,7 +716,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 LinearLayoutVote5.setVisibility(View.GONE);
                 LinearLayoutVote5.setId(ID1_VOTE_TYPE1_LIN5);
 
-                LinearLayoutVoteType1.addView(LinearLayoutVote5);
+                LinearLayoutType1.addView(LinearLayoutVote5);
+
+                GradientDrawable DrawableSelect = new GradientDrawable();
+                DrawableSelect.setStroke(Misc.ToDP(1), Misc.Color(R.color.Gray));
+                DrawableSelect.setShape(GradientDrawable.OVAL);
 
                 View ViewVote1 = new View(Activity);
                 ViewVote1.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(16), Misc.ToDP(16)));
@@ -809,29 +804,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 View ViewVoteLine1 = new View(Activity);
                 ViewVoteLine1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(8)));
-                LinearLayoutVoteType1.addView(ViewVoteLine1);
+
+                LinearLayoutType1.addView(ViewVoteLine1);
 
                 View ViewVoteLine2 = new View(Activity);
                 ViewVoteLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                 ViewVoteLine2.setBackgroundResource(R.color.LineWhite);
 
-                LinearLayoutVoteType1.addView(ViewVoteLine2);
+                LinearLayoutType1.addView(ViewVoteLine2);
 
                 View ViewVoteLine3 = new View(Activity);
                 ViewVoteLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(8)));
 
-                LinearLayoutVoteType1.addView(ViewVoteLine3);
+                LinearLayoutType1.addView(ViewVoteLine3);
 
-                LinearLayout LinearLayoutVoteSubmit = new LinearLayout(Activity);
-                LinearLayoutVoteSubmit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30)));
-                LinearLayoutVoteSubmit.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayoutVoteSubmit.setGravity(Gravity.CENTER_VERTICAL);
+                LinearLayout LinearLayoutResult = new LinearLayout(Activity);
+                LinearLayoutResult.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30)));
+                LinearLayoutResult.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayoutResult.setGravity(Gravity.CENTER_VERTICAL);
 
-                LinearLayoutVoteType1.addView(LinearLayoutVoteSubmit);
+                LinearLayoutType1.addView(LinearLayoutResult);
 
                 GradientDrawable DrawableSubmit = new GradientDrawable();
-                DrawableSubmit.setCornerRadius(Misc.ToDP(4));
                 DrawableSubmit.setColor(Misc.Color(R.color.Primary));
+                DrawableSubmit.setCornerRadius(Misc.ToDP(4));
 
                 TextView TextViewSubmit = new TextView(Activity, 12, true);
                 TextViewSubmit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30)));
@@ -841,32 +837,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewSubmit.setText(Activity.getString(R.string.PostAdapterSubmit));
                 TextViewSubmit.setId(ID1_VOTE_TYPE1_SUBMIT);
 
-                LinearLayoutVoteSubmit.addView(TextViewSubmit);
+                LinearLayoutResult.addView(TextViewSubmit);
 
                 TextView TextViewResult = new TextView(Activity, 12, false);
                 TextViewResult.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewResult.SetColor(R.color.Gray);
                 TextViewResult.setPadding(Misc.ToDP(10), Misc.ToDP(5), 0, 0);
                 TextViewResult.setId(ID1_VOTE_TYPE1_RESULT);
+                TextViewResult.SetColor(R.color.Gray);
 
-                LinearLayoutVoteSubmit.addView(TextViewResult);
+                LinearLayoutResult.addView(TextViewResult);
 
                 TextView TextViewVoteTime = new TextView(Activity, 12, false);
                 TextViewVoteTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewVoteTime.SetColor(R.color.Gray);
-                TextViewVoteTime.setPadding(Misc.ToDP(5), Misc.ToDP(5), 0, 0);
+                TextViewVoteTime.setPadding(Misc.ToDP(10), Misc.ToDP(5), 0, 0);
                 TextViewVoteTime.setId(ID1_VOTE_TYPE1_TIME);
+                TextViewVoteTime.SetColor(R.color.Gray);
 
-                LinearLayoutVoteSubmit.addView(TextViewVoteTime);
+                LinearLayoutResult.addView(TextViewVoteTime);
             }
 
             {
-                RelativeLayout RelativeLayoutVoteType2 = new RelativeLayout(Activity);
-                RelativeLayoutVoteType2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                RelativeLayoutVoteType2.setVisibility(View.GONE);
-                RelativeLayoutVoteType2.setId(ID1_VOTE_TYPE2);
+                RelativeLayout RelativeLayoutType2 = new RelativeLayout(Activity);
+                RelativeLayoutType2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                RelativeLayoutType2.setVisibility(View.GONE);
+                RelativeLayoutType2.setId(ID1_VOTE_TYPE2);
 
-                RelativeLayoutVote.addView(RelativeLayoutVoteType2);
+                RelativeLayoutVote.addView(RelativeLayoutType2);
 
                 RelativeLayout.LayoutParams TextViewPercent1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
                 TextViewPercent1Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -878,7 +874,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewPercent1.setGravity(Gravity.CENTER);
                 TextViewPercent1.setId(ID1_VOTE_TYPE2_PER1);
 
-                RelativeLayoutVoteType2.addView(TextViewPercent1);
+                RelativeLayoutType2.addView(TextViewPercent1);
 
                 RelativeLayout.LayoutParams TextViewPercent2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
                 TextViewPercent2Param.addRule(RelativeLayout.BELOW, ID1_VOTE_TYPE2_PER1);
@@ -891,7 +887,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewPercent2.setGravity(Gravity.CENTER);
                 TextViewPercent2.setId(ID1_VOTE_TYPE2_PER2);
 
-                RelativeLayoutVoteType2.addView(TextViewPercent2);
+                RelativeLayoutType2.addView(TextViewPercent2);
 
                 RelativeLayout.LayoutParams TextViewPercent3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
                 TextViewPercent3Param.addRule(RelativeLayout.BELOW, ID1_VOTE_TYPE2_PER2);
@@ -905,7 +901,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewPercent3.setVisibility(View.GONE);
                 TextViewPercent3.setId(ID1_VOTE_TYPE2_PER3);
 
-                RelativeLayoutVoteType2.addView(TextViewPercent3);
+                RelativeLayoutType2.addView(TextViewPercent3);
 
                 RelativeLayout.LayoutParams TextViewPercent4Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
                 TextViewPercent4Param.addRule(RelativeLayout.BELOW, ID1_VOTE_TYPE2_PER3);
@@ -919,7 +915,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewPercent4.setVisibility(View.GONE);
                 TextViewPercent4.setId(ID1_VOTE_TYPE2_PER4);
 
-                RelativeLayoutVoteType2.addView(TextViewPercent4);
+                RelativeLayoutType2.addView(TextViewPercent4);
 
                 RelativeLayout.LayoutParams TextViewPercent5Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(30));
                 TextViewPercent5Param.addRule(RelativeLayout.BELOW, ID1_VOTE_TYPE2_PER4);
@@ -933,7 +929,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewPercent5.setVisibility(View.GONE);
                 TextViewPercent5.setId(ID1_VOTE_TYPE2_PER5);
 
-                RelativeLayoutVoteType2.addView(TextViewPercent5);
+                RelativeLayoutType2.addView(TextViewPercent5);
 
                 RelativeLayout.LayoutParams TextViewVote1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(25));
                 TextViewVote1Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_TYPE2_PER1);
@@ -946,7 +942,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewVote1.setGravity(Gravity.LEFT);
                 TextViewVote1.setId(ID1_VOTE_TYPE2_TEXT1);
 
-                RelativeLayoutVoteType2.addView(TextViewVote1);
+                RelativeLayoutType2.addView(TextViewVote1);
 
                 RelativeLayout.LayoutParams TextViewVote2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(25));
                 TextViewVote2Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_TYPE2_PER2);
@@ -960,7 +956,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewVote2.setGravity(Gravity.LEFT);
                 TextViewVote2.setId(ID1_VOTE_TYPE2_TEXT2);
 
-                RelativeLayoutVoteType2.addView(TextViewVote2);
+                RelativeLayoutType2.addView(TextViewVote2);
 
                 RelativeLayout.LayoutParams TextViewVote3Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(25));
                 TextViewVote3Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_TYPE2_PER3);
@@ -975,7 +971,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewVote3.setVisibility(View.GONE);
                 TextViewVote3.setId(ID1_VOTE_TYPE2_TEXT3);
 
-                RelativeLayoutVoteType2.addView(TextViewVote3);
+                RelativeLayoutType2.addView(TextViewVote3);
 
                 RelativeLayout.LayoutParams TextViewVote4Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(25));
                 TextViewVote4Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_TYPE2_PER4);
@@ -990,7 +986,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewVote4.setVisibility(View.GONE);
                 TextViewVote4.setId(ID1_VOTE_TYPE2_TEXT4);
 
-                RelativeLayoutVoteType2.addView(TextViewVote4);
+                RelativeLayoutType2.addView(TextViewVote4);
 
                 RelativeLayout.LayoutParams TextViewVote5Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(25));
                 TextViewVote5Param.addRule(RelativeLayout.LEFT_OF, ID1_VOTE_TYPE2_PER5);
@@ -1005,14 +1001,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewVote5.setVisibility(View.GONE);
                 TextViewVote5.setId(ID1_VOTE_TYPE2_TEXT5);
 
-                RelativeLayoutVoteType2.addView(TextViewVote5);
+                RelativeLayoutType2.addView(TextViewVote5);
 
                 ImageView ImageViewSelect = new ImageView(Activity);
                 ImageViewSelect.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32)));
                 ImageViewSelect.setImageResource(R.drawable._inbox_selection);
                 ImageViewSelect.setId(ID1_VOTE_TYPE2_SELECT);
 
-                RelativeLayoutVoteType2.addView(ImageViewSelect);
+                RelativeLayoutType2.addView(ImageViewSelect);
 
                 RelativeLayout.LayoutParams ViewVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
                 ViewVoteParam.addRule(RelativeLayout.BELOW, ID1_VOTE_TYPE2_TEXT5);
@@ -1023,33 +1019,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 ViewVote.setBackgroundResource(R.color.LineWhite);
                 ViewVote.setId(Misc.ViewID());
 
-                RelativeLayoutVoteType2.addView(ViewVote);
+                RelativeLayoutType2.addView(ViewVote);
 
                 RelativeLayout.LayoutParams LinearLayoutVoteSubmitParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(30));
                 LinearLayoutVoteSubmitParam.addRule(RelativeLayout.BELOW, ViewVote.getId());
 
-                LinearLayout LinearLayoutVoteSubmit = new LinearLayout(Activity);
-                LinearLayoutVoteSubmit.setLayoutParams(LinearLayoutVoteSubmitParam);
-                LinearLayoutVoteSubmit.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayoutVoteSubmit.setGravity(Gravity.CENTER_VERTICAL);
+                LinearLayout LinearLayoutResult = new LinearLayout(Activity);
+                LinearLayoutResult.setLayoutParams(LinearLayoutVoteSubmitParam);
+                LinearLayoutResult.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayoutResult.setGravity(Gravity.CENTER_VERTICAL);
 
-                RelativeLayoutVoteType2.addView(LinearLayoutVoteSubmit);
+                RelativeLayoutType2.addView(LinearLayoutResult);
 
                 TextView TextViewSubmit = new TextView(Activity, 12, false);
                 TextViewSubmit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewSubmit.SetColor(R.color.Gray);
                 TextViewSubmit.setPadding(Misc.ToDP(10), Misc.ToDP(5), 0, 0);
                 TextViewSubmit.setId(ID1_VOTE_TYPE2_RESULT);
+                TextViewSubmit.SetColor(R.color.Gray);
 
-                LinearLayoutVoteSubmit.addView(TextViewSubmit);
+                LinearLayoutResult.addView(TextViewSubmit);
 
                 TextView TextViewVoteTime = new TextView(Activity, 12, false);
                 TextViewVoteTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewVoteTime.SetColor(R.color.Gray);
                 TextViewVoteTime.setPadding(Misc.ToDP(10), Misc.ToDP(5), 0, 0);
                 TextViewVoteTime.setId(ID1_VOTE_TYPE2_TIME);
+                TextViewVoteTime.SetColor(R.color.Gray);
 
-                LinearLayoutVoteSubmit.addView(TextViewVoteTime);
+                LinearLayoutResult.addView(TextViewVoteTime);
             }
 
             RelativeLayout.LayoutParams RelativeLayoutFileParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(70));
@@ -1397,12 +1393,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                     case 3:
                     {
                         Holder.RelativeLayoutVote.setVisibility(View.VISIBLE);
-                        Holder.RelativeLayoutVoteType2.setVisibility(View.GONE);
                         Holder.LinearLayoutVoteType1.setVisibility(View.GONE);
+                        Holder.RelativeLayoutVoteType2.setVisibility(View.GONE);
 
                         final JSONObject Vote = new JSONObject(PostList.get(Position).Data);
-
-                        Misc.Debug("Data: " + PostList.get(Position).Data);
 
                         if (Vote.isNull("Vote"))
                         {
@@ -1411,28 +1405,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             Holder.TextViewType1Text1.setText(Vote.getString("Vote1"));
                             Holder.TextViewType1Text2.setText(Vote.getString("Vote2"));
 
-                            if (!Vote.isNull("Vote3"))
+                            if (Vote.isNull("Vote3"))
+                                Holder.LinearLayoutVoteLin3.setVisibility(View.GONE);
+                            else
                             {
                                 Holder.LinearLayoutVoteLin3.setVisibility(View.VISIBLE);
                                 Holder.TextViewType1Text3.setText(Vote.getString("Vote3"));
                             }
 
-                            if (!Vote.isNull("Vote4"))
+                            if (Vote.isNull("Vote4"))
+                                Holder.LinearLayoutVoteLin4.setVisibility(View.GONE);
+                            else
                             {
                                 Holder.LinearLayoutVoteLin4.setVisibility(View.VISIBLE);
                                 Holder.TextViewType1Text4.setText(Vote.getString("Vote4"));
                             }
 
-                            if (!Vote.isNull("Vote5"))
+                            if (Vote.isNull("Vote5"))
+                                Holder.LinearLayoutVoteLin5.setVisibility(View.GONE);
+                            else
                             {
                                 Holder.LinearLayoutVoteLin5.setVisibility(View.VISIBLE);
                                 Holder.TextViewType1Text5.setText(Vote.getString("Vote5"));
                             }
 
-                            int Total = 0;
+                            int Total = Vote.getInt("Count1") + Vote.getInt("Count2");
 
-                            if (!Vote.isNull("Result"))
-                                Total = Vote.getInt("Result");
+                            if (!Vote.isNull("Count3"))
+                                Total += Vote.getInt("Count3");
+
+                            if (!Vote.isNull("Count4"))
+                                Total += Vote.getInt("Count4");
+
+                            if (!Vote.isNull("Count5"))
+                                Total += Vote.getInt("Count5");
 
                             Holder.TextViewType1Result.setText((Total + " " + Activity.getString(R.string.PostAdapterVotes)));
                             Holder.TextViewType1Time.setText(Misc.TimeLeft(Vote.getInt("Time")));
@@ -1447,9 +1453,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     Select.setShape(GradientDrawable.OVAL);
 
                                     GradientDrawable Circle = new GradientDrawable();
-                                    Circle.setColor(Misc.Color(R.color.Primary));
-                                    Circle.setShape(GradientDrawable.OVAL);
                                     Circle.setStroke(Misc.ToDP(7), Color.TRANSPARENT);
+                                    Circle.setShape(GradientDrawable.OVAL);
+                                    Circle.setColor(Color.BLACK);
 
                                     LayerDrawable Layer = new LayerDrawable(new Drawable[] { Select, Circle });
 
@@ -1504,25 +1510,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 @Override
                                 public void onClick(View v)
                                 {
-                                    int Selection = 0;
+                                    int S = 0;
 
                                     if (Holder.ViewType1Sel1.getTag() == "1")
-                                        Selection = 1;
+                                        S = 1;
                                     else if (Holder.ViewType1Sel2.getTag() == "1")
-                                        Selection = 2;
+                                        S = 2;
                                     else if (Holder.ViewType1Sel3.getTag() == "1")
-                                        Selection = 3;
+                                        S = 3;
                                     else if (Holder.ViewType1Sel4.getTag() == "1")
-                                        Selection = 4;
+                                        S = 4;
                                     else if (Holder.ViewType1Sel5.getTag() == "1")
-                                        Selection = 5;
+                                        S = 5;
 
-                                    if (Selection == 0)
+                                    if (S == 0)
                                         return;
+
+                                    final int Sel = S;
 
                                     AndroidNetworking.post(Misc.GetRandomServer("PostVote"))
                                     .addBodyParameter("Post", PostList.get(Position).ID)
-                                    .addBodyParameter("Vote", String.valueOf(Selection))
+                                    .addBodyParameter("Vote", String.valueOf(Sel))
                                     .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
                                     .setTag(Tag)
                                     .build()
@@ -1533,19 +1541,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         {
                                             try
                                             {
-                                                Misc.Debug("AA: " + Response);
                                                 JSONObject Result = new JSONObject(Response);
 
                                                 if (Result.getInt("Message") == 0)
                                                 {
                                                     JSONObject Data = new JSONObject();
 
-                                                    Data.put("Vote" , Result.getString("Vote"));
+                                                    Data.put("Vote" , Sel);
                                                     Data.put("Count1" , Result.getInt("Count1"));
                                                     Data.put("Count2" , Result.getInt("Count2"));
-                                                    Data.put("Count3" , Result.getInt("Count3"));
-                                                    Data.put("Count4" , Result.getInt("Count4"));
-                                                    Data.put("Count5" , Result.getInt("Count5"));
+
+                                                    if (!Result.isNull("Count3"))
+                                                        Data.put("Count3" , Result.getString("Count3"));
+
+                                                    if (!Result.isNull("Count4"))
+                                                        Data.put("Count4" , Result.getString("Count4"));
+
+                                                    if (!Result.isNull("Count5"))
+                                                        Data.put("Count5" , Result.getString("Count5"));
 
                                                     Data.put("Vote1" , Vote.getString("Vote1"));
                                                     Data.put("Vote2" , Vote.getString("Vote2"));
@@ -1581,13 +1594,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                             int Total = Vote.getInt("Count1") + Vote.getInt("Count2");
 
-                            if (!Vote.isNull("Vote3"))
+                            if (!Vote.isNull("Count3"))
                                 Total += Vote.getInt("Count3");
 
-                            if (!Vote.isNull("Vote4"))
+                            if (!Vote.isNull("Count4"))
                                 Total += Vote.getInt("Count4");
 
-                            if (!Vote.isNull("Vote5"))
+                            if (!Vote.isNull("Count5"))
                                 Total += Vote.getInt("Count5");
 
                             Holder.TextViewType2Text1.setText(Vote.getString("Vote1"));
@@ -1598,7 +1611,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             Holder.TextViewType2Text2.FillBackground(Vote.getInt("Count2") * 100 / Total);
                             Holder.TextViewType2Per2.setText((String.valueOf(Vote.getInt("Count2") * 100 / Total) + "%"));
 
-                            if (!Vote.isNull("Vote3"))
+                            if (Vote.isNull("Vote3"))
+                            {
+                                Holder.TextViewType2Per3.setVisibility(View.GONE);
+                                Holder.TextViewType2Text3.setVisibility(View.GONE);
+                            }
+                            else
                             {
                                 Holder.TextViewType2Per3.setVisibility(View.VISIBLE);
                                 Holder.TextViewType2Per3.setText((String.valueOf(Vote.getInt("Count3") * 100 / Total) + "%"));
@@ -1608,7 +1626,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewType2Text3.FillBackground(Vote.getInt("Count3") * 100 / Total);
                             }
 
-                            if (!Vote.isNull("Vote4"))
+                            if (Vote.isNull("Vote4"))
+                            {
+                                Holder.TextViewType2Per4.setVisibility(View.GONE);
+                                Holder.TextViewType2Text4.setVisibility(View.GONE);
+                            }
+                            else
                             {
                                 Holder.TextViewType2Per4.setVisibility(View.VISIBLE);
                                 Holder.TextViewType2Per4.setText((String.valueOf(Vote.getInt("Count4") * 100 / Total) + "%"));
@@ -1618,7 +1641,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewType2Text4.FillBackground(Vote.getInt("Count4") * 100 / Total);
                             }
 
-                            if (!Vote.isNull("Vote5"))
+                            if (Vote.isNull("Vote5"))
+                            {
+                                Holder.TextViewType2Per5.setVisibility(View.GONE);
+                                Holder.TextViewType2Text5.setVisibility(View.GONE);
+                            }
+                            else
                             {
                                 Holder.TextViewType2Per5.setVisibility(View.VISIBLE);
                                 Holder.TextViewType2Per5.setText((String.valueOf(Vote.getInt("Count5") * 100 / Total) + "%"));
@@ -2049,7 +2077,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RefreshView.onTouchEvent(e);
     }
 
-    // TODO Az Aval Check Shavad
     public void Update()
     {
         AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
@@ -2113,6 +2140,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                             P.IsBookmark = D.getInt("Bookmark") != 0;
 
+                            if (!D.isNull("I1"))
+                            {
+                                P.Person1ID = D.getString("I1");
+                                P.Person1Avatar = D.getString("I1P");
+                            }
+
+                            if (!D.isNull("I2"))
+                            {
+                                P.Person2ID = D.getString("I2");
+                                P.Person2Avatar = D.getString("I2P");
+                            }
+
+                            if (!D.isNull("I3"))
+                            {
+                                P.Person3ID = D.getString("I3");
+                                P.Person3Avatar = D.getString("I3P");
+                            }
+
+                            if (!D.isNull("I4"))
+                            {
+                                P.Person4ID = D.getString("I4");
+                                P.Person4Avatar = D.getString("I4P");
+                            }
+
                             PostList.add(P);
                         }
 
@@ -2127,16 +2178,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 }
             }
 
-            @Override
-            public void onError(ANError e)
-            {
-                Misc.Debug("PostAdapter-Update: " + e.toString());
-            }
+            @Override public void onError(ANError e) { }
         });
     }
 
-    // TODO Az Aval Check Shavad
-    public void Update(JSONObject D)
+    public void Insert(JSONObject D)
     {
         try
         {
@@ -2158,20 +2204,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             }
 
             P.Owner = D.getString("Owner");
-            P.View = 0;
             P.Category = D.getInt("Category");
             P.LikeCount = 0;
             P.CommentCount = 0;
-            P.IsLike = false;
-            P.IsFollow = false;
-            P.IsComment = false;
-            P.IsBookmark = false;
 
             PostList.add(1, P);
         }
         catch (Exception e)
         {
-            Misc.Debug("PostAdapter-Update2: " + e.toString());
+            Misc.Debug("PostAdapter-Insert: " + e.toString());
         }
     }
 
