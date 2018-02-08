@@ -146,7 +146,7 @@ class PhoneVerifyUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(R.string.PhoneVerifyUI));
+        TextViewTitle.setText(Misc.String(R.string.PhoneVerifyUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -191,7 +191,7 @@ class PhoneVerifyUI extends FragmentView
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(Misc.ToDP(20), Misc.ToDP(40), Misc.ToDP(20), Misc.ToDP(15));
         TextViewVerificationCode.SetColor(R.color.Gray);
-        TextViewVerificationCode.setText(GetActivity().getString(R.string.PhoneVerifyUICode));
+        TextViewVerificationCode.setText(Misc.String(R.string.PhoneVerifyUICode));
         TextViewVerificationCode.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewVerificationCode);
@@ -444,7 +444,7 @@ class PhoneVerifyUI extends FragmentView
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText((GetActivity().getString(R.string.PhoneVerifyUIMessage) + " " + (Code + Phone)), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText((Misc.String(R.string.PhoneVerifyUIMessage) + " " + (Code + Phone)), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         CharacterStyle CharacterStyleMessage = new CharacterStyle()
@@ -456,7 +456,7 @@ class PhoneVerifyUI extends FragmentView
                 t.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             }
         };
-        Span.setSpan(CharacterStyleMessage, GetActivity().getString(R.string.PhoneVerifyUIMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Span.setSpan(CharacterStyleMessage, Misc.String(R.string.PhoneVerifyUIMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -483,7 +483,7 @@ class PhoneVerifyUI extends FragmentView
         final TextView TextViewResend = new TextView(GetActivity(), 14, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.SetColor(R.color.Gray);
-        TextViewResend.setText(GetActivity().getString(R.string.PhoneVerifyUIResend));
+        TextViewResend.setText(Misc.String(R.string.PhoneVerifyUIResend));
         TextViewResend.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
         {
@@ -519,20 +519,20 @@ class PhoneVerifyUI extends FragmentView
                                 {
                                     case 0:
                                         CountDownTimerResend.start();
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneVerifyUIResendDone));
+                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUIResendDone));
                                         break;
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneUIError));
+                                        Misc.Toast( Misc.String(R.string.PhoneUIError));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -550,7 +550,7 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewResend.Stop();
                             TextViewResend.setVisibility(View.VISIBLE);
-                            Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
@@ -577,20 +577,20 @@ class PhoneVerifyUI extends FragmentView
                                 {
                                     case 0:
                                         CountDownTimerResend.start();
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneVerifyUIResendDone));
+                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUIResendDone));
                                         break;
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneUIError2));
+                                        Misc.Toast( Misc.String(R.string.PhoneUIError2));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -608,7 +608,7 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewResend.Stop();
                             TextViewResend.setVisibility(View.VISIBLE);
-                            Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
@@ -675,7 +675,7 @@ class PhoneVerifyUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
+        ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(StateListNext);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
@@ -721,19 +721,19 @@ class PhoneVerifyUI extends FragmentView
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
                                     case 8:
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneVerifyUICodeCount));
+                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeCount));
                                         break;
                                     case 9:
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneVerifyUICodeWrong));
+                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeWrong));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -751,7 +751,7 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewNext.Stop();
                             ButtonNext.setVisibility(View.VISIBLE);
-                            Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
@@ -797,22 +797,22 @@ class PhoneVerifyUI extends FragmentView
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
+                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
                                     case 8:
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneVerifyUICodeCount));
+                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeCount));
                                         break;
                                     case 9:
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneVerifyUICodeWrong));
+                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeWrong));
                                         break;
                                     case 10:
-                                        Misc.Toast( GetActivity().getString(R.string.PhoneVerifyUICodeNotFound));
+                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeNotFound));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -830,7 +830,7 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewNext.Stop();
                             ButtonNext.setVisibility(View.VISIBLE);
-                            Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }

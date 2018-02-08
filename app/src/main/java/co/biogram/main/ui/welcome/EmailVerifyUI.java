@@ -140,7 +140,7 @@ class EmailVerifyUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.EmailVerifyUI));
+        TextViewTitle.setText(Misc.String(R.string.EmailVerifyUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -185,7 +185,7 @@ class EmailVerifyUI extends FragmentView
         TextViewVerificationCode.setLayoutParams(TextViewVerificationCodeParam);
         TextViewVerificationCode.setPadding(Misc.ToDP(20), Misc.ToDP(40), Misc.ToDP(20), Misc.ToDP(15));
         TextViewVerificationCode.SetColor(R.color.Gray);
-        TextViewVerificationCode.setText(GetActivity().getString(R.string.EmailVerifyUICode));
+        TextViewVerificationCode.setText(Misc.String(R.string.EmailVerifyUICode));
         TextViewVerificationCode.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewVerificationCode);
@@ -438,7 +438,7 @@ class EmailVerifyUI extends FragmentView
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
-        TextViewMessage.setText((GetActivity().getString(R.string.EmailVerifyUIMessage) + " " + Email), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText((Misc.String(R.string.EmailVerifyUIMessage) + " " + Email), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         CharacterStyle CharacterStyleMessage = new CharacterStyle()
@@ -450,7 +450,7 @@ class EmailVerifyUI extends FragmentView
                 t.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             }
         };
-        Span.setSpan(CharacterStyleMessage, GetActivity().getString(R.string.PhoneVerifyUIMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Span.setSpan(CharacterStyleMessage, Misc.String(R.string.PhoneVerifyUIMessage).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -477,7 +477,7 @@ class EmailVerifyUI extends FragmentView
         final TextView TextViewResend = new TextView(GetActivity(), 14, false);
         TextViewResend.setLayoutParams(TextViewResendParam);
         TextViewResend.SetColor(R.color.Gray);
-        TextViewResend.setText(GetActivity().getString(R.string.EmailVerifyUIResend));
+        TextViewResend.setText(Misc.String(R.string.EmailVerifyUIResend));
         TextViewResend.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewResend.setOnClickListener(new View.OnClickListener()
         {
@@ -512,25 +512,25 @@ class EmailVerifyUI extends FragmentView
                             {
                                 case 0:
                                     CountDownTimerResend.start();
-                                    Misc.Toast( GetActivity().getString(R.string.EmailVerifyUIResendDone));
+                                    Misc.Toast( Misc.String(R.string.EmailVerifyUIResendDone));
                                     break;
                                 case 1:
                                 case 2:
                                 case 3:
                                 case 4:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError1));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError1));
                                     break;
                                 case 5:
                                 case 6:
                                 case 7:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError2));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError2));
                                     break;
                                 case 8:
                                 case 9:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError3));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError3));
                                     break;
                                 case 10:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError4));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError4));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -548,7 +548,7 @@ class EmailVerifyUI extends FragmentView
                     {
                         LoadingViewResend.Stop();
                         TextViewResend.setVisibility(View.VISIBLE);
-                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }
@@ -614,7 +614,7 @@ class EmailVerifyUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
+        ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(StateListNext);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
@@ -655,10 +655,10 @@ class EmailVerifyUI extends FragmentView
                                     break;
                                 case 1:
                                 case 2:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailVerifyUICodeCount));
+                                    Misc.Toast( Misc.String(R.string.EmailVerifyUICodeCount));
                                     break;
                                 case 3:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailVerifyUICodeWrong));
+                                    Misc.Toast( Misc.String(R.string.EmailVerifyUICodeWrong));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -676,7 +676,7 @@ class EmailVerifyUI extends FragmentView
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

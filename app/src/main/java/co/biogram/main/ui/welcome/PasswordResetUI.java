@@ -111,7 +111,7 @@ class PasswordResetUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.PasswordResetUI));
+        TextViewTitle.setText(Misc.String(R.string.PasswordResetUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -146,7 +146,7 @@ class PasswordResetUI extends FragmentView
         TextView TextViewEmail = new TextView(GetActivity(), 16, false);
         TextViewEmail.setLayoutParams(TextViewUsernameParam);
         TextViewEmail.SetColor(R.color.Gray);
-        TextViewEmail.setText(GetActivity().getString(R.string.GeneralEmailAddress));
+        TextViewEmail.setText(Misc.String(R.string.GeneralEmailAddress));
         TextViewEmail.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewEmail);
@@ -183,7 +183,7 @@ class PasswordResetUI extends FragmentView
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setText(GetActivity().getString(R.string.PasswordResetUIMessage));
+        TextViewMessage.setText(Misc.String(R.string.PasswordResetUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
@@ -204,7 +204,7 @@ class PasswordResetUI extends FragmentView
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.SetColor(R.color.Primary);
-        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
+        TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -233,7 +233,7 @@ class PasswordResetUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonFinish.setText(GetActivity().getString(R.string.PasswordResetUIFinish));
+        ButtonFinish.setText(Misc.String(R.string.PasswordResetUIFinish));
         ButtonFinish.setBackground(ListDrawableNext);
         ButtonFinish.setEnabled(false);
         ButtonFinish.setOnClickListener(new View.OnClickListener()
@@ -263,16 +263,16 @@ class PasswordResetUI extends FragmentView
                             switch (Result.getInt("Message"))
                             {
                                 case 0:
-                                    Misc.Toast( GetActivity().getString(R.string.PasswordResetUIError4));
+                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError4));
                                     break;
                                 case 1:
-                                    Misc.Toast( GetActivity().getString(R.string.PasswordResetUIError1));
+                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError1));
                                     break;
                                 case 2:
-                                    Misc.Toast( GetActivity().getString(R.string.PasswordResetUIError2));
+                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError2));
                                     break;
                                 case 3:
-                                    Misc.Toast( GetActivity().getString(R.string.PasswordResetUIError3));
+                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError3));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -289,7 +289,7 @@ class PasswordResetUI extends FragmentView
                     {
                         LoadingViewFinish.Stop();
                         ButtonFinish.setVisibility(View.VISIBLE);
-                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

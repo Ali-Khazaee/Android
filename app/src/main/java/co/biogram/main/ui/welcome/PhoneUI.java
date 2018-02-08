@@ -129,7 +129,7 @@ class PhoneUI extends FragmentView
 
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setText(GetActivity().getString(IsSignUp ? R.string.GeneralSignUp : R.string.GeneralSignIn));
+        TextViewTitle.setText(Misc.String(IsSignUp ? R.string.GeneralSignUp : R.string.GeneralSignIn));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -170,7 +170,7 @@ class PhoneUI extends FragmentView
         TextViewPhoneCode.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhoneCode.setPadding(0, Misc.ToDP(20), 0, 0);
         TextViewPhoneCode.SetColor(R.color.Gray);
-        TextViewPhoneCode.setText(GetActivity().getString(R.string.PhoneUICode));
+        TextViewPhoneCode.setText(Misc.String(R.string.PhoneUICode));
 
         LinearLayoutCode.addView(TextViewPhoneCode);
 
@@ -215,7 +215,7 @@ class PhoneUI extends FragmentView
                 TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.SetColor(R.color.TextWhite);
-                TextViewTitle.setText(GetActivity().getString(R.string.PhoneUIPreCode));
+                TextViewTitle.setText(Misc.String(R.string.PhoneUIPreCode));
                 TextViewTitle.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewTitle.setGravity(Gravity.CENTER);
 
@@ -289,7 +289,7 @@ class PhoneUI extends FragmentView
         TextViewPhone.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewPhone.setPadding(0, Misc.ToDP(20), 0, 0);
         TextViewPhone.SetColor(R.color.Gray);
-        TextViewPhone.setText(GetActivity().getString(R.string.PhoneUINumber));
+        TextViewPhone.setText(Misc.String(R.string.PhoneUINumber));
 
         LinearLayoutPhone.addView(TextViewPhone);
 
@@ -350,7 +350,7 @@ class PhoneUI extends FragmentView
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewMessage.setText((GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
+        TextViewMessage.setText((Misc.String(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + Misc.String(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
         ClickableSpan ClickableSpanMessage = new ClickableSpan()
@@ -377,7 +377,7 @@ class PhoneUI extends FragmentView
                 t.setUnderlineText(false);
             }
         };
-        Span.setSpan(ClickableSpanMessage, GetActivity().getString(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Span.setSpan(ClickableSpanMessage, Misc.String(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -396,7 +396,7 @@ class PhoneUI extends FragmentView
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.SetColor(R.color.Primary);
-        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
+        TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
 
@@ -425,7 +425,7 @@ class PhoneUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
+        ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(DrawableStateNext);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
@@ -440,7 +440,7 @@ class PhoneUI extends FragmentView
                 }
 
                 PermissionDialog PermissionDialogSMS = new PermissionDialog(GetActivity());
-                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, GetActivity().getString(R.string.PhoneUIPermission), new PermissionDialog.OnSelectedListener()
+                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, Misc.String(R.string.PhoneUIPermission), new PermissionDialog.OnSelectedListener()
                 {
                     @Override
                     public void OnSelected(boolean Allow)
@@ -544,15 +544,15 @@ class PhoneUI extends FragmentView
                             case 1:
                             case 2:
                             case 3:
-                                Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
+                                Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
                                 break;
                             case 4:
                             case 5:
                             case 6:
-                                Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
+                                Misc.Toast( Misc.String(R.string.GeneralPhone));
                                 break;
                             case 7:
-                                Misc.Toast( GetActivity().getString(R.string.PhoneUIError));
+                                Misc.Toast( Misc.String(R.string.PhoneUIError));
                                 break;
                             default:
                                 Misc.GeneralError(Result.getInt("Message"));
@@ -570,7 +570,7 @@ class PhoneUI extends FragmentView
                 {
                     LoadingViewNext.Stop();
                     ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                    Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                 }
             });
         }
@@ -611,15 +611,15 @@ class PhoneUI extends FragmentView
                             case 1:
                             case 2:
                             case 3:
-                                Misc.Toast( GetActivity().getString(R.string.GeneralPhoneCode));
+                                Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
                                 break;
                             case 4:
                             case 5:
                             case 6:
-                                Misc.Toast( GetActivity().getString(R.string.GeneralPhone));
+                                Misc.Toast( Misc.String(R.string.GeneralPhone));
                                 break;
                             case 7:
-                                Misc.Toast( GetActivity().getString(R.string.PhoneUIError2));
+                                Misc.Toast( Misc.String(R.string.PhoneUIError2));
                                 break;
                             default:
                                 Misc.GeneralError(Result.getInt("Message"));
@@ -637,7 +637,7 @@ class PhoneUI extends FragmentView
                 {
                     LoadingViewNext.Stop();
                     ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                    Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                 }
             });
         }

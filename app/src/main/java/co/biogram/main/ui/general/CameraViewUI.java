@@ -85,7 +85,7 @@ public class CameraViewUI extends FragmentView
                     public void OnCapture(byte[] Data, int O)
                     {
                         IsClicked = false;
-                        GetActivity().GetManager().OpenView(new ImagePreviewUI(GetActivity(), Data, O), R.id.ContainerFull, "ImagePreviewUI");
+                        GetActivity().GetManager().OpenView(new ImagePreviewUI(Data, O), R.id.ContainerFull, "ImagePreviewUI");
                     }
 
                     @Override

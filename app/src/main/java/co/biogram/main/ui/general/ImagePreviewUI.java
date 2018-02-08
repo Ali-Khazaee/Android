@@ -1,6 +1,5 @@
 package co.biogram.main.ui.general;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -30,6 +29,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 
 import com.bumptech.glide.request.transition.Transition;
+
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -52,16 +52,17 @@ import co.biogram.main.ui.view.TextView;
 
 public class ImagePreviewUI extends FragmentView
 {
-    private final List<String> UrlList = new ArrayList<>();
+    private List<String> UrlList = new ArrayList<>();
     private RelativeLayout RelativeLayoutHeader;
     private OnSelectListener SelectListener;
     private ViewPager ViewPagerMain;
     private boolean Selected = false;
+    private boolean Anim = false;
     private Bitmap bitmap = null;
     private boolean IsMax = false;
     private int Type = 0;
 
-    ImagePreviewUI(Context context, byte[] data, int O)
+    ImagePreviewUI(byte[] Data, int O)
     {
         try
         {
@@ -70,14 +71,14 @@ public class ImagePreviewUI extends FragmentView
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
 
-            BitmapFactory.decodeByteArray(data, 0, data.length, o);
+            BitmapFactory.decodeByteArray(Data, 0, Data.length, o);
 
             int Size = Misc.ToDP(150);
 
             o.inSampleSize = Misc.SampleSize(o, Size, Size);
             o.inJustDecodeBounds = false;
 
-            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, o);
+            bitmap = BitmapFactory.decodeByteArray(Data, 0, Data.length, o);
 
             Matrix matrix = new Matrix();
             matrix.postRotate(O);
@@ -89,23 +90,26 @@ public class ImagePreviewUI extends FragmentView
         }
         catch (Exception e)
         {
-            Misc.Debug("ImagePreviewUI-Data: " + e.toString());
+            Misc.Debug("ImagePreviewUI: " + e.toString());
         }
     }
 
-    public ImagePreviewUI(String URL)
+    public ImagePreviewUI(String URL, boolean anim)
     {
+        Anim = anim;
         UrlList.add(URL);
     }
 
-    public ImagePreviewUI(String URL, String URL2)
+    public ImagePreviewUI(String URL, String URL2, boolean anim)
     {
+        Anim = anim;
         UrlList.add(URL);
         UrlList.add(URL2);
     }
 
-    public ImagePreviewUI(String URL, String URL2, String URL3)
+    public ImagePreviewUI(String URL, String URL2, String URL3, boolean anim)
     {
+        Anim = anim;
         UrlList.add(URL);
         UrlList.add(URL2);
         UrlList.add(URL3);
@@ -200,7 +204,7 @@ public class ImagePreviewUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.ImagePreviewUI));
+        TextViewTitle.setText(Misc.String(R.string.ImagePreviewUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -311,7 +315,7 @@ public class ImagePreviewUI extends FragmentView
 
                     if (IsMax)
                     {
-                        Misc.Toast( GetActivity().getString(R.string.GalleryViewUIReach));
+                        Misc.Toast( Misc.String(R.string.GalleryViewUIReach));
                         return;
                     }
 
@@ -353,7 +357,7 @@ public class ImagePreviewUI extends FragmentView
                 public void onClick(View v)
                 {
                     PopupMenu PopMenu = new PopupMenu(GetActivity(), v);
-                    PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.ImagePreviewUIDownload));
+                    PopMenu.getMenu().add(0, 0, 0, Misc.String(R.string.ImagePreviewUIDownload));
                     PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                     {
                         @Override
@@ -383,7 +387,7 @@ public class ImagePreviewUI extends FragmentView
                                             OutputStream OS = new FileOutputStream(ImageFile);
                                             resource.compress(Bitmap.CompressFormat.JPEG, 100, OS);
 
-                                            Misc.Toast( GetActivity().getString(R.string.ImagePreviewUIDownloaded));
+                                            Misc.Toast( Misc.String(R.string.ImagePreviewUIDownloaded));
                                         }
                                         catch (Exception e)
                                         {
@@ -403,10 +407,13 @@ public class ImagePreviewUI extends FragmentView
             RelativeLayoutHeader.addView(ImageViewOption);
         }
 
-        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(200);
+        if (Anim)
+        {
+            TranslateAnimation Trans = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
+            Trans.setDuration(200);
 
-        RelativeLayoutMain.startAnimation(Anim);
+            RelativeLayoutMain.startAnimation(Trans);
+        }
 
         ViewMain = RelativeLayoutMain;
     }
@@ -414,7 +421,10 @@ public class ImagePreviewUI extends FragmentView
     @Override
     public void OnResume()
     {
-        Misc.RunOnUIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
+        if (Anim)
+            Misc.RunOnUIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
+        else
+            GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override

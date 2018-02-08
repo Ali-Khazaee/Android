@@ -113,7 +113,7 @@ class EmailSignInUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.GeneralEmail));
+        TextViewTitle.setText(Misc.String(R.string.GeneralEmail));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -147,7 +147,7 @@ class EmailSignInUI extends FragmentView
         TextView TextViewEmailOrUsername = new TextView(GetActivity(), 14, false);
         TextViewEmailOrUsername.setLayoutParams(TextViewEmailOrUsernameParam);
         TextViewEmailOrUsername.SetColor(R.color.Gray);
-        TextViewEmailOrUsername.setText(GetActivity().getString(R.string.EmailSignInUIOrUsername));
+        TextViewEmailOrUsername.setText(Misc.String(R.string.EmailSignInUIOrUsername));
         TextViewEmailOrUsername.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewEmailOrUsername);
@@ -189,7 +189,7 @@ class EmailSignInUI extends FragmentView
         TextView TextViewPassword = new TextView(GetActivity(), 14, false);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.SetColor(R.color.Gray);
-        TextViewPassword.setText(GetActivity().getString(R.string.GeneralPassword));
+        TextViewPassword.setText(Misc.String(R.string.GeneralPassword));
         TextViewPassword.setId(Misc.ViewID());
         TextViewPassword.setGravity(Misc.Gravity("R"));
 
@@ -230,7 +230,7 @@ class EmailSignInUI extends FragmentView
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setText(GetActivity().getString(R.string.EmailSignInUIMessage));
+        TextViewMessage.setText(Misc.String(R.string.EmailSignInUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
@@ -251,7 +251,7 @@ class EmailSignInUI extends FragmentView
         TextView TextViewReset = new TextView(GetActivity(), 14, false);
         TextViewReset.setLayoutParams(TextViewResetParam);
         TextViewReset.SetColor(R.color.Primary);
-        TextViewReset.setText(GetActivity().getString(R.string.EmailSignInUIForgot));
+        TextViewReset.setText(Misc.String(R.string.EmailSignInUIForgot));
         TextViewReset.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewReset.setOnClickListener(new View.OnClickListener()
         {
@@ -292,7 +292,7 @@ class EmailSignInUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutSignIn);
 
         ButtonSignIn.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonSignIn.setText(GetActivity().getString(R.string.GeneralSignIn));
+        ButtonSignIn.setText(Misc.String(R.string.GeneralSignIn));
         ButtonSignIn.setBackground(ListDrawableSignIn);
         ButtonSignIn.setEnabled(false);
         ButtonSignIn.setOnClickListener(new View.OnClickListener()
@@ -335,28 +335,28 @@ class EmailSignInUI extends FragmentView
                                     GetActivity().finish();
                                 break;
                                 case 1:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError1));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError1));
                                     break;
                                 case 2:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError2));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError2));
                                     break;
                                 case 3:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError3));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError3));
                                     break;
                                 case 4:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError4));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError4));
                                     break;
                                 case 5:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError5));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError5));
                                     break;
                                 case 6:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError6));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError6));
                                     break;
                                 case 7:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError7));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError7));
                                     break;
                                 case 8:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailSignInUIError8));
+                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError8));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -374,7 +374,7 @@ class EmailSignInUI extends FragmentView
                     {
                         LoadingViewSignIn.Stop();
                         ButtonSignIn.setVisibility(View.VISIBLE);
-                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

@@ -84,7 +84,7 @@ public class GalleryViewUI extends FragmentView
         final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-        TextViewTitle.setText(GalleryType == 3 ? GetActivity().getString(R.string.GalleryViewUIStorage) : GetActivity().getString(R.string.GalleryViewUI));
+        TextViewTitle.setText(GalleryType == 3 ? Misc.String(R.string.GalleryViewUIStorage) : Misc.String(R.string.GalleryViewUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setId(Misc.ViewID());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
@@ -96,7 +96,7 @@ public class GalleryViewUI extends FragmentView
                     return;
 
                 PopupMenu PopMenu = new PopupMenu(GetActivity(), TextViewTitle);
-                PopMenu.getMenu().add(0, 0, 0, GetActivity().getString(R.string.GalleryViewUI2));
+                PopMenu.getMenu().add(0, 0, 0, Misc.String(R.string.GalleryViewUI2));
 
                 int FolderCount = 1;
 
@@ -132,7 +132,7 @@ public class GalleryViewUI extends FragmentView
         ImageViewList.setLayoutParams(ImageViewListParam);
         ImageViewList.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewList.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3));
-        ImageViewList.setImageResource(R.drawable.arrow_down_blue);
+        ImageViewList.setImageResource(R.drawable._write_arrow);
 
         if (GalleryType != 3)
             RelativeLayoutHeader.addView(ImageViewList);
@@ -369,7 +369,7 @@ public class GalleryViewUI extends FragmentView
                     {
                         if (Count <= Selection)
                         {
-                            Misc.Toast( GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
+                            Misc.Toast( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
                             return;
                         }
 
@@ -418,7 +418,7 @@ public class GalleryViewUI extends FragmentView
                                 {
                                     if (Count <= Selection)
                                     {
-                                        Misc.Toast( GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
+                                        Misc.Toast( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
                                         return;
                                     }
 
@@ -434,7 +434,7 @@ public class GalleryViewUI extends FragmentView
                     }
                     else if (GalleryType == 1)
                     {
-                        ImagePreviewUI ip = new ImagePreviewUI(FileList.get(Position).Path);
+                        ImagePreviewUI ip = new ImagePreviewUI(FileList.get(Position).Path, false);
                         ip.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener()
                         {
                             @Override
@@ -451,7 +451,7 @@ public class GalleryViewUI extends FragmentView
                                 {
                                     if (Count <= Selection)
                                     {
-                                        Misc.Toast( GetActivity().getString(R.string.GalleryViewUIMaximum) + " " + Count);
+                                        Misc.Toast( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
                                         return;
                                     }
 

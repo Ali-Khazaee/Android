@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import co.biogram.main.handler.Misc;
@@ -151,14 +150,14 @@ public class CircleImageView extends ImageView
 
     public void SetBorderColor(int ID)
     {
-        BorderColor = ContextCompat.getColor(getContext(), ID);
+        BorderColor = Misc.Color(ID);
         BorderPaint.setColor(BorderColor);
         invalidate();
     }
 
     public void SetCircleBackgroundColor(int ID)
     {
-        BackgroundColor = ContextCompat.getColor(getContext(), ID);
+        BackgroundColor = Misc.Color(ID);
         BackgroundPaint.setColor(BackgroundColor);
         invalidate();
     }

@@ -109,7 +109,7 @@ public class VideoPreviewUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.VideoPreviewUI));
+        TextViewTitle.setText(Misc.String(R.string.VideoPreviewUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 

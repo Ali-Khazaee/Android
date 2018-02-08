@@ -59,17 +59,17 @@ public class SocketService extends Service
 
                             switch (Result.getInt("Type"))
                             {
-                                case 1: Message += context.getString(R.string.NotificationFragmentPostTag);     break;
-                                case 2: Message += context.getString(R.string.NotificationFragmentPostLike);    break;
+                                case 1: Message += Misc.String(R.string.NotificationFragmentPostTag);     break;
+                                case 2: Message += Misc.String(R.string.NotificationFragmentPostLike);    break;
                                 case 3:
                                     Type = 1;
                                     Data = Result.getString("Username");
-                                    Message += context.getString(R.string.NotificationFragmentFollow);
+                                    Message += Misc.String(R.string.NotificationFragmentFollow);
                                     break;
-                                case 4: Message += context.getString(R.string.NotificationFragmentCommentLike); break;
-                                case 5: Message += context.getString(R.string.NotificationFragmentComment);     break;
-                                case 6: Message += context.getString(R.string.NotificationFragmentCommentTag);  break;
-                                case 7: Message += context.getString(R.string.NotificationFragmentUnfollow);    break;
+                                case 4: Message += Misc.String(R.string.NotificationFragmentCommentLike); break;
+                                case 5: Message += Misc.String(R.string.NotificationFragmentComment);     break;
+                                case 6: Message += Misc.String(R.string.NotificationFragmentCommentTag);  break;
+                                case 7: Message += Misc.String(R.string.NotificationFragmentUnfollow);    break;
                             }
 
                             CreateNotification(context, Message, Data, Type);

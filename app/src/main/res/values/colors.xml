@@ -16,7 +16,7 @@
     <color name="ToastLine">#0a3148</color>
 
     <color name="HashTag">#1da1f2</color>
-    <color name="Primary">#1fd860</color>
+    <color name="Primary">#1da1f2</color>
     <color name="Gray">#ababab</color>
     <color name="Red">#de1e5a</color>
 </resources>

@@ -108,7 +108,7 @@ class PasswordUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.GeneralPassword));
+        TextViewTitle.setText(Misc.String(R.string.GeneralPassword));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -142,7 +142,7 @@ class PasswordUI extends FragmentView
         TextView TextViewPassword = new TextView(GetActivity(), 16, false);
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.SetColor(R.color.Gray);
-        TextViewPassword.setText(GetActivity().getString(R.string.GeneralPassword));
+        TextViewPassword.setText(Misc.String(R.string.GeneralPassword));
         TextViewPassword.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewPassword);
@@ -182,7 +182,7 @@ class PasswordUI extends FragmentView
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setText(GetActivity().getString(R.string.PasswordUIMessage));
+        TextViewMessage.setText(Misc.String(R.string.PasswordUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
@@ -203,7 +203,7 @@ class PasswordUI extends FragmentView
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.SetColor(R.color.Primary);
-        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
+        TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -232,7 +232,7 @@ class PasswordUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
+        ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()

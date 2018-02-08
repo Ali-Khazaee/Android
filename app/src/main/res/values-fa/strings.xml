@@ -227,14 +227,37 @@
     <string name="TimeAgoMins"> minutes ago</string>
     <string name="TimeAgoHour">a hour ago</string>
     <string name="TimeAgoHours">hours ago</string>
-    <string name="TimeAgoYes">yesterday</string>
     <string name="TimeAgoDay">days ago</string>
+    <string name="TimeAgoDays">days ago</string>
+
+    <!-- Time Left -->
+    <string name="TimeLeftNow">just now</string>
+    <string name="TimeLeftMin">a min left</string>
+    <string name="TimeLeftMins">mins left</string>
+    <string name="TimeLeftHour">an hour left</string>
+    <string name="TimeLeftHours">hours left</string>
+    <string name="TimeLeftDay">a day left</string>
+    <string name="TimeLeftDays">days left</string>
+    <string name="TimeLeftFinish">Time finish</string>
 
     <!-- Post Adapter -->
-    <string name="PostAdapterVote">رای</string>
+    <string name="PostAdapterSubmit">Submit</string>
     <string name="PostAdapterVotes">رای ها</string>
     <string name="PostAdapterVideo">فیلم</string>
     <string name="PostAdapterVoteChoice">رای خود را ارسال کنید</string>
     <string name="PostAdapterMB">MB</string>
+    <string name="PostAdapterDownload">Download in progress &#8230;</string>
+    <string name="PostAdapterComplete">Download Complete</string>
+    <string name="PostAdapterCancel">Cancel the download process ?</string>
+    <string name="PostAdapterYes">Yes</string>
+    <string name="PostAdapterNo">No</string>
+    <string name="PostAdapterOptionFollow">Follow</string>
+    <string name="PostAdapterOptionUnfollow">Unfollow</string>
+    <string name="PostAdapterOptionReport">Report</string>
+    <string name="PostAdapterOptionCopy">Copy Text</string>
+    <string name="PostAdapterOptionBlock">Block</string>
+    <string name="PostAdapterOptionBookmark">Bookmark</string>
+    <string name="PostAdapterOptionUnbookmark">Unbookmark</string>
+    <string name="PostAdapterOptionShare">Share</string>
 
 </resources>

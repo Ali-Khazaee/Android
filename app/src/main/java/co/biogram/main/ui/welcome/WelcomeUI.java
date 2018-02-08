@@ -79,7 +79,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewLanguage = new TextView(GetActivity(), 16, false);
         TextViewLanguage.setLayoutParams(TextViewLanguageParam);
-        TextViewLanguage.setText(GetActivity().getString(R.string.WelcomeUILanguage));
+        TextViewLanguage.setText(Misc.String(R.string.WelcomeUILanguage));
         TextViewLanguage.setId(Misc.ViewID());
         TextViewLanguage.setOnClickListener(new View.OnClickListener()
         {
@@ -105,7 +105,7 @@ public class WelcomeUI extends FragmentView
                 TextView TextViewTitle = new TextView(GetActivity(), 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.SetColor(R.color.TextWhite);
-                TextViewTitle.setText(GetActivity().getString(R.string.WelcomeUILanguageSelect));
+                TextViewTitle.setText(Misc.String(R.string.WelcomeUILanguageSelect));
                 TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
 
@@ -134,7 +134,7 @@ public class WelcomeUI extends FragmentView
                 TextView TextViewEnglish = new TextView(GetActivity(), 16, false);
                 TextViewEnglish.setLayoutParams(TextViewEnglishParam);
                 TextViewEnglish.SetColor(R.color.TextWhite);
-                TextViewEnglish.setText(GetActivity().getString(R.string.WelcomeUILanguageEnglish));
+                TextViewEnglish.setText(Misc.String(R.string.WelcomeUILanguageEnglish));
                 TextViewEnglish.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewEnglish.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
                 TextViewEnglish.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); Misc.ChangeLanguage("en"); } });
@@ -153,7 +153,7 @@ public class WelcomeUI extends FragmentView
                 TextView TextViewPersian = new TextView(GetActivity(), 16, false);
                 TextViewPersian.setLayoutParams(TextViewPersianParam);
                 TextViewPersian.SetColor(R.color.TextWhite);
-                TextViewPersian.setText(GetActivity().getString(R.string.WelcomeUILanguagePersian));
+                TextViewPersian.setText(Misc.String(R.string.WelcomeUILanguagePersian));
                 TextViewPersian.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewPersian.setGravity(Misc.Gravity("R") | Gravity.CENTER_VERTICAL);
                 TextViewPersian.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); Misc.ChangeLanguage("fa"); } });
@@ -189,13 +189,13 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewHeader = new TextView(GetActivity(), 14, false);
         TextViewHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewHeader.setText(GetActivity().getString(R.string.WelcomeUIHeader));
+        TextViewHeader.setText(Misc.String(R.string.WelcomeUIHeader));
 
         LinearLayoutHeader.addView(TextViewHeader);
 
         TextView TextViewHeader2 = new TextView(GetActivity(), 14, false);
         TextViewHeader2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        TextViewHeader2.setText(GetActivity().getString(R.string.WelcomeUIHeader2));
+        TextViewHeader2.setText(Misc.String(R.string.WelcomeUIHeader2));
 
         LinearLayoutHeader.addView(TextViewHeader2);
 
@@ -210,7 +210,7 @@ public class WelcomeUI extends FragmentView
 
         Button ButtonSignUp = new Button(GetActivity(), 16, true);
         ButtonSignUp.setLayoutParams(RelativeLayoutSignUpParam);
-        ButtonSignUp.setText(GetActivity().getString(R.string.GeneralSignUp));
+        ButtonSignUp.setText(Misc.String(R.string.GeneralSignUp));
         ButtonSignUp.setId(Misc.ViewID());
         ButtonSignUp.setBackground(DrawableSignUp);
         ButtonSignUp.setOnClickListener(new View.OnClickListener()
@@ -247,7 +247,7 @@ public class WelcomeUI extends FragmentView
 
         TextView TextViewOR = new TextView(GetActivity(), 14, true);
         TextViewOR.setLayoutParams(TextViewORParam);
-        TextViewOR.setText(GetActivity().getString(R.string.WelcomeUIOR));
+        TextViewOR.setText(Misc.String(R.string.WelcomeUIOR));
         TextViewOR.setId(Misc.ViewID());
         TextViewOR.setGravity(Gravity.CENTER);
         TextViewOR.SetColor(R.color.Gray);
@@ -310,7 +310,7 @@ public class WelcomeUI extends FragmentView
         TextView TextViewGoogle = new TextView(GetActivity(), 16, true);
         TextViewGoogle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewGoogle.SetColor(R.color.Primary);
-        TextViewGoogle.setText(GetActivity().getString(R.string.WelcomeUISignInGoogle));
+        TextViewGoogle.setText(Misc.String(R.string.WelcomeUISignInGoogle));
         TextViewGoogle.setPadding(0, Misc.ToDP(Misc.IsFa() ? 3 : 5), 0, 0);
         TextViewGoogle.setGravity(Gravity.CENTER_VERTICAL);
 
@@ -346,7 +346,7 @@ public class WelcomeUI extends FragmentView
         TextView TextViewSignIn = new TextView(GetActivity(), 14, false);
         TextViewSignIn.setLayoutParams(TextViewSignInParam);
         TextViewSignIn.SetColor(R.color.Gray);
-        TextViewSignIn.setText(GetActivity().getString(R.string.WelcomeUISignIn));
+        TextViewSignIn.setText(Misc.String(R.string.WelcomeUISignIn));
         TextViewSignIn.setId(Misc.ViewID());
 
         RelativeLayoutSignIn.addView(TextViewSignIn);
@@ -358,7 +358,7 @@ public class WelcomeUI extends FragmentView
         TextView TextViewSignIn2 = new TextView(GetActivity(), 14, false);
         TextViewSignIn2.setLayoutParams(TextViewSignIn2Param);
         TextViewSignIn2.SetColor(R.color.Primary);
-        TextViewSignIn2.setText(GetActivity().getString(R.string.GeneralSignIn));
+        TextViewSignIn2.setText(Misc.String(R.string.GeneralSignIn));
 
         RelativeLayoutSignIn.addView(TextViewSignIn2);
 
@@ -380,7 +380,7 @@ public class WelcomeUI extends FragmentView
         TextView TextViewTerm2 = new TextView(GetActivity(), 14, false);
         TextViewTerm2.setLayoutParams(TextViewTerm2Param);
         TextViewTerm2.SetColor(R.color.Gray);
-        TextViewTerm2.setText(GetActivity().getString(R.string.WelcomeUITerm2));
+        TextViewTerm2.setText(Misc.String(R.string.WelcomeUITerm2));
         TextViewTerm2.setId(Misc.ViewID());
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -393,7 +393,7 @@ public class WelcomeUI extends FragmentView
         TextView TextViewTerm = new TextView(GetActivity(), 14, false);
         TextViewTerm.setLayoutParams(TextViewTermParam);
         TextViewTerm.SetColor(R.color.Gray);
-        TextViewTerm.setText(GetActivity().getString(R.string.WelcomeUITerm));
+        TextViewTerm.setText(Misc.String(R.string.WelcomeUITerm));
 
         RelativeLayoutMain.addView(TextViewTerm);
 
@@ -508,10 +508,10 @@ public class WelcomeUI extends FragmentView
                                     case 3:
                                     case 4:
                                     case 5:
-                                        Misc.Toast( GetActivity().getString(R.string.WelcomeUIGoogleError1));
+                                        Misc.Toast( Misc.String(R.string.WelcomeUIGoogleError1));
                                         break;
                                     case 6:
-                                        Misc.Toast( GetActivity().getString(R.string.WelcomeUIGoogleError2));
+                                        Misc.Toast( Misc.String(R.string.WelcomeUIGoogleError2));
                                         break;
                                     default:
                                         Misc.GeneralError(Result3.getInt("Message"));
@@ -527,7 +527,7 @@ public class WelcomeUI extends FragmentView
                         public void onError(ANError e)
                         {
                             HideGoogleLoading();
-                            Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }

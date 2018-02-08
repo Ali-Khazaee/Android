@@ -47,7 +47,7 @@ public class InboxUI extends FragmentView
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.InboxUI));
+        TextViewTitle.setText(Misc.String(R.string.InboxUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 

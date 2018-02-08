@@ -188,6 +188,7 @@
     <string name="CategoryNature">Nature</string>
     <string name="CategoryWeather">Weather</string>
     <string name="CategoryHistorical">Historical</string>
+    <string name="CategoryRomantic">Romantic</string>
     <string name="CategoryOther">Other</string>
 
     <!-- Write UI -->
@@ -220,6 +221,10 @@
     <string name="WriteUILength">Vote Length</string>
     <string name="WriteUITime">Set vote length, time in hours</string>
     <string name="WriteUISet">Set Time</string>
+    <string name="WriteUIWorld">Post is public</string>
+    <string name="WriteUIWorld2">Post is private</string>
+    <string name="WriteUIVote">Add more votes</string>
+    <string name="WriteUIOptions">Options</string>
 
     <!-- Time Ago -->
     <string name="TimeAgoNow">just now</string>
@@ -238,6 +243,7 @@
     <string name="TimeLeftHours">hours left</string>
     <string name="TimeLeftDay">a day left</string>
     <string name="TimeLeftDays">days left</string>
+    <string name="TimeLeftFinish">Time is finished</string>
 
     <!-- Post Adapter -->
     <string name="PostAdapterSubmit">Submit</string>
@@ -250,6 +256,14 @@
     <string name="PostAdapterCancel">Cancel the download process ?</string>
     <string name="PostAdapterYes">Yes</string>
     <string name="PostAdapterNo">No</string>
-    <string name="PostAdapterNoApp">No</string>
+    <string name="PostAdapterNoHandle">There are no applications to handle this file</string>
+    <string name="PostAdapterOptionFollow">Follow</string>
+    <string name="PostAdapterOptionUnfollow">Unfollow</string>
+    <string name="PostAdapterOptionReport">Report</string>
+    <string name="PostAdapterOptionCopy">Copy Text</string>
+    <string name="PostAdapterOptionBlock">Block</string>
+    <string name="PostAdapterOptionBookmark">Bookmark</string>
+    <string name="PostAdapterOptionUnbookmark">Unbookmark</string>
+    <string name="PostAdapterOptionShare">Share</string>
 
 </resources>

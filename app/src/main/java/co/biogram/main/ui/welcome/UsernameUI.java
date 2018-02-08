@@ -131,7 +131,7 @@ class UsernameUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.GeneralUsername));
+        TextViewTitle.setText(Misc.String(R.string.GeneralUsername));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -166,7 +166,7 @@ class UsernameUI extends FragmentView
         TextView TextViewUsername = new TextView(GetActivity(), 16, false);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.SetColor(R.color.Gray);
-        TextViewUsername.setText(GetActivity().getString(R.string.GeneralUsername));
+        TextViewUsername.setText(Misc.String(R.string.GeneralUsername));
         TextViewUsername.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewUsername);
@@ -208,7 +208,7 @@ class UsernameUI extends FragmentView
         EditTextUsername.requestFocus();
         EditTextUsername.setPadding(0, -Misc.ToDP(2), Misc.ToDP(8), Misc.ToDP(5));
         EditTextUsername.setTypeface(FontHandler.GetTypeface(GetActivity()));
-        EditTextUsername.setHint(GetActivity().getString(R.string.UsernameUIHint));
+        EditTextUsername.setHint(Misc.String(R.string.UsernameUIHint));
         EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
         {
             private final Paint paint;
@@ -266,7 +266,7 @@ class UsernameUI extends FragmentView
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setText(GetActivity().getString(R.string.UsernameUIMessage));
+        TextViewMessage.setText(Misc.String(R.string.UsernameUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
@@ -287,7 +287,7 @@ class UsernameUI extends FragmentView
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.SetColor(R.color.Primary);
-        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
+        TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -316,7 +316,7 @@ class UsernameUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
+        ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
@@ -359,19 +359,19 @@ class UsernameUI extends FragmentView
                                         GetActivity().GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), R.id.ContainerFull, "PasswordUI");
                                     break;
                                 case 1:
-                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError1));
+                                    Misc.Toast( Misc.String(R.string.UsernameUIError1));
                                     break;
                                 case 2:
-                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError2));
+                                    Misc.Toast( Misc.String(R.string.UsernameUIError2));
                                     break;
                                 case 3:
-                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError3));
+                                    Misc.Toast( Misc.String(R.string.UsernameUIError3));
                                     break;
                                 case 4:
-                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError4));
+                                    Misc.Toast( Misc.String(R.string.UsernameUIError4));
                                     break;
                                 case 5:
-                                    Misc.Toast( GetActivity().getString(R.string.UsernameUIError5));
+                                    Misc.Toast( Misc.String(R.string.UsernameUIError5));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -388,7 +388,7 @@ class UsernameUI extends FragmentView
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

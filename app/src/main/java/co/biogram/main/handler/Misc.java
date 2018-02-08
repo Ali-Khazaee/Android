@@ -235,12 +235,12 @@ public class Misc
     {
         switch (Error)
         {
-            case -1: Toast(context.getString(R.string.GeneralError1)); break;
-            case -2: Toast(context.getString(R.string.GeneralError2)); break;
-            case -3: Toast(context.getString(R.string.GeneralError3)); break;
-            case -4: Toast(context.getString(R.string.GeneralError4)); break;
-            case -6: Toast(context.getString(R.string.GeneralError6)); break;
-            case -7: Toast(context.getString(R.string.GeneralError7)); break;
+            case -1: Toast(String(R.string.GeneralError1)); break;
+            case -2: Toast(String(R.string.GeneralError2)); break;
+            case -3: Toast(String(R.string.GeneralError3)); break;
+            case -4: Toast(String(R.string.GeneralError4)); break;
+            case -6: Toast(String(R.string.GeneralError6)); break;
+            case -7: Toast(String(R.string.GeneralError7)); break;
         }
     }
 
@@ -262,6 +262,11 @@ public class Misc
     public static int Color(int C)
     {
         return ContextCompat.getColor(context, C);
+    }
+
+    public static String String(int S)
+    {
+        return context.getString(S);
     }
 
     public static boolean IsDark()
@@ -298,19 +303,19 @@ public class Misc
         int Diff = Math.round((Math.abs(Now - Time) / 1000) / 60);
 
         if (Diff == 0)
-            return context.getString(R.string.TimeAgoNow);
+            return String(R.string.TimeAgoNow);
         else if (Diff == 1)
-            return context.getString(R.string.TimeAgoMin);
+            return String(R.string.TimeAgoMin);
         else if (Diff >= 2 && Diff <= 59)
-            return Diff + " " + context.getString(R.string.TimeAgoMins);
+            return Diff + " " + String(R.string.TimeAgoMins);
         else if (Diff >= 60 && Diff <= 90)
-            return context.getString(R.string.TimeAgoHour);
+            return String(R.string.TimeAgoHour);
         else if (Diff >= 90 && Diff <= 1439)
-            return (Math.round(Diff / 60)) + " " + context.getString(R.string.TimeAgoHours);
+            return (Math.round(Diff / 60)) + " " + String(R.string.TimeAgoHours);
         else if (Diff >= 1440 && Diff <= 2519)
-            return context.getString(R.string.TimeAgoDay);
+            return String(R.string.TimeAgoDay);
 
-        return (Math.round(Diff / 1440)) + " " + context.getString(R.string.TimeAgoDays);
+        return (Math.round(Diff / 1440)) + " " + String(R.string.TimeAgoDays);
     }
 
     static String TimeLeft(long Time)
@@ -318,25 +323,25 @@ public class Misc
         Time = Time * 1000;
         long Now = System.currentTimeMillis();
 
-        if (Time > Now || Time <= 0)
-            return "";
+        if (Time < Now)
+            return String(R.string.TimeLeftFinish);
 
         int Diff = Math.round((Math.abs(Now - Time) / 1000) / 60);
 
         if (Diff == 0)
-            return context.getString(R.string.TimeLeftNow);
+            return String(R.string.TimeLeftNow);
         else if (Diff == 1)
-            return context.getString(R.string.TimeLeftMin);
+            return String(R.string.TimeLeftMin);
         else if (Diff >= 2 && Diff <= 59)
-            return Diff + " " + context.getString(R.string.TimeLeftMins);
+            return Diff + " " + String(R.string.TimeLeftMins);
         else if (Diff >= 60 && Diff <= 90)
-            return context.getString(R.string.TimeLeftHour);
+            return String(R.string.TimeLeftHour);
         else if (Diff >= 90 && Diff <= 1439)
-            return (Math.round(Diff / 60)) + " " + context.getString(R.string.TimeLeftHours);
+            return (Math.round(Diff / 60)) + " " + String(R.string.TimeLeftHours);
         else if (Diff >= 1440 && Diff <= 2519)
-            return context.getString(R.string.TimeLeftDay);
+            return String(R.string.TimeLeftDay);
 
-        return (Math.round(Diff / 1440)) + " " + context.getString(R.string.TimeLeftDays);
+        return (Math.round(Diff / 1440)) + " " + String(R.string.TimeLeftDays);
     }
 
     public static void Debug(String Message)

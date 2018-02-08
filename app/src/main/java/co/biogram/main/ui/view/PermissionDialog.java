@@ -72,7 +72,7 @@ public class PermissionDialog extends Dialog
         TextViewDecline.setLayoutParams(TextViewMessageParam);
         TextViewDecline.SetColor(R.color.Gray);
         TextViewDecline.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewDecline.setText(context.getString(R.string.DialogPermissionDecline));
+        TextViewDecline.setText(Misc.String(R.string.DialogPermissionDecline));
         TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
 
         LinearLayoutChoice.addView(TextViewDecline);
@@ -81,7 +81,7 @@ public class PermissionDialog extends Dialog
         TextViewContinue.setLayoutParams(TextViewMessageParam);
         TextViewContinue.SetColor(R.color.Primary);
         TextViewContinue.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewContinue.setText(context.getString(R.string.DialogPermissionAccept));
+        TextViewContinue.setText(Misc.String(R.string.DialogPermissionAccept));
         TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
 
         LinearLayoutChoice.addView(TextViewContinue);

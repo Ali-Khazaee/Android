@@ -119,7 +119,7 @@ class EmailUI extends FragmentView
         TextView TextViewTitle = new TextView(GetActivity(), 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(GetActivity().getString(R.string.GeneralEmail));
+        TextViewTitle.setText(Misc.String(R.string.GeneralEmail));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -153,7 +153,7 @@ class EmailUI extends FragmentView
         TextView TextViewEmail = new TextView(GetActivity(), 14, false);
         TextViewEmail.setLayoutParams(TextViewEmailParam);
         TextViewEmail.SetColor(R.color.Gray);
-        TextViewEmail.setText(GetActivity().getString(R.string.GeneralEmailAddress));
+        TextViewEmail.setText(Misc.String(R.string.GeneralEmailAddress));
         TextViewEmail.setId(Misc.ViewID());
 
         RelativeLayoutScroll.addView(TextViewEmail);
@@ -193,7 +193,7 @@ class EmailUI extends FragmentView
         TextView TextViewMessage = new TextView(GetActivity(), 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setText(GetActivity().getString(R.string.EmailUIMessage));
+        TextViewMessage.setText(Misc.String(R.string.EmailUIMessage));
         TextViewMessage.setId(Misc.ViewID());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
@@ -214,7 +214,7 @@ class EmailUI extends FragmentView
         TextView TextViewPrivacy = new TextView(GetActivity(), 14, false);
         TextViewPrivacy.setLayoutParams(TextViewPrivacyParam);
         TextViewPrivacy.SetColor(R.color.Primary);
-        TextViewPrivacy.setText(GetActivity().getString(R.string.GeneralTerm));
+        TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
@@ -243,7 +243,7 @@ class EmailUI extends FragmentView
         RelativeLayoutBottom.addView(RelativeLayoutNext);
 
         ButtonNext.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonNext.setText(GetActivity().getString(R.string.GeneralNext));
+        ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
         ButtonNext.setOnClickListener(new View.OnClickListener()
@@ -280,7 +280,7 @@ class EmailUI extends FragmentView
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError5));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError5));
 
                                     GetActivity().GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), R.id.ContainerFull, "EmailVerifyUI");
                                     break;
@@ -288,19 +288,19 @@ class EmailUI extends FragmentView
                                 case 2:
                                 case 3:
                                 case 4:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError1));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError1));
                                     break;
                                 case 5:
                                 case 6:
                                 case 7:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError2));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError2));
                                     break;
                                 case 8:
                                 case 9:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError3));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError3));
                                     break;
                                 case 10:
-                                    Misc.Toast( GetActivity().getString(R.string.EmailUIError4));
+                                    Misc.Toast( Misc.String(R.string.EmailUIError4));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -318,7 +318,7 @@ class EmailUI extends FragmentView
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast( GetActivity().getString(R.string.GeneralNoInternet));
+                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }
