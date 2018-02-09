@@ -1063,7 +1063,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayoutFile2Param.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
             GradientDrawable DrawableFile = new GradientDrawable();
-            DrawableFile.setCornerRadius(Misc.ToDP(4));
             DrawableFile.setColor(Misc.Color(R.color.Primary));
             DrawableFile.setShape(GradientDrawable.OVAL);
 
@@ -1386,7 +1385,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
 
-                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(URL, false), R.id.ContainerFull, "VideoPreviewUI"); } });
+                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(URL, false, true), R.id.ContainerFull, "VideoPreviewUI"); } });
 
                         GlideApp.with(Activity).load(URL.substring(0, URL.length() - 3) + "png").placeholder(R.color.Gray).transforms(new CenterCrop()).into(Holder.ImageViewVideo);
 

@@ -422,7 +422,7 @@ public class ImagePreviewUI extends FragmentView
     public void OnResume()
     {
         if (Anim)
-            Misc.RunOnUIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
+            Misc.UIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
         else
             GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }

@@ -189,7 +189,7 @@ public class Misc
         return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void RunOnUIThread(Runnable r, long d)
+    public static void UIThread(Runnable r, long d)
     {
         new Handler(context.getApplicationContext().getMainLooper()).postDelayed(r, d);
     }

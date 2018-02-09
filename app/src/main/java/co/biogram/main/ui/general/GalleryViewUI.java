@@ -401,7 +401,7 @@ public class GalleryViewUI extends FragmentView
                 {
                     if (GalleryType == 2)
                     {
-                        VideoPreviewUI vp = new VideoPreviewUI(FileList.get(Position).Path, true);
+                        VideoPreviewUI vp = new VideoPreviewUI(FileList.get(Position).Path, true, false);
                         vp.SetType(FileList.get(Position).Selection, new VideoPreviewUI.OnSelectListener()
                         {
                             @Override

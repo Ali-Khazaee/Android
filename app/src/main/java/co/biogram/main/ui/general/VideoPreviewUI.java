@@ -65,11 +65,13 @@ public class VideoPreviewUI extends FragmentView
     private OnSelectListener SelectListener;
     private boolean Selected = false;
     private boolean IsLocal = false;
+    private boolean Anim = false;
     private String VideoURL = "";
     private Runnable runnable;
 
-    public VideoPreviewUI(String URL, boolean isLocal)
+    public VideoPreviewUI(String URL, boolean isLocal, boolean anim)
     {
+        Anim = anim;
         VideoURL = URL;
         IsLocal = isLocal;
     }
@@ -357,7 +359,7 @@ public class VideoPreviewUI extends FragmentView
             {
                 IsLoading = isLoading;
 
-                Misc.RunOnUIThread(new Runnable()
+                Misc.UIThread(new Runnable()
                 {
                     @Override
                     public void run()
@@ -469,10 +471,13 @@ public class VideoPreviewUI extends FragmentView
         RelativeLayoutHeader.bringToFront();
         RelativeLayoutControl.bringToFront();
 
-        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        Anim.setDuration(200);
+        if (Anim)
+        {
+            TranslateAnimation Trans = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
+            Trans.setDuration(200);
 
-        RelativeLayoutMain.startAnimation(Anim);
+            RelativeLayoutMain.startAnimation(Trans);
+        }
 
         ViewMain = RelativeLayoutMain;
     }
@@ -485,7 +490,10 @@ public class VideoPreviewUI extends FragmentView
         GetActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
         GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        Misc.RunOnUIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
+        if (Anim)
+            GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        else
+            Misc.UIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
     }
 
     @Override

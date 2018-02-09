@@ -904,7 +904,7 @@ class PhoneVerifyUI extends FragmentView
 
                 final String[] Separated = VerifyCode.split("(?!^)");
 
-                Misc.RunOnUIThread(new Runnable()
+                Misc.UIThread(new Runnable()
                 {
                     @Override
                     public void run()
