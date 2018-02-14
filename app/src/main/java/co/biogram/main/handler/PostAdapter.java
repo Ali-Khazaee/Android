@@ -3,6 +3,9 @@ package co.biogram.main.handler;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -45,6 +48,7 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
+import co.biogram.main.ui.social.LikeUI;
 import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.CircleView;
 import co.biogram.main.ui.view.LineView;
@@ -1908,6 +1912,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 if (PostList.get(Position).Person1Avatar != null && !PostList.get(Position).Person1Avatar.isEmpty())
                 {
                     GlideApp.with(Activity).load(PostList.get(Position).Person1Avatar).into(Holder.CircleImageViewPerson1);
+                    Holder.CircleImageViewPerson1.setVisibility(View.VISIBLE);
                     Holder.CircleImageViewPerson1.setOnClickListener(new View.OnClickListener()
                     {
                         @Override
@@ -1917,10 +1922,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         }
                     });
                 }
+                else
+                    Holder.CircleImageViewPerson1.setVisibility(View.GONE);
 
                 if (PostList.get(Position).Person2Avatar != null && !PostList.get(Position).Person2Avatar.isEmpty())
                 {
                     GlideApp.with(Activity).load(PostList.get(Position).Person2Avatar).into(Holder.CircleImageViewPerson2);
+                    Holder.CircleImageViewPerson2.setVisibility(View.VISIBLE);
                     Holder.CircleImageViewPerson2.setOnClickListener(new View.OnClickListener()
                     {
                         @Override
@@ -1930,10 +1938,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         }
                     });
                 }
+                else
+                    Holder.CircleImageViewPerson2.setVisibility(View.GONE);
 
                 if (PostList.get(Position).Person3Avatar != null && !PostList.get(Position).Person3Avatar.isEmpty())
                 {
                     GlideApp.with(Activity).load(PostList.get(Position).Person3Avatar).into(Holder.CircleImageViewPerson3);
+                    Holder.CircleImageViewPerson3.setVisibility(View.VISIBLE);
                     Holder.CircleImageViewPerson3.setOnClickListener(new View.OnClickListener()
                     {
                         @Override
@@ -1943,10 +1954,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         }
                     });
                 }
+                else
+                    Holder.CircleImageViewPerson3.setVisibility(View.GONE);
 
                 if (PostList.get(Position).Person4Avatar != null && !PostList.get(Position).Person4Avatar.isEmpty())
                 {
                     GlideApp.with(Activity).load(PostList.get(Position).Person4Avatar).into(Holder.CircleImageViewPerson4);
+                    Holder.CircleImageViewPerson4.setVisibility(View.VISIBLE);
                     Holder.CircleImageViewPerson4.setOnClickListener(new View.OnClickListener()
                     {
                         @Override
@@ -1956,6 +1970,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         }
                     });
                 }
+                else
+                    Holder.CircleImageViewPerson4.setVisibility(View.GONE);
 
                 if (PostList.get(Position).IsLike)
                 {
@@ -2032,7 +2048,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 });
 
                 Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
-                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  } }); // TODO Open Like
+                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID), R.id.ContainerFull, "LikeUI");  } });
 
                 if (PostList.get(Position).IsComment)
                 {
@@ -2069,8 +2085,69 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewFollow.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewFollow.setText(Misc.String(PostList.get(Position).IsFollow ? R.string.PostAdapterOptionUnfollow : R.string.PostAdapterOptionFollow));
                         TextViewFollow.setGravity(Gravity.CENTER_VERTICAL);
+                        TextViewFollow.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
+                                .addBodyParameter("Username", PostList.get(Position).Username)
+                                .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                                .setTag(Tag)
+                                .build()
+                                .getAsString(new StringRequestListener()
+                                {
+                                    @Override
+                                    public void onResponse(String e)
+                                    {
+                                        PostList.get(Position).IsFollow = !PostList.get(Position).IsFollow;
+                                        Misc.Toast(PostList.get(Position).Username + " " + (PostList.get(Position).IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
+                                    }
 
-                        LinearLayoutMain.addView(TextViewFollow);
+                                    @Override public void onError(ANError e) { }
+                                });
+
+                                DialogOption.dismiss();
+                            }
+                        });
+
+                        TextView TextViewDelete = new TextView(Activity, 14, false);
+                        TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                        TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                        TextViewDelete.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
+                        TextViewDelete.setText(Misc.String(R.string.PostAdapterOptionDelete));
+                        TextViewDelete.setGravity(Gravity.CENTER_VERTICAL);
+                        TextViewDelete.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                AndroidNetworking.post(Misc.GetRandomServer("PostDelete"))
+                                .addBodyParameter("PostID", PostList.get(Position).ID)
+                                .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                                .setTag(Tag)
+                                .build()
+                                .getAsString(new StringRequestListener()
+                                {
+                                    @Override
+                                    public void onResponse(String e)
+                                    {
+                                        Misc.Toast(Activity.getString(R.string.PostAdapterPostDeleted));
+                                        PostList.remove(Position);
+                                        notifyDataSetChanged();
+                                    }
+
+                                    @Override public void onError(ANError e) { }
+                                });
+
+                                DialogOption.dismiss();
+                            }
+                        });
+
+                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString(Activity, "ID")))
+                            LinearLayoutMain.addView(TextViewFollow);
+                        else
+                            LinearLayoutMain.addView(TextViewDelete);
 
                         View ViewLine = new View(Activity);
                         ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
@@ -2084,29 +2161,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewReport.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewReport.setText(Misc.String(R.string.PostAdapterOptionReport));
                         TextViewReport.setGravity(Gravity.CENTER_VERTICAL);
-
-                        LinearLayoutMain.addView(TextViewReport);
+                        TextViewReport.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                // TODO Safe Report
+                            }
+                        });
 
                         View ViewLine2 = new View(Activity);
                         ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                         ViewLine2.setBackgroundResource(R.color.LineWhite);
 
-                        LinearLayoutMain.addView(ViewLine2);
-
-                        TextView TextViewBlock = new TextView(Activity, 14, false);
-                        TextViewBlock.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                        TextViewBlock.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-                        TextViewBlock.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
-                        TextViewBlock.setText(Misc.String(R.string.PostAdapterOptionBlock));
-                        TextViewBlock.setGravity(Gravity.CENTER_VERTICAL);
-
-                        LinearLayoutMain.addView(TextViewBlock);
-
-                        View ViewLine3 = new View(Activity);
-                        ViewLine3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                        ViewLine3.setBackgroundResource(R.color.LineWhite);
-
-                        LinearLayoutMain.addView(ViewLine3);
+                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString(Activity, "ID")))
+                        {
+                            LinearLayoutMain.addView(TextViewReport);
+                            LinearLayoutMain.addView(ViewLine2);
+                        }
 
                         TextView TextViewCopy = new TextView(Activity, 14, false);
                         TextViewCopy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
@@ -2114,14 +2186,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewCopy.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewCopy.setText(Misc.String(R.string.PostAdapterOptionCopy));
                         TextViewCopy.setGravity(Gravity.CENTER_VERTICAL);
+                        TextViewCopy.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                ClipboardManager clipboard = (ClipboardManager) Activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData clip = ClipData.newPlainText("InboxMessage:"+ PostList.get(Position).ID, PostList.get(Position).Message);
 
-                        LinearLayoutMain.addView(TextViewCopy);
+                                if (clipboard != null)
+                                    clipboard.setPrimaryClip(clip);
+
+                                Misc.Toast(Misc.String(R.string.PostAdapterOptionCopy2));
+                                DialogOption.dismiss();
+                            }
+                        });
 
                         View ViewLine4 = new View(Activity);
                         ViewLine4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                         ViewLine4.setBackgroundResource(R.color.LineWhite);
 
-                        LinearLayoutMain.addView(ViewLine4);
+                        if (PostList.get(Position).Message != null && !PostList.get(Position).Message.isEmpty())
+                        {
+
+                            LinearLayoutMain.addView(TextViewCopy);
+                            LinearLayoutMain.addView(ViewLine4);
+                        }
 
                         TextView TextViewBookmark = new TextView(Activity, 14, false);
                         TextViewBookmark.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
@@ -2129,6 +2219,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewBookmark.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewBookmark.setText(Misc.String(PostList.get(Position).IsBookmark ? R.string.PostAdapterOptionUnbookmark : R.string.PostAdapterOptionBookmark));
                         TextViewBookmark.setGravity(Gravity.CENTER_VERTICAL);
+                        TextViewBookmark.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                AndroidNetworking.post(Misc.GetRandomServer("PostBookmark"))
+                                .addBodyParameter("PostID", PostList.get(Position).ID)
+                                .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                                .setTag(Tag)
+                                .build()
+                                .getAsString(new StringRequestListener()
+                                {
+                                    @Override
+                                    public void onResponse(String e)
+                                    {
+                                        PostList.get(Position).IsBookmark = !PostList.get(Position).IsBookmark;
+                                        Misc.Toast(Activity.getString(R.string.PostAdapterPostBookmark));
+                                    }
+
+                                    @Override public void onError(ANError e) { }
+                                });
+
+                                DialogOption.dismiss();
+                            }
+                        });
 
                         LinearLayoutMain.addView(TextViewBookmark);
 
@@ -2144,6 +2259,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewShare.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewShare.setText(Misc.String(R.string.PostAdapterOptionShare));
                         TextViewShare.setGravity(Gravity.CENTER_VERTICAL);
+                        TextViewShare.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                String Message = PostList.get(Position).Name + " " + Activity.getString(R.string.PostAdapterPostShare1) + "\n";
+                                Message += PostList.get(Position).Message == null ? "" : PostList.get(Position).Message;
+                                Message += "\n" +  Activity.getString(R.string.PostAdapterPostShare1) + "\nhttp://biogram.co/post/" + PostList.get(Position).ID;
+
+                                Intent I = new Intent();
+                                I.setAction(Intent.ACTION_SEND);
+                                I.putExtra(Intent.EXTRA_TEXT, Message);
+                                I.setType("text/plain");
+                                Activity.startActivity(I);
+
+                                DialogOption.dismiss();
+                            }
+                        });
 
                         LinearLayoutMain.addView(TextViewShare);
 

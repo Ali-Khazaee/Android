@@ -292,7 +292,7 @@ public class Misc
         return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
     }
 
-    static String TimeAgo(long Time)
+    public static String TimeAgo(long Time)
     {
         Time = Time * 1000;
         long Now = System.currentTimeMillis();

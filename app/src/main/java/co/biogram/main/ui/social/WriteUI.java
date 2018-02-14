@@ -23,7 +23,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.TextPaint;
 import android.text.TextWatcher;
+import android.text.style.CharacterStyle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -48,9 +51,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import co.biogram.main.R;
@@ -68,6 +73,7 @@ import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.ProgressDialog;
+import co.biogram.main.ui.view.ScrollNumber;
 import co.biogram.main.ui.view.TextView;
 import co.biogram.media.MediaTransCoder;
 
@@ -87,7 +93,7 @@ class WriteUI extends FragmentView
     private int SelectType = 0;
     private File SelectFile;
     private File SelectVideo;
-    private int VoteTime = 0;
+    private long VoteTime = 0;
     private int IsWorld = 0;
 
     @Override
@@ -384,13 +390,6 @@ class WriteUI extends FragmentView
 
         RelativeLayoutMain.addView(LinearLayoutBottom);
 
-        // TODO
-        // TODO
-        // TODO
-        // TODO
-        // TODO
-        // TODO
-
         ImageViewImage = new ImageView(GetActivity());
         ImageViewImage.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         ImageViewImage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -440,17 +439,17 @@ class WriteUI extends FragmentView
                                 {
                                     int Size = Misc.ToDP(150);
 
-                                    for (String i : ImageURL)
+                                    for (String I : ImageURL)
                                     {
                                         BitmapFactory.Options O = new BitmapFactory.Options();
                                         O.inJustDecodeBounds = true;
 
-                                        BitmapFactory.decodeFile(i, O);
+                                        BitmapFactory.decodeFile(I, O);
 
                                         O.inSampleSize = Misc.SampleSize(O, Size, Size);
                                         O.inJustDecodeBounds = false;
 
-                                        Bitmap bitmap = BitmapFactory.decodeFile(i, O);
+                                        Bitmap bitmap = BitmapFactory.decodeFile(I, O);
 
                                         File file = new File(CacheHandler.CacheDir(GetActivity()), System.currentTimeMillis() + ".jpg");
                                         file.createNewFile();
@@ -624,13 +623,11 @@ class WriteUI extends FragmentView
                     @Override
                     public void OnSelection(String URL)
                     {
-                        SelectFile = new File(URL);
-                        double Size = (double) SelectFile.length() / 1048576.0;
-
                         ChangeType(4);
+                        SelectFile = new File(URL);
                         RelativeLayoutFile.setVisibility(View.VISIBLE);
                         TextViewFileName.setText(SelectFile.getName());
-                        TextViewFileDetail.setText((new DecimalFormat("#.##").format(Size) + " " + Misc.String(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
+                        TextViewFileDetail.setText((new DecimalFormat("#.##").format((double) SelectFile.length() / 1048576.0) + " " + Misc.String(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
                     }
 
                     @Override public void OnRemove(String URL) { }
@@ -1014,29 +1011,174 @@ class WriteUI extends FragmentView
         TextViewLengthParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), 0);
         TextViewLengthParam.addRule(RelativeLayout.BELOW, EditTextVote5.getId());
 
-        TextView TextViewLengthVote = new TextView(GetActivity(), 14, false);
+        final TextView TextViewLengthVote = new TextView(GetActivity(), 14, false);
         TextViewLengthVote.setLayoutParams(TextViewLengthParam);
         TextViewLengthVote.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-        TextViewLengthVote.setText(Misc.String(R.string.WriteUILength));
         TextViewLengthVote.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view)
+            public void onClick(View v)
             {
-                final Dialog DialogVote = new Dialog(GetActivity());
-                DialogVote.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                DialogVote.setCancelable(false);
+                final Dialog DialogLength = new Dialog(GetActivity());
+                DialogLength.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogLength.setCancelable(true);
 
-                // TODO
-                // TODO
-                // TODO
-                // TODO
-                // TODO
+                LinearLayout LinearLayoutMain = new LinearLayout(GetActivity());
+                LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
-                DialogVote.setContentView(null);
-                DialogVote.show();
+                RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
+                TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+                TextViewTitleParam.addRule(Misc.Align("R"));
+
+                TextView TextViewTitle = new TextView(GetActivity(), 16, false);
+                TextViewTitle.setLayoutParams(TextViewTitleParam);
+                TextViewTitle.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), 0);
+                TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewTitle.setText(Misc.String(R.string.WriteUILength2));
+
+                LinearLayoutMain.addView(TextViewTitle);
+
+                View ViewLine = new View(GetActivity());
+                ViewLine.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+
+                LinearLayoutMain.addView(ViewLine);
+
+                View ViewLine1 = new View(GetActivity());
+                ViewLine1.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(15)));
+
+                LinearLayoutMain.addView(ViewLine1);
+
+                LinearLayout LinearLayoutTime = new LinearLayout(GetActivity());
+                LinearLayoutTime.setLayoutParams(new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayoutTime.setOrientation(LinearLayout.HORIZONTAL);
+
+                LinearLayoutMain.addView(LinearLayoutTime);
+
+                TextView TextViewDays = new TextView(GetActivity(), 14, false);
+                TextViewDays.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                TextViewDays.SetColor(R.color.TextWhite);
+                TextViewDays.setText(Misc.String(R.string.WriteUILengthDays));
+                TextViewDays.setGravity(Gravity.CENTER);
+
+                LinearLayoutTime.addView(TextViewDays);
+
+                TextView TextViewHours = new TextView(GetActivity(), 14, false);
+                TextViewHours.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                TextViewHours.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewHours.setText(Misc.String(R.string.WriteUILengthHours));
+                TextViewHours.setGravity(Gravity.CENTER);
+
+                LinearLayoutTime.addView(TextViewHours);
+
+                TextView TextViewMins = new TextView(GetActivity(), 14, false);
+                TextViewMins.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                TextViewMins.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewMins.setText(Misc.String(R.string.WriteUILengthMins));
+                TextViewMins.setGravity(Gravity.CENTER);
+
+                LinearLayoutTime.addView(TextViewMins);
+
+                LinearLayout LinearLayoutTime2 = new LinearLayout(GetActivity());
+                LinearLayoutTime2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayoutTime2.setOrientation(LinearLayout.HORIZONTAL);
+
+                LinearLayoutMain.addView(LinearLayoutTime2);
+
+                final ScrollNumber Days = new ScrollNumber(GetActivity());
+                Days.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(105), 1.0f));
+                Days.SetValues(1, 365);
+
+                LinearLayoutTime2.addView(Days);
+
+                final ScrollNumber Hours = new ScrollNumber(GetActivity());
+                Hours.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(105), 1.0f));
+                Hours.SetValues(0, 23);
+
+                LinearLayoutTime2.addView(Hours);
+
+                final ScrollNumber Mins = new ScrollNumber(GetActivity());
+                Mins.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(105), 1.0f));
+                Mins.SetValues(0, 59);
+
+                LinearLayoutTime2.addView(Mins);
+
+                View ViewLine2 = new View(GetActivity());
+                ViewLine2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+
+                LinearLayoutMain.addView(ViewLine2);
+
+                LinearLayout LinearLayoutButton = new LinearLayout(GetActivity());
+                LinearLayoutButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                LinearLayoutButton.setOrientation(LinearLayout.HORIZONTAL);
+
+                LinearLayoutMain.addView(LinearLayoutButton);
+
+                TextView TextViewCancel = new TextView(GetActivity(), 14, false);
+                TextViewCancel.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+                TextViewCancel.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewCancel.setText(Misc.String(R.string.WriteUILengthCancel));
+                TextViewCancel.setGravity(Gravity.CENTER);
+                TextViewCancel.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLength.dismiss(); } });
+
+                TextView TextViewSet = new TextView(GetActivity(), 14, false);
+                TextViewSet.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+                TextViewSet.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewSet.setText(Misc.String(R.string.WriteUILengthSet));
+                TextViewSet.setGravity(Gravity.CENTER);
+                TextViewSet.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        VoteTime = (System.currentTimeMillis() + (((Days.GetValue() * 86400) +  (Hours.GetValue() * 3600) + (Mins.GetValue() * 60)) * 1000));
+                        TextViewLengthVote.setText((Misc.String(R.string.WriteUILength) + " " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(VoteTime)), TextView.BufferType.SPANNABLE);
+
+                        Spannable Span = (Spannable) TextViewLengthVote.getText();
+                        CharacterStyle SpanMessage = new CharacterStyle()
+                        {
+                            @Override
+                            public void updateDrawState(TextPaint t)
+                            {
+                                t.setColor(Misc.Color(R.color.Primary));
+                            }
+                        };
+                        Span.setSpan(SpanMessage, Misc.String(R.string.WriteUILength).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                        DialogLength.dismiss();
+                    }
+                });
+
+                if (Misc.IsRTL())
+                {
+                    LinearLayoutButton.addView(TextViewSet);
+                    LinearLayoutButton.addView(TextViewCancel);
+                }
+                else
+                {
+                    LinearLayoutButton.addView(TextViewCancel);
+                    LinearLayoutButton.addView(TextViewSet);
+                }
+
+                DialogLength.setContentView(LinearLayoutMain);
+                DialogLength.show();
             }
         });
+
+        TextViewLengthVote.setText((Misc.String(R.string.WriteUILength) + " " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis())), TextView.BufferType.SPANNABLE);
+
+        Spannable Span = (Spannable) TextViewLengthVote.getText();
+        CharacterStyle SpanMessage = new CharacterStyle()
+        {
+            @Override
+            public void updateDrawState(TextPaint t)
+            {
+                t.setColor(Misc.Color(R.color.Primary));
+            }
+        };
+        Span.setSpan(SpanMessage, Misc.String(R.string.WriteUILength).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         RelativeLayoutVote.addView(TextViewLengthVote);
 
@@ -1357,19 +1499,19 @@ class WriteUI extends FragmentView
             {
                 if (SelectCategory == 0)
                 {
-                    Misc.Toast( Misc.String(R.string.WriteUIPickCategory));
+                    Misc.Toast(Misc.String(R.string.WriteUIPickCategory));
                     return;
                 }
 
-                // TODO
-                // TODO
-                // TODO
-                // TODO
-                // TODO
+                if (SelectType == 3 && (VoteTime == 0 || VoteTime < System.currentTimeMillis()))
+                {
+                    Misc.Toast(Misc.String(R.string.WriteUISetLength));
+                    return;
+                }
 
                 if (EditTextMessage.getText().length() <= 30 && SelectType == 0)
                 {
-                    Misc.Toast( Misc.String(R.string.WriteUIStatement));
+                    Misc.Toast(Misc.String(R.string.WriteUIStatement));
                     return;
                 }
 
@@ -1387,6 +1529,12 @@ class WriteUI extends FragmentView
                 {
                     try
                     {
+                        if (EditTextVote1.getText().toString().isEmpty() || EditTextVote2.getText().toString().isEmpty())
+                        {
+                            Misc.Toast(Misc.String(R.string.WriteUISetVote));
+                            return;
+                        }
+
                         Vote.put("Vote1", EditTextVote1.getText().toString());
                         Vote.put("Vote2", EditTextVote2.getText().toString());
 
@@ -1459,7 +1607,8 @@ class WriteUI extends FragmentView
                                     GetActivity().onBackPressed();
                                 break;
                                 case 3:
-                                    Misc.Toast(Misc.String(R.string.WriteUIVote));
+                                    // TODO Add Message for all types
+                                    Misc.Toast(Misc.String(R.string.WriteUISetVote));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
