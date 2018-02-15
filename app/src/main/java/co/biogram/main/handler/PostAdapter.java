@@ -48,6 +48,7 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
+import co.biogram.main.ui.social.CommentUI;
 import co.biogram.main.ui.social.LikeUI;
 import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.CircleView;
@@ -2048,7 +2049,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 });
 
                 Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
-                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID), R.id.ContainerFull, "LikeUI");  } });
+                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID), R.id.ContainerFull, "LikeUI"); } });
 
                 if (PostList.get(Position).IsComment)
                 {
@@ -2058,11 +2059,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 else
                 {
                     Holder.ImageViewComment.setVisibility(View.VISIBLE);
-                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  } });  // TODO Open Comment
+                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID), R.id.ContainerFull, "CommentUI"); } });
 
                     Holder.TextViewCommentCount.setVisibility(View.VISIBLE);
                     Holder.TextViewCommentCount.setText(String.valueOf(PostList.get(Position).CommentCount));
-                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  } });  // TODO Open Comment
+                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID), R.id.ContainerFull, "CommentUI"); } });
                 }
 
                 Holder.ImageViewOption.setOnClickListener(new View.OnClickListener()

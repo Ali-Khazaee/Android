@@ -157,14 +157,6 @@
 
     <!-- Inbox UI -->
     <string name="InboxUI">صندوق ورودی</string>
-    <string name="InboxUIUserLevel">سطح کاربری</string>
-    <string name="InboxUIRating">رتبه بندی</string>
-    <string name="InboxUIInfo">Your activities in biogram will result in users level increased and also rise in the users social rank, more information in</string>
-    <string name="InboxUIInfo2">in biogram help center</string>
-    <string name="InboxUIJoin">پیوستن</string>
-    <string name="InboxUIPopular">محبوبیت</string>
-    <string name="InboxUIPoint">امتیاز</string>
-    <string name="InboxUIMedal">افتخار</string>
 
     <!-- Category List -->
     <string name="CategoryNews">اخبار</string>
@@ -216,10 +208,7 @@
     <string name="WriteUIMB">MB</string>
     <string name="WriteUISeconds">ثانیه</string>
     <string name="WriteUICompress">لطفا صبر کنید، فشرده سازی ویدیو</string>
-    <string name="WriteUIHour">ساعت</string>
     <string name="WriteUILength">زمان رأی دادن</string>
-    <string name="WriteUITime">تنظیم زمان رای، زمان در ساعت</string>
-    <string name="WriteUISet">تنظیم زمان</string>
 
     <!-- Time Ago -->
     <string name="TimeAgoNow">just now</string>
@@ -244,10 +233,6 @@
     <string name="PostAdapterSubmit">Submit</string>
     <string name="PostAdapterVotes">رای ها</string>
     <string name="PostAdapterVideo">فیلم</string>
-    <string name="PostAdapterVoteChoice">رای خود را ارسال کنید</string>
-    <string name="PostAdapterMB">MB</string>
-    <string name="PostAdapterDownload">Download in progress &#8230;</string>
-    <string name="PostAdapterComplete">Download Complete</string>
     <string name="PostAdapterCancel">Cancel the download process ?</string>
     <string name="PostAdapterYes">Yes</string>
     <string name="PostAdapterNo">No</string>
@@ -255,7 +240,6 @@
     <string name="PostAdapterOptionUnfollow">Unfollow</string>
     <string name="PostAdapterOptionReport">Report</string>
     <string name="PostAdapterOptionCopy">Copy Text</string>
-    <string name="PostAdapterOptionBlock">Block</string>
     <string name="PostAdapterOptionBookmark">Bookmark</string>
     <string name="PostAdapterOptionUnbookmark">Unbookmark</string>
     <string name="PostAdapterOptionShare">Share</string>

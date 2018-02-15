@@ -157,14 +157,6 @@
 
     <!-- Inbox UI -->
     <string name="InboxUI">Inbox</string>
-    <string name="InboxUIUserLevel">User Level</string>
-    <string name="InboxUIRating">Rating</string>
-    <string name="InboxUIInfo">Your activities in biogram will result in users level increased and also rise in the users social rank, more information in</string>
-    <string name="InboxUIInfo2">biogram help center</string>
-    <string name="InboxUIJoin">Join</string>
-    <string name="InboxUIPopular">Popular</string>
-    <string name="InboxUIPoint">Point</string>
-    <string name="InboxUIMedal">Medal</string>
 
     <!-- Category List -->
     <string name="CategoryNews">News</string>
@@ -217,9 +209,7 @@
     <string name="WriteUIMB">MB</string>
     <string name="WriteUISeconds">Seconds</string>
     <string name="WriteUICompress">Please Wait, Compressing video</string>
-    <string name="WriteUIHour">Hours</string>
     <string name="WriteUILength">Vote Length: </string>
-    <string name="WriteUISet">Set Time</string>
     <string name="WriteUIWorld">Post is public</string>
     <string name="WriteUIWorld2">Post is private</string>
     <string name="WriteUIOptions">Options</string>
@@ -255,10 +245,6 @@
     <string name="PostAdapterSubmit">Submit</string>
     <string name="PostAdapterVotes">Votes</string>
     <string name="PostAdapterVideo">Video</string>
-    <string name="PostAdapterVoteChoice">Submit your vote</string>
-    <string name="PostAdapterMB">MB</string>
-    <string name="PostAdapterDownload">Download in progress &#8230;</string>
-    <string name="PostAdapterComplete">Download Complete</string>
     <string name="PostAdapterCancel">Cancel the download process ?</string>
     <string name="PostAdapterYes">Yes</string>
     <string name="PostAdapterNo">No</string>
@@ -267,23 +253,24 @@
     <string name="PostAdapterOptionUnfollow">Unfollow</string>
     <string name="PostAdapterOptionReport">Report</string>
     <string name="PostAdapterOptionCopy">Copy Text</string>
-    <string name="PostAdapterOptionBlock">Block</string>
     <string name="PostAdapterOptionDelete">Delete</string>
     <string name="PostAdapterOptionBookmark">Bookmark</string>
     <string name="PostAdapterOptionUnbookmark">Unbookmark</string>
     <string name="PostAdapterOptionShare">Share</string>
     <string name="PostAdapterOptionCopy2">Text copied to clipboard</string>
     <string name="PostAdapterUserFollowed">added to your following</string>
-    <string name="PostAdapterUserUnfollowed">removed from your following</string>
     <string name="PostAdapterPostBookmark">This post added to your bookmarks</string>
     <string name="PostAdapterPostDeleted">The post has been deleted</string>
     <string name="PostAdapterPostShare1">want you to see this post</string>
-    <string name="PostAdapterPostShare2">check this post in your browser</string>
 
     <!-- Like UI -->
     <string name="LikeUI">Likes</string>
     <string name="LikeUIFollow">Follow</string>
     <string name="LikeUIUnfollow">Unfollow</string>
     <string name="LikeUINo">NO LIKES YET</string>
+
+    <!-- Comment UI -->
+    <string name="CommentUI">Comments</string>
+    <string name="CommentUINo">NO COMMENTS YET</string>
 
 </resources>
