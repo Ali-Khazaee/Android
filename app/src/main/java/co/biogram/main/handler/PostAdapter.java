@@ -347,7 +347,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                     AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
                     .addBodyParameter("Time", String.valueOf(Time))
-                    .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                    .addHeaders("Token", SharedHandler.GetString( "Token"))
                     .setTag(Tag)
                     .build()
                     .getAsString(new StringRequestListener()
@@ -1548,7 +1548,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     AndroidNetworking.post(Misc.GetRandomServer("PostVote"))
                                     .addBodyParameter("Post", PostList.get(Position).ID)
                                     .addBodyParameter("Vote", String.valueOf(Sel))
-                                    .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                                    .addHeaders("Token", SharedHandler.GetString( "Token"))
                                     .setTag(Tag)
                                     .build()
                                     .getAsString(new StringRequestListener()
@@ -1977,12 +1977,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 if (PostList.get(Position).IsLike)
                 {
                     Holder.TextViewLikeCount.SetColor(R.color.Red);
-                    GlideApp.with(Activity).load(R.drawable.like_red).into(Holder.ImageViewLike);
+                    GlideApp.with(Activity).load(R.drawable._general_like_red).into(Holder.ImageViewLike);
                 }
                 else
                 {
                     Holder.TextViewLikeCount.SetColor(R.color.Gray);
-                    GlideApp.with(Activity).load(R.drawable.like_bluegray).into(Holder.ImageViewLike);
+                    GlideApp.with(Activity).load(R.drawable._general_like).into(Holder.ImageViewLike);
                 }
 
                 Holder.ImageViewLike.setOnClickListener(new View.OnClickListener()
@@ -1993,7 +1993,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         if (PostList.get(Position).IsLike)
                         {
                             Holder.TextViewLikeCount.SetColor(R.color.Gray);
-                            Holder.ImageViewLike.setImageResource(R.drawable.like_bluegray);
+                            Holder.ImageViewLike.setImageResource(R.drawable._general_like);
 
                             ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
                             Fade.setDuration(200);
@@ -2010,7 +2010,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         else
                         {
                             Holder.TextViewLikeCount.SetColor(R.color.Red);
-                            Holder.ImageViewLike.setImageResource(R.drawable.like_red);
+                            Holder.ImageViewLike.setImageResource(R.drawable._general_like_red);
 
                             ObjectAnimator SizeX = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1.5f);
                             SizeX.setDuration(200);
@@ -2041,7 +2041,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         AndroidNetworking.post(Misc.GetRandomServer("PostLike"))
                         .addBodyParameter("PostID", PostList.get(Position).ID)
-                        .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                        .addHeaders("Token", SharedHandler.GetString( "Token"))
                         .setTag(Tag)
                         .build()
                         .getAsString(null);
@@ -2049,7 +2049,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 });
 
                 Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
-                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID), R.id.ContainerFull, "LikeUI"); } });
+                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID, false), R.id.ContainerFull, "LikeUI"); } });
 
                 if (PostList.get(Position).IsComment)
                 {
@@ -2059,11 +2059,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 else
                 {
                     Holder.ImageViewComment.setVisibility(View.VISIBLE);
-                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID), R.id.ContainerFull, "CommentUI"); } });
+                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID, PostList.get(Position).Owner), R.id.ContainerFull, "CommentUI"); } });
 
                     Holder.TextViewCommentCount.setVisibility(View.VISIBLE);
                     Holder.TextViewCommentCount.setText(String.valueOf(PostList.get(Position).CommentCount));
-                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID), R.id.ContainerFull, "CommentUI"); } });
+                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID, PostList.get(Position).Owner), R.id.ContainerFull, "CommentUI"); } });
                 }
 
                 Holder.ImageViewOption.setOnClickListener(new View.OnClickListener()
@@ -2093,7 +2093,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             {
                                 AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
                                 .addBodyParameter("Username", PostList.get(Position).Username)
-                                .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                                .addHeaders("Token", SharedHandler.GetString( "Token"))
                                 .setTag(Tag)
                                 .build()
                                 .getAsString(new StringRequestListener()
@@ -2125,7 +2125,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             {
                                 AndroidNetworking.post(Misc.GetRandomServer("PostDelete"))
                                 .addBodyParameter("PostID", PostList.get(Position).ID)
-                                .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                                .addHeaders("Token", SharedHandler.GetString( "Token"))
                                 .setTag(Tag)
                                 .build()
                                 .getAsString(new StringRequestListener()
@@ -2145,7 +2145,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             }
                         });
 
-                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString(Activity, "ID")))
+                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString( "ID")))
                             LinearLayoutMain.addView(TextViewFollow);
                         else
                             LinearLayoutMain.addView(TextViewDelete);
@@ -2175,7 +2175,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                         ViewLine2.setBackgroundResource(R.color.LineWhite);
 
-                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString(Activity, "ID")))
+                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString( "ID")))
                         {
                             LinearLayoutMain.addView(TextViewReport);
                             LinearLayoutMain.addView(ViewLine2);
@@ -2227,7 +2227,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             {
                                 AndroidNetworking.post(Misc.GetRandomServer("PostBookmark"))
                                 .addBodyParameter("PostID", PostList.get(Position).ID)
-                                .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+                                .addHeaders("Token", SharedHandler.GetString( "Token"))
                                 .setTag(Tag)
                                 .build()
                                 .getAsString(new StringRequestListener()
@@ -2320,7 +2320,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     {
         AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
         .addBodyParameter("Skip", String.valueOf(GetSize()))
-        .addHeaders("Token", SharedHandler.GetString(Activity, "Token"))
+        .addHeaders("Token", SharedHandler.GetString( "Token"))
         .setTag(Tag)
         .build()
         .getAsString(new StringRequestListener()
@@ -2427,10 +2427,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         {
             PostStruct P = new PostStruct();
             P.ID = D.getString("_id");
-            P.Profile = SharedHandler.GetString(Activity, "Avatar");
-            P.Name = SharedHandler.GetString(Activity, "Name");
-            P.Medal = SharedHandler.GetString(Activity, "Medal");
-            P.Username = SharedHandler.GetString(Activity, "Username");
+            P.Profile = SharedHandler.GetString( "Avatar");
+            P.Name = SharedHandler.GetString( "Name");
+            P.Medal = SharedHandler.GetString( "Medal");
+            P.Username = SharedHandler.GetString( "Username");
             P.Time = D.getInt("Time");
 
             if (!D.isNull("Message"))

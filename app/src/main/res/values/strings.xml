@@ -272,5 +272,10 @@
     <!-- Comment UI -->
     <string name="CommentUI">Comments</string>
     <string name="CommentUINo">NO COMMENTS YET</string>
+    <string name="CommentUILike">likes</string>
+    <string name="CommentUIMessage">Are you sure ?</string>
+    <string name="CommentUIDelete">Delete</string>
+    <string name="CommentUICancel">Cancel</string>
+    <string name="CommentUIComment">Write your comment</string>
 
 </resources>

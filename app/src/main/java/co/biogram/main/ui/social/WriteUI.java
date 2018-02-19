@@ -1573,7 +1573,7 @@ class WriteUI extends FragmentView
                 .addMultipartParameter("Type", String.valueOf(SelectType))
                 .addMultipartParameter("Vote", Vote.toString())
                 .addMultipartParameter("World", String.valueOf(IsWorld))
-                .addHeaders("token", SharedHandler.GetString(GetActivity(), "Token"))
+                .addHeaders("token", SharedHandler.GetString("Token"))
                 .addMultipartFile(UploadFile)
                 .setTag("WriteFragment")
                 .build()

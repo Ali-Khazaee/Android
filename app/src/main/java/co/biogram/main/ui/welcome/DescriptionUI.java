@@ -621,12 +621,12 @@ public class DescriptionUI extends FragmentView
 
                                          RelativeLayoutMain.setAnimation(Anim);
 
-                                         SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
-                                         SharedHandler.SetBoolean(GetActivity(), "IsGoogle", true);
-                                         SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
-                                         SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
-                                         SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
-                                         SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
+                                         SharedHandler.SetBoolean("IsLogin", true);
+                                         SharedHandler.SetBoolean("IsGoogle", true);
+                                         SharedHandler.SetString("Token", Result.getString("Token"));
+                                         SharedHandler.SetString("ID", Result.getString("ID"));
+                                         SharedHandler.SetString("Username", Result.getString("Username"));
+                                         SharedHandler.SetString("Avatar", Result.getString("Avatar"));
 
                                          GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                          GetActivity().finish();
@@ -715,12 +715,12 @@ public class DescriptionUI extends FragmentView
 
                                         RelativeLayoutMain.setAnimation(Anim);
 
-                                        SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
-                                        SharedHandler.SetBoolean(GetActivity(), "IsGoogle", true);
-                                        SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
-                                        SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
-                                        SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
-                                        SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
+                                        SharedHandler.SetBoolean("IsLogin", true);
+                                        SharedHandler.SetBoolean("IsGoogle", true);
+                                        SharedHandler.SetString("Token", Result.getString("Token"));
+                                        SharedHandler.SetString("ID", Result.getString("ID"));
+                                        SharedHandler.SetString("Username", Result.getString("Username"));
+                                        SharedHandler.SetString("Avatar", Result.getString("Avatar"));
 
                                         GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                         GetActivity().finish();
@@ -805,12 +805,12 @@ public class DescriptionUI extends FragmentView
 
                                         RelativeLayoutMain.setAnimation(Anim);
 
-                                        SharedHandler.SetBoolean(GetActivity(), "IsLogin", true);
-                                        SharedHandler.SetBoolean(GetActivity(), "IsGoogle", true);
-                                        SharedHandler.SetString(GetActivity(), "Token", Result.getString("Token"));
-                                        SharedHandler.SetString(GetActivity(), "ID", Result.getString("ID"));
-                                        SharedHandler.SetString(GetActivity(), "Username", Result.getString("Username"));
-                                        SharedHandler.SetString(GetActivity(), "Avatar", Result.getString("Avatar"));
+                                        SharedHandler.SetBoolean("IsLogin", true);
+                                        SharedHandler.SetBoolean("IsGoogle", true);
+                                        SharedHandler.SetString("Token", Result.getString("Token"));
+                                        SharedHandler.SetString("ID", Result.getString("ID"));
+                                        SharedHandler.SetString("Username", Result.getString("Username"));
+                                        SharedHandler.SetString("Avatar", Result.getString("Avatar"));
 
                                         GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
                                         GetActivity().finish();

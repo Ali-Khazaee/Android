@@ -166,7 +166,6 @@ public class LoadingView extends LinearLayout
         }
 
         @Keep
-        @SuppressWarnings("unused")
         void setScale(float Scale)
         {
             setScaleX(Scale);

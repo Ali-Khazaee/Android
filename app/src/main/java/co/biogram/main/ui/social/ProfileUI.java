@@ -60,7 +60,7 @@ public class ProfileUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                if (SharedHandler.GetString(GetActivity(), "Language").equals("fa"))
+                if (SharedHandler.GetString("Language").equals("fa"))
                     Misc.ChangeLanguage("en");
                 else
                     Misc.ChangeLanguage("fa");

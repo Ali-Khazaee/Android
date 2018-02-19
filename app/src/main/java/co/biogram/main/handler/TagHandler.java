@@ -14,9 +14,9 @@ import android.view.View;
 
 import co.biogram.main.R;
 
-class TagHandler
+public class TagHandler
 {
-    static void Show(TextView tv)
+    public static void Show(TextView tv)
     {
         if (tv.getText().length() <= 2)
             return;
@@ -104,7 +104,7 @@ class TagHandler
             }
             else if (Type == 2)
             {
-                if (SharedHandler.GetString(context, "Username").equalsIgnoreCase(Message))
+                if (SharedHandler.GetString( "Username").equalsIgnoreCase(Message))
                     return;
 
                 Misc.Toast(Message + " - ID Clicked");

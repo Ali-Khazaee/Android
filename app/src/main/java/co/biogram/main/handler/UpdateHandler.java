@@ -91,7 +91,7 @@ class UpdateHandler
             @Override
             public void onDownloadComplete()
             {
-                SharedHandler.SetString(context, "AppVersion", String.valueOf(Version));
+                SharedHandler.SetString("AppVersion", String.valueOf(Version));
             }
 
             @Override public void onError(ANError anError) { }
@@ -104,7 +104,7 @@ class UpdateHandler
         {
             PackageInfo Package = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 
-            if (Integer.parseInt(SharedHandler.GetString(context, "AppVersion")) <= Package.versionCode)
+            if (Integer.parseInt(SharedHandler.GetString( "AppVersion")) <= Package.versionCode)
                 return true;
 
             File UpdateFolder = new File(context.getCacheDir(), "BioGramUpdate");
@@ -115,7 +115,7 @@ class UpdateHandler
 
                 if (UpdateFiles != null)
                 {
-                    String FileName = "biogram-" + SharedHandler.GetString(context, "AppVersion") + ".apk";
+                    String FileName = "biogram-" + SharedHandler.GetString( "AppVersion") + ".apk";
 
                     for (File file : UpdateFiles)
                     {

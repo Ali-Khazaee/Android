@@ -36,11 +36,13 @@ public class LikeUI extends FragmentView
 {
     private List<Struct> PeopleList = new ArrayList<>();
     private AdapterLike Adapter;
-    private String PostID;
+    private boolean IsComment;
+    private String ID;
 
-    public LikeUI(String id)
+    public LikeUI(String id, boolean isComment)
     {
-        PostID = id;
+        ID = id;
+        IsComment= isComment;
     }
 
     @Override
@@ -111,10 +113,52 @@ public class LikeUI extends FragmentView
 
     private void Update()
     {
+        if (IsComment)
+        {
+            AndroidNetworking.post(Misc.GetRandomServer("PostCommentLikeList"))
+            .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
+            .addBodyParameter("CommentID", ID)
+            .addHeaders("Token", SharedHandler.GetString("Token"))
+            .setTag("LikeUI")
+            .build()
+            .getAsString(new StringRequestListener()
+            {
+                @Override
+                public void onResponse(String Response)
+                {
+                    try
+                    {
+                        JSONObject Result = new JSONObject(Response);
+
+                        if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
+                        {
+                            JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                            for (int K = 0; K < ResultList.length(); K++)
+                            {
+                                JSONObject D = ResultList.getJSONObject(K);
+
+                                PeopleList.add(new Struct(D.getString("ID"), D.getString("Name"), D.getString("Username"), D.getString("Avatar"), D.getBoolean("Follow")));
+                            }
+
+                            Adapter.notifyDataSetChanged();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Misc.Debug("LikeUI-Update: " + e.toString());
+                    }
+                }
+
+                @Override public void onError(ANError e) { }
+            });
+            return;
+        }
+
         AndroidNetworking.post(Misc.GetRandomServer("PostLikeList"))
         .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
-        .addBodyParameter("PostID", PostID)
-        .addHeaders("Token", SharedHandler.GetString(GetActivity(), "Token"))
+        .addBodyParameter("PostID", ID)
+        .addHeaders("Token", SharedHandler.GetString("Token"))
         .setTag("LikeUI")
         .build()
         .getAsString(new StringRequestListener()
@@ -233,7 +277,7 @@ public class LikeUI extends FragmentView
                 }
             });
 
-            if (SharedHandler.GetString(GetActivity(), "ID").equals(PeopleList.get(Position).ID))
+            if (SharedHandler.GetString("ID").equals(PeopleList.get(Position).ID))
                 Holder.TextViewFollow.setVisibility(View.GONE);
             else
                 Holder.TextViewFollow.setVisibility(View.VISIBLE);
@@ -258,7 +302,7 @@ public class LikeUI extends FragmentView
                 {
                     AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
                     .addBodyParameter("Username", PeopleList.get(Position).Username)
-                    .addHeaders("Token", SharedHandler.GetString(GetActivity(), "Token"))
+                    .addHeaders("Token", SharedHandler.GetString("Token"))
                     .setTag("LikeUI")
                     .build()
                     .getAsString(null);

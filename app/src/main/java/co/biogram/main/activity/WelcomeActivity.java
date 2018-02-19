@@ -19,9 +19,9 @@ public class WelcomeActivity extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (SharedHandler.GetBoolean(this, "IsLogin"))
+        if (SharedHandler.GetBoolean("IsLogin"))
         {
-            if (SharedHandler.GetString(this, "Activity").equals("Chat"))
+            if (SharedHandler.GetString("Activity").equals("Chat"))
                 startActivity(new Intent(this, ChatActivity.class));
             else
                 startActivity(new Intent(this, SocialActivity.class));

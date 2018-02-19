@@ -247,7 +247,7 @@ public class Misc
     public static void ChangeTheme()
     {
         SharedPreferences.Editor Editor = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit();
-        Editor.putBoolean("IsDark", !SharedHandler.GetBoolean(context, "IsDark"));
+        Editor.putBoolean("IsDark", !SharedHandler.GetBoolean("IsDark"));
         // noinspection all
         Editor.commit();
 
@@ -271,14 +271,14 @@ public class Misc
 
     public static boolean IsDark()
     {
-        return SharedHandler.GetBoolean(context, "IsDark");
+        return SharedHandler.GetBoolean("IsDark");
     }
 
     public static void IsFullScreen(Activity activity, boolean Show)
     {
-        if (Show && SharedHandler.GetBoolean(context, "IsFullScreen"))
+        if (Show && SharedHandler.GetBoolean("IsFullScreen"))
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        else if (!Show && !SharedHandler.GetBoolean(context, "IsFullScreen"))
+        else if (!Show && !SharedHandler.GetBoolean("IsFullScreen"))
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 

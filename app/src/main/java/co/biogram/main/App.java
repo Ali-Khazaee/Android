@@ -37,22 +37,23 @@ public class App extends Application
         Context context = getApplicationContext();
 
         Misc.SetUp(context);
+        CacheHandler.SetUp(context);
 
         startService(new Intent(context, SocketService.class));
 
         OKClient = GetOKClient();
 
         AndroidNetworking.initialize(context, OKClient);
-
-        CacheHandler.SetUp(context);
     }
 
     @Override
     protected void attachBaseContext(Context base)
     {
+        SharedHandler.SetUp(base);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            Locale locale = new Locale(SharedHandler.GetString(base, "Language", "fa"));
+            Locale locale = new Locale(SharedHandler.GetString("Language", "fa"));
             Locale.setDefault(locale);
 
             Configuration configuration = base.getResources().getConfiguration();
@@ -63,7 +64,7 @@ public class App extends Application
         }
         else
         {
-            Locale locale = new Locale(SharedHandler.GetString(base, "Language", "fa"));
+            Locale locale = new Locale(SharedHandler.GetString("Language", "fa"));
             Locale.setDefault(locale);
 
             Configuration config = new Configuration();

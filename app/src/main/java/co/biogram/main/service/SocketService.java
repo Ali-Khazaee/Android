@@ -29,7 +29,7 @@ public class SocketService extends Service
                     try
                     {
                         JSONObject Data = new JSONObject();
-                        Data.put("ID", SharedHandler.GetString(context, "ID"));
+                        Data.put("ID", SharedHandler.GetString( "ID"));
 
                         socket.emit("Register", Data);
                     }
@@ -44,7 +44,7 @@ public class SocketService extends Service
                 @Override
                 public void call(Object... Args)
                 {
-                    if (!SharedHandler.GetBoolean(context, "Notification"))
+                    if (!SharedHandler.GetBoolean("Notification"))
                         return;
 
                     try
