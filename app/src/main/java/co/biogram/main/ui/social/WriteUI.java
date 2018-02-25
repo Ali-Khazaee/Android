@@ -626,7 +626,7 @@ class WriteUI extends FragmentView
                         ChangeType(4);
                         SelectFile = new File(URL);
                         RelativeLayoutFile.setVisibility(View.VISIBLE);
-                        TextViewFileName.setText(SelectFile.getName());
+                        TextViewFileName.setText(SelectFile.getName().length() <= 25 ? SelectFile.getName() : SelectFile.getName().substring(0, Math.min(SelectFile.getName().length(), 25)) + "...");
                         TextViewFileDetail.setText((new DecimalFormat("#.##").format((double) SelectFile.length() / 1048576.0) + " " + Misc.String(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
                     }
 
@@ -887,7 +887,6 @@ class WriteUI extends FragmentView
         ImageViewClose.setImageResource(R.drawable._write_remove);
         ImageViewClose.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
         ImageViewClose.setId(Misc.ViewID());
-        ImageViewClose.setAlpha(0.75f);
         ImageViewClose.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -1260,15 +1259,15 @@ class WriteUI extends FragmentView
         ImageView ImageViewFile = new ImageView(GetActivity());
         ImageViewFile.setLayoutParams(ImageViewFileParam);
         ImageViewFile.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        ImageViewFile.setImageResource(R.drawable._inbox_download);
+        ImageViewFile.setImageResource(R.drawable._general_download);
         ImageViewFile.setId(Misc.ViewID());
         ImageViewFile.setBackground(DrawableFile);
 
         RelativeLayoutFile.addView(ImageViewFile);
 
         RelativeLayout.LayoutParams TextViewFileNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewFileNameParam.setMargins(0, Misc.ToDP(12), 0, 0);
         TextViewFileNameParam.addRule(RelativeLayout.RIGHT_OF, ImageViewFile.getId());
+        TextViewFileNameParam.setMargins(0, Misc.ToDP(12), 0, 0);
 
         TextViewFileName.setLayoutParams(TextViewFileNameParam);
         TextViewFileName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
@@ -1281,6 +1280,7 @@ class WriteUI extends FragmentView
         TextViewFileDetailParam.addRule(RelativeLayout.BELOW, TextViewFileName.getId());
 
         TextViewFileDetail.setLayoutParams(TextViewFileDetailParam);
+        TextViewFileDetail.setGravity(Gravity.LEFT);
         TextViewFileDetail.SetColor(R.color.Gray);
 
         RelativeLayoutFile.addView(TextViewFileDetail);
@@ -1292,7 +1292,6 @@ class WriteUI extends FragmentView
         ImageView ImageViewRemoveFile = new ImageView(GetActivity());
         ImageViewRemoveFile.setLayoutParams(ImageViewRemoveFileParam);
         ImageViewRemoveFile.setImageResource(R.drawable._write_remove);
-        ImageViewRemoveFile.setAlpha(0.75f);
         ImageViewRemoveFile.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -1337,7 +1336,6 @@ class WriteUI extends FragmentView
         ImageViewRemoveVideo.setLayoutParams(ImageViewRemoveVideoParam);
         ImageViewRemoveVideo.setImageResource(R.drawable._write_remove);
         ImageViewRemoveVideo.setId(Misc.ViewID());
-        ImageViewRemoveVideo.setAlpha(0.75f);
         ImageViewRemoveVideo.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -1359,7 +1357,7 @@ class WriteUI extends FragmentView
 
         ImageView ImageViewCompress = new ImageView(GetActivity());
         ImageViewCompress.setLayoutParams(ImageViewCompressParam);
-        ImageViewCompress.setImageResource(R.drawable.compress_white);
+        ImageViewCompress.setImageResource(R.drawable._write_compress);
         ImageViewCompress.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -1547,7 +1545,7 @@ class WriteUI extends FragmentView
                         if (EditTextVote5.getVisibility() == View.VISIBLE)
                             Vote.put("Vote5", EditTextVote5.getText().toString());
 
-                        Vote.put("Time", VoteTime);
+                        Vote.put("Time", (VoteTime / 1000));
                     }
                     catch (Exception e)
                     {
@@ -1737,7 +1735,6 @@ class WriteUI extends FragmentView
             ImageViewRemove.setLayoutParams(ImageViewRemoveParam);
             ImageViewRemove.setImageResource(R.drawable._write_remove);
             ImageViewRemove.setId(Misc.ViewID());
-            ImageViewRemove.setAlpha(0.75f);
             ImageViewRemove.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -1756,14 +1753,14 @@ class WriteUI extends FragmentView
 
             RelativeLayoutMain.addView(ImageViewRemove);
 
-            RelativeLayout.LayoutParams ImageViewCropParam = new RelativeLayout.LayoutParams(Misc.ToDP(34), Misc.ToDP(34));
+            RelativeLayout.LayoutParams ImageViewCropParam = new RelativeLayout.LayoutParams(Misc.ToDP(30), Misc.ToDP(30));
             ImageViewCropParam.addRule(RelativeLayout.BELOW, ImageViewRemove.getId());
             ImageViewCropParam.setMargins(0, Misc.ToDP(5), Misc.ToDP(20), 0);
             ImageViewCropParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
             ImageView ImageViewCrop = new ImageView(GetActivity());
             ImageViewCrop.setLayoutParams(ImageViewCropParam);
-            ImageViewCrop.setImageResource(R.drawable.crop_white);
+            ImageViewCrop.setImageResource(R.drawable._write_crop);
             ImageViewCrop.setOnClickListener(new View.OnClickListener()
             {
                 @Override

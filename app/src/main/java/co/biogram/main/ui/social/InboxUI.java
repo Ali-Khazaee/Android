@@ -70,7 +70,7 @@ public class InboxUI extends FragmentView
         ImageViewWrite.setLayoutParams(ImageViewWriteParam);
         ImageViewWrite.setId(Misc.ViewID());
         ImageViewWrite.setImageResource(R.drawable._inbox_write);
-        ImageViewWrite.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
+        ImageViewWrite.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
         ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new WriteUI(), R.id.ContainerFull, "WriteUI");  } });
 
         RelativeLayoutHeader.addView(ImageViewWrite);
@@ -88,7 +88,14 @@ public class InboxUI extends FragmentView
         RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity())
+        {
+            @Override
+            public boolean canScrollHorizontally()
+            {
+                return false;
+            }
+        };
 
         RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);

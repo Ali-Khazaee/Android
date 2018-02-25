@@ -59,6 +59,7 @@ import co.biogram.main.ui.view.TextView;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain>
 {
     private ArrayList<PostStruct> PostList = new ArrayList<>();
+    private GradientDrawable DrawableBorder;
     private PullToRefreshView RefreshView;
     private FragmentActivity Activity;
     private String Tag;
@@ -151,6 +152,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         Activity = activity;
 
         PostList.add(new PostStruct(0));
+
+        DrawableBorder = new GradientDrawable();
+        DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
+        DrawableBorder.setCornerRadius(Misc.ToDP(6));
     }
 
     class ViewHolderMain extends RecyclerView.ViewHolder
@@ -359,7 +364,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             {
                                 JSONObject Result = new JSONObject(Response);
 
-                                if (Result.getInt("Message") == 0)
+                                if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
                                 {
                                     JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
@@ -653,10 +658,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewVideo.setBackground(DrawableVideo);
 
             RelativeLayoutVideo.addView(TextViewVideo);
-
-            GradientDrawable DrawableBorder = new GradientDrawable();
-            DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
-            DrawableBorder.setCornerRadius(Misc.ToDP(6));
 
             RelativeLayout.LayoutParams RelativeLayoutVoteParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             RelativeLayoutVoteParam.setMargins(0, 0, Misc.ToDP(5), 0);
@@ -1053,7 +1054,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             }
 
             RelativeLayout.LayoutParams RelativeLayoutFileParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(70));
-            RelativeLayoutFileParam.setMargins(0, 0, Misc.ToDP(5), 0);
+            RelativeLayoutFileParam.setMargins(0, Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
 
             RelativeLayout RelativeLayoutFile = new RelativeLayout(Activity);
             RelativeLayoutFile.setLayoutParams(RelativeLayoutFileParam);
@@ -1081,7 +1082,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewFile = new ImageView(Activity);
             ImageViewFile.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(50), Misc.ToDP(50)));
             ImageViewFile.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
-            ImageViewFile.setImageResource(R.drawable._inbox_download);
+            ImageViewFile.setImageResource(R.drawable._general_download);
             ImageViewFile.setId(ID1_FILE_IMAGE);
 
             RelativeLayoutFile2.addView(ImageViewFile);
@@ -1204,8 +1205,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleImageView CircleImageViewPerson2 = new CircleImageView(Activity);
             CircleImageViewPerson2.setLayoutParams(CircleImageViewPerson2Param);
             CircleImageViewPerson2.setId(ID1_PERSON2);
-            CircleImageViewPerson2.SetBorderWidth(Misc.ToDP(1));
-            CircleImageViewPerson2.SetBorderColor(R.color.LineWhite);
 
             RelativeLayoutTool.addView(CircleImageViewPerson2);
 
@@ -1217,8 +1216,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleImageView CircleImageViewPerson3 = new CircleImageView(Activity);
             CircleImageViewPerson3.setLayoutParams(CircleImageViewPerson3Param);
             CircleImageViewPerson3.setId(ID1_PERSON3);
-            CircleImageViewPerson3.SetBorderWidth(Misc.ToDP(1));
-            CircleImageViewPerson3.SetBorderColor(R.color.LineWhite);
 
             RelativeLayoutTool.addView(CircleImageViewPerson3);
 
@@ -1230,8 +1227,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleImageView CircleImageViewPerson4 = new CircleImageView(Activity);
             CircleImageViewPerson4.setLayoutParams(CircleImageViewPerson4Param);
             CircleImageViewPerson4.setId(ID1_PERSON4);
-            CircleImageViewPerson4.SetBorderWidth(Misc.ToDP(1));
-            CircleImageViewPerson4.SetBorderColor(R.color.LineWhite);
 
             RelativeLayoutTool.addView(CircleImageViewPerson4);
 
@@ -1345,7 +1340,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.ImageViewSingle.setVisibility(View.VISIBLE);
                                 Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, true), R.id.ContainerFull, "ImagePreviewUI"); } });
 
-                                GlideApp.with(Activity).load(URL1).placeholder(R.color.Gray).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewSingle);
+                                GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewSingle);
                             }
                             break;
                             case 2:
@@ -1358,8 +1353,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, true), R.id.ContainerFull, "ImagePreviewUI"); } });
                                 Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL1, true), R.id.ContainerFull, "ImagePreviewUI"); } });
 
-                                GlideApp.with(Activity).load(URL1).placeholder(R.color.Gray).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble1);
-                                GlideApp.with(Activity).load(URL2).placeholder(R.color.Gray).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble2);
+                                GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble1);
+                                GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble2);
                             }
                             break;
                             case 3:
@@ -1374,9 +1369,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL3, URL1, true), R.id.ContainerFull, "ImagePreviewUI"); } });
                                 Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL3, URL1, URL2, true), R.id.ContainerFull, "ImagePreviewUI"); } });
 
-                                GlideApp.with(Activity).load(URL1).placeholder(R.color.Gray).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple1);
-                                GlideApp.with(Activity).load(URL2).placeholder(R.color.Gray).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple2);
-                                GlideApp.with(Activity).load(URL3).placeholder(R.color.Gray).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple3);
+                                GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple1);
+                                GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple2);
+                                GlideApp.with(Activity).load(URL3).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple3);
                             }
                             break;
                         }
@@ -1387,6 +1382,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         JSONObject Video = new JSONObject(PostList.get(Position).Data);
 
                         final String URL = Video.getString("URL");
+
+                        // TODO Add Video Size
 
                         Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
 
@@ -1689,10 +1686,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Param.addRule(RelativeLayout.BELOW, ID);
 
                             Holder.ImageViewType2Select.setLayoutParams(Param);
-                            Holder.ImageViewType2Select.invalidate();
-
                             Holder.TextViewType2Result.setText((Total + " " + Misc.String(R.string.PostAdapterVotes)));
                             Holder.TextViewType2Time.setText(Misc.TimeLeft(Vote.getInt("Time")));
+
+                            Holder.RelativeLayoutVoteType2.invalidate();
+                            Holder.RelativeLayoutVoteType2.requestLayout();
                         }
                     }
                     break;
@@ -1702,7 +1700,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         final String URL = file.getString("URL");
                         final String FileName = file.getString("Name");
 
-                        String Name = file.getString("Name").length() <= 25 ? file.getString("Name") : file.getString("Name").substring(0, Math.min(file.getString("Name").length(), 25)) + "...";
+                        String Name = file.getString("Name").length() <= 15 ? file.getString("Name") : file.getString("Name").substring(0, Math.min(file.getString("Name").length(), 15)) + "...";
                         String Details = new DecimalFormat("####.##").format(((double) file.getInt("Size") / 1024 / 1024)) + " MB / " + file.getString("Ext").toUpperCase().substring(1);
 
                         Holder.RelativeLayoutFile.setVisibility(View.VISIBLE);
@@ -1711,23 +1709,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         final File Download = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/Bio/" + FileName);
 
-                        if (Download.exists())
+                        if (PostList.get(Position).IsDownloading)
+                        {
+                            Holder.ImageViewFile.setVisibility(View.GONE);
+                            Holder.TextViewFile.setVisibility(View.VISIBLE);
+                        }
+                        else if (Download.exists())
                         {
                             Holder.TextViewFile.setVisibility(View.GONE);
                             Holder.ImageViewFile.setVisibility(View.VISIBLE);
                             Holder.ImageViewFile.setImageResource(R.drawable._inbox_downloaded);
                             Holder.ImageViewFile.setPadding(Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7));
                         }
-                        else if (PostList.get(Position).IsDownloading)
-                        {
-                            Holder.ImageViewFile.setVisibility(View.GONE);
-                            Holder.TextViewFile.setVisibility(View.VISIBLE);
-                        }
                         else
                         {
                             Holder.TextViewFile.setVisibility(View.GONE);
                             Holder.ImageViewFile.setVisibility(View.VISIBLE);
-                            Holder.ImageViewFile.setImageResource(R.drawable._inbox_download);
+                            Holder.ImageViewFile.setImageResource(R.drawable._general_download);
                             Holder.ImageViewFile.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
                         }
 
@@ -1736,51 +1734,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             @Override
                             public void onClick(View view)
                             {
-                                if (Download.exists())
-                                {
-                                    try
-                                    {
-                                        Uri URI = Uri.fromFile(Download);
-                                        String URL = Download.getAbsolutePath();
-                                        Intent I = new Intent(Intent.ACTION_VIEW);
-
-                                        if (URL.contains(".doc") || URL.contains(".docx"))
-                                            I.setDataAndType(URI, "application/msword");
-                                        else if (URL.contains(".pdf"))
-                                            I.setDataAndType(URI, "application/pdf");
-                                        else if (URL.contains(".ppt") || URL.contains(".pptx"))
-                                            I.setDataAndType(URI, "application/vnd.ms-powerpoint");
-                                        else if (URL.contains(".xls") ||URL.contains(".xlsx"))
-                                            I.setDataAndType(URI, "application/vnd.ms-excel");
-                                        else if (URL.contains(".zip") || URL.contains(".rar"))
-                                            I.setDataAndType(URI, "application/x-wav");
-                                        else if (URL.contains(".rtf"))
-                                            I.setDataAndType(URI, "application/rtf");
-                                        else if (URL.contains(".wav") || URL.contains(".mp3"))
-                                            I.setDataAndType(URI, "audio/x-wav");
-                                        else if (URL.contains(".gif"))
-                                            I.setDataAndType(URI, "image/gif");
-                                        else if (URL.contains(".jpg") || URL.contains(".jpeg") || URL.contains(".png"))
-                                            I.setDataAndType(URI, "image/jpeg");
-                                        else if (URL.contains(".txt"))
-                                            I.setDataAndType(URI, "text/plain");
-                                        else if (URL.contains(".3gp") || URL.contains(".mpg") || URL.contains(".mpeg") || URL.contains(".mpe") || URL.contains(".mp4") || URL.contains(".avi"))
-                                            I.setDataAndType(URI, "video/*");
-                                        else
-                                            I.setDataAndType(URI, "*/*");
-
-                                        I.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                        Activity.startActivity(I);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Misc.Toast(Misc.String(R.string.PostAdapterNoHandle));
-                                    }
-
-                                    return;
-                                }
-
                                 if (PostList.get(Position).IsDownloading)
                                 {
                                     final Dialog DialogCancel = new Dialog(Activity);
@@ -1856,6 +1809,50 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     DialogCancel.show();
                                     return;
                                 }
+                                else if (Download.exists())
+                                {
+                                    try
+                                    {
+                                        Uri URI = Uri.fromFile(Download);
+                                        String URL = Download.getAbsolutePath();
+                                        Intent I = new Intent(Intent.ACTION_VIEW);
+
+                                        if (URL.contains(".doc") || URL.contains(".docx"))
+                                            I.setDataAndType(URI, "application/msword");
+                                        else if (URL.contains(".pdf"))
+                                            I.setDataAndType(URI, "application/pdf");
+                                        else if (URL.contains(".ppt") || URL.contains(".pptx"))
+                                            I.setDataAndType(URI, "application/vnd.ms-powerpoint");
+                                        else if (URL.contains(".xls") ||URL.contains(".xlsx"))
+                                            I.setDataAndType(URI, "application/vnd.ms-excel");
+                                        else if (URL.contains(".zip") || URL.contains(".rar"))
+                                            I.setDataAndType(URI, "application/x-wav");
+                                        else if (URL.contains(".rtf"))
+                                            I.setDataAndType(URI, "application/rtf");
+                                        else if (URL.contains(".wav") || URL.contains(".mp3"))
+                                            I.setDataAndType(URI, "audio/x-wav");
+                                        else if (URL.contains(".gif"))
+                                            I.setDataAndType(URI, "image/gif");
+                                        else if (URL.contains(".jpg") || URL.contains(".jpeg") || URL.contains(".png"))
+                                            I.setDataAndType(URI, "image/jpeg");
+                                        else if (URL.contains(".txt"))
+                                            I.setDataAndType(URI, "text/plain");
+                                        else if (URL.contains(".3gp") || URL.contains(".mpg") || URL.contains(".mpeg") || URL.contains(".mpe") || URL.contains(".mp4") || URL.contains(".avi"))
+                                            I.setDataAndType(URI, "video/*");
+                                        else
+                                            I.setDataAndType(URI, "*/*");
+
+                                        I.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                        Activity.startActivity(I);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Misc.Toast(Misc.String(R.string.PostAdapterNoHandle));
+                                    }
+
+                                    return;
+                                }
 
                                 PostList.get(Position).IsDownloading = true;
 
@@ -1863,12 +1860,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewFile.setVisibility(View.VISIBLE);
                                 Holder.TextViewFile.setText("0%");
 
-                                File BioFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Bio");
-
-                                if (!BioFolder.exists())
-                                    BioFolder.mkdir();
-
-                                AndroidNetworking.download(URL, BioFolder.getAbsolutePath(), FileName)
+                                AndroidNetworking.download(URL, CacheHandler.GetDir().getAbsolutePath(), FileName)
                                 .setPriority(Priority.MEDIUM)
                                 .setTag(PostList.get(Position).ID)
                                 .build()
@@ -1900,11 +1892,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         Holder.TextViewFile.setVisibility(View.GONE);
                                         Holder.ImageViewFile.setVisibility(View.VISIBLE);
-                                        Holder.ImageViewFile.setImageResource(R.drawable._inbox_download);
+                                        Holder.ImageViewFile.setImageResource(R.drawable._general_download);
                                     }
                                 });
                             }
-
                         });
                     }
                     break;

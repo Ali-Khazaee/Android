@@ -3,6 +3,7 @@ package co.biogram.main.handler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -24,6 +25,16 @@ public class CacheHandler
             CacheFolder.mkdir();
 
         return CacheFolder;
+    }
+
+    public static File GetDir()
+    {
+        File BioFolder = new File(Environment.getExternalStorageDirectory(), "Bio");
+
+        if (!BioFolder.exists())
+            BioFolder.mkdir();
+
+        return BioFolder;
     }
 
     public static void SetUp(Context context)

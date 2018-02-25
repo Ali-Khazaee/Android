@@ -6,20 +6,19 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateFormat;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.load.DataSource;
@@ -274,7 +273,9 @@ public class ImagePreviewUI extends FragmentView
                         FOS.close();
 
                         DescriptionUI SignUpDescription = (DescriptionUI) GetActivity().GetManager().FindByTag("DescriptionUI");
-                        SignUpDescription.Update(ProfileFile, false);
+
+                        if(SignUpDescription != null)
+                            SignUpDescription.Update(ProfileFile, false);
 
                         GetActivity().onBackPressed();
                         GetActivity().onBackPressed();
@@ -346,65 +347,41 @@ public class ImagePreviewUI extends FragmentView
             RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
             ImageViewOptionParam.addRule(Misc.Align("L"));
 
-            ImageView ImageViewOption = new ImageView(GetActivity());
-            ImageViewOption.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-            ImageViewOption.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageViewOption.setLayoutParams(ImageViewOptionParam);
-            ImageViewOption.setImageResource(R.drawable.more_white);
-            ImageViewOption.setOnClickListener(new View.OnClickListener()
+            ImageView ImageViewDownload = new ImageView(GetActivity());
+            ImageViewDownload.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
+            ImageViewDownload.setLayoutParams(ImageViewOptionParam);
+            ImageViewDownload.setImageResource(R.drawable._general_download);
+            ImageViewDownload.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    PopupMenu PopMenu = new PopupMenu(GetActivity(), v);
-                    PopMenu.getMenu().add(0, 0, 0, Misc.String(R.string.ImagePreviewUIDownload));
-                    PopMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                    GlideApp.with(GetActivity())
+                    .asBitmap()
+                    .load(UrlList.get(ViewPagerMain.getCurrentItem()))
+                    .into(new SimpleTarget<Bitmap>()
                     {
                         @Override
-                        public boolean onMenuItemClick(MenuItem item)
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition)
                         {
-                            if (item.getItemId() == 0)
+                            try
                             {
-                                GlideApp.with(GetActivity())
-                                .asBitmap()
-                                .load(UrlList.get(ViewPagerMain.getCurrentItem()))
-                                .into(new SimpleTarget<Bitmap>()
-                                {
-                                    @Override
-                                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition)
-                                    {
-                                        try
-                                        {
-                                            File Download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                                            Download.mkdir();
+                                OutputStream OS = new FileOutputStream(new File(CacheHandler.GetDir(), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
+                                resource.compress(Bitmap.CompressFormat.PNG, 100, OS);
+                                OS.close();
 
-                                            File Biogram = new File(Download, "Biogram");
-                                            Biogram.mkdir();
-
-                                            CharSequence Name = DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime());
-
-                                            File ImageFile = new File(Biogram, Name + ".jpg");
-                                            OutputStream OS = new FileOutputStream(ImageFile);
-                                            resource.compress(Bitmap.CompressFormat.JPEG, 100, OS);
-
-                                            Misc.Toast( Misc.String(R.string.ImagePreviewUIDownloaded));
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Misc.Debug("ImagePreviewUI-Download: " + e.toString());
-                                        }
-                                    }
-                                });
+                                Misc.Toast(Misc.String(R.string.ImagePreviewUIDownloaded));
                             }
-
-                            return false;
+                            catch (Exception e)
+                            {
+                                Misc.Debug("ImagePreviewUI-Download: " + e.toString());
+                            }
                         }
                     });
-                    PopMenu.show();
                 }
             });
 
-            RelativeLayoutHeader.addView(ImageViewOption);
+            RelativeLayoutHeader.addView(ImageViewDownload);
         }
 
         if (Anim)
@@ -421,16 +398,15 @@ public class ImagePreviewUI extends FragmentView
     @Override
     public void OnResume()
     {
-        if (Anim)
-            Misc.UIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
-        else
-            GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(Color.BLACK);
     }
 
     @Override
     public void OnPause()
     {
-        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
     }
 
     private class PreviewAdapter extends PagerAdapter

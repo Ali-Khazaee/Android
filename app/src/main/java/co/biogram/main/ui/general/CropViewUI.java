@@ -40,7 +40,7 @@ public class CropViewUI extends FragmentView
         final CropImageView CropImageViewMain = new CropImageView(GetActivity());
         CropImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         CropImageViewMain.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
-        CropImageViewMain.setFixedAspectRatio(true);
+        CropImageViewMain.setFixedAspectRatio(false);
         CropImageViewMain.setAutoZoomEnabled(true);
         CropImageViewMain.setImageBitmap(BitmapFactory.decodeFile(Path));
 
@@ -51,7 +51,6 @@ public class CropViewUI extends FragmentView
 
         ImageView ImageViewDone = new ImageView(GetActivity());
         ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
-        ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
         ImageViewDone.setImageResource(R.drawable.done_white);
         ImageViewDone.setOnClickListener(new View.OnClickListener()
@@ -62,7 +61,7 @@ public class CropViewUI extends FragmentView
                 try
                 {
                     ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-                    CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
+                    CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.PNG, 100, BAOS);
 
                     File file = new File(CacheHandler.CacheDir(GetActivity()), System.currentTimeMillis() + ".jpg");
                     file.createNewFile();
@@ -90,7 +89,6 @@ public class CropViewUI extends FragmentView
 
         ImageView ImageViewClose = new ImageView(GetActivity());
         ImageViewClose.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
-        ImageViewClose.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewClose.setLayoutParams(ImageViewCloseParam);
         ImageViewClose.setImageResource(R.drawable.close_white);
         ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });

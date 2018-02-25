@@ -57,28 +57,28 @@ public class TextView extends android.widget.TextView
     public void FillBackground(int width)
     {
         Width = width;
-        String FillColor = "#8ff9b1";
+        String FillColor = "#1da1f2";
 
-        /*if (width >= 100)
-            FillColor = "#b01fd860";
+        if (width >= 100)
+            FillColor = "#b01da1f2";
         else if (width >= 90)
-            FillColor = "#a01fd860";
+            FillColor = "#a01da1f2";
         else if (width >= 80)
-            FillColor = "#901fd860";
+            FillColor = "#901da1f2";
         else if (width >= 70)
-            FillColor = "#901fd860";
+            FillColor = "#901da1f2";
         else if (width >= 60)
-            FillColor = "#701fd860";
+            FillColor = "#701da1f2";
         else if (width >= 50)
-            FillColor = "#601fd860";
+            FillColor = "#601da1f2";
         else if (width >= 40)
-            FillColor = "#501fd860";
+            FillColor = "#501da1f2";
         else if (width >= 30)
-            FillColor = "#401fd860";
+            FillColor = "#401da1f2";
         else if (width >= 20)
-            FillColor = "#301fd860";
+            FillColor = "#301da1f2";
         else if (width >= 10)
-            FillColor = "#201fd860";*/
+            FillColor = "#201da1f2";
 
         PaintFill = new Paint();
         PaintFill.setAntiAlias(true);

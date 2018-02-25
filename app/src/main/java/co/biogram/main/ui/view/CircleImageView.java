@@ -28,7 +28,6 @@ public class CircleImageView extends ImageView
     private int BackgroundColor = Color.TRANSPARENT;
 
     private final boolean IsReady;
-    private boolean WithPladding = false;
     private boolean IsSetupPending;
 
     private float BorderRadius;
@@ -162,11 +161,6 @@ public class CircleImageView extends ImageView
         invalidate();
     }
 
-    public void SetWidthPadding()
-    {
-        WithPladding = true;
-    }
-
     public void SetBorderWidth(int Width)
     {
         BorderWidth = Misc.ToDP(Width);
@@ -243,10 +237,6 @@ public class CircleImageView extends ImageView
 
         BorderRect.set(new RectF(Left, Top, Left + SideLength, Top + SideLength));
         BorderRadius = Math.min((BorderRect.height() - BorderWidth) / 2.0f, (BorderRect.width() - BorderWidth) / 2.0f);
-
-        if (WithPladding)
-            BorderRadius += (getPaddingTop() + getPaddingLeft() + getPaddingRight() + getPaddingBottom()) / 4;
-
         DrawableRect.set(BorderRect);
 
         if (BorderWidth > 0)

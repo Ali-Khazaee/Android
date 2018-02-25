@@ -309,6 +309,8 @@ public class LikeUI extends FragmentView
 
                     PeopleList.get(Position).Follow = !PeopleList.get(Position).Follow;
                     notifyDataSetChanged();
+
+                    Misc.Toast(PeopleList.get(Position).Follow ? GetActivity().getString(R.string.LikeUIFollowed) : GetActivity().getString(R.string.LikeUIUnfollowed));
                 }
             });
 
@@ -350,7 +352,7 @@ public class LikeUI extends FragmentView
                 TextViewContentParam.addRule(RelativeLayout.BELOW, ImageViewContent.getId());
                 TextViewContentParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-                TextView TextViewContent = new TextView(GetActivity(), 16, true);
+                TextView TextViewContent = new TextView(GetActivity(), 16, false);
                 TextViewContent.setLayoutParams(TextViewContentParam);
                 TextViewContent.SetColor(R.color.Gray);
                 TextViewContent.setText(GetActivity().getString(R.string.LikeUINo));

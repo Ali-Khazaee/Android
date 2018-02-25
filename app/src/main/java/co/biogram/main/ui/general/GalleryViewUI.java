@@ -185,8 +185,9 @@ public class GalleryViewUI extends FragmentView
         {
             if (GalleryType == 3)
             {
-                for (File file : Environment.getExternalStorageDirectory().listFiles())
-                    GalleryList.add(new Struct(file.getName(), file.getAbsolutePath(), true));
+                for (File file : ContextCompat.getExternalFilesDirs(GetActivity(), null))
+                    for (File file2 : file.getParentFile().getParentFile().getParentFile().getParentFile().listFiles())
+                        GalleryList.add(new Struct(file2.getName(), file2.getAbsolutePath(), true));
             }
             else if (GalleryType == 2)
             {
@@ -271,13 +272,14 @@ public class GalleryViewUI extends FragmentView
 
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
-        private final List<Struct> FileList = new ArrayList<>();
-        private final int ID1_MAIN = Misc.ViewID();
-        private final int ID1_NAME = Misc.ViewID();
-        private final int ID_MAIN = Misc.ViewID();
-        private final int ID_CIRCLE = Misc.ViewID();
-        private final GradientDrawable DrawableSelect;
-        private final GradientDrawable DrawableSelected;
+        private List<Struct> FileList = new ArrayList<>();
+        private int ID1_MAIN = Misc.ViewID();
+        private int ID1_FILE = Misc.ViewID();
+        private int ID1_NAME = Misc.ViewID();
+        private int ID_MAIN = Misc.ViewID();
+        private int ID_CIRCLE = Misc.ViewID();
+        private GradientDrawable DrawableSelect;
+        private GradientDrawable DrawableSelected;
         private int Selection = 0;
 
         AdapterGallery()
@@ -288,13 +290,14 @@ public class GalleryViewUI extends FragmentView
 
             DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
-            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+            DrawableSelected.setColor(Misc.Color(R.color.Primary));
             DrawableSelected.setStroke(Misc.ToDP(2), Color.WHITE);
         }
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
             RelativeLayout RelativeLayoutMain;
+            ImageView ImageViewFile;
             TextView TextViewName;
 
             ImageView ImageViewMain;
@@ -307,6 +310,7 @@ public class GalleryViewUI extends FragmentView
                 if (Type == 1)
                 {
                     RelativeLayoutMain = view.findViewById(ID1_MAIN);
+                    ImageViewFile = view.findViewById(ID1_FILE);
                     TextViewName = view.findViewById(ID1_NAME);
                 }
                 else
@@ -325,6 +329,18 @@ public class GalleryViewUI extends FragmentView
             if (Holder.getItemViewType() == 1)
             {
                 Holder.TextViewName.setText(FileList.get(Position).Name);
+
+                if (new File(FileList.get(Position).Path).isDirectory())
+                {
+                    Holder.ImageViewFile.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
+                    GlideApp.with(GetActivity()).load(R.drawable._gallery_folder).dontAnimate().into(Holder.ImageViewFile);
+                }
+                else
+                {
+                    Holder.ImageViewFile.setPadding(Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9));
+                    GlideApp.with(GetActivity()).load(R.drawable._gallery_file).dontAnimate().into(Holder.ImageViewFile);
+                }
+
                 Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -479,19 +495,15 @@ public class GalleryViewUI extends FragmentView
                 RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
                 RelativeLayoutMain.setId(ID1_MAIN);
 
-                CircleImageView CircleImageViewIcon = new CircleImageView(GetActivity());
-                CircleImageViewIcon.setLayoutParams(new RecyclerView.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
-                CircleImageViewIcon.setPadding(Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(8), Misc.ToDP(8));
-                CircleImageViewIcon.setImageResource(R.drawable.comment_bluegray);
-                CircleImageViewIcon.SetCircleBackgroundColor(R.color.Gray);
-                CircleImageViewIcon.setId(Misc.ViewID());
-                CircleImageViewIcon.SetWidthPadding();
+                ImageView ImageViewIcon = new ImageView(GetActivity());
+                ImageViewIcon.setLayoutParams(new RecyclerView.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
+                ImageViewIcon.setId(ID1_FILE);
 
-                RelativeLayoutMain.addView(CircleImageViewIcon);
+                RelativeLayoutMain.addView(ImageViewIcon);
 
                 RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ID1_FILE);
                 TextViewNameParam.setMargins(0, Misc.ToDP(12), 0, 0);
-                TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, CircleImageViewIcon.getId());
 
                 TextView TextViewName = new TextView(GetActivity(), 14, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
@@ -501,11 +513,11 @@ public class GalleryViewUI extends FragmentView
                 RelativeLayoutMain.addView(TextViewName);
 
                 RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
-                ViewLineParam.addRule(RelativeLayout.BELOW, CircleImageViewIcon.getId());
+                ViewLineParam.addRule(RelativeLayout.BELOW, ID1_FILE);
 
                 View ViewLine = new View(GetActivity());
                 ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundResource( Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
 
                 RelativeLayoutMain.addView(ViewLine);
 

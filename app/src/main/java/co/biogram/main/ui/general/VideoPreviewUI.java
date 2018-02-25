@@ -1,14 +1,16 @@
 package co.biogram.main.ui.general;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
@@ -23,6 +25,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
+
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -37,6 +40,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
@@ -52,8 +56,10 @@ import java.io.File;
 import java.util.Date;
 
 import co.biogram.main.App;
+import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
+import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -86,7 +92,7 @@ public class VideoPreviewUI extends FragmentView
 
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20ffffff"));
+        RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20000000"));
         RelativeLayoutHeader.setId(Misc.ViewID());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -123,7 +129,7 @@ public class VideoPreviewUI extends FragmentView
         ImageViewDownload.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDownload.setId(Misc.ViewID());
         ImageViewDownload.setLayoutParams(ImageViewDownloadParam);
-        ImageViewDownload.setImageResource(R.drawable._inbox_download);
+        ImageViewDownload.setImageResource(R.drawable._general_download);
         ImageViewDownload.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -133,27 +139,34 @@ public class VideoPreviewUI extends FragmentView
                     return;
 
                 final int NotifyID = (int) (System.currentTimeMillis() / 1000);
-                CharSequence Name = DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime());
                 final NotificationManager NotifyManager = (NotificationManager) GetActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-                final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(GetActivity(), "BiogramVideo");
-                NotifyBuilder.setContentTitle("Biogram Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._inbox_download);
+                final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(GetActivity(), "BioVideo");
 
-                File Download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                Download.mkdir();
+                Intent i = new Intent(GetActivity(), SocialActivity.class);
+                i.putExtra("CancelVideo", true);
+                i.putExtra("Tag", NotifyID);
 
-                File Biogram = new File(Download, "Biogram");
-                Biogram.mkdir();
+                NotifyBuilder.setContentTitle("Bio Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._general_download).addAction(0, "Cancel", PendingIntent.getActivity(GetActivity(), 0, i, 0));
 
-                AndroidNetworking.download(VideoURL, Biogram.getAbsolutePath(), Name.toString() + ".mp4").build()
+                AndroidNetworking.download(VideoURL, CacheHandler.GetDir().getAbsolutePath(), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()).toString() + ".mp4")
+                .setTag(NotifyID)
+                .build()
                 .setDownloadProgressListener(new DownloadProgressListener()
                 {
+                    private int Last = 0;
+
                     @Override
                     public void onProgress(long D, long T)
                     {
-                        NotifyBuilder.setProgress(100, (int) (T * D / T), false);
+                        int Percent = (int) (D * 100 / T);
 
-                        if (NotifyManager != null)
+                        if (Last != Percent && Percent % 2 == 0 && NotifyManager != null)
+                        {
+                            Last = Percent;
+
+                            NotifyBuilder.setProgress(100, Percent, false);
                             NotifyManager.notify(NotifyID, NotifyBuilder.build());
+                        }
                     }
                 })
                 .startDownload(new DownloadListener()
@@ -162,12 +175,20 @@ public class VideoPreviewUI extends FragmentView
                     public void onDownloadComplete()
                     {
                         NotifyBuilder.setContentText("Download completed").setProgress(0, 0, false);
+                        NotifyBuilder.mActions.clear();
+
+                        if (NotifyManager != null)
+                            NotifyManager.notify(NotifyID, NotifyBuilder.build());
                     }
 
                     @Override
-                    public void onError(ANError error)
+                    public void onError(ANError e)
                     {
-                        NotifyBuilder.setContentText("Download failed").setProgress(0, 0, false);
+                        NotifyBuilder.setContentText("Download failed");
+                        NotifyBuilder.mActions.clear();
+
+                        if (NotifyManager != null)
+                            NotifyManager.notify(NotifyID, NotifyBuilder.build());
                     }
                 });
             }
@@ -239,7 +260,7 @@ public class VideoPreviewUI extends FragmentView
 
         final RelativeLayout RelativeLayoutControl = new RelativeLayout(GetActivity());
         RelativeLayoutControl.setLayoutParams(RelativeLayoutControlParam);
-        RelativeLayoutControl.setBackgroundColor(Color.parseColor("#20ffffff"));
+        RelativeLayoutControl.setBackgroundColor(Color.parseColor("#20000000"));
 
         RelativeLayoutMain.addView(RelativeLayoutControl);
 
@@ -277,7 +298,7 @@ public class VideoPreviewUI extends FragmentView
 
         RelativeLayoutControl.addView(SeekBarMain);
 
-        RelativeLayout.LayoutParams SimpleExoPlayerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams SimpleExoPlayerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         SimpleExoPlayerViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         SimpleExoPlayerMain = ExoPlayerFactory.newSimpleInstance(GetActivity(), new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter())));
@@ -287,6 +308,7 @@ public class VideoPreviewUI extends FragmentView
         SimpleExoPlayerViewMain.setUseController(false);
         SimpleExoPlayerViewMain.setVisibility(View.GONE);
         SimpleExoPlayerViewMain.setPlayer(SimpleExoPlayerMain);
+        SimpleExoPlayerViewMain.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         SimpleExoPlayerViewMain.getVideoSurfaceView().setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -355,7 +377,9 @@ public class VideoPreviewUI extends FragmentView
             @Override public void onPlayerError(ExoPlaybackException error) { }
             @Override public void onPositionDiscontinuity() { }
             @Override public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) { }
-            @Override public void onLoadingChanged(boolean isLoading)
+
+            @Override
+            public void onLoadingChanged(boolean isLoading)
             {
                 IsLoading = isLoading;
 
@@ -371,7 +395,9 @@ public class VideoPreviewUI extends FragmentView
                     }
                 }, 150);
             }
-            @Override public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
             {
                 if (playbackState == 4)
                 {
@@ -490,10 +516,8 @@ public class VideoPreviewUI extends FragmentView
         GetActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
         GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (Anim)
-            GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        else
-            Misc.UIThread(new Runnable() { @Override public void run() { GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); } }, 250);
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(Color.BLACK);
     }
 
     @Override
@@ -502,7 +526,6 @@ public class VideoPreviewUI extends FragmentView
         SimpleExoPlayerViewMain.removeCallbacks(runnable);
         SimpleExoPlayerMain.setPlayWhenReady(false);
         GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
@@ -510,6 +533,9 @@ public class VideoPreviewUI extends FragmentView
     {
         super.OnDestroy();
         SimpleExoPlayerMain.release();
+
+        if (Build.VERSION.SDK_INT > 20)
+            GetActivity().getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
     }
 
     void SetType(boolean select, OnSelectListener l)

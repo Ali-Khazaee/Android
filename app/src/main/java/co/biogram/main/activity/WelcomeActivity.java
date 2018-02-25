@@ -3,12 +3,12 @@ package co.biogram.main.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.R;
+import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.welcome.WelcomeUI;
 
@@ -31,7 +31,7 @@ public class WelcomeActivity extends FragmentActivity
         }
 
         if (Build.VERSION.SDK_INT > 20)
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.Primary));
+            getWindow().setStatusBarColor(Misc.Color(R.color.Primary));
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 

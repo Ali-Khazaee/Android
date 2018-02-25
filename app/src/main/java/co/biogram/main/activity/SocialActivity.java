@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.androidnetworking.AndroidNetworking;
+
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
@@ -124,20 +126,26 @@ public class SocialActivity extends FragmentActivity
         if (getIntent() == null)
             return;
 
+        if (getIntent().getBooleanExtra("CancelVideo", false))
+        {
+            AndroidNetworking.forceCancel(getIntent().getStringExtra("Tag"));
+            return;
+        }
+
         switch (getIntent().getIntExtra("Type", 0))
         {
             case 1:
             {
                 String Username = getIntent().getStringExtra("Data");
                 GetManager().OpenView(new ProfileUI(Username), R.id.Container, "ProfileUI");
-                break;
             }
+            break;
             case 2:
             {
                 String PostID = getIntent().getStringExtra("Data");
                 GetManager().OpenView(new PostUI(PostID), R.id.Container, "PostUI");
-                break;
             }
+            break;
         }
     }
 

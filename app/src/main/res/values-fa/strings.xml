@@ -180,6 +180,7 @@
     <string name="CategoryNature">طبیعت</string>
     <string name="CategoryWeather">آب و هوا</string>
     <string name="CategoryHistorical">تاریخی</string>
+    <string name="CategoryRomantic">احساسی</string>
     <string name="CategoryOther">دیگر</string>
 
     <!-- Write UI -->
@@ -205,43 +206,78 @@
     <string name="WriteUIMaximumImage">شما به حداکثر تصویر رسیده اید</string>
     <string name="WriteUIPermissionStorage">Please allow biogram to access your Storage This will help to complete your mission</string>
     <string name="WriteUIVideoLength">طول فیلم بالا است، حداکثر 240 ثانیه است</string>
-    <string name="WriteUIMB">MB</string>
+    <string name="WriteUIMB">مگابایت</string>
     <string name="WriteUISeconds">ثانیه</string>
     <string name="WriteUICompress">لطفا صبر کنید، فشرده سازی ویدیو</string>
     <string name="WriteUILength">زمان رأی دادن</string>
+    <string name="WriteUIWorld">Post is public</string>
+    <string name="WriteUIWorld2">Post is private</string>
+    <string name="WriteUIOptions">Options</string>
+    <string name="WriteUILength2">Set Length</string>
+    <string name="WriteUILengthCancel">Cancel</string>
+    <string name="WriteUILengthSet">Set</string>
+    <string name="WriteUILengthDays">Days</string>
+    <string name="WriteUILengthHours">Hours</string>
+    <string name="WriteUILengthMins">Minutes</string>
+    <string name="WriteUISetLength">Please, set vote length</string>
+    <string name="WriteUISetVote">Please, add more votes</string>
 
     <!-- Time Ago -->
-    <string name="TimeAgoNow">just now</string>
-    <string name="TimeAgoMin">a minute ago</string>
-    <string name="TimeAgoMins"> minutes ago</string>
-    <string name="TimeAgoHour">a hour ago</string>
-    <string name="TimeAgoHours">hours ago</string>
-    <string name="TimeAgoDay">days ago</string>
-    <string name="TimeAgoDays">days ago</string>
+    <string name="TimeAgoNow">همین الان</string>
+    <string name="TimeAgoMin">یک دیقیقه پیش</string>
+    <string name="TimeAgoMins">دقیقه پیش</string>
+    <string name="TimeAgoHour">یک ساعت پیش</string>
+    <string name="TimeAgoHours">ساعت پیش</string>
+    <string name="TimeAgoDay">یک روز پیش</string>
+    <string name="TimeAgoDays">روز پیش</string>
 
     <!-- Time Left -->
-    <string name="TimeLeftNow">just now</string>
-    <string name="TimeLeftMin">a min left</string>
-    <string name="TimeLeftMins">mins left</string>
-    <string name="TimeLeftHour">an hour left</string>
-    <string name="TimeLeftHours">hours left</string>
-    <string name="TimeLeftDay">a day left</string>
-    <string name="TimeLeftDays">days left</string>
-    <string name="TimeLeftFinish">Time finish</string>
+    <string name="TimeLeftNow">همین الان</string>
+    <string name="TimeLeftMin">یک دیقیقه مانده</string>
+    <string name="TimeLeftMins">دقیقه مانده</string>
+    <string name="TimeLeftHour">یک ساعت مانده</string>
+    <string name="TimeLeftHours">ساعت مانده</string>
+    <string name="TimeLeftDay">یک روز مانده</string>
+    <string name="TimeLeftDays">روز مانده</string>
+    <string name="TimeLeftFinish">اتمام زمان</string>
 
     <!-- Post Adapter -->
-    <string name="PostAdapterSubmit">Submit</string>
-    <string name="PostAdapterVotes">رای ها</string>
+    <string name="PostAdapterSubmit">ثبت</string>
+    <string name="PostAdapterVotes">رای</string>
     <string name="PostAdapterVideo">فیلم</string>
-    <string name="PostAdapterCancel">Cancel the download process ?</string>
-    <string name="PostAdapterYes">Yes</string>
-    <string name="PostAdapterNo">No</string>
-    <string name="PostAdapterOptionFollow">Follow</string>
-    <string name="PostAdapterOptionUnfollow">Unfollow</string>
-    <string name="PostAdapterOptionReport">Report</string>
-    <string name="PostAdapterOptionCopy">Copy Text</string>
+    <string name="PostAdapterCancel">لغو پروس دانلود ؟</string>
+    <string name="PostAdapterYes">بله</string>
+    <string name="PostAdapterNo">خیر</string>
+    <string name="PostAdapterNoHandle">There are no applications to handle this file</string>
+    <string name="PostAdapterOptionFollow">پیروی</string>
+    <string name="PostAdapterOptionUnfollow">لغو پیروی</string>
+    <string name="PostAdapterOptionReport">گزارش</string>
+    <string name="PostAdapterOptionCopy">کپی متن</string>
+    <string name="PostAdapterOptionDelete">پاک کردن</string>
     <string name="PostAdapterOptionBookmark">Bookmark</string>
     <string name="PostAdapterOptionUnbookmark">Unbookmark</string>
-    <string name="PostAdapterOptionShare">Share</string>
+    <string name="PostAdapterOptionShare">اشتراک گذاشتن</string>
+    <string name="PostAdapterOptionCopy2">Text copied to clipboard</string>
+    <string name="PostAdapterUserFollowed">added to your following</string>
+    <string name="PostAdapterPostBookmark">This post added to your bookmarks</string>
+    <string name="PostAdapterPostDeleted">The post has been deleted</string>
+    <string name="PostAdapterPostShare1">want you to see this post</string>
+
+    <!-- Like UI -->
+    <string name="LikeUI">لایک ها</string>
+    <string name="LikeUIFollow">پیروی</string>
+    <string name="LikeUIUnfollow">لغو پیروی</string>
+    <string name="LikeUINo">NO LIKES YET</string>
+    <string name="LikeUIFollowed">کاربر دنبال شد</string>
+    <string name="LikeUIUnfollowed">کاربر از  لیست دنبال شدگان خارج شد</string>
+
+    <!-- Comment UI -->
+    <string name="CommentUI">دیدگاه ها</string>
+    <string name="CommentUINo">NO COMMENTS YET</string>
+    <string name="CommentUILike">likes</string>
+    <string name="CommentUIMessage">Are you sure ?</string>
+    <string name="CommentUIDelete">Delete</string>
+    <string name="CommentUICancel">Cancel</string>
+    <string name="CommentUIComment">Write your comment</string>
 
 </resources>

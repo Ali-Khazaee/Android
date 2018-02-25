@@ -171,17 +171,17 @@ public class Misc
 
     public static void HideSoftKey(Activity a)
     {
-        View view = a.getCurrentFocus();
+        View v = a.getCurrentFocus();
 
-        if (view != null)
-            view.clearFocus();
+        if (v == null)
+            return;
 
         InputMethodManager IMM = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (IMM == null)
             return;
 
-        IMM.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public static boolean HasPermission(String p)
