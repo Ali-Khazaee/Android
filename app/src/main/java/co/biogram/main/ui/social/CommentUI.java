@@ -30,7 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
@@ -38,6 +37,7 @@ import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnScrollRecyclerView;
+import co.biogram.main.handler.PostAdapter;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.ui.view.CircleImageView;
@@ -46,16 +46,20 @@ import co.biogram.main.ui.view.TextView;
 
 public class CommentUI extends FragmentView
 {
-    private List<Struct> CommentList = new ArrayList<>();
+    private ArrayList<PostAdapter.PostStruct> PostList;
+    private ArrayList<Struct> CommentList = new ArrayList<>();
     private EditText EditTextMessage;
     private AdapterComment Adapter;
     private boolean IsOwner;
     private String PostID;
+    private int PositionPost;
 
-    public CommentUI(String id, String owner)
+    public CommentUI(ArrayList<PostAdapter.PostStruct> pl, int p)
     {
-        PostID = id;
-        IsOwner = SharedHandler.GetString("ID").equals(owner);
+        PostList = pl;
+        PositionPost = p;
+        PostID = PostList.get(p).ID;
+        IsOwner = SharedHandler.GetString("ID").equals(PostList.get(p).Owner);
     }
 
     @Override
@@ -194,6 +198,8 @@ public class CommentUI extends FragmentView
                                 EditTextMessage.setText("");
 
                                 LinearLayoutManagerMain.scrollToPositionWithOffset(0, 0);
+
+                                PostList.get(PositionPost).InsComment();
                             }
                         }
                         catch (Exception e)
@@ -252,19 +258,31 @@ public class CommentUI extends FragmentView
 
         RelativeLayoutMain.addView(ViewLine2);
 
-        RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        RecyclerViewMainParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
-        RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        RelativeLayout.LayoutParams RelativeLayoutContentParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayoutContentParam.addRule(RelativeLayout.ABOVE, ViewLine2.getId());
+        RelativeLayoutContentParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+        RelativeLayout RelativeLayoutContent = new RelativeLayout(GetActivity());
+        RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
+
+        RelativeLayoutMain.addView(RelativeLayoutContent);
 
         RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
-        RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
+        RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMain.setAdapter(Adapter = new AdapterComment());
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain) { @Override public void OnLoadMore() { Update(); } });
+        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain) { @Override public void OnLoadMore() { Update(null); } });
 
-        RelativeLayoutMain.addView(RecyclerViewMain);
+        RelativeLayoutContent.addView(RecyclerViewMain);
 
-        Update();
+        LoadingView LoadingViewMain = new LoadingView(GetActivity());
+        LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        LoadingViewMain.setBackgroundResource(R.color.GroundWhite);
+        LoadingViewMain.Start();
+
+        RelativeLayoutContent.addView(LoadingViewMain);
+
+        Update(LoadingViewMain);
 
         ViewMain = RelativeLayoutMain;
     }
@@ -276,7 +294,7 @@ public class CommentUI extends FragmentView
         Misc.HideSoftKey(GetActivity());
     }
 
-    private void Update()
+    private void Update(final LoadingView Loading)
     {
         AndroidNetworking.post(Misc.GetRandomServer("PostCommentList"))
         .addBodyParameter("Skip", String.valueOf(CommentList.size()))
@@ -311,9 +329,23 @@ public class CommentUI extends FragmentView
                 {
                     Misc.Debug("CommentUI-Update: " + e.toString());
                 }
+
+                if (Loading != null)
+                {
+                    Loading.Stop();
+                    Loading.setVisibility(View.GONE);
+                }
             }
 
-            @Override public void onError(ANError e) { }
+            @Override
+            public void onError(ANError e)
+            {
+                if (Loading != null)
+                {
+                    Loading.Stop();
+                    Loading.setVisibility(View.GONE);
+                }
+            }
         });
     }
 
@@ -543,6 +575,8 @@ public class CommentUI extends FragmentView
                             .setTag("CommentUI")
                             .build()
                             .getAsString(null);
+
+                            PostList.get(PositionPost).DesComment();
 
                             CommentList.remove(Position);
                             notifyDataSetChanged();

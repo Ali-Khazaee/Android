@@ -7,6 +7,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,7 +15,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -43,6 +43,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
@@ -51,8 +52,6 @@ import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.social.CommentUI;
 import co.biogram.main.ui.social.LikeUI;
 import co.biogram.main.ui.view.CircleImageView;
-import co.biogram.main.ui.view.CircleView;
-import co.biogram.main.ui.view.LineView;
 import co.biogram.main.ui.view.PullToRefreshView;
 import co.biogram.main.ui.view.TextView;
 
@@ -62,89 +61,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private GradientDrawable DrawableBorder;
     private PullToRefreshView RefreshView;
     private FragmentActivity Activity;
+    private DBHandler DB;
     private String Tag;
-
-    // ViewType 1
-    private final int ID1_MAIN = Misc.ViewID();
-    private final int ID1_PROFILE = Misc.ViewID();
-    private final int ID1_NAME = Misc.ViewID();
-    private final int ID1_MEDAL = Misc.ViewID();
-    private final int ID1_USERNAME = Misc.ViewID();
-    private final int ID1_TIME = Misc.ViewID();
-    private final int ID1_MESSAGE = Misc.ViewID();
-    private final int ID1_LIKE = Misc.ViewID();
-    private final int ID1_LIKE_COUNT = Misc.ViewID();
-    private final int ID1_COMMENT = Misc.ViewID();
-    private final int ID1_COMMENT_COUNT = Misc.ViewID();
-    private final int ID1_OPTION = Misc.ViewID();
-    private final int ID1_PERSON1 = Misc.ViewID();
-    private final int ID1_PERSON2 = Misc.ViewID();
-    private final int ID1_PERSON3 = Misc.ViewID();
-    private final int ID1_PERSON4 = Misc.ViewID();
-    private final int ID1_IMAGE_LAYOUT = Misc.ViewID();
-    private final int ID1_SINGLE = Misc.ViewID();
-    private final int ID1_DOUBLE_LAYOUT = Misc.ViewID();
-    private final int ID1_DOUBLE1 = Misc.ViewID();
-    private final int ID1_DOUBLE2 = Misc.ViewID();
-    private final int ID1_TRIPLE_LAYOUT = Misc.ViewID();
-    private final int ID1_TRIPLE1 = Misc.ViewID();
-    private final int ID1_TRIPLE2 = Misc.ViewID();
-    private final int ID1_TRIPLE3 = Misc.ViewID();
-    private final int ID1_VIDEO_LAYOUT = Misc.ViewID();
-    private final int ID1_VIDEO_IMAGE = Misc.ViewID();
-    private final int ID1_VIDEO_DUROTION = Misc.ViewID();
-    private final int ID1_VOTE_LAYOUT = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_LIN1 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_LIN2 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_LIN3 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_LIN4 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_LIN5 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_SEL1 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_TEXT1 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_SEL2 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_TEXT2 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_SEL3 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_TEXT3 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_SEL4 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_TEXT4 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_SEL5 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_TEXT5 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_SUBMIT = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_RESULT = Misc.ViewID();
-    private final int ID1_VOTE_TYPE1_TIME = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_TEXT1 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_TEXT2 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_TEXT3 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_TEXT4 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_TEXT5 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_PER1 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_PER2 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_PER3 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_PER4 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_PER5 = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_SELECT = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_RESULT = Misc.ViewID();
-    private final int ID1_VOTE_TYPE2_TIME = Misc.ViewID();
-    private final int ID1_FILE_LAYOUT = Misc.ViewID();
-    private final int ID1_FILE_IMAGE = Misc.ViewID();
-    private final int ID1_FILE_TEXT = Misc.ViewID();
-    private final int ID1_FILE_NAME = Misc.ViewID();
-    private final int ID1_FILE_DETAIL = Misc.ViewID();
-    private final int ID1_VIEW_LINE = Misc.ViewID();
-
-    // ViewType 2
-    private final int ID2_LEVEL = Misc.ViewID();
-    private final int ID2_NUMBER = Misc.ViewID();
-    private final int ID2_RATING = Misc.ViewID();
-    private final int ID2_JOIN = Misc.ViewID();
-    private final int ID2_POPULAR = Misc.ViewID();
-    private final int ID2_POINT = Misc.ViewID();
-    private final int ID2_MEDAL = Misc.ViewID();
-    private final int ID2_CLOSE = Misc.ViewID();
-    private final int ID2_MORE = Misc.ViewID();
-    private final int ID2_MORE2 = Misc.ViewID();
 
     public PostAdapter(FragmentActivity activity, String tag)
     {
@@ -156,11 +74,81 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         DrawableBorder = new GradientDrawable();
         DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
         DrawableBorder.setCornerRadius(Misc.ToDP(6));
+
+        DB = new DBHandler(Activity);
     }
+
+    private int ID1_MAIN = Misc.ViewID();
+    private int ID1_PROFILE = Misc.ViewID();
+    private int ID1_NAME = Misc.ViewID();
+    private int ID1_MEDAL = Misc.ViewID();
+    private int ID1_USERNAME = Misc.ViewID();
+    private int ID1_TIME = Misc.ViewID();
+    private int ID1_MESSAGE = Misc.ViewID();
+    private int ID1_LIKE = Misc.ViewID();
+    private int ID1_LIKE_COUNT = Misc.ViewID();
+    private int ID1_COMMENT = Misc.ViewID();
+    private int ID1_COMMENT_COUNT = Misc.ViewID();
+    private int ID1_OPTION = Misc.ViewID();
+    private int ID1_PERSON1 = Misc.ViewID();
+    private int ID1_PERSON2 = Misc.ViewID();
+    private int ID1_PERSON3 = Misc.ViewID();
+    private int ID1_PERSON4 = Misc.ViewID();
+    private int ID1_IMAGE_LAYOUT = Misc.ViewID();
+    private int ID1_SINGLE = Misc.ViewID();
+    private int ID1_DOUBLE_LAYOUT = Misc.ViewID();
+    private int ID1_DOUBLE1 = Misc.ViewID();
+    private int ID1_DOUBLE2 = Misc.ViewID();
+    private int ID1_TRIPLE_LAYOUT = Misc.ViewID();
+    private int ID1_TRIPLE1 = Misc.ViewID();
+    private int ID1_TRIPLE2 = Misc.ViewID();
+    private int ID1_TRIPLE3 = Misc.ViewID();
+    private int ID1_VIDEO_LAYOUT = Misc.ViewID();
+    private int ID1_VIDEO_IMAGE = Misc.ViewID();
+    private int ID1_VIDEO_DUROTION = Misc.ViewID();
+    private int ID1_VOTE_LAYOUT = Misc.ViewID();
+    private int ID1_VOTE_TYPE1 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_LIN1 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_LIN2 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_LIN3 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_LIN4 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_LIN5 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_SEL1 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_TEXT1 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_SEL2 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_TEXT2 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_SEL3 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_TEXT3 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_SEL4 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_TEXT4 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_SEL5 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_TEXT5 = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_SUBMIT = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_RESULT = Misc.ViewID();
+    private int ID1_VOTE_TYPE1_TIME = Misc.ViewID();
+    private int ID1_VOTE_TYPE2 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_TEXT1 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_TEXT2 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_TEXT3 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_TEXT4 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_TEXT5 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_PER1 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_PER2 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_PER3 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_PER4 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_PER5 = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_SELECT = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_RESULT = Misc.ViewID();
+    private int ID1_VOTE_TYPE2_TIME = Misc.ViewID();
+    private int ID1_FILE_LAYOUT = Misc.ViewID();
+    private int ID1_FILE_IMAGE = Misc.ViewID();
+    private int ID1_FILE_TEXT = Misc.ViewID();
+    private int ID1_FILE_NAME = Misc.ViewID();
+    private int ID1_FILE_DETAIL = Misc.ViewID();
+    private int ID1_VIEW_LINE = Misc.ViewID();
 
     class ViewHolderMain extends RecyclerView.ViewHolder
     {
-        // ViewType 1
         RelativeLayout RelativeLayoutMain;
         CircleImageView CircleImageViewProfile;
         TextView TextViewName;
@@ -229,18 +217,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         TextView TextViewFile;
         TextView TextViewFileName;
         TextView TextViewFileDetail;
-
-        // ViewType 2
-        CircleView CircleViewLevel;
-        TextView TextViewNumber;
-        LineView LineViewRating;
-        CircleView CircleViewJoin;
-        CircleView CircleViewPopular;
-        CircleView CircleViewPoint;
-        CircleImageView CircleImageViewMedal;
-        ImageView ImageViewClose;
-        LinearLayout LinearLayoutMore;
-        LinearLayout LinearLayoutMore2;
 
         ViewHolderMain(View v, int type)
         {
@@ -317,19 +293,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 TextViewFileName = v.findViewById(ID1_FILE_NAME);
                 TextViewFileDetail = v.findViewById(ID1_FILE_DETAIL);
             }
-            else if (type == 2)
-            {
-                CircleViewLevel = v.findViewById(ID2_LEVEL);
-                TextViewNumber = v.findViewById(ID2_NUMBER);
-                LineViewRating = v.findViewById(ID2_RATING);
-                CircleViewJoin = v.findViewById(ID2_JOIN);
-                CircleViewPopular = v.findViewById(ID2_POPULAR);
-                CircleViewPoint = v.findViewById(ID2_POINT);
-                CircleImageViewMedal = v.findViewById(ID2_MEDAL);
-                ImageViewClose = v.findViewById(ID2_CLOSE);
-                LinearLayoutMore = v.findViewById(ID2_MORE);
-                LinearLayoutMore2 = v.findViewById(ID2_MORE2);
-            }
         }
     }
 
@@ -345,10 +308,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 @Override
                 public void OnRefresh()
                 {
-                    int Time = 0 ;
+                    int Time = 0;
 
                     if (PostList.size() > 1)
                         Time = PostList.get(1).Time;
+
+                    if (Time == 0)
+                    {
+                        Update();
+                        return;
+                    }
 
                     AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
                     .addBodyParameter("Time", String.valueOf(Time))
@@ -391,7 +360,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         if (D.getInt("Type") != 0)
                                         {
-                                            P.DataType = D.getInt("Type");
+                                            P.Type = D.getInt("Type");
                                             P.Data = D.getString("Data");
                                         }
 
@@ -412,11 +381,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         P.IsBookmark = D.getInt("Bookmark") != 0;
 
                                         PostList.add(P);
+
+                                        DB.InboxUpdate(P);
                                     }
 
-                                    Collections.sort(PostList, new PostSort());
-
-                                    notifyDataSetChanged();
+                                    OnChanged();
                                 }
                             }
                             catch (Exception e)
@@ -632,6 +601,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             GradientDrawable DrawableVideo = new GradientDrawable();
             DrawableVideo.setColor(Color.parseColor("#65000000"));
             DrawableVideo.setCornerRadius(Misc.ToDP(4));
+            DrawableVideo.mutate();
 
             RelativeLayout.LayoutParams TextViewDuritonParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewDuritonParam.setMargins(Misc.ToDP(8), 0, Misc.ToDP(8), Misc.ToDP(8));
@@ -1320,7 +1290,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 Holder.RelativeLayoutImage.setVisibility(View.GONE);
                 Holder.RelativeLayoutFile.setVisibility(View.GONE);
 
-                switch (PostList.get(Position).DataType)
+                switch (PostList.get(Position).Type)
                 {
                     case 1:
                     {
@@ -1688,9 +1658,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             Holder.ImageViewType2Select.setLayoutParams(Param);
                             Holder.TextViewType2Result.setText((Total + " " + Misc.String(R.string.PostAdapterVotes)));
                             Holder.TextViewType2Time.setText(Misc.TimeLeft(Vote.getInt("Time")));
-
-                            Holder.RelativeLayoutVoteType2.invalidate();
-                            Holder.RelativeLayoutVoteType2.requestLayout();
                         }
                     }
                     break;
@@ -1707,7 +1674,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         Holder.TextViewFileName.setText(Name);
                         Holder.TextViewFileDetail.setText(Details);
 
-                        final File Download = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/Bio/" + FileName);
+                        final File Download = new File(CacheHandler.GetDir(), FileName);
 
                         if (PostList.get(Position).IsDownloading)
                         {
@@ -2050,11 +2017,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 else
                 {
                     Holder.ImageViewComment.setVisibility(View.VISIBLE);
-                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID, PostList.get(Position).Owner), R.id.ContainerFull, "CommentUI"); } });
+                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), R.id.ContainerFull, "CommentUI"); } });
 
                     Holder.TextViewCommentCount.setVisibility(View.VISIBLE);
                     Holder.TextViewCommentCount.setText(String.valueOf(PostList.get(Position).CommentCount));
-                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList.get(Position).ID, PostList.get(Position).Owner), R.id.ContainerFull, "CommentUI"); } });
+                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), R.id.ContainerFull, "CommentUI"); } });
                 }
 
                 Holder.ImageViewOption.setOnClickListener(new View.OnClickListener()
@@ -2071,75 +2038,122 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
                         LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
-                        TextView TextViewFollow = new TextView(Activity, 14, false);
-                        TextViewFollow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                        TextViewFollow.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-                        TextViewFollow.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
-                        TextViewFollow.setText(Misc.String(PostList.get(Position).IsFollow ? R.string.PostAdapterOptionUnfollow : R.string.PostAdapterOptionFollow));
-                        TextViewFollow.setGravity(Gravity.CENTER_VERTICAL);
-                        TextViewFollow.setOnClickListener(new View.OnClickListener()
+                        if (PostList.get(Position).Owner.equals(SharedHandler.GetString( "ID")))
                         {
-                            @Override
-                            public void onClick(View v)
+                            TextView TextViewDelete = new TextView(Activity, 14, false);
+                            TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                            TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                            TextViewDelete.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
+                            TextViewDelete.setText(Misc.String(R.string.PostAdapterOptionDelete));
+                            TextViewDelete.setGravity(Gravity.CENTER_VERTICAL);
+                            TextViewDelete.setOnClickListener(new View.OnClickListener()
                             {
-                                AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
-                                .addBodyParameter("Username", PostList.get(Position).Username)
-                                .addHeaders("Token", SharedHandler.GetString( "Token"))
-                                .setTag(Tag)
-                                .build()
-                                .getAsString(new StringRequestListener()
+                                @Override
+                                public void onClick(View v)
                                 {
-                                    @Override
-                                    public void onResponse(String e)
+                                    AndroidNetworking.post(Misc.GetRandomServer("PostDelete"))
+                                    .addBodyParameter("PostID", PostList.get(Position).ID)
+                                    .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                    .setTag(Tag)
+                                    .build()
+                                    .getAsString(new StringRequestListener()
                                     {
-                                        PostList.get(Position).IsFollow = !PostList.get(Position).IsFollow;
-                                        Misc.Toast(PostList.get(Position).Username + " " + (PostList.get(Position).IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
-                                    }
+                                        @Override
+                                        public void onResponse(String e)
+                                        {
+                                            DB.InboxDelete(PostList.get(Position).ID);
+                                            Misc.Toast(Activity.getString(R.string.PostAdapterPostDeleted));
+                                            PostList.remove(Position);
+                                            notifyDataSetChanged();
+                                        }
 
-                                    @Override public void onError(ANError e) { }
-                                });
+                                        @Override public void onError(ANError e) { }
+                                    });
 
-                                DialogOption.dismiss();
-                            }
-                        });
+                                    DialogOption.dismiss();
+                                }
+                            });
 
-                        TextView TextViewDelete = new TextView(Activity, 14, false);
-                        TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                        TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-                        TextViewDelete.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
-                        TextViewDelete.setText(Misc.String(R.string.PostAdapterOptionDelete));
-                        TextViewDelete.setGravity(Gravity.CENTER_VERTICAL);
-                        TextViewDelete.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                AndroidNetworking.post(Misc.GetRandomServer("PostDelete"))
-                                .addBodyParameter("PostID", PostList.get(Position).ID)
-                                .addHeaders("Token", SharedHandler.GetString( "Token"))
-                                .setTag(Tag)
-                                .build()
-                                .getAsString(new StringRequestListener()
-                                {
-                                    @Override
-                                    public void onResponse(String e)
-                                    {
-                                        Misc.Toast(Activity.getString(R.string.PostAdapterPostDeleted));
-                                        PostList.remove(Position);
-                                        notifyDataSetChanged();
-                                    }
-
-                                    @Override public void onError(ANError e) { }
-                                });
-
-                                DialogOption.dismiss();
-                            }
-                        });
-
-                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString( "ID")))
-                            LinearLayoutMain.addView(TextViewFollow);
-                        else
                             LinearLayoutMain.addView(TextViewDelete);
+
+                            if (PostList.get(Position).Time < ((System.currentTimeMillis() / 1000) + 172800))
+                            {
+                                View ViewLine = new View(Activity);
+                                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                                ViewLine.setBackgroundResource(R.color.LineWhite);
+
+                                LinearLayoutMain.addView(ViewLine);
+
+                                TextView TextViewEdit = new TextView(Activity, 14, false);
+                                TextViewEdit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                                TextViewEdit.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                                TextViewEdit.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
+                                TextViewEdit.setText(Misc.String(R.string.PostAdapterOptionDelete));
+                                TextViewEdit.setGravity(Gravity.CENTER_VERTICAL);
+                                TextViewEdit.setOnClickListener(new View.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(View v)
+                                    {
+                                        AndroidNetworking.post(Misc.GetRandomServer("PostEdit"))
+                                        .addBodyParameter("PostID", PostList.get(Position).ID)
+                                        .addHeaders("Token", SharedHandler.GetString("Token"))
+                                        .setTag(Tag)
+                                        .build()
+                                        .getAsString(new StringRequestListener()
+                                        {
+                                            @Override
+                                            public void onResponse(String e)
+                                            {
+
+                                            }
+
+                                            @Override public void onError(ANError e) { }
+                                        });
+
+                                        DialogOption.dismiss();
+                                    }
+                                });
+
+                                LinearLayoutMain.addView(TextViewEdit);
+                            }
+                        }
+                        else
+                        {
+                            TextView TextViewFollow = new TextView(Activity, 14, false);
+                            TextViewFollow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                            TextViewFollow.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                            TextViewFollow.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
+                            TextViewFollow.setText(Misc.String(PostList.get(Position).IsFollow ? R.string.PostAdapterOptionUnfollow : R.string.PostAdapterOptionFollow));
+                            TextViewFollow.setGravity(Gravity.CENTER_VERTICAL);
+                            TextViewFollow.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
+                                    .addBodyParameter("Username", PostList.get(Position).Username)
+                                    .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                    .setTag(Tag)
+                                    .build()
+                                    .getAsString(new StringRequestListener()
+                                    {
+                                        @Override
+                                        public void onResponse(String e)
+                                        {
+                                            PostList.get(Position).IsFollow = !PostList.get(Position).IsFollow;
+                                            Misc.Toast(PostList.get(Position).Username + " " + (PostList.get(Position).IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
+                                        }
+
+                                        @Override public void onError(ANError e) { }
+                                    });
+
+                                    DialogOption.dismiss();
+                                }
+                            });
+
+                            LinearLayoutMain.addView(TextViewFollow);
+                        }
 
                         View ViewLine = new View(Activity);
                         ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
@@ -2301,6 +2315,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         return PostList.size();
     }
 
+    private void OnChanged()
+    {
+        Collections.sort(PostList, new PostSort());
+
+        notifyDataSetChanged();
+    }
+
     public void OnTouchEvent(MotionEvent e)
     {
         if (RefreshView != null)
@@ -2309,8 +2330,101 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
     public void Update()
     {
+        int Size = GetSize();
+        Cursor cursor = DB.InboxPost(Size);
+        StringBuilder ID = new StringBuilder();
+
+        while (cursor.moveToNext())
+        {
+            PostStruct P = new PostStruct();
+            P.ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_ID));
+            P.Profile = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_PROFILE));
+            P.Name = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_NAME));
+            P.Medal = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_MEDAL));
+            P.Username = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_USERNAME));
+            P.Time = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_TIME));
+            P.Message = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_MESSAGE));
+            P.Type = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_TYPE));
+            P.Data = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_DATA));
+            P.Owner = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_OWNER));
+            P.View = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_VIEW));
+            P.Category = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_CATEGORY));
+            P.LikeCount = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_LIKECOUNT));
+            P.CommentCount = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_COMMENTCOUNT));
+            P.IsLike = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_LIKE)) == 1;
+            P.IsFollow = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_FOLLOW)) == 1;
+            P.IsComment = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_COMMENT)) == 1;
+            P.IsBookmark = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_BOOKMARK)) == 1;
+            P.Person1ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I1));
+            P.Person1Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I1P));
+            P.Person2ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I2));
+            P.Person2Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I2P));
+            P.Person3ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I3));
+            P.Person3Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I3P));
+            P.Person4ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I4));
+            P.Person4Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I4P));
+            PostList.add(P);
+
+            ID.append(P.ID).append(",");
+        }
+
+        cursor.close();
+        OnChanged();
+
+        String ID2 = ID.toString();
+
+        if (ID2.length() > 5 && ID2.charAt(ID2.length() - 1) == ',')
+            ID2 = ID2.substring(0, ID2.length() - 1);
+
+        AndroidNetworking.post(Misc.GetRandomServer("PostDeleteCheck"))
+        .addBodyParameter("List", ID2)
+        .addHeaders("Token", SharedHandler.GetString( "Token"))
+        .setTag(Tag)
+        .build()
+        .getAsString(new StringRequestListener()
+        {
+            @Override
+            public void onResponse(String Response)
+            {
+                try
+                {
+                    JSONObject Result = new JSONObject(Response);
+
+                    if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
+                    {
+                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+
+                        for (int I = 0; I < ResultList.length(); I++)
+                        {
+                            String ID = ResultList.getJSONObject(I).getString("ID");
+
+                            DB.InboxDelete(ID);
+
+                            Iterator itr = PostList.iterator();
+
+                            while (itr.hasNext())
+                            {
+                                PostStruct Post = (PostStruct) itr.next();
+
+                                if (ID.equals(Post.ID))
+                                    itr.remove();
+                            }
+                        }
+
+                        OnChanged();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Misc.Debug("PostAdapter-Delete: " + e.toString());
+                }
+            }
+
+            @Override public void onError(ANError e) { }
+        });
+
         AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
-        .addBodyParameter("Skip", String.valueOf(GetSize()))
+        .addBodyParameter("Skip", String.valueOf(Size))
         .addHeaders("Token", SharedHandler.GetString( "Token"))
         .setTag(Tag)
         .build()
@@ -2350,7 +2464,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                             if (D.getInt("Type") != 0)
                             {
-                                P.DataType = D.getInt("Type");
+                                P.Type = D.getInt("Type");
                                 P.Data = D.getString("Data");
                             }
 
@@ -2394,12 +2508,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 P.Person4Avatar = D.getString("I4P");
                             }
 
-                            PostList.add(P);
+                            int I = PostList.indexOf(P);
+
+                            if (I != -1)
+                                PostList.set(I, P);
+
+                            DB.InboxUpdate(P);
                         }
 
-                        Collections.sort(PostList, new PostSort());
-
-                        notifyDataSetChanged();
+                        OnChanged();
                     }
                 }
                 catch (Exception e)
@@ -2418,10 +2535,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         {
             PostStruct P = new PostStruct();
             P.ID = D.getString("_id");
-            P.Profile = SharedHandler.GetString( "Avatar");
-            P.Name = SharedHandler.GetString( "Name");
-            P.Medal = SharedHandler.GetString( "Medal");
-            P.Username = SharedHandler.GetString( "Username");
+            P.Profile = SharedHandler.GetString("Avatar");
+            P.Name = SharedHandler.GetString("Name");
+            P.Medal = SharedHandler.GetString("Medal");
+            P.Username = SharedHandler.GetString("Username");
             P.Time = D.getInt("Time");
 
             if (!D.isNull("Message"))
@@ -2429,7 +2546,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             if (D.getInt("Type") != 0)
             {
-                P.DataType = D.getInt("Type");
+                P.Type = D.getInt("Type");
                 P.Data = D.getString("Data");
             }
 
@@ -2438,7 +2555,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             P.LikeCount = 0;
             P.CommentCount = 0;
 
-            PostList.add(1, P);
+            PostList.add(P);
+            DB.InboxUpdate(P);
+
+            OnChanged();
         }
         catch (Exception e)
         {
@@ -2457,17 +2577,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         return Size;
     }
 
-    private class PostStruct
+    public class PostStruct
     {
-        String ID;
+        public String ID;
         String Profile;
         String Name;
         String Medal;
         String Username;
-        String Owner;
+        public String Owner;
         int Time;
         String Message;
-        int DataType; // 0: Message 1: Image 2: Video 3: Vote 4: File
+        int Type; // 0: Message 1: Image 2: Video 3: Vote 4: File
         String Data;
         int View;
         int Category;
@@ -2493,8 +2613,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         PostStruct(int v) { ViewType = v; }
 
         void RevLike() { IsLike = !IsLike; }
-        void InsLike() { LikeCount++; }
-        void DesLike() { LikeCount--; }
+
+        void InsLike()
+        {
+            LikeCount++;
+            DB.InboxLike(ID, true);
+        }
+
+        void DesLike()
+        {
+            LikeCount--;
+            DB.InboxLike(ID, false);
+        }
+
+        public void InsComment()
+        {
+            CommentCount++;
+            DB.InboxComment(ID, true);
+        }
+
+        public void DesComment()
+        {
+            CommentCount--;
+            DB.InboxComment(ID, false);
+        }
     }
 
     private class PostSort implements Comparator<PostStruct>

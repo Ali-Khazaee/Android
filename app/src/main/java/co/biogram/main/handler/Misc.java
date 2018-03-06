@@ -308,14 +308,22 @@ public class Misc
             return String(R.string.TimeAgoMin);
         else if (Diff >= 2 && Diff <= 59)
             return Diff + " " + String(R.string.TimeAgoMins);
-        else if (Diff >= 60 && Diff <= 90)
+        else if (Diff >= 60 && Diff <= 119)
             return String(R.string.TimeAgoHour);
-        else if (Diff >= 90 && Diff <= 1439)
+        else if (Diff >= 120 && Diff <= 1439)
             return (Math.round(Diff / 60)) + " " + String(R.string.TimeAgoHours);
         else if (Diff >= 1440 && Diff <= 2519)
             return String(R.string.TimeAgoDay);
+        else if (Diff >= 2520  && Diff <= 43199)
+            return (Math.round(Diff / 1440)) + " " + String(R.string.TimeAgoDays);
+        else if (Diff >= 43200 && Diff <= 86399)
+            return String(R.string.TimeAgoMonth);
+        else if (Diff >= 86400 && Diff <= 525599)
+            return (Math.round(Diff / 43200)) + " " + String(R.string.TimeAgoMonths);
+        else if (Diff >= 525600 && Diff <= 655199)
+            return String(R.string.TimeAgoYear);
 
-        return (Math.round(Diff / 1440)) + " " + String(R.string.TimeAgoDays);
+        return Math.round(Diff / 525600) + " " + String(R.string.TimeAgoYears);
     }
 
     static String TimeLeft(long Time)

@@ -230,6 +230,10 @@
     <string name="TimeAgoHours">hours ago</string>
     <string name="TimeAgoDay">a day ago</string>
     <string name="TimeAgoDays">days ago</string>
+    <string name="TimeAgoMonth">a month ago</string>
+    <string name="TimeAgoMonths">months ago</string>
+    <string name="TimeAgoYear">a year ago</string>
+    <string name="TimeAgoYears">yers ago</string>
 
     <!-- Time Left -->
     <string name="TimeLeftNow">just now</string>

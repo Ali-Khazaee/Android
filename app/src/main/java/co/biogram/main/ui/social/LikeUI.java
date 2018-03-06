@@ -30,6 +30,7 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnScrollRecyclerView;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.CircleImageView;
+import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
 public class LikeUI extends FragmentView
@@ -90,17 +91,29 @@ public class LikeUI extends FragmentView
 
         LinearLayoutMain.addView(ViewLine);
 
+        RelativeLayout RelativeLayoutContent = new RelativeLayout(GetActivity());
+        RelativeLayoutContent.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+
+        LinearLayoutMain.addView(RelativeLayoutContent);
+
         LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
 
         RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
         RecyclerViewMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMain.setAdapter(Adapter = new AdapterLike());
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain) { @Override public void OnLoadMore() { Update(); } });
+        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain) { @Override public void OnLoadMore() { Update(null); } });
 
-        LinearLayoutMain.addView(RecyclerViewMain);
+        RelativeLayoutContent.addView(RecyclerViewMain);
 
-        Update();
+        LoadingView LoadingViewMain = new LoadingView(GetActivity());
+        LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        LoadingViewMain.setBackgroundResource(R.color.GroundWhite);
+        LoadingViewMain.Start();
+
+        RelativeLayoutContent.addView(LoadingViewMain);
+
+        Update(LoadingViewMain);
 
         ViewMain = LinearLayoutMain;
     }
@@ -111,7 +124,7 @@ public class LikeUI extends FragmentView
         AndroidNetworking.forceCancel("LikeUI");
     }
 
-    private void Update()
+    private void Update(final LoadingView Loading)
     {
         if (IsComment)
         {
@@ -148,10 +161,25 @@ public class LikeUI extends FragmentView
                     {
                         Misc.Debug("LikeUI-Update: " + e.toString());
                     }
+
+                    if (Loading != null)
+                    {
+                        Loading.Stop();
+                        Loading.setVisibility(View.GONE);
+                    }
                 }
 
-                @Override public void onError(ANError e) { }
+                @Override
+                public void onError(ANError e)
+                {
+                    if (Loading != null)
+                    {
+                        Loading.Stop();
+                        Loading.setVisibility(View.GONE);
+                    }
+                }
             });
+
             return;
         }
 
@@ -188,9 +216,23 @@ public class LikeUI extends FragmentView
                 {
                     Misc.Debug("LikeUI-Update: " + e.toString());
                 }
+
+                if (Loading != null)
+                {
+                    Loading.Stop();
+                    Loading.setVisibility(View.GONE);
+                }
             }
 
-            @Override public void onError(ANError e) { }
+            @Override
+            public void onError(ANError e)
+            {
+                if (Loading != null)
+                {
+                    Loading.Stop();
+                    Loading.setVisibility(View.GONE);
+                }
+            }
         });
     }
 

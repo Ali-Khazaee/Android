@@ -3,16 +3,12 @@ package co.biogram.main.handler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class DBHandler extends SQLiteOpenHelper
 {
-    public DBHandler(Context context)
+    DBHandler(Context context)
     {
         super(context, "Bio.db" , null, 1);
     }
@@ -20,7 +16,7 @@ public class DBHandler extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase DB)
     {
-        DB.execSQL("CREATE TABLE `post` (id integer primary key, name text,phone text,email text, street text,place text)");
+        DB.execSQL("CREATE TABLE `inbox_post` (`ID` VARCHAR(50) PRIMARY KEY NOT NULL, `Owner` VARCHAR(50), `Profile` VARCHAR(50), `Name` VARCHAR(50), `Medal` VARCHAR(50), `Message` VARCHAR(300), `Username` VARCHAR(50), `Time` INT(10), `Type` TINYINT(3), `Data` VARCHAR(500), `View` INT(10), `Category` TINYINT(3), `LikeCount` INT(10), `CommentCount` INT(10), `IsLike` TINYINT(3), `IsFollow` TINYINT(3), `IsComment` TINYINT(3), `IsBookmark` TINYINT(3), `I1` VARCHAR(50), `I1P` VARCHAR(50), `I2` VARCHAR(50), `I2P` VARCHAR(50), `I3` VARCHAR(50), `I3P` VARCHAR(50), `I4` VARCHAR(50), `I4P` VARCHAR(50))");
     }
 
     @Override
@@ -29,61 +25,115 @@ public class DBHandler extends SQLiteOpenHelper
         onCreate(DB);
     }
 
-    public boolean insertContact (String name, String phone, String email, String street,String place) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("phone", phone);
-        contentValues.put("email", email);
-        contentValues.put("street", street);
-        contentValues.put("place", place);
-        db.insert("contacts", null, contentValues);
-        return true;
+    static final String INBOX_POST_ID = "ID";
+    static final String INBOX_POST_OWNER = "Owner";
+    static final String INBOX_POST_PROFILE = "Profile";
+    static final String INBOX_POST_NAME = "Name";
+    static final String INBOX_POST_MEDAL = "Medal";
+    static final String INBOX_POST_MESSAGE = "Message";
+    static final String INBOX_POST_USERNAME = "Username";
+    static final String INBOX_POST_TIME = "Time";
+    static final String INBOX_POST_TYPE = "Type";
+    static final String INBOX_POST_DATA = "Data";
+    static final String INBOX_POST_VIEW = "View";
+    static final String INBOX_POST_CATEGORY = "Category";
+    static final String INBOX_POST_LIKECOUNT = "LikeCount";
+    static final String INBOX_POST_COMMENTCOUNT = "CommentCount";
+    static final String INBOX_POST_LIKE = "IsLike";
+    static final String INBOX_POST_FOLLOW = "IsFollow";
+    static final String INBOX_POST_BOOKMARK = "IsComment";
+    static final String INBOX_POST_COMMENT = "IsBookmark";
+    static final String INBOX_POST_I1 = "I1";
+    static final String INBOX_POST_I1P = "I1P";
+    static final String INBOX_POST_I2 = "I2";
+    static final String INBOX_POST_I2P = "I2P";
+    static final String INBOX_POST_I3 = "I3";
+    static final String INBOX_POST_I3P = "I3P";
+    static final String INBOX_POST_I4 = "I4";
+    static final String INBOX_POST_I4P = "I4P";
+
+    Cursor InboxPost(int Skip)
+    {
+        return getReadableDatabase().rawQuery("SELECT * FROM `inbox_post` ORDER BY  `Time` DESC LIMIT " + Skip + ",8", null);
     }
 
-    public Cursor getData(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from contacts where id="+id+"", null );
-        return res;
-    }
+    void InboxUpdate(PostAdapter.PostStruct P)
+    {
+        ContentValues Value = new ContentValues();
+        Value.put(INBOX_POST_ID, P.ID);
 
-    public int numberOfRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, "contacts");
-        return numRows;
-    }
+        if (P.Profile != null)
+            Value.put(INBOX_POST_PROFILE, P.Profile);
 
-    public boolean updateContact (Integer id, String name, String phone, String email, String street,String place) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("phone", phone);
-        contentValues.put("email", email);
-        contentValues.put("street", street);
-        contentValues.put("place", place);
-        db.update("contacts", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
-        return true;
-    }
+        Value.put(INBOX_POST_NAME, P.Name);
 
-    public Integer deleteContact (Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("contacts",
-                "id = ? ",
-                new String[] { Integer.toString(id) });
-    }
+        if (P.Medal != null)
+            Value.put(INBOX_POST_MEDAL, P.Medal);
 
-    public ArrayList<String> getAllCotacts() {
-        ArrayList<String> array_list = new ArrayList<String>();
+        Value.put(INBOX_POST_USERNAME, P.Username);
+        Value.put(INBOX_POST_TIME, P.Time);
 
-        //hp = new HashMap();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from contacts", null );
-        res.moveToFirst();
+        if (P.Message != null)
+            Value.put(INBOX_POST_MESSAGE, P.Message);
 
-        while(res.isAfterLast() == false){
-            array_list.add(res.getString(res.getColumnIndex("name")));
-            res.moveToNext();
+        Value.put(INBOX_POST_TYPE, P.Type);
+
+        if (P.Data != null)
+            Value.put(INBOX_POST_DATA, P.Data);
+
+        Value.put(INBOX_POST_OWNER, P.Owner);
+        Value.put(INBOX_POST_VIEW, P.View);
+        Value.put(INBOX_POST_CATEGORY, P.Category);
+        Value.put(INBOX_POST_LIKECOUNT, P.LikeCount);
+        Value.put(INBOX_POST_COMMENTCOUNT, P.CommentCount);
+        Value.put(INBOX_POST_LIKE, P.IsLike);
+        Value.put(INBOX_POST_FOLLOW, P.IsFollow);
+        Value.put(INBOX_POST_COMMENT, P.IsComment);
+        Value.put(INBOX_POST_BOOKMARK, P.IsBookmark);
+
+        if (P.Person1ID != null)
+        {
+            Value.put(INBOX_POST_I1, P.Person1ID);
+            Value.put(INBOX_POST_I1P, P.Person1Avatar);
         }
-        return array_list;
+
+        if (P.Person2ID != null)
+        {
+            Value.put(INBOX_POST_I2, P.Person2ID);
+            Value.put(INBOX_POST_I2P, P.Person2Avatar);
+        }
+
+        if (P.Person3ID != null)
+        {
+            Value.put(INBOX_POST_I3, P.Person3ID);
+            Value.put(INBOX_POST_I3P, P.Person3Avatar);
+        }
+
+        if (P.Person4ID != null)
+        {
+            Value.put(INBOX_POST_I4, P.Person4ID);
+            Value.put(INBOX_POST_I4P, P.Person4Avatar);
+        }
+
+        getWritableDatabase().replace("inbox_post", null, Value);
+    }
+
+    void InboxLike(String ID, boolean Ins)
+    {
+        String SQL = "UPDATE `inbox_post` SET `" + INBOX_POST_LIKECOUNT + "` = `" + INBOX_POST_LIKECOUNT + "`" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";
+
+        getWritableDatabase().execSQL(SQL);
+    }
+
+    void InboxComment(String ID, boolean Ins)
+    {
+        String SQL = "UPDATE `inbox_post` SET `" + INBOX_POST_COMMENTCOUNT + "` = `" + INBOX_POST_COMMENTCOUNT + "`" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";
+
+        getWritableDatabase().execSQL(SQL);
+    }
+
+    void InboxDelete(String ID)
+    {
+        getWritableDatabase().execSQL("DELETE FROM `inbox_post` WHERE `ID` = '" + ID + "'");
     }
 }

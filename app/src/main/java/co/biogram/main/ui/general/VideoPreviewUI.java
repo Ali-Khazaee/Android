@@ -139,14 +139,18 @@ public class VideoPreviewUI extends FragmentView
                     return;
 
                 final int NotifyID = (int) (System.currentTimeMillis() / 1000);
+
+                if (PendingIntent.getActivity(GetActivity(), NotifyID, new Intent(GetActivity(), SocialActivity.class), PendingIntent.FLAG_NO_CREATE) != null)
+                    return;
+
                 final NotificationManager NotifyManager = (NotificationManager) GetActivity().getSystemService(Context.NOTIFICATION_SERVICE);
                 final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(GetActivity(), "BioVideo");
 
                 Intent i = new Intent(GetActivity(), SocialActivity.class);
-                i.putExtra("CancelVideo", true);
-                i.putExtra("Tag", NotifyID);
+                i.putExtra("VideoCancel", true);
+                i.putExtra("VideoID", NotifyID);
 
-                NotifyBuilder.setContentTitle("Bio Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._general_download).addAction(0, "Cancel", PendingIntent.getActivity(GetActivity(), 0, i, 0));
+                NotifyBuilder.setContentTitle("Bio Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._general_download).addAction(0, "Cancel", PendingIntent.getActivity(GetActivity(), NotifyID, i, 0));
 
                 AndroidNetworking.download(VideoURL, CacheHandler.GetDir().getAbsolutePath(), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()).toString() + ".mp4")
                 .setTag(NotifyID)
