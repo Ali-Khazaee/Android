@@ -20,23 +20,23 @@ public class CameraViewUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
 
-        FrameLayout FrameLayoutMain = new FrameLayout(GetActivity());
+        FrameLayout FrameLayoutMain = new FrameLayout(Activity);
         FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
         RelativeLayoutMain.addView(FrameLayoutMain);
 
-        Camera = new CameraHandler(GetActivity());
+        Camera = new CameraHandler(Activity);
 
         FrameLayoutMain.addView(Camera);
 
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(75));
         RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-        RelativeLayout RelativeLayoutBottom = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutBottom = new RelativeLayout(Activity);
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
 
         RelativeLayoutMain.addView(RelativeLayoutBottom);
@@ -45,7 +45,7 @@ public class CameraViewUI extends FragmentView
         ImageViewPickParam.setMargins(Misc.ToDP(50), 0, Misc.ToDP(50), 0);
         ImageViewPickParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        final ImageView ImageViewPick = new ImageView(GetActivity());
+        final ImageView ImageViewPick = new ImageView(Activity);
         ImageViewPick.setLayoutParams(ImageViewPickParam);
         ImageViewPick.setImageResource(R.drawable.camera_pick_white);
         ImageViewPick.setId(Misc.ViewID());
@@ -85,7 +85,7 @@ public class CameraViewUI extends FragmentView
                     public void OnCapture(byte[] Data, int O)
                     {
                         IsClicked = false;
-                        GetActivity().GetManager().OpenView(new ImagePreviewUI(Data, O), R.id.ContainerFull, "ImagePreviewUI");
+                        Activity.GetManager().OpenView(new ImagePreviewUI(Data, O), R.id.ContainerFull, "ImagePreviewUI");
                     }
 
                     @Override
@@ -103,7 +103,7 @@ public class CameraViewUI extends FragmentView
         ImageViewFlashParam.addRule(RelativeLayout.LEFT_OF, ImageViewPick.getId());
         ImageViewFlashParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        final ImageView ImageViewFlash = new ImageView(GetActivity());
+        final ImageView ImageViewFlash = new ImageView(Activity);
         ImageViewFlash.setLayoutParams(ImageViewFlashParam);
         ImageViewFlash.setImageResource(R.drawable.flash_auto_white);
         ImageViewFlash.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
@@ -127,7 +127,7 @@ public class CameraViewUI extends FragmentView
         ImageViewSwitchParam.addRule(RelativeLayout.RIGHT_OF, ImageViewPick.getId());
         ImageViewSwitchParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        ImageView ImageViewSwitch = new ImageView(GetActivity());
+        ImageView ImageViewSwitch = new ImageView(Activity);
         ImageViewSwitch.setLayoutParams(ImageViewSwitchParam);
         ImageViewSwitch.setImageResource(R.drawable.camera_switch_white);
         ImageViewSwitch.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
@@ -141,14 +141,14 @@ public class CameraViewUI extends FragmentView
     @Override
     public void OnResume()
     {
-        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Camera.Start();
     }
 
     @Override
     public void OnPause()
     {
-        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Camera.Stop();
     }
 

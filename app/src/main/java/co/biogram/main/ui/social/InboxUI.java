@@ -26,12 +26,12 @@ public class InboxUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
         RelativeLayoutHeader.setId(Misc.ViewID());
@@ -43,7 +43,7 @@ public class InboxUI extends FragmentView
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTitleParam.addRule(Misc.Align("R"));
 
-        TextView TextViewTitle = new TextView(GetActivity(), 16, true);
+        TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
@@ -54,7 +54,7 @@ public class InboxUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewSearchParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewSearchParam.addRule(Misc.Align("L"));
 
-        ImageView ImageViewSearch = new ImageView(GetActivity());
+        ImageView ImageViewSearch = new ImageView(Activity);
         ImageViewSearch.setLayoutParams(ImageViewSearchParam);
         ImageViewSearch.setId(Misc.ViewID());
         ImageViewSearch.setImageResource(R.drawable._inbox_search);
@@ -66,19 +66,18 @@ public class InboxUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewWriteParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewWriteParam.addRule(Misc.AlignTo("L"), ImageViewSearch.getId());
 
-        ImageView ImageViewWrite = new ImageView(GetActivity());
+        ImageView ImageViewWrite = new ImageView(Activity);
         ImageViewWrite.setLayoutParams(ImageViewWriteParam);
-        ImageViewWrite.setId(Misc.ViewID());
         ImageViewWrite.setImageResource(R.drawable._inbox_write);
         ImageViewWrite.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
-        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().GetManager().OpenView(new WriteUI(), R.id.ContainerFull, "WriteUI");  } });
+        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new WriteUI(), R.id.ContainerFull, "WriteUI");  } });
 
         RelativeLayoutHeader.addView(ImageViewWrite);
 
         RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-        View ViewLine = new View(GetActivity());
+        View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
         ViewLine.setId(Misc.ViewID());
@@ -88,7 +87,7 @@ public class InboxUI extends FragmentView
         RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity())
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(Activity)
         {
             @Override
             public boolean canScrollHorizontally()
@@ -97,9 +96,9 @@ public class InboxUI extends FragmentView
             }
         };
 
-        RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
+        RecyclerView RecyclerViewMain = new RecyclerView(Activity);
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
-        RecyclerViewMain.setAdapter(Adapter = new PostAdapter(GetActivity(), "InboxUI"));
+        RecyclerViewMain.setAdapter(Adapter = new PostAdapter(Activity, "InboxUI"));
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
         RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain) { @Override public void OnLoadMore() { Adapter.Update(); } });
         RecyclerViewMain.setOnTouchListener(new View.OnTouchListener()
@@ -120,10 +119,10 @@ public class InboxUI extends FragmentView
     @Override
     public void OnResume()
     {
-        Misc.IsFullScreen(GetActivity(), true);
+        Misc.IsFullScreen(Activity, true);
 
         if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
+            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
 
         Adapter.Update();
     }
@@ -131,7 +130,7 @@ public class InboxUI extends FragmentView
     @Override
     public void OnPause()
     {
-        Misc.IsFullScreen(GetActivity(), false);
+        Misc.IsFullScreen(Activity, false);
         AndroidNetworking.forceCancel("InboxUI");
     }
 

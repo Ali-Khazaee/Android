@@ -52,12 +52,12 @@ public class GalleryViewUI extends FragmentView
     {
         final AdapterGallery Adapter = new AdapterGallery();
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
         RelativeLayoutMain.setClickable(true);
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
         RelativeLayoutHeader.setId(Misc.ViewID());
@@ -67,13 +67,13 @@ public class GalleryViewUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
-        ImageView ImageViewBack = new ImageView(GetActivity());
+        ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
         ImageViewBack.setId(Misc.ViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -81,7 +81,7 @@ public class GalleryViewUI extends FragmentView
         TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        final TextView TextViewTitle = new TextView(GetActivity(), 16, true);
+        final TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
         TextViewTitle.setText(GalleryType == 3 ? Misc.String(R.string.GalleryViewUIStorage) : Misc.String(R.string.GalleryViewUI));
@@ -95,7 +95,7 @@ public class GalleryViewUI extends FragmentView
                 if (GalleryType == 3)
                     return;
 
-                PopupMenu PopMenu = new PopupMenu(GetActivity(), TextViewTitle);
+                PopupMenu PopMenu = new PopupMenu(Activity, TextViewTitle);
                 PopMenu.getMenu().add(0, 0, 0, Misc.String(R.string.GalleryViewUI2));
 
                 int FolderCount = 1;
@@ -128,7 +128,7 @@ public class GalleryViewUI extends FragmentView
         ImageViewListParam.addRule(Misc.AlignTo("R"), TextViewTitle.getId());
         ImageViewListParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        ImageView ImageViewList = new ImageView(GetActivity());
+        ImageView ImageViewList = new ImageView(Activity);
         ImageViewList.setLayoutParams(ImageViewListParam);
         ImageViewList.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewList.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3));
@@ -140,7 +140,7 @@ public class GalleryViewUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewSaveParam.addRule(Misc.Align("L"));
 
-        ImageView ImageViewSave = new ImageView(GetActivity());
+        ImageView ImageViewSave = new ImageView(Activity);
         ImageViewSave.setLayoutParams(ImageViewSaveParam);
         ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSave.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
@@ -151,7 +151,7 @@ public class GalleryViewUI extends FragmentView
             public void onClick(View v)
             {
                 Listener.OnSave();
-                GetActivity().onBackPressed();
+                Activity.onBackPressed();
             }
         });
 
@@ -161,7 +161,7 @@ public class GalleryViewUI extends FragmentView
         RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
         ViewLineParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
 
-        View ViewLine = new View(GetActivity());
+        View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
         ViewLine.setId(Misc.ViewID());
@@ -171,9 +171,9 @@ public class GalleryViewUI extends FragmentView
         RelativeLayout.LayoutParams RecyclerViewFollowersParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewFollowersParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
+        RecyclerView RecyclerViewMain = new RecyclerView(Activity);
         RecyclerViewMain.setLayoutParams(RecyclerViewFollowersParam);
-        RecyclerViewMain.setLayoutManager(GalleryType != 3 ? new GridLayoutManager(GetActivity(), 3) : new LinearLayoutManager(GetActivity()));
+        RecyclerViewMain.setLayoutManager(GalleryType != 3 ? new GridLayoutManager(Activity, 3) : new LinearLayoutManager(Activity));
         RecyclerViewMain.setAdapter(Adapter);
 
         if (GalleryType != 3)
@@ -185,7 +185,7 @@ public class GalleryViewUI extends FragmentView
         {
             if (GalleryType == 3)
             {
-                for (File file : ContextCompat.getExternalFilesDirs(GetActivity(), null))
+                for (File file : ContextCompat.getExternalFilesDirs(Activity, null))
                     for (File file2 : file.getParentFile().getParentFile().getParentFile().getParentFile().listFiles())
                         GalleryList.add(new Struct(file2.getName(), file2.getAbsolutePath(), true));
             }
@@ -193,8 +193,8 @@ public class GalleryViewUI extends FragmentView
             {
                 Cursor[] cursors = new Cursor[2];
 
-                cursors[0] = GetActivity().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-                cursors[1] = GetActivity().getContentResolver().query(MediaStore.Video.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[0] = Activity.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[1] = Activity.getContentResolver().query(MediaStore.Video.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
 
                 Cursor cursor = new MergeCursor(cursors);
 
@@ -223,8 +223,8 @@ public class GalleryViewUI extends FragmentView
             {
                 Cursor[] cursors = new Cursor[2];
 
-                cursors[0] = GetActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-                cursors[1] = GetActivity().getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[0] = Activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+                cursors[1] = Activity.getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
 
                 Cursor cursor = new MergeCursor(cursors);
 
@@ -261,13 +261,13 @@ public class GalleryViewUI extends FragmentView
     @Override
     public void OnResume()
     {
-        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
     public void OnPause()
     {
-        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
@@ -333,12 +333,12 @@ public class GalleryViewUI extends FragmentView
                 if (new File(FileList.get(Position).Path).isDirectory())
                 {
                     Holder.ImageViewFile.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-                    GlideApp.with(GetActivity()).load(R.drawable._gallery_folder).dontAnimate().into(Holder.ImageViewFile);
+                    GlideApp.with(Activity).load(R.drawable._gallery_folder).dontAnimate().into(Holder.ImageViewFile);
                 }
                 else
                 {
                     Holder.ImageViewFile.setPadding(Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9));
-                    GlideApp.with(GetActivity()).load(R.drawable._gallery_file).dontAnimate().into(Holder.ImageViewFile);
+                    GlideApp.with(Activity).load(R.drawable._gallery_file).dontAnimate().into(Holder.ImageViewFile);
                 }
 
                 Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
@@ -361,7 +361,7 @@ public class GalleryViewUI extends FragmentView
                         else
                         {
                             Listener.OnSelection(Path.getAbsolutePath());
-                            GetActivity().onBackPressed();
+                            Activity.onBackPressed();
                         }
                     }
                 });
@@ -402,7 +402,7 @@ public class GalleryViewUI extends FragmentView
             else
                 Holder.ViewCircle.setBackground(DrawableSelect);
 
-            GlideApp.with(GetActivity())
+            GlideApp.with(Activity)
             .load(FileList.get(Position).Path)
             .thumbnail(0.1f)
             .placeholder(R.color.Gray)
@@ -446,7 +446,7 @@ public class GalleryViewUI extends FragmentView
                             }
                         });
 
-                        GetActivity().GetManager().OpenView(vp, R.id.ContainerFull, "VideoPreviewUI");
+                        Activity.GetManager().OpenView(vp, R.id.ContainerFull, "VideoPreviewUI");
                     }
                     else if (GalleryType == 1)
                     {
@@ -479,7 +479,7 @@ public class GalleryViewUI extends FragmentView
                             }
                         });
 
-                        GetActivity().GetManager().OpenView(ip, R.id.ContainerFull, "ImagePreviewUI");
+                        Activity.GetManager().OpenView(ip, R.id.ContainerFull, "ImagePreviewUI");
                     }
                 }
             });
@@ -490,12 +490,12 @@ public class GalleryViewUI extends FragmentView
         {
             if (ViewType == 1)
             {
-                RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
                 RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(57)));
                 RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
                 RelativeLayoutMain.setId(ID1_MAIN);
 
-                ImageView ImageViewIcon = new ImageView(GetActivity());
+                ImageView ImageViewIcon = new ImageView(Activity);
                 ImageViewIcon.setLayoutParams(new RecyclerView.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
                 ImageViewIcon.setId(ID1_FILE);
 
@@ -505,7 +505,7 @@ public class GalleryViewUI extends FragmentView
                 TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ID1_FILE);
                 TextViewNameParam.setMargins(0, Misc.ToDP(12), 0, 0);
 
-                TextView TextViewName = new TextView(GetActivity(), 14, true);
+                TextView TextViewName = new TextView(Activity, 14, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
                 TextViewName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                 TextViewName.setId(ID1_NAME);
@@ -515,7 +515,7 @@ public class GalleryViewUI extends FragmentView
                 RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
                 ViewLineParam.addRule(RelativeLayout.BELOW, ID1_FILE);
 
-                View ViewLine = new View(GetActivity());
+                View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(ViewLineParam);
                 ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
 
@@ -525,10 +525,10 @@ public class GalleryViewUI extends FragmentView
             }
             else
             {
-                RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
                 RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(90)));
 
-                ImageView ImageViewMain = new ImageView(GetActivity());
+                ImageView ImageViewMain = new ImageView(Activity);
                 ImageViewMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
                 ImageViewMain.setId(ID_MAIN);
 
@@ -538,7 +538,7 @@ public class GalleryViewUI extends FragmentView
                 ViewCircleParam.setMargins(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), 0);
                 ViewCircleParam.addRule(Misc.Align("R"));
 
-                View ViewCircle = new View(GetActivity());
+                View ViewCircle = new View(Activity);
                 ViewCircle.setLayoutParams(ViewCircleParam);
                 ViewCircle.setId(ID_CIRCLE);
 

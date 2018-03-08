@@ -1,9 +1,5 @@
 package co.biogram.main.ui.general;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -11,20 +7,13 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.DownloadListener;
-import com.androidnetworking.interfaces.DownloadProgressListener;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -53,13 +42,10 @@ import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvicto
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 import java.io.File;
-import java.util.Date;
 
 import co.biogram.main.App;
-import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
-import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -85,12 +71,12 @@ public class VideoPreviewUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
         RelativeLayoutMain.setClickable(true);
 
-        final RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+        final RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#20000000"));
         RelativeLayoutHeader.setId(Misc.ViewID());
@@ -100,13 +86,13 @@ public class VideoPreviewUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
-        ImageView ImageViewBack = new ImageView(GetActivity());
+        ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setId(Misc.ViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -114,17 +100,17 @@ public class VideoPreviewUI extends FragmentView
         TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(GetActivity(), 16, true);
+        TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setText(Misc.String(R.string.VideoPreviewUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        RelativeLayout.LayoutParams ImageViewDownloadParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
+        /*RelativeLayout.LayoutParams ImageViewDownloadParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewDownloadParam.addRule(Misc.Align("L"));
 
-        ImageView ImageViewDownload = new ImageView(GetActivity());
+        ImageView ImageViewDownload = new ImageView(Activity);
         ImageViewDownload.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewDownload.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDownload.setId(Misc.ViewID());
@@ -140,17 +126,17 @@ public class VideoPreviewUI extends FragmentView
 
                 final int NotifyID = (int) (System.currentTimeMillis() / 1000);
 
-                if (PendingIntent.getActivity(GetActivity(), NotifyID, new Intent(GetActivity(), SocialActivity.class), PendingIntent.FLAG_NO_CREATE) != null)
+                if (PendingIntent.getActivity(Activity, NotifyID, new Intent(Activity, SocialActivity.class), PendingIntent.FLAG_NO_CREATE) != null)
                     return;
 
-                final NotificationManager NotifyManager = (NotificationManager) GetActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-                final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(GetActivity(), "BioVideo");
+                final NotificationManager NotifyManager = (NotificationManager) Activity.getSystemService(Context.NOTIFICATION_SERVICE);
+                final NotificationCompat.Builder NotifyBuilder = new NotificationCompat.Builder(Activity, "BioVideo");
 
-                Intent i = new Intent(GetActivity(), SocialActivity.class);
+                Intent i = new Intent(Activity, SocialActivity.class);
                 i.putExtra("VideoCancel", true);
                 i.putExtra("VideoID", NotifyID);
 
-                NotifyBuilder.setContentTitle("Bio Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._general_download).addAction(0, "Cancel", PendingIntent.getActivity(GetActivity(), NotifyID, i, 0));
+                NotifyBuilder.setContentTitle("Bio Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._general_download).addAction(0, "Cancel", PendingIntent.getActivity(Activity, NotifyID, i, 0));
 
                 AndroidNetworking.download(VideoURL, CacheHandler.GetDir().getAbsolutePath(), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()).toString() + ".mp4")
                 .setTag(NotifyID)
@@ -199,7 +185,7 @@ public class VideoPreviewUI extends FragmentView
         });
 
         if (!IsLocal)
-            RelativeLayoutHeader.addView(ImageViewDownload);
+            RelativeLayoutHeader.addView(ImageViewDownload);*/
 
         if (SelectListener != null)
         {
@@ -209,7 +195,7 @@ public class VideoPreviewUI extends FragmentView
 
             final GradientDrawable DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
-            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+            DrawableSelected.setColor(ContextCompat.getColor(Activity, R.color.Primary));
             DrawableSelected.setStroke(Misc.ToDP(2), Color.WHITE);
 
             RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(24), Misc.ToDP(24));
@@ -217,14 +203,14 @@ public class VideoPreviewUI extends FragmentView
             ViewCircleParam.addRule(RelativeLayout.CENTER_VERTICAL);
             ViewCircleParam.addRule(Misc.Align("L"));
 
-            View ViewCircle = new View(GetActivity());
+            View ViewCircle = new View(Activity);
             ViewCircle.setLayoutParams(ViewCircleParam);
             ViewCircle.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    GetActivity().onBackPressed();
+                    Activity.onBackPressed();
 
                     if (Selected)
                     {
@@ -253,7 +239,7 @@ public class VideoPreviewUI extends FragmentView
         LoadingViewMainParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
         LoadingViewMainParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        final LoadingView LoadingViewMain = new LoadingView(GetActivity());
+        final LoadingView LoadingViewMain = new LoadingView(Activity);
         LoadingViewMain.setLayoutParams(LoadingViewMainParam);
         LoadingViewMain.SetColor(R.color.TextDark);
         LoadingViewMain.SetScale(1.7f);
@@ -262,13 +248,13 @@ public class VideoPreviewUI extends FragmentView
         RelativeLayout.LayoutParams RelativeLayoutControlParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
         RelativeLayoutControlParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-        final RelativeLayout RelativeLayoutControl = new RelativeLayout(GetActivity());
+        final RelativeLayout RelativeLayoutControl = new RelativeLayout(Activity);
         RelativeLayoutControl.setLayoutParams(RelativeLayoutControlParam);
         RelativeLayoutControl.setBackgroundColor(Color.parseColor("#20000000"));
 
         RelativeLayoutMain.addView(RelativeLayoutControl);
 
-        final ImageView ImageViewPlay = new ImageView(GetActivity());
+        final ImageView ImageViewPlay = new ImageView(Activity);
         ImageViewPlay.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
         ImageViewPlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewPlay.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56)));
@@ -282,7 +268,7 @@ public class VideoPreviewUI extends FragmentView
         TextViewTimeParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTimeParam.setMargins(Misc.ToDP(10), Misc.ToDP(3), Misc.ToDP(10), 0);
 
-        final TextView TextViewTime = new TextView(GetActivity(), 14, false);
+        final TextView TextViewTime = new TextView(Activity, 14, false);
         TextViewTime.setLayoutParams(TextViewTimeParam);
         TextViewTime.setId(Misc.ViewID());
         TextViewTime.setText((StringForTime(0) + " / " + StringForTime(0)));
@@ -294,9 +280,9 @@ public class VideoPreviewUI extends FragmentView
         SeekBarMainParam.addRule(RelativeLayout.LEFT_OF, TextViewTime.getId());
         SeekBarMainParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        final SeekBar SeekBarMain = new SeekBar(GetActivity(), null, android.R.attr.progressBarStyleHorizontal);
+        final SeekBar SeekBarMain = new SeekBar(Activity, null, android.R.attr.progressBarStyleHorizontal);
         SeekBarMain.setLayoutParams(SeekBarMainParam);
-        SeekBarMain.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(GetActivity(), R.color.TextDark), PorterDuff.Mode.MULTIPLY));
+        SeekBarMain.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(Activity, R.color.TextDark), PorterDuff.Mode.MULTIPLY));
         SeekBarMain.setMax(1000);
         SeekBarMain.setProgress(1);
 
@@ -305,9 +291,9 @@ public class VideoPreviewUI extends FragmentView
         RelativeLayout.LayoutParams SimpleExoPlayerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         SimpleExoPlayerViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        SimpleExoPlayerMain = ExoPlayerFactory.newSimpleInstance(GetActivity(), new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter())));
+        SimpleExoPlayerMain = ExoPlayerFactory.newSimpleInstance(Activity, new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(new DefaultBandwidthMeter())));
 
-        SimpleExoPlayerViewMain = new SimpleExoPlayerView(GetActivity());
+        SimpleExoPlayerViewMain = new SimpleExoPlayerView(Activity);
         SimpleExoPlayerViewMain.setLayoutParams(SimpleExoPlayerViewMainParam);
         SimpleExoPlayerViewMain.setUseController(false);
         SimpleExoPlayerViewMain.setVisibility(View.GONE);
@@ -352,15 +338,15 @@ public class VideoPreviewUI extends FragmentView
         {
             if (IsLocal)
             {
-                final FileDataSource fileDataSource = new FileDataSource();
-                fileDataSource.open(new DataSpec(Uri.parse(VideoURL)));
-                DataSource.Factory DataSourceMain = new DataSource.Factory() { @Override public DataSource createDataSource() { return fileDataSource; } };
-                MediaSourceMain = new ExtractorMediaSource(fileDataSource.getUri(), DataSourceMain, new DefaultExtractorsFactory(), null, null);
+                final FileDataSource FDS = new FileDataSource();
+                FDS.open(new DataSpec(Uri.parse(VideoURL)));
+                DataSource.Factory DataSourceMain = new DataSource.Factory() { @Override public DataSource createDataSource() { return FDS; } };
+                MediaSourceMain = new ExtractorMediaSource(FDS.getUri(), DataSourceMain, new DefaultExtractorsFactory(), null, null);
             }
             else
             {
-                Cache CacheMain = new SimpleCache(new File(GetActivity().getCacheDir(), "BiogramVideo"), new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024));
-                DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(App.GetOKClient(), "BioGram", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
+                Cache CacheMain = new SimpleCache(new File(Activity.getCacheDir(), "BioVideo"), new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024));
+                DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(App.GetOKClient(), "Bio", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
                 MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain, new DefaultExtractorsFactory(), null, null);
             }
         }
@@ -397,7 +383,7 @@ public class VideoPreviewUI extends FragmentView
                         else
                             LoadingViewMain.Stop();
                     }
-                }, 150);
+                }, 200);
             }
 
             @Override
@@ -482,7 +468,7 @@ public class VideoPreviewUI extends FragmentView
                     {
                         long Current = SimpleExoPlayerMain.getCurrentPosition();
                         long Duration = SimpleExoPlayerMain.getDuration();
-                        final long Position = 1000L * Current / Duration;
+                        long Position = 1000L * Current / Duration;
 
                         SeekBarMain.setProgress((int) Position);
                         SeekBarMain.setSecondaryProgress(SimpleExoPlayerMain.getBufferedPercentage()* 10);
@@ -517,11 +503,11 @@ public class VideoPreviewUI extends FragmentView
     {
         SimpleExoPlayerViewMain.postDelayed(runnable, 500);
 
-        GetActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(Color.BLACK);
+            Activity.getWindow().setStatusBarColor(Color.BLACK);
     }
 
     @Override
@@ -529,7 +515,7 @@ public class VideoPreviewUI extends FragmentView
     {
         SimpleExoPlayerViewMain.removeCallbacks(runnable);
         SimpleExoPlayerMain.setPlayWhenReady(false);
-        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
@@ -539,7 +525,7 @@ public class VideoPreviewUI extends FragmentView
         SimpleExoPlayerMain.release();
 
         if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
+            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
     }
 
     void SetType(boolean select, OnSelectListener l)

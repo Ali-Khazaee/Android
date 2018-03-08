@@ -50,17 +50,17 @@ public class WelcomeUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        ScrollViewMain = new ScrollView(GetActivity());
+        ScrollViewMain = new ScrollView(Activity);
         ScrollViewMain.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
         ScrollViewMain.setBackgroundResource(R.color.TextDark);
         ScrollViewMain.setFillViewport(true);
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ScrollViewMain.addView(RelativeLayoutMain);
 
-        LinearLayout LinearLayoutHeader = new LinearLayout(GetActivity());
+        LinearLayout LinearLayoutHeader = new LinearLayout(Activity);
         LinearLayoutHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(200)));
         LinearLayoutHeader.setBackgroundResource(R.color.Primary);
         LinearLayoutHeader.setOrientation(LinearLayout.VERTICAL);
@@ -69,7 +69,7 @@ public class WelcomeUI extends FragmentView
 
         RelativeLayoutMain.addView(LinearLayoutHeader);
 
-        RelativeLayout RelativeLayoutLanguage = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutLanguage = new RelativeLayout(Activity);
         RelativeLayoutLanguage.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(35)));
 
         LinearLayoutHeader.addView(RelativeLayoutLanguage);
@@ -77,7 +77,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayout.LayoutParams TextViewLanguageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewLanguageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextView TextViewLanguage = new TextView(GetActivity(), 16, false);
+        TextView TextViewLanguage = new TextView(Activity, 16, false);
         TextViewLanguage.setLayoutParams(TextViewLanguageParam);
         TextViewLanguage.setText(Misc.String(R.string.WelcomeUILanguage));
         TextViewLanguage.setId(Misc.ViewID());
@@ -86,15 +86,15 @@ public class WelcomeUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                final Dialog DialogLanguage = new Dialog(GetActivity());
+                final Dialog DialogLanguage = new Dialog(Activity);
                 DialogLanguage.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogLanguage.setCancelable(true);
 
-                LinearLayout LinearLayoutLanguage = new LinearLayout(GetActivity());
+                LinearLayout LinearLayoutLanguage = new LinearLayout(Activity);
                 LinearLayoutLanguage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                 LinearLayoutLanguage.setOrientation(LinearLayout.VERTICAL);
 
-                RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+                RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
                 RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
 
                 LinearLayoutLanguage.addView(RelativeLayoutHeader);
@@ -102,7 +102,7 @@ public class WelcomeUI extends FragmentView
                 RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Misc.ToDP(56));
                 TextViewTitleParam.addRule(Misc.Align("R"));
 
-                TextView TextViewTitle = new TextView(GetActivity(), 16, false);
+                TextView TextViewTitle = new TextView(Activity, 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.SetColor(R.color.TextWhite);
                 TextViewTitle.setText(Misc.String(R.string.WelcomeUILanguageSelect));
@@ -114,7 +114,7 @@ public class WelcomeUI extends FragmentView
                 RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
                 ImageViewCloseParam.addRule(Misc.Align("L"));
 
-                ImageView ImageViewClose = new ImageView(GetActivity());
+                ImageView ImageViewClose = new ImageView(Activity);
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                 ImageViewClose.setImageResource(R.drawable.close_blue);
                 ImageViewClose.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
@@ -122,7 +122,7 @@ public class WelcomeUI extends FragmentView
 
                 RelativeLayoutHeader.addView(ImageViewClose);
 
-                View ViewLine = new View(GetActivity());
+                View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                 ViewLine.setBackgroundResource(R.color.Gray);
 
@@ -131,7 +131,7 @@ public class WelcomeUI extends FragmentView
                 RelativeLayout.LayoutParams TextViewEnglishParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
                 TextViewEnglishParam.addRule(Misc.Align("R"));
 
-                TextView TextViewEnglish = new TextView(GetActivity(), 16, false);
+                TextView TextViewEnglish = new TextView(Activity, 16, false);
                 TextViewEnglish.setLayoutParams(TextViewEnglishParam);
                 TextViewEnglish.SetColor(R.color.TextWhite);
                 TextViewEnglish.setText(Misc.String(R.string.WelcomeUILanguageEnglish));
@@ -141,7 +141,7 @@ public class WelcomeUI extends FragmentView
 
                 LinearLayoutLanguage.addView(TextViewEnglish);
 
-                View ViewLine2 = new View(GetActivity());
+                View ViewLine2 = new View(Activity);
                 ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                 ViewLine2.setBackgroundResource(R.color.Gray);
 
@@ -150,7 +150,7 @@ public class WelcomeUI extends FragmentView
                 RelativeLayout.LayoutParams TextViewPersianParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
                 TextViewPersianParam.addRule(Misc.Align("R"));
 
-                TextView TextViewPersian = new TextView(GetActivity(), 16, false);
+                TextView TextViewPersian = new TextView(Activity, 16, false);
                 TextViewPersian.setLayoutParams(TextViewPersianParam);
                 TextViewPersian.SetColor(R.color.TextWhite);
                 TextViewPersian.setText(Misc.String(R.string.WelcomeUILanguagePersian));
@@ -172,7 +172,7 @@ public class WelcomeUI extends FragmentView
         ImageViewLanguageParam.addRule(Misc.AlignTo("R"), TextViewLanguage.getId());
         ImageViewLanguageParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        ImageView ImageViewLanguage = new ImageView(GetActivity());
+        ImageView ImageViewLanguage = new ImageView(Activity);
         ImageViewLanguage.setLayoutParams(ImageViewLanguageParam);
         ImageViewLanguage.setImageResource(R.drawable.option_white);
 
@@ -181,19 +181,19 @@ public class WelcomeUI extends FragmentView
         LinearLayout.LayoutParams ImageViewHeaderParam = new LinearLayout.LayoutParams(Misc.ToDP(150), Misc.ToDP(65));
         ImageViewHeaderParam.setMargins(0, Misc.ToDP(15), 0, Misc.ToDP(10));
 
-        ImageView ImageViewHeader = new ImageView(GetActivity());
+        ImageView ImageViewHeader = new ImageView(Activity);
         ImageViewHeader.setLayoutParams(ImageViewHeaderParam);
         ImageViewHeader.setImageResource(Misc.IsFa() ? R.drawable.ic_logo_fa : R.drawable.ic_logo);
 
         LinearLayoutHeader.addView(ImageViewHeader);
 
-        TextView TextViewHeader = new TextView(GetActivity(), 14, false);
+        TextView TextViewHeader = new TextView(Activity, 14, false);
         TextViewHeader.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewHeader.setText(Misc.String(R.string.WelcomeUIHeader));
 
         LinearLayoutHeader.addView(TextViewHeader);
 
-        TextView TextViewHeader2 = new TextView(GetActivity(), 14, false);
+        TextView TextViewHeader2 = new TextView(Activity, 14, false);
         TextViewHeader2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewHeader2.setText(Misc.String(R.string.WelcomeUIHeader2));
 
@@ -205,10 +205,10 @@ public class WelcomeUI extends FragmentView
         RelativeLayoutSignUpParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
         GradientDrawable DrawableSignUp = new GradientDrawable();
-        DrawableSignUp.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+        DrawableSignUp.setColor(ContextCompat.getColor(Activity, R.color.Primary));
         DrawableSignUp.setCornerRadius(Misc.ToDP(7));
 
-        Button ButtonSignUp = new Button(GetActivity(), 16, true);
+        Button ButtonSignUp = new Button(Activity, 16, true);
         ButtonSignUp.setLayoutParams(RelativeLayoutSignUpParam);
         ButtonSignUp.setText(Misc.String(R.string.GeneralSignUp));
         ButtonSignUp.setId(Misc.ViewID());
@@ -223,7 +223,7 @@ public class WelcomeUI extends FragmentView
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new PhoneUI(true), R.id.ContainerFull, "PhoneUI");
+                Activity.GetManager().OpenView(new PhoneUI(true), R.id.ContainerFull, "PhoneUI");
             }
         });
 
@@ -236,7 +236,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayoutORParam.setMargins(0, Misc.ToDP(20), 0, Misc.ToDP(5));
         RelativeLayoutORParam.addRule(RelativeLayout.BELOW, ButtonSignUp.getId());
 
-        RelativeLayout RelativeLayoutOR = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutOR = new RelativeLayout(Activity);
         RelativeLayoutOR.setLayoutParams(RelativeLayoutORParam);
         RelativeLayoutOR.setId(Misc.ViewID());
 
@@ -245,7 +245,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayout.LayoutParams TextViewORParam = new RelativeLayout.LayoutParams(Misc.ToDP(40), RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewORParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextView TextViewOR = new TextView(GetActivity(), 14, true);
+        TextView TextViewOR = new TextView(Activity, 14, true);
         TextViewOR.setLayoutParams(TextViewORParam);
         TextViewOR.setText(Misc.String(R.string.WelcomeUIOR));
         TextViewOR.setId(Misc.ViewID());
@@ -258,7 +258,7 @@ public class WelcomeUI extends FragmentView
         ViewOrLine1Param.addRule(RelativeLayout.RIGHT_OF, TextViewOR.getId());
         ViewOrLine1Param.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        View ViewOrLine1 = new View(GetActivity());
+        View ViewOrLine1 = new View(Activity);
         ViewOrLine1.setLayoutParams(ViewOrLine1Param);
         ViewOrLine1.setBackgroundResource(R.color.Gray);
 
@@ -268,7 +268,7 @@ public class WelcomeUI extends FragmentView
         ViewOrLine2Param.addRule(RelativeLayout.LEFT_OF, TextViewOR.getId());
         ViewOrLine2Param.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        View ViewOrLine2 = new View(GetActivity());
+        View ViewOrLine2 = new View(Activity);
         ViewOrLine2.setLayoutParams(ViewOrLine2Param);
         ViewOrLine2.setBackgroundResource(R.color.Gray);
 
@@ -278,7 +278,7 @@ public class WelcomeUI extends FragmentView
         LinearLayoutGoogleParam.addRule(RelativeLayout.BELOW, RelativeLayoutOR.getId());
         LinearLayoutGoogleParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        LinearLayout LinearLayoutGoogle = new LinearLayout(GetActivity());
+        LinearLayout LinearLayoutGoogle = new LinearLayout(Activity);
         LinearLayoutGoogle.setLayoutParams(LinearLayoutGoogleParam);
         LinearLayoutGoogle.setGravity(Gravity.CENTER);
         LinearLayoutGoogle.setOrientation(LinearLayout.HORIZONTAL);
@@ -288,11 +288,11 @@ public class WelcomeUI extends FragmentView
             public void onClick(View v)
             {
                 if (Build.VERSION.SDK_INT > 20)
-                    GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.TextWhite));
+                    Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.TextWhite));
 
                 RelativeLayoutGoogle.setVisibility(View.VISIBLE);
                 LoadingViewGoogle.Start();
-                GetActivity().startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(GoogleApiClient), 100);
+                Activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(GoogleApiClient), 100);
             }
         });
 
@@ -301,13 +301,13 @@ public class WelcomeUI extends FragmentView
         LinearLayout.LayoutParams ImageViewGoogleParam = new LinearLayout.LayoutParams(Misc.ToDP(30), Misc.ToDP(30));
         ImageViewGoogleParam.setMargins(Misc.ToDP(5), 0, Misc.ToDP(5), 0);
 
-        ImageView ImageViewGoogle = new ImageView(GetActivity());
+        ImageView ImageViewGoogle = new ImageView(Activity);
         ImageViewGoogle.setLayoutParams(ImageViewGoogleParam);
         ImageViewGoogle.setBackgroundResource(R.drawable.google);
 
         LinearLayoutGoogle.addView(ImageViewGoogle);
 
-        TextView TextViewGoogle = new TextView(GetActivity(), 16, true);
+        TextView TextViewGoogle = new TextView(Activity, 16, true);
         TextViewGoogle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         TextViewGoogle.SetColor(R.color.Primary);
         TextViewGoogle.setText(Misc.String(R.string.WelcomeUISignInGoogle));
@@ -319,7 +319,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayout.LayoutParams RelativeLayoutSignInParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
         RelativeLayoutSignInParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-        RelativeLayout RelativeLayoutSignIn = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutSignIn = new RelativeLayout(Activity);
         RelativeLayoutSignIn.setLayoutParams(RelativeLayoutSignInParam);
         RelativeLayoutSignIn.setBackgroundResource(R.color.ActionBarWhite);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
@@ -334,7 +334,7 @@ public class WelcomeUI extends FragmentView
 
                 ScrollViewMain.setAnimation(Anim);
 
-                GetActivity().GetManager().OpenView(new PhoneUI(false), R.id.ContainerFull, "PhoneUI");
+                Activity.GetManager().OpenView(new PhoneUI(false), R.id.ContainerFull, "PhoneUI");
             }
         });
 
@@ -343,7 +343,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayout.LayoutParams TextViewSignInParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewSignInParam.addRule(Misc.Align("R"));
 
-        TextView TextViewSignIn = new TextView(GetActivity(), 14, false);
+        TextView TextViewSignIn = new TextView(Activity, 14, false);
         TextViewSignIn.setLayoutParams(TextViewSignInParam);
         TextViewSignIn.SetColor(R.color.Gray);
         TextViewSignIn.setText(Misc.String(R.string.WelcomeUISignIn));
@@ -355,7 +355,7 @@ public class WelcomeUI extends FragmentView
         TextViewSignIn2Param.setMargins(Misc.ToDP(5), 0, Misc.ToDP(5), 0);
         TextViewSignIn2Param.addRule(Misc.AlignTo("R"), TextViewSignIn.getId());
 
-        TextView TextViewSignIn2 = new TextView(GetActivity(), 14, false);
+        TextView TextViewSignIn2 = new TextView(Activity, 14, false);
         TextViewSignIn2.setLayoutParams(TextViewSignIn2Param);
         TextViewSignIn2.SetColor(R.color.Primary);
         TextViewSignIn2.setText(Misc.String(R.string.GeneralSignIn));
@@ -365,7 +365,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
         ViewLineParam.addRule(RelativeLayout.ABOVE, RelativeLayoutSignIn.getId());
 
-        View ViewLine = new View(GetActivity());
+        View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
         ViewLine.setId(Misc.ViewID());
@@ -377,12 +377,12 @@ public class WelcomeUI extends FragmentView
         TextViewTerm2Param.addRule(RelativeLayout.ABOVE, ViewLine.getId());
         TextViewTerm2Param.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewTerm2 = new TextView(GetActivity(), 14, false);
+        TextView TextViewTerm2 = new TextView(Activity, 14, false);
         TextViewTerm2.setLayoutParams(TextViewTerm2Param);
         TextViewTerm2.SetColor(R.color.Gray);
         TextViewTerm2.setText(Misc.String(R.string.WelcomeUITerm2));
         TextViewTerm2.setId(Misc.ViewID());
-        TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
+        TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutMain.addView(TextViewTerm2);
 
@@ -390,14 +390,14 @@ public class WelcomeUI extends FragmentView
         TextViewTermParam.addRule(RelativeLayout.ABOVE, TextViewTerm2.getId());
         TextViewTermParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        TextView TextViewTerm = new TextView(GetActivity(), 14, false);
+        TextView TextViewTerm = new TextView(Activity, 14, false);
         TextViewTerm.setLayoutParams(TextViewTermParam);
         TextViewTerm.SetColor(R.color.Gray);
         TextViewTerm.setText(Misc.String(R.string.WelcomeUITerm));
 
         RelativeLayoutMain.addView(TextViewTerm);
 
-        RelativeLayoutGoogle = new RelativeLayout(GetActivity());
+        RelativeLayoutGoogle = new RelativeLayout(Activity);
         RelativeLayoutGoogle.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutGoogle.setBackgroundColor(Color.parseColor("#90000000"));
         RelativeLayoutGoogle.setClickable(true);
@@ -408,7 +408,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayout.LayoutParams LoadingViewGoogleParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         LoadingViewGoogleParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        LoadingViewGoogle = new LoadingView(GetActivity());
+        LoadingViewGoogle = new LoadingView(Activity);
         LoadingViewGoogle.setLayoutParams(LoadingViewGoogleParam);
         LoadingViewGoogle.SetColor(R.color.TextDark);
 
@@ -416,11 +416,11 @@ public class WelcomeUI extends FragmentView
 
         ViewMain = ScrollViewMain;
 
-        IsGoogleAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(GetActivity()) == ConnectionResult.SUCCESS;
+        IsGoogleAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Activity) == ConnectionResult.SUCCESS;
 
         if (IsGoogleAvailable)
         {
-            GoogleApiClient = new GoogleApiClient.Builder(GetActivity().getApplicationContext())
+            GoogleApiClient = new GoogleApiClient.Builder(Activity.getApplicationContext())
             .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com")
@@ -491,8 +491,8 @@ public class WelcomeUI extends FragmentView
                                             SharedHandler.SetString("Username", Result3.getString("Username"));
                                             SharedHandler.SetString("Avatar", Result3.getString("Avatar"));
 
-                                            GetActivity().startActivity(new Intent(GetActivity(), SocialActivity.class));
-                                            GetActivity().finish();
+                                            Activity.startActivity(new Intent(Activity, SocialActivity.class));
+                                            Activity.finish();
                                             return;
                                         }
 
@@ -501,7 +501,7 @@ public class WelcomeUI extends FragmentView
 
                                         ScrollViewMain.setAnimation(Anim);
 
-                                        GetActivity().GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), R.id.ContainerFull, "UsernameUI");
+                                        Activity.GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), R.id.ContainerFull, "UsernameUI");
                                         break;
                                     case 1:
                                     case 2:
@@ -546,7 +546,7 @@ public class WelcomeUI extends FragmentView
     private void HideGoogleLoading()
     {
         if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+            Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.Primary));
 
         LoadingViewGoogle.Stop();
         RelativeLayoutGoogle.setVisibility(View.GONE);

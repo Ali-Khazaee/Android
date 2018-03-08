@@ -125,6 +125,13 @@ public class DBHandler extends SQLiteOpenHelper
         getWritableDatabase().execSQL(SQL);
     }
 
+    void InboxMessage(String ID, String Message)
+    {
+        String SQL = "UPDATE `inbox_post` SET `" + INBOX_POST_MESSAGE + "` = '" + Message + "' WHERE `ID` = '" + ID + "'";
+
+        getWritableDatabase().execSQL(SQL);
+    }
+
     void InboxComment(String ID, boolean Ins)
     {
         String SQL = "UPDATE `inbox_post` SET `" + INBOX_POST_COMMENTCOUNT + "` = `" + INBOX_POST_COMMENTCOUNT + "`" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";

@@ -32,12 +32,12 @@ public class CropViewUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
         RelativeLayoutMain.setClickable(true);
 
-        final CropImageView CropImageViewMain = new CropImageView(GetActivity());
+        final CropImageView CropImageViewMain = new CropImageView(Activity);
         CropImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         CropImageViewMain.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
         CropImageViewMain.setFixedAspectRatio(false);
@@ -49,7 +49,7 @@ public class CropViewUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewDoneParam.addRule(Misc.Align("L"));
 
-        ImageView ImageViewDone = new ImageView(GetActivity());
+        ImageView ImageViewDone = new ImageView(Activity);
         ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
         ImageViewDone.setImageResource(R.drawable.done_white);
@@ -63,7 +63,7 @@ public class CropViewUI extends FragmentView
                     ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
                     CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.PNG, 100, BAOS);
 
-                    File file = new File(CacheHandler.CacheDir(GetActivity()), System.currentTimeMillis() + ".jpg");
+                    File file = new File(CacheHandler.TempDir(Activity), System.currentTimeMillis() + ".jpg");
                     file.createNewFile();
 
                     FileOutputStream FOS = new FileOutputStream(file);
@@ -78,7 +78,7 @@ public class CropViewUI extends FragmentView
                     Misc.Debug("CropViewUI: " + e.toString());
                 }
 
-                GetActivity().onBackPressed();
+                Activity.onBackPressed();
             }
         });
 
@@ -87,11 +87,11 @@ public class CropViewUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewCloseParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewCloseParam.addRule(Misc.Align("R"));
 
-        ImageView ImageViewClose = new ImageView(GetActivity());
+        ImageView ImageViewClose = new ImageView(Activity);
         ImageViewClose.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewClose.setLayoutParams(ImageViewCloseParam);
         ImageViewClose.setImageResource(R.drawable.close_white);
-        ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
+        ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
         RelativeLayoutMain.addView(ImageViewClose);
 
@@ -101,13 +101,13 @@ public class CropViewUI extends FragmentView
     @Override
     public void OnResume()
     {
-        GetActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
     public void OnPause()
     {
-        GetActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public interface OnCropListener

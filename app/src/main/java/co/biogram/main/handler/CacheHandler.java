@@ -1,58 +1,71 @@
 package co.biogram.main.handler;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.RandomAccessFile;
 
 public class CacheHandler
 {
-    public static File CacheDir(Context context)
+    public final static int DOWNLOAD = 0;
+    public final static int DOCUMENT = 1;
+    public final static int PICTURE = 2;
+    public final static int VIDEO = 3;
+    public final static int AUDIO = 4;
+    public final static int FILE = 5;
+
+    public static File TempDir(Context context)
     {
-        File CacheFolder = new File(context.getCacheDir(), "Temp");
+        File TempFolder = new File(context.getCacheDir(), "Temp");
 
-        if (!CacheFolder.exists())
-            CacheFolder.mkdir();
+        if (!TempFolder.exists())
+            TempFolder.mkdir();
 
-        return CacheFolder;
+        return TempFolder;
     }
 
-    public static File GetDir()
+    public static File Dir(int Type)
     {
-        File BioFolder = new File(Environment.getExternalStorageDirectory(), "Bio");
+        File Bio = new File(Environment.getExternalStorageDirectory(), "Bio");
 
-        if (!BioFolder.exists())
-            BioFolder.mkdir();
+        if (!Bio.exists())
+            Bio.mkdir();
 
-        return BioFolder;
+        String Folder = "";
+
+        switch (Type)
+        {
+            case DOWNLOAD: Folder = "Download"; break;
+            case DOCUMENT: Folder = "Document"; break;
+            case PICTURE: Folder = "Picture"; break;
+            case VIDEO: Folder = "Video"; break;
+            case AUDIO: Folder = "Audio"; break;
+            case FILE: Folder = "File"; break;
+        }
+
+        File Select = new File(Bio, Folder);
+
+        if (!Select.exists())
+            Select.mkdir();
+
+        return Select;
     }
 
     public static void SetUp(Context context)
     {
-        try
+        File TempFolder = TempDir(context);
+
+        if (TempFolder.exists() && TempFolder.isDirectory())
         {
-            File TempFolder = CacheDir(context);
+            File[] TempFiles = TempFolder.listFiles();
 
-            if (TempFolder.exists() && TempFolder.isDirectory())
-            {
-                File[] TempFiles = TempFolder.listFiles();
+            if (TempFiles != null)
+                for (File file : TempFiles)
+                    file.delete();
+        }
+    }
 
-                if (TempFiles != null)
-                    for (File file : TempFiles)
-                        file.delete();
-            }
-
-            /*File CacheFolder = new File(context.getCacheDir(), "BioGramCache");
+    /*File CacheFolder = new File(context.getCacheDir(), "BioGramCache");
 
             if (!CacheFolder.exists())
                 CacheFolder.mkdir();
@@ -93,14 +106,8 @@ public class CacheHandler
 
             if (CacheFile.delete())
                 CacheTemp.renameTo(CacheFile);*/
-        }
-        catch (Exception e)
-        {
-            Misc.Debug("CacheHandler-SetUp: " + e.toString());
-        }
-    }
 
-    private static void StoreCacheData(Context context, String Data)
+    /*private static void StoreCacheData(Context context, String Data)
     {
         try
         {
@@ -223,5 +230,5 @@ public class CacheHandler
         {
             Misc.Debug("CacheHandler-StoreBitmap: " + e.toString());
         }
-    }
+    }*/
 }

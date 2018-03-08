@@ -1,14 +1,10 @@
 package co.biogram.main.activity;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import com.androidnetworking.AndroidNetworking;
 
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentView;
@@ -128,7 +124,7 @@ public class SocialActivity extends FragmentActivity
         if (getIntent() == null)
             return;
 
-        if (getIntent().getBooleanExtra("VideoCancel", false))
+        /*if (getIntent().getBooleanExtra("VideoCancel", false))
         {
             AndroidNetworking.forceCancel(getIntent().getStringExtra("VideoID"));
 
@@ -138,7 +134,7 @@ public class SocialActivity extends FragmentActivity
                 Notify.cancel(getIntent().getIntExtra("VideoID", 0));
 
             return;
-        }
+        }*/
 
         switch (getIntent().getIntExtra("Type", 0))
         {

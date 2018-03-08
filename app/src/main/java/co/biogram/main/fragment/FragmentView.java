@@ -6,14 +6,9 @@ import android.view.ViewGroup;
 
 public class FragmentView
 {
-    FragmentActivity Activity;
+    public FragmentActivity Activity;
     public View ViewMain;
     String Tag;
-
-    public FragmentActivity GetActivity()
-    {
-        return Activity;
-    }
 
     public void OnDestroy()
     {

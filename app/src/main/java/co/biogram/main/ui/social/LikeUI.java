@@ -49,13 +49,13 @@ public class LikeUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        LinearLayout LinearLayoutMain = new LinearLayout(GetActivity());
+        LinearLayout LinearLayoutMain = new LinearLayout(Activity);
         LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
         LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutMain.setClickable(true);
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
 
@@ -64,11 +64,11 @@ public class LikeUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
-        ImageView ImageViewBack = new ImageView(GetActivity());
+        ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { GetActivity().onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
         ImageViewBack.setId(Misc.ViewID());
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -77,7 +77,7 @@ public class LikeUI extends FragmentView
         TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(GetActivity(), 16, true);
+        TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
         TextViewTitle.setText(Misc.String(R.string.LikeUI));
@@ -85,20 +85,20 @@ public class LikeUI extends FragmentView
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        View ViewLine = new View(GetActivity());
+        View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
 
         LinearLayoutMain.addView(ViewLine);
 
-        RelativeLayout RelativeLayoutContent = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutContent = new RelativeLayout(Activity);
         RelativeLayoutContent.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         LinearLayoutMain.addView(RelativeLayoutContent);
 
-        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(GetActivity());
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(Activity);
 
-        RecyclerView RecyclerViewMain = new RecyclerView(GetActivity());
+        RecyclerView RecyclerViewMain = new RecyclerView(Activity);
         RecyclerViewMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMain.setAdapter(Adapter = new AdapterLike());
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
@@ -106,7 +106,7 @@ public class LikeUI extends FragmentView
 
         RelativeLayoutContent.addView(RecyclerViewMain);
 
-        LoadingView LoadingViewMain = new LoadingView(GetActivity());
+        LoadingView LoadingViewMain = new LoadingView(Activity);
         LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         LoadingViewMain.setBackgroundResource(R.color.GroundWhite);
         LoadingViewMain.Start();
@@ -289,7 +289,7 @@ public class LikeUI extends FragmentView
 
             final int Position = Holder.getAdapterPosition();
 
-            GlideApp.with(GetActivity()).load(PeopleList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
+            GlideApp.with(Activity).load(PeopleList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
             Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -327,13 +327,13 @@ public class LikeUI extends FragmentView
             if (PeopleList.get(Position).Follow)
             {
                 Holder.TextViewFollow.SetColor(R.color.TextDark);
-                Holder.TextViewFollow.setText(GetActivity().getString(R.string.LikeUIUnfollow));
+                Holder.TextViewFollow.setText(Activity.getString(R.string.LikeUIUnfollow));
                 Holder.TextViewFollow.setBackground(DrawableUnfollow);
             }
             else
             {
                 Holder.TextViewFollow.SetColor(R.color.TextDark);
-                Holder.TextViewFollow.setText(GetActivity().getString(R.string.LikeUIFollow));
+                Holder.TextViewFollow.setText(Activity.getString(R.string.LikeUIFollow));
                 Holder.TextViewFollow.setBackground(DrawableFollow);
             }
 
@@ -352,7 +352,7 @@ public class LikeUI extends FragmentView
                     PeopleList.get(Position).Follow = !PeopleList.get(Position).Follow;
                     notifyDataSetChanged();
 
-                    Misc.Toast(PeopleList.get(Position).Follow ? GetActivity().getString(R.string.LikeUIFollowed) : GetActivity().getString(R.string.LikeUIUnfollowed));
+                    Misc.Toast(PeopleList.get(Position).Follow ? Activity.getString(R.string.LikeUIFollowed) : Activity.getString(R.string.LikeUIUnfollowed));
                 }
             });
 
@@ -367,13 +367,13 @@ public class LikeUI extends FragmentView
         {
             if (ViewType == 0)
             {
-                RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+                RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
                 RelativeLayout.LayoutParams LinearLayoutMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 LinearLayoutMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-                LinearLayout LinearLayoutMain = new LinearLayout(GetActivity());
+                LinearLayout LinearLayoutMain = new LinearLayout(Activity);
                 LinearLayoutMain.setLayoutParams(LinearLayoutMainParam);
                 LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
                 LinearLayoutMain.setGravity(Gravity.CENTER);
@@ -383,7 +383,7 @@ public class LikeUI extends FragmentView
                 RelativeLayout.LayoutParams ImageViewContentParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
                 ImageViewContentParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-                ImageView ImageViewContent = new CircleImageView(GetActivity());
+                ImageView ImageViewContent = new CircleImageView(Activity);
                 ImageViewContent.setLayoutParams(ImageViewContentParam);
                 ImageViewContent.setImageResource(R.drawable._general_like);
                 ImageViewContent.setId(Misc.ViewID());
@@ -394,10 +394,10 @@ public class LikeUI extends FragmentView
                 TextViewContentParam.addRule(RelativeLayout.BELOW, ImageViewContent.getId());
                 TextViewContentParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-                TextView TextViewContent = new TextView(GetActivity(), 16, false);
+                TextView TextViewContent = new TextView(Activity, 16, false);
                 TextViewContent.setLayoutParams(TextViewContentParam);
                 TextViewContent.SetColor(R.color.Gray);
-                TextViewContent.setText(GetActivity().getString(R.string.LikeUINo));
+                TextViewContent.setText(Activity.getString(R.string.LikeUINo));
 
                 LinearLayoutMain.addView(TextViewContent);
 
@@ -407,7 +407,7 @@ public class LikeUI extends FragmentView
             StateListDrawable StatePress = new StateListDrawable();
             StatePress.addState(new int[] { android.R.attr.state_pressed }, new ColorDrawable(Color.parseColor("#b0eeeeee")));
 
-            RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
             RelativeLayoutMain.setBackground(StatePress);
             RelativeLayoutMain.setOnClickListener(null);
@@ -416,7 +416,7 @@ public class LikeUI extends FragmentView
             CircleImageViewProfileParam.setMargins(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
             CircleImageViewProfileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-            CircleImageView CircleImageViewProfile = new CircleImageView(GetActivity());
+            CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
             CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
             CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
             CircleImageViewProfile.SetBorderWidth(1);
@@ -428,7 +428,7 @@ public class LikeUI extends FragmentView
             TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ID_PROFILE);
             TextViewNameParam.setMargins(0, Misc.ToDP(13), 0, 0);
 
-            TextView TextViewName = new TextView(GetActivity(), 14, false);
+            TextView TextViewName = new TextView(Activity, 14, false);
             TextViewName.setLayoutParams(TextViewNameParam);
             TextViewName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
             TextViewName.setId(ID_NAME);
@@ -439,7 +439,7 @@ public class LikeUI extends FragmentView
             TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF, ID_PROFILE);
             TextViewUsernameParam.setMargins(0, Misc.ToDP(35), 0, 0);
 
-            TextView TextViewUsername = new TextView(GetActivity(), 12, false);
+            TextView TextViewUsername = new TextView(Activity, 12, false);
             TextViewUsername.setLayoutParams(TextViewUsernameParam);
             TextViewUsername.SetColor(R.color.Gray);
             TextViewUsername.setId(ID_USERNAME);
@@ -451,7 +451,7 @@ public class LikeUI extends FragmentView
             TextViewFollowParam.addRule(RelativeLayout.CENTER_VERTICAL);
             TextViewFollowParam.setMargins(0, 0, Misc.ToDP(10), 0);
 
-            TextView TextViewFollow = new TextView(GetActivity(), 12, true);
+            TextView TextViewFollow = new TextView(Activity, 12, true);
             TextViewFollow.setLayoutParams(TextViewFollowParam);
             TextViewFollow.setPadding(Misc.ToDP(8), Misc.ToDP(5), Misc.ToDP(8), Misc.ToDP(3));
             TextViewFollow.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -462,7 +462,7 @@ public class LikeUI extends FragmentView
             RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
             ViewLineParam.addRule(RelativeLayout.BELOW, ID_PROFILE);
 
-            View ViewLine = new View(GetActivity());
+            View ViewLine = new View(Activity);
             ViewLine.setLayoutParams(ViewLineParam);
             ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
             ViewLine.setId(ID_LINE);

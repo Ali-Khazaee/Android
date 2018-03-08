@@ -16,11 +16,14 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -1674,7 +1677,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         Holder.TextViewFileName.setText(Name);
                         Holder.TextViewFileDetail.setText(Details);
 
-                        final File Download = new File(CacheHandler.GetDir(), FileName);
+                        final File Download = new File(CacheHandler.Dir(CacheHandler.DOWNLOAD), FileName);
 
                         if (PostList.get(Position).IsDownloading)
                         {
@@ -1827,7 +1830,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewFile.setVisibility(View.VISIBLE);
                                 Holder.TextViewFile.setText("0%");
 
-                                AndroidNetworking.download(URL, CacheHandler.GetDir().getAbsolutePath(), FileName)
+                                AndroidNetworking.download(URL, CacheHandler.Dir(CacheHandler.DOWNLOAD).getAbsolutePath(), FileName)
                                 .setPriority(Priority.MEDIUM)
                                 .setTag(PostList.get(Position).ID)
                                 .build()
@@ -2088,30 +2091,120 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 TextViewEdit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
                                 TextViewEdit.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                                 TextViewEdit.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
-                                TextViewEdit.setText(Misc.String(R.string.PostAdapterOptionDelete));
+                                TextViewEdit.setText(Misc.String(R.string.PostAdapterOptionEdit));
                                 TextViewEdit.setGravity(Gravity.CENTER_VERTICAL);
                                 TextViewEdit.setOnClickListener(new View.OnClickListener()
                                 {
                                     @Override
                                     public void onClick(View v)
                                     {
-                                        AndroidNetworking.post(Misc.GetRandomServer("PostEdit"))
-                                        .addBodyParameter("PostID", PostList.get(Position).ID)
-                                        .addHeaders("Token", SharedHandler.GetString("Token"))
-                                        .setTag(Tag)
-                                        .build()
-                                        .getAsString(new StringRequestListener()
+                                        DialogOption.dismiss();
+
+                                        final Dialog DialogEdit = new Dialog(Activity);
+                                        DialogEdit.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                        DialogEdit.setCancelable(true);
+
+                                        LinearLayout LinearLayoutMain = new LinearLayout(Activity);
+                                        LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                                        LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                                        LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
+
+                                        TextView TextViewTitle = new TextView(Activity, 14, true);
+                                        TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                                        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                                        TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
+                                        TextViewTitle.setText(Misc.String(R.string.PostAdapterOptionEditTitle));
+                                        TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
+
+                                        LinearLayoutMain.addView(TextViewTitle);
+
+                                        View ViewLine = new View(Activity);
+                                        ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                                        ViewLine.setBackgroundResource(R.color.LineWhite);
+
+                                        LinearLayoutMain.addView(ViewLine);
+
+                                        final EditText EditTextMessage = new EditText(Activity);
+                                        EditTextMessage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                        EditTextMessage.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
+                                        EditTextMessage.setMinHeight(Misc.ToDP(56));
+                                        EditTextMessage.setBackground(null);
+                                        EditTextMessage.setText(PostList.get(Position).Message);
+                                        EditTextMessage.setHint(R.string.PostAdapterOptionEditMessage);
+                                        EditTextMessage.setHintTextColor(Misc.Color(R.color.Gray));
+                                        EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+                                        EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                        EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(300) });
+
+                                        LinearLayoutMain.addView(EditTextMessage);
+
+                                        View ViewLine2 = new View(Activity);
+                                        ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                                        ViewLine2.setBackgroundResource(R.color.LineWhite);
+
+                                        LinearLayoutMain.addView(ViewLine2);
+
+                                        TextView TextViewSubmit = new TextView(Activity, 14, true);
+                                        TextViewSubmit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                                        TextViewSubmit.SetColor(R.color.Primary);
+                                        TextViewSubmit.setText(Misc.String(R.string.PostAdapterOptionEditSubmit));
+                                        TextViewSubmit.setGravity(Gravity.CENTER);
+                                        TextViewSubmit.setOnClickListener(new View.OnClickListener()
                                         {
                                             @Override
-                                            public void onResponse(String e)
+                                            public void onClick(View view)
                                             {
+                                                AndroidNetworking.post(Misc.GetRandomServer("PostEdit"))
+                                                .addBodyParameter("PostID", PostList.get(Position).ID)
+                                                .addBodyParameter("Message", EditTextMessage.getText().toString())
+                                                .addHeaders("Token", SharedHandler.GetString("Token"))
+                                                .setTag(Tag)
+                                                .build()
+                                                .getAsString(new StringRequestListener()
+                                                {
+                                                    @Override
+                                                    public void onResponse(String Response)
+                                                    {
+                                                        try
+                                                        {
+                                                            JSONObject Result = new JSONObject(Response);
 
+                                                            if (Result.getInt("Message") == 0)
+                                                            {
+                                                                PostList.get(Position).Message = Result.getString("Text");
+
+                                                                if (PostList.get(Position).Message == null || PostList.get(Position).Message.isEmpty())
+                                                                    Holder.TextViewMessage.setVisibility(View.GONE);
+                                                                else
+                                                                {
+                                                                    Holder.TextViewMessage.setVisibility(View.VISIBLE);
+                                                                    Holder.TextViewMessage.setText(PostList.get(Position).Message);
+
+                                                                    TagHandler.Show(Holder.TextViewMessage);
+                                                                }
+
+                                                                DB.InboxMessage(PostList.get(Position).ID, PostList.get(Position).Message);
+
+                                                                notifyDataSetChanged();
+                                                            }
+                                                        }
+                                                        catch (Exception e)
+                                                        {
+                                                            Misc.Debug("PostAdapter-Edit: " + e.toString());
+                                                        }
+                                                    }
+
+                                                    @Override public void onError(ANError e) { }
+                                                });
+
+                                                DialogEdit.dismiss();
                                             }
-
-                                            @Override public void onError(ANError e) { }
                                         });
 
-                                        DialogOption.dismiss();
+                                        LinearLayoutMain.addView(TextViewSubmit);
+
+                                        DialogEdit.setContentView(LinearLayoutMain);
+                                        DialogEdit.show();
                                     }
                                 });
 

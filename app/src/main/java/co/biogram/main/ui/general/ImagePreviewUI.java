@@ -7,7 +7,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -16,7 +15,6 @@ import android.text.format.DateFormat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -117,14 +115,14 @@ public class ImagePreviewUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
         RelativeLayoutMain.setClickable(true);
 
         if (bitmap != null)
         {
-            PhotoView PhotoViewMain = new PhotoView(GetActivity());
+            PhotoView PhotoViewMain = new PhotoView(Activity);
             PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             PhotoViewMain.setImageBitmap(bitmap);
             PhotoViewMain.setOnClickListener(new View.OnClickListener()
@@ -143,7 +141,7 @@ public class ImagePreviewUI extends FragmentView
         }
         else
         {
-            ViewPagerMain = new ViewPager(GetActivity())
+            ViewPagerMain = new ViewPager(Activity)
             {
                 @Override
                 public boolean onTouchEvent(MotionEvent ev)
@@ -177,7 +175,7 @@ public class ImagePreviewUI extends FragmentView
             RelativeLayoutMain.addView(ViewPagerMain);
         }
 
-        RelativeLayoutHeader = new RelativeLayout(GetActivity());
+        RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#3f000000"));
 
@@ -186,13 +184,13 @@ public class ImagePreviewUI extends FragmentView
         RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
         ImageViewBackParam.addRule(Misc.Align("R"));
 
-        ImageView ImageViewBack = new ImageView(GetActivity());
+        ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setId(Misc.ViewID());
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { GetActivity().onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -200,7 +198,7 @@ public class ImagePreviewUI extends FragmentView
         TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextView TextViewTitle = new TextView(GetActivity(), 16, true);
+        TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setText(Misc.String(R.string.ImagePreviewUI));
@@ -209,12 +207,12 @@ public class ImagePreviewUI extends FragmentView
 
         if (Type == 1)
         {
-            final CropImageView CropImageViewMain = new CropImageView(GetActivity());
+            final CropImageView CropImageViewMain = new CropImageView(Activity);
 
             RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
             ImageViewDoneParam.addRule(Misc.Align("L"));
 
-            ImageView ImageViewDone = new ImageView(GetActivity());
+            ImageView ImageViewDone = new ImageView(Activity);
             ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
             ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone.setLayoutParams(ImageViewDoneParam);
@@ -240,7 +238,7 @@ public class ImagePreviewUI extends FragmentView
 
             RelativeLayoutMain.addView(CropImageViewMain);
 
-            RelativeLayout RelativeLayoutCrop = new RelativeLayout(GetActivity());
+            RelativeLayout RelativeLayoutCrop = new RelativeLayout(Activity);
             RelativeLayoutCrop.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
 
             CropImageViewMain.addView(RelativeLayoutCrop);
@@ -248,7 +246,7 @@ public class ImagePreviewUI extends FragmentView
             RelativeLayout.LayoutParams ImageViewDone2Param = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
             ImageViewDone2Param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-            ImageView ImageViewDone2 = new ImageView(GetActivity());
+            ImageView ImageViewDone2 = new ImageView(Activity);
             ImageViewDone2.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
             ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone2.setLayoutParams(ImageViewDone2Param);
@@ -265,20 +263,20 @@ public class ImagePreviewUI extends FragmentView
                         ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
                         CropImageViewMain.getCroppedImage(250, 250).compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
 
-                        File ProfileFile = new File(CacheHandler.CacheDir(GetActivity()), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
+                        File ProfileFile = new File(CacheHandler.TempDir(Activity), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
 
                         FileOutputStream FOS = new FileOutputStream(ProfileFile);
                         FOS.write(BAOS.toByteArray());
                         FOS.flush();
                         FOS.close();
 
-                        DescriptionUI SignUpDescription = (DescriptionUI) GetActivity().GetManager().FindByTag("DescriptionUI");
+                        DescriptionUI SignUpDescription = (DescriptionUI) Activity.GetManager().FindByTag("DescriptionUI");
 
                         if(SignUpDescription != null)
                             SignUpDescription.Update(ProfileFile, false);
 
-                        GetActivity().onBackPressed();
-                        GetActivity().onBackPressed();
+                        Activity.onBackPressed();
+                        Activity.onBackPressed();
                     }
                     catch (Exception e)
                     {
@@ -297,7 +295,7 @@ public class ImagePreviewUI extends FragmentView
 
             final GradientDrawable DrawableSelected = new GradientDrawable();
             DrawableSelected.setShape(GradientDrawable.OVAL);
-            DrawableSelected.setColor(ContextCompat.getColor(GetActivity(), R.color.Primary));
+            DrawableSelected.setColor(ContextCompat.getColor(Activity, R.color.Primary));
             DrawableSelected.setStroke(Misc.ToDP(2), Color.WHITE);
 
             RelativeLayout.LayoutParams ViewCircleParam = new RelativeLayout.LayoutParams(Misc.ToDP(24), Misc.ToDP(24));
@@ -305,14 +303,14 @@ public class ImagePreviewUI extends FragmentView
             ViewCircleParam.addRule(RelativeLayout.CENTER_VERTICAL);
             ViewCircleParam.addRule(Misc.Align("L"));
 
-            View ViewCircle = new View(GetActivity());
+            View ViewCircle = new View(Activity);
             ViewCircle.setLayoutParams(ViewCircleParam);
             ViewCircle.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    GetActivity().onBackPressed();
+                    Activity.onBackPressed();
 
                     if (IsMax)
                     {
@@ -347,7 +345,7 @@ public class ImagePreviewUI extends FragmentView
             RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
             ImageViewOptionParam.addRule(Misc.Align("L"));
 
-            ImageView ImageViewDownload = new ImageView(GetActivity());
+            ImageView ImageViewDownload = new ImageView(Activity);
             ImageViewDownload.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
             ImageViewDownload.setLayoutParams(ImageViewOptionParam);
             ImageViewDownload.setImageResource(R.drawable._general_download);
@@ -356,7 +354,7 @@ public class ImagePreviewUI extends FragmentView
                 @Override
                 public void onClick(View v)
                 {
-                    GlideApp.with(GetActivity())
+                    GlideApp.with(Activity)
                     .asBitmap()
                     .load(UrlList.get(ViewPagerMain.getCurrentItem()))
                     .into(new SimpleTarget<Bitmap>()
@@ -366,7 +364,7 @@ public class ImagePreviewUI extends FragmentView
                         {
                             try
                             {
-                                OutputStream OS = new FileOutputStream(new File(CacheHandler.GetDir(), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
+                                OutputStream OS = new FileOutputStream(new File(CacheHandler.Dir(CacheHandler.DOWNLOAD), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
                                 resource.compress(Bitmap.CompressFormat.PNG, 100, OS);
                                 OS.close();
 
@@ -399,14 +397,14 @@ public class ImagePreviewUI extends FragmentView
     public void OnResume()
     {
         if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(Color.BLACK);
+            Activity.getWindow().setStatusBarColor(Color.BLACK);
     }
 
     @Override
     public void OnPause()
     {
         if (Build.VERSION.SDK_INT > 20)
-            GetActivity().getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
+            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
     }
 
     private class PreviewAdapter extends PagerAdapter
@@ -415,10 +413,10 @@ public class ImagePreviewUI extends FragmentView
         @Override
         public Object instantiateItem(@NonNull ViewGroup Container, int Position)
         {
-            RelativeLayout RelativeLayoutMain = new RelativeLayout(GetActivity());
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
-            PhotoView PhotoViewMain = new PhotoView(GetActivity());
+            PhotoView PhotoViewMain = new PhotoView(Activity);
             PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             PhotoViewMain.setOnClickListener(new View.OnClickListener()
             {
@@ -437,14 +435,14 @@ public class ImagePreviewUI extends FragmentView
             RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
             LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-            final LoadingView LoadingViewMain = new LoadingView(GetActivity());
+            final LoadingView LoadingViewMain = new LoadingView(Activity);
             LoadingViewMain.setLayoutParams(LoadingViewMainParam);
             LoadingViewMain.SetColor(R.color.TextDark);
             LoadingViewMain.Start();
 
             RelativeLayoutMain.addView(LoadingViewMain);
 
-            GlideApp.with(GetActivity())
+            GlideApp.with(Activity)
             .load(UrlList.get(Position))
             .listener(new RequestListener<Drawable>()
             {
