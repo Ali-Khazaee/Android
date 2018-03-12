@@ -113,7 +113,7 @@ public class SocialActivity extends FragmentActivity
 
         setContentView(RelativeLayoutMain);
 
-        ChangePage(getIntent().getIntExtra("Tab", 1));
+        ChangePage(getIntent().getIntExtra("Tab", 4));
     }
 
     @Override

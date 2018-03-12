@@ -604,7 +604,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             GradientDrawable DrawableVideo = new GradientDrawable();
             DrawableVideo.setColor(Color.parseColor("#65000000"));
             DrawableVideo.setCornerRadius(Misc.ToDP(4));
-            DrawableVideo.mutate();
 
             RelativeLayout.LayoutParams TextViewDuritonParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewDuritonParam.setMargins(Misc.ToDP(8), 0, Misc.ToDP(8), Misc.ToDP(8));

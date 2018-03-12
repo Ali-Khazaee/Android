@@ -290,5 +290,16 @@
 
     <!-- Profile UI -->
     <string name="ProfileUI">Profile</string>
+    <string name="ProfileUIEdit">Edit</string>
+    <string name="ProfileUIPost">Posts</string>
+    <string name="ProfileUIFollower">Followers</string>
+    <string name="ProfileUIFollowing">Following</string>
+    <string name="ProfileUIProfileView">Profile Seen</string>
+    <string name="ProfileUIProperty">Property</string>
+    <string name="ProfileUILevel">Levels</string>
+    <string name="ProfileUICash">Cash</string>
+    <string name="ProfileUIRating">Rating</string>
+    <string name="ProfileUIBadge">Badge</string>
+    <string name="ProfileUIAbout">About Me</string>
 
 </resources>
