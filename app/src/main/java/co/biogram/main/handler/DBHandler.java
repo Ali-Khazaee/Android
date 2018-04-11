@@ -10,7 +10,7 @@ public class DBHandler extends SQLiteOpenHelper
 {
     public DBHandler(Context context)
     {
-        super(context, "Bio.db" , null, 2);
+        super(context, "Bio.db" , null, 4);
     }
 
     @Override
@@ -27,10 +27,13 @@ public class DBHandler extends SQLiteOpenHelper
 
     private void CreateDB(SQLiteDatabase DB)
     {
-        DB.execSQL("CREATE TABLE `inbox_post` (`ID` VARCHAR(50) PRIMARY KEY NOT NULL, `Owner` VARCHAR(50), `Profile` VARCHAR(50), `Name` VARCHAR(50), `Medal` VARCHAR(50), `Message` VARCHAR(300), `Username` VARCHAR(50), `Time` INT(10), `Type` TINYINT(3), `Data` VARCHAR(500), `View` INT(10), `Category` TINYINT(3), `LikeCount` INT(10), `CommentCount` INT(10), `IsLike` TINYINT(3), `IsFollow` TINYINT(3), `IsComment` TINYINT(3), `IsBookmark` TINYINT(3), `I1` VARCHAR(50), `I1P` VARCHAR(50), `I2` VARCHAR(50), `I2P` VARCHAR(50), `I3` VARCHAR(50), `I3P` VARCHAR(50), `I4` VARCHAR(50), `I4P` VARCHAR(50))");
-        DB.execSQL("CREATE TABLE `private_profile` (`ID` VARCHAR(50) PRIMARY KEY NOT NULL, `Name 2` VARCHAR(50) NOT NULL, `Username` VARCHAR(50) NOT NULL, `Type` VARCHAR(50) NOT NULL, `ProfileCount` INT(11) NOT NULL, `PostCount` INT(11) NOT NULL, `FollowingCount` INT(11) NOT NULL, `FollowerCount` INT(11) NOT NULL, `RatingCount` INT(11) NOT NULL, `Level` INT(11) NOT NULL, `Cash` INT(11) NOT NULL, `Rating` FLOAT NOT NULL, `Badge` VARCHAR(50) NOT NULL, `AboutMe` VARCHAR(50) NOT NULL, `Link` VARCHAR(50) NOT NULL, `Location` VARCHAR(50) NOT NULL)");
+        DB.execSQL("DROP TABLE IF EXISTS `" + INBOX_POST + "`");
+        DB.execSQL("DROP TABLE IF EXISTS `" + PROFILE_PRIVATE + "`");
+        DB.execSQL("CREATE TABLE `" + INBOX_POST + "` (`ID` VARCHAR(50) PRIMARY KEY NOT NULL, `Owner` VARCHAR(50), `Profile` VARCHAR(50), `Name` VARCHAR(50), `Medal` VARCHAR(50), `Message` VARCHAR(300), `Username` VARCHAR(50), `Time` INT(10), `Type` TINYINT(3), `Data` VARCHAR(500), `View` INT(10), `Category` TINYINT(3), `LikeCount` INT(10), `CommentCount` INT(10), `IsLike` TINYINT(3), `IsFollow` TINYINT(3), `IsComment` TINYINT(3), `IsBookmark` TINYINT(3), `I1` VARCHAR(50), `I1P` VARCHAR(50), `I2` VARCHAR(50), `I2P` VARCHAR(50), `I3` VARCHAR(50), `I3P` VARCHAR(50), `I4` VARCHAR(50), `I4P` VARCHAR(50))");
+        DB.execSQL("CREATE TABLE `" + PROFILE_PRIVATE + "` (`ID` VARCHAR(50) PRIMARY KEY NOT NULL, `Name` VARCHAR(50) NOT NULL, `Profile` VARCHAR(50) NOT NULL, `Username` VARCHAR(50) NOT NULL, `Type` VARCHAR(50) NOT NULL, `ProfileCount` INT(11) NOT NULL, `PostCount` INT(11) NOT NULL, `FollowingCount` INT(11) NOT NULL, `FollowerCount` INT(11) NOT NULL, `RatingCount` INT(11) NOT NULL, `Level` INT(11) NOT NULL, `Cash` INT(11) NOT NULL, `Rating` FLOAT NOT NULL, `Badge` VARCHAR(50) NOT NULL, `AboutMe` VARCHAR(50) NOT NULL, `Link` VARCHAR(50) NOT NULL, `Location` VARCHAR(50) NOT NULL, `Latitude` VARCHAR(50) NOT NULL, `Longitude` VARCHAR(50) NOT NULL)");
     }
 
+    private static String INBOX_POST = "inbox_post";
     static String INBOX_POST_ID = "ID";
     static String INBOX_POST_OWNER = "Owner";
     static String INBOX_POST_PROFILE = "Profile";
@@ -60,10 +63,10 @@ public class DBHandler extends SQLiteOpenHelper
 
     Cursor InboxPost(int Skip)
     {
-        return getReadableDatabase().rawQuery("SELECT * FROM `inbox_post` ORDER BY `Time` DESC LIMIT " + Skip + ",8", null);
+        return getReadableDatabase().rawQuery("SELECT * FROM `" + INBOX_POST + "` ORDER BY `Time` DESC LIMIT " + Skip + ",8", null);
     }
 
-    void InboxUpdate(PostAdapter.PostStruct P)
+    public void InboxUpdate(PostAdapter.PostStruct P)
     {
         ContentValues Value = new ContentValues();
         Value.put(INBOX_POST_ID, P.ID);
@@ -93,38 +96,40 @@ public class DBHandler extends SQLiteOpenHelper
         Value.put(INBOX_POST_I4, P.Person4ID);
         Value.put(INBOX_POST_I4P, P.Person4Avatar);
 
-        getWritableDatabase().replace("inbox_post", null, Value);
+        getWritableDatabase().replace(INBOX_POST, null, Value);
     }
 
     void InboxLike(String ID, boolean Ins)
     {
-        String SQL = "UPDATE `inbox_post` SET `" + INBOX_POST_LIKECOUNT + "` = `" + INBOX_POST_LIKECOUNT + "`" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";
+        String SQL = "UPDATE `" + INBOX_POST + "` SET `" + INBOX_POST_LIKECOUNT + "` = '" + INBOX_POST_LIKECOUNT + "'" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";
 
         getWritableDatabase().execSQL(SQL);
     }
 
-    void InboxMessage(String ID, String Message)
+    public void InboxMessage(String ID, String Message)
     {
-        String SQL = "UPDATE `inbox_post` SET `" + INBOX_POST_MESSAGE + "` = '" + Message + "' WHERE `ID` = '" + ID + "'";
+        String SQL = "UPDATE `" + INBOX_POST + "` SET `" + INBOX_POST_MESSAGE + "` = '" + Message + "' WHERE `ID` = '" + ID + "'";
 
         getWritableDatabase().execSQL(SQL);
     }
 
     void InboxComment(String ID, boolean Ins)
     {
-        String SQL = "UPDATE `inbox_post` SET `" + INBOX_POST_COMMENTCOUNT + "` = `" + INBOX_POST_COMMENTCOUNT + "`" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";
+        String SQL = "UPDATE `" + INBOX_POST + "` SET `" + INBOX_POST_COMMENTCOUNT + "` = '" + INBOX_POST_COMMENTCOUNT + "'" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";
 
         getWritableDatabase().execSQL(SQL);
     }
 
-    void InboxDelete(String ID)
+    public void InboxDelete(String ID)
     {
-        getWritableDatabase().execSQL("DELETE FROM `inbox_post` WHERE `ID` = '" + ID + "'");
+        getWritableDatabase().execSQL("DELETE FROM `" + INBOX_POST + "` WHERE `ID` = '" + ID + "'");
     }
 
+    private static String PROFILE_PRIVATE = "profile_private";
     public static String PROFILE_PRIVATE_ID = "ID";
     public static String PROFILE_PRIVATE_NAME = "Name";
     public static String PROFILE_PRIVATE_USERNAME = "Username";
+    public static String PROFILE_PRIVATE_PROFILE = "Profile";
     public static String PROFILE_PRIVATE_TYPE = "Type";
     public static String PROFILE_PRIVATE_PROFILE_COUNT = "ProfileCount";
     public static String PROFILE_PRIVATE_POST_COUNT = "PostCount";
@@ -138,14 +143,45 @@ public class DBHandler extends SQLiteOpenHelper
     public static String PROFILE_PRIVATE_ABOUTME = "AboutMe";
     public static String PROFILE_PRIVATE_LINK = "Link";
     public static String PROFILE_PRIVATE_LOCATION = "Location";
+    public static String PROFILE_PRIVATE_LATITUDE = "Latitude";
+    public static String PROFILE_PRIVATE_LONGITUDE = "Longitude";
 
     public void ProfilePrivate(ContentValues Value)
     {
-        getWritableDatabase().replace("private_profile", null, Value);
+        getWritableDatabase().replace(PROFILE_PRIVATE, null, Value);
     }
 
-    public Cursor ProfilePrivate(String ID)
+    public Cursor ProfilePrivate(String ID, boolean IsUsername)
     {
-        return getReadableDatabase().rawQuery("SELECT * FROM `private_profile` WHERE `ID` = '" + ID + "'", null);
+        if (IsUsername)
+            return getReadableDatabase().rawQuery("SELECT * FROM `" + PROFILE_PRIVATE + "` WHERE `Username` = '" + ID + "'", null);
+
+        return getReadableDatabase().rawQuery("SELECT * FROM `" + PROFILE_PRIVATE + "` WHERE `ID` = '" + ID + "'", null);
+    }
+
+    public void ProfilePrivateAbout(String ID, String Message)
+    {
+        String SQL = "UPDATE `" + PROFILE_PRIVATE + "` SET `" + PROFILE_PRIVATE_ABOUTME + "` = '" + Message + "' WHERE `ID` = '" + ID + "'";
+
+        getWritableDatabase().execSQL(SQL);
+    }
+
+    public void ProfilePrivateLink(String ID, String Message)
+    {
+        String SQL = "UPDATE `" + PROFILE_PRIVATE + "` SET `" + PROFILE_PRIVATE_LINK + "` = '" + Message + "' WHERE `ID` = '" + ID + "'";
+
+        getWritableDatabase().execSQL(SQL);
+    }
+
+    public void ProfilePrivateLocation(String ID, String Name, String Lati, String Long)
+    {
+        String SQL = "UPDATE `" + PROFILE_PRIVATE + "` SET `" + PROFILE_PRIVATE_LOCATION + "` = '" + Name + "', `" + PROFILE_PRIVATE_LATITUDE + "` = '" + Lati + "', `" + PROFILE_PRIVATE_LONGITUDE + "` = '" + Long + "' WHERE `ID` = '" + ID + "'";
+
+        getWritableDatabase().execSQL(SQL);
+    }
+
+    public Cursor PostDetail(String ID)
+    {
+        return getReadableDatabase().rawQuery("SELECT * FROM `" + INBOX_POST + "`" + " WHERE `ID` = '" + ID + "' ORDER BY `Time` DESC LIMIT 1", null);
     }
 }

@@ -6,11 +6,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FragmentManager
 {
-    private List<FragmentView> FragmentList = new ArrayList<>();
+    private ArrayList<FragmentView> FragmentList = new ArrayList<>();
     private FragmentActivity Activity;
     private FragmentView Fragment;
 

@@ -54,6 +54,7 @@ import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.social.CommentUI;
 import co.biogram.main.ui.social.LikeUI;
+import co.biogram.main.ui.social.PostUI;
 import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.PullToRefreshView;
 import co.biogram.main.ui.view.TextView;
@@ -64,7 +65,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private GradientDrawable DrawableBorder;
     private PullToRefreshView RefreshView;
     private FragmentActivity Activity;
-    private DBHandler DB;
+    private static DBHandler DB;
     private String Tag;
 
     public PostAdapter(FragmentActivity activity, String tag)
@@ -108,7 +109,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private int ID1_TRIPLE3 = Misc.ViewID();
     private int ID1_VIDEO_LAYOUT = Misc.ViewID();
     private int ID1_VIDEO_IMAGE = Misc.ViewID();
-    private int ID1_VIDEO_DUROTION = Misc.ViewID();
+    private int ID1_VIDEO_DURATION = Misc.ViewID();
     private int ID1_VOTE_LAYOUT = Misc.ViewID();
     private int ID1_VOTE_TYPE1 = Misc.ViewID();
     private int ID1_VOTE_TYPE1_LIN1 = Misc.ViewID();
@@ -255,7 +256,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 ImageViewTriple3 = v.findViewById(ID1_TRIPLE3);
                 RelativeLayoutVideo = v.findViewById(ID1_VIDEO_LAYOUT);
                 ImageViewVideo = v.findViewById(ID1_VIDEO_IMAGE);
-                TextViewDurotion = v.findViewById(ID1_VIDEO_DUROTION);
+                TextViewDurotion = v.findViewById(ID1_VIDEO_DURATION);
                 RelativeLayoutVote = v.findViewById(ID1_VOTE_LAYOUT);
                 LinearLayoutVoteType1 = v.findViewById(ID1_VOTE_TYPE1);
                 LinearLayoutVoteLin1 = v.findViewById(ID1_VOTE_TYPE1_LIN1);
@@ -610,13 +611,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             TextViewDuritonParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             TextViewDuritonParam.addRule(Misc.Align("L"));
 
-            TextView TextViewDurotion = new TextView(Activity, 12, false);
-            TextViewDurotion.setLayoutParams(TextViewDuritonParam);
-            TextViewDurotion.setPadding(Misc.ToDP(5), Misc.ToDP(3), Misc.ToDP(5), 0);
-            TextViewDurotion.setBackground(DrawableVideo);
-            TextViewDurotion.setId(ID1_VIDEO_DUROTION);
+            TextView TextViewDuration = new TextView(Activity, 12, false);
+            TextViewDuration.setLayoutParams(TextViewDuritonParam);
+            TextViewDuration.setPadding(Misc.ToDP(5), Misc.ToDP(3), Misc.ToDP(5), 0);
+            TextViewDuration.setBackground(DrawableVideo);
+            TextViewDuration.setId(ID1_VIDEO_DURATION);
 
-            RelativeLayoutVideo.addView(TextViewDurotion);
+            RelativeLayoutVideo.addView(TextViewDuration);
 
             RelativeLayout.LayoutParams TextViewVideoParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewVideoParam.setMargins(Misc.ToDP(8), 0, Misc.ToDP(8), Misc.ToDP(8));
@@ -1228,14 +1229,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         {
             try
             {
-                Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        // TODO Open Post
-                    }
-                });
+                Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new PostUI(PostList.get(Position).ID), R.id.ContainerFull, "PostUI"); } });
 
                 GlideApp.with(Activity).load(PostList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
                 Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
@@ -2078,7 +2072,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                             LinearLayoutMain.addView(TextViewDelete);
 
-                            if (PostList.get(Position).Time < ((System.currentTimeMillis() / 1000) + 172800))
+                            if ((PostList.get(Position).Time + 172800) > ((System.currentTimeMillis() / 1000)))
                             {
                                 View ViewLine = new View(Activity);
                                 ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
@@ -2131,6 +2125,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         EditTextMessage.setText(PostList.get(Position).Message);
                                         EditTextMessage.setHint(R.string.PostAdapterOptionEditMessage);
                                         EditTextMessage.setHintTextColor(Misc.Color(R.color.Gray));
+                                        EditTextMessage.setSelection(EditTextMessage.getText().length());
                                         EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
                                         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                                         EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(300) });
@@ -2669,50 +2664,50 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         return Size;
     }
 
-    public class PostStruct
+    public static class PostStruct
     {
         public String ID;
-        String Profile;
-        String Name;
-        String Medal;
-        String Username;
+        public String Profile;
+        public String Name;
+        public String Medal;
+        public String Username;
         public String Owner;
-        int Time;
-        String Message;
-        int Type; // 0: Message 1: Image 2: Video 3: Vote 4: File
-        String Data;
-        int View;
-        int Category;
-        int LikeCount;
-        int CommentCount;
-        boolean IsLike;
-        boolean IsFollow;
-        boolean IsComment;
-        boolean IsBookmark;
-        String Person1ID;
-        String Person1Avatar;
-        String Person2ID;
-        String Person2Avatar;
-        String Person3ID;
-        String Person3Avatar;
-        String Person4ID;
-        String Person4Avatar;
+        public int Time;
+        public String Message;
+        public int Type; // 0: Message 1: Image 2: Video 3: Vote 4: File
+        public String Data;
+        public int View;
+        public int Category;
+        public int LikeCount;
+        public int CommentCount;
+        public boolean IsLike;
+        public boolean IsFollow;
+        public boolean IsComment;
+        public boolean IsBookmark;
+        public String Person1ID;
+        public String Person1Avatar;
+        public String Person2ID;
+        public String Person2Avatar;
+        public String Person3ID;
+        public String Person3Avatar;
+        public String Person4ID;
+        public String Person4Avatar;
 
         int ViewType = 1; // 0: Pull 1: Post
-        boolean IsDownloading = false;
+        public boolean IsDownloading = false;
 
-        PostStruct() { }
+        public PostStruct() { }
         PostStruct(int v) { ViewType = v; }
 
-        void RevLike() { IsLike = !IsLike; }
+        public void RevLike() { IsLike = !IsLike; }
 
-        void InsLike()
+        public void InsLike()
         {
             LikeCount++;
             DB.InboxLike(ID, true);
         }
 
-        void DesLike()
+        public void DesLike()
         {
             LikeCount--;
             DB.InboxLike(ID, false);

@@ -70,7 +70,7 @@ public abstract class FragmentActivity extends Activity
 
     public void RequestPermission(@NonNull String permission, @NonNull OnPermissionListener listener)
     {
-        if (Misc.HasPermission(permission))
+        if (Misc.checkPermission(permission))
         {
             listener.OnResult(true);
             return;

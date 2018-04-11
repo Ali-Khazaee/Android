@@ -288,18 +288,26 @@
     <string name="CommentUICancel">Cancel</string>
     <string name="CommentUIComment">Write your comment</string>
 
+    <!-- Post UI -->
+    <string name="PostUI">Post Details</string>
+
+    <!-- My Level UI -->
+    <string name="MyLevelUI">My Level</string>
+
     <!-- Profile UI -->
     <string name="ProfileUI">Profile</string>
-    <string name="ProfileUIEdit">Edit</string>
-    <string name="ProfileUIPost">Posts</string>
+    <string name="ProfileUISaved">Saved</string>
     <string name="ProfileUIFollower">Followers</string>
     <string name="ProfileUIFollowing">Following</string>
-    <string name="ProfileUIProfileView">Profile Seen</string>
-    <string name="ProfileUIProperty">Property</string>
-    <string name="ProfileUILevel">Levels</string>
-    <string name="ProfileUICash">Cash</string>
+    <string name="ProfileUIProfileView">Profile View</string>
+    <string name="ProfileUINotSet">Not Set</string>
     <string name="ProfileUIRating">Rating</string>
-    <string name="ProfileUIBadge">Badge</string>
-    <string name="ProfileUIAbout">About Me</string>
+    <string name="ProfileUIRate">Rate</string>
+    <string name="ProfileUIPhoneNumber">Phone Number</string>
+    <string name="ProfileUIEmailAddress">Email Address</string>
+    <string name="ProfileUIAboutMe">About Me</string>
+    <string name="ProfileUIWebsite">Website</string>
+    <string name="ProfileUILocation">Location</string>
+    <string name="ProfileUITag">Tags</string>
 
 </resources>

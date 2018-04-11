@@ -433,7 +433,7 @@ class PhoneUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                if (Misc.HasPermission(Manifest.permission.RECEIVE_SMS))
+                if (Misc.checkPermission(Manifest.permission.RECEIVE_SMS))
                 {
                     SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                     return;

@@ -113,8 +113,6 @@ class WriteUI extends FragmentView
 
         RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
-        RelativeLayoutMain.setClickable(true);
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
         {
@@ -476,7 +474,7 @@ class WriteUI extends FragmentView
                     }
                 };
 
-                if (Misc.HasPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
                     Activity.GetManager().OpenView(new GalleryViewUI(3, 1, L), R.id.ContainerFull, "GalleryViewUI");
                     return;
@@ -561,7 +559,7 @@ class WriteUI extends FragmentView
                     }
                 };
 
-                if (Misc.HasPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
                     Activity.GetManager().OpenView(new GalleryViewUI(1, 2, L), R.id.ContainerFull, "GalleryViewUI");
                     return;
@@ -634,7 +632,7 @@ class WriteUI extends FragmentView
                     @Override public void OnSave() { }
                 };
 
-                if (Misc.HasPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
                     Activity.GetManager().OpenView(new GalleryViewUI(1, 3, L), R.id.ContainerFull, "GalleryViewUI");
                     return;
@@ -674,7 +672,7 @@ class WriteUI extends FragmentView
         TextViewCount.SetColor(R.color.Gray);
         TextViewCount.setText(("300"));
 
-        TextView TextViewSend = new TextView(Activity, 14, false);
+        TextView TextViewSend = new TextView(Activity, 14, true);
         TextViewSend.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         TextViewSend.setText(Misc.String(R.string.WriteUISend));
         TextViewSend.setGravity(Gravity.CENTER);
@@ -1629,7 +1627,13 @@ class WriteUI extends FragmentView
             }
         });
 
-        ViewMain = RelativeLayoutMain;
+        RelativeLayout RelativeLayoutBack = new RelativeLayout(Activity);
+        RelativeLayoutBack.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutBack.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutBack.setClickable(true);
+        RelativeLayoutBack.addView(RelativeLayoutMain);
+
+        ViewMain = RelativeLayoutBack;
     }
 
     @Override

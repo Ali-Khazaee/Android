@@ -3,5 +3,10 @@
         <item name="colorControlActivated">@color/Primary</item>
         <item name="colorControlHighlight">@color/Primary</item>
         <item name="android:textColorHint">@color/Gray</item>
+        <item name="TextColor">#000</item>
+        <item name="LineColor">#eee</item>
+        <item name="GroundColor">#fff</item>
+        <item name="ActionBarColor">#fff</item>
+        <item name="StatusBarColor">#ddd</item>
     </style>
 </resources>

@@ -230,7 +230,7 @@ public class DescriptionUI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        if (Misc.HasPermission(Manifest.permission.CAMERA))
+                        if (Misc.checkPermission(Manifest.permission.CAMERA))
                         {
                             DialogProfile.dismiss();
                             Activity.GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
@@ -286,7 +286,7 @@ public class DescriptionUI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        if (Misc.HasPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                        if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                         {
                             DialogProfile.dismiss();
 

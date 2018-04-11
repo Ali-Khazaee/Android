@@ -184,7 +184,7 @@ public class Misc
         IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public static boolean HasPermission(String p)
+    public static boolean checkPermission(String p)
     {
         return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
     }
@@ -326,7 +326,7 @@ public class Misc
         return Math.round(Diff / 525600) + " " + String(R.string.TimeAgoYears);
     }
 
-    static String TimeLeft(long Time)
+    public static String TimeLeft(long Time)
     {
         Time = Time * 1000;
         long Now = System.currentTimeMillis();

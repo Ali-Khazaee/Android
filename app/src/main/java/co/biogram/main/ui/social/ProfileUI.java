@@ -1,66 +1,35 @@
 package co.biogram.main.ui.social;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-
-import org.json.JSONObject;
+import android.widget.TextView;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.DBHandler;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.ui.view.CircleImageView;
-import co.biogram.main.ui.view.StickyScrollView;
-import co.biogram.main.ui.view.TextView;
 
 public class ProfileUI extends FragmentView
 {
-    public ProfileUI()
-    {
+    private String ID;
+    private boolean IsUsername;
 
-    }
+    private double Latitude = 0.0f;
+    private double Longitude = 0.0f;
+
+    public ProfileUI() { }
 
     public ProfileUI(String username)
     {
-
+        ID = username;
+        IsUsername = true;
     }
-
-    private TextView TextViewName;
-    private TextView TextViewTitle;
-    private CircleImageView CircleImageViewProfile;
-    private TextView TextViewUsername;
-    private TextView TextViewType;
-    private TextView TextViewProfileCount;
-    private TextView TextViewFollowingCount;
-    private TextView TextViewFollowerCount;
-    private TextView TextViewPostCount;
-    private TextView TextViewLevel2;
-    private TextView TextViewCash2;
-    private TextView TextViewRating2;
-    private TextView TextViewRating3;
-    private TextView TextViewBadge3;
-    private TextView TextViewAboutMe;
-    private TextView TextViewLink;
-    private LinearLayout LinearLayoutLink;
-    private LinearLayout LinearLayoutLocation;
-    private TextView TextViewLocation;
 
     @Override
     public void OnCreate()
     {
+        /*final DBHandler DB = new DBHandler(Activity);
+
+        if (!IsUsername)
+            ID = SharedHandler.GetString("ID");
+
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
@@ -78,7 +47,7 @@ public class ProfileUI extends FragmentView
         TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
         TextViewTitleParam.addRule(Misc.Align("R"));
 
-        TextViewTitle = new TextView(Activity, 16, true);
+        final TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
@@ -94,7 +63,7 @@ public class ProfileUI extends FragmentView
         ImageViewSetting.setId(Misc.ViewID());
         ImageViewSetting.setImageResource(R.drawable._inbox_search);
         ImageViewSetting.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        ImageViewSetting.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Open Setting */  } });
+        ImageViewSetting.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Open Setting * /  } });
 
         RelativeLayoutHeader.addView(ImageViewSetting);
 
@@ -105,7 +74,7 @@ public class ProfileUI extends FragmentView
         ImageViewProfile.setLayoutParams(ImageViewWriteParam);
         ImageViewProfile.setImageResource(R.drawable._inbox_write);
         ImageViewProfile.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
-        ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Open Profile */  } });
+        ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Open Profile * /  } });
 
         RelativeLayoutHeader.addView(ImageViewProfile);
 
@@ -136,11 +105,10 @@ public class ProfileUI extends FragmentView
         CircleImageViewProfileParam.setMargins(Misc.ToDP(15), Misc.ToDP(20), Misc.ToDP(15), 0);
         CircleImageViewProfileParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        CircleImageViewProfile = new CircleImageView(Activity);
+        final CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
-        CircleImageViewProfile.SetCircleBackgroundColor(R.color.Gray);
-        CircleImageViewProfile.setImageResource(R.drawable._profile_avatar);
+        CircleImageViewProfile.setImageResource(R.drawable._general_avatar);
         CircleImageViewProfile.setId(Misc.ViewID());
         CircleImageViewProfile.SetBorderWidth(1);
 
@@ -150,7 +118,7 @@ public class ProfileUI extends FragmentView
         TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, CircleImageViewProfile.getId());
         TextViewNameParam.setMargins(0, Misc.ToDP(20), 0, 0);
 
-        TextViewName = new TextView(Activity, 14, true);
+        final TextView TextViewName = new TextView(Activity, 14, true);
         TextViewName.setLayoutParams(TextViewNameParam);
         TextViewName.SetColor(R.color.TextWhite);
 
@@ -160,7 +128,7 @@ public class ProfileUI extends FragmentView
         TextViewUsernameParam.addRule(RelativeLayout.RIGHT_OF,  CircleImageViewProfile.getId());
         TextViewUsernameParam.setMargins(0, Misc.ToDP(39), 0, 0);
 
-        TextViewUsername = new TextView(Activity, 14, false);
+        final TextView TextViewUsername = new TextView(Activity, 14, false);
         TextViewUsername.setLayoutParams(TextViewUsernameParam);
         TextViewUsername.SetColor(R.color.Gray);
 
@@ -178,11 +146,11 @@ public class ProfileUI extends FragmentView
 
         ImageView ImageViewType = new ImageView(Activity);
         ImageViewType.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(24), Misc.ToDP(24)));
-        ImageViewType.setImageResource(R.drawable._general_like);
+        ImageViewType.setImageResource(R.drawable._profile_avatar);
 
         LinearLayoutType.addView(ImageViewType);
 
-        TextViewType = new TextView(Activity, 14, false);
+        final TextView TextViewType = new TextView(Activity, 14, false);
         TextViewType.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewType.SetColor(R.color.Primary);
 
@@ -247,7 +215,7 @@ public class ProfileUI extends FragmentView
 
         LinearLayoutCount.addView(LinearLayoutPost);
 
-        TextViewPostCount = new TextView(Activity, 14, true);
+        final TextView TextViewPostCount = new TextView(Activity, 14, true);
         TextViewPostCount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewPostCount.SetColor(R.color.TextWhite);
         TextViewPostCount.setPadding(0, Misc.ToDP(5), 0, 0);
@@ -269,7 +237,7 @@ public class ProfileUI extends FragmentView
 
         LinearLayoutCount.addView(LinearLayoutFollower);
 
-        TextViewFollowerCount = new TextView(Activity, 14, true);
+        final TextView TextViewFollowerCount = new TextView(Activity, 14, true);
         TextViewFollowerCount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewFollowerCount.SetColor(R.color.TextWhite);
         TextViewFollowerCount.setPadding(0, Misc.ToDP(5), 0, 0);
@@ -291,7 +259,7 @@ public class ProfileUI extends FragmentView
 
         LinearLayoutCount.addView(LinearLayoutFollowing);
 
-        TextViewFollowingCount = new TextView(Activity, 14, true);
+        final TextView TextViewFollowingCount = new TextView(Activity, 14, true);
         TextViewFollowingCount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewFollowingCount.SetColor(R.color.TextWhite);
         TextViewFollowingCount.setPadding(0, Misc.ToDP(5), 0, 0);
@@ -313,7 +281,7 @@ public class ProfileUI extends FragmentView
 
         LinearLayoutCount.addView(LinearLayoutProfile);
 
-        TextViewProfileCount = new TextView(Activity, 14, true);
+        final TextView TextViewProfileCount = new TextView(Activity, 14, true);
         TextViewProfileCount.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewProfileCount.SetColor(R.color.TextWhite);
         TextViewProfileCount.setPadding(0, Misc.ToDP(5), 0, 0);
@@ -375,10 +343,19 @@ public class ProfileUI extends FragmentView
         RelativeLayoutLevel.setLayoutParams(RelativeLayoutLevelParam);
         RelativeLayoutLevel.setBackground(DrawableLevel);
         RelativeLayoutLevel.setId(Misc.ViewID());
+        RelativeLayoutLevel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Activity.GetManager().OpenView(new MyLevelUI(), R.id.ContainerFull, "MyLevelUI");
+            }
+        });
 
         RelativeLayoutScroll.addView(RelativeLayoutLevel);
 
         RelativeLayout.LayoutParams ImageViewLevelParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32));
+        ImageViewLevelParam.setMargins(Misc.ToDP(5), 0, 0, 0);
         ImageViewLevelParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         ImageView ImageViewLevel = new ImageView(Activity);
@@ -393,7 +370,7 @@ public class ProfileUI extends FragmentView
         TextViewLevel2Param.addRule(RelativeLayout.RIGHT_OF, ImageViewLevel.getId());
         TextViewLevel2Param.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextViewLevel2 = new TextView(Activity, 14, true);
+        final TextView TextViewLevel2 = new TextView(Activity, 14, true);
         TextViewLevel2.setLayoutParams(TextViewLevel2Param);
         TextViewLevel2.SetColor(R.color.TextDark);
         TextViewLevel2.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(10), 0);
@@ -438,6 +415,7 @@ public class ProfileUI extends FragmentView
         RelativeLayoutScroll.addView(RelativeLayoutCash);
 
         RelativeLayout.LayoutParams ImageViewCashParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32));
+        ImageViewCashParam.setMargins(Misc.ToDP(5), 0, 0, 0);
         ImageViewCashParam.addRule(RelativeLayout.CENTER_VERTICAL);
 
         ImageView ImageViewCash = new ImageView(Activity);
@@ -451,7 +429,7 @@ public class ProfileUI extends FragmentView
         TextViewCash2Param.addRule(RelativeLayout.RIGHT_OF, ImageViewCash.getId());
         TextViewCash2Param.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextViewCash2 = new TextView(Activity, 14, false);
+        final TextView TextViewCash2 = new TextView(Activity, 14, false);
         TextViewCash2.setLayoutParams(TextViewCash2Param);
         TextViewCash2.SetColor(R.color.TextDark);
         TextViewCash2.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(10), 0);
@@ -485,7 +463,7 @@ public class ProfileUI extends FragmentView
         TextViewRating3Param.addRule(RelativeLayout.RIGHT_OF, TextViewRating.getId());
         TextViewRating3Param.setMargins(0, Misc.ToDP(3), 0, 0);
 
-        TextViewRating3 = new TextView(Activity, 12, false);
+        final TextView TextViewRating3 = new TextView(Activity, 12, false);
         TextViewRating3.setLayoutParams(TextViewRating3Param);
         TextViewRating3.SetColor(R.color.Gray);
 
@@ -508,7 +486,7 @@ public class ProfileUI extends FragmentView
         RelativeLayout.LayoutParams TextViewRating2Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewRating2Param.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextViewRating2 = new TextView(Activity, 16, true);
+        final TextView TextViewRating2 = new TextView(Activity, 16, true);
         TextViewRating2.setLayoutParams(TextViewRating2Param);
         TextViewRating2.SetColor(R.color.TextWhite);
         TextViewRating2.setPadding(Misc.ToDP(15), Misc.ToDP(5), Misc.ToDP(30), 0);
@@ -582,7 +560,7 @@ public class ProfileUI extends FragmentView
         TextViewBadge3Param.addRule(RelativeLayout.RIGHT_OF, TextViewBadge2.getId());
         TextViewBadge3Param.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        TextViewBadge3 = new TextView(Activity, 14, false);
+        final TextView TextViewBadge3 = new TextView(Activity, 14, false);
         TextViewBadge3.setLayoutParams(TextViewBadge3Param);
         TextViewBadge3.SetColor(R.color.TextWhite);
         TextViewBadge3.setPadding(Misc.ToDP(15), Misc.ToDP(5), Misc.ToDP(15), 0);
@@ -626,10 +604,109 @@ public class ProfileUI extends FragmentView
         TextViewAboutMeParam.addRule(RelativeLayout.BELOW, TextViewAbout.getId());
         TextViewAboutMeParam.setMargins(Misc.ToDP(20), 0, Misc.ToDP(20), Misc.ToDP(5));
 
-        TextViewAboutMe = new TextView(Activity, 14, false);
+        final TextView TextViewAboutMe = new TextView(Activity, 14, false);
         TextViewAboutMe.setLayoutParams(TextViewAboutMeParam);
         TextViewAboutMe.SetColor(R.color.Gray);
         TextViewAboutMe.setId(Misc.ViewID());
+        TextViewAboutMe.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final Dialog DialogLink = new Dialog(Activity);
+                DialogLink.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogLink.setCancelable(true);
+
+                LinearLayout LinearLayoutMain = new LinearLayout(Activity);
+                LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
+
+                TextView TextViewTitle = new TextView(Activity, 14, true);
+                TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
+                TextViewTitle.setText(Misc.String(R.string.ProfileUIAboutTitle));
+                TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
+
+                LinearLayoutMain.addView(TextViewTitle);
+
+                View ViewLine = new View(Activity);
+                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                ViewLine.setBackgroundResource(R.color.LineWhite);
+
+                LinearLayoutMain.addView(ViewLine);
+
+                final EditText EditTextMessage = new EditText(Activity);
+                EditTextMessage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                EditTextMessage.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
+                EditTextMessage.setMinHeight(Misc.ToDP(56));
+                EditTextMessage.setBackground(null);
+                EditTextMessage.setText(TextViewAboutMe.getText().toString());
+                EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+                EditTextMessage.setSelection(EditTextMessage.getText().length());
+                EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(512) });
+
+                LinearLayoutMain.addView(EditTextMessage);
+
+                View ViewLine2 = new View(Activity);
+                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                ViewLine2.setBackgroundResource(R.color.LineWhite);
+
+                LinearLayoutMain.addView(ViewLine2);
+
+                TextView TextViewSubmit = new TextView(Activity, 14, true);
+                TextViewSubmit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                TextViewSubmit.SetColor(R.color.Primary);
+                TextViewSubmit.setText(Misc.String(R.string.ProfileUISubmit));
+                TextViewSubmit.setGravity(Gravity.CENTER);
+                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        AndroidNetworking.post(Misc.GetRandomServer("ProfileAbout"))
+                        .addBodyParameter("Message", EditTextMessage.getText().toString())
+                        .addHeaders("Token", SharedHandler.GetString("Token"))
+                        .setTag("ProfileUI")
+                        .build()
+                        .getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 0)
+                                    {
+                                        String Message = Result.getString("Result");
+
+                                        TextViewAboutMe.setText(Message);
+                                        DB.ProfilePrivateAbout(SharedHandler.GetString("ID"), Message);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Misc.Debug("ProfileUI-About: " + e.toString());
+                                }
+                            }
+
+                            @Override public void onError(ANError e) { }
+                        });
+
+                        DialogLink.dismiss();
+                    }
+                });
+
+                LinearLayoutMain.addView(TextViewSubmit);
+
+                DialogLink.setContentView(LinearLayoutMain);
+                DialogLink.show();
+            }
+        });
 
         RelativeLayoutScroll.addView(TextViewAboutMe);
 
@@ -637,7 +714,7 @@ public class ProfileUI extends FragmentView
         LinearLayoutLinkParam.addRule(RelativeLayout.BELOW, TextViewAboutMe.getId());
         LinearLayoutLinkParam.setMargins(Misc.ToDP(20), 0, Misc.ToDP(20), Misc.ToDP(5));
 
-        LinearLayoutLink = new LinearLayout(Activity);
+        LinearLayout LinearLayoutLink = new LinearLayout(Activity);
         LinearLayoutLink.setLayoutParams(LinearLayoutLinkParam);
         LinearLayoutLink.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutLink.setId(Misc.ViewID());
@@ -651,7 +728,7 @@ public class ProfileUI extends FragmentView
 
         LinearLayoutLink.addView(ImageViewLink);
 
-        TextViewLink = new TextView(Activity, 14, false);
+        final TextView TextViewLink = new TextView(Activity, 14, false);
         TextViewLink.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewLink.SetColor(R.color.Primary);
         TextViewLink.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(10), 0);
@@ -660,7 +737,108 @@ public class ProfileUI extends FragmentView
             @Override
             public void onClick(View v)
             {
+                final Dialog DialogLink = new Dialog(Activity);
+                DialogLink.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogLink.setCancelable(true);
 
+                LinearLayout LinearLayoutMain = new LinearLayout(Activity);
+                LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
+
+                TextView TextViewTitle = new TextView(Activity, 14, true);
+                TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
+                TextViewTitle.setText(Misc.String(R.string.ProfileUILink));
+                TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
+
+                LinearLayoutMain.addView(TextViewTitle);
+
+                View ViewLine = new View(Activity);
+                ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                ViewLine.setBackgroundResource(R.color.LineWhite);
+
+                LinearLayoutMain.addView(ViewLine);
+
+                final EditText EditTextMessage = new EditText(Activity);
+                EditTextMessage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                EditTextMessage.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
+                EditTextMessage.setMinHeight(Misc.ToDP(56));
+                EditTextMessage.setBackground(null);
+                EditTextMessage.setText(TextViewLink.getText().toString());
+                EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+                EditTextMessage.setSelection(EditTextMessage.getText().length());
+                EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(512) });
+
+                LinearLayoutMain.addView(EditTextMessage);
+
+                View ViewLine2 = new View(Activity);
+                ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
+                ViewLine2.setBackgroundResource(R.color.LineWhite);
+
+                LinearLayoutMain.addView(ViewLine2);
+
+                TextView TextViewSubmit = new TextView(Activity, 14, true);
+                TextViewSubmit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
+                TextViewSubmit.SetColor(R.color.Primary);
+                TextViewSubmit.setText(Misc.String(R.string.ProfileUISubmit));
+                TextViewSubmit.setGravity(Gravity.CENTER);
+                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        AndroidNetworking.post(Misc.GetRandomServer("ProfileURL"))
+                        .addBodyParameter("URL", EditTextMessage.getText().toString())
+                        .addHeaders("Token", SharedHandler.GetString("Token"))
+                        .setTag("ProfileUI")
+                        .build()
+                        .getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 0)
+                                    {
+                                        String Message = EditTextMessage.getText().toString();
+
+                                        if (Message.isEmpty())
+                                        {
+                                            TextViewLink.setTextColor(Misc.Color(R.color.Gray));
+                                            TextViewLink.setText(Activity.getString(R.string.ProfileUINone));
+                                        }
+                                        else
+                                        {
+                                            TextViewLink.setTextColor(Misc.Color(R.color.Primary));
+                                            TextViewLink.setText(Message);
+                                        }
+
+                                        DB.ProfilePrivateLink(SharedHandler.GetString("ID"), Message);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Misc.Debug("ProfileUI-Link: " + e.toString());
+                                }
+                            }
+
+                            @Override public void onError(ANError e) { }
+                        });
+
+                        DialogLink.dismiss();
+                    }
+                });
+
+                LinearLayoutMain.addView(TextViewSubmit);
+
+                DialogLink.setContentView(LinearLayoutMain);
+                DialogLink.show();
             }
         });
 
@@ -670,7 +848,7 @@ public class ProfileUI extends FragmentView
         LinearLayoutLocationParam.addRule(RelativeLayout.BELOW, LinearLayoutLink.getId());
         LinearLayoutLocationParam.setMargins(Misc.ToDP(20), 0, Misc.ToDP(20), Misc.ToDP(5));
 
-        LinearLayoutLocation = new LinearLayout(Activity);
+        LinearLayout LinearLayoutLocation = new LinearLayout(Activity);
         LinearLayoutLocation.setLayoutParams(LinearLayoutLocationParam);
         LinearLayoutLocation.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -683,53 +861,216 @@ public class ProfileUI extends FragmentView
 
         LinearLayoutLocation.addView(ImageViewLocation);
 
-        TextViewLocation = new TextView(Activity, 14, false);
+        final TextView TextViewLocation = new TextView(Activity, 14, false);
         TextViewLocation.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         TextViewLocation.SetColor(R.color.Gray);
         TextViewLocation.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(10), 0);
+        TextViewLocation.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final EditText EditTextLocation = new EditText(Activity);
+
+                final Dialog DialogLocation = new Dialog(Activity);
+                DialogLocation.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                DialogLocation.setCancelable(true);
+
+                RelativeLayout RelativeLayoutLocation = new RelativeLayout(Activity);
+                RelativeLayoutLocation.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+                RelativeLayoutLocation.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+
+                RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
+                ImageViewSaveParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+                ImageView ImageViewSave = new ImageView(Activity);
+                ImageViewSave.setLayoutParams(ImageViewSaveParam);
+                ImageViewSave.setImageResource(R.drawable.done_blue);
+                ImageViewSave.setId(Misc.ViewID());
+                ImageViewSave.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
+                ImageViewSave.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        AndroidNetworking.post(Misc.GetRandomServer("ProfileLocation"))
+                        .addBodyParameter("Name", EditTextLocation.getText().toString())
+                        .addBodyParameter("Latitude", String.valueOf(Latitude))
+                        .addBodyParameter("Longitude", String.valueOf(Longitude))
+                        .addHeaders("Token", SharedHandler.GetString("Token"))
+                        .setTag("ProfileUI")
+                        .build()
+                        .getAsString(new StringRequestListener()
+                        {
+                            @Override
+                            public void onResponse(String Response)
+                            {
+                                try
+                                {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    if (Result.getInt("Message") == 0)
+                                    {
+                                        TextViewLocation.setText(Result.getString("Result"));
+
+                                        DB.ProfilePrivateLocation(SharedHandler.GetString("ID"), Result.getString("Result"), String.valueOf(Latitude), String.valueOf(Longitude));
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Misc.Debug("ProfileUI-Location: " + e.toString());
+                                }
+                            }
+
+                            @Override public void onError(ANError e) { }
+                        });
+
+                        DialogLocation.dismiss();
+                    }
+                });
+
+                RelativeLayoutLocation.addView(ImageViewSave);
+
+                RelativeLayout.LayoutParams EditTextLocationParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
+                EditTextLocationParam.addRule(RelativeLayout.LEFT_OF, ImageViewSave.getId());
+
+                EditTextLocation.setLayoutParams(EditTextLocationParam);
+                EditTextLocation.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
+                EditTextLocation.setId(Misc.ViewID());
+                EditTextLocation.setBackground(null);
+                EditTextLocation.setHint(Activity.getString(R.string.ProfileUILocation));
+                EditTextLocation.setHintTextColor(Misc.Color(R.color.Gray));
+                EditTextLocation.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+                EditTextLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                EditTextLocation.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
+
+                RelativeLayoutLocation.addView(EditTextLocation);
+
+                RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
+                ViewLineParam.addRule(RelativeLayout.BELOW, EditTextLocation.getId());
+
+                View ViewLine = new View(Activity);
+                ViewLine.setLayoutParams(ViewLineParam);
+                ViewLine.setBackgroundResource(R.color.LineWhite);
+                ViewLine.setId(Misc.ViewID());
+
+                RelativeLayoutLocation.addView(ViewLine);
+
+                RelativeLayout.LayoutParams MapViewParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                MapViewParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+
+                final MapView MapView = new MapView(Activity);
+                MapView.onCreate(null);
+                MapView.setLayoutParams(MapViewParam);
+                MapView.getMapAsync(new OnMapReadyCallback()
+                {
+                    @Override
+                    public void onMapReady(GoogleMap map)
+                    {
+                        MapView.onResume();
+
+                        FrameLayout.LayoutParams ImageViewPinParam = new FrameLayout.LayoutParams(Misc.ToDP(24), Misc.ToDP(42));
+                        ImageViewPinParam.topMargin = -Misc.ToDP(20);
+                        ImageViewPinParam.gravity = Gravity.CENTER;
+
+                        ImageView ImageViewPin = new ImageView(Activity);
+                        ImageViewPin.setLayoutParams(ImageViewPinParam);
+                        ImageViewPin.setImageResource(R.drawable._profile_pin);
+
+                        MapView.addView(ImageViewPin);
+
+                        map.getUiSettings().setMyLocationButtonEnabled(true);
+                        map.getUiSettings().setZoomControlsEnabled(true);
+                        map.getUiSettings().setCompassEnabled(true);
+
+                        if (Misc.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
+                             map.setMyLocationEnabled(true);
+
+                        if (Latitude != 0.0f && Longitude != 0.0f)
+                        {
+                            CameraUpdate MyPosition = CameraUpdateFactory.newLatLngZoom(new LatLng(Latitude, Longitude), map.getMaxZoomLevel() - 15);
+                            map.moveCamera(MyPosition);
+                            map.animateCamera(MyPosition);
+                        }
+                        else if (Misc.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+                        {
+                            map.setMyLocationEnabled(true);
+
+                            Location MyLocation = null;
+                            LocationManager Manager = (LocationManager) Activity.getSystemService(LOCATION_SERVICE);
+
+                            if (Manager != null)
+                                MyLocation = Manager.getLastKnownLocation(Manager.getBestProvider(new Criteria(), true));
+
+                            if (MyLocation != null)
+                            {
+                                double Lat = MyLocation.getLatitude();
+                                double Long = MyLocation.getLongitude();
+
+                                CameraUpdate MyPosition = CameraUpdateFactory.newLatLngZoom(new LatLng(Lat, Long), map.getMaxZoomLevel() - 15);
+                                map.moveCamera(MyPosition);
+                                map.animateCamera(MyPosition);
+                            }
+                        }
+                    }
+                });
+
+                RelativeLayoutLocation.addView(MapView);
+
+                DialogLocation.setContentView(RelativeLayoutLocation);
+                DialogLocation.show();
+            }
+        });
 
         LinearLayoutLocation.addView(TextViewLocation);
 
+        RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        LoadingViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
+        LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        final DBHandler DB = new DBHandler(Activity);
-        Cursor cursor = DB.InboxPost(Size);
+        final LoadingView LoadingViewMain = new LoadingView(Activity);
+        LoadingViewMain.setLayoutParams(LoadingViewMainParam);
+        LoadingViewMain.setBackgroundResource(R.color.GroundWhite);
+        LoadingViewMain.Start();
+
+        RelativeLayoutMain.addView(LoadingViewMain);
+
+        Cursor cursor = DB.ProfilePrivate(ID, IsUsername);
 
         while (cursor.moveToNext())
         {
-            P.ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_ID));
-            P.Profile = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_PROFILE));
-            P.Name = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_NAME));
-            P.Medal = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_MEDAL));
-            P.Username = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_USERNAME));
-            P.Time = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_TIME));
-            P.Message = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_MESSAGE));
-            P.Type = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_TYPE));
-            P.Data = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_DATA));
-            P.Owner = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_OWNER));
-            P.View = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_VIEW));
-            P.Category = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_CATEGORY));
-            P.LikeCount = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_LIKECOUNT));
-            P.CommentCount = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_COMMENTCOUNT));
-            P.IsLike = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_LIKE)) == 1;
-            P.IsFollow = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_FOLLOW)) == 1;
-            P.IsComment = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_COMMENT)) == 1;
-            P.IsBookmark = cursor.getInt(cursor.getColumnIndex(DBHandler.INBOX_POST_BOOKMARK)) == 1;
-            P.Person1ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I1));
-            P.Person1Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I1P));
-            P.Person2ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I2));
-            P.Person2Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I2P));
-            P.Person3ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I3));
-            P.Person3Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I3P));
-            P.Person4ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I4));
-            P.Person4Avatar = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_I4P));
+            TextViewName.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_NAME)));
+            TextViewUsername.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_USERNAME)));
+            TextViewType.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_TYPE)));
+            TextViewProfileCount.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_PROFILE_COUNT)));
+            TextViewFollowingCount.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_FOLLOWING_COUNT)));
+            TextViewFollowerCount.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_FOLLOWER_COUNT)));
+            TextViewPostCount.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_POST_COUNT)));
+            TextViewLevel2.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_LEVEL)));
+            TextViewCash2.setText((cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_CASH)) + " T"));
+            TextViewRating2.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_RATING)));
+            TextViewBadge3.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_BADGE)));
+            TextViewAboutMe.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_ABOUTME)));
+            TextViewLink.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_LINK)));
+            TextViewLocation.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_LOCATION)));
+            TextViewRating3.setText(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_RATING_COUNT)));
+            Latitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_LATITUDE)));
+            Longitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_LONGITUDE)));
+
+            if (cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_LINK)).equals(Activity.getString(R.string.ProfileUINone)))
+                TextViewLink.setTextColor(Misc.Color(R.color.Gray));
+
+            LoadingViewMain.Stop();
+            LoadingViewMain.setVisibility(View.GONE);
+
+            GlideApp.with(Activity).load(cursor.getString(cursor.getColumnIndex(DBHandler.PROFILE_PRIVATE_PROFILE))).placeholder(R.drawable._general_avatar).into(CircleImageViewProfile);
         }
 
         cursor.close();
 
-        AndroidNetworking.post(Misc.GetRandomServer("PostDeleteCheck"))
-        .addBodyParameter("List", ID2)
+        AndroidNetworking.post(Misc.GetRandomServer("ProfilePrivate"))
         .addHeaders("Token", SharedHandler.GetString( "Token"))
-        .setTag(Tag)
+        .setTag("ProfileUI")
         .build()
         .getAsString(new StringRequestListener()
         {
@@ -742,37 +1083,170 @@ public class ProfileUI extends FragmentView
 
                     if (Result.getInt("Message") == 0)
                     {
+                        String Name = Result.getString("Name");
+                        String Username = "@" + Result.getString("Username");
+                        String Profile = Result.getString("Profile");
+                        String ProfileCount = Result.getString("ProfileCount");
+                        String FollowingCount = Result.getString("Following");
+                        String FollowerCount = Result.getString("Follower");
+                        String PostCount = Result.getString("Post");
+                        String Rating = Result.getString("Rating");
+                        String Rating2 = Result.getString("Star");
 
+                        if (Rating2 == null || Rating2.equals("null"))
+                            Rating2 = "0 " + Activity.getString(R.string.ProfileUIRate);
+                        else
+                            Rating2 = Rating2 + " " + Activity.getString(R.string.ProfileUIRate);
+
+                        String Type = Activity.getString(R.string.ProfileUINormal);
+
+                        if (!Result.isNull("Type"))
+                            Type = Result.getString("Type");
+
+                        String Link = Activity.getString(R.string.ProfileUINone);
+
+                        if (!Result.isNull("Link"))
+                            Link = Result.getString("Link");
+
+                        if (Link.equals(Activity.getString(R.string.ProfileUINone)))
+                            TextViewLink.setTextColor(Misc.Color(R.color.Gray));
+
+                        String Level = "0";
+
+                        if (!Result.isNull("Level"))
+                            Level = Result.getString("Level");
+
+                        String Cash = "0";
+
+                        if (!Result.isNull("Cash"))
+                            Cash = Result.getString("Cash");
+
+                        String AboutMe = Activity.getString(R.string.ProfileUINone);
+
+                        if (!Result.isNull("About"))
+                            AboutMe = Result.getString("About");
+
+                        String Location = Activity.getString(R.string.ProfileUINone);
+
+                        if (!Result.isNull("Location"))
+                            Location = Result.getString("Location");
+
+                        if (!Result.isNull("Latitude"))
+                            Latitude = Result.getDouble("Latitude");
+
+                        if (!Result.isNull("Longitude"))
+                            Longitude = Result.getDouble("Longitude");
+
+                        String Badge = Activity.getString(R.string.ProfileUINone);
+
+                        if (!Result.isNull("Badge"))
+                            Badge = Result.getString("Badge");
+
+                        // TODO Hide Text Add Image
+
+                        GlideApp.with(Activity).load(Profile).placeholder(R.drawable._general_avatar).into(CircleImageViewProfile);
+
+                        ContentValues Value = new ContentValues();
+                        Value.put(DBHandler.PROFILE_PRIVATE_ID, SharedHandler.GetString("ID"));
+                        Value.put(DBHandler.PROFILE_PRIVATE_NAME, Name);
+                        Value.put(DBHandler.PROFILE_PRIVATE_PROFILE, Profile);
+                        Value.put(DBHandler.PROFILE_PRIVATE_USERNAME, Username);
+                        Value.put(DBHandler.PROFILE_PRIVATE_TYPE, Type);
+                        Value.put(DBHandler.PROFILE_PRIVATE_PROFILE_COUNT, ProfileCount);
+                        Value.put(DBHandler.PROFILE_PRIVATE_FOLLOWING_COUNT, FollowingCount);
+                        Value.put(DBHandler.PROFILE_PRIVATE_FOLLOWER_COUNT, FollowerCount);
+                        Value.put(DBHandler.PROFILE_PRIVATE_POST_COUNT, PostCount);
+                        Value.put(DBHandler.PROFILE_PRIVATE_LEVEL, Level);
+                        Value.put(DBHandler.PROFILE_PRIVATE_CASH, Cash);
+                        Value.put(DBHandler.PROFILE_PRIVATE_RATING, Rating);
+                        Value.put(DBHandler.PROFILE_PRIVATE_BADGE, Badge);
+                        Value.put(DBHandler.PROFILE_PRIVATE_ABOUTME, AboutMe);
+                        Value.put(DBHandler.PROFILE_PRIVATE_LINK, Link);
+                        Value.put(DBHandler.PROFILE_PRIVATE_LOCATION, Location);
+                        Value.put(DBHandler.PROFILE_PRIVATE_RATING_COUNT, Rating2);
+                        Value.put(DBHandler.PROFILE_PRIVATE_LATITUDE, Latitude);
+                        Value.put(DBHandler.PROFILE_PRIVATE_LONGITUDE, Longitude);
+
+                        DB.ProfilePrivate(Value);
+
+                        TextViewName.setText(Name);
+                        TextViewUsername.setText(Username);
+                        TextViewType.setText(Type);
+                        TextViewProfileCount.setText(ProfileCount);
+                        TextViewFollowingCount.setText(FollowingCount);
+                        TextViewFollowerCount.setText(FollowerCount);
+                        TextViewPostCount.setText(PostCount);
+                        TextViewLevel2.setText(Level);
+                        TextViewCash2.setText(Cash);
+                        TextViewRating2.setText(Rating);
+                        TextViewBadge3.setText(Badge);
+                        TextViewAboutMe.setText(AboutMe);
+                        TextViewLink.setText(Link);
+                        TextViewLocation.setText(Location);
+                        TextViewRating3.setText(Rating2);
                     }
                 }
                 catch (Exception e)
                 {
-                    Misc.Debug("PostAdapter-Delete: " + e.toString());
+                    Misc.Debug("ProfileUI: " + e.toString());
                 }
+
+                LoadingViewMain.Stop();
+                LoadingViewMain.setVisibility(View.GONE);
             }
 
-            @Override public void onError(ANError e) { }
-        });
+            @Override
+            public void onError(ANError e)
+            {
+                LoadingViewMain.Stop();
+                LoadingViewMain.setVisibility(View.GONE);
+            }
+        });*/
 
+        View view = View.inflate(Activity, R.layout.profile, null);
 
+        TextView TextViewName = view.findViewById(R.id.TextViewName);
+        TextViewName.setText("Ali Khazaee");
 
+        TextView TextViewUsername = view.findViewById(R.id.TextViewUsername);
+        TextViewUsername.setText("@alikhazaee");
 
-        TextViewName.setText("ali khazaee");
-        TextViewUsername.setText("@ali.khazaee");
-        TextViewType.setText("Normal");
-        TextViewProfileCount.setText("9812");
-        TextViewFollowingCount.setText("1862");
-        TextViewFollowerCount.setText("53.2K");
-        TextViewPostCount.setText("10");
-        TextViewLevel2.setText("Lv 3");
-        TextViewCash2.setText("1800000 T");
-        TextViewRating2.setText("3.5");
-        TextViewBadge3.setText("none");
-        TextViewAboutMe.setText("Salam Sosis, Ali Hastam Mohandese Petro Shimie Karaj Tahte Lisanse ORoPa xD, Biiiiiiiiiiiiiiiiiiiiib, ye QQ Miad Jolo Az ghast K Maaaan Begam on Weed o Bede Pass Man ye Daaam Begiram ");
-        TextViewLink.setText("http://google.com/");
-        TextViewLocation.setText("Karaj - Tehran");
-        TextViewRating3.setText("12.3K Rates");
+        TextView TextViewFollowing = view.findViewById(R.id.TextViewFollowing);
+        TextViewFollowing.setText("12.6K");
 
-        ViewMain = RelativeLayoutMain;
+        TextView TextViewFollower = view.findViewById(R.id.TextViewFollower);
+        TextViewFollower.setText("1892");
+
+        TextView TextViewProfileView = view.findViewById(R.id.TextViewProfileView);
+        TextViewProfileView.setText("102K");
+
+        TextView TextViewRating = view.findViewById(R.id.TextViewRating);
+        TextViewRating.setText("4.6");
+
+        TextView TextViewRate = view.findViewById(R.id.TextViewRate);
+        TextViewRate.setText("Desinger");
+
+        TextView TextViewTag1 = view.findViewById(R.id.TextViewTag1);
+        TextViewTag1.setText("Developer");
+
+        TextView TextViewTag2 = view.findViewById(R.id.TextViewTag2);
+        TextViewTag2.setText("PHP");
+
+        TextView TextViewTag3 = view.findViewById(R.id.TextViewTag3);
+        TextViewTag3.setText("Node JS");
+
+        TextView TextViewTag4 = view.findViewById(R.id.TextViewTag4);
+        TextViewTag4.setText("Sexy Lady");
+
+        TextView TextViewTag5 = view.findViewById(R.id.TextViewTag5);
+        TextViewTag5.setText("Hava Garm e Haa");
+
+        TextView TextViewTag6 = view.findViewById(R.id.TextViewTag6);
+        TextViewTag6.setText("Tanbe 1000");
+
+        TextView TextViewTag7 = view.findViewById(R.id.TextViewTag7);
+        TextViewTag7.setText("9103");
+
+        ViewMain = view;
     }
 }

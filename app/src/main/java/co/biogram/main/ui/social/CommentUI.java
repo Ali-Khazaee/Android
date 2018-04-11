@@ -53,6 +53,14 @@ public class CommentUI extends FragmentView
     private boolean IsOwner;
     private String PostID;
     private int PositionPost;
+    private PostAdapter.PostStruct Post;
+
+    CommentUI(PostAdapter.PostStruct p)
+    {
+        Post = p;
+        PostID = p.ID;
+        IsOwner = SharedHandler.GetString("ID").equals(p.Owner);
+    }
 
     public CommentUI(ArrayList<PostAdapter.PostStruct> pl, int p)
     {
@@ -199,7 +207,10 @@ public class CommentUI extends FragmentView
 
                                 LinearLayoutManagerMain.scrollToPositionWithOffset(0, 0);
 
-                                PostList.get(PositionPost).InsComment();
+                                if (Post != null)
+                                    Post.InsComment();
+                                else
+                                    PostList.get(PositionPost).InsComment();
                             }
                         }
                         catch (Exception e)
@@ -576,7 +587,10 @@ public class CommentUI extends FragmentView
                             .build()
                             .getAsString(null);
 
-                            PostList.get(PositionPost).DesComment();
+                            if (Post != null)
+                                Post.DesComment();
+                            else
+                                PostList.get(PositionPost).DesComment();
 
                             CommentList.remove(Position);
                             notifyDataSetChanged();

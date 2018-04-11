@@ -39,7 +39,7 @@ android
     defaultConfig
     {
         applicationId "co.biogram.main"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 203
         versionName "2.0.3"
@@ -87,6 +87,8 @@ dependencies
 
     implementation  'com.google.android.gms:play-services-auth:11.8.0'
     implementation  'com.google.android.gms:play-services-maps:11.8.0'
+
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     implementation  'com.github.bumptech.glide:glide:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
