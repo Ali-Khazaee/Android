@@ -26,7 +26,7 @@ public class NotificationUI extends FragmentView
         TextView TextViewTheme = new TextView(Activity , 16, false);
         TextViewTheme.setLayoutParams(TextViewThemeParam);
         TextViewTheme.setText(("Theme"));
-        TextViewTheme.setId(Misc.ViewID());
+        TextViewTheme.setId(Misc.generateViewId());
         TextViewTheme.setBackgroundResource(R.color.Gray);
         TextViewTheme.setOnClickListener(new View.OnClickListener()
         {

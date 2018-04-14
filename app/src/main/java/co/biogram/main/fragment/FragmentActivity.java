@@ -6,11 +6,9 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import co.biogram.main.handler.Misc;
-
 public abstract class FragmentActivity extends Activity
 {
-    private OnPermissionListener PermissionListener;
+    private OnGrantListener Listener;
     private FragmentManager Manager;
     private boolean Resume = true;
     private String Permission;
@@ -64,26 +62,20 @@ public abstract class FragmentActivity extends Activity
         super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
         for (int I = 0; I < Permissions.length; I++)
-            if (PermissionListener != null && Permissions[I].equals(Permission))
-                PermissionListener.OnResult(GrantResults[I] == PackageManager.PERMISSION_GRANTED);
+            if (Listener != null && Permissions[I].equals(Permission))
+                Listener.OnGrant(GrantResults[I] == PackageManager.PERMISSION_GRANTED);
     }
 
-    public void RequestPermission(@NonNull String permission, @NonNull OnPermissionListener listener)
+    public void RequestPermission(String permission, OnGrantListener listener)
     {
-        if (Misc.checkPermission(permission))
-        {
-            listener.OnResult(true);
-            return;
-        }
-
+        Listener = listener;
         Permission = permission;
-        PermissionListener = listener;
 
         ActivityCompat.requestPermissions(this, new String[] { Permission }, 555);
     }
 
-    public interface OnPermissionListener
+    public interface OnGrantListener
     {
-        void OnResult(boolean Granted);
+        void OnGrant(boolean Result);
     }
 }

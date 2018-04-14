@@ -21,24 +21,27 @@ import android.widget.RelativeLayout;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.TextView;
 
 public class GalleryViewUI extends FragmentView
 {
-    private final List<Struct> GalleryList = new ArrayList<>();
-    private final List<String> FolderList = new ArrayList<>();
-    private final GalleryListener Listener;
+    public static int TYPE_IMAGE = 1;
+    public static int TYPE_VIDEO = 2;
+    public static int TYPE_FILE = 3;
+
+    private int Count;
+    private int GalleryType;
     private String Type = "Gallery";
-    private final int GalleryType;
-    private final int Count;
+    private GalleryListener Listener;
+    private AdapterGallery Adapter = new AdapterGallery();
+    private ArrayList<String> FolderList = new ArrayList<>();
+    private ArrayList<Struct> GalleryList = new ArrayList<>();
 
     public GalleryViewUI(int count, int type, GalleryListener l)
     {
@@ -50,8 +53,6 @@ public class GalleryViewUI extends FragmentView
     @Override
     public void OnCreate()
     {
-        final AdapterGallery Adapter = new AdapterGallery();
-
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
@@ -60,7 +61,7 @@ public class GalleryViewUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(View.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -69,10 +70,9 @@ public class GalleryViewUI extends FragmentView
 
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
-        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.__general_back_blue_rtl : R.drawable.__general_back_blue);
+        ImageViewBack.setId(View.generateViewId());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -84,15 +84,15 @@ public class GalleryViewUI extends FragmentView
         final TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-        TextViewTitle.setText(GalleryType == 3 ? Misc.String(R.string.GalleryViewUIStorage) : Misc.String(R.string.GalleryViewUI));
+        TextViewTitle.setText(GalleryType == TYPE_FILE ? Misc.String(R.string.GalleryViewUIStorage) : Misc.String(R.string.GalleryViewUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setId(Misc.ViewID());
+        TextViewTitle.setId(View.generateViewId());
         TextViewTitle.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                if (GalleryType == 3)
+                if (GalleryType == TYPE_FILE)
                     return;
 
                 PopupMenu PopMenu = new PopupMenu(Activity, TextViewTitle);
@@ -130,11 +130,10 @@ public class GalleryViewUI extends FragmentView
 
         ImageView ImageViewList = new ImageView(Activity);
         ImageViewList.setLayoutParams(ImageViewListParam);
-        ImageViewList.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewList.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3));
-        ImageViewList.setImageResource(R.drawable._write_arrow);
+        ImageViewList.setImageResource(R.drawable.__general_arrow_blue_down);
 
-        if (GalleryType != 3)
+        if (GalleryType != TYPE_FILE)
             RelativeLayoutHeader.addView(ImageViewList);
 
         RelativeLayout.LayoutParams ImageViewSaveParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
@@ -142,20 +141,18 @@ public class GalleryViewUI extends FragmentView
 
         ImageView ImageViewSave = new ImageView(Activity);
         ImageViewSave.setLayoutParams(ImageViewSaveParam);
-        ImageViewSave.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewSave.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
-        ImageViewSave.setImageResource(R.drawable.done_blue);
+        ImageViewSave.setImageResource(R.drawable.__general_done_blue);
         ImageViewSave.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 Listener.OnSave();
-                Activity.onBackPressed();
             }
         });
 
-        if (GalleryType != 3)
+        if (GalleryType != TYPE_FILE)
             RelativeLayoutHeader.addView(ImageViewSave);
 
         RelativeLayout.LayoutParams ViewLineParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1));
@@ -164,7 +161,7 @@ public class GalleryViewUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -173,86 +170,79 @@ public class GalleryViewUI extends FragmentView
 
         RecyclerView RecyclerViewMain = new RecyclerView(Activity);
         RecyclerViewMain.setLayoutParams(RecyclerViewFollowersParam);
-        RecyclerViewMain.setLayoutManager(GalleryType != 3 ? new GridLayoutManager(Activity, 3) : new LinearLayoutManager(Activity));
+        RecyclerViewMain.setLayoutManager(GalleryType != TYPE_FILE ? new GridLayoutManager(Activity, 3) : new LinearLayoutManager(Activity));
         RecyclerViewMain.setAdapter(Adapter);
 
-        if (GalleryType != 3)
+        if (GalleryType != TYPE_FILE)
             RecyclerViewMain.addItemDecoration(new GridSpacingItemDecoration());
 
         RelativeLayoutMain.addView(RecyclerViewMain);
 
-        try
+        if (GalleryType == TYPE_FILE)
         {
-            if (GalleryType == 3)
-            {
-                for (File file : ContextCompat.getExternalFilesDirs(Activity, null))
-                    for (File file2 : file.getParentFile().getParentFile().getParentFile().getParentFile().listFiles())
-                        GalleryList.add(new Struct(file2.getName(), file2.getAbsolutePath(), true));
-            }
-            else if (GalleryType == 2)
-            {
-                Cursor[] cursors = new Cursor[2];
-
-                cursors[0] = Activity.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-                cursors[1] = Activity.getContentResolver().query(MediaStore.Video.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-
-                Cursor cursor = new MergeCursor(cursors);
-
-                if (cursor.moveToFirst())
-                {
-                    String Folder;
-
-                    int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-                    int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
-
-                    do
-                    {
-                        Folder = cursor.getString(FolderColumn);
-
-                        if (!FolderList.contains(Folder))
-                            FolderList.add(Folder);
-
-                        GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), false));
-                    }
-                    while (cursor.moveToNext());
-                }
-
-                cursor.close();
-            }
-            else if (GalleryType == 1)
-            {
-                Cursor[] cursors = new Cursor[2];
-
-                cursors[0] = Activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-                cursors[1] = Activity.getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
-
-                Cursor cursor = new MergeCursor(cursors);
-
-                if (cursor.moveToFirst())
-                {
-                    String Folder;
-
-                    int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-                    int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-
-                    do
-                    {
-                        Folder = cursor.getString(FolderColumn);
-
-                        if (!FolderList.contains(Folder))
-                            FolderList.add(Folder);
-
-                        GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), false));
-                    }
-                    while (cursor.moveToNext());
-                }
-
-                cursor.close();
-            }
+            for (File file : ContextCompat.getExternalFilesDirs(Activity, null))
+                for (File file2 : file.getParentFile().getParentFile().getParentFile().getParentFile().listFiles())
+                    GalleryList.add(new Struct(file2.getName(), file2.getAbsolutePath(), true));
         }
-        catch (Exception e)
+        else if (GalleryType == TYPE_VIDEO)
         {
-            Misc.Debug("GalleryViewUI-MediaList: " + e.toString());
+            Cursor[] cursors = new Cursor[2];
+
+            cursors[0] = Activity.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+            cursors[1] = Activity.getContentResolver().query(MediaStore.Video.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+
+            Cursor cursor = new MergeCursor(cursors);
+
+            if (cursor.moveToFirst())
+            {
+                String Folder;
+
+                int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+
+                do
+                {
+                    Folder = cursor.getString(FolderColumn);
+
+                    if (!FolderList.contains(Folder))
+                        FolderList.add(Folder);
+
+                    GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), false));
+                }
+                while (cursor.moveToNext());
+            }
+
+            cursor.close();
+        }
+        else if (GalleryType == TYPE_IMAGE)
+        {
+            Cursor[] cursors = new Cursor[2];
+
+            cursors[0] = Activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+            cursors[1] = Activity.getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME }, null, null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+
+            Cursor cursor = new MergeCursor(cursors);
+
+            if (cursor.moveToFirst())
+            {
+                String Folder;
+
+                int PathColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                int FolderColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+
+                do
+                {
+                    Folder = cursor.getString(FolderColumn);
+
+                    if (!FolderList.contains(Folder))
+                        FolderList.add(Folder);
+
+                    GalleryList.add(new Struct(Folder, cursor.getString(PathColumn), false));
+                }
+                while (cursor.moveToNext());
+            }
+
+            cursor.close();
         }
 
         ViewMain = RelativeLayoutMain;
@@ -272,14 +262,14 @@ public class GalleryViewUI extends FragmentView
 
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
-        private List<Struct> FileList = new ArrayList<>();
-        private int ID1_MAIN = Misc.ViewID();
-        private int ID1_FILE = Misc.ViewID();
-        private int ID1_NAME = Misc.ViewID();
-        private int ID_MAIN = Misc.ViewID();
-        private int ID_CIRCLE = Misc.ViewID();
-        private GradientDrawable DrawableSelect;
+        private ArrayList<Struct> FileList = new ArrayList<>();
+        private int ID1_MAIN = Misc.generateViewId();
+        private int ID1_FILE = Misc.generateViewId();
+        private int ID1_NAME = Misc.generateViewId();
+        private int ID_MAIN = Misc.generateViewId();
+        private int ID_CIRCLE = Misc.generateViewId();
         private GradientDrawable DrawableSelected;
+        private GradientDrawable DrawableSelect;
         private int Selection = 0;
 
         AdapterGallery()
@@ -333,12 +323,12 @@ public class GalleryViewUI extends FragmentView
                 if (new File(FileList.get(Position).Path).isDirectory())
                 {
                     Holder.ImageViewFile.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-                    GlideApp.with(Activity).load(R.drawable._gallery_folder).dontAnimate().into(Holder.ImageViewFile);
+                    GlideApp.with(Activity).load(R.drawable.__gallery_folder).dontAnimate().into(Holder.ImageViewFile);
                 }
                 else
                 {
                     Holder.ImageViewFile.setPadding(Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9));
-                    GlideApp.with(Activity).load(R.drawable._gallery_file).dontAnimate().into(Holder.ImageViewFile);
+                    GlideApp.with(Activity).load(R.drawable.__gallery_file).dontAnimate().into(Holder.ImageViewFile);
                 }
 
                 Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
@@ -415,7 +405,7 @@ public class GalleryViewUI extends FragmentView
                 @Override
                 public void onClick(View v)
                 {
-                    if (GalleryType == 2)
+                    if (GalleryType == TYPE_VIDEO)
                     {
                         VideoPreviewUI vp = new VideoPreviewUI(FileList.get(Position).Path, true, false);
                         vp.SetType(FileList.get(Position).Selection, new VideoPreviewUI.OnSelectListener()
@@ -448,7 +438,7 @@ public class GalleryViewUI extends FragmentView
 
                         Activity.GetManager().OpenView(vp, R.id.ContainerFull, "VideoPreviewUI");
                     }
-                    else if (GalleryType == 1)
+                    else if (GalleryType == TYPE_IMAGE)
                     {
                         ImagePreviewUI ip = new ImagePreviewUI(FileList.get(Position).Path, false);
                         ip.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener()
@@ -551,7 +541,7 @@ public class GalleryViewUI extends FragmentView
         @Override
         public int getItemViewType(int Position)
         {
-            if (GalleryType == 3)
+            if (GalleryType == TYPE_FILE)
                 return 1;
 
             return 0;
@@ -560,7 +550,7 @@ public class GalleryViewUI extends FragmentView
         @Override
         public int getItemCount()
         {
-            if (GalleryType == 3)
+            if (GalleryType == TYPE_FILE)
             {
                 if (FileList.size() > 0)
                     return FileList.size();
@@ -630,8 +620,8 @@ public class GalleryViewUI extends FragmentView
 
     public interface GalleryListener
     {
-        void OnSelection(String URL);
-        void OnRemove(String URL);
+        void OnSelection(String path);
+        void OnRemove(String path);
         void OnSave();
     }
 }

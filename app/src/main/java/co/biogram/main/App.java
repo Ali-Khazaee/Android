@@ -10,15 +10,14 @@ import com.androidnetworking.AndroidNetworking;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import okhttp3.OkHttpClient;
+
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.service.SocketService;
-
-import okhttp3.OkHttpClient;
 
 public class App extends Application
 {
@@ -37,13 +36,10 @@ public class App extends Application
         Context context = getApplicationContext();
 
         Misc.SetUp(context);
-        CacheHandler.SetUp(context);
 
         startService(new Intent(context, SocketService.class));
 
-        OKClient = GetOKClient();
-
-        AndroidNetworking.initialize(context, OKClient);
+        AndroidNetworking.initialize(context, GetOKClient());
     }
 
     @Override

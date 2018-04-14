@@ -6,7 +6,6 @@ import android.widget.RelativeLayout;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.DBHandler;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.StickyScrollView;
 import co.biogram.main.ui.view.TextView;
@@ -24,7 +23,7 @@ public class MyLevelUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -34,8 +33,8 @@ public class MyLevelUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.ViewID());
-        ImageViewBack.setImageResource(R.drawable.back_blue);
+        ImageViewBack.setId(Misc.generateViewId());
+        ImageViewBack.setImageResource(R.drawable.__general_back_blue);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
@@ -59,7 +58,7 @@ public class MyLevelUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 

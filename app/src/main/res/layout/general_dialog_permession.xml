@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutIcon"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:gravity="center"
+        android:background="@color/Primary">
+
+        <ImageView
+            android:id="@+id/ImageViewIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/TextViewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_below="@+id/LinearLayoutIcon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_below="@+id/TextViewMessage">
+
+        <TextView
+            android:id="@+id/TextViewDecline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/GeneralDialogPermissionDecline"
+            android:textSize="@dimen/FontVerySmall"
+            android:textStyle="bold"
+            android:textColor="@color/Gray"
+            android:padding="15dp" />
+
+        <TextView
+            android:id="@+id/TextViewAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/GeneralDialogPermissionAccept"
+            android:textSize="@dimen/FontVerySmall"
+            android:textStyle="bold"
+            android:textColor="@color/Primary"
+            android:padding="15dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

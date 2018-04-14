@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -77,7 +76,7 @@ public class ProgressDialog extends AlertDialog
 
         TextView TextViewTitle = new TextView(getContext(), 14, false);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setId(Misc.ViewID());
+        TextViewTitle.setId(Misc.generateViewId());
         TextViewTitle.SetColor(R.color.TextWhite);
 
         RelativeLayoutMain.addView(TextViewTitle);
@@ -89,7 +88,7 @@ public class ProgressDialog extends AlertDialog
 
         ProgressBarMain = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleHorizontal);
         ProgressBarMain.setLayoutParams(ProgressBarMainParam);
-        ProgressBarMain.setId(Misc.ViewID());
+        ProgressBarMain.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ProgressBarMain);
 

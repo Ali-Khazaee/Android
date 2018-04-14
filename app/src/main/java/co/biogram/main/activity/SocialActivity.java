@@ -41,7 +41,7 @@ public class SocialActivity extends FragmentActivity
         LinearLayoutMenu.setLayoutParams(LinearLayoutMenuParam);
         LinearLayoutMenu.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
         LinearLayoutMenu.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutMenu.setId(Misc.ViewID());
+        LinearLayoutMenu.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(LinearLayoutMenu);
 
@@ -91,7 +91,7 @@ public class SocialActivity extends FragmentActivity
 
         View ViewLine = new View(this);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
 
         RelativeLayoutMain.addView(ViewLine);
@@ -141,7 +141,7 @@ public class SocialActivity extends FragmentActivity
             case 1:
             {
                 String Username = getIntent().getStringExtra("Data");
-                GetManager().OpenView(new ProfileUI(Username), R.id.Container, "ProfileUI");
+                GetManager().OpenView(new ProfileUI(), R.id.Container, "ProfileUI");
             }
             break;
             case 2:

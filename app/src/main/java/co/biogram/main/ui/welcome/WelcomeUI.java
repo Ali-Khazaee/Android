@@ -65,7 +65,7 @@ public class WelcomeUI extends FragmentView
         LinearLayoutHeader.setBackgroundResource(R.color.Primary);
         LinearLayoutHeader.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutHeader.setGravity(Gravity.CENTER_HORIZONTAL);
-        LinearLayoutHeader.setId(Misc.ViewID());
+        LinearLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(LinearLayoutHeader);
 
@@ -80,7 +80,7 @@ public class WelcomeUI extends FragmentView
         TextView TextViewLanguage = new TextView(Activity, 16, false);
         TextViewLanguage.setLayoutParams(TextViewLanguageParam);
         TextViewLanguage.setText(Misc.String(R.string.WelcomeUILanguage));
-        TextViewLanguage.setId(Misc.ViewID());
+        TextViewLanguage.setId(Misc.generateViewId());
         TextViewLanguage.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -211,7 +211,7 @@ public class WelcomeUI extends FragmentView
         Button ButtonSignUp = new Button(Activity, 16, true);
         ButtonSignUp.setLayoutParams(RelativeLayoutSignUpParam);
         ButtonSignUp.setText(Misc.String(R.string.GeneralSignUp));
-        ButtonSignUp.setId(Misc.ViewID());
+        ButtonSignUp.setId(Misc.generateViewId());
         ButtonSignUp.setBackground(DrawableSignUp);
         ButtonSignUp.setOnClickListener(new View.OnClickListener()
         {
@@ -238,7 +238,7 @@ public class WelcomeUI extends FragmentView
 
         RelativeLayout RelativeLayoutOR = new RelativeLayout(Activity);
         RelativeLayoutOR.setLayoutParams(RelativeLayoutORParam);
-        RelativeLayoutOR.setId(Misc.ViewID());
+        RelativeLayoutOR.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutOR);
 
@@ -248,7 +248,7 @@ public class WelcomeUI extends FragmentView
         TextView TextViewOR = new TextView(Activity, 14, true);
         TextViewOR.setLayoutParams(TextViewORParam);
         TextViewOR.setText(Misc.String(R.string.WelcomeUIOR));
-        TextViewOR.setId(Misc.ViewID());
+        TextViewOR.setId(Misc.generateViewId());
         TextViewOR.setGravity(Gravity.CENTER);
         TextViewOR.SetColor(R.color.Gray);
 
@@ -323,7 +323,7 @@ public class WelcomeUI extends FragmentView
         RelativeLayoutSignIn.setLayoutParams(RelativeLayoutSignInParam);
         RelativeLayoutSignIn.setBackgroundResource(R.color.ActionBarWhite);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
-        RelativeLayoutSignIn.setId(Misc.ViewID());
+        RelativeLayoutSignIn.setId(Misc.generateViewId());
         RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -347,7 +347,7 @@ public class WelcomeUI extends FragmentView
         TextViewSignIn.setLayoutParams(TextViewSignInParam);
         TextViewSignIn.SetColor(R.color.Gray);
         TextViewSignIn.setText(Misc.String(R.string.WelcomeUISignIn));
-        TextViewSignIn.setId(Misc.ViewID());
+        TextViewSignIn.setId(Misc.generateViewId());
 
         RelativeLayoutSignIn.addView(TextViewSignIn);
 
@@ -368,7 +368,7 @@ public class WelcomeUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -381,7 +381,7 @@ public class WelcomeUI extends FragmentView
         TextViewTerm2.setLayoutParams(TextViewTerm2Param);
         TextViewTerm2.SetColor(R.color.Gray);
         TextViewTerm2.setText(Misc.String(R.string.WelcomeUITerm2));
-        TextViewTerm2.setId(Misc.ViewID());
+        TextViewTerm2.setId(Misc.generateViewId());
         TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
 
         RelativeLayoutMain.addView(TextViewTerm2);

@@ -9,24 +9,28 @@ import android.widget.RelativeLayout;
 
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-
-import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
-import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.fragment.FragmentView;
 
 public class CropViewUI extends FragmentView
 {
-    private String Path;
-    private OnCropListener Crop;
+    private Bitmap bitmap;
+    private boolean Fixed = false;
+    private OnCropListener Listener;
 
-    public CropViewUI(String path, OnCropListener l)
+    public CropViewUI(String path, boolean isFixed, OnCropListener l)
     {
-        Path = path;
-        Crop = l;
+        bitmap = BitmapFactory.decodeFile(path);
+        Fixed = isFixed;
+        Listener = l;
+    }
+
+    CropViewUI(Bitmap Source, boolean isFixed, OnCropListener l)
+    {
+        bitmap = Source;
+        Fixed = isFixed;
+        Listener = l;
     }
 
     @Override
@@ -35,14 +39,12 @@ public class CropViewUI extends FragmentView
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
-        RelativeLayoutMain.setClickable(true);
 
         final CropImageView CropImageViewMain = new CropImageView(Activity);
         CropImageViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         CropImageViewMain.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
-        CropImageViewMain.setFixedAspectRatio(false);
-        CropImageViewMain.setAutoZoomEnabled(true);
-        CropImageViewMain.setImageBitmap(BitmapFactory.decodeFile(Path));
+        CropImageViewMain.setFixedAspectRatio(Fixed);
+        CropImageViewMain.setImageBitmap(bitmap);
 
         RelativeLayoutMain.addView(CropImageViewMain);
 
@@ -52,32 +54,13 @@ public class CropViewUI extends FragmentView
         ImageView ImageViewDone = new ImageView(Activity);
         ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
-        ImageViewDone.setImageResource(R.drawable.done_white);
+        ImageViewDone.setImageResource(R.drawable.__general_done_white);
         ImageViewDone.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                try
-                {
-                    ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-                    CropImageViewMain.getCroppedImage().compress(Bitmap.CompressFormat.PNG, 100, BAOS);
-
-                    File file = new File(CacheHandler.TempDir(Activity), System.currentTimeMillis() + ".jpg");
-                    file.createNewFile();
-
-                    FileOutputStream FOS = new FileOutputStream(file);
-                    FOS.write(BAOS.toByteArray());
-                    FOS.flush();
-                    FOS.close();
-
-                    Crop.OnCrop(file.getAbsolutePath());
-                }
-                catch (Exception e)
-                {
-                    Misc.Debug("CropViewUI: " + e.toString());
-                }
-
+                Listener.OnCrop(CropImageViewMain.getCroppedImage());
                 Activity.onBackPressed();
             }
         });
@@ -90,7 +73,7 @@ public class CropViewUI extends FragmentView
         ImageView ImageViewClose = new ImageView(Activity);
         ImageViewClose.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewClose.setLayoutParams(ImageViewCloseParam);
-        ImageViewClose.setImageResource(R.drawable.close_white);
+        ImageViewClose.setImageResource(R.drawable.__general_close_white);
         ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
         RelativeLayoutMain.addView(ImageViewClose);
@@ -112,6 +95,6 @@ public class CropViewUI extends FragmentView
 
     public interface OnCropListener
     {
-        void OnCrop(String Path);
+        void OnCrop(Bitmap bitmap);
     }
 }

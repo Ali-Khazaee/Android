@@ -10,8 +10,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -21,45 +23,200 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
+import co.biogram.main.BuildConfig;
 import co.biogram.main.activity.WelcomeActivity;
-import co.biogram.main.ui.view.TextView;
 
 public class Misc
 {
-    private static AtomicInteger NextGeneratedID = new AtomicInteger(1);
-
     @SuppressLint("StaticFieldLeak")
     private static volatile Context context;
+    private static volatile Typeface TypeFontCache;
+
+    public final static int DOWNLOAD = 0;
+    public final static int DOCUMENT = 1;
+    public final static int PICTURE = 2;
+    public final static int VIDEO = 3;
+    public final static int AUDIO = 4;
+    public final static int FILE = 5;
+
+    private Misc()
+    {
+
+    }
 
     public static void SetUp(Context c)
     {
         context = c;
+
+        File TempFolder = Temp();
+
+        if (TempFolder.exists() && TempFolder.isDirectory())
+        {
+            File[] TempFiles = TempFolder.listFiles();
+
+            for (File file : TempFiles)
+                file.delete();
+        }
     }
 
-    public static int ViewID()
+    public static File Dir(int Type)
     {
-        if (Build.VERSION.SDK_INT > 16)
+        String Folder = "";
+
+        switch (Type)
+        {
+            case DOWNLOAD: Folder = "Download"; break;
+            case DOCUMENT: Folder = "Document"; break;
+            case PICTURE: Folder = "Picture"; break;
+            case VIDEO: Folder = "Video"; break;
+            case AUDIO: Folder = "Audio"; break;
+            case FILE: Folder = "File"; break;
+        }
+
+        File BioDir = new File(Environment.getExternalStorageDirectory(), "Bio");
+
+        if (!BioDir.exists())
+            BioDir.mkdir();
+
+        File FolderDir = new File(BioDir, Folder);
+
+        if (!FolderDir.exists())
+            FolderDir.mkdir();
+
+        return FolderDir;
+    }
+
+    public static File Temp()
+    {
+        File TempFolder = new File(context.getCacheDir(), "Temp");
+
+        if (!TempFolder.exists())
+            TempFolder.mkdir();
+
+        return TempFolder;
+    }
+
+    public static Typeface GetTypeface()
+    {
+        if (TypeFontCache == null)
+            TypeFontCache = Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf");
+
+        return TypeFontCache;
+    }
+
+    public static void Toast(int Message)
+    {
+        GradientDrawable drawableToast = new GradientDrawable();
+        drawableToast.setStroke(ToDP(1), Color(R.color.ToastLine));
+        drawableToast.setColor(Color(R.color.Toast));
+        drawableToast.setCornerRadius(10.0f);
+
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setBackground(drawableToast);
+
+        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        TextView TextViewMessage = new TextView(context);
+        TextViewMessage.setLayoutParams(TextViewMessageParam);
+        TextViewMessage.setPadding(ToDP(15), ToDP(15), ToDP(15), ToDP(15));
+        TextViewMessage.setTypeface(GetTypeface());
+        TextViewMessage.setText(String(Message));
+        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewMessage.setTextColor(Color(R.color.TextDark));
+
+        RelativeLayoutMain.addView(TextViewMessage);
+
+        Toast toast = new Toast(context);
+        toast.setGravity(Gravity.BOTTOM, 0, ToDP(65));
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(RelativeLayoutMain);
+        toast.show();
+    }
+
+    public static int Color(int C)
+    {
+        return ContextCompat.getColor(context, C);
+    }
+
+    public static String String(int S)
+    {
+        return context.getString(S);
+    }
+
+    public static int SampleSize(int W, int H, int MW, int MH)
+    {
+        int S = 1;
+
+        if (H > MH || W > MW)
+        {
+            while ((H / S) >= MH || (W / S) >= MW)
+            {
+                S *= 2;
+            }
+        }
+
+        return S;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static int generateViewId()
+    {
+
             return View.generateViewId();
 
-        for (;;)
-        {
-            int Result = NextGeneratedID.get();
 
-            int Value = Result + 1;
-
-            if (Value > 0x00FFFFFF)
-                Value = 1;
-
-            if (NextGeneratedID.compareAndSet(Result, Value))
-                return Result;
-        }
     }
 
     private static boolean IsRTL = false;
@@ -145,7 +302,7 @@ public class Misc
         RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        TextView TextViewMessage = new TextView(context, 14, false);
+        TextView TextViewMessage = new TextView(context);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.setPadding(ToDP(15), ToDP(15), ToDP(15), ToDP(15));
         TextViewMessage.setText(Message);
@@ -216,6 +373,8 @@ public class Misc
         return S;
     }
 
+
+
     public static void ChangeLanguage(String Language)
     {
         SharedPreferences.Editor Editor = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit();
@@ -259,15 +418,7 @@ public class Misc
         System.exit(0);
     }
 
-    public static int Color(int C)
-    {
-        return ContextCompat.getColor(context, C);
-    }
 
-    public static String String(int S)
-    {
-        return context.getString(S);
-    }
 
     public static boolean IsDark()
     {

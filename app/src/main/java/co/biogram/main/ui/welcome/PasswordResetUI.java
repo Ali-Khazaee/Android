@@ -87,7 +87,7 @@ class PasswordResetUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -97,7 +97,7 @@ class PasswordResetUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
@@ -121,7 +121,7 @@ class PasswordResetUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -147,7 +147,7 @@ class PasswordResetUI extends FragmentView
         TextViewEmail.setLayoutParams(TextViewUsernameParam);
         TextViewEmail.SetColor(R.color.Gray);
         TextViewEmail.setText(Misc.String(R.string.GeneralEmailAddress));
-        TextViewEmail.setId(Misc.ViewID());
+        TextViewEmail.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(TextViewEmail);
 
@@ -157,7 +157,7 @@ class PasswordResetUI extends FragmentView
 
         final EditText EditTextEmailOrUsername = new EditText(Activity);
         EditTextEmailOrUsername.setLayoutParams(EditTextUsernameParam);
-        EditTextEmailOrUsername.setId(Misc.ViewID());
+        EditTextEmailOrUsername.setId(Misc.generateViewId());
         EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(128) });
         EditTextEmailOrUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
@@ -184,7 +184,7 @@ class PasswordResetUI extends FragmentView
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(Misc.String(R.string.PasswordResetUIMessage));
-        TextViewMessage.setId(Misc.ViewID());
+        TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
         RelativeLayoutScroll.addView(TextViewMessage);

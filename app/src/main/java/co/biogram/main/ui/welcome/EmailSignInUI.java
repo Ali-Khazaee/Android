@@ -89,7 +89,7 @@ class EmailSignInUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -99,7 +99,7 @@ class EmailSignInUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
@@ -123,7 +123,7 @@ class EmailSignInUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -148,7 +148,7 @@ class EmailSignInUI extends FragmentView
         TextViewEmailOrUsername.setLayoutParams(TextViewEmailOrUsernameParam);
         TextViewEmailOrUsername.SetColor(R.color.Gray);
         TextViewEmailOrUsername.setText(Misc.String(R.string.EmailSignInUIOrUsername));
-        TextViewEmailOrUsername.setId(Misc.ViewID());
+        TextViewEmailOrUsername.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(TextViewEmailOrUsername);
 
@@ -158,7 +158,7 @@ class EmailSignInUI extends FragmentView
 
         final EditText EditTextEmailOrUsername = new EditText(Activity);
         EditTextEmailOrUsername.setLayoutParams(EditTextEmailOrUsernameParam);
-        EditTextEmailOrUsername.setId(Misc.ViewID());
+        EditTextEmailOrUsername.setId(Misc.generateViewId());
         EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
         EditTextEmailOrUsername.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -190,7 +190,7 @@ class EmailSignInUI extends FragmentView
         TextViewPassword.setLayoutParams(TextViewPasswordParam);
         TextViewPassword.SetColor(R.color.Gray);
         TextViewPassword.setText(Misc.String(R.string.GeneralPassword));
-        TextViewPassword.setId(Misc.ViewID());
+        TextViewPassword.setId(Misc.generateViewId());
         TextViewPassword.setGravity(Misc.Gravity("R"));
 
         RelativeLayoutScroll.addView(TextViewPassword);
@@ -201,7 +201,7 @@ class EmailSignInUI extends FragmentView
 
         final EditText EditTextPassword = new EditText(Activity);
         EditTextPassword.setLayoutParams(EditTextPasswordParam);
-        EditTextPassword.setId(Misc.ViewID());
+        EditTextPassword.setId(Misc.generateViewId());
         EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
         EditTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -231,7 +231,7 @@ class EmailSignInUI extends FragmentView
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(Misc.String(R.string.EmailSignInUIMessage));
-        TextViewMessage.setId(Misc.ViewID());
+        TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
         RelativeLayoutScroll.addView(TextViewMessage);

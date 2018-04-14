@@ -41,12 +41,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
-import co.biogram.main.handler.CacheHandler;
-import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.general.CameraViewUI;
@@ -129,7 +126,7 @@ public class DescriptionUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -139,7 +136,7 @@ public class DescriptionUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
@@ -163,7 +160,7 @@ public class DescriptionUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -187,7 +184,7 @@ public class DescriptionUI extends FragmentView
 
         CircleImageViewProfile = new CircleImageView(Activity);
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
-        CircleImageViewProfile.setId(Misc.ViewID());
+        CircleImageViewProfile.setId(Misc.generateViewId());
         CircleImageViewProfile.setImageResource(R.drawable.person_blue);
         CircleImageViewProfile.SetBorderColor(R.color.Gray);
         CircleImageViewProfile.SetBorderWidth(2);
@@ -230,39 +227,21 @@ public class DescriptionUI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        if (Misc.checkPermission(Manifest.permission.CAMERA))
-                        {
-                            DialogProfile.dismiss();
-                            Activity.GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
-                            return;
-                        }
+                        DialogProfile.dismiss();
 
                         PermissionDialog PermissionDialogCamera = new PermissionDialog(Activity);
-                        PermissionDialogCamera.SetContentView(R.drawable.permission_camera_white, Misc.String(R.string.DescriptionUIPermissionCamera), new PermissionDialog.OnSelectedListener()
+                        PermissionDialogCamera.SetContentView(R.drawable.__general_permission_camera_white, R.string.DescriptionUIPermissionCamera, Manifest.permission.CAMERA, Activity, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
-                            public void OnSelected(boolean Allow)
+                            public void OnChoice(boolean Allow)
                             {
                                 if (!Allow)
                                 {
-                                    DialogProfile.dismiss();
                                     Misc.Toast( Misc.String(R.string.DescriptionUIPermissionCamera));
                                     return;
                                 }
 
-                                Activity.RequestPermission(Manifest.permission.CAMERA, new FragmentActivity.OnPermissionListener()
-                                {
-                                    @Override
-                                    public void OnResult(boolean Granted)
-                                    {
-                                        DialogProfile.dismiss();
-
-                                        if (Granted)
-                                            Activity.GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
-                                        else
-                                            Misc.Toast( Misc.String(R.string.DescriptionUIPermissionCamera));
-                                    }
-                                });
+                                Activity.GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
                             }
                         });
                     }
@@ -316,57 +295,44 @@ public class DescriptionUI extends FragmentView
                             return;
                         }
 
+                        DialogProfile.dismiss();
+
                         PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                        PermissionDialogGallery.SetContentView(R.drawable.permission_storage_white, Misc.String(R.string.DescriptionUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                        PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.DescriptionUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
-                            public void OnSelected(boolean Allow)
+                            public void OnChoice(boolean Allow)
                             {
                                 if (!Allow)
                                 {
-                                    DialogProfile.dismiss();
+
                                     Misc.Toast( Misc.String(R.string.DescriptionUIPermissionStorage));
                                     return;
                                 }
 
-                                Activity.RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
+                                Activity.GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
                                 {
+                                    String ImageURL;
+
                                     @Override
-                                    public void OnResult(boolean Granted)
+                                    public void OnSelection(String URL)
                                     {
-                                        DialogProfile.dismiss();
-
-                                        if (!Granted)
-                                        {
-                                            Misc.Toast(Misc.String(R.string.DescriptionUIPermissionStorage));
-                                            return;
-                                        }
-
-                                        Activity.GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
-                                        {
-                                            String ImageURL;
-
-                                            @Override
-                                            public void OnSelection(String URL)
-                                            {
-                                                ImageURL = URL;
-                                            }
-
-                                            @Override
-                                            public void OnRemove(String URL)
-                                            {
-                                                ImageURL = "";
-                                            }
-
-                                            @Override
-                                            public void OnSave()
-                                            {
-
-                                                Update(new File(ImageURL), true);
-                                            }
-                                        }), R.id.ContainerFull, "GalleryViewUI");
+                                        ImageURL = URL;
                                     }
-                                });
+
+                                    @Override
+                                    public void OnRemove(String URL)
+                                    {
+                                        ImageURL = "";
+                                    }
+
+                                    @Override
+                                    public void OnSave()
+                                    {
+
+                                        Update(new File(ImageURL), true);
+                                    }
+                                }), R.id.ContainerFull, "GalleryViewUI");
                             }
                         });
                     }
@@ -412,7 +378,7 @@ public class DescriptionUI extends FragmentView
         LinearLayout LinearLayoutName = new LinearLayout(Activity);
         LinearLayoutName.setLayoutParams(LinearLayoutNameParam);
         LinearLayoutName.setOrientation(LinearLayout.VERTICAL);
-        LinearLayoutName.setId(Misc.ViewID());
+        LinearLayoutName.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(LinearLayoutName);
 
@@ -452,7 +418,7 @@ public class DescriptionUI extends FragmentView
         EditTextName.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextName.requestFocus();
         EditTextName.setPadding(0, -Misc.ToDP(2), 0, Misc.ToDP(5));
-        EditTextName.setTypeface(FontHandler.GetTypeface(Activity));
+        EditTextName.setTypeface(Misc.GetTypeface());
         EditTextName.setHintTextColor(ContextCompat.getColor(Activity, R.color.Gray));
         EditTextName.setHint(Misc.String(R.string.DescriptionUIEditName));
         EditTextName.addTextChangedListener(new TextWatcher()
@@ -481,7 +447,7 @@ public class DescriptionUI extends FragmentView
         TextViewDescription.setLayoutParams(TextViewDescriptionParam);
         TextViewDescription.SetColor(R.color.Gray);
         TextViewDescription.setText(Misc.String(R.string.GeneralDescription));
-        TextViewDescription.setId(Misc.ViewID());
+        TextViewDescription.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(TextViewDescription);
 
@@ -491,7 +457,7 @@ public class DescriptionUI extends FragmentView
 
         final EditText EditTextDescription = new EditText(Activity);
         EditTextDescription.setLayoutParams(EditTextDescriptionParam);
-        EditTextDescription.setId(Misc.ViewID());
+        EditTextDescription.setId(Misc.generateViewId());
         EditTextDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextDescription.setFilters(new InputFilter[] { new InputFilter.LengthFilter(150) });
         EditTextDescription.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
@@ -499,7 +465,7 @@ public class DescriptionUI extends FragmentView
         EditTextDescription.setMaxLines(5);
         EditTextDescription.setMaxHeight(Misc.ToDP(100));
         EditTextDescription.setPadding(Misc.ToDP(3), -Misc.ToDP(2), Misc.ToDP(3), Misc.ToDP(5));
-        EditTextDescription.setTypeface(FontHandler.GetTypeface(Activity));
+        EditTextDescription.setTypeface(Misc.GetTypeface());
         EditTextDescription.setHintTextColor(ContextCompat.getColor(Activity, R.color.Gray));
         EditTextDescription.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
@@ -514,7 +480,7 @@ public class DescriptionUI extends FragmentView
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(Misc.String(R.string.DescriptionUIMessage));
-        TextViewMessage.setId(Misc.ViewID());
+        TextViewMessage.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(TextViewMessage);
 
@@ -892,7 +858,7 @@ public class DescriptionUI extends FragmentView
         ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
-        ImageViewDone.setImageResource(R.drawable.done_white);
+        ImageViewDone.setImageResource(R.drawable.__general_done_white);
         ImageViewDone.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -908,7 +874,7 @@ public class DescriptionUI extends FragmentView
                     ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
                     CropImageViewMain.getCroppedImage(250, 250).compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
 
-                    File ProfileFile = new File(CacheHandler.TempDir(Activity), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
+                    File ProfileFile = new File(Misc.Temp(), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
 
                     FileOutputStream FOS = new FileOutputStream(ProfileFile);
                     FOS.write(BAOS.toByteArray());

@@ -294,6 +294,25 @@
     <!-- My Level UI -->
     <string name="MyLevelUI">My Level</string>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- Profile UI -->
     <string name="ProfileUI">Profile</string>
     <string name="ProfileUISaved">Saved</string>
@@ -301,6 +320,8 @@
     <string name="ProfileUIFollowing">Following</string>
     <string name="ProfileUIProfileView">Profile View</string>
     <string name="ProfileUINotSet">Not Set</string>
+    <string name="ProfileUIPopular">Popular</string>
+    <string name="ProfileUILv">Lv . </string>
     <string name="ProfileUIRating">Rating</string>
     <string name="ProfileUIRate">Rate</string>
     <string name="ProfileUIPhoneNumber">Phone Number</string>
@@ -309,5 +330,14 @@
     <string name="ProfileUIWebsite">Website</string>
     <string name="ProfileUILocation">Location</string>
     <string name="ProfileUITag">Tags</string>
+    <string name="ProfileUIAvatar">Set Profile Photo</string>
+    <string name="ProfileUIAvatarCamera">Set From Camera</string>
+    <string name="ProfileUIAvatarCameraMessage">To allow take picture from camera you should allow camera permission</string>
+    <string name="ProfileUIAvatarGallery">Set From Gallery</string>
+    <string name="ProfileUIAvatarGalleryMessage">To allow pick image from gallery you should allow read sotrage permission</string>
+    <string name="ProfileUIAvatarDelete">Remove Profile Photo</string>
 
+    <!-- General Dialog Permission -->
+    <string name="GeneralDialogPermissionAccept">ALLOW</string>
+    <string name="GeneralDialogPermissionDecline">NOT NOW</string>
 </resources>

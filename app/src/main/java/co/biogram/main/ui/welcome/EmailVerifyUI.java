@@ -116,7 +116,7 @@ class EmailVerifyUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -126,7 +126,7 @@ class EmailVerifyUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
@@ -160,7 +160,7 @@ class EmailVerifyUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -186,7 +186,7 @@ class EmailVerifyUI extends FragmentView
         TextViewVerificationCode.setPadding(Misc.ToDP(20), Misc.ToDP(40), Misc.ToDP(20), Misc.ToDP(15));
         TextViewVerificationCode.SetColor(R.color.Gray);
         TextViewVerificationCode.setText(Misc.String(R.string.EmailVerifyUICode));
-        TextViewVerificationCode.setId(Misc.ViewID());
+        TextViewVerificationCode.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(TextViewVerificationCode);
 
@@ -196,7 +196,7 @@ class EmailVerifyUI extends FragmentView
         LinearLayout LinearLayoutVerificationCode = new LinearLayout(Activity);
         LinearLayoutVerificationCode.setLayoutParams(LinearLayoutVerificationCodeParam);
         LinearLayoutVerificationCode.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutVerificationCode.setId(Misc.ViewID());
+        LinearLayoutVerificationCode.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(LinearLayoutVerificationCode);
 
@@ -435,7 +435,7 @@ class EmailVerifyUI extends FragmentView
         TextView TextViewMessage = new TextView(Activity, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setId(Misc.ViewID());
+        TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
         TextViewMessage.setText((Misc.String(R.string.EmailVerifyUIMessage) + " " + Email), TextView.BufferType.SPANNABLE);

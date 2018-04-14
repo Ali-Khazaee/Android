@@ -39,7 +39,6 @@ import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONObject;
 
-import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.R;
@@ -106,7 +105,7 @@ class PhoneUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -116,7 +115,7 @@ class PhoneUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
@@ -140,7 +139,7 @@ class PhoneUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -162,7 +161,7 @@ class PhoneUI extends FragmentView
         LinearLayoutCode.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(90), LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayoutCode.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutCode.setGravity(Gravity.CENTER_HORIZONTAL);
-        LinearLayoutCode.setId(Misc.ViewID());
+        LinearLayoutCode.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(LinearLayoutCode);
 
@@ -228,7 +227,7 @@ class PhoneUI extends FragmentView
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                 ImageViewClose.setImageResource(R.drawable.close_blue);
                 ImageViewClose.setPadding(Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9));
-                ImageViewClose.setId(Misc.ViewID());
+                ImageViewClose.setId(Misc.generateViewId());
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
 
                 RelativeLayoutCode.addView(ImageViewClose);
@@ -238,7 +237,7 @@ class PhoneUI extends FragmentView
 
                 View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setId(Misc.ViewID());
+                ViewLine.setId(Misc.generateViewId());
                 ViewLine.setBackgroundResource(R.color.Gray);
 
                 RelativeLayoutCode.addView(ViewLine);
@@ -347,7 +346,7 @@ class PhoneUI extends FragmentView
         TextView TextViewMessage = new TextView(Activity, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setId(Misc.ViewID());
+        TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setText((Misc.String(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + Misc.String(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
@@ -433,32 +432,13 @@ class PhoneUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                if (Misc.checkPermission(Manifest.permission.RECEIVE_SMS))
-                {
-                    SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
-                    return;
-                }
-
                 PermissionDialog PermissionDialogSMS = new PermissionDialog(Activity);
-                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, Misc.String(R.string.PhoneUIPermission), new PermissionDialog.OnSelectedListener()
+                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, Activity, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
-                    public void OnSelected(boolean Allow)
+                    public void OnChoice(boolean Allow)
                     {
-                        if (!Allow)
-                        {
-                            SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
-                            return;
-                        }
-
-                        Activity.RequestPermission(Manifest.permission.RECEIVE_SMS, new FragmentActivity.OnPermissionListener()
-                        {
-                            @Override
-                            public void OnResult(boolean Granted)
-                            {
-                                SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
-                            }
-                        });
+                        SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                     }
                 });
             }

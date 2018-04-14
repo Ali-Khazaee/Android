@@ -95,7 +95,7 @@ class EmailUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -105,7 +105,7 @@ class EmailUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
@@ -129,7 +129,7 @@ class EmailUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(R.color.Gray);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -154,7 +154,7 @@ class EmailUI extends FragmentView
         TextViewEmail.setLayoutParams(TextViewEmailParam);
         TextViewEmail.SetColor(R.color.Gray);
         TextViewEmail.setText(Misc.String(R.string.GeneralEmailAddress));
-        TextViewEmail.setId(Misc.ViewID());
+        TextViewEmail.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(TextViewEmail);
 
@@ -164,7 +164,7 @@ class EmailUI extends FragmentView
 
         final EditText EditTextEmail = new EditText(Activity);
         EditTextEmail.setLayoutParams(EditTextEmailParam);
-        EditTextEmail.setId(Misc.ViewID());
+        EditTextEmail.setId(Misc.generateViewId());
         EditTextEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         EditTextEmail.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
         EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -194,7 +194,7 @@ class EmailUI extends FragmentView
         TextViewMessage.setLayoutParams(TextViewMessageParam);
         TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(Misc.String(R.string.EmailUIMessage));
-        TextViewMessage.setId(Misc.ViewID());
+        TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
 
         RelativeLayoutScroll.addView(TextViewMessage);

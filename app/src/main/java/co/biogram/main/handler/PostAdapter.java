@@ -82,74 +82,74 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         DB = new DBHandler(Activity);
     }
 
-    private int ID1_MAIN = Misc.ViewID();
-    private int ID1_PROFILE = Misc.ViewID();
-    private int ID1_NAME = Misc.ViewID();
-    private int ID1_MEDAL = Misc.ViewID();
-    private int ID1_USERNAME = Misc.ViewID();
-    private int ID1_TIME = Misc.ViewID();
-    private int ID1_MESSAGE = Misc.ViewID();
-    private int ID1_LIKE = Misc.ViewID();
-    private int ID1_LIKE_COUNT = Misc.ViewID();
-    private int ID1_COMMENT = Misc.ViewID();
-    private int ID1_COMMENT_COUNT = Misc.ViewID();
-    private int ID1_OPTION = Misc.ViewID();
-    private int ID1_PERSON1 = Misc.ViewID();
-    private int ID1_PERSON2 = Misc.ViewID();
-    private int ID1_PERSON3 = Misc.ViewID();
-    private int ID1_PERSON4 = Misc.ViewID();
-    private int ID1_IMAGE_LAYOUT = Misc.ViewID();
-    private int ID1_SINGLE = Misc.ViewID();
-    private int ID1_DOUBLE_LAYOUT = Misc.ViewID();
-    private int ID1_DOUBLE1 = Misc.ViewID();
-    private int ID1_DOUBLE2 = Misc.ViewID();
-    private int ID1_TRIPLE_LAYOUT = Misc.ViewID();
-    private int ID1_TRIPLE1 = Misc.ViewID();
-    private int ID1_TRIPLE2 = Misc.ViewID();
-    private int ID1_TRIPLE3 = Misc.ViewID();
-    private int ID1_VIDEO_LAYOUT = Misc.ViewID();
-    private int ID1_VIDEO_IMAGE = Misc.ViewID();
-    private int ID1_VIDEO_DURATION = Misc.ViewID();
-    private int ID1_VOTE_LAYOUT = Misc.ViewID();
-    private int ID1_VOTE_TYPE1 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_LIN1 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_LIN2 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_LIN3 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_LIN4 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_LIN5 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_SEL1 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_TEXT1 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_SEL2 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_TEXT2 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_SEL3 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_TEXT3 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_SEL4 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_TEXT4 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_SEL5 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_TEXT5 = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_SUBMIT = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_RESULT = Misc.ViewID();
-    private int ID1_VOTE_TYPE1_TIME = Misc.ViewID();
-    private int ID1_VOTE_TYPE2 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_TEXT1 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_TEXT2 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_TEXT3 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_TEXT4 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_TEXT5 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_PER1 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_PER2 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_PER3 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_PER4 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_PER5 = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_SELECT = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_RESULT = Misc.ViewID();
-    private int ID1_VOTE_TYPE2_TIME = Misc.ViewID();
-    private int ID1_FILE_LAYOUT = Misc.ViewID();
-    private int ID1_FILE_IMAGE = Misc.ViewID();
-    private int ID1_FILE_TEXT = Misc.ViewID();
-    private int ID1_FILE_NAME = Misc.ViewID();
-    private int ID1_FILE_DETAIL = Misc.ViewID();
-    private int ID1_VIEW_LINE = Misc.ViewID();
+    private int ID1_MAIN = Misc.generateViewId();
+    private int ID1_PROFILE = Misc.generateViewId();
+    private int ID1_NAME = Misc.generateViewId();
+    private int ID1_MEDAL = Misc.generateViewId();
+    private int ID1_USERNAME = Misc.generateViewId();
+    private int ID1_TIME = Misc.generateViewId();
+    private int ID1_MESSAGE = Misc.generateViewId();
+    private int ID1_LIKE = Misc.generateViewId();
+    private int ID1_LIKE_COUNT = Misc.generateViewId();
+    private int ID1_COMMENT = Misc.generateViewId();
+    private int ID1_COMMENT_COUNT = Misc.generateViewId();
+    private int ID1_OPTION = Misc.generateViewId();
+    private int ID1_PERSON1 = Misc.generateViewId();
+    private int ID1_PERSON2 = Misc.generateViewId();
+    private int ID1_PERSON3 = Misc.generateViewId();
+    private int ID1_PERSON4 = Misc.generateViewId();
+    private int ID1_IMAGE_LAYOUT = Misc.generateViewId();
+    private int ID1_SINGLE = Misc.generateViewId();
+    private int ID1_DOUBLE_LAYOUT = Misc.generateViewId();
+    private int ID1_DOUBLE1 = Misc.generateViewId();
+    private int ID1_DOUBLE2 = Misc.generateViewId();
+    private int ID1_TRIPLE_LAYOUT = Misc.generateViewId();
+    private int ID1_TRIPLE1 = Misc.generateViewId();
+    private int ID1_TRIPLE2 = Misc.generateViewId();
+    private int ID1_TRIPLE3 = Misc.generateViewId();
+    private int ID1_VIDEO_LAYOUT = Misc.generateViewId();
+    private int ID1_VIDEO_IMAGE = Misc.generateViewId();
+    private int ID1_VIDEO_DURATION = Misc.generateViewId();
+    private int ID1_VOTE_LAYOUT = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_LIN1 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_LIN2 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_LIN3 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_LIN4 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_LIN5 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_SEL1 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_TEXT1 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_SEL2 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_TEXT2 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_SEL3 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_TEXT3 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_SEL4 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_TEXT4 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_SEL5 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_TEXT5 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_SUBMIT = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_RESULT = Misc.generateViewId();
+    private int ID1_VOTE_TYPE1_TIME = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_TEXT1 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_TEXT2 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_TEXT3 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_TEXT4 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_TEXT5 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_PER1 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_PER2 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_PER3 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_PER4 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_PER5 = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_SELECT = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_RESULT = Misc.generateViewId();
+    private int ID1_VOTE_TYPE2_TIME = Misc.generateViewId();
+    private int ID1_FILE_LAYOUT = Misc.generateViewId();
+    private int ID1_FILE_IMAGE = Misc.generateViewId();
+    private int ID1_FILE_TEXT = Misc.generateViewId();
+    private int ID1_FILE_NAME = Misc.generateViewId();
+    private int ID1_FILE_DETAIL = Misc.generateViewId();
+    private int ID1_VIEW_LINE = Misc.generateViewId();
 
     class ViewHolderMain extends RecyclerView.ViewHolder
     {
@@ -495,7 +495,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             RelativeLayout RelativeLayoutContent = new RelativeLayout(Activity);
             RelativeLayoutContent.setLayoutParams(RelativeLayoutContentParam);
-            RelativeLayoutContent.setId(Misc.ViewID());
+            RelativeLayoutContent.setId(Misc.generateViewId());
 
             RelativeLayoutMain.addView(RelativeLayoutContent);
 
@@ -995,7 +995,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 View ViewVote = new View(Activity);
                 ViewVote.setLayoutParams(ViewVoteParam);
                 ViewVote.setBackgroundResource(R.color.LineWhite);
-                ViewVote.setId(Misc.ViewID());
+                ViewVote.setId(Misc.generateViewId());
 
                 RelativeLayoutType2.addView(ViewVote);
 
@@ -1048,7 +1048,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayout RelativeLayoutFile2 = new RelativeLayout(Activity);
             RelativeLayoutFile2.setLayoutParams(RelativeLayoutFile2Param);
             RelativeLayoutFile2.setBackground(DrawableFile);
-            RelativeLayoutFile2.setId(Misc.ViewID());
+            RelativeLayoutFile2.setId(Misc.generateViewId());
 
             RelativeLayoutFile.addView(RelativeLayoutFile2);
 
@@ -1670,7 +1670,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         Holder.TextViewFileName.setText(Name);
                         Holder.TextViewFileDetail.setText(Details);
 
-                        final File Download = new File(CacheHandler.Dir(CacheHandler.DOWNLOAD), FileName);
+                        final File Download = new File(Misc.Dir(Misc.DOWNLOAD), FileName);
 
                         if (PostList.get(Position).IsDownloading)
                         {
@@ -1823,7 +1823,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewFile.setVisibility(View.VISIBLE);
                                 Holder.TextViewFile.setText("0%");
 
-                                AndroidNetworking.download(URL, CacheHandler.Dir(CacheHandler.DOWNLOAD).getAbsolutePath(), FileName)
+                                AndroidNetworking.download(URL, Misc.Dir(Misc.DOWNLOAD).getAbsolutePath(), FileName)
                                 .setPriority(Priority.MEDIUM)
                                 .setTag(PostList.get(Position).ID)
                                 .build()

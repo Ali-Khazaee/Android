@@ -67,9 +67,9 @@ public class LikeUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.__general_back_blue_rtl : R.drawable.__general_back_blue);
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -238,11 +238,11 @@ public class LikeUI extends FragmentView
 
     private class AdapterLike extends RecyclerView.Adapter<AdapterLike.ViewHolderMain>
     {
-        private int ID_PROFILE = Misc.ViewID();
-        private int ID_NAME = Misc.ViewID();
-        private int ID_USERNAME = Misc.ViewID();
-        private int ID_FOLLOW = Misc.ViewID();
-        private int ID_LINE = Misc.ViewID();
+        private int ID_PROFILE = Misc.generateViewId();
+        private int ID_NAME = Misc.generateViewId();
+        private int ID_USERNAME = Misc.generateViewId();
+        private int ID_FOLLOW = Misc.generateViewId();
+        private int ID_LINE = Misc.generateViewId();
 
         private GradientDrawable DrawableFollow;
         private GradientDrawable DrawableUnfollow;
@@ -386,7 +386,7 @@ public class LikeUI extends FragmentView
                 ImageView ImageViewContent = new CircleImageView(Activity);
                 ImageViewContent.setLayoutParams(ImageViewContentParam);
                 ImageViewContent.setImageResource(R.drawable._general_like);
-                ImageViewContent.setId(Misc.ViewID());
+                ImageViewContent.setId(Misc.generateViewId());
 
                 LinearLayoutMain.addView(ImageViewContent);
 

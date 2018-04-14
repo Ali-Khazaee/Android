@@ -39,7 +39,6 @@ import java.util.List;
 
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
-import co.biogram.main.handler.CacheHandler;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.PhotoView;
@@ -189,7 +188,7 @@ public class ImagePreviewUI extends FragmentView
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_white_rtl : R.drawable.back_white);
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.onBackPressed(); } });
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -216,7 +215,7 @@ public class ImagePreviewUI extends FragmentView
             ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
             ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone.setLayoutParams(ImageViewDoneParam);
-            ImageViewDone.setImageResource(R.drawable.done_white);
+            ImageViewDone.setImageResource(R.drawable.__general_done_white);
             ImageViewDone.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -250,7 +249,7 @@ public class ImagePreviewUI extends FragmentView
             ImageViewDone2.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
             ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone2.setLayoutParams(ImageViewDone2Param);
-            ImageViewDone2.setImageResource(R.drawable.done_white);
+            ImageViewDone2.setImageResource(R.drawable.__general_done_white);
             ImageViewDone2.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -263,7 +262,7 @@ public class ImagePreviewUI extends FragmentView
                         ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
                         CropImageViewMain.getCroppedImage(250, 250).compress(Bitmap.CompressFormat.JPEG, 100, BAOS);
 
-                        File ProfileFile = new File(CacheHandler.TempDir(Activity), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
+                        File ProfileFile = new File(Misc.Temp(), (String.valueOf(System.currentTimeMillis()) + "_imagepreview_crop.jpg"));
 
                         FileOutputStream FOS = new FileOutputStream(ProfileFile);
                         FOS.write(BAOS.toByteArray());
@@ -364,7 +363,7 @@ public class ImagePreviewUI extends FragmentView
                         {
                             try
                             {
-                                OutputStream OS = new FileOutputStream(new File(CacheHandler.Dir(CacheHandler.DOWNLOAD), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
+                                OutputStream OS = new FileOutputStream(new File(Misc.Dir(Misc.DOWNLOAD), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
                                 resource.compress(Bitmap.CompressFormat.PNG, 100, OS);
                                 OS.close();
 

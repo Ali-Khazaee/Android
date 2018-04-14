@@ -2,20 +2,48 @@ package co.biogram.main.ui.general;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.support.media.ExifInterface;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import co.biogram.main.fragment.FragmentView;
+import com.otaliastudios.cameraview.CameraListener;
+import com.otaliastudios.cameraview.CameraView;
+import com.otaliastudios.cameraview.Flash;
+import com.otaliastudios.cameraview.Gesture;
+import com.otaliastudios.cameraview.GestureAction;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import co.biogram.main.R;
-import co.biogram.main.handler.CameraHandler;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.fragment.FragmentView;
 
 public class CameraViewUI extends FragmentView
 {
-    private CameraHandler Camera;
+    private int Width = 0;
+    private int Height = 0;
+    private boolean IsProfile = true;
+    private CameraView CameraViewMain;
+    private OnCaptureListener Listener;
+
+    public CameraViewUI()
+    {
+
+    }
+
+    public CameraViewUI(int W, int H, boolean isProfile, OnCaptureListener L)
+    {
+        Width = W;
+        Height = H;
+        IsProfile = isProfile;
+        Listener = L;
+    }
 
     @Override
     public void OnCreate()
@@ -24,14 +52,32 @@ public class CameraViewUI extends FragmentView
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
 
-        FrameLayout FrameLayoutMain = new FrameLayout(Activity);
-        FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        CameraViewMain = new CameraView(Activity);
+        CameraViewMain.setLayoutParams(new CameraView.LayoutParams(CameraView.LayoutParams.MATCH_PARENT, CameraView.LayoutParams.MATCH_PARENT));
+        CameraViewMain.setKeepScreenOn(true);
+        CameraViewMain.setJpegQuality(100);
+        CameraViewMain.setFlash(Flash.AUTO);
+        CameraViewMain.mapGesture(Gesture.PINCH, GestureAction.ZOOM);
+        CameraViewMain.mapGesture(Gesture.TAP, GestureAction.FOCUS_WITH_MARKER);
+        CameraViewMain.mapGesture(Gesture.LONG_TAP, GestureAction.CAPTURE);
+        CameraViewMain.addCameraListener(new CameraListener()
+        {
+            @Override
+            public void onPictureTaken(byte[] Source)
+            {
+                Activity.GetManager().OpenView(new CropViewUI(DecodeBitmap(Source, Width, Height), IsProfile, new CropViewUI.OnCropListener()
+                {
+                    @Override
+                    public void OnCrop(Bitmap bitmap)
+                    {
+                        Listener.OnCapture(bitmap);
+                        Activity.onBackPressed();
+                    }
+                }), R.id.ContainerFull, "CropViewUI");
+            }
+        });
 
-        RelativeLayoutMain.addView(FrameLayoutMain);
-
-        Camera = new CameraHandler(Activity);
-
-        FrameLayoutMain.addView(Camera);
+        RelativeLayoutMain.addView(CameraViewMain);
 
         RelativeLayout.LayoutParams RelativeLayoutBottomParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(75));
         RelativeLayoutBottomParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -45,33 +91,26 @@ public class CameraViewUI extends FragmentView
         ImageViewPickParam.setMargins(Misc.ToDP(50), 0, Misc.ToDP(50), 0);
         ImageViewPickParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-        final ImageView ImageViewPick = new ImageView(Activity);
+        ImageView ImageViewPick = new ImageView(Activity);
         ImageViewPick.setLayoutParams(ImageViewPickParam);
-        ImageViewPick.setImageResource(R.drawable.camera_pick_white);
-        ImageViewPick.setId(Misc.ViewID());
+        ImageViewPick.setImageResource(R.drawable.__camera_pick_white);
+        ImageViewPick.setId(Misc.generateViewId());
         ImageViewPick.setOnClickListener(new View.OnClickListener()
         {
-            boolean IsClicked = false;
-
             @Override
             public void onClick(View v)
             {
-                if (IsClicked)
-                    return;
-
-                IsClicked = true;
-
-                ObjectAnimator SizeX = ObjectAnimator.ofFloat(ImageViewPick, "scaleX", 1.35f);
+                ObjectAnimator SizeX = ObjectAnimator.ofFloat(v, "scaleX", 1.35f);
                 SizeX.setDuration(200);
 
-                ObjectAnimator SizeY = ObjectAnimator.ofFloat(ImageViewPick, "scaleY", 1.35f);
+                ObjectAnimator SizeY = ObjectAnimator.ofFloat(v, "scaleY", 1.35f);
                 SizeY.setDuration(200);
 
-                ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(ImageViewPick, "scaleX", 1f);
+                ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(v, "scaleX", 1f);
                 SizeX2.setDuration(200);
                 SizeX2.setStartDelay(200);
 
-                ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(ImageViewPick, "scaleY", 1f);
+                ObjectAnimator SizeY2 = ObjectAnimator.ofFloat(v, "scaleY", 1f);
                 SizeY2.setDuration(200);
                 SizeY2.setStartDelay(200);
 
@@ -79,21 +118,7 @@ public class CameraViewUI extends FragmentView
                 AnimationSet.playTogether(SizeX, SizeY, SizeX2, SizeY2);
                 AnimationSet.start();
 
-                Camera.TakePicture(new CameraHandler.CameraListener()
-                {
-                    @Override
-                    public void OnCapture(byte[] Data, int O)
-                    {
-                        IsClicked = false;
-                        Activity.GetManager().OpenView(new ImagePreviewUI(Data, O), R.id.ContainerFull, "ImagePreviewUI");
-                    }
-
-                    @Override
-                    public void OnFailed()
-                    {
-                        IsClicked = false;
-                    }
-                });
+                CameraViewMain.capturePicture();
             }
         });
 
@@ -105,18 +130,32 @@ public class CameraViewUI extends FragmentView
 
         final ImageView ImageViewFlash = new ImageView(Activity);
         ImageViewFlash.setLayoutParams(ImageViewFlashParam);
-        ImageViewFlash.setImageResource(R.drawable.flash_auto_white);
+        ImageViewFlash.setImageResource(R.drawable.__flash_auto_white);
         ImageViewFlash.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
         ImageViewFlash.setOnClickListener(new View.OnClickListener()
         {
+            private int Type = 2;
+
             @Override
             public void onClick(View v)
             {
-                switch (Camera.SwitchFlash())
+                switch (Type)
                 {
-                    case 0: ImageViewFlash.setImageResource(R.drawable.flash_auto_white); break;
-                    case 1: ImageViewFlash.setImageResource(R.drawable.flash_on_white); break;
-                    case 2: ImageViewFlash.setImageResource(R.drawable.flash_off_white); break;
+                    case 0:
+                        ImageViewFlash.setImageResource(R.drawable.__flash_on_white);
+                        CameraViewMain.setFlash(Flash.ON);
+                        Type = 1;
+                        break;
+                    case 1:
+                        ImageViewFlash.setImageResource(R.drawable.__flash_auto_white);
+                        CameraViewMain.setFlash(Flash.AUTO);
+                        Type = 2;
+                        break;
+                    case 2:
+                        ImageViewFlash.setImageResource(R.drawable.__flash_off_white);
+                        CameraViewMain.setFlash(Flash.OFF);
+                        Type = 0;
+                        break;
                 }
             }
         });
@@ -129,9 +168,9 @@ public class CameraViewUI extends FragmentView
 
         ImageView ImageViewSwitch = new ImageView(Activity);
         ImageViewSwitch.setLayoutParams(ImageViewSwitchParam);
-        ImageViewSwitch.setImageResource(R.drawable.camera_switch_white);
+        ImageViewSwitch.setImageResource(R.drawable.__camera_switch_white);
         ImageViewSwitch.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
-        ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Camera.SwitchCamera(); } });
+        ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { CameraViewMain.toggleFacing(); } });
 
         RelativeLayoutBottom.addView(ImageViewSwitch);
 
@@ -142,20 +181,98 @@ public class CameraViewUI extends FragmentView
     public void OnResume()
     {
         Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Camera.Start();
+        CameraViewMain.start();
     }
 
     @Override
     public void OnPause()
     {
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Camera.Stop();
+        CameraViewMain.stop();
     }
 
     @Override
     public void OnDestroy()
     {
-        Camera.Release();
+        CameraViewMain.destroy();
         super.OnDestroy();
+    }
+
+    public interface OnCaptureListener
+    {
+        void OnCapture(Bitmap bitmap);
+    }
+
+    private static Bitmap DecodeBitmap(byte[] Source, int MW, int MH)
+    {
+        int O = 0;
+        boolean Flip = false;
+
+        try
+        {
+            InputStream IS = new ByteArrayInputStream(Source);
+            Integer O2 = new ExifInterface(IS).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            IS.close();
+
+            switch (O2)
+            {
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                    O = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                case ExifInterface.ORIENTATION_TRANSPOSE:
+                    O = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                case ExifInterface.ORIENTATION_TRANSVERSE:
+                    O = 270;
+                    break;
+            }
+
+            Flip = O2 == ExifInterface.ORIENTATION_FLIP_HORIZONTAL || O2 == ExifInterface.ORIENTATION_FLIP_VERTICAL || O2 == ExifInterface.ORIENTATION_TRANSPOSE || O2 == ExifInterface.ORIENTATION_TRANSVERSE;
+        }
+        catch (Exception e)
+        {
+            Misc.Debug("CameraViewUI-DecodeBitmap: " + e.toString());
+        }
+
+        Bitmap bitmap;
+
+        if (MW != 0 || MH != 0)
+        {
+            BitmapFactory.Options O2 = new BitmapFactory.Options();
+            O2.inJustDecodeBounds = true;
+
+            BitmapFactory.decodeByteArray(Source, 0, Source.length, O2);
+
+            int H = O2.outHeight;
+            int W = O2.outWidth;
+
+            if (O % 180 != 0)
+            {
+                H = O2.outWidth;
+                W = O2.outHeight;
+            }
+
+            O2.inSampleSize = Misc.SampleSize(W, H, MW, MH);
+            O2.inJustDecodeBounds = false;
+
+            bitmap = BitmapFactory.decodeByteArray(Source, 0, Source.length, O2);
+        }
+        else
+        {
+            bitmap = BitmapFactory.decodeByteArray(Source, 0, Source.length);
+        }
+
+        if (O != 0 || Flip)
+        {
+            Matrix matrix = new Matrix();
+            matrix.setRotate(O);
+
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        }
+
+        return bitmap;
     }
 }

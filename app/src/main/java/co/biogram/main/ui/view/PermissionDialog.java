@@ -2,15 +2,13 @@ package co.biogram.main.ui.view;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.handler.Misc;
 
 public class PermissionDialog extends Dialog
@@ -22,76 +20,59 @@ public class PermissionDialog extends Dialog
         requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
-    public void SetContentView(int IconID, String Message, final OnSelectedListener Listener)
+    public void SetContentView(int Icon, int Message, final String Permession, final FragmentActivity Activity, final OnChoiceListener Listener)
     {
-        Context context = getContext();
+        if (Misc.checkPermission(Permession))
+        {
+            dismiss();
+            Listener.OnChoice(true);
+            return;
+        }
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        View dialogView = View.inflate(getContext(), R.layout.general_dialog_permession, null);
 
-        RelativeLayout RelativeLayoutHeader = new RelativeLayout(context);
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(125)));
-        RelativeLayoutHeader.setBackgroundResource(R.color.Primary);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        ImageView ImageViewIcon = dialogView.findViewById(R.id.ImageViewIcon);
+        ImageViewIcon.setImageResource(Icon);
 
-        RelativeLayoutMain.addView(RelativeLayoutHeader);
+        TextView TextViewMessage = dialogView.findViewById(R.id.TextViewMessage);
+        TextViewMessage.setText(getContext().getString(Message));
 
-        RelativeLayout.LayoutParams ImageViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32));
-        ImageViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        TextView TextViewAccept = dialogView.findViewById(R.id.TextViewAccept);
+        TextViewAccept.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dismiss();
 
-        ImageView ImageViewMain = new ImageView(context);
-        ImageViewMain.setLayoutParams(ImageViewMainParam);
-        ImageViewMain.setImageResource(IconID);
+                Activity.RequestPermission(Permession, new FragmentActivity.OnGrantListener()
+                {
+                    @Override
+                    public void OnGrant(boolean Result)
+                    {
+                        Listener.OnChoice(Result);
+                    }
+                });
+            }
+        });
 
-        RelativeLayoutHeader.addView(ImageViewMain);
+        TextView TextViewDecline = dialogView.findViewById(R.id.TextViewDecline);
+        TextViewDecline.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dismiss();
+                Listener.OnChoice(false);
+            }
+        });
 
-        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.BELOW, RelativeLayoutHeader.getId());
-        TextViewMessageParam.addRule(Misc.Align("R"));
-
-        TextView TextViewMessage = new TextView(context, 14, false);
-        TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.SetColor(R.color.TextWhite);
-        TextViewMessage.setId(Misc.ViewID());
-        TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(25), Misc.ToDP(15), Misc.ToDP(25));
-        TextViewMessage.setText(Message);
-
-        RelativeLayoutMain.addView(TextViewMessage);
-
-        RelativeLayout.LayoutParams LinearLayoutChoiceParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayoutChoiceParam.addRule(RelativeLayout.BELOW, TextViewMessage.getId());
-
-        LinearLayout LinearLayoutChoice = new LinearLayout(context);
-        LinearLayoutChoice.setLayoutParams(LinearLayoutChoiceParam);
-        LinearLayoutChoice.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutChoice.setGravity(Gravity.END);
-
-        RelativeLayoutMain.addView(LinearLayoutChoice);
-
-        TextView TextViewDecline = new TextView(context, 14, true);
-        TextViewDecline.setLayoutParams(TextViewMessageParam);
-        TextViewDecline.SetColor(R.color.Gray);
-        TextViewDecline.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewDecline.setText(Misc.String(R.string.DialogPermissionDecline));
-        TextViewDecline.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(false); } });
-
-        LinearLayoutChoice.addView(TextViewDecline);
-
-        TextView TextViewContinue = new TextView(context, 14, true);
-        TextViewContinue.setLayoutParams(TextViewMessageParam);
-        TextViewContinue.SetColor(R.color.Primary);
-        TextViewContinue.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewContinue.setText(Misc.String(R.string.DialogPermissionAccept));
-        TextViewContinue.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dismiss(); Listener.OnSelected(true); } });
-
-        LinearLayoutChoice.addView(TextViewContinue);
-
-        setContentView(RelativeLayoutMain);
+        setContentView(dialogView);
         show();
     }
 
-    public interface OnSelectedListener
+    public interface OnChoiceListener
     {
-        void OnSelected(boolean Allow);
+        void OnChoice(boolean Result);
     }
 }

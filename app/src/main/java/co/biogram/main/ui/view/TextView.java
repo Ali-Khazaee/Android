@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 
 import co.biogram.main.R;
-import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.Misc;
 
 public class TextView extends android.widget.TextView
@@ -28,9 +27,9 @@ public class TextView extends android.widget.TextView
         this(context);
 
         if (isBold)
-            setTypeface(FontHandler.GetTypeface(context), Typeface.BOLD);
+            setTypeface(Misc.GetTypeface(), Typeface.BOLD);
         else
-            setTypeface(FontHandler.GetTypeface(context));
+            setTypeface(Misc.GetTypeface());
 
         setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
         setTextColor(ContextCompat.getColor(context, R.color.TextDark));

@@ -59,10 +59,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.CacheHandler;
-import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnClickRecyclerView;
@@ -150,7 +147,7 @@ class WriteUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -160,9 +157,9 @@ class WriteUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.__general_back_blue_rtl : R.drawable.__general_back_blue);
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -213,7 +210,7 @@ class WriteUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -223,11 +220,11 @@ class WriteUI extends FragmentView
         final EditText EditTextMessage = new EditText(Activity);
         EditTextMessage.setLayoutParams(EditTextMessageParam);
         EditTextMessage.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextMessage.setId(Misc.ViewID());
+        EditTextMessage.setId(Misc.generateViewId());
         EditTextMessage.setMaxLines(5);
         EditTextMessage.setHint(R.string.WriteUIMessage);
         EditTextMessage.setBackground(null);
-        EditTextMessage.setTypeface(FontHandler.GetTypeface(Activity));
+        EditTextMessage.setTypeface(Misc.GetTypeface());
         EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextMessage.setHintTextColor(Misc.Color(Misc.IsDark() ? R.color.Gray : R.color.Gray));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -384,7 +381,7 @@ class WriteUI extends FragmentView
         LinearLayout LinearLayoutBottom = new LinearLayout(Activity);
         LinearLayoutBottom.setLayoutParams(LinearLayoutBottomParam);
         LinearLayoutBottom.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutBottom.setId(Misc.ViewID());
+        LinearLayoutBottom.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(LinearLayoutBottom);
 
@@ -449,7 +446,7 @@ class WriteUI extends FragmentView
 
                                         Bitmap bitmap = BitmapFactory.decodeFile(I, O);
 
-                                        File file = new File(CacheHandler.TempDir(Activity), System.currentTimeMillis() + ".jpg");
+                                        File file = new File(Misc.Temp(), System.currentTimeMillis() + ".jpg");
                                         file.createNewFile();
 
                                         ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
@@ -474,17 +471,11 @@ class WriteUI extends FragmentView
                     }
                 };
 
-                if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
-                {
-                    Activity.GetManager().OpenView(new GalleryViewUI(3, 1, L), R.id.ContainerFull, "GalleryViewUI");
-                    return;
-                }
-
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.permission_storage_white, Misc.String(R.string.WriteUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
-                    public void OnSelected(boolean Allow)
+                    public void OnChoice(boolean Allow)
                     {
                         if (!Allow)
                         {
@@ -492,17 +483,7 @@ class WriteUI extends FragmentView
                             return;
                         }
 
-                        Activity.RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
-                        {
-                            @Override
-                            public void OnResult(boolean Granted)
-                            {
-                                if (Granted)
-                                    Activity.GetManager().OpenView(new GalleryViewUI(3, 1, L), R.id.ContainerFull, "GalleryViewUI");
-                                else
-                                    Misc.Toast(Misc.String(R.string.PermissionStorage));
-                            }
-                        });
+                        Activity.GetManager().OpenView(new GalleryViewUI(3, 1, L), R.id.ContainerFull, "GalleryViewUI");
                     }
                 });
             }
@@ -559,17 +540,11 @@ class WriteUI extends FragmentView
                     }
                 };
 
-                if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
-                {
-                    Activity.GetManager().OpenView(new GalleryViewUI(1, 2, L), R.id.ContainerFull, "GalleryViewUI");
-                    return;
-                }
-
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.permission_storage_white, Misc.String(R.string.WriteUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
-                    public void OnSelected(boolean Allow)
+                    public void OnChoice(boolean Allow)
                     {
                         if (!Allow)
                         {
@@ -577,17 +552,7 @@ class WriteUI extends FragmentView
                             return;
                         }
 
-                        Activity.RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
-                        {
-                            @Override
-                            public void OnResult(boolean Granted)
-                            {
-                                if (Granted)
-                                    Activity.GetManager().OpenView(new GalleryViewUI(1, 2, L), R.id.ContainerFull, "GalleryViewUI");
-                                else
-                                    Misc.Toast(Misc.String(R.string.PermissionStorage));
-                            }
-                        });
+                        Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_VIDEO, L), R.id.ContainerFull, "GalleryViewUI");
                     }
                 });
             }
@@ -639,10 +604,10 @@ class WriteUI extends FragmentView
                 }
 
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.permission_storage_white, Misc.String(R.string.WriteUIPermissionStorage), new PermissionDialog.OnSelectedListener()
+                PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
-                    public void OnSelected(boolean Allow)
+                    public void OnChoice(boolean Allow)
                     {
                         if (!Allow)
                         {
@@ -650,17 +615,7 @@ class WriteUI extends FragmentView
                             return;
                         }
 
-                        Activity.RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new FragmentActivity.OnPermissionListener()
-                        {
-                            @Override
-                            public void OnResult(boolean Granted)
-                            {
-                                if (Granted)
-                                    Activity.GetManager().OpenView(new GalleryViewUI(1, 3, L), R.id.ContainerFull, "GalleryViewUI");
-                                else
-                                    Misc.Toast(Misc.String(R.string.PermissionStorage));
-                            }
-                        });
+                        Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_FILE, L), R.id.ContainerFull, "GalleryViewUI");
                     }
                 });
             }
@@ -703,7 +658,7 @@ class WriteUI extends FragmentView
         View ViewLine2 = new View(Activity);
         ViewLine2.setLayoutParams(ViewLine2Param);
         ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine2.setId(Misc.ViewID());
+        ViewLine2.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine2);
 
@@ -713,7 +668,7 @@ class WriteUI extends FragmentView
 
         LinearLayout LinearLayoutCategory = new LinearLayout(Activity);
         LinearLayoutCategory.setLayoutParams(LinearLayoutCategoryParam);
-        LinearLayoutCategory.setId(Misc.ViewID());
+        LinearLayoutCategory.setId(Misc.generateViewId());
         LinearLayoutCategory.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutCategory.setGravity(Misc.IsRTL() ? Gravity.END : Gravity.START);
         LinearLayoutCategory.setOnClickListener(new View.OnClickListener()
@@ -733,7 +688,7 @@ class WriteUI extends FragmentView
                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
                 RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
                 RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-                RelativeLayoutHeader.setId(Misc.ViewID());
+                RelativeLayoutHeader.setId(Misc.generateViewId());
 
                 LinearLayoutMain.addView(RelativeLayoutHeader);
 
@@ -766,7 +721,7 @@ class WriteUI extends FragmentView
                 View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(ViewLineParam);
                 ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-                ViewLine.setId(Misc.ViewID());
+                ViewLine.setId(Misc.generateViewId());
 
                 LinearLayoutMain.addView(ViewLine);
 
@@ -841,7 +796,7 @@ class WriteUI extends FragmentView
 
         ImageView ImageViewArrow = new ImageView(Activity);
         ImageViewArrow.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(20), RelativeLayout.LayoutParams.MATCH_PARENT));
-        ImageViewArrow.setImageResource(R.drawable._write_arrow);
+        ImageViewArrow.setImageResource(R.drawable.__general_arrow_blue_down);
 
         if (Misc.IsRTL())
         {
@@ -884,7 +839,7 @@ class WriteUI extends FragmentView
         ImageViewClose.setLayoutParams(ImageViewCloseVoteParam);
         ImageViewClose.setImageResource(R.drawable._write_remove);
         ImageViewClose.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
-        ImageViewClose.setId(Misc.ViewID());
+        ImageViewClose.setId(Misc.generateViewId());
         ImageViewClose.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -914,7 +869,7 @@ class WriteUI extends FragmentView
         final EditText EditTextVote1 = new EditText(Activity);
         EditTextVote1.setLayoutParams(EditTextVote1Param);
         EditTextVote1.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextVote1.setId(Misc.ViewID());
+        EditTextVote1.setId(Misc.generateViewId());
         EditTextVote1.setHint(R.string.WriteUIChoice1);
         EditTextVote1.setBackground(Disable);
         EditTextVote1.setHintTextColor(Misc.Color(R.color.Gray));
@@ -933,7 +888,7 @@ class WriteUI extends FragmentView
         final EditText EditTextVote2 = new EditText(Activity);
         EditTextVote2.setLayoutParams(EditTextVote2Param);
         EditTextVote2.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextVote2.setId(Misc.ViewID());
+        EditTextVote2.setId(Misc.generateViewId());
         EditTextVote2.setHint(R.string.WriteUIChoice2);
         EditTextVote2.setBackground(Disable);
         EditTextVote2.setHintTextColor(Misc.Color(R.color.Gray));
@@ -952,7 +907,7 @@ class WriteUI extends FragmentView
         final EditText EditTextVote3 = new EditText(Activity);
         EditTextVote3.setLayoutParams(EditTextVote3Param);
         EditTextVote3.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-        EditTextVote3.setId(Misc.ViewID());
+        EditTextVote3.setId(Misc.generateViewId());
         EditTextVote3.setHint(R.string.WriteUIChoice3);
         EditTextVote3.setBackground(Disable);
         EditTextVote3.setHintTextColor(Misc.Color(R.color.Gray));
@@ -980,7 +935,7 @@ class WriteUI extends FragmentView
         EditTextVote4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
         EditTextVote4.setOnFocusChangeListener(OnFocus);
         EditTextVote4.setVisibility(View.GONE);
-        EditTextVote4.setId(Misc.ViewID());
+        EditTextVote4.setId(Misc.generateViewId());
 
         RelativeLayoutVote.addView(EditTextVote4);
 
@@ -1000,7 +955,7 @@ class WriteUI extends FragmentView
         EditTextVote5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(24) });
         EditTextVote5.setOnFocusChangeListener(OnFocus);
         EditTextVote5.setVisibility(View.GONE);
-        EditTextVote5.setId(Misc.ViewID());
+        EditTextVote5.setId(Misc.generateViewId());
 
         RelativeLayoutVote.addView(EditTextVote5);
 
@@ -1258,7 +1213,7 @@ class WriteUI extends FragmentView
         ImageViewFile.setLayoutParams(ImageViewFileParam);
         ImageViewFile.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         ImageViewFile.setImageResource(R.drawable._general_download);
-        ImageViewFile.setId(Misc.ViewID());
+        ImageViewFile.setId(Misc.generateViewId());
         ImageViewFile.setBackground(DrawableFile);
 
         RelativeLayoutFile.addView(ImageViewFile);
@@ -1269,7 +1224,7 @@ class WriteUI extends FragmentView
 
         TextViewFileName.setLayoutParams(TextViewFileNameParam);
         TextViewFileName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-        TextViewFileName.setId(Misc.ViewID());
+        TextViewFileName.setId(Misc.generateViewId());
 
         RelativeLayoutFile.addView(TextViewFileName);
 
@@ -1333,7 +1288,7 @@ class WriteUI extends FragmentView
         ImageView ImageViewRemoveVideo = new ImageView(Activity);
         ImageViewRemoveVideo.setLayoutParams(ImageViewRemoveVideoParam);
         ImageViewRemoveVideo.setImageResource(R.drawable._write_remove);
-        ImageViewRemoveVideo.setId(Misc.ViewID());
+        ImageViewRemoveVideo.setId(Misc.generateViewId());
         ImageViewRemoveVideo.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -1369,7 +1324,7 @@ class WriteUI extends FragmentView
 
                 String OldPath = SelectVideo.getAbsolutePath();
 
-                SelectVideo = new File(CacheHandler.TempDir(Activity), "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
+                SelectVideo = new File(Misc.Temp(), "video." + String.valueOf(System.currentTimeMillis()) + ".mp4");
 
                 final ProgressDialog Progress = new ProgressDialog(Activity);
                 Progress.setMessage(Misc.String(R.string.WriteUICompress));
@@ -1465,7 +1420,7 @@ class WriteUI extends FragmentView
         TextViewSize.setLayoutParams(TextViewSizeVideoParam);
         TextViewSize.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), 0);
         TextViewSize.setBackground(DrawableVideo);
-        TextViewSize.setId(Misc.ViewID());
+        TextViewSize.setId(Misc.generateViewId());
 
         RelativeLayoutVideo.addView(TextViewSize);
 
@@ -1738,7 +1693,7 @@ class WriteUI extends FragmentView
             ImageView ImageViewRemove = new ImageView(Activity);
             ImageViewRemove.setLayoutParams(ImageViewRemoveParam);
             ImageViewRemove.setImageResource(R.drawable._write_remove);
-            ImageViewRemove.setId(Misc.ViewID());
+            ImageViewRemove.setId(Misc.generateViewId());
             ImageViewRemove.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -1770,13 +1725,14 @@ class WriteUI extends FragmentView
                 @Override
                 public void onClick(View view)
                 {
-                    Activity.GetManager().OpenView(new CropViewUI(SelectImage.get(Position), new CropViewUI.OnCropListener()
+                    Activity.GetManager().OpenView(new CropViewUI(SelectImage.get(Position), false, new CropViewUI.OnCropListener()
                     {
                         @Override
-                        public void OnCrop(String Path)
+                        public void OnCrop(Bitmap bitmap)
                         {
                             SelectImage.remove(Position);
-                            SelectImage.add(Path);
+                            //SelectImage.add(Path);
+                            // TODO Add bitmap to file
                             AdapterImage.notifyDataSetChanged();
                         }
                     }), R.id.ContainerFull, "CropViewUI");
@@ -1818,9 +1774,9 @@ class WriteUI extends FragmentView
     private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderMain>
     {
         private List<Struct> CategoryList = new ArrayList<>();
-        private int ID_ICON = Misc.ViewID();
-        private int ID_NAME = Misc.ViewID();
-        private int ID_LINE = Misc.ViewID();
+        private int ID_ICON = Misc.generateViewId();
+        private int ID_NAME = Misc.generateViewId();
+        private int ID_LINE = Misc.generateViewId();
 
         AdapterCategory()
         {

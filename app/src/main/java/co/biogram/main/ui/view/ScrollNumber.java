@@ -3,7 +3,6 @@ package co.biogram.main.ui.view;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,7 +51,7 @@ public class ScrollNumber extends LinearLayout
 
         ImageView Down = new ImageView(c);
         Down.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32)));
-        Down.setImageResource(R.drawable._write_arrow);
+        Down.setImageResource(R.drawable.__general_arrow_blue_down);
         Down.setOnClickListener(new OnClickListener()
         {
             @Override

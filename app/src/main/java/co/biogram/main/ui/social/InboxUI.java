@@ -34,7 +34,7 @@ public class InboxUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -56,7 +56,7 @@ public class InboxUI extends FragmentView
 
         ImageView ImageViewSearch = new ImageView(Activity);
         ImageViewSearch.setLayoutParams(ImageViewSearchParam);
-        ImageViewSearch.setId(Misc.ViewID());
+        ImageViewSearch.setId(Misc.generateViewId());
         ImageViewSearch.setImageResource(R.drawable._inbox_search);
         ImageViewSearch.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Search */  } });
@@ -80,7 +80,7 @@ public class InboxUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 

@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.FontHandler;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnScrollRecyclerView;
@@ -83,7 +82,7 @@ public class CommentUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -93,9 +92,9 @@ public class CommentUI extends FragmentView
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.back_blue_rtl : R.drawable.back_blue);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.__general_back_blue_rtl : R.drawable.__general_back_blue);
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
-        ImageViewBack.setId(Misc.ViewID());
+        ImageViewBack.setId(Misc.generateViewId());
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -117,7 +116,7 @@ public class CommentUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -127,7 +126,7 @@ public class CommentUI extends FragmentView
         RelativeLayout RelativeLayoutBottom = new RelativeLayout(Activity);
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
         RelativeLayoutBottom.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutBottom.setId(Misc.ViewID());
+        RelativeLayoutBottom.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutBottom);
 
@@ -139,7 +138,7 @@ public class CommentUI extends FragmentView
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
         CircleImageViewProfile.SetBorderWidth(1);
-        CircleImageViewProfile.setId(Misc.ViewID());
+        CircleImageViewProfile.setId(Misc.generateViewId());
 
         if (SharedHandler.GetString("Avatar").isEmpty())
             CircleImageViewProfile.setVisibility(View.GONE);
@@ -153,7 +152,7 @@ public class CommentUI extends FragmentView
 
         RelativeLayout RelativeLayoutSend = new RelativeLayout(Activity);
         RelativeLayoutSend.setLayoutParams(RelativeLayoutSendParam);
-        RelativeLayoutSend.setId(Misc.ViewID());
+        RelativeLayoutSend.setId(Misc.generateViewId());
 
         RelativeLayoutBottom.addView(RelativeLayoutSend);
 
@@ -239,7 +238,7 @@ public class CommentUI extends FragmentView
         EditTextMessage.setMaxLines(2);
         EditTextMessage.setHint(R.string.CommentUIComment);
         EditTextMessage.setBackground(null);
-        EditTextMessage.setTypeface(FontHandler.GetTypeface(Activity));
+        EditTextMessage.setTypeface(Misc.GetTypeface());
         EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextMessage.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -265,7 +264,7 @@ public class CommentUI extends FragmentView
         View ViewLine2 = new View(Activity);
         ViewLine2.setLayoutParams(ViewLine2Param);
         ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine2.setId(Misc.ViewID());
+        ViewLine2.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine2);
 
@@ -362,15 +361,15 @@ public class CommentUI extends FragmentView
 
     private class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHolderMain>
     {
-        private int ID_PROFILE = Misc.ViewID();
-        private int ID_USERNAME = Misc.ViewID();
-        private int ID_TIME = Misc.ViewID();
-        private int ID_MESSAGE = Misc.ViewID();
-        private int ID_LIKE = Misc.ViewID();
-        private int ID_SHORTCUT = Misc.ViewID();
-        private int ID_DELETE = Misc.ViewID();
-        private int ID_LIKE_COUNT = Misc.ViewID();
-        private int ID_LINE = Misc.ViewID();
+        private int ID_PROFILE = Misc.generateViewId();
+        private int ID_USERNAME = Misc.generateViewId();
+        private int ID_TIME = Misc.generateViewId();
+        private int ID_MESSAGE = Misc.generateViewId();
+        private int ID_LIKE = Misc.generateViewId();
+        private int ID_SHORTCUT = Misc.generateViewId();
+        private int ID_DELETE = Misc.generateViewId();
+        private int ID_LIKE_COUNT = Misc.generateViewId();
+        private int ID_LINE = Misc.generateViewId();
 
         class ViewHolderMain extends RecyclerView.ViewHolder
         {
@@ -651,7 +650,7 @@ public class CommentUI extends FragmentView
                 ImageView ImageViewContent = new CircleImageView(Activity);
                 ImageViewContent.setLayoutParams(ImageViewContentParam);
                 ImageViewContent.setImageResource(R.drawable._general_comment_gray);
-                ImageViewContent.setId(Misc.ViewID());
+                ImageViewContent.setId(Misc.generateViewId());
 
                 LinearLayoutMain.addView(ImageViewContent);
 
@@ -730,7 +729,7 @@ public class CommentUI extends FragmentView
             LinearLayout LinearLayoutTool = new LinearLayout(Activity);
             LinearLayoutTool.setLayoutParams(LinearLayoutToolParam);
             LinearLayoutTool.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayoutTool.setId(Misc.ViewID());
+            LinearLayoutTool.setId(Misc.generateViewId());
 
             RelativeLayoutMain.addView(LinearLayoutTool);
 

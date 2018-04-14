@@ -1,31 +1,311 @@
 package co.biogram.main.ui.social;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 
+import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.general.CameraViewUI;
+import co.biogram.main.ui.general.CropViewUI;
+import co.biogram.main.ui.general.GalleryViewUI;
+import co.biogram.main.ui.view.PermissionDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileUI extends FragmentView
 {
-    private String ID;
-    private boolean IsUsername;
-
-    private double Latitude = 0.0f;
-    private double Longitude = 0.0f;
-
-    public ProfileUI() { }
-
-    public ProfileUI(String username)
-    {
-        ID = username;
-        IsUsername = true;
-    }
-
     @Override
     public void OnCreate()
     {
-        /*final DBHandler DB = new DBHandler(Activity);
+        View view = View.inflate(Activity, R.layout.profile, null);
+
+        ImageView ImageViewSetting = view.findViewById(R.id.ImageViewSetting);
+        ImageViewSetting.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // TODO Open Setting Page
+            }
+        });
+
+        ImageView ImageViewProfile = view.findViewById(R.id.ImageViewProfile);
+        ImageViewProfile.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // TODO Open Profile Page
+            }
+        });
+
+        final CircleImageView CircleImageViewProfile = view.findViewById(R.id.CircleImageViewProfile);
+        CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final Dialog dialog = new Dialog(Activity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(true);
+
+                View dialogView = View.inflate(Activity, R.layout.profile_dialog_avatar, null);
+
+                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
+                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+
+                TextView TextViewCamera = dialogView.findViewById(R.id.TextViewCamera);
+                TextViewCamera.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialog.dismiss();
+
+                        PermissionDialog permissionDialog = new PermissionDialog(Activity);
+                        permissionDialog.SetContentView(R.drawable.__general_permission_camera_white, R.string.ProfileUIAvatarCameraMessage, Manifest.permission.CAMERA, Activity, new PermissionDialog.OnChoiceListener()
+                        {
+                            @Override
+                            public void OnChoice(boolean Result)
+                            {
+                                if (!Result)
+                                    return;
+
+                                Activity.GetManager().OpenView(new CameraViewUI(Misc.ToDP(300), Misc.ToDP(300), true, new CameraViewUI.OnCaptureListener()
+                                {
+                                    @Override
+                                    public void OnCapture(Bitmap bitmap)
+                                    {
+                                        // TODO Update Profile
+                                    }
+                                }), R.id.ContainerFull, "CameraViewUI");
+                            }
+                        });
+                    }
+                });
+
+                TextView TextViewGallery = dialogView.findViewById(R.id.TextViewGallery);
+                TextViewGallery.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialog.dismiss();
+
+                        PermissionDialog permissionDialog = new PermissionDialog(Activity);
+                        permissionDialog.SetContentView(R.drawable.__general_permission_storage_white, R.string.ProfileUIAvatarGalleryMessage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
+                        {
+                            @Override
+                            public void OnChoice(boolean Result)
+                            {
+                                if (!Result)
+                                {
+                                    Misc.Toast(R.string.ProfileUIAvatarGalleryMessage);
+                                    return;
+                                }
+
+                                Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_IMAGE, new GalleryViewUI.GalleryListener()
+                                {
+                                    private String Path = "";
+
+                                    @Override
+                                    public void OnSelection(String path)
+                                    {
+                                        Path = path;
+                                    }
+
+                                    @Override
+                                    public void OnRemove(String path)
+                                    {
+                                        Path = path;
+                                    }
+
+                                    @Override
+                                    public void OnSave()
+                                    {
+                                        Activity.GetManager().OpenView(new CropViewUI(Path, true, new CropViewUI.OnCropListener()
+                                        {
+                                            @Override
+                                            public void OnCrop(Bitmap bitmap)
+                                            {
+                                                Activity.onBackPressed();
+                                                // TODO Send avaar
+                                            }
+                                        }), R.id.ContainerFull, "CropViewUI");
+                                    }
+                                }), R.id.ContainerFull, "CameraViewUI");
+                            }
+                        });
+                    }
+                });
+
+                TextView TextViewDelete = dialogView.findViewById(R.id.TextViewDelete);
+                TextViewDelete.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialog.dismiss();
+                        CircleImageViewProfile.setImageResource(R.drawable.__profile_avatar);
+
+                        // TODO Request Delete Profile Image
+                    }
+                });
+
+                dialog.setContentView(dialogView);
+                dialog.show();
+            }
+        });
+
+        TextView TextViewName = view.findViewById(R.id.TextViewName);
+        TextViewName.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final Dialog dialog = new Dialog(Activity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(true);
+
+                View dialogView = View.inflate(Activity, R.layout.profile_dialog_avatar, null);
+
+                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
+                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+
+                TextView TextViewDelete = dialogView.findViewById(R.id.TextViewDelete);
+                TextViewDelete.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialog.dismiss();
+                        CircleImageViewProfile.setImageResource(R.drawable.__profile_avatar);
+
+                        // TODO Request Delete Profile Image
+                    }
+                });
+
+                dialog.setContentView(dialogView);
+                dialog.show();
+            }
+        });
+
+        TextView TextViewUsername = view.findViewById(R.id.TextViewUsername);
+        TextViewUsername.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // TODO Open Saved Page
+            }
+        });
+
+        LinearLayout LinearLayoutSaved = view.findViewById(R.id.LinearLayoutSaved);
+        LinearLayoutSaved.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // TODO Open Saved Page
+            }
+        });
+
+
+        TextView TextViewFollowing = view.findViewById(R.id.TextViewFollowing);
+
+
+        TextView TextViewFollower = view.findViewById(R.id.TextViewFollower);
+
+
+        TextView TextViewProfileView = view.findViewById(R.id.TextViewProfileView);
+
+
+        TextView TextViewRating = view.findViewById(R.id.TextViewRating);
+
+
+        TextView TextViewPopular = view.findViewById(R.id.TextViewPopular);
+
+
+        TextView TextViewRate = view.findViewById(R.id.TextViewRate);
+
+        TextView TextViewTag1 = view.findViewById(R.id.TextViewTag1);
+
+
+        TextView TextViewTag2 = view.findViewById(R.id.TextViewTag2);
+
+
+        TextView TextViewTag3 = view.findViewById(R.id.TextViewTag3);
+
+
+        TextView TextViewTag4 = view.findViewById(R.id.TextViewTag4);
+
+
+        TextView TextViewTag5 = view.findViewById(R.id.TextViewTag5);
+
+
+        TextView TextViewTag6 = view.findViewById(R.id.TextViewTag6);
+
+
+        TextView TextViewTag7 = view.findViewById(R.id.TextViewTag7);
+
+
+        TextViewUsername.setText("@alikhazaee");
+        TextViewName.setText("Ali Khazaee");
+        TextViewFollowing.setText("12.6K");
+        TextViewFollower.setText("1892");
+        TextViewProfileView.setText("102K");
+        TextViewRating.setText("4.6");
+        TextViewPopular.setText("Lv . 2");
+        TextViewRate.setText("1023");
+        TextViewTag1.setText("Developer");
+        TextViewTag2.setText("PHP");
+        TextViewTag3.setText("Node JS");
+        TextViewTag4.setText("Sexy Lady");
+        TextViewTag5.setText("Hava Garm e Haa");
+        TextViewTag6.setText("Tanbe 1000");
+        TextViewTag7.setText("9103");
+
+        ViewMain = view;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*final DBHandler DB = new DBHandler(Activity);
 
         if (!IsUsername)
             ID = SharedHandler.GetString("ID");
@@ -38,7 +318,7 @@ public class ProfileUI extends FragmentView
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
         RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
-        RelativeLayoutHeader.setId(Misc.ViewID());
+        RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
 
@@ -60,7 +340,7 @@ public class ProfileUI extends FragmentView
 
         ImageView ImageViewSetting = new ImageView(Activity);
         ImageViewSetting.setLayoutParams(ImageViewSettingParam);
-        ImageViewSetting.setId(Misc.ViewID());
+        ImageViewSetting.setId(Misc.generateViewId());
         ImageViewSetting.setImageResource(R.drawable._inbox_search);
         ImageViewSetting.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         ImageViewSetting.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Open Setting * /  } });
@@ -84,7 +364,7 @@ public class ProfileUI extends FragmentView
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
         ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
-        ViewLine.setId(Misc.ViewID());
+        ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
 
@@ -109,7 +389,7 @@ public class ProfileUI extends FragmentView
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
         CircleImageViewProfile.setImageResource(R.drawable._general_avatar);
-        CircleImageViewProfile.setId(Misc.ViewID());
+        CircleImageViewProfile.setId(Misc.generateViewId());
         CircleImageViewProfile.SetBorderWidth(1);
 
         RelativeLayoutScroll.addView(CircleImageViewProfile);
@@ -193,7 +473,7 @@ public class ProfileUI extends FragmentView
         View ViewLine2 = new View(Activity);
         ViewLine2.setLayoutParams(ViewLine2Param);
         ViewLine2.setBackgroundResource(R.color.LineWhite);
-        ViewLine2.setId(Misc.ViewID());
+        ViewLine2.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(ViewLine2);
 
@@ -204,7 +484,7 @@ public class ProfileUI extends FragmentView
         LinearLayoutCount.setLayoutParams(LinearLayoutCountParam);
         LinearLayoutCount.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutCount.setGravity(Gravity.CENTER);
-        LinearLayoutCount.setId(Misc.ViewID());
+        LinearLayoutCount.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(LinearLayoutCount);
 
@@ -303,7 +583,7 @@ public class ProfileUI extends FragmentView
         View ViewLine3 = new View(Activity);
         ViewLine3.setLayoutParams(ViewLine3Param);
         ViewLine3.setBackgroundResource(R.color.LineWhite);
-        ViewLine3.setId(Misc.ViewID());
+        ViewLine3.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(ViewLine3);
 
@@ -314,7 +594,7 @@ public class ProfileUI extends FragmentView
         TextView TextViewProperty = new TextView(Activity, 16, true);
         TextViewProperty.setLayoutParams(TextViewPropertyParam);
         TextViewProperty.SetColor(R.color.TextWhite);
-        TextViewProperty.setId(Misc.ViewID());
+        TextViewProperty.setId(Misc.generateViewId());
         TextViewProperty.setText(Activity.getString(R.string.ProfileUIProperty));
 
         RelativeLayoutScroll.addView(TextViewProperty);
@@ -325,7 +605,7 @@ public class ProfileUI extends FragmentView
 
         TextView TextViewLevel = new TextView(Activity, 14, true);
         TextViewLevel.setLayoutParams(TextViewLevelParam);
-        TextViewLevel.setId(Misc.ViewID());
+        TextViewLevel.setId(Misc.generateViewId());
         TextViewLevel.SetColor(R.color.Gray);
         TextViewLevel.setText(Activity.getString(R.string.ProfileUILevel));
 
@@ -342,7 +622,7 @@ public class ProfileUI extends FragmentView
         RelativeLayout RelativeLayoutLevel = new RelativeLayout(Activity);
         RelativeLayoutLevel.setLayoutParams(RelativeLayoutLevelParam);
         RelativeLayoutLevel.setBackground(DrawableLevel);
-        RelativeLayoutLevel.setId(Misc.ViewID());
+        RelativeLayoutLevel.setId(Misc.generateViewId());
         RelativeLayoutLevel.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -362,7 +642,7 @@ public class ProfileUI extends FragmentView
         ImageViewLevel.setLayoutParams(ImageViewLevelParam);
         ImageViewLevel.setImageResource(R.drawable._profile_level);
         ImageViewLevel.setPadding(Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3), Misc.ToDP(3));
-        ImageViewLevel.setId(Misc.ViewID());
+        ImageViewLevel.setId(Misc.generateViewId());
 
         RelativeLayoutLevel.addView(ImageViewLevel);
 
@@ -421,7 +701,7 @@ public class ProfileUI extends FragmentView
         ImageView ImageViewCash = new ImageView(Activity);
         ImageViewCash.setLayoutParams(ImageViewCashParam);
         ImageViewCash.setImageResource(R.drawable._profile_cash);
-        ImageViewCash.setId(Misc.ViewID());
+        ImageViewCash.setId(Misc.generateViewId());
 
         RelativeLayoutCash.addView(ImageViewCash);
 
@@ -452,7 +732,7 @@ public class ProfileUI extends FragmentView
 
         TextView TextViewRating = new TextView(Activity, 14, true);
         TextViewRating.setLayoutParams(TextViewRatingParam);
-        TextViewRating.setId(Misc.ViewID());
+        TextViewRating.setId(Misc.generateViewId());
         TextViewRating.SetColor(R.color.Gray);
         TextViewRating.setText(Activity.getString(R.string.ProfileUIRating));
 
@@ -490,7 +770,7 @@ public class ProfileUI extends FragmentView
         TextViewRating2.setLayoutParams(TextViewRating2Param);
         TextViewRating2.SetColor(R.color.TextWhite);
         TextViewRating2.setPadding(Misc.ToDP(15), Misc.ToDP(5), Misc.ToDP(30), 0);
-        TextViewRating2.setId(Misc.ViewID());
+        TextViewRating2.setId(Misc.generateViewId());
 
         RelativeLayoutRating.addView(TextViewRating2);
 
@@ -521,7 +801,7 @@ public class ProfileUI extends FragmentView
 
         TextView TextViewBadge = new TextView(Activity, 14, true);
         TextViewBadge.setLayoutParams(TextViewBadgeParam);
-        TextViewBadge.setId(Misc.ViewID());
+        TextViewBadge.setId(Misc.generateViewId());
         TextViewBadge.SetColor(R.color.Gray);
         TextViewBadge.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(10), 0);
         TextViewBadge.setText(Activity.getString(R.string.ProfileUIBadge));
@@ -540,7 +820,7 @@ public class ProfileUI extends FragmentView
         RelativeLayout RelativeLayoutBadge = new RelativeLayout(Activity);
         RelativeLayoutBadge.setLayoutParams(RelativeLayoutBadgeParam);
         RelativeLayoutBadge.setBackground(DrawableBadge);
-        RelativeLayoutBadge.setId(Misc.ViewID());
+        RelativeLayoutBadge.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(RelativeLayoutBadge);
 
@@ -551,7 +831,7 @@ public class ProfileUI extends FragmentView
         TextViewBadge2.setLayoutParams(TextViewBadge2Param);
         TextViewBadge2.SetColor(R.color.Primary);
         TextViewBadge2.setPadding(Misc.ToDP(15), Misc.ToDP(5), 0, 0);
-        TextViewBadge2.setId(Misc.ViewID());
+        TextViewBadge2.setId(Misc.generateViewId());
         TextViewBadge2.setText(Activity.getString(R.string.ProfileUIBadge));
 
         RelativeLayoutBadge.addView(TextViewBadge2);
@@ -584,7 +864,7 @@ public class ProfileUI extends FragmentView
         View ViewLine4 = new View(Activity);
         ViewLine4.setLayoutParams(ViewLine4Param);
         ViewLine4.setBackgroundResource(R.color.LineWhite);
-        ViewLine4.setId(Misc.ViewID());
+        ViewLine4.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(ViewLine4);
 
@@ -595,7 +875,7 @@ public class ProfileUI extends FragmentView
         TextView TextViewAbout = new TextView(Activity, 16, true);
         TextViewAbout.setLayoutParams(TextViewAboutParam);
         TextViewAbout.SetColor(R.color.TextWhite);
-        TextViewAbout.setId(Misc.ViewID());
+        TextViewAbout.setId(Misc.generateViewId());
         TextViewAbout.setText(Activity.getString(R.string.ProfileUIAbout));
 
         RelativeLayoutScroll.addView(TextViewAbout);
@@ -607,7 +887,7 @@ public class ProfileUI extends FragmentView
         final TextView TextViewAboutMe = new TextView(Activity, 14, false);
         TextViewAboutMe.setLayoutParams(TextViewAboutMeParam);
         TextViewAboutMe.SetColor(R.color.Gray);
-        TextViewAboutMe.setId(Misc.ViewID());
+        TextViewAboutMe.setId(Misc.generateViewId());
         TextViewAboutMe.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -717,7 +997,7 @@ public class ProfileUI extends FragmentView
         LinearLayout LinearLayoutLink = new LinearLayout(Activity);
         LinearLayoutLink.setLayoutParams(LinearLayoutLinkParam);
         LinearLayoutLink.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutLink.setId(Misc.ViewID());
+        LinearLayoutLink.setId(Misc.generateViewId());
 
         RelativeLayoutScroll.addView(LinearLayoutLink);
 
@@ -886,7 +1166,7 @@ public class ProfileUI extends FragmentView
                 ImageView ImageViewSave = new ImageView(Activity);
                 ImageViewSave.setLayoutParams(ImageViewSaveParam);
                 ImageViewSave.setImageResource(R.drawable.done_blue);
-                ImageViewSave.setId(Misc.ViewID());
+                ImageViewSave.setId(Misc.generateViewId());
                 ImageViewSave.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
                 ImageViewSave.setOnClickListener(new View.OnClickListener()
                 {
@@ -936,7 +1216,7 @@ public class ProfileUI extends FragmentView
 
                 EditTextLocation.setLayoutParams(EditTextLocationParam);
                 EditTextLocation.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
-                EditTextLocation.setId(Misc.ViewID());
+                EditTextLocation.setId(Misc.generateViewId());
                 EditTextLocation.setBackground(null);
                 EditTextLocation.setHint(Activity.getString(R.string.ProfileUILocation));
                 EditTextLocation.setHintTextColor(Misc.Color(R.color.Gray));
@@ -952,7 +1232,7 @@ public class ProfileUI extends FragmentView
                 View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(ViewLineParam);
                 ViewLine.setBackgroundResource(R.color.LineWhite);
-                ViewLine.setId(Misc.ViewID());
+                ViewLine.setId(Misc.generateViewId());
 
                 RelativeLayoutLocation.addView(ViewLine);
 
@@ -1202,51 +1482,3 @@ public class ProfileUI extends FragmentView
                 LoadingViewMain.setVisibility(View.GONE);
             }
         });*/
-
-        View view = View.inflate(Activity, R.layout.profile, null);
-
-        TextView TextViewName = view.findViewById(R.id.TextViewName);
-        TextViewName.setText("Ali Khazaee");
-
-        TextView TextViewUsername = view.findViewById(R.id.TextViewUsername);
-        TextViewUsername.setText("@alikhazaee");
-
-        TextView TextViewFollowing = view.findViewById(R.id.TextViewFollowing);
-        TextViewFollowing.setText("12.6K");
-
-        TextView TextViewFollower = view.findViewById(R.id.TextViewFollower);
-        TextViewFollower.setText("1892");
-
-        TextView TextViewProfileView = view.findViewById(R.id.TextViewProfileView);
-        TextViewProfileView.setText("102K");
-
-        TextView TextViewRating = view.findViewById(R.id.TextViewRating);
-        TextViewRating.setText("4.6");
-
-        TextView TextViewRate = view.findViewById(R.id.TextViewRate);
-        TextViewRate.setText("Desinger");
-
-        TextView TextViewTag1 = view.findViewById(R.id.TextViewTag1);
-        TextViewTag1.setText("Developer");
-
-        TextView TextViewTag2 = view.findViewById(R.id.TextViewTag2);
-        TextViewTag2.setText("PHP");
-
-        TextView TextViewTag3 = view.findViewById(R.id.TextViewTag3);
-        TextViewTag3.setText("Node JS");
-
-        TextView TextViewTag4 = view.findViewById(R.id.TextViewTag4);
-        TextViewTag4.setText("Sexy Lady");
-
-        TextView TextViewTag5 = view.findViewById(R.id.TextViewTag5);
-        TextViewTag5.setText("Hava Garm e Haa");
-
-        TextView TextViewTag6 = view.findViewById(R.id.TextViewTag6);
-        TextViewTag6.setText("Tanbe 1000");
-
-        TextView TextViewTag7 = view.findViewById(R.id.TextViewTag7);
-        TextViewTag7.setText("9103");
-
-        ViewMain = view;
-    }
-}
