@@ -10,7 +10,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_alignParentStart="true"
-        android:text="@string/ProfileUIAvatar"
+        android:text="@string/ProfileUIUsername"
         android:textStyle="bold"
         android:textSize="@dimen/FontVerySmall"
         android:gravity="center_vertical"
@@ -22,7 +22,7 @@
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
         android:padding="10dp"
-        android:src="@drawable/__general_close_blue"
+        android:src="@drawable/___general_close_blue"
         android:layout_alignParentEnd="true" />
 
     <View
@@ -36,47 +36,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ViewLine"
+        android:gravity="end"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/TextViewCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/ActionBar"
-            android:text="@string/ProfileUIAvatarCamera"
-            android:gravity="center_vertical"
-            android:textColor="?TextColor"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
-
-        <View
+        <EditText
+            android:id="@+id/EditTextUsername"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ActionLine"
-            android:background="?LineColor" />
+            android:layout_height="@dimen/ActionBar"
+            android:textSize="@dimen/FontMedium"
+            android:textColor="?TextColor"
+            android:hint="@string/ProfileUIUsernameHint"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:maxLines="1"
+            android:inputType="text"
+            android:maxLength="32" />
 
         <TextView
-            android:id="@+id/TextViewGallery"
+            android:id="@+id/TextViewSubmit"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/ActionBar"
-            android:text="@string/ProfileUIAvatarGallery"
-            android:gravity="center_vertical"
-            android:textColor="?TextColor"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/ActionLine"
-            android:background="?LineColor" />
-
-        <TextView
-            android:id="@+id/TextViewDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/ActionBar"
-            android:text="@string/ProfileUIAvatarDelete"
-            android:gravity="center_vertical"
-            android:textColor="?TextColor"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
+            android:layout_height="wrap_content"
+            android:text="@string/ProfileUISubmit"
+            android:textColor="@color/Primary"
+            android:textSize="@dimen/FontMedium"
+            android:padding="20dp" />
 
     </LinearLayout>
 

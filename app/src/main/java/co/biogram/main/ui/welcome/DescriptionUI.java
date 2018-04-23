@@ -230,7 +230,7 @@ public class DescriptionUI extends FragmentView
                         DialogProfile.dismiss();
 
                         PermissionDialog PermissionDialogCamera = new PermissionDialog(Activity);
-                        PermissionDialogCamera.SetContentView(R.drawable.__general_permission_camera_white, R.string.DescriptionUIPermissionCamera, Manifest.permission.CAMERA, Activity, new PermissionDialog.OnChoiceListener()
+                        PermissionDialogCamera.SetContentView(R.drawable.___general_permission_camera, R.string.DescriptionUIPermissionCamera, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
                             public void OnChoice(boolean Allow)
@@ -241,7 +241,7 @@ public class DescriptionUI extends FragmentView
                                     return;
                                 }
 
-                                Activity.GetManager().OpenView(new CameraViewUI(), R.id.ContainerFull, "CameraViewUI");
+                                Activity.GetManager().OpenView(new CameraViewUI(0,0, false, null), R.id.ContainerFull, "CameraViewUI");
                             }
                         });
                     }
@@ -298,7 +298,7 @@ public class DescriptionUI extends FragmentView
                         DialogProfile.dismiss();
 
                         PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                        PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.DescriptionUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
+                        PermissionDialogGallery.SetContentView(R.drawable.___general_permission_storage, R.string.DescriptionUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
                             public void OnChoice(boolean Allow)
@@ -858,7 +858,7 @@ public class DescriptionUI extends FragmentView
         ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
         ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
-        ImageViewDone.setImageResource(R.drawable.__general_done_white);
+        ImageViewDone.setImageResource(R.drawable.___general_done_white);
         ImageViewDone.setOnClickListener(new View.OnClickListener()
         {
             @Override

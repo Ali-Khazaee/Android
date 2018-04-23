@@ -7,7 +7,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Keep;
-import android.support.v4.content.ContextCompat;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,8 +20,8 @@ import co.biogram.main.handler.Misc;
 
 public class LoadingView extends LinearLayout
 {
-    private final List<ValueAnimator> AnimatorList = new ArrayList<>();
-    private final List<Bounce> BounceList = new ArrayList<>();
+    private List<ValueAnimator> AnimatorList = new ArrayList<>();
+    private List<Bounce> BounceList = new ArrayList<>();
 
     private boolean ShouldPlay = false;
     private float BounceScale;
@@ -30,14 +30,19 @@ public class LoadingView extends LinearLayout
 
     public LoadingView(Context context)
     {
-        super(context);
+        this(context, null);
+    }
 
-        BounceScale = 2.0f;
-        BounceSize = Misc.ToDP(6);
-        BounceColor = ContextCompat.getColor(context, R.color.Gray);
+    public LoadingView(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
+
+        BounceScale = 2.0f;
+        BounceSize = Misc.ToDP(6);
+        BounceColor = Misc.Color(R.color.Gray);
     }
 
     @Override
@@ -60,24 +65,23 @@ public class LoadingView extends LinearLayout
     {
         LocalStop();
 
-        Context context = getContext();
         LayoutParams BounceParam = new LayoutParams(BounceSize, BounceSize);
         LayoutParams SpaceParam = new LayoutParams(Misc.ToDP(5), BounceSize * 3);
 
-        GradientDrawable GradientDrawableBounce = new GradientDrawable();
-        GradientDrawableBounce.setShape(GradientDrawable.OVAL);
-        GradientDrawableBounce.setColor(BounceColor);
+        GradientDrawable DrawableBounce = new GradientDrawable();
+        DrawableBounce.setShape(GradientDrawable.OVAL);
+        DrawableBounce.setColor(BounceColor);
 
         for (int I = 0; I < 3; I++)
         {
-            Bounce bounce = new Bounce(context);
-            bounce.setBackground(GradientDrawableBounce);
+            Bounce bounce = new Bounce(getContext());
+            bounce.setBackground(DrawableBounce);
 
             BounceList.add(bounce);
             addView(bounce, BounceParam);
 
             if (I < 2)
-                addView(new View(context), SpaceParam);
+                addView(new View(getContext()), SpaceParam);
         }
 
         for (int I = 0; I < 3; I++)
@@ -104,16 +108,19 @@ public class LoadingView extends LinearLayout
 
             ValueAnimatorGrow.setStartDelay(I * (int) (0.4 * BounceSpeed));
             ValueAnimatorGrow.start();
+
             AnimatorList.add(ValueAnimatorGrow);
         }
 
         ShouldPlay = true;
+        setVisibility(VISIBLE);
     }
 
     public void Stop()
     {
         LocalStop();
         ShouldPlay = false;
+        setVisibility(INVISIBLE);
     }
 
     private void LocalStop()
@@ -155,7 +162,7 @@ public class LoadingView extends LinearLayout
 
     public void SetColor(int Color)
     {
-        BounceColor = ContextCompat.getColor(getContext(), Color);
+        BounceColor = Misc.Color(Color);
     }
 
     private class Bounce extends View
@@ -166,7 +173,7 @@ public class LoadingView extends LinearLayout
         }
 
         @Keep
-        void setScale(float Scale)
+        public void setScale(float Scale)
         {
             setScaleX(Scale);
             setScaleY(Scale);

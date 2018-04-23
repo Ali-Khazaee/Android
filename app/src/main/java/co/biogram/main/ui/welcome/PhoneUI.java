@@ -433,7 +433,7 @@ class PhoneUI extends FragmentView
             public void onClick(View v)
             {
                 PermissionDialog PermissionDialogSMS = new PermissionDialog(Activity);
-                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, Activity, new PermissionDialog.OnChoiceListener()
+                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
                     public void OnChoice(boolean Allow)

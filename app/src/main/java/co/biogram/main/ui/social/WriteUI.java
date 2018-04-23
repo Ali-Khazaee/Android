@@ -472,7 +472,7 @@ class WriteUI extends FragmentView
                 };
 
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
+                PermissionDialogGallery.SetContentView(R.drawable.___general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
                     public void OnChoice(boolean Allow)
@@ -541,7 +541,7 @@ class WriteUI extends FragmentView
                 };
 
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
+                PermissionDialogGallery.SetContentView(R.drawable.___general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
                     public void OnChoice(boolean Allow)
@@ -604,7 +604,7 @@ class WriteUI extends FragmentView
                 }
 
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.__general_permission_storage_white, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, Activity, new PermissionDialog.OnChoiceListener()
+                PermissionDialogGallery.SetContentView(R.drawable.___general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
                 {
                     @Override
                     public void OnChoice(boolean Allow)

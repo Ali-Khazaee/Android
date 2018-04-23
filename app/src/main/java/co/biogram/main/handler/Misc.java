@@ -166,7 +166,35 @@ public class Misc
 
         return S;
     }
+    public static void ShowSoftKey(View v)
+    {
+        InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        if (IMM == null)
+            return;
+
+        IMM.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static void HideSoftKey(Activity a)
+    {
+        View v = a.getCurrentFocus();
+
+        if (v == null)
+            return;
+
+        InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (IMM == null)
+            return;
+
+        IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    public static boolean checkPermission(String p)
+    {
+        return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
+    }
 
 
 
@@ -316,35 +344,7 @@ public class Misc
         ToastMain.show();
     }
 
-    public static void ShowSoftKey(View view)
-    {
-        InputMethodManager IMM = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        if (IMM == null)
-            return;
-
-        IMM.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-    }
-
-    public static void HideSoftKey(Activity a)
-    {
-        View v = a.getCurrentFocus();
-
-        if (v == null)
-            return;
-
-        InputMethodManager IMM = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        if (IMM == null)
-            return;
-
-        IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
-
-    public static boolean checkPermission(String p)
-    {
-        return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
-    }
 
     public static void UIThread(Runnable r, long d)
     {

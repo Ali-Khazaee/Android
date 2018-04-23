@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/ActionBar"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_alignParentStart="true"
+        android:text="@string/ProfileUIWebsite"
+        android:textStyle="bold"
+        android:textSize="@dimen/FontVerySmall"
+        android:gravity="center_vertical"
+        android:textColor="?TextColor"
+        android:layout_toStartOf="@+id/ImageViewClose" />
+
+    <ImageView
+        android:id="@+id/ImageViewClose"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:padding="10dp"
+        android:src="@drawable/___general_close_blue"
+        android:layout_alignParentEnd="true" />
+
+    <View
+        android:id="@+id/ViewLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionLine"
+        android:layout_below="@+id/ImageViewClose"
+        android:background="?LineColor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ViewLine"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/EditTextWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ActionBar"
+            android:textSize="@dimen/FontMedium"
+            android:textColor="?TextColor"
+            android:hint="@string/ProfileUIWebsiteHint"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:maxLines="1"
+            android:inputType="text|textUri"
+            android:maxLength="512" />
+
+        <TextView
+            android:id="@+id/TextViewSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ProfileUISubmit"
+            android:textColor="@color/Primary"
+            android:textSize="@dimen/FontMedium"
+            android:padding="20dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

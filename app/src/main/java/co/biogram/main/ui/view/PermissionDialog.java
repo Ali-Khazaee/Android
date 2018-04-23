@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.fragment.FragmentActivity;
 
 public class PermissionDialog extends Dialog
 {
@@ -20,22 +20,21 @@ public class PermissionDialog extends Dialog
         requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
-    public void SetContentView(int Icon, int Message, final String Permession, final FragmentActivity Activity, final OnChoiceListener Listener)
+    public void SetContentView(int Icon, int Message, final String Permission, final OnChoiceListener Listener)
     {
-        if (Misc.checkPermission(Permession))
+        if (Misc.checkPermission(Permission))
         {
-            dismiss();
             Listener.OnChoice(true);
             return;
         }
 
-        View dialogView = View.inflate(getContext(), R.layout.general_dialog_permession, null);
+        View dialogView = View.inflate(getContext(), R.layout.social_dialog_permession, null);
 
         ImageView ImageViewIcon = dialogView.findViewById(R.id.ImageViewIcon);
         ImageViewIcon.setImageResource(Icon);
 
         TextView TextViewMessage = dialogView.findViewById(R.id.TextViewMessage);
-        TextViewMessage.setText(getContext().getString(Message));
+        TextViewMessage.setText(Misc.String(Message));
 
         TextView TextViewAccept = dialogView.findViewById(R.id.TextViewAccept);
         TextViewAccept.setOnClickListener(new View.OnClickListener()
@@ -45,7 +44,7 @@ public class PermissionDialog extends Dialog
             {
                 dismiss();
 
-                Activity.RequestPermission(Permession, new FragmentActivity.OnGrantListener()
+                ((FragmentActivity) getContext()).RequestPermission(Permission, new FragmentActivity.OnGrantListener()
                 {
                     @Override
                     public void OnGrant(boolean Result)

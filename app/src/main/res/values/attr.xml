@@ -5,4 +5,6 @@
     <attr name="GroundColor" format="reference|color" />
     <attr name="ActionBarColor" format="reference|color" />
     <attr name="StatusBarColor" format="reference|color" />
+    <attr name="ToastColor" format="reference|color" />
+    <attr name="ToastLineColor" format="reference|color" />
 </resources>

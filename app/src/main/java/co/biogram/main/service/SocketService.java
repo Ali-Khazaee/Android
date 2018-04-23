@@ -5,13 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
-import io.socket.client.Socket;
-
 public class SocketService extends Service
 {
     private static final String BROADCAST_NOTIFICATION = "BIOGRAM_NOTIFICATION";
-
-    private Socket socket;
 
     @Override
     public int onStartCommand(Intent intent, int Flags, int StartID)
@@ -99,10 +95,6 @@ public class SocketService extends Service
         return null;
     }
 
-    public Socket GetSocket()
-    {
-        return socket;
-    }
 
     private void CreateNotification(Context context, String Message, String Data, int Type)
     {

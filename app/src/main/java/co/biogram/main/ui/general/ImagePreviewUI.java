@@ -215,7 +215,7 @@ public class ImagePreviewUI extends FragmentView
             ImageViewDone.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
             ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone.setLayoutParams(ImageViewDoneParam);
-            ImageViewDone.setImageResource(R.drawable.__general_done_white);
+            ImageViewDone.setImageResource(R.drawable.___general_done_white);
             ImageViewDone.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -249,7 +249,7 @@ public class ImagePreviewUI extends FragmentView
             ImageViewDone2.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
             ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone2.setLayoutParams(ImageViewDone2Param);
-            ImageViewDone2.setImageResource(R.drawable.__general_done_white);
+            ImageViewDone2.setImageResource(R.drawable.___general_done_white);
             ImageViewDone2.setOnClickListener(new View.OnClickListener()
             {
                 @Override

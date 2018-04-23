@@ -32,16 +32,11 @@ public class CameraViewUI extends FragmentView
     private CameraView CameraViewMain;
     private OnCaptureListener Listener;
 
-    public CameraViewUI()
-    {
-
-    }
-
-    public CameraViewUI(int W, int H, boolean isProfile, OnCaptureListener L)
+    public CameraViewUI(int W, int H, boolean P, OnCaptureListener L)
     {
         Width = W;
         Height = H;
-        IsProfile = isProfile;
+        IsProfile = P;
         Listener = L;
     }
 
@@ -93,7 +88,7 @@ public class CameraViewUI extends FragmentView
 
         ImageView ImageViewPick = new ImageView(Activity);
         ImageViewPick.setLayoutParams(ImageViewPickParam);
-        ImageViewPick.setImageResource(R.drawable.__camera_pick_white);
+        ImageViewPick.setImageResource(R.drawable.___general_camera_pick);
         ImageViewPick.setId(Misc.generateViewId());
         ImageViewPick.setOnClickListener(new View.OnClickListener()
         {
@@ -130,7 +125,7 @@ public class CameraViewUI extends FragmentView
 
         final ImageView ImageViewFlash = new ImageView(Activity);
         ImageViewFlash.setLayoutParams(ImageViewFlashParam);
-        ImageViewFlash.setImageResource(R.drawable.__flash_auto_white);
+        ImageViewFlash.setImageResource(R.drawable.___general_camera_flash_auto);
         ImageViewFlash.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
         ImageViewFlash.setOnClickListener(new View.OnClickListener()
         {
@@ -142,17 +137,17 @@ public class CameraViewUI extends FragmentView
                 switch (Type)
                 {
                     case 0:
-                        ImageViewFlash.setImageResource(R.drawable.__flash_on_white);
+                        ImageViewFlash.setImageResource(R.drawable.___general_camera_flash_on);
                         CameraViewMain.setFlash(Flash.ON);
                         Type = 1;
                         break;
                     case 1:
-                        ImageViewFlash.setImageResource(R.drawable.__flash_auto_white);
+                        ImageViewFlash.setImageResource(R.drawable.___general_camera_flash_auto);
                         CameraViewMain.setFlash(Flash.AUTO);
                         Type = 2;
                         break;
                     case 2:
-                        ImageViewFlash.setImageResource(R.drawable.__flash_off_white);
+                        ImageViewFlash.setImageResource(R.drawable.___general_camera_flash_off);
                         CameraViewMain.setFlash(Flash.OFF);
                         Type = 0;
                         break;
@@ -168,7 +163,7 @@ public class CameraViewUI extends FragmentView
 
         ImageView ImageViewSwitch = new ImageView(Activity);
         ImageViewSwitch.setLayoutParams(ImageViewSwitchParam);
-        ImageViewSwitch.setImageResource(R.drawable.__camera_switch_white);
+        ImageViewSwitch.setImageResource(R.drawable.___general_camera_switch);
         ImageViewSwitch.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
         ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { CameraViewMain.toggleFacing(); } });
 
