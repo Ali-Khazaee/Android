@@ -10,7 +10,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_alignParentStart="true"
-        android:text="@string/ProfileUITagTitle"
+        android:text="@string/ProfileUIFeatureTitle"
         android:textStyle="bold"
         android:textSize="@dimen/FontVerySmall"
         android:gravity="center_vertical"
@@ -32,12 +32,23 @@
         android:layout_below="@+id/ImageViewClose"
         android:background="?LineColor" />
 
-    <me.originqiu.library.EditTag
+    <TextView
+        android:id="@+id/TextViewMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ViewLine"
+        android:text="@string/ProfileUIFeatureMessage"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontVerySmall"
+        android:padding="15dp" />
+
+    <co.biogram.main.ui.view.EditTag
         android:id="@+id/EditTagFeature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/ViewLine" />
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/TextViewMessage" />
 
     <TextView
         android:id="@+id/TextViewSubmit"

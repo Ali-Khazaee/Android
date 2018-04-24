@@ -514,7 +514,7 @@
                         android:textColor="?TextColor"
                         android:textStyle="bold"
                         android:paddingBottom="5dp"
-                        android:text="@string/ProfileUITag" />
+                        android:text="@string/ProfileUIFeature" />
 
                     <co.biogram.main.ui.view.FlowLayout
                         android:layout_width="match_parent"
@@ -533,7 +533,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginBottom="10dp"
                             android:textSize="@dimen/FontMinimal"
-                            android:background="@drawable/__profile_tag_border"
+                            android:background="@drawable/___profile_tag_border"
                             android:textColor="@color/Primary" />
 
                         <TextView
@@ -548,7 +548,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginBottom="10dp"
                             android:textSize="@dimen/FontMinimal"
-                            android:background="@drawable/__profile_tag_border"
+                            android:background="@drawable/___profile_tag_border"
                             android:textColor="@color/Primary" />
 
                         <TextView
@@ -563,7 +563,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginBottom="10dp"
                             android:textSize="@dimen/FontMinimal"
-                            android:background="@drawable/__profile_tag_border"
+                            android:background="@drawable/___profile_tag_border"
                             android:textColor="@color/Primary" />
 
                         <TextView
@@ -578,7 +578,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginBottom="10dp"
                             android:textSize="@dimen/FontMinimal"
-                            android:background="@drawable/__profile_tag_border"
+                            android:background="@drawable/___profile_tag_border"
                             android:textColor="@color/Primary" />
 
                         <TextView
@@ -593,7 +593,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginBottom="10dp"
                             android:textSize="@dimen/FontMinimal"
-                            android:background="@drawable/__profile_tag_border"
+                            android:background="@drawable/___profile_tag_border"
                             android:textColor="@color/Primary" />
 
                         <TextView
@@ -608,7 +608,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginBottom="10dp"
                             android:textSize="@dimen/FontMinimal"
-                            android:background="@drawable/__profile_tag_border"
+                            android:background="@drawable/___profile_tag_border"
                             android:textColor="@color/Primary" />
 
                         <TextView
@@ -623,7 +623,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginBottom="10dp"
                             android:textSize="@dimen/FontMinimal"
-                            android:background="@drawable/__profile_tag_border"
+                            android:background="@drawable/___profile_tag_border"
                             android:textColor="@color/Primary" />
 
                     </co.biogram.main.ui.view.FlowLayout>
