@@ -70,8 +70,6 @@
 
 
     <!-- Dialog Permission -->
-    <string name="DialogPermissionAccept">ALLOW</string>
-    <string name="DialogPermissionDecline">NOT NOW</string>
 
     <!-- General -->
     <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
@@ -211,7 +209,6 @@
 
     <!-- Image Preview UI -->
     <string name="ImagePreviewUI">Image Preview</string>
-    <string name="ImagePreviewUIDownload">Download</string>
     <string name="ImagePreviewUIDownloaded">Image saved on your download directory</string>
 
     <!-- Gallery View UI -->
@@ -386,8 +383,6 @@
     <string name="ProfileUIFollowing">Following</string>
     <string name="ProfileUIProfileView">Profile View</string>
     <string name="ProfileUINotSet">Not Set</string>
-    <string name="ProfileUIPopular">Popular</string>
-    <string name="ProfileUILv">Lv . </string>
     <string name="ProfileUIRating">Rating</string>
     <string name="ProfileUIRate">Rate</string>
     <string name="ProfileUISpecial">Special Center</string>
@@ -399,13 +394,6 @@
     <string name="ProfileUIFeature">Features</string>
     <string name="ProfileUIFeatureTitle">Set Your Features</string>
     <string name="ProfileUIFeatureMessage">Add your features so those other can identify you based on them</string>
-    <string name="ProfileUIFeatureHint1">Feature 1</string>
-    <string name="ProfileUIFeatureHint2">Feature 2</string>
-    <string name="ProfileUIFeatureHint3">Feature 3</string>
-    <string name="ProfileUIFeatureHint4">Feature 4</string>
-    <string name="ProfileUIFeatureHint5">Feature 5</string>
-    <string name="ProfileUIFeatureHint6">Feature 6</string>
-    <string name="ProfileUIFeatureHint7">Feature 7</string>
     <string name="ProfileUIFeatureTag">Write Your Feature</string>
     <string name="ProfileUIAvatar">Set Profile Photo</string>
     <string name="ProfileUIAvatarCamera">Set From Camera</string>
@@ -423,7 +411,6 @@
     <string name="ProfileUIEmailHint">Email</string>
     <string name="ProfileUIAbout">Set Your About</string>
     <string name="ProfileUIAboutHint">About Me</string>
-    <string name="ProfileUIWebsiteTitle">Set Your Website</string>
     <string name="ProfileUIWebsiteHint">Website</string>
     <string name="ProfileUILocationTitle">Set Your Location</string>
     <string name="ProfileUILocationHint">Location</string>

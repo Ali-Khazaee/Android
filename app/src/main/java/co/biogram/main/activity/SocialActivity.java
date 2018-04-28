@@ -53,7 +53,7 @@ public class SocialActivity extends FragmentActivity
         ImageViewInbox.setImageResource(R.drawable.z_social_activity_inbox);
         ImageViewMoment.setImageResource(R.drawable.z_social_activity_moment);
         ImageViewNotification.setImageResource(NotificationAvailable ? R.drawable.z_social_activity_notification_available : R.drawable.z_social_activity_notification);
-        ImageViewProfile.setImageResource(R.drawable.profile_gray);
+        ImageViewProfile.setImageResource(R.drawable.z_social_activity_profile);
 
         String Tag;
         FragmentView Fragment;

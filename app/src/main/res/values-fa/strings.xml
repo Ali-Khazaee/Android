@@ -31,8 +31,6 @@
 
 
     <!-- Dialog Permission -->
-    <string name="DialogPermissionAccept">اجازه دادن</string>
-    <string name="DialogPermissionDecline">نه فعلا</string>
 
     <!-- General -->
     <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
@@ -172,7 +170,6 @@
 
     <!-- Image Preview UI -->
     <string name="ImagePreviewUI">نمایش عکس</string>
-    <string name="ImagePreviewUIDownload">دانلود</string>
     <string name="ImagePreviewUIDownloaded">عکس در محل دنلود ها ذخیره شد</string>
 
     <!-- Gallery View UI -->
