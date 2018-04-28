@@ -298,18 +298,6 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewPopular = view.findViewById(R.id.TextViewPopular);
-
-        LinearLayout LinearLayoutPopular = view.findViewById(R.id.LinearLayoutPopular);
-        LinearLayoutPopular.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // TODO Open Popular Page
-            }
-        });
-
         TextView TextViewRating = view.findViewById(R.id.TextViewRating);
         TextView TextViewRate = view.findViewById(R.id.TextViewRate);
 
@@ -329,7 +317,7 @@ public class ProfileUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                // TODO Open Special Page
+                Activity.GetManager().OpenView(new Profile_SpecialCenterUI(), R.id.ContainerFull, "Profile_SpecialCenterUI");
             }
         });
 
@@ -600,7 +588,6 @@ public class ProfileUI extends FragmentView
         TextViewFollowing.setText("12.6K");
         TextViewFollower.setText("1892");
         TextViewProfileView.setText("102K");
-        TextViewPopular.setText("Lv . 4");
         TextViewRating.setText("4.6");
         TextViewRate.setText("1023");
         TextViewPhoneNumber.setText("09385454764");

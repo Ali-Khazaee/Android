@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?GroundColor"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontVerySmall"
+            android:padding="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/TextViewMoney"
+            android:text="@string/SocialProfileSpecialCenterUICreditTotal" />
+
+        <TextView
+            android:id="@+id/TextViewAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontMedium"
+            android:textStyle="bold"
+            android:paddingBottom="25dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="25dp"
+            android:paddingStart="5dp"
+            android:text="15,000" />
+
+        <TextView
+            android:id="@+id/TextViewMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/TextViewAmount"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/FontVerySmall"
+            android:paddingBottom="25dp"
+            android:paddingTop="25dp"
+            android:text="@string/SocialProfileSpecialCenterUICreditRial" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ActionLine"
+            android:layout_below="@+id/TextViewAmount"
+            android:background="?LineColor" />
+
+        <TextView
+            android:id="@+id/TextViewIncrease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextViewAmount"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontVerySmall"
+            android:padding="25dp"
+            android:text="@string/SocialProfileSpecialCenterUICreditIncrease" />
+
+        <EditText
+            android:id="@+id/EditTextAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="25dp"
+            android:textSize="@dimen/FontVerySmall"
+            android:padding="5dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:gravity="center"
+            android:inputType="numberSigned"
+            android:imeOptions="actionDone"
+            android:hint="@string/SocialProfileSpecialCenterUICreditEnter"
+            android:background="@drawable/z_social_profile_specialcenter_edittext"
+            android:layout_below="@+id/TextViewAmount"
+            android:layout_toEndOf="@+id/TextViewIncrease" />
+
+        <TextView
+            android:id="@+id/TextViewAddCredit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/Primary"
+            android:textColor="@android:color/white"
+            android:text="@string/SocialProfileSpecialCenterUICreditAdd"
+            android:textStyle="bold"
+            android:textSize="@dimen/FontVerySmall"
+            android:gravity="center"
+            android:layout_below="@+id/EditTextAmount" />
+
+        <View
+            android:id="@+id/ViewLine"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@+id/TextViewAddCredit"
+            android:background="?LineColor" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RecyclerViewMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ViewLine" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

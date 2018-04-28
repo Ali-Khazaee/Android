@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Application -->
-    <string name="ApplicationName">بیوگرام</string>
+    <string name="ApplicationName">کانل</string>
+
+    <!-- Social Profile Special Center UI -->
+    <string name="SocialProfileSpecialCenterUI">مرکز ویژه</string>
+    <string name="SocialProfileSpecialCenterUICredit">اعتبار</string>
+    <string name="SocialProfileSpecialCenterUIBadge">نشان</string>
+    <string name="SocialProfileSpecialCenterUISpecialPost">پست ویژه</string>
+    <string name="SocialProfileSpecialCenterUICreditTotal">کل اعتبار</string>
+    <string name="SocialProfileSpecialCenterUICreditRial">ريال</string>
+    <string name="SocialProfileSpecialCenterUICreditIncrease">افزایش اعتبار</string>
+    <string name="SocialProfileSpecialCenterUICreditEnter">مقدار اعتبار</string>
+    <string name="SocialProfileSpecialCenterUICreditAdd">افزودن اعتبار</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Dialog Permission -->
     <string name="DialogPermissionAccept">اجازه دادن</string>

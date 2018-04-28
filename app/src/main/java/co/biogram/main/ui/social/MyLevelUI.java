@@ -34,7 +34,7 @@ public class MyLevelUI extends FragmentView
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.generateViewId());
-        ImageViewBack.setImageResource(R.drawable.__general_back_blue);
+        ImageViewBack.setImageResource(R.drawable.z_general_back_blue);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 

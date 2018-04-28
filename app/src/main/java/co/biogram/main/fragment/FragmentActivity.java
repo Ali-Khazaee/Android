@@ -1,12 +1,12 @@
 package co.biogram.main.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 
-public abstract class FragmentActivity extends Activity
+public abstract class FragmentActivity extends AppCompatActivity
 {
     private OnGrantListener Listener;
     private FragmentManager Manager;

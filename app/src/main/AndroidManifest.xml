@@ -21,9 +21,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/ApplicationName"
         android:theme="@style/AppThemeLight"
+        android:supportsRtl="true"
         android:largeHeap="true"
-        android:allowBackup="false"
-        tools:replace="android:allowBackup,android:icon,android:label,android:theme">
+        android:allowBackup="false">
 
         <activity android:name=".activity.WelcomeActivity" android:screenOrientation="portrait">
             <intent-filter>

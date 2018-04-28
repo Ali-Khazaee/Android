@@ -1,23 +1,22 @@
 package co.biogram.main.handler;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 public abstract class OnScrollRecyclerView extends RecyclerView.OnScrollListener
 {
-    private LinearLayoutManager LayoutManager;
+    private RecyclerView.LayoutManager LayoutManager;
     private int PreviousTotalCount = 0;
     private boolean IsLoading = true;
 
-    protected OnScrollRecyclerView(LinearLayoutManager llm)
-    {
-        LayoutManager = llm;
-    }
-
     @Override
-    public void onScrolled(RecyclerView View, int X, int Y)
+    public void onScrolled(RecyclerView rc, int X, int Y)
     {
-        if (X == 0 && Y == 0)
+        if (LayoutManager == null)
+            LayoutManager = rc.getLayoutManager();
+
+        if (LayoutManager == null || (X == 0 && Y == 0))
             return;
 
         int TotalCount = LayoutManager.getItemCount();
@@ -28,7 +27,14 @@ public abstract class OnScrollRecyclerView extends RecyclerView.OnScrollListener
             PreviousTotalCount = TotalCount;
         }
 
-        if (!IsLoading && (LayoutManager.findLastVisibleItemPosition() + 5) > TotalCount)
+        int LastPosition = 5;
+
+        if (LayoutManager instanceof LinearLayoutManager)
+            LastPosition += ((LinearLayoutManager) LayoutManager).findLastVisibleItemPosition();
+        else if (LayoutManager instanceof GridLayoutManager)
+            LastPosition += ((GridLayoutManager) LayoutManager).findLastVisibleItemPosition();
+
+        if (!IsLoading && LastPosition > TotalCount)
         {
             OnLoadMore();
             IsLoading = true;

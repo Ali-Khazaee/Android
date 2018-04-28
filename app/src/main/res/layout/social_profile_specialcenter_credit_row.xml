@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayoutMain"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ImageViewIcon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/TextViewMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="?TextColor"
+        android:textSize="@dimen/FontVerySmall"
+        android:layout_toEndOf="@+id/ImageViewIcon" />
+
+    <TextView
+        android:id="@+id/TextViewAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/Gray"
+        android:text="@string/SocialProfileSpecialCenterUICreditRowAmount"
+        android:textSize="@dimen/FontVerySmall"
+        android:layout_below="@+id/TextViewMessage"
+        android:layout_toEndOf="@+id/ImageViewIcon" />
+
+    <TextView
+        android:id="@+id/TextViewAmount2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontVerySmall"
+        android:layout_below="@+id/TextViewMessage"
+        android:layout_toEndOf="@+id/TextViewAmount" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/Gray"
+        android:text="@string/SocialProfileSpecialCenterUICreditRowRial"
+        android:textSize="@dimen/FontMinimal"
+        android:layout_below="@+id/TextViewMessage"
+        android:layout_toEndOf="@+id/TextViewAmount2" />
+
+    <TextView
+        android:id="@+id/TextViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontMinimal"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/TextViewMessage"
+        android:layout_alignParentEnd="true" />
+
+    <View
+        android:id="@+id/ViewLine"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/TextViewAmount"
+        android:background="?LineColor" />
+
+</RelativeLayout>

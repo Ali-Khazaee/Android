@@ -19,7 +19,11 @@ public class WelcomeActivity extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
 
-        if (SharedHandler.GetBoolean("IsLogin"))
+        startActivity(new Intent(this, SocialActivity.class));
+
+        finish();
+
+        /*if (SharedHandler.GetBoolean("IsLogin"))
         {
             if (SharedHandler.GetString("Activity").equals("Chat"))
                 startActivity(new Intent(this, ChatActivity.class));
@@ -41,6 +45,6 @@ public class WelcomeActivity extends FragmentActivity
 
         setContentView(RelativeLayoutMain);
 
-        GetManager().OpenView(new WelcomeUI(), R.id.ContainerFull, "WelcomeUI");
+        GetManager().OpenView(new WelcomeUI(), R.id.ContainerFull, "WelcomeUI");*/
     }
 }

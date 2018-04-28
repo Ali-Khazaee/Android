@@ -100,7 +100,7 @@ public class InboxUI extends FragmentView
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
         RecyclerViewMain.setAdapter(Adapter = new PostAdapter(Activity, "InboxUI"));
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView(LinearLayoutManagerMain) { @Override public void OnLoadMore() { Adapter.Update(); } });
+        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView() { @Override public void OnLoadMore() { Adapter.Update(); } });
         RecyclerViewMain.setOnTouchListener(new View.OnTouchListener()
         {
             @Override

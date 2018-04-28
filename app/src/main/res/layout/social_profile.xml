@@ -219,46 +219,6 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/LinearLayoutPopular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:gravity="start|center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/__profile_popular" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
-                        android:textColor="?TextColor"
-                        android:textStyle="bold"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/ProfileUIPopular" />
-
-                    <TextView
-                        android:id="@+id/TextViewPopular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
-                        android:textStyle="bold"
-                        android:textColor="#ed6c9e"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/ActionLine"
-                    android:background="?LineColor" />
-
-                <LinearLayout
                     android:id="@+id/LinearLayoutRating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -3,6 +3,65 @@
     <!-- Application -->
     <string name="ApplicationName">Channel</string>
 
+    <!-- Social Profile Special Center UI -->
+    <string name="SocialProfileSpecialCenterUI">Special Center</string>
+    <string name="SocialProfileSpecialCenterUICredit">Credit</string>
+    <string name="SocialProfileSpecialCenterUIBadge">Badge</string>
+    <string name="SocialProfileSpecialCenterUISpecialPost">Special Post</string>
+    <string name="SocialProfileSpecialCenterUICreditTotal">Total Amount</string>
+    <string name="SocialProfileSpecialCenterUICreditRial">Rial</string>
+    <string name="SocialProfileSpecialCenterUICreditIncrease">Increase credit</string>
+    <string name="SocialProfileSpecialCenterUICreditEnter">Enter the amount</string>
+    <string name="SocialProfileSpecialCenterUICreditAdd">Add credit</string>
+    <string name="SocialProfileSpecialCenterUICreditRowIns">Your credit has been increased</string>
+    <string name="SocialProfileSpecialCenterUICreditRowBadge">Your purchase for the badge has been submited</string>
+    <string name="SocialProfileSpecialCenterUICreditRowSponsored">Your purchase for the sponsored post has been submited</string>
+    <string name="SocialProfileSpecialCenterUICreditRowPurchase">Your purchase for the goods has been submited</string>
+    <string name="SocialProfileSpecialCenterUICreditRowRequest">Your request has been submited</string>
+    <string name="SocialProfileSpecialCenterUICreditRowAmount">Amount:</string>
+    <string name="SocialProfileSpecialCenterUICreditRowRial">Rial</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- Dialog Permission -->
     <string name="DialogPermissionAccept">ALLOW</string>
     <string name="DialogPermissionDecline">NOT NOW</string>
