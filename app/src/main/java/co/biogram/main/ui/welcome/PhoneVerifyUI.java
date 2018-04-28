@@ -499,7 +499,7 @@ class PhoneVerifyUI extends FragmentView
                 if (IsSignUp)
                 {
                     AndroidNetworking.post(Misc.GetRandomServer("SignUpPhone"))
-                    .addBodyParameter("Code", Code)
+                    .addBodyParameter("Issue", Code)
                     .addBodyParameter("Phone", Phone)
                     .setTag("PhoneVerifyUI")
                     .build()
@@ -519,20 +519,20 @@ class PhoneVerifyUI extends FragmentView
                                 {
                                     case 0:
                                         CountDownTimerResend.start();
-                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUIResendDone));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUIResendDone));
                                         break;
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
-                                        Misc.Toast( Misc.String(R.string.PhoneUIError));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneUIError));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -550,14 +550,14 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewResend.Stop();
                             TextViewResend.setVisibility(View.VISIBLE);
-                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
                 else
                 {
                     AndroidNetworking.post(Misc.GetRandomServer("SignInPhone"))
-                    .addBodyParameter("Code", Code)
+                    .addBodyParameter("Issue", Code)
                     .addBodyParameter("Phone", Phone)
                     .setTag("PhoneVerifyUI")
                     .build()
@@ -577,20 +577,20 @@ class PhoneVerifyUI extends FragmentView
                                 {
                                     case 0:
                                         CountDownTimerResend.start();
-                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUIResendDone));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUIResendDone));
                                         break;
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
-                                        Misc.Toast( Misc.String(R.string.PhoneUIError2));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneUIError2));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -608,7 +608,7 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewResend.Stop();
                             TextViewResend.setVisibility(View.VISIBLE);
-                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
@@ -691,7 +691,7 @@ class PhoneVerifyUI extends FragmentView
                 if (IsSignUp)
                 {
                     AndroidNetworking.post(Misc.GetRandomServer("SignUpPhoneVerify"))
-                    .addBodyParameter("Code", Code)
+                    .addBodyParameter("Issue", Code)
                     .addBodyParameter("Phone", Phone)
                     .addBodyParameter("VerifyCode", VerifyCode)
                     .setTag("PhoneVerifyUI")
@@ -721,19 +721,19 @@ class PhoneVerifyUI extends FragmentView
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
                                     case 8:
-                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeCount));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeCount));
                                         break;
                                     case 9:
-                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeWrong));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeWrong));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -751,14 +751,14 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewNext.Stop();
                             ButtonNext.setVisibility(View.VISIBLE);
-                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
                 else
                 {
                     AndroidNetworking.post(Misc.GetRandomServer("SignInPhoneVerify"))
-                    .addBodyParameter("Code", Code)
+                    .addBodyParameter("Issue", Code)
                     .addBodyParameter("Phone", Phone)
                     .addBodyParameter("VerifyCode", VerifyCode)
                     .addBodyParameter("Session", Misc.GenerateSession())
@@ -797,22 +797,22 @@ class PhoneVerifyUI extends FragmentView
                                     case 1:
                                     case 2:
                                     case 3:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
                                         break;
                                     case 4:
                                     case 5:
                                     case 6:
-                                        Misc.Toast( Misc.String(R.string.GeneralPhone));
+                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
                                         break;
                                     case 7:
                                     case 8:
-                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeCount));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeCount));
                                         break;
                                     case 9:
-                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeWrong));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeWrong));
                                         break;
                                     case 10:
-                                        Misc.Toast( Misc.String(R.string.PhoneVerifyUICodeNotFound));
+                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeNotFound));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -830,7 +830,7 @@ class PhoneVerifyUI extends FragmentView
                         {
                             LoadingViewNext.Stop();
                             ButtonNext.setVisibility(View.VISIBLE);
-                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
@@ -897,7 +897,7 @@ class PhoneVerifyUI extends FragmentView
 
             if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Verify"))
             {
-                String VerifyCode = intent.getExtras().getString("Code", "");
+                String VerifyCode = intent.getExtras().getString("Issue", "");
 
                 if (VerifyCode.length() < 4)
                     return;

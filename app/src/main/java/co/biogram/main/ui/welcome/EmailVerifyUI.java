@@ -512,25 +512,25 @@ class EmailVerifyUI extends FragmentView
                             {
                                 case 0:
                                     CountDownTimerResend.start();
-                                    Misc.Toast( Misc.String(R.string.EmailVerifyUIResendDone));
+                                    Misc.ToastOld( Misc.String(R.string.EmailVerifyUIResendDone));
                                     break;
                                 case 1:
                                 case 2:
                                 case 3:
                                 case 4:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError1));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError1));
                                     break;
                                 case 5:
                                 case 6:
                                 case 7:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError2));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError2));
                                     break;
                                 case 8:
                                 case 9:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError3));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError3));
                                     break;
                                 case 10:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError4));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError4));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -548,7 +548,7 @@ class EmailVerifyUI extends FragmentView
                     {
                         LoadingViewResend.Stop();
                         TextViewResend.setVisibility(View.VISIBLE);
-                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }
@@ -655,10 +655,10 @@ class EmailVerifyUI extends FragmentView
                                     break;
                                 case 1:
                                 case 2:
-                                    Misc.Toast( Misc.String(R.string.EmailVerifyUICodeCount));
+                                    Misc.ToastOld( Misc.String(R.string.EmailVerifyUICodeCount));
                                     break;
                                 case 3:
-                                    Misc.Toast( Misc.String(R.string.EmailVerifyUICodeWrong));
+                                    Misc.ToastOld( Misc.String(R.string.EmailVerifyUICodeWrong));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -676,7 +676,7 @@ class EmailVerifyUI extends FragmentView
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

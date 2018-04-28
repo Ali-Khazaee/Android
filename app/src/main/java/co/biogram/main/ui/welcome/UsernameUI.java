@@ -359,19 +359,19 @@ class UsernameUI extends FragmentView
                                         Activity.GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), R.id.ContainerFull, "PasswordUI");
                                     break;
                                 case 1:
-                                    Misc.Toast( Misc.String(R.string.UsernameUIError1));
+                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError1));
                                     break;
                                 case 2:
-                                    Misc.Toast( Misc.String(R.string.UsernameUIError2));
+                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError2));
                                     break;
                                 case 3:
-                                    Misc.Toast( Misc.String(R.string.UsernameUIError3));
+                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError3));
                                     break;
                                 case 4:
-                                    Misc.Toast( Misc.String(R.string.UsernameUIError4));
+                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError4));
                                     break;
                                 case 5:
-                                    Misc.Toast( Misc.String(R.string.UsernameUIError5));
+                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError5));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -388,7 +388,7 @@ class UsernameUI extends FragmentView
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

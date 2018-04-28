@@ -22,7 +22,7 @@ public class PermissionDialog extends Dialog
 
     public void SetContentView(int Icon, int Message, final String Permission, final OnChoiceListener Listener)
     {
-        if (Misc.checkPermission(Permission))
+        if (Misc.CheckPermission(Permission))
         {
             Listener.OnChoice(true);
             return;

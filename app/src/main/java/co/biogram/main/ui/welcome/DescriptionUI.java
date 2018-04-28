@@ -237,7 +237,7 @@ public class DescriptionUI extends FragmentView
                             {
                                 if (!Allow)
                                 {
-                                    Misc.Toast( Misc.String(R.string.DescriptionUIPermissionCamera));
+                                    Misc.ToastOld( Misc.String(R.string.DescriptionUIPermissionCamera));
                                     return;
                                 }
 
@@ -265,7 +265,7 @@ public class DescriptionUI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                        if (Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                         {
                             DialogProfile.dismiss();
 
@@ -306,7 +306,7 @@ public class DescriptionUI extends FragmentView
                                 if (!Allow)
                                 {
 
-                                    Misc.Toast( Misc.String(R.string.DescriptionUIPermissionStorage));
+                                    Misc.ToastOld( Misc.String(R.string.DescriptionUIPermissionStorage));
                                     return;
                                 }
 
@@ -602,23 +602,23 @@ public class DescriptionUI extends FragmentView
                                      case 3:
                                      case 4:
                                      case 5:
-                                         Misc.Toast( Misc.String(R.string.DescriptionUIUsernameUnavailable));
+                                         Misc.ToastOld( Misc.String(R.string.DescriptionUIUsernameUnavailable));
                                          break;
                                      case 6:
-                                         Misc.Toast( Misc.String(R.string.DescriptionUINameEmpty));
+                                         Misc.ToastOld( Misc.String(R.string.DescriptionUINameEmpty));
                                          break;
                                      case 7:
-                                         Misc.Toast( Misc.String(R.string.DescriptionUINameLess));
+                                         Misc.ToastOld( Misc.String(R.string.DescriptionUINameLess));
                                          break;
                                      case 8:
-                                         Misc.Toast( Misc.String(R.string.DescriptionUINameGreater));
+                                         Misc.ToastOld( Misc.String(R.string.DescriptionUINameGreater));
                                          break;
                                      case 1:
                                      case 9:
                                      case 10:
                                      case 11:
                                      case 12:
-                                         Misc.Toast( Misc.String(R.string.DescriptionUICode));
+                                         Misc.ToastOld( Misc.String(R.string.DescriptionUICode));
                                          break;
                                      default:
                                          Misc.GeneralError(Result.getInt("Message"));
@@ -637,14 +637,14 @@ public class DescriptionUI extends FragmentView
                              Progress.dismiss();
                              LoadingViewFinish.Stop();
                              ButtonFinish.setVisibility(View.VISIBLE);
-                             Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                             Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                          }
                      });
                  }
                 else if (Type == 1)
                 {
                     AndroidNetworking.upload(Misc.GetRandomServer("SignUpPhoneFinish"))
-                    .addMultipartParameter("Code", Code)
+                    .addMultipartParameter("Issue", Code)
                     .addMultipartParameter("Name", EditTextName.getText().toString())
                     .addMultipartParameter("Username", Username)
                     .addMultipartParameter("Description", EditTextDescription.getText().toString())
@@ -693,23 +693,23 @@ public class DescriptionUI extends FragmentView
                                         break;
                                     case 1:
                                     case 9:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUICode));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUICode));
                                         break;
                                     case 2:
                                     case 3:
                                     case 4:
                                     case 5:
                                     case 10:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUIUsernameUnavailable));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUIUsernameUnavailable));
                                         break;
                                     case 6:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUINameEmpty));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUINameEmpty));
                                         break;
                                     case 7:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUINameLess));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUINameLess));
                                         break;
                                     case 8:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUINameGreater));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUINameGreater));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -728,14 +728,14 @@ public class DescriptionUI extends FragmentView
                             Progress.dismiss();
                             LoadingViewFinish.Stop();
                             ButtonFinish.setVisibility(View.VISIBLE);
-                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }
                 else if (Type == 2)
                 {
                     AndroidNetworking.upload(Misc.GetRandomServer("SignUpEmailFinish"))
-                    .addMultipartParameter("Code", Code)
+                    .addMultipartParameter("Issue", Code)
                     .addMultipartParameter("Name", EditTextName.getText().toString())
                     .addMultipartParameter("Description", EditTextDescription.getText().toString())
                     .addMultipartParameter("Session", Misc.GenerateSession())
@@ -783,23 +783,23 @@ public class DescriptionUI extends FragmentView
                                         break;
                                     case 1:
                                     case 9:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUICode));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUICode));
                                         break;
                                     case 2:
                                     case 3:
                                     case 4:
                                     case 5:
                                     case 10:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUIUsernameUnavailable));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUIUsernameUnavailable));
                                         break;
                                     case 6:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUINameEmpty));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUINameEmpty));
                                         break;
                                     case 7:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUINameLess));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUINameLess));
                                         break;
                                     case 8:
-                                        Misc.Toast( Misc.String(R.string.DescriptionUINameGreater));
+                                        Misc.ToastOld( Misc.String(R.string.DescriptionUINameGreater));
                                         break;
                                     default:
                                         Misc.GeneralError(Result.getInt("Message"));
@@ -818,7 +818,7 @@ public class DescriptionUI extends FragmentView
                             Progress.dismiss();
                             LoadingViewFinish.Stop();
                             ButtonFinish.setVisibility(View.VISIBLE);
-                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }

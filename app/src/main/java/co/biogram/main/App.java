@@ -35,7 +35,7 @@ public class App extends Application
 
         Context context = getApplicationContext();
 
-        Misc.SetUp(context);
+        Misc.Initial(context);
 
         startService(new Intent(context, SocketService.class));
 

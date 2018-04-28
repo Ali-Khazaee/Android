@@ -375,7 +375,7 @@ public class GalleryViewUI extends FragmentView
                     {
                         if (Count <= Selection)
                         {
-                            Misc.Toast( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
+                            Misc.ToastOld( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
                             return;
                         }
 
@@ -424,7 +424,7 @@ public class GalleryViewUI extends FragmentView
                                 {
                                     if (Count <= Selection)
                                     {
-                                        Misc.Toast( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
+                                        Misc.ToastOld( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
                                         return;
                                     }
 
@@ -457,7 +457,7 @@ public class GalleryViewUI extends FragmentView
                                 {
                                     if (Count <= Selection)
                                     {
-                                        Misc.Toast( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
+                                        Misc.ToastOld( Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
                                         return;
                                     }
 

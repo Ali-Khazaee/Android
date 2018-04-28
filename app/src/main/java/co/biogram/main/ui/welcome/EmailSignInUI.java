@@ -335,28 +335,28 @@ class EmailSignInUI extends FragmentView
                                     Activity.finish();
                                 break;
                                 case 1:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError1));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError1));
                                     break;
                                 case 2:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError2));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError2));
                                     break;
                                 case 3:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError3));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError3));
                                     break;
                                 case 4:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError4));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError4));
                                     break;
                                 case 5:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError5));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError5));
                                     break;
                                 case 6:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError6));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError6));
                                     break;
                                 case 7:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError7));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError7));
                                     break;
                                 case 8:
-                                    Misc.Toast( Misc.String(R.string.EmailSignInUIError8));
+                                    Misc.ToastOld( Misc.String(R.string.EmailSignInUIError8));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -374,7 +374,7 @@ class EmailSignInUI extends FragmentView
                     {
                         LoadingViewSignIn.Stop();
                         ButtonSignIn.setVisibility(View.VISIBLE);
-                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

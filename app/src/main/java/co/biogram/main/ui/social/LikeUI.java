@@ -352,7 +352,7 @@ public class LikeUI extends FragmentView
                     PeopleList.get(Position).Follow = !PeopleList.get(Position).Follow;
                     notifyDataSetChanged();
 
-                    Misc.Toast(PeopleList.get(Position).Follow ? Activity.getString(R.string.LikeUIFollowed) : Activity.getString(R.string.LikeUIUnfollowed));
+                    Misc.ToastOld(PeopleList.get(Position).Follow ? Activity.getString(R.string.LikeUIFollowed) : Activity.getString(R.string.LikeUIUnfollowed));
                 }
             });
 

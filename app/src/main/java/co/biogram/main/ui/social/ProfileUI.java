@@ -90,7 +90,7 @@ public class ProfileUI extends FragmentView
                             {
                                 if (!Result)
                                 {
-                                    Misc.Toast(R.string.SocialProfileUIAvatarCameraMessage);
+                                    Misc.ToastOld(R.string.SocialProfileUIAvatarCameraMessage);
                                     return;
                                 }
 
@@ -123,7 +123,7 @@ public class ProfileUI extends FragmentView
                             {
                                 if (!Result)
                                 {
-                                    Misc.Toast(R.string.SocialProfileUIAvatarGalleryMessage);
+                                    Misc.ToastOld(R.string.SocialProfileUIAvatarGalleryMessage);
                                     return;
                                 }
 

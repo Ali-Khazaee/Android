@@ -22,7 +22,7 @@
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
         android:padding="10dp"
-        android:src="@drawable/___general_close_blue"
+        android:src="@drawable/z_general_close_blue"
         android:layout_alignParentEnd="true" />
 
     <View

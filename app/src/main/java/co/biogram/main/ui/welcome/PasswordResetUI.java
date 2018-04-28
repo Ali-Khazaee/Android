@@ -263,16 +263,16 @@ class PasswordResetUI extends FragmentView
                             switch (Result.getInt("Message"))
                             {
                                 case 0:
-                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError4));
+                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError4));
                                     break;
                                 case 1:
-                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError1));
+                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError1));
                                     break;
                                 case 2:
-                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError2));
+                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError2));
                                     break;
                                 case 3:
-                                    Misc.Toast( Misc.String(R.string.PasswordResetUIError3));
+                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError3));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -289,7 +289,7 @@ class PasswordResetUI extends FragmentView
                     {
                         LoadingViewFinish.Stop();
                         ButtonFinish.setVisibility(View.VISIBLE);
-                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

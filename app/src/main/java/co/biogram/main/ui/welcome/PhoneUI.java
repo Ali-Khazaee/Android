@@ -490,7 +490,7 @@ class PhoneUI extends FragmentView
         if (IsSignUp)
         {
             AndroidNetworking.post(Misc.GetRandomServer("SignUpPhone"))
-            .addBodyParameter("Code", EditTextPhoneCode.getText().toString())
+            .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
             .addBodyParameter("Phone", EditTextPhone.getText().toString())
             .setTag("PhoneUI")
             .build()
@@ -524,15 +524,15 @@ class PhoneUI extends FragmentView
                             case 1:
                             case 2:
                             case 3:
-                                Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
+                                Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
                                 break;
                             case 4:
                             case 5:
                             case 6:
-                                Misc.Toast( Misc.String(R.string.GeneralPhone));
+                                Misc.ToastOld( Misc.String(R.string.GeneralPhone));
                                 break;
                             case 7:
-                                Misc.Toast( Misc.String(R.string.PhoneUIError));
+                                Misc.ToastOld( Misc.String(R.string.PhoneUIError));
                                 break;
                             default:
                                 Misc.GeneralError(Result.getInt("Message"));
@@ -550,14 +550,14 @@ class PhoneUI extends FragmentView
                 {
                     LoadingViewNext.Stop();
                     ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                    Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                 }
             });
         }
         else
         {
             AndroidNetworking.post(Misc.GetRandomServer("SignInPhone"))
-            .addBodyParameter("Code", EditTextPhoneCode.getText().toString())
+            .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
             .addBodyParameter("Phone", EditTextPhone.getText().toString())
             .setTag("PhoneUI")
             .build()
@@ -591,15 +591,15 @@ class PhoneUI extends FragmentView
                             case 1:
                             case 2:
                             case 3:
-                                Misc.Toast( Misc.String(R.string.GeneralPhoneCode));
+                                Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
                                 break;
                             case 4:
                             case 5:
                             case 6:
-                                Misc.Toast( Misc.String(R.string.GeneralPhone));
+                                Misc.ToastOld( Misc.String(R.string.GeneralPhone));
                                 break;
                             case 7:
-                                Misc.Toast( Misc.String(R.string.PhoneUIError2));
+                                Misc.ToastOld( Misc.String(R.string.PhoneUIError2));
                                 break;
                             default:
                                 Misc.GeneralError(Result.getInt("Message"));
@@ -617,7 +617,7 @@ class PhoneUI extends FragmentView
                 {
                     LoadingViewNext.Stop();
                     ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                    Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                 }
             });
         }

@@ -508,10 +508,10 @@ public class WelcomeUI extends FragmentView
                                     case 3:
                                     case 4:
                                     case 5:
-                                        Misc.Toast( Misc.String(R.string.WelcomeUIGoogleError1));
+                                        Misc.ToastOld( Misc.String(R.string.WelcomeUIGoogleError1));
                                         break;
                                     case 6:
-                                        Misc.Toast( Misc.String(R.string.WelcomeUIGoogleError2));
+                                        Misc.ToastOld( Misc.String(R.string.WelcomeUIGoogleError2));
                                         break;
                                     default:
                                         Misc.GeneralError(Result3.getInt("Message"));
@@ -527,7 +527,7 @@ public class WelcomeUI extends FragmentView
                         public void onError(ANError e)
                         {
                             HideGoogleLoading();
-                            Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                         }
                     });
                 }

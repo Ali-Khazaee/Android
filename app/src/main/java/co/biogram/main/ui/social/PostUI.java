@@ -1514,7 +1514,7 @@ public class PostUI extends FragmentView
                                 TextViewFileName.setText(Name);
                                 TextViewFileDetail.setText(Details);
 
-                                final File Download = new File(CacheHandler.Dir(CacheHandler.DOWNLOAD), FileName);
+                                final File Download = new File(CacheHandler.Dir(CacheHandler.DIR_DOWNLOAD), FileName);
 
                                 if (P.IsDownloading)
                                 {
@@ -1655,7 +1655,7 @@ public class PostUI extends FragmentView
                                             }
                                             catch (Exception e)
                                             {
-                                                Misc.Toast(Misc.String(R.string.PostAdapterNoHandle));
+                                                Misc.ToastOld(Misc.String(R.string.PostAdapterNoHandle));
                                             }
 
                                             return;
@@ -1667,7 +1667,7 @@ public class PostUI extends FragmentView
                                         TextViewFile.setVisibility(View.VISIBLE);
                                         TextViewFile.setText("0%");
 
-                                        AndroidNetworking.download(URL, CacheHandler.Dir(CacheHandler.DOWNLOAD).getAbsolutePath(), FileName)
+                                        AndroidNetworking.download(URL, CacheHandler.Dir(CacheHandler.DIR_DOWNLOAD).getAbsolutePath(), FileName)
                                         .setPriority(Priority.MEDIUM)
                                         .setTag(P.ID)
                                         .build()
@@ -1902,7 +1902,7 @@ public class PostUI extends FragmentView
                                                 public void onResponse(String e)
                                                 {
                                                     DB.InboxDelete(P.ID);
-                                                    Misc.Toast(Activity.getString(R.string.PostAdapterPostDeleted));
+                                                    Misc.ToastOld(Activity.getString(R.string.PostAdapterPostDeleted));
                                                     Activity.onBackPressed();
                                                 }
 
@@ -2072,7 +2072,7 @@ public class PostUI extends FragmentView
                                                 public void onResponse(String e)
                                                 {
                                                     P.IsFollow = !P.IsFollow;
-                                                    Misc.Toast(P.Username + " " + (P.IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
+                                                    Misc.ToastOld(P.Username + " " + (P.IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
                                                 }
 
                                                 @Override public void onError(ANError e) { }
@@ -2133,7 +2133,7 @@ public class PostUI extends FragmentView
                                         if (clipboard != null)
                                             clipboard.setPrimaryClip(clip);
 
-                                        Misc.Toast(Misc.String(R.string.PostAdapterOptionCopy2));
+                                        Misc.ToastOld(Misc.String(R.string.PostAdapterOptionCopy2));
                                         DialogOption.dismiss();
                                     }
                                 });
@@ -2171,7 +2171,7 @@ public class PostUI extends FragmentView
                                             public void onResponse(String e)
                                             {
                                                 P.IsBookmark = !P.IsBookmark;
-                                                Misc.Toast(Activity.getString(R.string.PostAdapterPostBookmark));
+                                                Misc.ToastOld(Activity.getString(R.string.PostAdapterPostBookmark));
                                             }
 
                                             @Override public void onError(ANError e) { }

@@ -191,13 +191,13 @@ class WriteUI extends FragmentView
                 {
                     IsWorld = 1;
                     ((ImageView) v).setImageResource(R.drawable._write_global_blue);
-                    Misc.Toast(Misc.String(R.string.WriteUIWorld));
+                    Misc.ToastOld(Misc.String(R.string.WriteUIWorld));
                 }
                 else
                 {
                     IsWorld = 0;
                     ((ImageView) v).setImageResource(R.drawable._write_global_gray);
-                    Misc.Toast(Misc.String(R.string.WriteUIWorld2));
+                    Misc.ToastOld(Misc.String(R.string.WriteUIWorld2));
                 }
             }
         });
@@ -360,7 +360,7 @@ class WriteUI extends FragmentView
                         if (clipboard != null)
                             clipboard.setPrimaryClip(clip);
 
-                        Misc.Toast(Misc.String(R.string.WriteUIClipboard));
+                        Misc.ToastOld(Misc.String(R.string.WriteUIClipboard));
                         DialogOption.dismiss();
                     }
                 });
@@ -396,7 +396,7 @@ class WriteUI extends FragmentView
             {
                 if (SelectImage.size() >= 3)
                 {
-                    Misc.Toast(Misc.String(R.string.WriteUIMaximumImage));
+                    Misc.ToastOld(Misc.String(R.string.WriteUIMaximumImage));
                     return;
                 }
 
@@ -479,7 +479,7 @@ class WriteUI extends FragmentView
                     {
                         if (!Allow)
                         {
-                            Misc.Toast(Misc.String(R.string.PermissionStorage));
+                            Misc.ToastOld(Misc.String(R.string.PermissionStorage));
                             return;
                         }
 
@@ -525,7 +525,7 @@ class WriteUI extends FragmentView
 
                             if (Time > 240)
                             {
-                                Misc.Toast(Misc.String(R.string.WriteUIVideoLength));
+                                Misc.ToastOld(Misc.String(R.string.WriteUIVideoLength));
                                 return;
                             }
 
@@ -548,7 +548,7 @@ class WriteUI extends FragmentView
                     {
                         if (!Allow)
                         {
-                            Misc.Toast(Misc.String(R.string.PermissionStorage));
+                            Misc.ToastOld(Misc.String(R.string.PermissionStorage));
                             return;
                         }
 
@@ -597,7 +597,7 @@ class WriteUI extends FragmentView
                     @Override public void OnSave() { }
                 };
 
-                if (Misc.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                if (Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
                     Activity.GetManager().OpenView(new GalleryViewUI(1, 3, L), R.id.ContainerFull, "GalleryViewUI");
                     return;
@@ -611,7 +611,7 @@ class WriteUI extends FragmentView
                     {
                         if (!Allow)
                         {
-                            Misc.Toast(Misc.String(R.string.PermissionStorage));
+                            Misc.ToastOld(Misc.String(R.string.PermissionStorage));
                             return;
                         }
 
@@ -1318,7 +1318,7 @@ class WriteUI extends FragmentView
             {
                 if (Build.VERSION.SDK_INT <= 17)
                 {
-                    Misc.Toast(Misc.String(R.string.WriteUICantCompress));
+                    Misc.ToastOld(Misc.String(R.string.WriteUICantCompress));
                     return;
                 }
 
@@ -1450,19 +1450,19 @@ class WriteUI extends FragmentView
             {
                 if (SelectCategory == 0)
                 {
-                    Misc.Toast(Misc.String(R.string.WriteUIPickCategory));
+                    Misc.ToastOld(Misc.String(R.string.WriteUIPickCategory));
                     return;
                 }
 
                 if (SelectType == 3 && (VoteTime == 0 || VoteTime < System.currentTimeMillis()))
                 {
-                    Misc.Toast(Misc.String(R.string.WriteUISetLength));
+                    Misc.ToastOld(Misc.String(R.string.WriteUISetLength));
                     return;
                 }
 
                 if (EditTextMessage.getText().length() <= 30 && SelectType == 0)
                 {
-                    Misc.Toast(Misc.String(R.string.WriteUIStatement));
+                    Misc.ToastOld(Misc.String(R.string.WriteUIStatement));
                     return;
                 }
 
@@ -1482,7 +1482,7 @@ class WriteUI extends FragmentView
                     {
                         if (EditTextVote1.getText().toString().isEmpty() || EditTextVote2.getText().toString().isEmpty())
                         {
-                            Misc.Toast(Misc.String(R.string.WriteUISetVote));
+                            Misc.ToastOld(Misc.String(R.string.WriteUISetVote));
                             return;
                         }
 
@@ -1559,7 +1559,7 @@ class WriteUI extends FragmentView
                                 break;
                                 case 3:
                                     // TODO Add Message for all types
-                                    Misc.Toast(Misc.String(R.string.WriteUISetVote));
+                                    Misc.ToastOld(Misc.String(R.string.WriteUISetVote));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -1576,7 +1576,7 @@ class WriteUI extends FragmentView
                     public void onError(ANError e)
                     {
                         Progress.cancel();
-                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }

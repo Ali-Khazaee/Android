@@ -6,18 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -279,16 +276,16 @@ public class Profile_SpecialCenterUI extends FragmentView
             public int Amount;
             public int Date;
             public int Type;
-            public String Code;
+            public String Issue;
             public int Status;
             public String Detail;
 
-            Credit(int amount, int date, int type, String code, int status, String detail)
+            Credit(int amount, int date, int type, String issue, int status, String detail)
             {
                 Amount = amount;
                 Date = date;
                 Type = type;
-                Code = code;
+                Issue = issue;
                 Status = status;
                 Detail = detail;
             }

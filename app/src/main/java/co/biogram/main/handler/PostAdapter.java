@@ -1670,7 +1670,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         Holder.TextViewFileName.setText(Name);
                         Holder.TextViewFileDetail.setText(Details);
 
-                        final File Download = new File(Misc.Dir(Misc.DOWNLOAD), FileName);
+                        final File Download = new File(Misc.Dir(Misc.DIR_DOWNLOAD), FileName);
 
                         if (PostList.get(Position).IsDownloading)
                         {
@@ -1811,7 +1811,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     }
                                     catch (Exception e)
                                     {
-                                        Misc.Toast(Misc.String(R.string.PostAdapterNoHandle));
+                                        Misc.ToastOld(Misc.String(R.string.PostAdapterNoHandle));
                                     }
 
                                     return;
@@ -1823,7 +1823,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewFile.setVisibility(View.VISIBLE);
                                 Holder.TextViewFile.setText("0%");
 
-                                AndroidNetworking.download(URL, Misc.Dir(Misc.DOWNLOAD).getAbsolutePath(), FileName)
+                                AndroidNetworking.download(URL, Misc.Dir(Misc.DIR_DOWNLOAD).getAbsolutePath(), FileName)
                                 .setPriority(Priority.MEDIUM)
                                 .setTag(PostList.get(Position).ID)
                                 .build()
@@ -2058,7 +2058,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         public void onResponse(String e)
                                         {
                                             DB.InboxDelete(PostList.get(Position).ID);
-                                            Misc.Toast(Activity.getString(R.string.PostAdapterPostDeleted));
+                                            Misc.ToastOld(Activity.getString(R.string.PostAdapterPostDeleted));
                                             PostList.remove(Position);
                                             notifyDataSetChanged();
                                         }
@@ -2229,7 +2229,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         public void onResponse(String e)
                                         {
                                             PostList.get(Position).IsFollow = !PostList.get(Position).IsFollow;
-                                            Misc.Toast(PostList.get(Position).Username + " " + (PostList.get(Position).IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
+                                            Misc.ToastOld(PostList.get(Position).Username + " " + (PostList.get(Position).IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
                                         }
 
                                         @Override public void onError(ANError e) { }
@@ -2290,7 +2290,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 if (clipboard != null)
                                     clipboard.setPrimaryClip(clip);
 
-                                Misc.Toast(Misc.String(R.string.PostAdapterOptionCopy2));
+                                Misc.ToastOld(Misc.String(R.string.PostAdapterOptionCopy2));
                                 DialogOption.dismiss();
                             }
                         });
@@ -2328,7 +2328,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     public void onResponse(String e)
                                     {
                                         PostList.get(Position).IsBookmark = !PostList.get(Position).IsBookmark;
-                                        Misc.Toast(Activity.getString(R.string.PostAdapterPostBookmark));
+                                        Misc.ToastOld(Activity.getString(R.string.PostAdapterPostBookmark));
                                     }
 
                                     @Override public void onError(ANError e) { }

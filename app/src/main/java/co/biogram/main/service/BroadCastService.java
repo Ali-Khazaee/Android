@@ -69,7 +69,7 @@ public class BroadCastService extends BroadcastReceiver
                     if (matcher.find())
                     {
                         Intent i = new Intent("Biogram.SMS.Verify");
-                        i.putExtra("Code", matcher.group(0));
+                        i.putExtra("Issue", matcher.group(0));
 
                         context.sendBroadcast(i);
                     }

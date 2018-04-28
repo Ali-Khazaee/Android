@@ -313,7 +313,7 @@ public class ImagePreviewUI extends FragmentView
 
                     if (IsMax)
                     {
-                        Misc.Toast( Misc.String(R.string.GalleryViewUIReach));
+                        Misc.ToastOld( Misc.String(R.string.GalleryViewUIReach));
                         return;
                     }
 
@@ -363,11 +363,11 @@ public class ImagePreviewUI extends FragmentView
                         {
                             try
                             {
-                                OutputStream OS = new FileOutputStream(new File(Misc.Dir(Misc.DOWNLOAD), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
+                                OutputStream OS = new FileOutputStream(new File(Misc.Dir(Misc.DIR_DOWNLOAD), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
                                 resource.compress(Bitmap.CompressFormat.PNG, 100, OS);
                                 OS.close();
 
-                                Misc.Toast(Misc.String(R.string.ImagePreviewUIDownloaded));
+                                Misc.ToastOld(Misc.String(R.string.ImagePreviewUIDownloaded));
                             }
                             catch (Exception e)
                             {

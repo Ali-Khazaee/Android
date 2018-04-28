@@ -20,6 +20,13 @@
     <string name="SocialProfileSpecialCenterUICreditRowRequest">Your request has been submited</string>
     <string name="SocialProfileSpecialCenterUICreditRowAmount">Amount:</string>
     <string name="SocialProfileSpecialCenterUICreditRowRial">Rial</string>
+    <string name="SocialProfileSpecialCenterUICreditDialog">Issue Details</string>
+    <string name="SocialProfileSpecialCenterUICreditDialogAmount">Amount:</string>
+    <string name="SocialProfileSpecialCenterUICreditDialogRial">Rial</string>
+    <string name="SocialProfileSpecialCenterUICreditDialogIssue">Issue:</string>
+    <string name="SocialProfileSpecialCenterUICreditDialogDetail">Detail:</string>
+    <string name="SocialProfileSpecialCenterUICreditDialogTime">Time:</string>
+    <string name="SocialProfileSpecialCenterUICreditDialogStatus">Status:</string>
 
 
 

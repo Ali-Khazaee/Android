@@ -38,62 +38,30 @@ import co.biogram.main.activity.WelcomeActivity;
 
 public class Misc
 {
+    public static final String TAG = "channel";
+
+    public static final int DIR_DOWNLOAD = 0;
+    public static final int DIR_DOCUMENT = 1;
+    public static final int DIR_PICTURE = 2;
+    public static final int DIR_VIDEO = 3;
+    public static final int DIR_AUDIO = 4;
+    public static final int DIR_FILE = 5;
+
     @SuppressLint("StaticFieldLeak")
     private static volatile Context context;
     private static volatile Typeface TypeFontCache;
 
-    public final static int DOWNLOAD = 0;
-    public final static int DOCUMENT = 1;
-    public final static int PICTURE = 2;
-    public final static int VIDEO = 3;
-    public final static int AUDIO = 4;
-    public final static int FILE = 5;
+    private Misc() { }
 
-    private Misc()
-    {
-
-    }
-
-    public static void SetUp(Context c)
+    public static void Initial(Context c)
     {
         context = c;
 
         File TempFolder = Temp();
 
         if (TempFolder.exists() && TempFolder.isDirectory())
-        {
-            File[] TempFiles = TempFolder.listFiles();
-
-            for (File file : TempFiles)
+            for (File file : TempFolder.listFiles())
                 file.delete();
-        }
-    }
-
-    public static File Dir(int Type)
-    {
-        String Folder = "";
-
-        switch (Type)
-        {
-            case DOWNLOAD: Folder = "Download"; break;
-            case DOCUMENT: Folder = "Document"; break;
-            case PICTURE: Folder = "Picture"; break;
-            case VIDEO: Folder = "Video"; break;
-            case AUDIO: Folder = "Audio"; break;
-            case FILE: Folder = "File"; break;
-        }
-
-        File BioDir = new File(Environment.getExternalStorageDirectory(), "Bio");
-
-        if (!BioDir.exists())
-            BioDir.mkdir();
-
-        File FolderDir = new File(BioDir, Folder);
-
-        if (!FolderDir.exists())
-            FolderDir.mkdir();
-
-        return FolderDir;
     }
 
     public static File Temp()
@@ -106,6 +74,33 @@ public class Misc
         return TempFolder;
     }
 
+    public static File Dir(int Type)
+    {
+        String Folder = "";
+
+        switch (Type)
+        {
+            case DIR_DOWNLOAD: Folder = "Download"; break;
+            case DIR_DOCUMENT: Folder = "Document"; break;
+            case DIR_PICTURE:  Folder = "Picture";  break;
+            case DIR_VIDEO:    Folder = "Video";    break;
+            case DIR_AUDIO:    Folder = "Audio";    break;
+            case DIR_FILE:     Folder = "File";     break;
+        }
+
+        File AppDir = new File(Environment.getExternalStorageDirectory(), TAG);
+
+        if (!AppDir.exists())
+            AppDir.mkdir();
+
+        File DirFolder = new File(AppDir, Folder);
+
+        if (!DirFolder.exists())
+            DirFolder.mkdir();
+
+        return DirFolder;
+    }
+
     public static Typeface GetTypeface()
     {
         if (TypeFontCache == null)
@@ -114,7 +109,211 @@ public class Misc
         return TypeFontCache;
     }
 
-    public static void Toast(int Message)
+    public static int Color(int C)
+    {
+        return ContextCompat.getColor(context, C);
+    }
+
+    public static String String(int S)
+    {
+        return context.getString(S);
+    }
+
+    public static int SampleSize(int W, int H, int MW, int MH)
+    {
+        int S = 1;
+
+        if (H > MH || W > MW)
+        {
+            while ((H / S) >= MH || (W / S) >= MW)
+            {
+                S *= 2;
+            }
+        }
+
+        return S;
+    }
+
+    public static boolean CheckPermission(String p)
+    {
+        return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static void SetCursorColor(View view, int Color)
+    {
+        try
+        {
+            Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
+            field.setAccessible(true);
+
+            Drawable drawable = ContextCompat.getDrawable(context, field.getInt(view));
+
+            if (drawable != null)
+                drawable.setColorFilter(Misc.Color(Color), PorterDuff.Mode.SRC_IN);
+
+            field = TextView.class.getDeclaredField("mEditor");
+            field.setAccessible(true);
+
+            Object Editor = field.get(view);
+
+            field = Editor.getClass().getDeclaredField("mCursorDrawable");
+            field.setAccessible(true);
+            field.set(Editor, new Drawable[] { drawable, drawable });
+        }
+        catch (Exception e)
+        {
+            //
+        }
+    }
+
+    public static void SetString(String Key, String Value)
+    {
+        SharedPreferences.Editor Editor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+        Editor.putString(Key, Value);
+        Editor.apply();
+    }
+
+    public static String GetString(String Key)
+    {
+        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, "");
+    }
+
+    public static String GetString(String Key, String Value)
+    {
+        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, Value);
+    }
+
+    public static void SetBoolean(String Key, boolean Value)
+    {
+        SharedPreferences.Editor Editor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+        Editor.putBoolean(Key, Value);
+        Editor.apply();
+    }
+
+    public static boolean GetBoolean(String Key)
+    {
+        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getBoolean(Key, false);
+    }
+
+    public static int ToDP(float Value)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void ShowSoftKey(View v)
+    {
+        InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (IMM == null)
+            return;
+
+        IMM.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static void HideSoftKey(Activity a)
+    {
+        View v = a.getCurrentFocus();
+
+        if (v == null)
+            return;
+
+        InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (IMM == null)
+            return;
+
+        IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void ToastOld(int Message)
     {
         GradientDrawable drawableToast = new GradientDrawable();
         drawableToast.setStroke(ToDP(1), Color(R.color.ToastLine));
@@ -144,110 +343,6 @@ public class Misc
         toast.setView(RelativeLayoutMain);
         toast.show();
     }
-
-    public static int Color(int C)
-    {
-        return ContextCompat.getColor(context, C);
-    }
-
-    public static String String(int S)
-    {
-        return context.getString(S);
-    }
-
-    public static int SampleSize(int W, int H, int MW, int MH)
-    {
-        int S = 1;
-
-        if (H > MH || W > MW)
-        {
-            while ((H / S) >= MH || (W / S) >= MW)
-            {
-                S *= 2;
-            }
-        }
-
-        return S;
-    }
-    public static void ShowSoftKey(View v)
-    {
-        InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        if (IMM == null)
-            return;
-
-        IMM.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
-    }
-
-    public static void HideSoftKey(Activity a)
-    {
-        View v = a.getCurrentFocus();
-
-        if (v == null)
-            return;
-
-        InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        if (IMM == null)
-            return;
-
-        IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
-
-    public static boolean checkPermission(String p)
-    {
-        return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public static void SetCursorColor(View view, int Color)
-    {
-        try
-        {
-            Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
-            field.setAccessible(true);
-
-            int ResID = field.getInt(view);
-
-            field = TextView.class.getDeclaredField("mEditor");
-            field.setAccessible(true);
-
-            Object Editor = field.get(view);
-
-            Drawable drawable = ContextCompat.getDrawable(view.getContext(), ResID);
-
-            if (drawable != null)
-                drawable.setColorFilter(Misc.Color(Color), PorterDuff.Mode.SRC_IN);
-
-            field = Editor.getClass().getDeclaredField("mCursorDrawable");
-            field.setAccessible(true);
-            field.set(Editor, new Drawable[] { drawable, drawable });
-        }
-        catch (Exception e)
-        {
-            //
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -343,12 +438,9 @@ public class Misc
             return IsRTL() ? Gravity.END : Gravity.START;
     }
 
-    public static int ToDP(float Value)
-    {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
-    }
 
-    public static void Toast(String Message)
+
+    public static void ToastOld(String Message)
     {
         GradientDrawable DrawableToast = new GradientDrawable();
         DrawableToast.setColor(ContextCompat.getColor(context, R.color.Toast));
@@ -426,12 +518,12 @@ public class Misc
     {
         switch (Error)
         {
-            case -1: Toast(String(R.string.GeneralError1)); break;
-            case -2: Toast(String(R.string.GeneralError2)); break;
-            case -3: Toast(String(R.string.GeneralError3)); break;
-            case -4: Toast(String(R.string.GeneralError4)); break;
-            case -6: Toast(String(R.string.GeneralError6)); break;
-            case -7: Toast(String(R.string.GeneralError7)); break;
+            case -1: ToastOld(String(R.string.GeneralError1)); break;
+            case -2: ToastOld(String(R.string.GeneralError2)); break;
+            case -3: ToastOld(String(R.string.GeneralError3)); break;
+            case -4: ToastOld(String(R.string.GeneralError4)); break;
+            case -6: ToastOld(String(R.string.GeneralError6)); break;
+            case -7: ToastOld(String(R.string.GeneralError7)); break;
         }
     }
 

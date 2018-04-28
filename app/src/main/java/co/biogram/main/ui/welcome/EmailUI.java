@@ -280,7 +280,7 @@ class EmailUI extends FragmentView
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    Misc.Toast( Misc.String(R.string.EmailUIError5));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError5));
 
                                     Activity.GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), R.id.ContainerFull, "EmailVerifyUI");
                                     break;
@@ -288,19 +288,19 @@ class EmailUI extends FragmentView
                                 case 2:
                                 case 3:
                                 case 4:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError1));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError1));
                                     break;
                                 case 5:
                                 case 6:
                                 case 7:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError2));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError2));
                                     break;
                                 case 8:
                                 case 9:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError3));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError3));
                                     break;
                                 case 10:
-                                    Misc.Toast( Misc.String(R.string.EmailUIError4));
+                                    Misc.ToastOld( Misc.String(R.string.EmailUIError4));
                                     break;
                                 default:
                                     Misc.GeneralError(Result.getInt("Message"));
@@ -318,7 +318,7 @@ class EmailUI extends FragmentView
                     {
                         LoadingViewNext.Stop();
                         ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.Toast( Misc.String(R.string.GeneralNoInternet));
+                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
                     }
                 });
             }
