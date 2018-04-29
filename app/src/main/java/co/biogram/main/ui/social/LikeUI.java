@@ -27,11 +27,11 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.OnScrollRecyclerView;
-import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.ui.view.CircleImageView;
+import co.biogram.main.handler.RecyclerViewOnScroll;
+
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LikeUI extends FragmentView
 {
@@ -102,7 +102,7 @@ public class LikeUI extends FragmentView
         RecyclerViewMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMain.setAdapter(Adapter = new AdapterLike());
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView() { @Override public void OnLoadMore() { Update(null); } });
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() { @Override public void OnLoadMore() { Update(null); } });
 
         RelativeLayoutContent.addView(RecyclerViewMain);
 
@@ -131,7 +131,7 @@ public class LikeUI extends FragmentView
             AndroidNetworking.post(Misc.GetRandomServer("PostCommentLikeList"))
             .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
             .addBodyParameter("CommentID", ID)
-            .addHeaders("Token", SharedHandler.GetString("Token"))
+            .addHeaders("Token", Misc.GetString("Token"))
             .setTag("LikeUI")
             .build()
             .getAsString(new StringRequestListener()
@@ -186,7 +186,7 @@ public class LikeUI extends FragmentView
         AndroidNetworking.post(Misc.GetRandomServer("PostLikeList"))
         .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
         .addBodyParameter("PostID", ID)
-        .addHeaders("Token", SharedHandler.GetString("Token"))
+        .addHeaders("Token", Misc.GetString("Token"))
         .setTag("LikeUI")
         .build()
         .getAsString(new StringRequestListener()
@@ -319,7 +319,7 @@ public class LikeUI extends FragmentView
                 }
             });
 
-            if (SharedHandler.GetString("ID").equals(PeopleList.get(Position).ID))
+            if (Misc.GetString("ID").equals(PeopleList.get(Position).ID))
                 Holder.TextViewFollow.setVisibility(View.GONE);
             else
                 Holder.TextViewFollow.setVisibility(View.VISIBLE);
@@ -344,7 +344,7 @@ public class LikeUI extends FragmentView
                 {
                     AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
                     .addBodyParameter("Username", PeopleList.get(Position).Username)
-                    .addHeaders("Token", SharedHandler.GetString("Token"))
+                    .addHeaders("Token", Misc.GetString("Token"))
                     .setTag("LikeUI")
                     .build()
                     .getAsString(null);
@@ -418,8 +418,8 @@ public class LikeUI extends FragmentView
 
             CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
             CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
-            CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
-            CircleImageViewProfile.SetBorderWidth(1);
+            //CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
+            //CircleImageViewProfile.SetBorderWidth(1);
             CircleImageViewProfile.setId(ID_PROFILE);
 
             RelativeLayoutMain.addView(CircleImageViewProfile);

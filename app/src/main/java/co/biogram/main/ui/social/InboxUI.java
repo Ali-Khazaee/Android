@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.OnScrollRecyclerView;
+import co.biogram.main.handler.RecyclerViewOnScroll;
 import co.biogram.main.handler.PostAdapter;
 import co.biogram.main.ui.view.TextView;
 
@@ -70,7 +70,7 @@ public class InboxUI extends FragmentView
         ImageViewWrite.setLayoutParams(ImageViewWriteParam);
         ImageViewWrite.setImageResource(R.drawable._inbox_write);
         ImageViewWrite.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
-        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new WriteUI(), R.id.ContainerFull, "WriteUI");  } });
+        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new WriteUI(), "WriteUI", true);  } });
 
         RelativeLayoutHeader.addView(ImageViewWrite);
 
@@ -100,7 +100,7 @@ public class InboxUI extends FragmentView
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
         RecyclerViewMain.setAdapter(Adapter = new PostAdapter(Activity, "InboxUI"));
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView() { @Override public void OnLoadMore() { Adapter.Update(); } });
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() { @Override public void OnLoadMore() { Adapter.Update(); } });
         RecyclerViewMain.setOnTouchListener(new View.OnTouchListener()
         {
             @Override

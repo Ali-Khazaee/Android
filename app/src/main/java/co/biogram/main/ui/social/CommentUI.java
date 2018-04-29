@@ -35,13 +35,12 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.OnScrollRecyclerView;
+import co.biogram.main.handler.RecyclerViewOnScroll;
 import co.biogram.main.handler.PostAdapter;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.handler.TagHandler;
-import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentUI extends FragmentView
 {
@@ -58,7 +57,7 @@ public class CommentUI extends FragmentView
     {
         Post = p;
         PostID = p.ID;
-        IsOwner = SharedHandler.GetString("ID").equals(p.Owner);
+        IsOwner = Misc.GetString("ID").equals(p.Owner);
     }
 
     public CommentUI(ArrayList<PostAdapter.PostStruct> pl, int p)
@@ -66,7 +65,7 @@ public class CommentUI extends FragmentView
         PostList = pl;
         PositionPost = p;
         PostID = PostList.get(p).ID;
-        IsOwner = SharedHandler.GetString("ID").equals(PostList.get(p).Owner);
+        IsOwner = Misc.GetString("ID").equals(PostList.get(p).Owner);
     }
 
     @Override
@@ -136,14 +135,14 @@ public class CommentUI extends FragmentView
 
         CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
-        CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
-        CircleImageViewProfile.SetBorderWidth(1);
+        //CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
+        //CircleImageViewProfile.SetBorderWidth(1);
         CircleImageViewProfile.setId(Misc.generateViewId());
 
-        if (SharedHandler.GetString("Avatar").isEmpty())
+        if (Misc.GetString("Avatar").isEmpty())
             CircleImageViewProfile.setVisibility(View.GONE);
         else
-            GlideApp.with(Activity).load(SharedHandler.GetString("Avatar")).placeholder(R.drawable._general_avatar).into(CircleImageViewProfile);
+            GlideApp.with(Activity).load(Misc.GetString("Avatar")).placeholder(R.drawable._general_avatar).into(CircleImageViewProfile);
 
         RelativeLayoutBottom.addView(CircleImageViewProfile);
 
@@ -183,7 +182,7 @@ public class CommentUI extends FragmentView
                 AndroidNetworking.post(Misc.GetRandomServer("PostComment"))
                 .addBodyParameter("Message", EditTextMessage.getText().toString())
                 .addBodyParameter("PostID", PostID)
-                .addHeaders("Token", SharedHandler.GetString("Token"))
+                .addHeaders("Token", Misc.GetString("Token"))
                 .setTag("CommentUI")
                 .build()
                 .getAsString(new StringRequestListener()
@@ -200,7 +199,7 @@ public class CommentUI extends FragmentView
 
                             if (Result.getInt("Message") == 0)
                             {
-                                CommentList.add(0, new Struct(Result.getString("ID"), SharedHandler.GetString("Username"), SharedHandler.GetString("Avatar"), EditTextMessage.getText().toString(), SharedHandler.GetString("ID"), 0, (int) (System.currentTimeMillis() / 1000), false));
+                                CommentList.add(0, new Struct(Result.getString("ID"), Misc.GetString("Username"), Misc.GetString("Avatar"), EditTextMessage.getText().toString(), Misc.GetString("ID"), 0, (int) (System.currentTimeMillis() / 1000), false));
                                 Adapter.notifyDataSetChanged();
                                 EditTextMessage.setText("");
 
@@ -281,7 +280,7 @@ public class CommentUI extends FragmentView
         RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMain.setAdapter(Adapter = new AdapterComment());
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView() { @Override public void OnLoadMore() { Update(null); } });
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() { @Override public void OnLoadMore() { Update(null); } });
 
         RelativeLayoutContent.addView(RecyclerViewMain);
 
@@ -309,7 +308,7 @@ public class CommentUI extends FragmentView
         AndroidNetworking.post(Misc.GetRandomServer("PostCommentList"))
         .addBodyParameter("Skip", String.valueOf(CommentList.size()))
         .addBodyParameter("PostID", PostID)
-        .addHeaders("Token", SharedHandler.GetString("Token"))
+        .addHeaders("Token", Misc.GetString("Token"))
         .setTag("CommentUI")
         .build()
         .getAsString(new StringRequestListener()
@@ -440,7 +439,7 @@ public class CommentUI extends FragmentView
                 Holder.TextViewLikeCount.setVisibility(View.VISIBLE);
             
             Holder.TextViewLikeCount.setText((CommentList.get(Position).LikeCount + " " + Activity.getString(R.string.CommentUILike)));
-            Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(CommentList.get(Position).ID, true), R.id.ContainerFull, "LikeUI"); } });
+            Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(CommentList.get(Position).ID, true), "LikeUI", true); } });
 
             if (CommentList.get(Position).Like)
                 GlideApp.with(Activity).load(R.drawable._general_like_red).into(Holder.ImageViewLike);
@@ -506,7 +505,7 @@ public class CommentUI extends FragmentView
 
                     AndroidNetworking.post(Misc.GetRandomServer("PostCommentLike"))
                     .addBodyParameter("CommentID", CommentList.get(Position).ID)
-                    .addHeaders("Token", SharedHandler.GetString( "Token"))
+                    .addHeaders("Token", Misc.GetString( "Token"))
                     .setTag("CommentUI")
                     .build()
                     .getAsString(null);
@@ -529,7 +528,7 @@ public class CommentUI extends FragmentView
                 }
             });
 
-            if (IsOwner || SharedHandler.GetString("ID").equals(CommentList.get(Position).Owner))
+            if (IsOwner || Misc.GetString("ID").equals(CommentList.get(Position).Owner))
                 Holder.ImageViewDelete.setVisibility(View.VISIBLE);
             else
                 Holder.ImageViewDelete.setVisibility(View.GONE);
@@ -581,7 +580,7 @@ public class CommentUI extends FragmentView
                         {
                             AndroidNetworking.post(Misc.GetRandomServer("PostCommentDelete"))
                             .addBodyParameter("CommentID", CommentList.get(Position).ID)
-                            .addHeaders("Token", SharedHandler.GetString( "Token"))
+                            .addHeaders("Token", Misc.GetString( "Token"))
                             .setTag("CommentUI")
                             .build()
                             .getAsString(null);
@@ -682,8 +681,8 @@ public class CommentUI extends FragmentView
 
             CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
             CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
-            CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
-            CircleImageViewProfile.SetBorderWidth(1);
+            //CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
+            //CircleImageViewProfile.SetBorderWidth(1);
             CircleImageViewProfile.setId(ID_PROFILE);
 
             RelativeLayoutMain.addView(CircleImageViewProfile);

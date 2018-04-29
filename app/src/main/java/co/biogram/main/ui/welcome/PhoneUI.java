@@ -363,9 +363,9 @@ class PhoneUI extends FragmentView
                 RelativeLayoutMain.setAnimation(Anim);
 
                 if (IsSignUp)
-                    Activity.GetManager().OpenView(new UsernameUI(), R.id.ContainerFull, "UsernameUI");
+                    Activity.GetManager().OpenView(new UsernameUI(), "UsernameUI", true);
                 else
-                    Activity.GetManager().OpenView(new EmailSignInUI(), R.id.ContainerFull, "EmailSignInUI");
+                    Activity.GetManager().OpenView(new EmailSignInUI(), "EmailSignInUI", true);
             }
 
             @Override
@@ -519,7 +519,7 @@ class PhoneUI extends FragmentView
                                 while (Phone.charAt(0) == '0')
                                     Phone = Phone.substring(1);
 
-                                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, true), R.id.ContainerFull, "PhoneVerifyUI");
+                                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, true), "PhoneVerifyUI", true);
                                 break;
                             case 1:
                             case 2:
@@ -586,7 +586,7 @@ class PhoneUI extends FragmentView
                                 while (Phone.charAt(0) == '0')
                                     Phone = Phone.substring(1);
 
-                                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, false), R.id.ContainerFull, "PhoneVerifyUI");
+                                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, false), "PhoneVerifyUI", true);
                                 break;
                             case 1:
                             case 2:

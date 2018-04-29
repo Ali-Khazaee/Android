@@ -3,26 +3,29 @@ package co.biogram.main.fragment;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
+
+import co.biogram.main.R;
 
 public class FragmentManager
 {
     private ArrayList<FragmentView> FragmentList = new ArrayList<>();
     private FragmentActivity Activity;
-    private FragmentView Fragment;
+    private FragmentView CurrentFrag;
 
     FragmentManager(FragmentActivity a)
     {
         Activity = a;
     }
 
-    public void OpenView(FragmentView Frag, int ID, String Tag)
+    public void OpenView(FragmentView Frag, String Tag, boolean Full)
     {
-        if (Fragment != null && Tag.equals(Fragment.Tag))
+        if (CurrentFrag != null && CurrentFrag.Tag.equals(Tag))
         {
-            Fragment.OnOpen();
+            CurrentFrag.OnOpen();
             return;
         }
 
@@ -36,36 +39,46 @@ public class FragmentManager
                 Frag2.ViewMain.setVisibility(View.GONE);
         }
 
-        Fragment = Frag;
-        Fragment.Tag = Tag;
-        Fragment.Activity = Activity;
-        Fragment.OnCreate();
-        Fragment.OnResume();
+        CurrentFrag = Frag;
+        CurrentFrag.Tag = Tag;
+        CurrentFrag.Activity = Activity;
+        CurrentFrag.OnCreate();
+        CurrentFrag.OnResume();
 
-        if (Fragment.ViewMain != null)
+        if (CurrentFrag.ViewMain != null)
         {
-            RelativeLayout RelativeLayoutMain = Activity.findViewById(ID);
-            RelativeLayoutMain.addView(Fragment.ViewMain);
+            FrameLayout FrameLayoutMain = Activity.findViewById(Full ? R.id.ContainerFull : R.id.Container);
+            FrameLayoutMain.addView(CurrentFrag.ViewMain);
         }
 
-        FragmentList.add(Fragment);
+        FragmentList.add(CurrentFrag);
     }
 
     boolean HandleBack()
     {
         if (FragmentList.size() > 1)
         {
-            int I = FragmentList.size() - 1;
+            FragmentView Frag = FragmentList.get(FragmentList.size() - 1);
+            Frag.OnPause();
+            Frag.OnDestroy();
 
-            FragmentList.get(I).OnPause();
-            FragmentList.get(I).OnDestroy();
-            FragmentList.remove(I);
+            if (Frag.ViewMain != null)
+            {
+                ViewGroup Parent = (ViewGroup) Frag.ViewMain.getParent();
 
-            Fragment = FragmentList.get(FragmentList.size() - 1);
-            Fragment.OnResume();
+                if (Parent != null)
+                    Parent.removeView(Frag.ViewMain);
 
-            if (Fragment.ViewMain != null && Fragment.ViewMain.getVisibility() == View.GONE)
-                Fragment.ViewMain.setVisibility(View.VISIBLE);
+                Frag.ViewMain = null;
+            }
+
+            FragmentList.remove(FragmentList.size() - 1);
+
+            CurrentFrag = FragmentList.get(FragmentList.size() - 1);
+            CurrentFrag.OnResume();
+
+            if (CurrentFrag.ViewMain != null && CurrentFrag.ViewMain.getVisibility() == View.GONE)
+                CurrentFrag.ViewMain.setVisibility(View.VISIBLE);
 
             return false;
         }
@@ -76,33 +89,33 @@ public class FragmentManager
     @Nullable
     public FragmentView FindByTag(String Tag)
     {
-        for (FragmentView Fragment : FragmentList)
-            if (Fragment.Tag.equals(Tag))
-                return Fragment;
+        for (FragmentView Frag : FragmentList)
+            if (Frag.Tag.equals(Tag))
+                return Frag;
 
         return null;
     }
 
     void OnResume()
     {
-        if (Fragment != null)
+        if (CurrentFrag != null)
         {
-            if (Fragment.ViewMain != null && Fragment.ViewMain.getVisibility() == View.GONE)
-                Fragment.ViewMain.setVisibility(View.VISIBLE);
+            if (CurrentFrag.ViewMain != null && CurrentFrag.ViewMain.getVisibility() == View.GONE)
+                CurrentFrag.ViewMain.setVisibility(View.VISIBLE);
 
-            Fragment.OnResume();
+            CurrentFrag.OnResume();
         }
     }
 
     void OnPause()
     {
-        if (Fragment != null)
-            Fragment.OnPause();
+        if (CurrentFrag != null)
+            CurrentFrag.OnPause();
     }
 
     void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
     {
-        if (Fragment != null)
-            Fragment.OnActivityResult(RequestCode, ResultCode, intent);
+        if (CurrentFrag != null)
+            CurrentFrag.OnActivityResult(RequestCode, ResultCode, intent);
     }
 }

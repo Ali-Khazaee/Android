@@ -4,7 +4,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-public abstract class OnScrollRecyclerView extends RecyclerView.OnScrollListener
+public abstract class RecyclerViewOnScroll extends RecyclerView.OnScrollListener
 {
     private RecyclerView.LayoutManager LayoutManager;
     private int PreviousTotalCount = 0;

@@ -36,18 +36,17 @@ public class PermissionDialog extends Dialog
         TextView TextViewMessage = dialogView.findViewById(R.id.TextViewMessage);
         TextViewMessage.setText(Misc.String(Message));
 
-        TextView TextViewAccept = dialogView.findViewById(R.id.TextViewAccept);
-        TextViewAccept.setOnClickListener(new View.OnClickListener()
+        dialogView.findViewById(R.id.TextViewAccept).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 dismiss();
 
-                ((FragmentActivity) getContext()).RequestPermission(Permission, new FragmentActivity.OnGrantListener()
+                ((FragmentActivity) getContext()).RequestPermission(Permission, new FragmentActivity.OnPermissionListener()
                 {
                     @Override
-                    public void OnGrant(boolean Result)
+                    public void OnPermission(boolean Result)
                     {
                         Listener.OnChoice(Result);
                     }
@@ -55,8 +54,7 @@ public class PermissionDialog extends Dialog
             }
         });
 
-        TextView TextViewDecline = dialogView.findViewById(R.id.TextViewDecline);
-        TextViewDecline.setOnClickListener(new View.OnClickListener()
+        dialogView.findViewById(R.id.TextViewDecline).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)

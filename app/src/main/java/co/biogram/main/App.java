@@ -2,7 +2,6 @@ package co.biogram.main;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 
@@ -16,12 +15,10 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SharedHandler;
-import co.biogram.main.service.SocketService;
 
 public class App extends Application
 {
-    private static OkHttpClient OKClient;
+    private static volatile OkHttpClient OKClient;
 
     @Override
     public void onCreate()
@@ -33,23 +30,19 @@ public class App extends Application
 
         LeakCanary.install(this);
 
-        Context context = getApplicationContext();
+        Misc.Initial(getApplicationContext());
 
-        Misc.Initial(context);
-
-        startService(new Intent(context, SocketService.class));
-
-        AndroidNetworking.initialize(context, GetOKClient());
+        AndroidNetworking.initialize(getApplicationContext(), GetOKClient());
     }
 
     @Override
     protected void attachBaseContext(Context base)
     {
-        SharedHandler.SetUp(base);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            Locale locale = new Locale(SharedHandler.GetString("Language", "fa"));
+            Locale locale = new Locale(Misc.GetString("Language", "fa"));
             Locale.setDefault(locale);
 
             Configuration configuration = base.getResources().getConfiguration();
@@ -60,7 +53,7 @@ public class App extends Application
         }
         else
         {
-            Locale locale = new Locale(SharedHandler.GetString("Language", "fa"));
+            Locale locale = new Locale(Misc.GetString("Language", "fa"));
             Locale.setDefault(locale);
 
             Configuration config = new Configuration();
@@ -69,12 +62,12 @@ public class App extends Application
 
             // noinspection deprecation
             base.getResources().updateConfiguration(config, base.getResources().getDisplayMetrics());
-        }
+        }*/
 
         super.attachBaseContext(base);
     }
 
-     public static OkHttpClient GetOKClient()
+    public static OkHttpClient GetOKClient()
     {
         if (OKClient == null)
         {

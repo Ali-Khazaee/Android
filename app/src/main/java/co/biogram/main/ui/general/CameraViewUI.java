@@ -68,7 +68,7 @@ public class CameraViewUI extends FragmentView
                         Listener.OnCapture(bitmap);
                         Activity.onBackPressed();
                     }
-                }), R.id.ContainerFull, "CropViewUI");
+                }), "CropViewUI", true);
             }
         });
 
@@ -190,7 +190,6 @@ public class CameraViewUI extends FragmentView
     public void OnDestroy()
     {
         CameraViewMain.destroy();
-        super.OnDestroy();
     }
 
     public interface OnCaptureListener

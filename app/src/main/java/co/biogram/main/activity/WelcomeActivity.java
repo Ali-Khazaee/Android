@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SharedHandler;
+
 import co.biogram.main.ui.welcome.WelcomeUI;
 
 public class WelcomeActivity extends FragmentActivity
@@ -23,9 +23,9 @@ public class WelcomeActivity extends FragmentActivity
 
         finish();
 
-        /*if (SharedHandler.GetBoolean("IsLogin"))
+        /*if (Misc.GetBoolean("IsLogin"))
         {
-            if (SharedHandler.GetString("Activity").equals("Chat"))
+            if (Misc.GetString("Activity").equals("Chat"))
                 startActivity(new Intent(this, ChatActivity.class));
             else
                 startActivity(new Intent(this, SocialActivity.class));

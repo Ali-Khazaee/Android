@@ -34,7 +34,6 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -223,7 +222,7 @@ public class WelcomeUI extends FragmentView
 
                 ScrollViewMain.setAnimation(Anim);
 
-                Activity.GetManager().OpenView(new PhoneUI(true), R.id.ContainerFull, "PhoneUI");
+                Activity.GetManager().OpenView(new PhoneUI(true), "PhoneUI", true);
             }
         });
 
@@ -334,7 +333,7 @@ public class WelcomeUI extends FragmentView
 
                 ScrollViewMain.setAnimation(Anim);
 
-                Activity.GetManager().OpenView(new PhoneUI(false), R.id.ContainerFull, "PhoneUI");
+                Activity.GetManager().OpenView(new PhoneUI(false), "PhoneUI", true);
             }
         });
 
@@ -484,12 +483,12 @@ public class WelcomeUI extends FragmentView
                                     case 0:
                                         if (Result3.getBoolean("Registered"))
                                         {
-                                            SharedHandler.SetBoolean("IsLogin", true);
-                                            SharedHandler.SetBoolean("IsGoogle", true);
-                                            SharedHandler.SetString("Token", Result3.getString("Token"));
-                                            SharedHandler.SetString("ID", Result3.getString("ID"));
-                                            SharedHandler.SetString("Username", Result3.getString("Username"));
-                                            SharedHandler.SetString("Avatar", Result3.getString("Avatar"));
+                                            Misc.SetBoolean("IsLogin", true);
+                                            Misc.SetBoolean("IsGoogle", true);
+                                            Misc.SetString("Token", Result3.getString("Token"));
+                                            Misc.SetString("ID", Result3.getString("ID"));
+                                            Misc.SetString("Username", Result3.getString("Username"));
+                                            Misc.SetString("Avatar", Result3.getString("Avatar"));
 
                                             Activity.startActivity(new Intent(Activity, SocialActivity.class));
                                             Activity.finish();
@@ -501,7 +500,7 @@ public class WelcomeUI extends FragmentView
 
                                         ScrollViewMain.setAnimation(Anim);
 
-                                        Activity.GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), R.id.ContainerFull, "UsernameUI");
+                                        Activity.GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), "UsernameUI", true);
                                         break;
                                     case 1:
                                     case 2:

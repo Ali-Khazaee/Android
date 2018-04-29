@@ -1,35 +1,23 @@
 package co.biogram.main.fragment;
 
-import android.content.Intent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.content.Intent;
 
-public class FragmentView
+public abstract class FragmentView
 {
     public FragmentActivity Activity;
     public View ViewMain;
     String Tag;
 
-    public void OnDestroy()
-    {
-        if (ViewMain != null)
-        {
-            ViewGroup Parent = (ViewGroup) ViewMain.getParent();
-
-            if (Parent != null)
-                Parent.removeView(ViewMain);
-
-            ViewMain = null;
-        }
-    }
-
-    public void OnOpen() { }
-
-    public void OnCreate() { }
+    public abstract void OnCreate();
 
     public void OnResume() { }
 
+    public void OnOpen() { }
+
     public void OnPause() { }
+
+    public void OnDestroy() { }
 
     public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) { }
 }

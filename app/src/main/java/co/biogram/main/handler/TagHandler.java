@@ -104,7 +104,7 @@ public class TagHandler
             }
             else if (Type == 2)
             {
-                if (SharedHandler.GetString( "Username").equalsIgnoreCase(Message))
+                if (Misc.GetString("Username").equalsIgnoreCase(Message))
                     return;
 
                 Misc.ToastOld(Message + " - ID Clicked");

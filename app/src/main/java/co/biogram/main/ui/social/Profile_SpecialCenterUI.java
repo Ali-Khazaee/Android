@@ -23,7 +23,7 @@ import java.util.Locale;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.OnScrollRecyclerView;
+import co.biogram.main.handler.RecyclerViewOnScroll;
 
 public class Profile_SpecialCenterUI extends FragmentView
 {
@@ -109,7 +109,7 @@ public class Profile_SpecialCenterUI extends FragmentView
         RecyclerViewMain.setLayoutManager(new LinearLayoutManager(Activity));
         RecyclerViewMain.setNestedScrollingEnabled(false);
         RecyclerViewMain.setHasFixedSize(false);
-        RecyclerViewMain.addOnScrollListener(new OnScrollRecyclerView()
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll()
         {
             @Override
             public void OnLoadMore()

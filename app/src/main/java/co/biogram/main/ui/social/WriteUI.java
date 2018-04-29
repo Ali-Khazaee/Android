@@ -63,7 +63,6 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.OnClickRecyclerView;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.general.CropViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
@@ -483,7 +482,7 @@ class WriteUI extends FragmentView
                             return;
                         }
 
-                        Activity.GetManager().OpenView(new GalleryViewUI(3, 1, L), R.id.ContainerFull, "GalleryViewUI");
+                        Activity.GetManager().OpenView(new GalleryViewUI(3, 1, L), "GalleryViewUI", true);
                     }
                 });
             }
@@ -552,7 +551,7 @@ class WriteUI extends FragmentView
                             return;
                         }
 
-                        Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_VIDEO, L), R.id.ContainerFull, "GalleryViewUI");
+                        Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_VIDEO, L), "GalleryViewUI", true);
                     }
                 });
             }
@@ -599,7 +598,7 @@ class WriteUI extends FragmentView
 
                 if (Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
-                    Activity.GetManager().OpenView(new GalleryViewUI(1, 3, L), R.id.ContainerFull, "GalleryViewUI");
+                    Activity.GetManager().OpenView(new GalleryViewUI(1, 3, L), "GalleryViewUI", true);
                     return;
                 }
 
@@ -615,7 +614,7 @@ class WriteUI extends FragmentView
                             return;
                         }
 
-                        Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_FILE, L), R.id.ContainerFull, "GalleryViewUI");
+                        Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_FILE, L), "GalleryViewUI", true);
                     }
                 });
             }
@@ -1276,7 +1275,7 @@ class WriteUI extends FragmentView
         RelativeLayoutContent.addView(RelativeLayoutVideo);
 
         ImageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        ImageViewThumb.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.GetManager().OpenView(new VideoPreviewUI(SelectVideo.getAbsolutePath(), true, false), R.id.ContainerFull, "VideoPreviewUI"); } });
+        ImageViewThumb.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.GetManager().OpenView(new VideoPreviewUI(SelectVideo.getAbsolutePath(), true, false), "VideoPreviewUI", true); } });
         ImageViewThumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         RelativeLayoutVideo.addView(ImageViewThumb);
@@ -1524,7 +1523,7 @@ class WriteUI extends FragmentView
                 .addMultipartParameter("Type", String.valueOf(SelectType))
                 .addMultipartParameter("Vote", Vote.toString())
                 .addMultipartParameter("World", String.valueOf(IsWorld))
-                .addHeaders("token", SharedHandler.GetString("Token"))
+                .addHeaders("token", Misc.GetString("Token"))
                 .addMultipartFile(UploadFile)
                 .setTag("WriteFragment")
                 .build()
@@ -1678,7 +1677,7 @@ class WriteUI extends FragmentView
                 public void onClick(View v)
                 {
                     if (SelectImage.size() > 0)
-                        Activity.GetManager().OpenView(new ImagePreviewUI(SelectImage.get(Position), false), R.id.ContainerFull, "ImagePreviewUI");
+                        Activity.GetManager().OpenView(new ImagePreviewUI(SelectImage.get(Position), false), "ImagePreviewUI", true);
                 }
             });
 
@@ -1735,7 +1734,7 @@ class WriteUI extends FragmentView
                             // TODO Add bitmap to file
                             AdapterImage.notifyDataSetChanged();
                         }
-                    }), R.id.ContainerFull, "CropViewUI");
+                    }),  "CropViewUI", true);
                 }
             });
 

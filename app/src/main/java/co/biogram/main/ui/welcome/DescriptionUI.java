@@ -45,15 +45,15 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.general.CameraViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.view.Button;
-import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.ProgressDialog;
 import co.biogram.main.ui.view.TextView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DescriptionUI extends FragmentView
 {
@@ -186,8 +186,8 @@ public class DescriptionUI extends FragmentView
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
         CircleImageViewProfile.setId(Misc.generateViewId());
         CircleImageViewProfile.setImageResource(R.drawable.person_blue);
-        CircleImageViewProfile.SetBorderColor(R.color.Gray);
-        CircleImageViewProfile.SetBorderWidth(2);
+        //CircleImageViewProfile.SetBorderColor(R.color.Gray);
+        //CircleImageViewProfile.SetBorderWidth(2);
         CircleImageViewProfile.setPadding(Misc.ToDP(2), Misc.ToDP(2), Misc.ToDP(2), Misc.ToDP(2));
         CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
         {
@@ -241,7 +241,7 @@ public class DescriptionUI extends FragmentView
                                     return;
                                 }
 
-                                Activity.GetManager().OpenView(new CameraViewUI(0,0, false, null), R.id.ContainerFull, "CameraViewUI");
+                                Activity.GetManager().OpenView(new CameraViewUI(0,0, false, null), "CameraViewUI", true);
                             }
                         });
                     }
@@ -291,7 +291,7 @@ public class DescriptionUI extends FragmentView
 
                                     Update(new File(ImageURL), true);
                                 }
-                            }), R.id.ContainerFull, "GalleryViewUI");
+                            }), "GalleryViewUI", true);
                             return;
                         }
 
@@ -332,7 +332,7 @@ public class DescriptionUI extends FragmentView
 
                                         Update(new File(ImageURL), true);
                                     }
-                                }), R.id.ContainerFull, "GalleryViewUI");
+                                }), "GalleryViewUI", true);
                             }
                         });
                     }
@@ -587,12 +587,12 @@ public class DescriptionUI extends FragmentView
 
                                          RelativeLayoutMain.setAnimation(Anim);
 
-                                         SharedHandler.SetBoolean("IsLogin", true);
-                                         SharedHandler.SetBoolean("IsGoogle", true);
-                                         SharedHandler.SetString("Token", Result.getString("Token"));
-                                         SharedHandler.SetString("ID", Result.getString("ID"));
-                                         SharedHandler.SetString("Username", Result.getString("Username"));
-                                         SharedHandler.SetString("Avatar", Result.getString("Avatar"));
+                                         Misc.SetBoolean("IsLogin", true);
+                                         Misc.SetBoolean("IsGoogle", true);
+                                         Misc.SetString("Token", Result.getString("Token"));
+                                         Misc.SetString("ID", Result.getString("ID"));
+                                         Misc.SetString("Username", Result.getString("Username"));
+                                         Misc.SetString("Avatar", Result.getString("Avatar"));
 
                                          Activity.startActivity(new Intent(Activity, SocialActivity.class));
                                          Activity.finish();
@@ -681,12 +681,12 @@ public class DescriptionUI extends FragmentView
 
                                         RelativeLayoutMain.setAnimation(Anim);
 
-                                        SharedHandler.SetBoolean("IsLogin", true);
-                                        SharedHandler.SetBoolean("IsGoogle", true);
-                                        SharedHandler.SetString("Token", Result.getString("Token"));
-                                        SharedHandler.SetString("ID", Result.getString("ID"));
-                                        SharedHandler.SetString("Username", Result.getString("Username"));
-                                        SharedHandler.SetString("Avatar", Result.getString("Avatar"));
+                                        Misc.SetBoolean("IsLogin", true);
+                                        Misc.SetBoolean("IsGoogle", true);
+                                        Misc.SetString("Token", Result.getString("Token"));
+                                        Misc.SetString("ID", Result.getString("ID"));
+                                        Misc.SetString("Username", Result.getString("Username"));
+                                        Misc.SetString("Avatar", Result.getString("Avatar"));
 
                                         Activity.startActivity(new Intent(Activity, SocialActivity.class));
                                         Activity.finish();
@@ -771,12 +771,12 @@ public class DescriptionUI extends FragmentView
 
                                         RelativeLayoutMain.setAnimation(Anim);
 
-                                        SharedHandler.SetBoolean("IsLogin", true);
-                                        SharedHandler.SetBoolean("IsGoogle", true);
-                                        SharedHandler.SetString("Token", Result.getString("Token"));
-                                        SharedHandler.SetString("ID", Result.getString("ID"));
-                                        SharedHandler.SetString("Username", Result.getString("Username"));
-                                        SharedHandler.SetString("Avatar", Result.getString("Avatar"));
+                                        Misc.SetBoolean("IsLogin", true);
+                                        Misc.SetBoolean("IsGoogle", true);
+                                        Misc.SetString("Token", Result.getString("Token"));
+                                        Misc.SetString("ID", Result.getString("ID"));
+                                        Misc.SetString("Username", Result.getString("Username"));
+                                        Misc.SetString("Avatar", Result.getString("Avatar"));
 
                                         Activity.startActivity(new Intent(Activity, SocialActivity.class));
                                         Activity.finish();

@@ -8,9 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 
 public abstract class FragmentActivity extends AppCompatActivity
 {
-    private OnGrantListener Listener;
+    private OnPermissionListener Listener;
+    private boolean FirstCall = true;
     private FragmentManager Manager;
-    private boolean Resume = true;
     private String Permission;
 
     public FragmentManager GetManager()
@@ -40,9 +40,9 @@ public abstract class FragmentActivity extends AppCompatActivity
     {
         super.onResume();
 
-        if (Resume)
+        if (FirstCall)
         {
-            Resume = false;
+            FirstCall = false;
             return;
         }
 
@@ -61,21 +61,28 @@ public abstract class FragmentActivity extends AppCompatActivity
     {
         super.onRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
-        for (int I = 0; I < Permissions.length; I++)
-            if (Listener != null && Permissions[I].equals(Permission))
-                Listener.OnGrant(GrantResults[I] == PackageManager.PERMISSION_GRANTED);
+        if (Listener != null)
+        {
+            for (int I = 0; I < Permissions.length; I++)
+            {
+                if (Permissions[I].equals(Permission))
+                {
+                    Listener.OnPermission(GrantResults[I] == PackageManager.PERMISSION_GRANTED);
+                }
+            }
+        }
     }
 
-    public void RequestPermission(String permission, OnGrantListener listener)
+    public void RequestPermission(String p, OnPermissionListener l)
     {
-        Listener = listener;
-        Permission = permission;
+        Listener = l;
+        Permission = p;
 
-        ActivityCompat.requestPermissions(this, new String[] { Permission }, 555);
+        ActivityCompat.requestPermissions(this, new String[] { p }, 555);
     }
 
-    public interface OnGrantListener
+    public interface OnPermissionListener
     {
-        void OnGrant(boolean Result);
+        void OnPermission(boolean Result);
     }
 }

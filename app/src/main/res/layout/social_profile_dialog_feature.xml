@@ -42,7 +42,7 @@
         android:textSize="@dimen/FontVerySmall"
         android:padding="15dp" />
 
-    <co.biogram.main.ui.view.EditTag
+    <co.biogram.main.ui.view.EditTextTag
         android:id="@+id/EditTagFeature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

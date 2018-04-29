@@ -30,7 +30,6 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -263,7 +262,7 @@ class EmailSignInUI extends FragmentView
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                Activity.GetManager().OpenView(new PasswordResetUI(), R.id.ContainerFull, "PasswordResetUI");
+                Activity.GetManager().OpenView(new PasswordResetUI(), "PasswordResetUI", true);
             }
         });
 
@@ -324,12 +323,12 @@ class EmailSignInUI extends FragmentView
                             switch (Result.getInt("Message"))
                             {
                                 case 0:
-                                    SharedHandler.SetBoolean("IsLogin", true);
-                                    SharedHandler.SetBoolean("IsGoogle", false);
-                                    SharedHandler.SetString("Token", Result.getString("Token"));
-                                    SharedHandler.SetString("ID", Result.getString("ID"));
-                                    SharedHandler.SetString("Username", Result.getString("Username"));
-                                    SharedHandler.SetString("Avatar", Result.getString("Avatar"));
+                                    Misc.SetBoolean("IsLogin", true);
+                                    Misc.SetBoolean("IsGoogle", false);
+                                    Misc.SetString("Token", Result.getString("Token"));
+                                    Misc.SetString("ID", Result.getString("ID"));
+                                    Misc.SetString("Username", Result.getString("Username"));
+                                    Misc.SetString("Avatar", Result.getString("Avatar"));
 
                                     Activity.startActivity(new Intent(Activity, SocialActivity.class));
                                     Activity.finish();

@@ -3,6 +3,11 @@
     <!-- Application -->
     <string name="ApplicationName">Channel</string>
 
+    <!-- Stateful Layout -->
+    <string name="StatefulLayoutNoConnection">No Internet Connection</string>
+    <string name="StatefulLayoutNoContent">No Content</string>
+    <string name="StatefulLayoutTry">Try Again</string>
+
     <!-- Social Profile Special Center UI -->
     <string name="SocialProfileSpecialCenterUI">Special Center</string>
     <string name="SocialProfileSpecialCenterUICredit">Credit</string>

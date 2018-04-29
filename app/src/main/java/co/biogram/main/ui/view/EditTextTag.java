@@ -2,9 +2,7 @@ package co.biogram.main.ui.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
@@ -21,33 +19,32 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class EditTag extends FrameLayout implements View.OnClickListener, TextView.OnEditorActionListener, View.OnKeyListener
+public class EditTextTag extends FrameLayout implements View.OnClickListener, TextView.OnEditorActionListener, View.OnKeyListener
 {
-    private Drawable TagDrawable;
+    private Drawable DrawableTag;
     private EditText EditTextMain;
     private FlowLayout FlowLayoutMain;
     private TextView LastSelectTagView;
     private boolean IsDelAction = false;
     private List<String> TagList = new ArrayList<>();
 
-    public EditTag(Context context)
+    public EditTextTag(Context context)
     {
         this(context, null);
     }
 
-    public EditTag(Context context, AttributeSet attrs)
+    public EditTextTag(Context context, AttributeSet attrs)
     {
         this(context, attrs, 0);
     }
 
-    public EditTag(Context context, AttributeSet attrs, int defStyleAttr)
+    public EditTextTag(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
 
@@ -152,7 +149,7 @@ public class EditTag extends FrameLayout implements View.OnClickListener, TextVi
             if (!TextUtils.isEmpty(Tag))
             {
                 TextView TagView = CreateTag(Tag);
-                TagView.setOnClickListener(EditTag.this);
+                TagView.setOnClickListener(EditTextTag.this);
 
                 FlowLayoutMain.addView(TagView, FlowLayoutMain.getChildCount() - 1);
                 EditTextMain.getText().clear();
@@ -161,8 +158,8 @@ public class EditTag extends FrameLayout implements View.OnClickListener, TextVi
                 TagList.add(Tag);
                 Handle = true;
 
-                if (TagDrawable == null)
-                    TagDrawable = TagView.getBackground();
+                if (DrawableTag == null)
+                    DrawableTag = TagView.getBackground();
             }
         }
 
@@ -183,7 +180,7 @@ public class EditTag extends FrameLayout implements View.OnClickListener, TextVi
             {
                 if (LastSelectTagView.equals(v))
                 {
-                    v.setBackground(TagDrawable);
+                    v.setBackground(DrawableTag);
                     LastSelectTagView = null;
                 }
                 else
@@ -197,7 +194,7 @@ public class EditTag extends FrameLayout implements View.OnClickListener, TextVi
         {
             if (LastSelectTagView != null)
             {
-                LastSelectTagView.setBackground(TagDrawable);
+                LastSelectTagView.setBackground(DrawableTag);
                 LastSelectTagView = null;
             }
         }
@@ -213,10 +210,10 @@ public class EditTag extends FrameLayout implements View.OnClickListener, TextVi
                 return;
 
             TextView TagView = CreateTag(Tag);
-            TagView.setOnClickListener(EditTag.this);
+            TagView.setOnClickListener(EditTextTag.this);
 
-            if (TagDrawable == null)
-                TagDrawable = TagView.getBackground();
+            if (DrawableTag == null)
+                DrawableTag = TagView.getBackground();
 
             FlowLayoutMain.addView(TagView, FlowLayoutMain.getChildCount() - 1);
 

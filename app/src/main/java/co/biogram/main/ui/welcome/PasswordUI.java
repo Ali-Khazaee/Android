@@ -245,7 +245,7 @@ class PasswordUI extends FragmentView
 
                 RelativeLayoutMain.setAnimation(Anim);
 
-                Activity.GetManager().OpenView(new EmailUI(Username, EditTextPassword.getText().toString()), R.id.ContainerFull, "EmailUI");
+                Activity.GetManager().OpenView(new EmailUI(Username, EditTextPassword.getText().toString()), "EmailUI", true);
             }
         });
 

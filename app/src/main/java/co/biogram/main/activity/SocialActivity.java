@@ -9,7 +9,7 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
-import co.biogram.main.ui.social.ProfileUI;
+import co.biogram.main.ui.social.Profile_UI;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.fragment.FragmentActivity;
 
@@ -45,7 +45,7 @@ public class SocialActivity extends FragmentActivity
         ImageViewProfile = findViewById(R.id.ImageViewProfile);
         ImageViewProfile.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangePage(5); } });
 
-        ChangePage(1);
+        ChangePage(5);
     }
 
     private void ChangePage(int Page)
@@ -80,12 +80,12 @@ public class SocialActivity extends FragmentActivity
                 ImageViewNotification.setImageResource(R.drawable.z_social_activity_notification_blue);
                 break;
             default:
-                Tag = "ProfileUI";
-                Fragment = new ProfileUI();
+                Tag = "Profile_UI";
+                Fragment = new Profile_UI();
                 ImageViewProfile.setImageResource(R.drawable.z_social_activity_profile_blue);
                 break;
         }
 
-        GetManager().OpenView(Fragment, R.id.Container, Tag);
+        GetManager().OpenView(Fragment, Tag, false);
     }
 }

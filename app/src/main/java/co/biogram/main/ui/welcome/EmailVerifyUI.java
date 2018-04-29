@@ -651,7 +651,7 @@ class EmailVerifyUI extends FragmentView
 
                                     RelativeLayoutMain.setAnimation(Anim);
 
-                                    Activity.GetManager().OpenView(new DescriptionUI(VerifyCode), R.id.ContainerFull, "DescriptionUI");
+                                    Activity.GetManager().OpenView(new DescriptionUI(VerifyCode), "DescriptionUI", true);
                                     break;
                                 case 1:
                                 case 2:
@@ -717,6 +717,5 @@ class EmailVerifyUI extends FragmentView
     public void OnDestroy()
     {
         CountDownTimerResend.cancel();
-        super.OnDestroy();
     }
 }

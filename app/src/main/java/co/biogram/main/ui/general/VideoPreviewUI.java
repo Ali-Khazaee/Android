@@ -521,7 +521,6 @@ public class VideoPreviewUI extends FragmentView
     @Override
     public void OnDestroy()
     {
-        super.OnDestroy();
         SimpleExoPlayerMain.release();
 
         if (Build.VERSION.SDK_INT > 20)

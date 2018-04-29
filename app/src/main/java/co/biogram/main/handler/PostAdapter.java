@@ -55,9 +55,9 @@ import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.social.CommentUI;
 import co.biogram.main.ui.social.LikeUI;
 import co.biogram.main.ui.social.PostUI;
-import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.PullToRefreshView;
 import co.biogram.main.ui.view.TextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain>
 {
@@ -325,7 +325,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                     AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
                     .addBodyParameter("Time", String.valueOf(Time))
-                    .addHeaders("Token", SharedHandler.GetString( "Token"))
+                    .addHeaders("Token", Misc.GetString( "Token"))
                     .setTag(Tag)
                     .build()
                     .getAsString(new StringRequestListener()
@@ -427,9 +427,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
             CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
-            CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
+            //CircleImageViewProfile.setBorderColor(R.color.LineWhite);
             CircleImageViewProfile.setId(ID1_PROFILE);
-            CircleImageViewProfile.SetBorderWidth(1);
+            //CircleImageViewProfile.SetBorderWidth(1);
 
             RelativeLayoutMain.addView(CircleImageViewProfile);
 
@@ -1165,8 +1165,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             CircleImageView CircleImageViewPerson = new CircleImageView(Activity);
             CircleImageViewPerson.setLayoutParams(CircleImageViewPerson1Param);
             CircleImageViewPerson.setId(ID1_PERSON1);
-            CircleImageViewPerson.SetBorderWidth(Misc.ToDP(1));
-            CircleImageViewPerson.SetBorderColor(R.color.LineWhite);
+            //CircleImageViewPerson.SetBorderWidth(Misc.ToDP(1));
+            //CircleImageViewPerson.SetBorderColor(R.color.LineWhite);
 
             RelativeLayoutTool.addView(CircleImageViewPerson);
 
@@ -1229,7 +1229,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         {
             try
             {
-                Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new PostUI(PostList.get(Position).ID), R.id.ContainerFull, "PostUI"); } });
+                Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new PostUI(PostList.get(Position).ID), "PostUI", false); } });
 
                 GlideApp.with(Activity).load(PostList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
                 Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
@@ -1304,7 +1304,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 final String URL1 = URL.get(0).toString();
 
                                 Holder.ImageViewSingle.setVisibility(View.VISIBLE);
-                                Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, true), R.id.ContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, true), "ImagePreviewUI", true); } });
 
                                 GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewSingle);
                             }
@@ -1316,8 +1316,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                 Holder.LinearLayoutDouble.setVisibility(View.VISIBLE);
 
-                                Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, true), R.id.ContainerFull, "ImagePreviewUI"); } });
-                                Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL1, true), R.id.ContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, true), "ImagePreviewUI", true); } });
+                                Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL1, true), "ImagePreviewUI", true); } });
 
                                 GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble1);
                                 GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble2);
@@ -1331,9 +1331,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                 Holder.LinearLayoutTriple.setVisibility(View.VISIBLE);
 
-                                Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, URL3, true), R.id.ContainerFull, "ImagePreviewUI"); } });
-                                Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL3, URL1, true), R.id.ContainerFull, "ImagePreviewUI"); } });
-                                Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL3, URL1, URL2, true), R.id.ContainerFull, "ImagePreviewUI"); } });
+                                Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, URL3, true), "ImagePreviewUI", true); } });
+                                Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL3, URL1, true), "ImagePreviewUI", true); } });
+                                Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL3, URL1, URL2, true), "ImagePreviewUI", true); } });
 
                                 GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple1);
                                 GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple2);
@@ -1353,7 +1353,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
 
-                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(URL, false, true), R.id.ContainerFull, "VideoPreviewUI"); } });
+                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(URL, false, true), "VideoPreviewUI", true); } });
 
                         GlideApp.with(Activity).load(URL.substring(0, URL.length() - 3) + "png").placeholder(R.color.Gray).transforms(new CenterCrop()).into(Holder.ImageViewVideo);
 
@@ -1511,7 +1511,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     AndroidNetworking.post(Misc.GetRandomServer("PostVote"))
                                     .addBodyParameter("Post", PostList.get(Position).ID)
                                     .addBodyParameter("Vote", String.valueOf(Sel))
-                                    .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                    .addHeaders("Token", Misc.GetString( "Token"))
                                     .setTag(Tag)
                                     .build()
                                     .getAsString(new StringRequestListener()
@@ -1995,7 +1995,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         AndroidNetworking.post(Misc.GetRandomServer("PostLike"))
                         .addBodyParameter("PostID", PostList.get(Position).ID)
-                        .addHeaders("Token", SharedHandler.GetString( "Token"))
+                        .addHeaders("Token", Misc.GetString( "Token"))
                         .setTag(Tag)
                         .build()
                         .getAsString(null);
@@ -2003,7 +2003,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 });
 
                 Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
-                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID, false), R.id.ContainerFull, "LikeUI"); } });
+                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID, false), "LikeUI", true); } });
 
                 if (PostList.get(Position).IsComment)
                 {
@@ -2013,11 +2013,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 else
                 {
                     Holder.ImageViewComment.setVisibility(View.VISIBLE);
-                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), R.id.ContainerFull, "CommentUI"); } });
+                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), "CommentUI", true); } });
 
                     Holder.TextViewCommentCount.setVisibility(View.VISIBLE);
                     Holder.TextViewCommentCount.setText(String.valueOf(PostList.get(Position).CommentCount));
-                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), R.id.ContainerFull, "CommentUI"); } });
+                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), "CommentUI", true); } });
                 }
 
                 Holder.ImageViewOption.setOnClickListener(new View.OnClickListener()
@@ -2034,7 +2034,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
                         LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
-                        if (PostList.get(Position).Owner.equals(SharedHandler.GetString( "ID")))
+                        if (PostList.get(Position).Owner.equals(Misc.GetString( "ID")))
                         {
                             TextView TextViewDelete = new TextView(Activity, 14, false);
                             TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
@@ -2049,7 +2049,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 {
                                     AndroidNetworking.post(Misc.GetRandomServer("PostDelete"))
                                     .addBodyParameter("PostID", PostList.get(Position).ID)
-                                    .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                    .addHeaders("Token", Misc.GetString( "Token"))
                                     .setTag(Tag)
                                     .build()
                                     .getAsString(new StringRequestListener()
@@ -2151,7 +2151,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                                 AndroidNetworking.post(Misc.GetRandomServer("PostEdit"))
                                                 .addBodyParameter("PostID", PostList.get(Position).ID)
                                                 .addBodyParameter("Message", EditTextMessage.getText().toString())
-                                                .addHeaders("Token", SharedHandler.GetString("Token"))
+                                                .addHeaders("Token", Misc.GetString("Token"))
                                                 .setTag(Tag)
                                                 .build()
                                                 .getAsString(new StringRequestListener()
@@ -2220,7 +2220,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 {
                                     AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
                                     .addBodyParameter("Username", PostList.get(Position).Username)
-                                    .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                    .addHeaders("Token", Misc.GetString( "Token"))
                                     .setTag(Tag)
                                     .build()
                                     .getAsString(new StringRequestListener()
@@ -2267,7 +2267,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                         ViewLine2.setBackgroundResource(R.color.LineWhite);
 
-                        if (!PostList.get(Position).Owner.equals(SharedHandler.GetString( "ID")))
+                        if (!PostList.get(Position).Owner.equals(Misc.GetString( "ID")))
                         {
                             LinearLayoutMain.addView(TextViewReport);
                             LinearLayoutMain.addView(ViewLine2);
@@ -2319,7 +2319,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             {
                                 AndroidNetworking.post(Misc.GetRandomServer("PostBookmark"))
                                 .addBodyParameter("PostID", PostList.get(Position).ID)
-                                .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                .addHeaders("Token", Misc.GetString( "Token"))
                                 .setTag(Tag)
                                 .build()
                                 .getAsString(new StringRequestListener()
@@ -2465,7 +2465,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
         AndroidNetworking.post(Misc.GetRandomServer("PostDeleteCheck"))
         .addBodyParameter("List", ID2)
-        .addHeaders("Token", SharedHandler.GetString( "Token"))
+        .addHeaders("Token", Misc.GetString( "Token"))
         .setTag(Tag)
         .build()
         .getAsString(new StringRequestListener()
@@ -2512,7 +2512,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
         AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
         .addBodyParameter("Skip", String.valueOf(Size))
-        .addHeaders("Token", SharedHandler.GetString( "Token"))
+        .addHeaders("Token", Misc.GetString( "Token"))
         .setTag(Tag)
         .build()
         .getAsString(new StringRequestListener()
@@ -2622,10 +2622,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         {
             PostStruct P = new PostStruct();
             P.ID = D.getString("_id");
-            P.Profile = SharedHandler.GetString("Avatar");
-            P.Name = SharedHandler.GetString("Name");
-            P.Medal = SharedHandler.GetString("Medal");
-            P.Username = SharedHandler.GetString("Username");
+            P.Profile = Misc.GetString("Avatar");
+            P.Name = Misc.GetString("Name");
+            P.Medal = Misc.GetString("Medal");
+            P.Username = Misc.GetString("Username");
             P.Time = D.getInt("Time");
 
             if (!D.isNull("Message"))

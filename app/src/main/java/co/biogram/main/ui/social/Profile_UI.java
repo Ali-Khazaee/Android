@@ -3,6 +3,7 @@ package co.biogram.main.ui.social;
 import android.Manifest;
 import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -10,37 +11,31 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Random;
+
+import co.biogram.main.ui.view.StatefulLayout;
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.general.CameraViewUI;
 import co.biogram.main.ui.general.CropViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
-import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileUI extends FragmentView
+public class Profile_UI extends FragmentView
 {
-    private String Name = "";
-    private String Username = "";
-    private String Phone = "";
-    private String Email = "";
-    private String About = "";
-    private String Website = "";
-
     @Override
     public void OnCreate()
     {
         View view = View.inflate(Activity, R.layout.social_profile, null);
 
-        ImageView ImageViewSetting = view.findViewById(R.id.ImageViewSetting);
-        ImageViewSetting.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.ImageViewSetting).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -49,8 +44,7 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        ImageView ImageViewProfile = view.findViewById(R.id.ImageViewProfile);
-        ImageViewProfile.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.ImageViewProfile).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -101,7 +95,7 @@ public class ProfileUI extends FragmentView
                                     {
                                         // TODO Update Profile
                                     }
-                                }), R.id.ContainerFull, "CameraViewUI");
+                                }), "CameraViewUI", true);
                             }
                         });
                     }
@@ -154,9 +148,9 @@ public class ProfileUI extends FragmentView
                                                 Activity.onBackPressed();
                                                 // TODO Send avaar
                                             }
-                                        }), R.id.ContainerFull, "CropViewUI");
+                                        }), "CropViewUI", true);
                                     }
-                                }), R.id.ContainerFull, "CameraViewUI");
+                                }), "CameraViewUI", true);
                             }
                         });
                     }
@@ -180,7 +174,7 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewName = view.findViewById(R.id.TextViewName);
+        final TextView TextViewName = view.findViewById(R.id.TextViewName);
         TextViewName.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -195,9 +189,9 @@ public class ProfileUI extends FragmentView
                 ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
-                final EditText EditTextName = dialogView.findViewById(R.id.EditTextName);
-                EditTextName.setText(Name);
-                EditTextName.setSelection(Name.length());
+                EditText EditTextName = dialogView.findViewById(R.id.EditTextName);
+                EditTextName.setText(TextViewName.getText());
+                EditTextName.setSelection(TextViewName.length());
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -219,7 +213,7 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewUsername = view.findViewById(R.id.TextViewUsername);
+        final TextView TextViewUsername = view.findViewById(R.id.TextViewUsername);
         TextViewUsername.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -235,8 +229,8 @@ public class ProfileUI extends FragmentView
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextUsername = dialogView.findViewById(R.id.EditTextUsername);
-                EditTextUsername.setText(Username);
-                EditTextUsername.setSelection(Username.length());
+                EditTextUsername.setText(TextViewUsername.getText());
+                EditTextUsername.setSelection(TextViewUsername.length());
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -258,8 +252,7 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        LinearLayout LinearLayoutSaved = view.findViewById(R.id.LinearLayoutSaved);
-        LinearLayoutSaved.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutSaved).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -268,41 +261,40 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewFollowing = view.findViewById(R.id.TextViewFollowing);
+        final TextView TextViewFollowing = view.findViewById(R.id.TextViewFollowing);
         TextViewFollowing.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // TODO Open Saved Page
+                // TODO Open Following Page
             }
         });
 
-        TextView TextViewFollower = view.findViewById(R.id.TextViewFollower);
+        final TextView TextViewFollower = view.findViewById(R.id.TextViewFollower);
         TextViewFollower.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // TODO Open Saved Page
+                // TODO Open Follower Page
             }
         });
 
-        TextView TextViewProfileView = view.findViewById(R.id.TextViewProfileView);
+        final TextView TextViewProfileView = view.findViewById(R.id.TextViewProfileView);
         TextViewProfileView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // TODO Open Saved Page
+                // TODO Open ProfileView Page
             }
         });
 
-        TextView TextViewRating = view.findViewById(R.id.TextViewRating);
-        TextView TextViewRate = view.findViewById(R.id.TextViewRate);
+        final TextView TextViewRating = view.findViewById(R.id.TextViewRating);
+        final TextView TextViewRate = view.findViewById(R.id.TextViewRate);
 
-        LinearLayout LinearLayoutRating = view.findViewById(R.id.LinearLayoutRating);
-        LinearLayoutRating.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutRating).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -311,20 +303,18 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        LinearLayout LinearLayoutSpecial = view.findViewById(R.id.LinearLayoutSpecial);
-        LinearLayoutSpecial.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutSpecial).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Activity.GetManager().OpenView(new Profile_SpecialCenterUI(), R.id.ContainerFull, "Profile_SpecialCenterUI");
+                Activity.GetManager().OpenView(new Profile_SpecialCenterUI(), "Profile_SpecialCenterUI", true);
             }
         });
 
-        TextView TextViewPhoneNumber = view.findViewById(R.id.TextViewPhoneNumber);
+        final TextView TextViewPhoneNumber = view.findViewById(R.id.TextViewPhoneNumber);
 
-        LinearLayout LinearLayoutPhoneNumber = view.findViewById(R.id.LinearLayoutPhoneNumber);
-        LinearLayoutPhoneNumber.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutPhoneNumber).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -339,8 +329,8 @@ public class ProfileUI extends FragmentView
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextPhone = dialogView.findViewById(R.id.EditTextPhone);
-                EditTextPhone.setText(Phone);
-                EditTextPhone.setSelection(Phone.length());
+                EditTextPhone.setText(TextViewPhoneNumber.getText());
+                EditTextPhone.setSelection(TextViewPhoneNumber.length());
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -362,10 +352,9 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewEmailAddress = view.findViewById(R.id.TextViewEmailAddress);
+        final TextView TextViewEmailAddress = view.findViewById(R.id.TextViewEmailAddress);
 
-        LinearLayout LinearLayoutEmail = view.findViewById(R.id.LinearLayoutEmail);
-        LinearLayoutEmail.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutEmail).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -380,8 +369,8 @@ public class ProfileUI extends FragmentView
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextEmail = dialogView.findViewById(R.id.EditTextEmail);
-                EditTextEmail.setText(Email);
-                EditTextEmail.setSelection(Email.length());
+                EditTextEmail.setText(TextViewEmailAddress.getText());
+                EditTextEmail.setSelection(TextViewEmailAddress.length());
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -403,10 +392,9 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewAboutMe = view.findViewById(R.id.TextViewAboutMe);
+        final TextView TextViewAboutMe = view.findViewById(R.id.TextViewAboutMe);
 
-        LinearLayout LinearLayoutAboutMe = view.findViewById(R.id.LinearLayoutAboutMe);
-        LinearLayoutAboutMe.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutAboutMe).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -421,8 +409,8 @@ public class ProfileUI extends FragmentView
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextAbout = dialogView.findViewById(R.id.EditTextAbout);
-                EditTextAbout.setText(About);
-                EditTextAbout.setSelection(About.length());
+                EditTextAbout.setText(TextViewAboutMe.getText());
+                EditTextAbout.setSelection(TextViewAboutMe.length());
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -444,10 +432,9 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewWebsite = view.findViewById(R.id.TextViewWebsite);
+        final TextView TextViewWebsite = view.findViewById(R.id.TextViewWebsite);
 
-        LinearLayout LinearLayoutWebsite = view.findViewById(R.id.LinearLayoutWebsite);
-        LinearLayoutWebsite.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutWebsite).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -462,8 +449,8 @@ public class ProfileUI extends FragmentView
                 ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextWebsite = dialogView.findViewById(R.id.EditTextWebsite);
-                EditTextWebsite.setText(Website);
-                EditTextWebsite.setSelection(Website.length());
+                EditTextWebsite.setText(TextViewWebsite.getText());
+                EditTextWebsite.setSelection(TextViewWebsite.length());
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -485,10 +472,9 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewLocation = view.findViewById(R.id.TextViewLocation);
+        final TextView TextViewLocation = view.findViewById(R.id.TextViewLocation);
 
-        LinearLayout LinearLayoutLocation = view.findViewById(R.id.LinearLayoutLocation);
-        LinearLayoutLocation.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutLocation).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -535,16 +521,15 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        TextView TextViewTag1 = view.findViewById(R.id.TextViewTag1);
-        TextView TextViewTag2 = view.findViewById(R.id.TextViewTag2);
-        TextView TextViewTag3 = view.findViewById(R.id.TextViewTag3);
-        TextView TextViewTag4 = view.findViewById(R.id.TextViewTag4);
-        TextView TextViewTag5 = view.findViewById(R.id.TextViewTag5);
-        TextView TextViewTag6 = view.findViewById(R.id.TextViewTag6);
-        TextView TextViewTag7 = view.findViewById(R.id.TextViewTag7);
+        final TextView TextViewFeature1 = view.findViewById(R.id.TextViewTag1);
+        final TextView TextViewFeature2 = view.findViewById(R.id.TextViewTag2);
+        final TextView TextViewFeature3 = view.findViewById(R.id.TextViewTag3);
+        final TextView TextViewFeature4 = view.findViewById(R.id.TextViewTag4);
+        final TextView TextViewFeature5 = view.findViewById(R.id.TextViewTag5);
+        final TextView TextViewFeature6 = view.findViewById(R.id.TextViewTag6);
+        final TextView TextViewFeature7 = view.findViewById(R.id.TextViewTag7);
 
-        LinearLayout LinearLayoutFeature = view.findViewById(R.id.LinearLayoutFeature);
-        LinearLayoutFeature.setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutFeature).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -578,10 +563,32 @@ public class ProfileUI extends FragmentView
             }
         });
 
-        LoadingView LoadingViewMain = view.findViewById(R.id.LoadingViewMain);
+        final StatefulLayout StatefulLayoutMain = view.findViewById(R.id.StatefulLayoutMain);
 
-        // TODO Cache
-        // TODO Server
+        switch (new Random().nextInt(3))
+        {
+            case 0:
+                StatefulLayoutMain.Connection(Misc.ToDP(120));
+                break;
+            case 1:
+                StatefulLayoutMain.Loading();
+                break;
+            case 2:
+                StatefulLayoutMain.Content(Misc.ToDP(120));
+                break;
+        }
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                StatefulLayoutMain.Hide();
+            }
+        }, 5000);
+
+        // TODO Implement Cache
+        // TODO Update From Server
 
         TextViewUsername.setText("@alikhazaee");
         TextViewName.setText("Ali Khazaee");
@@ -595,13 +602,13 @@ public class ProfileUI extends FragmentView
         TextViewAboutMe.setText("I am e Sosis");
         TextViewWebsite.setText("https://google.com");
         TextViewLocation.setText("Karaj - MehrShahr");
-        TextViewTag1.setText("Developer");
-        TextViewTag2.setText("PHP");
-        TextViewTag3.setText("Node JS");
-        TextViewTag4.setText("Sexy Lady");
-        TextViewTag5.setText("Hava Garm e Haa");
-        TextViewTag6.setText("Tanbe 1000");
-        TextViewTag7.setText("9103");
+        TextViewFeature1.setText("Developer");
+        TextViewFeature2.setText("PHP");
+        TextViewFeature3.setText("Node JS");
+        TextViewFeature4.setText("Sexy Lady");
+        TextViewFeature5.setText("Hava Garm e Haa");
+        TextViewFeature6.setText("Tanbe 1000");
+        TextViewFeature7.setText("9103");
 
         ViewMain = view;
     }

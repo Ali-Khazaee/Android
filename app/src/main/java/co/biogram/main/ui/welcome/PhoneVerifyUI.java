@@ -42,7 +42,6 @@ import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.R;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
@@ -716,7 +715,7 @@ class PhoneVerifyUI extends FragmentView
 
                                         RelativeLayoutMain.setAnimation(Anim);
 
-                                        Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), R.id.ContainerFull, "UsernameUI");
+                                        Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), "UsernameUI", true);
                                         break;
                                     case 1:
                                     case 2:
@@ -784,12 +783,12 @@ class PhoneVerifyUI extends FragmentView
 
                                         RelativeLayoutMain.setAnimation(Anim);
 
-                                        SharedHandler.SetBoolean("IsLogin", true);
-                                        SharedHandler.SetBoolean("IsGoogle", false);
-                                        SharedHandler.SetString("Token", Result.getString("Token"));
-                                        SharedHandler.SetString("ID", Result.getString("ID"));
-                                        SharedHandler.SetString("Username", Result.getString("Username"));
-                                        SharedHandler.SetString("Avatar", Result.getString("Avatar"));
+                                        Misc.SetBoolean("IsLogin", true);
+                                        Misc.SetBoolean("IsGoogle", false);
+                                        Misc.SetString("Token", Result.getString("Token"));
+                                        Misc.SetString("ID", Result.getString("ID"));
+                                        Misc.SetString("Username", Result.getString("Username"));
+                                        Misc.SetString("Avatar", Result.getString("Avatar"));
 
                                         Activity.startActivity(new Intent(Activity, SocialActivity.class));
                                         Activity.finish();
@@ -884,7 +883,6 @@ class PhoneVerifyUI extends FragmentView
         Activity.unregisterReceiver(VerifyReceiver);
 
         CountDownTimerResend.cancel();
-        super.OnDestroy();
     }
 
     private final BroadcastReceiver VerifyReceiver = new BroadcastReceiver()

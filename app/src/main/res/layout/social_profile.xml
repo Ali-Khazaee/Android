@@ -596,11 +596,10 @@
 
     </ScrollView>
 
-    <co.biogram.main.ui.view.LoadingView
-        android:id="@+id/LoadingViewMain"
+    <co.biogram.main.ui.view.StatefulLayout
+        android:id="@+id/StatefulLayoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:background="?GroundColor" />
 
 </RelativeLayout>

@@ -200,6 +200,13 @@ public class Misc
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
     }
 
+    public static void ChangeTheme()
+    {
+        SharedPreferences.Editor Editor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+        Editor.putBoolean("ThemeDark", !Misc.GetBoolean("ThemeDark"));
+        // noinspection all
+        Editor.commit();
+    }
 
 
 
@@ -527,33 +534,20 @@ public class Misc
         }
     }
 
-    public static void ChangeTheme()
-    {
-        SharedPreferences.Editor Editor = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit();
-        Editor.putBoolean("IsDark", !SharedHandler.GetBoolean("IsDark"));
-        // noinspection all
-        Editor.commit();
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        if (alarmManager != null)
-            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, new Intent(context, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
-
-        System.exit(0);
-    }
 
 
 
     public static boolean IsDark()
     {
-        return SharedHandler.GetBoolean("IsDark");
+        return Misc.GetBoolean("IsDark");
     }
 
     public static void IsFullScreen(Activity activity, boolean Show)
     {
-        if (Show && SharedHandler.GetBoolean("IsFullScreen"))
+        if (Show && Misc.GetBoolean("IsFullScreen"))
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        else if (!Show && !SharedHandler.GetBoolean("IsFullScreen"))
+        else if (!Show && !Misc.GetBoolean("IsFullScreen"))
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 

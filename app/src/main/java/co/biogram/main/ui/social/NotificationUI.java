@@ -6,7 +6,6 @@ import android.widget.RelativeLayout;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SharedHandler;
 import co.biogram.main.ui.view.TextView;
 
 public class NotificationUI extends FragmentView
@@ -51,7 +50,7 @@ public class NotificationUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                if (SharedHandler.GetString("Language").equals("fa"))
+                if (Misc.GetString("Language").equals("fa"))
                     Misc.ChangeLanguage("en");
                 else
                     Misc.ChangeLanguage("fa");

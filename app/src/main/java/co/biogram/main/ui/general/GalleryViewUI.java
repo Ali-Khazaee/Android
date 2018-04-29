@@ -436,7 +436,7 @@ public class GalleryViewUI extends FragmentView
                             }
                         });
 
-                        Activity.GetManager().OpenView(vp, R.id.ContainerFull, "VideoPreviewUI");
+                        Activity.GetManager().OpenView(vp, "VideoPreviewUI", true);
                     }
                     else if (GalleryType == TYPE_IMAGE)
                     {
@@ -469,7 +469,7 @@ public class GalleryViewUI extends FragmentView
                             }
                         });
 
-                        Activity.GetManager().OpenView(ip, R.id.ContainerFull, "ImagePreviewUI");
+                        Activity.GetManager().OpenView(ip, "ImagePreviewUI", true);
                     }
                 }
             });

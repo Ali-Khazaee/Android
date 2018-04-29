@@ -14,8 +14,8 @@ import com.androidnetworking.AndroidNetworking;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.view.CircleImageView;
 import co.biogram.main.ui.view.TextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostUI extends FragmentView
 {
@@ -173,9 +173,9 @@ public class PostUI extends FragmentView
 
         final CircleImageView CircleImageViewProfile = new CircleImageView(Activity);
         CircleImageViewProfile.setLayoutParams(CircleImageViewProfileParam);
-        CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
+        //CircleImageViewProfile.SetBorderColor(R.color.LineWhite);
         CircleImageViewProfile.setId(ID1_PROFILE);
-        CircleImageViewProfile.SetBorderWidth(1);
+        //CircleImageViewProfile.SetBorderWidth(1);
 
         RelativeLayoutScroll.addView(CircleImageViewProfile);
 
@@ -995,8 +995,8 @@ public class PostUI extends FragmentView
 
         AndroidNetworking.post(Misc.GetRandomServer("PostDetail"))
         .addQueryParameter("PostID", ID)
-        .addHeaders("Token", SharedHandler.GetString( "Token"))
-        .setTag("ProfileUI")
+        .addHeaders("Token", Misc.GetString( "Token"))
+        .setTag("Profile_UI")
         .build()
         .getAsString(new StringRequestListener()
         {
@@ -1355,7 +1355,7 @@ public class PostUI extends FragmentView
                                             AndroidNetworking.post(Misc.GetRandomServer("PostVote"))
                                             .addBodyParameter("Post", P.ID)
                                             .addBodyParameter("Vote", String.valueOf(Sel))
-                                            .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                            .addHeaders("Token", Misc.GetString( "Token"))
                                             .setTag("PostUI")
                                             .build()
                                             .getAsString(new StringRequestListener()
@@ -1839,7 +1839,7 @@ public class PostUI extends FragmentView
 
                                 AndroidNetworking.post(Misc.GetRandomServer("PostLike"))
                                 .addBodyParameter("PostID", P.ID)
-                                .addHeaders("Token", SharedHandler.GetString( "Token"))
+                                .addHeaders("Token", Misc.GetString( "Token"))
                                 .setTag("PostUI")
                                 .build()
                                 .getAsString(null);
