@@ -79,7 +79,7 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
 
         TextView Tag = new TextView(getContext());
         Tag.setPadding(Misc.ToDP(10), Misc.ToDP(5), Misc.ToDP(10), Misc.ToDP(5));
-        Tag.setBackgroundResource(R.drawable.___profile_tag_border);
+        Tag.setBackgroundResource(R.drawable.z_social_profile_feature);
         Tag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         Tag.setTextColor(Misc.Color(R.color.Primary));
         Tag.setGravity(Gravity.CENTER);

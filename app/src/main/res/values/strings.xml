@@ -33,6 +33,45 @@
     <string name="SocialProfileSpecialCenterUICreditDialogTime">Time:</string>
     <string name="SocialProfileSpecialCenterUICreditDialogStatus">Status:</string>
 
+    <!-- Profile UI -->
+    <string name="SocialProfileUI">Profile</string>
+    <string name="SocialProfileUIBookmark">Saved</string>
+    <string name="SocialProfileUIFollower">Followers</string>
+    <string name="SocialProfileUIFollowing">Following</string>
+    <string name="SocialProfileUIProfileView">Profile View</string>
+    <string name="SocialProfileUINotSet">Not Set</string>
+    <string name="SocialProfileUIRating">Rating</string>
+    <string name="SocialProfileUIRate">Rate</string>
+    <string name="SocialProfileUISpecial">Special Center</string>
+    <string name="SocialProfileUIPhoneNumber">Phone Number</string>
+    <string name="SocialProfileUIEmailAddress">Email Address</string>
+    <string name="SocialProfileUIAboutMe">About Me</string>
+    <string name="SocialProfileUIWebsite">Website</string>
+    <string name="SocialProfileUILocation">Location</string>
+    <string name="SocialProfileUIFeature">Features</string>
+    <string name="ProfileUIFeatureTitle">Set Your Features</string>
+    <string name="ProfileUIFeatureMessage">Add your features so those other can identify you based on them</string>
+    <string name="ProfileUIFeatureTag">Write Your Feature</string>
+    <string name="ProfileUIAvatar">Set Profile Photo</string>
+    <string name="ProfileUIAvatarCamera">Set From Camera</string>
+    <string name="SocialProfileUIAvatarCameraMessage">To allow take picture from camera you should allow camera permission</string>
+    <string name="ProfileUIAvatarGallery">Set From Gallery</string>
+    <string name="SocialProfileUIAvatarGalleryMessage">To allow pick image from gallery you should allow read sotrage permission</string>
+    <string name="ProfileUIAvatarDelete">Remove Profile Photo</string>
+    <string name="ProfileUIName">Set Your Name</string>
+    <string name="ProfileUINameHint">Name</string>
+    <string name="ProfileUIUsername">Set Your Username</string>
+    <string name="ProfileUIUsernameHint">Username</string>
+    <string name="ProfileUIPhone">Set Your Phone</string>
+    <string name="ProfileUIPhoneHint">Phone</string>
+    <string name="ProfileUIEmail">Set Your Email</string>
+    <string name="ProfileUIEmailHint">Email</string>
+    <string name="ProfileUIAbout">Set Your About</string>
+    <string name="ProfileUIAboutHint">About Me</string>
+    <string name="ProfileUIWebsiteHint">Website</string>
+    <string name="ProfileUILocationTitle">Set Your Location</string>
+    <string name="ProfileUILocationHint">Location</string>
+    <string name="ProfileUISubmit">Submit</string>
 
 
 
@@ -74,7 +113,13 @@
 
 
 
-    <!-- Dialog Permission -->
+
+
+
+
+
+
+
 
     <!-- General -->
     <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
@@ -381,45 +426,7 @@
 
 
 
-    <!-- Profile UI -->
-    <string name="ProfileUI">Profile</string>
-    <string name="ProfileUISaved">Saved</string>
-    <string name="ProfileUIFollower">Followers</string>
-    <string name="ProfileUIFollowing">Following</string>
-    <string name="ProfileUIProfileView">Profile View</string>
-    <string name="ProfileUINotSet">Not Set</string>
-    <string name="ProfileUIRating">Rating</string>
-    <string name="ProfileUIRate">Rate</string>
-    <string name="ProfileUISpecial">Special Center</string>
-    <string name="ProfileUIPhoneNumber">Phone Number</string>
-    <string name="ProfileUIEmailAddress">Email Address</string>
-    <string name="ProfileUIAboutMe">About Me</string>
-    <string name="ProfileUIWebsite">Website</string>
-    <string name="ProfileUILocation">Location</string>
-    <string name="ProfileUIFeature">Features</string>
-    <string name="ProfileUIFeatureTitle">Set Your Features</string>
-    <string name="ProfileUIFeatureMessage">Add your features so those other can identify you based on them</string>
-    <string name="ProfileUIFeatureTag">Write Your Feature</string>
-    <string name="ProfileUIAvatar">Set Profile Photo</string>
-    <string name="ProfileUIAvatarCamera">Set From Camera</string>
-    <string name="SocialProfileUIAvatarCameraMessage">To allow take picture from camera you should allow camera permission</string>
-    <string name="ProfileUIAvatarGallery">Set From Gallery</string>
-    <string name="SocialProfileUIAvatarGalleryMessage">To allow pick image from gallery you should allow read sotrage permission</string>
-    <string name="ProfileUIAvatarDelete">Remove Profile Photo</string>
-    <string name="ProfileUIName">Set Your Name</string>
-    <string name="ProfileUINameHint">Name</string>
-    <string name="ProfileUIUsername">Set Your Username</string>
-    <string name="ProfileUIUsernameHint">Username</string>
-    <string name="ProfileUIPhone">Set Your Phone</string>
-    <string name="ProfileUIPhoneHint">Phone</string>
-    <string name="ProfileUIEmail">Set Your Email</string>
-    <string name="ProfileUIEmailHint">Email</string>
-    <string name="ProfileUIAbout">Set Your About</string>
-    <string name="ProfileUIAboutHint">About Me</string>
-    <string name="ProfileUIWebsiteHint">Website</string>
-    <string name="ProfileUILocationTitle">Set Your Location</string>
-    <string name="ProfileUILocationHint">Location</string>
-    <string name="ProfileUISubmit">Submit</string>
+
 
     <!-- General Dialog Permission -->
     <string name="GeneralDialogPermissionAccept">ALLOW</string>

@@ -29,6 +29,8 @@ public class FragmentManager
             return;
         }
 
+        // TODO If Exist ReOpen FindByTag(Tag);
+
         if (FragmentList.size() > 0)
         {
             FragmentView Frag2 = FragmentList.get(FragmentList.size() - 1);

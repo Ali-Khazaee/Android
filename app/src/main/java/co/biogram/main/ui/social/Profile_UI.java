@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import java.util.Random;
 
-import co.biogram.main.ui.view.StatefulLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import co.biogram.main.R;
@@ -25,8 +24,8 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.general.CameraViewUI;
 import co.biogram.main.ui.general.CropViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
-import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
+import co.biogram.main.ui.view.StatefulLayout;
 
 public class Profile_UI extends FragmentView
 {
@@ -163,7 +162,7 @@ public class Profile_UI extends FragmentView
                     public void onClick(View v)
                     {
                         dialog.dismiss();
-                        CircleImageViewProfile.setImageResource(R.drawable.___social_profile_avatar);
+                        CircleImageViewProfile.setImageResource(R.drawable.z_social_profile_avatar);
 
                         // TODO Request Delete Profile Image
                     }
@@ -252,7 +251,7 @@ public class Profile_UI extends FragmentView
             }
         });
 
-        view.findViewById(R.id.LinearLayoutSaved).setOnClickListener(new View.OnClickListener()
+        view.findViewById(R.id.LinearLayoutBookmark).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
