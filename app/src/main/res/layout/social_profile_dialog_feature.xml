@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,7 +10,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_alignParentStart="true"
-        android:text="@string/ProfileUIFeatureTitle"
+        android:text="@string/SocialProfileUIFeatureTitle"
         android:textStyle="bold"
         android:textSize="@dimen/FontVerySmall"
         android:gravity="center_vertical"
@@ -21,7 +21,7 @@
         android:id="@+id/ImageViewClose"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
-        android:padding="10dp"
+        android:padding="9dp"
         android:src="@drawable/z_general_close_blue"
         android:layout_alignParentEnd="true" />
 
@@ -34,18 +34,21 @@
 
     <TextView
         android:id="@+id/TextViewMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ViewLine"
-        android:text="@string/ProfileUIFeatureMessage"
-        android:textColor="@color/Gray"
-        android:textSize="@dimen/FontVerySmall"
-        android:padding="15dp" />
-
-    <co.biogram.main.ui.view.EditTextTag
-        android:id="@+id/EditTagFeature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontVerySmall"
+        android:paddingTop="10dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_below="@+id/ViewLine"
+        android:text="@string/SocialProfileUIFeatureMessage" />
+
+    <co.biogram.main.ui.view.EditTextTag
+        android:id="@+id/EditTextTagFeature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_below="@+id/TextViewMessage" />
@@ -54,11 +57,22 @@
         android:id="@+id/TextViewSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/EditTagFeature"
+        android:layout_below="@+id/EditTextTagFeature"
         android:layout_alignParentEnd="true"
-        android:text="@string/ProfileUISubmit"
+        android:text="@string/SocialProfileUISubmit"
         android:textColor="@color/Primary"
         android:textSize="@dimen/FontMedium"
+        android:padding="20dp" />
+
+    <TextView
+        android:id="@+id/TextViewAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EditTextTagFeature"
+        android:layout_alignParentStart="true"
+        android:text="@string/SocialProfileUIFeatureAdd"
+        android:textColor="@color/Primary"
+        android:textSize="@dimen/FontSmall"
         android:padding="20dp" />
 
 </RelativeLayout>

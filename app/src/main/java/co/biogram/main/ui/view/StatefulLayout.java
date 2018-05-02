@@ -100,7 +100,7 @@ public class StatefulLayout extends LinearLayout
 
         ImageView ImageViewIcon = new ImageView(getContext());
         ImageViewIcon.setLayoutParams(new LayoutParams(Size, Size));
-        ImageViewIcon.setImageResource(R.drawable.z_social_activity_profile);  // TODO Icon
+        ImageViewIcon.setImageResource(R.drawable.z_social_stateful_network);
 
         addView(ImageViewIcon);
 
@@ -131,7 +131,7 @@ public class StatefulLayout extends LinearLayout
 
         ImageView ImageViewIcon = new ImageView(getContext());
         ImageViewIcon.setLayoutParams(new LayoutParams(Size, Size));
-        ImageViewIcon.setImageResource(R.drawable.z_social_activity_profile); // TODO Icon
+        ImageViewIcon.setImageResource(R.drawable.z_social_stateful_content);
 
         addView(ImageViewIcon);
 

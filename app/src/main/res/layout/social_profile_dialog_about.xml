@@ -10,7 +10,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_alignParentStart="true"
-        android:text="@string/ProfileUIAbout"
+        android:text="@string/SocialProfileUIAbout"
         android:textStyle="bold"
         android:textSize="@dimen/FontVerySmall"
         android:gravity="center_vertical"
@@ -21,7 +21,7 @@
         android:id="@+id/ImageViewClose"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
-        android:padding="10dp"
+        android:padding="9dp"
         android:src="@drawable/z_general_close_blue"
         android:layout_alignParentEnd="true" />
 
@@ -39,6 +39,16 @@
         android:gravity="end"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/FontVerySmall"
+            android:paddingTop="10dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="@string/SocialProfileUIAboutMessage" />
+
         <EditText
             android:id="@+id/EditTextAbout"
             android:layout_width="match_parent"
@@ -46,7 +56,7 @@
             android:minHeight="@dimen/ActionBar"
             android:textSize="@dimen/FontMedium"
             android:textColor="?TextColor"
-            android:hint="@string/ProfileUIAboutHint"
+            android:hint="@string/SocialProfileUIAboutHint"
             android:padding="10dp"
             android:layout_margin="10dp"
             android:maxLines="6"
@@ -57,7 +67,7 @@
             android:id="@+id/TextViewSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ProfileUISubmit"
+            android:text="@string/SocialProfileUISubmit"
             android:textColor="@color/Primary"
             android:textSize="@dimen/FontMedium"
             android:padding="20dp" />

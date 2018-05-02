@@ -49,14 +49,14 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
         super(context, attrs, defStyleAttr);
 
         FlowLayoutMain = new FlowLayout(getContext());
-        FlowLayoutMain.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        FlowLayoutMain.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
         addView(FlowLayoutMain);
 
         EditTextMain = new TagEditText(getContext());
-        EditTextMain.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        EditTextMain.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         EditTextMain.setPadding(Misc.ToDP(8), 0, Misc.ToDP(8), Misc.ToDP(14));
-        EditTextMain.setHint(Misc.String(R.string.ProfileUIFeatureTag));
+        EditTextMain.setHint(Misc.String(R.string.SocialProfileUIFeatureTag));
         EditTextMain.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextMain.setImeOptions(EditorInfo.IME_ACTION_DONE);
         EditTextMain.setOnEditorActionListener(this);
@@ -121,8 +121,8 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
                     if (TagList.size() > 0 && LastSelectTagView != null)
                     {
                         IsDelAction = false;
-                        FlowLayoutMain.removeView(LastSelectTagView);
                         TagList.remove(FlowLayoutMain.indexOfChild(LastSelectTagView));
+                        FlowLayoutMain.removeView(LastSelectTagView);
                         LastSelectTagView = null;
                     }
                 }
@@ -143,27 +143,36 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
         boolean Handle = false;
 
         if (ActionID == EditorInfo.IME_ACTION_DONE)
-        {
-            String Tag = EditTextMain.getText().toString();
-
-            if (!TextUtils.isEmpty(Tag))
-            {
-                TextView TagView = CreateTag(Tag);
-                TagView.setOnClickListener(EditTextTag.this);
-
-                FlowLayoutMain.addView(TagView, FlowLayoutMain.getChildCount() - 1);
-                EditTextMain.getText().clear();
-                EditTextMain.performClick();
-                IsDelAction = false;
-                TagList.add(Tag);
-                Handle = true;
-
-                if (DrawableTag == null)
-                    DrawableTag = TagView.getBackground();
-            }
-        }
+            Handle = Add();
 
         return Handle;
+    }
+
+    public boolean Add()
+    {
+        if (TagList.size() > 7)
+            return false;
+
+        String Tag = EditTextMain.getText().toString();
+
+        if (Tag.length() > 1 && Tag.length() < 32)
+        {
+            TextView TagView = CreateTag(Tag);
+            TagView.setOnClickListener(EditTextTag.this);
+
+            FlowLayoutMain.addView(TagView, FlowLayoutMain.getChildCount() - 1);
+            EditTextMain.getText().clear();
+            EditTextMain.performClick();
+            IsDelAction = false;
+            TagList.add(Tag);
+
+            if (DrawableTag == null)
+                DrawableTag = TagView.getBackground();
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override

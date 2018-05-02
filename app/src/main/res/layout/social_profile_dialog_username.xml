@@ -10,7 +10,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_alignParentStart="true"
-        android:text="@string/ProfileUIUsername"
+        android:text="@string/SocialProfileUIUsername"
         android:textStyle="bold"
         android:textSize="@dimen/FontVerySmall"
         android:gravity="center_vertical"
@@ -39,13 +39,23 @@
         android:gravity="end"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/FontVerySmall"
+            android:paddingTop="10dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="@string/SocialProfileUIUsernameMessage" />
+
         <EditText
             android:id="@+id/EditTextUsername"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ActionBar"
             android:textSize="@dimen/FontMedium"
             android:textColor="?TextColor"
-            android:hint="@string/ProfileUIUsernameHint"
+            android:hint="@string/SocialProfileUIUsernameHint"
             android:padding="10dp"
             android:layout_margin="10dp"
             android:maxLines="1"
@@ -56,7 +66,7 @@
             android:id="@+id/TextViewSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ProfileUISubmit"
+            android:text="@string/SocialProfileUISubmit"
             android:textColor="@color/Primary"
             android:textSize="@dimen/FontMedium"
             android:padding="20dp" />

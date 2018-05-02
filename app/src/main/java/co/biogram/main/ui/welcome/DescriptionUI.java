@@ -230,7 +230,7 @@ public class DescriptionUI extends FragmentView
                         DialogProfile.dismiss();
 
                         PermissionDialog PermissionDialogCamera = new PermissionDialog(Activity);
-                        PermissionDialogCamera.SetContentView(R.drawable.___general_permission_camera, R.string.DescriptionUIPermissionCamera, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener()
+                        PermissionDialogCamera.SetContentView(R.drawable.z_general_permission_camera, R.string.DescriptionUIPermissionCamera, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
                             public void OnChoice(boolean Allow)
@@ -298,7 +298,7 @@ public class DescriptionUI extends FragmentView
                         DialogProfile.dismiss();
 
                         PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                        PermissionDialogGallery.SetContentView(R.drawable.___general_permission_storage, R.string.DescriptionUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
+                        PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.DescriptionUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
                             public void OnChoice(boolean Allow)

@@ -10,7 +10,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_alignParentStart="true"
-        android:text="@string/ProfileUILocationTitle"
+        android:text="@string/SocialProfileUILocationTitle"
         android:textStyle="bold"
         android:textSize="@dimen/FontVerySmall"
         android:gravity="center_vertical"
@@ -21,7 +21,7 @@
         android:id="@+id/ImageViewClose"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
-        android:padding="10dp"
+        android:padding="9dp"
         android:src="@drawable/z_general_close_blue"
         android:layout_alignParentEnd="true" />
 
@@ -32,15 +32,27 @@
         android:layout_below="@+id/ImageViewClose"
         android:background="?LineColor" />
 
+    <TextView
+        android:id="@+id/TextViewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontVerySmall"
+        android:paddingTop="10dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_below="@+id/ViewLine"
+        android:text="@string/SocialProfileUILocationMessage" />
+
     <EditText
         android:id="@+id/EditTextLocation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ActionBar"
-        android:layout_below="@+id/ViewLine"
+        android:layout_below="@+id/TextViewMessage"
         android:layout_toLeftOf="@+id/ImageViewSearch"
         android:textSize="@dimen/FontMedium"
         android:textColor="?TextColor"
-        android:hint="@string/ProfileUILocationHint"
+        android:hint="@string/SocialProfileUILocationHint"
         android:padding="10dp"
         android:layout_margin="10dp"
         android:maxLines="1"
@@ -51,10 +63,10 @@
         android:id="@+id/ImageViewSearch"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_below="@+id/ViewLine"
+        android:layout_below="@+id/TextViewMessage"
         android:src="@drawable/_inbox_search"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
         android:layout_alignParentEnd="true" />
 
     <View

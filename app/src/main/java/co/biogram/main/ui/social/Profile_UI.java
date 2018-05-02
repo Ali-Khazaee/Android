@@ -2,15 +2,16 @@ package co.biogram.main.ui.social;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.ui.view.EditTextTag;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.general.CameraViewUI;
 import co.biogram.main.ui.general.CropViewUI;
@@ -64,19 +66,16 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_avatar, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
-                TextView TextViewCamera = dialogView.findViewById(R.id.TextViewCamera);
-                TextViewCamera.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewCamera).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
                         dialog.dismiss();
 
-                        PermissionDialog permissionDialog = new PermissionDialog(Activity);
-                        permissionDialog.SetContentView(R.drawable.___general_permission_camera, R.string.SocialProfileUIAvatarCameraMessage, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener()
+                        new PermissionDialog(Activity).SetContentView(R.drawable.z_general_permission_camera, R.string.SocialProfileUIAvatarCameraMessage, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
                             public void OnChoice(boolean Result)
@@ -100,16 +99,14 @@ public class Profile_UI extends FragmentView
                     }
                 });
 
-                TextView TextViewGallery = dialogView.findViewById(R.id.TextViewGallery);
-                TextViewGallery.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewGallery).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
                         dialog.dismiss();
 
-                        PermissionDialog permissionDialog = new PermissionDialog(Activity);
-                        permissionDialog.SetContentView(R.drawable.___general_permission_storage, R.string.SocialProfileUIAvatarGalleryMessage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
+                        new PermissionDialog(Activity).SetContentView(R.drawable.z_general_permission_storage, R.string.SocialProfileUIAvatarGalleryMessage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
                             public void OnChoice(boolean Result)
@@ -145,6 +142,7 @@ public class Profile_UI extends FragmentView
                                             public void OnCrop(Bitmap bitmap)
                                             {
                                                 Activity.onBackPressed();
+
                                                 // TODO Send avaar
                                             }
                                         }), "CropViewUI", true);
@@ -155,8 +153,7 @@ public class Profile_UI extends FragmentView
                     }
                 });
 
-                TextView TextViewDelete = dialogView.findViewById(R.id.TextViewDelete);
-                TextViewDelete.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewDelete).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -185,18 +182,19 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_name, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
-                EditText EditTextName = dialogView.findViewById(R.id.EditTextName);
+                final EditText EditTextName = dialogView.findViewById(R.id.EditTextName);
                 EditTextName.setText(TextViewName.getText());
                 EditTextName.setSelection(TextViewName.length());
+
+                Misc.SetCursorColor(EditTextName, R.color.Primary);
+                ViewCompat.setBackgroundTintList(EditTextName, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                TextView TextViewSubmit = dialogView.findViewById(R.id.TextViewSubmit);
-                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -224,18 +222,19 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_username, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextUsername = dialogView.findViewById(R.id.EditTextUsername);
-                EditTextUsername.setText(TextViewUsername.getText());
+                EditTextUsername.setText(TextViewUsername.getText().toString().substring(1));
                 EditTextUsername.setSelection(TextViewUsername.length());
+
+                Misc.SetCursorColor(EditTextUsername, R.color.Primary);
+                ViewCompat.setBackgroundTintList(EditTextUsername, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                TextView TextViewSubmit = dialogView.findViewById(R.id.TextViewSubmit);
-                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -324,18 +323,19 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_phone, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextPhone = dialogView.findViewById(R.id.EditTextPhone);
                 EditTextPhone.setText(TextViewPhoneNumber.getText());
                 EditTextPhone.setSelection(TextViewPhoneNumber.length());
 
+                Misc.SetCursorColor(EditTextPhone, R.color.Primary);
+                ViewCompat.setBackgroundTintList(EditTextPhone, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
+
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                TextView TextViewSubmit = dialogView.findViewById(R.id.TextViewSubmit);
-                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -364,18 +364,19 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_email, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextEmail = dialogView.findViewById(R.id.EditTextEmail);
                 EditTextEmail.setText(TextViewEmailAddress.getText());
                 EditTextEmail.setSelection(TextViewEmailAddress.length());
 
+                Misc.SetCursorColor(EditTextEmail, R.color.Primary);
+                ViewCompat.setBackgroundTintList(EditTextEmail, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
+
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                TextView TextViewSubmit = dialogView.findViewById(R.id.TextViewSubmit);
-                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -404,18 +405,19 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_about, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
                 final EditText EditTextAbout = dialogView.findViewById(R.id.EditTextAbout);
                 EditTextAbout.setText(TextViewAboutMe.getText());
                 EditTextAbout.setSelection(TextViewAboutMe.length());
 
+                Misc.SetCursorColor(EditTextAbout, R.color.Primary);
+                ViewCompat.setBackgroundTintList(EditTextAbout, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
+
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                TextView TextViewSubmit = dialogView.findViewById(R.id.TextViewSubmit);
-                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -444,18 +446,21 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_website, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+
+                String URL = TextViewWebsite.length() == 0 ? "http://" : TextViewWebsite.getText().toString();
 
                 final EditText EditTextWebsite = dialogView.findViewById(R.id.EditTextWebsite);
-                EditTextWebsite.setText(TextViewWebsite.getText());
-                EditTextWebsite.setSelection(TextViewWebsite.length());
+                EditTextWebsite.setText(URL);
+                EditTextWebsite.setSelection(URL.length());
+
+                Misc.SetCursorColor(EditTextWebsite, R.color.Primary);
+                ViewCompat.setBackgroundTintList(EditTextWebsite, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                TextView TextViewSubmit = dialogView.findViewById(R.id.TextViewSubmit);
-                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -484,17 +489,19 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_location, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
 
-                final ListView ListViewSearch = dialogView.findViewById(R.id.ListViewSearch);
-                final EditText EditTextLocation = dialogView.findViewById(R.id.EditTextLocation);
+                EditText EditTextLocation = dialogView.findViewById(R.id.EditTextLocation);
+
+                Misc.SetCursorColor(EditTextLocation, R.color.Primary);
+                ViewCompat.setBackgroundTintList(EditTextLocation, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-                ImageView ImageViewSearch = dialogView.findViewById(R.id.ImageViewSearch);
-                ImageViewSearch.setOnClickListener(new View.OnClickListener()
+                final ListView ListViewSearch = dialogView.findViewById(R.id.ListViewSearch);
+
+                dialogView.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -520,13 +527,13 @@ public class Profile_UI extends FragmentView
             }
         });
 
-        final TextView TextViewFeature1 = view.findViewById(R.id.TextViewTag1);
-        final TextView TextViewFeature2 = view.findViewById(R.id.TextViewTag2);
-        final TextView TextViewFeature3 = view.findViewById(R.id.TextViewTag3);
-        final TextView TextViewFeature4 = view.findViewById(R.id.TextViewTag4);
-        final TextView TextViewFeature5 = view.findViewById(R.id.TextViewTag5);
-        final TextView TextViewFeature6 = view.findViewById(R.id.TextViewTag6);
-        final TextView TextViewFeature7 = view.findViewById(R.id.TextViewTag7);
+        final TextView TextViewFeature1 = view.findViewById(R.id.TextViewFeature1);
+        final TextView TextViewFeature2 = view.findViewById(R.id.TextViewFeature2);
+        final TextView TextViewFeature3 = view.findViewById(R.id.TextViewFeature3);
+        final TextView TextViewFeature4 = view.findViewById(R.id.TextViewFeature4);
+        final TextView TextViewFeature5 = view.findViewById(R.id.TextViewFeature5);
+        final TextView TextViewFeature6 = view.findViewById(R.id.TextViewFeature6);
+        final TextView TextViewFeature7 = view.findViewById(R.id.TextViewFeature7);
 
         view.findViewById(R.id.LinearLayoutFeature).setOnClickListener(new View.OnClickListener()
         {
@@ -539,21 +546,30 @@ public class Profile_UI extends FragmentView
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_feature, null);
 
-                ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+
+                final EditTextTag EditTagFeature = dialogView.findViewById(R.id.EditTextTagFeature);
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-                TextView TextViewSubmit = dialogView.findViewById(R.id.TextViewSubmit);
-                TextViewSubmit.setOnClickListener(new View.OnClickListener()
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
                         dialog.dismiss();
 
-                        // TODO Update AboutMe
+                        // TODO Update Feature
+                    }
+                });
+
+                dialogView.findViewById(R.id.TextViewAdd).setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        EditTagFeature.Add();
                     }
                 });
 
