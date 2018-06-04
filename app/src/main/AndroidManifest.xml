@@ -34,8 +34,6 @@
 
         <activity android:name=".activity.SocialActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.ChatActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.messager.Chat_UI" android:screenOrientation="portrait" />
-        <activity android:name=".ui.messager.Contact_Massage_Page" android:screenOrientation="portrait" />
 
         <receiver android:name="co.biogram.main.service.BroadCastService" android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>

@@ -55,11 +55,11 @@ android
     {
         release
         {
-//            storeFile file('E:\\Biogram\\Android\\app\\Sign.jks')
-//            storePassword SignPassword
-//            keyAlias SignAlias
-//            keyPassword SignAliasPassword
-//            v2SigningEnabled false
+            storeFile file('E:\\Biogram\\Android\\app\\Sign.jks')
+            storePassword SignPassword
+            keyAlias SignAlias
+            keyPassword SignAliasPassword
+            v2SigningEnabled false
         }
     }
 
@@ -73,7 +73,7 @@ android
             zipAlignEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
 }

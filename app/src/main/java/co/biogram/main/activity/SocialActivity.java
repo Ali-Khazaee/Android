@@ -1,13 +1,11 @@
 package co.biogram.main.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.messager.Chat_UI;
 import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
@@ -21,7 +19,6 @@ public class SocialActivity extends FragmentActivity
 
     private ImageView ImageViewInbox;
     private ImageView ImageViewMoment;
-    private ImageView ImageViewChat;
     private ImageView ImageViewNotification;
     private ImageView ImageViewProfile;
 
@@ -39,12 +36,8 @@ public class SocialActivity extends FragmentActivity
         ImageViewMoment = findViewById(R.id.ImageViewMoment);
         ImageViewMoment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangePage(2); } });
 
-        ImageViewChat = findViewById(R.id.ImageViewChat);
-        ImageViewChat.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {
-            Intent intent =new Intent(SocialActivity.this,Chat_UI.class);
-            startActivity(intent,null);
-            finish();
-             } });
+        ImageView ImageViewChat = findViewById(R.id.ImageViewChat);
+        ImageViewChat.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangePage(3); } });
 
         ImageViewNotification = findViewById(R.id.ImageViewNotification);
         ImageViewNotification.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangePage(4); } });
@@ -79,9 +72,6 @@ public class SocialActivity extends FragmentActivity
                 break;
             case 3:
                 // TODO - Start Chat Activity
-//                return;
-              //  Tag = "Chat_UI";
-           //     Fragment = new Chat_UI();
                 return;
             case 4:
                 Tag = "NotificationUI";
