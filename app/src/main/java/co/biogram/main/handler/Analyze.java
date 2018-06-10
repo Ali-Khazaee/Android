@@ -2,7 +2,7 @@ package co.biogram.main.handler;
 
 import android.util.Log;
 
-public class AnalyzeHandler
+public class Analyze
 {
     public static void Log(String Tag, Exception e)
     {

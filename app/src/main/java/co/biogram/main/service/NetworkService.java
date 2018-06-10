@@ -4,28 +4,27 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import io.socket.client.Ack;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-
-import co.biogram.main.handler.AnalyzeHandler;
+import co.biogram.socket.Socket;
+import co.biogram.socket.Emitter;
+import co.biogram.main.handler.Analyze;
 
 public class NetworkService extends Service
 {
-    private Socket socket;
+    private static Socket socket;
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
+    public int onStartCommand(Intent intent, int Flags, int StartID)
     {
+        Analyze.Debug("NetworkService", "onStartCommand Called");
+
         try
         {
-            socket = IO.socket(GetBestServer());
-            socket.connect();
+            socket = new Socket(GetBestServer(), 7000);
+            socket.Connect();
         }
         catch (Exception e)
         {
-            AnalyzeHandler.Log("NetworkService", e);
+            Analyze.Log("NetworkService", e);
         }
 
         return START_STICKY;
@@ -37,48 +36,20 @@ public class NetworkService extends Service
         return null;
     }
 
-    public void Emit(String Event, String Message)
+    public static void Emit(String Event, String Data, Emitter.Listener Listener)
     {
-        if (socket == null)
-            return;
-
-        socket.emit(Event, Message);
-    }
-
-    public void Emit(String Event, String Message, Ack ack)
-    {
-        if (socket == null)
-            return;
-
-        socket.emit(Event, Message, ack);
+        Analyze.Debug("NetworkService", "Emit: " + Event);
+        socket.emit(Event, Data, Listener);
     }
 
     public void On(String Event, Emitter.Listener Listener)
     {
-        if (socket == null)
-            return;
-
+        Analyze.Debug("NetworkService", "On: " + Event);
         socket.on(Event, Listener);
-    }
-
-    public void Off(String Event)
-    {
-        if (socket == null)
-            return;
-
-        socket.off(Event);
-    }
-
-    public void Off(String Event, Emitter.Listener Listener)
-    {
-        if (socket == null)
-            return;
-
-        socket.off(Event, Listener);
     }
 
     private String GetBestServer()
     {
-        return "http://198.50.232.192";
+        return "198.50.232.192";
     }
 }

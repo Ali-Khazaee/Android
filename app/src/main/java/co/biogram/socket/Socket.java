@@ -1,5 +1,7 @@
 package co.biogram.socket;
 
+import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -10,8 +12,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Socket {
-    public static final String EVENT_CONNECT = "connect";
+public class Socket
+{
+
+
+
+
+
+
+
+    public static final String EVENT_CONNECT = "Connect";
     public static final String EVENT_SOCKET_CONNECT = "socket_connect";
     public static final String EVENT_CLOSE = "close";
     public static final String EVENT_ERROR = "error";
@@ -49,24 +59,32 @@ public class Socket {
         }
     }
 
-    public void connect() {
-        if (connected) return;
+    public void Connect()
+    {
+        if (connected)
+            return;
 
         manuallyClosed = false;
-        eventThread.run(new Callable<Void>() {
+        eventThread.run(new Callable<Void>()
+        {
             @Override
-            public Void call() throws Exception {
-                socket = new java.net.Socket();
-                socket.connect(new InetSocketAddress(host, port), opts.timeout);
+            public Void call() throws Exception
+            {
+                Log.e("QQ", "connecting to: " + host);
+                socket = new java.net.Socket(host, 7000);
+
                 bufferedInputStream = new BufferedInputStream(socket.getInputStream());
                 bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream());
                 new SocketReceiverThread().start();
                 return null;
             }
-        }).addCallback(new FutureCallback<Void>() {
+        })
+        .addCallback(new FutureCallback<Void>()
+        {
             @Override
-            public void onSuccess(Void result) {
-                connected = true;
+            public void onSuccess(Void result)
+            {
+                connected = true;Log.e("QQ", "vasl shod");
 
                 try {
                     flushQueue();
@@ -78,7 +96,9 @@ public class Socket {
             }
 
             @Override
-            public void onFailure(Throwable failure) {
+            public void onFailure(Throwable failure)
+            {
+                Log.e("QQ", failure.getMessage());
                 emitter.emit(EVENT_ERROR, failure);
                 emitter.emit(EVENT_CLOSE);
 
@@ -252,7 +272,7 @@ public class Socket {
             public Void call() throws Exception {
                 Thread.sleep(opts.reconnectInterval);
                 emitter.emit(EVENT_RECONNECTING);
-                connect();
+                Connect();
                 return null;
             }
         });
