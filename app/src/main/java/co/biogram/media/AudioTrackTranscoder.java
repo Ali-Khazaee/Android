@@ -6,18 +6,17 @@ import android.media.MediaFormat;
 
 import java.io.IOException;
 
-class AudioTrackTranscoder implements TrackTranscoder
-{
+class AudioTrackTranscoder implements TrackTranscoder {
     private static final QueuedMuxer.SampleType SAMPLE_TYPE = QueuedMuxer.SampleType.AUDIO;
     private static final int DRAIN_STATE_NONE = 0;
     private static final int DRAIN_STATE_SHOULD_RETRY_IMMEDIATELY = 1;
     private static final int DRAIN_STATE_CONSUMED = 2;
     private final MediaExtractor mExtractor;
     private final QueuedMuxer mMuxer;
-    private long mWrittenPresentationTimeUs;
     private final int mTrackIndex;
     private final MediaFormat mOutputFormat;
     private final MediaCodec.BufferInfo mBufferInfo = new MediaCodec.BufferInfo();
+    private long mWrittenPresentationTimeUs;
     private MediaCodec mDecoder;
     private MediaCodec mEncoder;
     private MediaFormat mActualOutputFormat;
@@ -30,8 +29,7 @@ class AudioTrackTranscoder implements TrackTranscoder
     private boolean mEncoderStarted;
     private AudioChannel mAudioChannel;
 
-    AudioTrackTranscoder(MediaExtractor extractor, int trackIndex, MediaFormat outputFormat, QueuedMuxer muxer)
-    {
+    AudioTrackTranscoder(MediaExtractor extractor, int trackIndex, MediaFormat outputFormat, QueuedMuxer muxer) {
         mExtractor = extractor;
         mTrackIndex = trackIndex;
         mOutputFormat = outputFormat;
@@ -39,16 +37,12 @@ class AudioTrackTranscoder implements TrackTranscoder
     }
 
     @Override
-    public void setup()
-    {
+    public void setup() {
         mExtractor.selectTrack(mTrackIndex);
 
-        try
-        {
+        try {
             mEncoder = MediaCodec.createEncoderByType(mOutputFormat.getString(MediaFormat.KEY_MIME));
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
 
@@ -58,12 +52,9 @@ class AudioTrackTranscoder implements TrackTranscoder
         mEncoderBuffers = new MediaCodecBufferCompatWrapper(mEncoder);
         final MediaFormat inputFormat = mExtractor.getTrackFormat(mTrackIndex);
 
-        try
-        {
+        try {
             mDecoder = MediaCodec.createDecoderByType(inputFormat.getString(MediaFormat.KEY_MIME));
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
 
@@ -76,16 +67,14 @@ class AudioTrackTranscoder implements TrackTranscoder
 
 
     @Override
-    public boolean stepPipeline()
-    {
+    public boolean stepPipeline() {
         boolean busy = false;
         int status;
 
         while (drainEncoder() != DRAIN_STATE_NONE)
             busy = true;
 
-        do
-        {
+        do {
             status = drainDecoder();
             if (status != DRAIN_STATE_NONE)
                 busy = true;
@@ -101,8 +90,7 @@ class AudioTrackTranscoder implements TrackTranscoder
         return busy;
     }
 
-    private int drainExtractor()
-    {
+    private int drainExtractor() {
         if (mIsExtractorEOS)
             return DRAIN_STATE_NONE;
 
@@ -116,8 +104,7 @@ class AudioTrackTranscoder implements TrackTranscoder
         if (result < 0)
             return DRAIN_STATE_NONE;
 
-        if (trackIndex < 0)
-        {
+        if (trackIndex < 0) {
             mIsExtractorEOS = true;
             mDecoder.queueInputBuffer(result, 0, 0, 0, MediaCodec.BUFFER_FLAG_END_OF_STREAM);
             return DRAIN_STATE_NONE;
@@ -130,15 +117,13 @@ class AudioTrackTranscoder implements TrackTranscoder
         return DRAIN_STATE_CONSUMED;
     }
 
-    private int drainDecoder()
-    {
+    private int drainDecoder() {
         if (mIsDecoderEOS)
             return DRAIN_STATE_NONE;
 
         int result = mDecoder.dequeueOutputBuffer(mBufferInfo, (long) 0);
 
-        switch (result)
-        {
+        switch (result) {
             case MediaCodec.INFO_TRY_AGAIN_LATER:
                 return DRAIN_STATE_NONE;
             case MediaCodec.INFO_OUTPUT_FORMAT_CHANGED:
@@ -147,26 +132,22 @@ class AudioTrackTranscoder implements TrackTranscoder
                 return DRAIN_STATE_SHOULD_RETRY_IMMEDIATELY;
         }
 
-        if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0)
-        {
+        if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
             mIsDecoderEOS = true;
             mAudioChannel.drainDecoderBufferAndQueue(AudioChannel.BUFFER_INDEX_END_OF_STREAM, 0);
-        }
-        else if (mBufferInfo.size > 0)
+        } else if (mBufferInfo.size > 0)
             mAudioChannel.drainDecoderBufferAndQueue(result, mBufferInfo.presentationTimeUs);
 
         return DRAIN_STATE_CONSUMED;
     }
 
-    private int drainEncoder()
-    {
+    private int drainEncoder() {
         if (mIsEncoderEOS)
             return DRAIN_STATE_NONE;
 
         int result = mEncoder.dequeueOutputBuffer(mBufferInfo, (long) 0);
 
-        switch (result)
-        {
+        switch (result) {
             case MediaCodec.INFO_TRY_AGAIN_LATER:
                 return DRAIN_STATE_NONE;
             case MediaCodec.INFO_OUTPUT_FORMAT_CHANGED:
@@ -183,14 +164,12 @@ class AudioTrackTranscoder implements TrackTranscoder
         if (mActualOutputFormat == null)
             throw new RuntimeException("Could not determine actual output format.");
 
-        if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0)
-        {
+        if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
             mIsEncoderEOS = true;
             mBufferInfo.set(0, 0, 0, mBufferInfo.flags);
         }
 
-        if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0)
-        {
+        if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
             mEncoder.releaseOutputBuffer(result, false);
             return DRAIN_STATE_SHOULD_RETRY_IMMEDIATELY;
         }
@@ -202,29 +181,24 @@ class AudioTrackTranscoder implements TrackTranscoder
     }
 
     @Override
-    public long getWrittenPresentationTimeUs()
-    {
+    public long getWrittenPresentationTimeUs() {
         return mWrittenPresentationTimeUs;
     }
 
     @Override
-    public boolean isFinished()
-    {
+    public boolean isFinished() {
         return mIsEncoderEOS;
     }
 
     @Override
-    public void release()
-    {
-        if (mDecoder != null)
-        {
+    public void release() {
+        if (mDecoder != null) {
             if (mDecoderStarted) mDecoder.stop();
             mDecoder.release();
             mDecoder = null;
         }
 
-        if (mEncoder != null)
-        {
+        if (mEncoder != null) {
             if (mEncoderStarted) mEncoder.stop();
             mEncoder.release();
             mEncoder = null;

@@ -20,32 +20,26 @@ import java.util.ArrayList;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class StatefulLayout extends LinearLayout
-{
-    public StatefulLayout(Context context)
-    {
+public class StatefulLayout extends LinearLayout {
+    public StatefulLayout(Context context) {
         this(context, null);
     }
 
-    public StatefulLayout(Context context, AttributeSet attrs)
-    {
+    public StatefulLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public StatefulLayout(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+    public StatefulLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         setGravity(Gravity.CENTER);
     }
 
-    public void Loading()
-    {
+    public void Loading() {
         Loading(Misc.ToDP(6), R.color.Gray);
     }
 
-    public void Loading(int Size, int Color)
-    {
+    public void Loading(int Size, int Color) {
         removeAllViews();
         setVisibility(VISIBLE);
         setOrientation(HORIZONTAL);
@@ -59,8 +53,7 @@ public class StatefulLayout extends LinearLayout
         DrawableBounce.setShape(GradientDrawable.OVAL);
         DrawableBounce.setColor(Misc.Color(Color));
 
-        for (int I = 0; I < 3; I++)
-        {
+        for (int I = 0; I < 3; I++) {
             Bounce bounce = new Bounce(getContext());
             bounce.setBackground(DrawableBounce);
 
@@ -72,13 +65,10 @@ public class StatefulLayout extends LinearLayout
             ValueAnimator GrowAnim = ObjectAnimator.ofFloat(bounce, "scale", 1.0f, 2.0f, 1.0f);
             GrowAnim.setDuration(300);
 
-            if (I == 2)
-            {
-                GrowAnim.addListener(new AnimatorListenerAdapter()
-                {
+            if (I == 2) {
+                GrowAnim.addListener(new AnimatorListenerAdapter() {
                     @Override
-                    public void onAnimationEnd(Animator animation)
-                    {
+                    public void onAnimationEnd(Animator animation) {
                         for (ValueAnimator animator : AnimatorList)
                             animator.start();
                     }
@@ -92,8 +82,7 @@ public class StatefulLayout extends LinearLayout
         }
     }
 
-    public void Connection(int Size)
-    {
+    public void Connection(int Size) {
         removeAllViews();
         setVisibility(VISIBLE);
         setOrientation(VERTICAL);
@@ -123,8 +112,7 @@ public class StatefulLayout extends LinearLayout
         addView(TextViewTry);
     }
 
-    public void Content(int Size)
-    {
+    public void Content(int Size) {
         removeAllViews();
         setVisibility(VISIBLE);
         setOrientation(VERTICAL);
@@ -145,23 +133,19 @@ public class StatefulLayout extends LinearLayout
         addView(TextViewMessage);
     }
 
-    public void Hide()
-    {
+    public void Hide() {
         removeAllViews();
         setVisibility(GONE);
     }
 
-    private class Bounce extends View
-    {
-        Bounce(Context context)
-        {
+    private class Bounce extends View {
+        Bounce(Context context) {
             super(context);
         }
 
         @Keep
         @SuppressWarnings("unused")
-        public void setScale(float Scale)
-        {
+        public void setScale(float Scale) {
             setScaleX(Scale);
             setScaleY(Scale);
         }

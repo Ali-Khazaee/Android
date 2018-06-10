@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentStart="true"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_alignParentStart="true"
-        android:text="@string/SocialProfileUIAvatar"
-        android:textStyle="bold"
-        android:textSize="@dimen/FontVerySmall"
+        android:layout_toStartOf="@+id/ImageViewClose"
         android:gravity="center_vertical"
+        android:text="@string/SocialProfileUIAvatar"
         android:textColor="?TextColor"
-        android:layout_toStartOf="@+id/ImageViewClose" />
+        android:textSize="@dimen/FontVerySmall"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/ImageViewClose"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentEnd="true"
         android:padding="9dp"
-        android:src="@drawable/z_general_close_blue"
-        android:layout_alignParentEnd="true" />
+        android:src="@drawable/z_general_close_blue" />
 
     <View
         android:id="@+id/ViewLine"
@@ -42,11 +41,11 @@
             android:id="@+id/TextViewCamera"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/ActionBar"
-            android:text="@string/SocialProfileUIAvatarCamera"
             android:gravity="center_vertical"
-            android:textColor="?TextColor"
+            android:paddingEnd="15dp"
             android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
+            android:text="@string/SocialProfileUIAvatarCamera"
+            android:textColor="?TextColor" />
 
         <View
             android:layout_width="match_parent"
@@ -57,11 +56,11 @@
             android:id="@+id/TextViewGallery"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/ActionBar"
-            android:text="@string/SocialProfileUIAvatarGallery"
             android:gravity="center_vertical"
-            android:textColor="?TextColor"
+            android:paddingEnd="15dp"
             android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
+            android:text="@string/SocialProfileUIAvatarGallery"
+            android:textColor="?TextColor" />
 
         <View
             android:layout_width="match_parent"
@@ -72,11 +71,11 @@
             android:id="@+id/TextViewDelete"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/ActionBar"
-            android:text="@string/SocialProfileUIAvatarDelete"
             android:gravity="center_vertical"
-            android:textColor="?TextColor"
+            android:paddingEnd="15dp"
             android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
+            android:text="@string/SocialProfileUIAvatarDelete"
+            android:textColor="?TextColor" />
 
     </LinearLayout>
 

@@ -9,15 +9,12 @@ import android.util.TypedValue;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class Button extends android.widget.Button
-{
-    private Button(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+public class Button extends android.widget.Button {
+    private Button(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public Button(Context context, float size, boolean isBold)
-    {
+    public Button(Context context, float size, boolean isBold) {
         this(context, null, android.R.attr.borderlessButtonStyle);
 
         if (isBold)

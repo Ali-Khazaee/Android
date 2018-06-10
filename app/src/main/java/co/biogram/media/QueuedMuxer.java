@@ -11,29 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TargetApi(18)
-class QueuedMuxer
-{
+class QueuedMuxer {
     private static final int BUFFER_SIZE = 64 * 1024;
     private final MediaMuxer mMuxer;
+    private final List<SampleInfo> mSampleInfoList;
     private MediaFormat mVideoFormat;
     private MediaFormat mAudioFormat;
     private int mVideoTrackIndex;
     private int mAudioTrackIndex;
     private ByteBuffer mByteBuffer;
-    private final List<SampleInfo> mSampleInfoList;
     private boolean mStarted;
 
-    QueuedMuxer(MediaMuxer muxer)
-    {
+    QueuedMuxer(MediaMuxer muxer) {
         mMuxer = muxer;
 
         mSampleInfoList = new ArrayList<>();
     }
 
-    void setOutputFormat(SampleType sampleType, MediaFormat format)
-    {
-        switch (sampleType)
-        {
+    void setOutputFormat(SampleType sampleType, MediaFormat format) {
+        switch (sampleType) {
             case VIDEO:
                 mVideoFormat = format;
                 break;
@@ -47,8 +43,7 @@ class QueuedMuxer
         onSetOutputFormat();
     }
 
-    private void onSetOutputFormat()
-    {
+    private void onSetOutputFormat() {
         if (mVideoFormat == null || mAudioFormat == null)
             return;
 
@@ -65,8 +60,7 @@ class QueuedMuxer
         MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
         int offset = 0;
 
-        for (SampleInfo sampleInfo : mSampleInfoList)
-        {
+        for (SampleInfo sampleInfo : mSampleInfoList) {
             sampleInfo.writeToBufferInfo(bufferInfo, offset);
             mMuxer.writeSampleData(getTrackIndexForSampleType(sampleInfo.mSampleType), mByteBuffer, bufferInfo);
             offset += sampleInfo.mSize;
@@ -76,10 +70,8 @@ class QueuedMuxer
         mByteBuffer = null;
     }
 
-    void writeSampleData(SampleType sampleType, ByteBuffer byteBuf, MediaCodec.BufferInfo bufferInfo)
-    {
-        if (mStarted)
-        {
+    void writeSampleData(SampleType sampleType, ByteBuffer byteBuf, MediaCodec.BufferInfo bufferInfo) {
+        if (mStarted) {
             mMuxer.writeSampleData(getTrackIndexForSampleType(sampleType), byteBuf, bufferInfo);
             return;
         }
@@ -94,10 +86,8 @@ class QueuedMuxer
         mSampleInfoList.add(new SampleInfo(sampleType, bufferInfo.size, bufferInfo));
     }
 
-    private int getTrackIndexForSampleType(SampleType sampleType)
-    {
-        switch (sampleType)
-        {
+    private int getTrackIndexForSampleType(SampleType sampleType) {
+        switch (sampleType) {
             case VIDEO:
                 return mVideoTrackIndex;
             case AUDIO:
@@ -109,23 +99,20 @@ class QueuedMuxer
 
     enum SampleType {VIDEO, AUDIO}
 
-    private static class SampleInfo
-    {
+    private static class SampleInfo {
         private final SampleType mSampleType;
         private final int mSize;
         private final long mPresentationTimeUs;
         private final int mFlags;
 
-        private SampleInfo(SampleType sampleType, int size, MediaCodec.BufferInfo bufferInfo)
-        {
+        private SampleInfo(SampleType sampleType, int size, MediaCodec.BufferInfo bufferInfo) {
             mSampleType = sampleType;
             mSize = size;
             mPresentationTimeUs = bufferInfo.presentationTimeUs;
             mFlags = bufferInfo.flags;
         }
 
-        private void writeToBufferInfo(MediaCodec.BufferInfo bufferInfo, int offset)
-        {
+        private void writeToBufferInfo(MediaCodec.BufferInfo bufferInfo, int offset) {
             bufferInfo.set(offset, mSize, mPresentationTimeUs, mFlags);
         }
     }

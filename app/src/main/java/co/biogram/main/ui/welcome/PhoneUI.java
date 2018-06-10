@@ -47,20 +47,17 @@ import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.TextView;
 
-class PhoneUI extends FragmentView
-{
+class PhoneUI extends FragmentView {
+    private final boolean IsSignUp;
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
-    private final boolean IsSignUp;
 
-    PhoneUI(boolean isSignUp)
-    {
+    PhoneUI(boolean isSignUp) {
         IsSignUp = isSignUp;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final Button ButtonNext = new Button(Activity, 16, false);
         final LoadingView LoadingViewNext = new LoadingView(Activity);
 
@@ -69,31 +66,24 @@ class PhoneUI extends FragmentView
         RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
-        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             int HeightDifference = 0;
 
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 Rect rect = new Rect();
                 RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference)
-                {
+                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (DifferenceHeight != HeightDifference)
-                {
+                } else if (DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (HeightDifference != 0)
-                {
+                } else if (HeightDifference != 0) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
                     HeightDifference = 0;
                 }
@@ -117,7 +107,12 @@ class PhoneUI extends FragmentView
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -174,13 +169,12 @@ class PhoneUI extends FragmentView
         LinearLayoutCode.addView(TextViewPhoneCode);
 
         TelephonyManager Telephony = (TelephonyManager) Activity.getSystemService(Context.TELEPHONY_SERVICE);
-        String CountryCode =  Telephony == null ? "" : Telephony.getNetworkCountryIso();
+        String CountryCode = Telephony == null ? "" : Telephony.getNetworkCountryIso();
 
         if (Telephony != null && (CountryCode == null || CountryCode.equals("")))
             CountryCode = Telephony.getSimCountryIso();
 
-        switch (CountryCode)
-        {
+        switch (CountryCode) {
             case "ir":
                 CountryCode = "+98";
                 break;
@@ -196,11 +190,9 @@ class PhoneUI extends FragmentView
         EditTextPhoneCode.setFocusable(false);
         EditTextPhoneCode.setText(CountryCode);
         EditTextPhoneCode.setGravity(Gravity.CENTER_HORIZONTAL);
-        EditTextPhoneCode.setOnClickListener(new View.OnClickListener()
-        {
+        EditTextPhoneCode.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog DialogCode = new Dialog(Activity);
                 DialogCode.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogCode.setCancelable(true);
@@ -228,7 +220,12 @@ class PhoneUI extends FragmentView
                 ImageViewClose.setImageResource(R.drawable.close_blue);
                 ImageViewClose.setPadding(Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9));
                 ImageViewClose.setId(Misc.generateViewId());
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
+                ImageViewClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogCode.dismiss();
+                    }
+                });
 
                 RelativeLayoutCode.addView(ImageViewClose);
 
@@ -264,7 +261,12 @@ class PhoneUI extends FragmentView
                 TextViewIran.setText(Iran);
                 TextViewIran.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                TextViewIran.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogCode.dismiss(); } });
+                TextViewIran.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogCode.dismiss();
+                    }
+                });
 
                 LinearLayoutList.addView(TextViewIran);
 
@@ -293,7 +295,7 @@ class PhoneUI extends FragmentView
         LinearLayoutPhone.addView(TextViewPhone);
 
         LinearLayout.LayoutParams EditTextPhoneParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        EditTextPhoneParam.setMargins(0, 0 , Misc.ToDP(15), 0);
+        EditTextPhoneParam.setMargins(0, 0, Misc.ToDP(15), 0);
 
         final EditText EditTextPhone = new EditText(Activity);
         EditTextPhone.setLayoutParams(EditTextPhoneParam);
@@ -302,37 +304,35 @@ class PhoneUI extends FragmentView
         EditTextPhone.setInputType(InputType.TYPE_CLASS_PHONE);
         EditTextPhone.requestFocus();
         EditTextPhone.setFilters(new InputFilter[]
-        {
-            new InputFilter.LengthFilter(16), new InputFilter()
-            {
-                @Override
-                public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
                 {
-                    if (End > Start)
-                    {
-                        char[] AllowChar = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+                        new InputFilter.LengthFilter(16), new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de) {
+                        if (End > Start) {
+                            char[] AllowChar = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-                        for (int I = Start; I < End; I++)
-                        {
-                            if (!new String(AllowChar).contains(String.valueOf(s.charAt(I))))
-                            {
-                                return "";
+                            for (int I = Start; I < End; I++) {
+                                if (!new String(AllowChar).contains(String.valueOf(s.charAt(I)))) {
+                                    return "";
+                                }
                             }
                         }
-                    }
 
-                    return null;
+                        return null;
+                    }
                 }
+                });
+        EditTextPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence a, int b, int c, int d) {
             }
-        });
-        EditTextPhone.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence a, int b, int c, int d) { }
-            @Override public void afterTextChanged(Editable a) { }
 
             @Override
-            public void onTextChanged(CharSequence a, int b, int c, int d)
-            {
+            public void afterTextChanged(Editable a) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence a, int b, int c, int d) {
                 ButtonNext.setEnabled(a.length() > 7);
             }
         });
@@ -352,11 +352,9 @@ class PhoneUI extends FragmentView
         TextViewMessage.setText((Misc.String(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + Misc.String(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
-        ClickableSpan ClickableSpanMessage = new ClickableSpan()
-        {
+        ClickableSpan ClickableSpanMessage = new ClickableSpan() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                 Anim.setDuration(200);
 
@@ -369,8 +367,7 @@ class PhoneUI extends FragmentView
             }
 
             @Override
-            public void updateDrawState(TextPaint t)
-            {
+            public void updateDrawState(TextPaint t) {
                 super.updateDrawState(t);
                 t.setColor(ContextCompat.getColor(Activity, R.color.Primary));
                 t.setUnderlineText(false);
@@ -397,7 +394,12 @@ class PhoneUI extends FragmentView
         TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/"))); } });
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/")));
+            }
+        });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
@@ -410,8 +412,8 @@ class PhoneUI extends FragmentView
         DrawableDisable.setColor(ContextCompat.getColor(Activity, R.color.Gray));
 
         StateListDrawable DrawableStateNext = new StateListDrawable();
-        DrawableStateNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
-        DrawableStateNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
+        DrawableStateNext.addState(new int[]{android.R.attr.state_enabled}, DrawableEnable);
+        DrawableStateNext.addState(new int[]{-android.R.attr.state_enabled}, DrawableDisable);
 
         RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
         RelativeLayoutNextParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -427,17 +429,13 @@ class PhoneUI extends FragmentView
         ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(DrawableStateNext);
         ButtonNext.setEnabled(false);
-        ButtonNext.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 PermissionDialog PermissionDialogSMS = new PermissionDialog(Activity);
-                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, new PermissionDialog.OnChoiceListener()
-                {
+                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, new PermissionDialog.OnChoiceListener() {
                     @Override
-                    public void OnChoice(boolean Allow)
-                    {
+                    public void OnChoice(boolean Allow) {
                         SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
                     }
                 });
@@ -456,11 +454,19 @@ class PhoneUI extends FragmentView
 
         TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
-        Anim.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { Misc.ShowSoftKey(EditTextPhone); }
+        Anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Misc.ShowSoftKey(EditTextPhone);
+            }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -469,157 +475,137 @@ class PhoneUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         Misc.HideSoftKey(Activity);
         AndroidNetworking.forceCancel("PhoneUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }
 
-    private void SendRequest(final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode)
-    {
+    private void SendRequest(final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode) {
         ButtonNext.setVisibility(View.GONE);
         LoadingViewNext.Start();
 
-        if (IsSignUp)
-        {
+        if (IsSignUp) {
             AndroidNetworking.post(Misc.GetRandomServer("SignUpPhone"))
-            .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
-            .addBodyParameter("Phone", EditTextPhone.getText().toString())
-            .setTag("PhoneUI")
-            .build()
-            .getAsString(new StringRequestListener()
-            {
-                @Override
-                public void onResponse(String Response)
-                {
-                    LoadingViewNext.Stop();
-                    ButtonNext.setVisibility(View.VISIBLE);
+                    .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
+                    .addBodyParameter("Phone", EditTextPhone.getText().toString())
+                    .setTag("PhoneUI")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String Response) {
+                            LoadingViewNext.Stop();
+                            ButtonNext.setVisibility(View.VISIBLE);
 
-                    try
-                    {
-                        JSONObject Result = new JSONObject(Response);
+                            try {
+                                JSONObject Result = new JSONObject(Response);
 
-                        switch (Result.getInt("Message"))
-                        {
-                            case 0:
-                                TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                Anim.setDuration(200);
+                                switch (Result.getInt("Message")) {
+                                    case 0:
+                                        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                        Anim.setDuration(200);
 
-                                RelativeLayoutMain.setAnimation(Anim);
+                                        RelativeLayoutMain.setAnimation(Anim);
 
-                                String Phone = EditTextPhone.getText().toString();
+                                        String Phone = EditTextPhone.getText().toString();
 
-                                while (Phone.charAt(0) == '0')
-                                    Phone = Phone.substring(1);
+                                        while (Phone.charAt(0) == '0')
+                                            Phone = Phone.substring(1);
 
-                                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, true), "PhoneVerifyUI", true);
-                                break;
-                            case 1:
-                            case 2:
-                            case 3:
-                                Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
-                                break;
-                            case 4:
-                            case 5:
-                            case 6:
-                                Misc.ToastOld( Misc.String(R.string.GeneralPhone));
-                                break;
-                            case 7:
-                                Misc.ToastOld( Misc.String(R.string.PhoneUIError));
-                                break;
-                            default:
-                                Misc.GeneralError(Result.getInt("Message"));
-                                break;
+                                        Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, true), "PhoneVerifyUI", true);
+                                        break;
+                                    case 1:
+                                    case 2:
+                                    case 3:
+                                        Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
+                                        break;
+                                    case 4:
+                                    case 5:
+                                    case 6:
+                                        Misc.ToastOld(Misc.String(R.string.GeneralPhone));
+                                        break;
+                                    case 7:
+                                        Misc.ToastOld(Misc.String(R.string.PhoneUIError));
+                                        break;
+                                    default:
+                                        Misc.GeneralError(Result.getInt("Message"));
+                                        break;
+                                }
+                            } catch (Exception e) {
+                                Misc.Debug("PhoneUI-SignUpPhone: " + e.toString());
+                            }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Misc.Debug("PhoneUI-SignUpPhone: " + e.toString());
-                    }
-                }
 
-                @Override
-                public void onError(ANError e)
-                {
-                    LoadingViewNext.Stop();
-                    ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                }
-            });
-        }
-        else
-        {
+                        @Override
+                        public void onError(ANError e) {
+                            LoadingViewNext.Stop();
+                            ButtonNext.setVisibility(View.VISIBLE);
+                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                        }
+                    });
+        } else {
             AndroidNetworking.post(Misc.GetRandomServer("SignInPhone"))
-            .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
-            .addBodyParameter("Phone", EditTextPhone.getText().toString())
-            .setTag("PhoneUI")
-            .build()
-            .getAsString(new StringRequestListener()
-            {
-                @Override
-                public void onResponse(String Response)
-                {
-                    LoadingViewNext.Stop();
-                    ButtonNext.setVisibility(View.VISIBLE);
+                    .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
+                    .addBodyParameter("Phone", EditTextPhone.getText().toString())
+                    .setTag("PhoneUI")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String Response) {
+                            LoadingViewNext.Stop();
+                            ButtonNext.setVisibility(View.VISIBLE);
 
-                    try
-                    {
-                        JSONObject Result = new JSONObject(Response);
+                            try {
+                                JSONObject Result = new JSONObject(Response);
 
-                        switch (Result.getInt("Message"))
-                        {
-                            case 0:
-                                TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                Anim.setDuration(200);
+                                switch (Result.getInt("Message")) {
+                                    case 0:
+                                        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                        Anim.setDuration(200);
 
-                                RelativeLayoutMain.setAnimation(Anim);
+                                        RelativeLayoutMain.setAnimation(Anim);
 
-                                String Phone = EditTextPhone.getText().toString();
+                                        String Phone = EditTextPhone.getText().toString();
 
-                                while (Phone.charAt(0) == '0')
-                                    Phone = Phone.substring(1);
+                                        while (Phone.charAt(0) == '0')
+                                            Phone = Phone.substring(1);
 
-                                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, false), "PhoneVerifyUI", true);
-                                break;
-                            case 1:
-                            case 2:
-                            case 3:
-                                Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
-                                break;
-                            case 4:
-                            case 5:
-                            case 6:
-                                Misc.ToastOld( Misc.String(R.string.GeneralPhone));
-                                break;
-                            case 7:
-                                Misc.ToastOld( Misc.String(R.string.PhoneUIError2));
-                                break;
-                            default:
-                                Misc.GeneralError(Result.getInt("Message"));
-                                break;
+                                        Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, false), "PhoneVerifyUI", true);
+                                        break;
+                                    case 1:
+                                    case 2:
+                                    case 3:
+                                        Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
+                                        break;
+                                    case 4:
+                                    case 5:
+                                    case 6:
+                                        Misc.ToastOld(Misc.String(R.string.GeneralPhone));
+                                        break;
+                                    case 7:
+                                        Misc.ToastOld(Misc.String(R.string.PhoneUIError2));
+                                        break;
+                                    default:
+                                        Misc.GeneralError(Result.getInt("Message"));
+                                        break;
+                                }
+                            } catch (Exception e) {
+                                Misc.Debug("PhoneUI-SignInPhone: " + e.toString());
+                            }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Misc.Debug("PhoneUI-SignInPhone: " + e.toString());
-                    }
-                }
 
-                @Override
-                public void onError(ANError e)
-                {
-                    LoadingViewNext.Stop();
-                    ButtonNext.setVisibility(View.VISIBLE);
-                    Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                }
-            });
+                        @Override
+                        public void onError(ANError e) {
+                            LoadingViewNext.Stop();
+                            ButtonNext.setVisibility(View.VISIBLE);
+                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                        }
+                    });
         }
     }
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/Toolbar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/ActionBar"
+        android:gravity="center_vertical"
+        android:weightSum="6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/ImageButtonSearch"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@null"
+            android:padding="12dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_search_blue" />
+
+        <EditText
+            android:id="@+id/EditTextSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:background="#00ffffff"
+            android:hint="@string/ChatUISearch"
+            android:maxLength="1" />
+
+        <ImageButton
+            android:id="@+id/ImageButtonClear"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@null"
+            android:padding="9dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/_comment_delete" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e1e1e1"
+        app:layout_constraintBottom_toTopOf="@+id/RecyclerViewContacts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Toolbar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerViewContacts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_above="@id/ButtonNewMessage"
+        android:layout_below="@id/Toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/ButtonNewMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+
+    <Button
+        android:id="@+id/ButtonNewMessage"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/layout_send_message"
+        android:gravity="center"
+        android:text="@string/ChatUISendMessage"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+</android.support.constraint.ConstraintLayout>

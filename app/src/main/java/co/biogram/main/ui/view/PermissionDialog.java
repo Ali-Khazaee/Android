@@ -2,6 +2,7 @@ package co.biogram.main.ui.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -11,19 +12,19 @@ import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.fragment.FragmentActivity;
 
-public class PermissionDialog extends Dialog
-{
-    public PermissionDialog(Context context)
-    {
+public class PermissionDialog extends Dialog {
+    Context Activity;
+
+
+    public PermissionDialog(Context context) {
         super(context);
+        this.Activity = context;
         setCancelable(false);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
-    public void SetContentView(int Icon, int Message, final String Permission, final OnChoiceListener Listener)
-    {
-        if (Misc.CheckPermission(Permission))
-        {
+    public void SetContentView(int Icon, int Message, final String Permission, final OnChoiceListener Listener) {
+        if (Misc.CheckPermission(Permission)) {
             Listener.OnChoice(true);
             return;
         }
@@ -36,29 +37,23 @@ public class PermissionDialog extends Dialog
         TextView TextViewMessage = dialogView.findViewById(R.id.TextViewMessage);
         TextViewMessage.setText(Misc.String(Message));
 
-        dialogView.findViewById(R.id.TextViewAccept).setOnClickListener(new View.OnClickListener()
-        {
+        dialogView.findViewById(R.id.TextViewAccept).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 dismiss();
 
-                ((FragmentActivity) getContext()).RequestPermission(Permission, new FragmentActivity.OnPermissionListener()
-                {
+                ((FragmentActivity) Activity).RequestPermission(Permission, new FragmentActivity.OnPermissionListener() {
                     @Override
-                    public void OnPermission(boolean Result)
-                    {
+                    public void OnPermission(boolean Result) {
                         Listener.OnChoice(Result);
                     }
                 });
             }
         });
 
-        dialogView.findViewById(R.id.TextViewDecline).setOnClickListener(new View.OnClickListener()
-        {
+        dialogView.findViewById(R.id.TextViewDecline).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 dismiss();
                 Listener.OnChoice(false);
             }
@@ -68,8 +63,8 @@ public class PermissionDialog extends Dialog
         show();
     }
 
-    public interface OnChoiceListener
-    {
+
+    public interface OnChoiceListener {
         void OnChoice(boolean Result);
     }
 }

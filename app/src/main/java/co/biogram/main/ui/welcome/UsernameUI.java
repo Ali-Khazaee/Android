@@ -42,27 +42,23 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class UsernameUI extends FragmentView
-{
+class UsernameUI extends FragmentView {
+    private final int Type;
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
     private String Code;
-    private final int Type;
 
-    UsernameUI()
-    {
+    UsernameUI() {
         Type = 2;
     }
 
-    UsernameUI(String code, int type)
-    {
+    UsernameUI(String code, int type) {
         Code = code;
         Type = type;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final Button ButtonNext = new Button(Activity, 16, false);
         final LoadingView LoadingViewNext = new LoadingView(Activity);
 
@@ -71,31 +67,24 @@ class UsernameUI extends FragmentView
         RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
-        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             int HeightDifference = 0;
 
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 Rect rect = new Rect();
                 RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference)
-                {
+                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (DifferenceHeight != HeightDifference)
-                {
+                } else if (DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (HeightDifference != 0)
-                {
+                } else if (HeightDifference != 0) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
                     HeightDifference = 0;
                 }
@@ -120,7 +109,12 @@ class UsernameUI extends FragmentView
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -180,37 +174,31 @@ class UsernameUI extends FragmentView
         EditTextUsername.setId(Misc.generateViewId());
         EditTextUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextUsername.setFilters(new InputFilter[]
-        {
-            new InputFilter.LengthFilter(32), new InputFilter()
-            {
-                @Override
-                public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
                 {
-                    if (End > Start)
-                    {
-                        char[] AllowChar = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+                        new InputFilter.LengthFilter(32), new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de) {
+                        if (End > Start) {
+                            char[] AllowChar = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-                        for (int I = Start; I < End; I++)
-                        {
-                            if (!new String(AllowChar).contains(String.valueOf(s.charAt(I))))
-                            {
-                                return "";
+                            for (int I = Start; I < End; I++) {
+                                if (!new String(AllowChar).contains(String.valueOf(s.charAt(I)))) {
+                                    return "";
+                                }
                             }
                         }
-                    }
 
-                    return null;
+                        return null;
+                    }
                 }
-            }
-        });
+                });
         EditTextUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         EditTextUsername.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextUsername.requestFocus();
         EditTextUsername.setPadding(0, -Misc.ToDP(2), Misc.ToDP(8), Misc.ToDP(5));
         EditTextUsername.setTypeface(Misc.GetTypeface());
         EditTextUsername.setHint(Misc.String(R.string.UsernameUIHint));
-        EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable()
-        {
+        EditTextUsername.setCompoundDrawablesWithIntrinsicBounds(new Drawable() {
             private final Paint paint;
 
             {
@@ -222,38 +210,37 @@ class UsernameUI extends FragmentView
             }
 
             @Override
-            public void draw(@NonNull Canvas canvas)
-            {
+            public void draw(@NonNull Canvas canvas) {
                 canvas.drawText("@", Misc.ToDP(8), Misc.ToDP(2), paint);
             }
 
             @Override
-            public void setAlpha(int alpha)
-            {
+            public void setAlpha(int alpha) {
                 paint.setAlpha(alpha);
             }
 
             @Override
-            public void setColorFilter(ColorFilter cf)
-            {
+            public void setColorFilter(ColorFilter cf) {
                 paint.setColorFilter(cf);
             }
 
             @Override
-            public int getOpacity()
-            {
+            public int getOpacity() {
                 return PixelFormat.TRANSLUCENT;
             }
         }, null, null, null);
         EditTextUsername.setCompoundDrawablePadding(Misc.ToDP(27));
-        EditTextUsername.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
+        EditTextUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ButtonNext.setEnabled(s.length() > 2);
             }
         });
@@ -289,7 +276,12 @@ class UsernameUI extends FragmentView
         TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co")));
+            }
+        });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
@@ -306,8 +298,8 @@ class UsernameUI extends FragmentView
         DrawableDisable.setColor(ContextCompat.getColor(Activity, R.color.Gray));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
-        ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
-        ListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
+        ListDrawableNext.addState(new int[]{android.R.attr.state_enabled}, DrawableEnable);
+        ListDrawableNext.addState(new int[]{-android.R.attr.state_enabled}, DrawableDisable);
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(Activity);
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
@@ -319,78 +311,69 @@ class UsernameUI extends FragmentView
         ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
-        ButtonNext.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ButtonNext.setVisibility(View.GONE);
                 LoadingViewNext.Start();
 
                 AndroidNetworking.post(Misc.GetRandomServer("Username"))
-                .addBodyParameter("Username", EditTextUsername.getText().toString())
-                .setTag("UsernameUI")
-                .build()
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
+                        .addBodyParameter("Username", EditTextUsername.getText().toString())
+                        .setTag("UsernameUI")
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String Response) {
+                                LoadingViewNext.Stop();
+                                ButtonNext.setVisibility(View.VISIBLE);
 
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
+                                try {
+                                    JSONObject Result = new JSONObject(Response);
 
-                            switch (Result.getInt("Message"))
-                            {
-                                case 0:
-                                    TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                    Anim.setDuration(200);
+                                    switch (Result.getInt("Message")) {
+                                        case 0:
+                                            TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                            Anim.setDuration(200);
 
-                                    RelativeLayoutMain.setAnimation(Anim);
+                                            RelativeLayoutMain.setAnimation(Anim);
 
-                                    if (Type == 0)
-                                        Activity.GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 0), "DescriptionUI", true);
-                                    else if (Type == 1)
-                                        Activity.GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 1), "DescriptionUI", true);
-                                    else if (Type == 2)
-                                        Activity.GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), "PasswordUI", true);
-                                    break;
-                                case 1:
-                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError1));
-                                    break;
-                                case 2:
-                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError2));
-                                    break;
-                                case 3:
-                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError3));
-                                    break;
-                                case 4:
-                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError4));
-                                    break;
-                                case 5:
-                                    Misc.ToastOld( Misc.String(R.string.UsernameUIError5));
-                                    break;
-                                default:
-                                    Misc.GeneralError(Result.getInt("Message"));
+                                            if (Type == 0)
+                                                Activity.GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 0), "DescriptionUI", true);
+                                            else if (Type == 1)
+                                                Activity.GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 1), "DescriptionUI", true);
+                                            else if (Type == 2)
+                                                Activity.GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), "PasswordUI", true);
+                                            break;
+                                        case 1:
+                                            Misc.ToastOld(Misc.String(R.string.UsernameUIError1));
+                                            break;
+                                        case 2:
+                                            Misc.ToastOld(Misc.String(R.string.UsernameUIError2));
+                                            break;
+                                        case 3:
+                                            Misc.ToastOld(Misc.String(R.string.UsernameUIError3));
+                                            break;
+                                        case 4:
+                                            Misc.ToastOld(Misc.String(R.string.UsernameUIError4));
+                                            break;
+                                        case 5:
+                                            Misc.ToastOld(Misc.String(R.string.UsernameUIError5));
+                                            break;
+                                        default:
+                                            Misc.GeneralError(Result.getInt("Message"));
+                                    }
+                                } catch (Exception e) {
+                                    Misc.Debug("UsernameUI: " + e.toString());
+                                }
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("UsernameUI: " + e.toString());
-                        }
-                    }
 
-                    @Override
-                    public void onError(ANError e)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                    }
-                });
+                            @Override
+                            public void onError(ANError e) {
+                                LoadingViewNext.Stop();
+                                ButtonNext.setVisibility(View.VISIBLE);
+                                Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                            }
+                        });
             }
         });
 
@@ -406,11 +389,19 @@ class UsernameUI extends FragmentView
 
         TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
-        Anim.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { Misc.ShowSoftKey(EditTextUsername); }
+        Anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Misc.ShowSoftKey(EditTextUsername);
+            }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -419,14 +410,12 @@ class UsernameUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         Misc.HideSoftKey(Activity);
         AndroidNetworking.forceCancel("UsernameUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);

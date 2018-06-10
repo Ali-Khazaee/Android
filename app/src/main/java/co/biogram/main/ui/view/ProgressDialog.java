@@ -19,14 +19,13 @@ import java.util.Locale;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class ProgressDialog extends AlertDialog
-{
+public class ProgressDialog extends AlertDialog {
+    private final NumberFormat PercentFormat;
     private ProgressBar ProgressBarMain;
     private TextView TextViewNumber;
     private TextView TextViewPercent;
     private CharSequence Title;
     private int MaxPercentage;
-    private final NumberFormat PercentFormat;
     private boolean HasStarted;
     private int ProgressValue;
     private int SecondaryProgressValue;
@@ -37,22 +36,18 @@ public class ProgressDialog extends AlertDialog
     private boolean Indeterminate;
     private Handler ViewUpdateHandler;
 
-    public ProgressDialog(Context context)
-    {
+    public ProgressDialog(Context context) {
         super(context);
         PercentFormat = NumberFormat.getPercentInstance();
         PercentFormat.setMaximumFractionDigits(0);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         // TODO Memory Leak
-        ViewUpdateHandler = new Handler()
-        {
+        ViewUpdateHandler = new Handler() {
             @Override
-            public void handleMessage(Message msg)
-            {
+            public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 
                 int Progress = ProgressBarMain.getProgress();
@@ -149,23 +144,19 @@ public class ProgressDialog extends AlertDialog
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         HasStarted = true;
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
         HasStarted = false;
     }
 
-    public void setProgress(int Value)
-    {
-        if (HasStarted)
-        {
+    public void setProgress(int Value) {
+        if (HasStarted) {
             ProgressBarMain.setProgress(Value);
             onProgressChanged();
             return;
@@ -174,10 +165,8 @@ public class ProgressDialog extends AlertDialog
         ProgressValue = Value;
     }
 
-    private void setSecondaryProgress(int Value)
-    {
-        if (ProgressBarMain != null)
-        {
+    private void setSecondaryProgress(int Value) {
+        if (ProgressBarMain != null) {
             ProgressBarMain.setSecondaryProgress(Value);
             onProgressChanged();
             return;
@@ -186,10 +175,8 @@ public class ProgressDialog extends AlertDialog
         SecondaryProgressValue = Value;
     }
 
-    public void setMax(int max)
-    {
-        if (ProgressBarMain != null)
-        {
+    public void setMax(int max) {
+        if (ProgressBarMain != null) {
             ProgressBarMain.setMax(max);
             onProgressChanged();
             return;
@@ -198,10 +185,8 @@ public class ProgressDialog extends AlertDialog
         MaxPercentage = max;
     }
 
-    private void incrementProgressBy(int diff)
-    {
-        if (ProgressBarMain != null)
-        {
+    private void incrementProgressBy(int diff) {
+        if (ProgressBarMain != null) {
             ProgressBarMain.incrementProgressBy(diff);
             onProgressChanged();
             return;
@@ -210,10 +195,8 @@ public class ProgressDialog extends AlertDialog
         IncrementBy += diff;
     }
 
-    private void incrementSecondaryProgressBy(int diff)
-    {
-        if (ProgressBarMain != null)
-        {
+    private void incrementSecondaryProgressBy(int diff) {
+        if (ProgressBarMain != null) {
             ProgressBarMain.incrementSecondaryProgressBy(diff);
             onProgressChanged();
             return;
@@ -222,24 +205,21 @@ public class ProgressDialog extends AlertDialog
         IncrementSecondaryBy += diff;
     }
 
-    private void setProgressDrawable(Drawable d)
-    {
+    private void setProgressDrawable(Drawable d) {
         if (ProgressBarMain != null)
             ProgressBarMain.setProgressDrawable(d);
         else
             ProgressDrawable = d;
     }
 
-    private void setIndeterminateDrawable(Drawable d)
-    {
+    private void setIndeterminateDrawable(Drawable d) {
         if (ProgressBarMain != null)
             ProgressBarMain.setIndeterminateDrawable(d);
         else
             IndeterminateDrawable = d;
     }
 
-    public void setIndeterminate(boolean indeterminate)
-    {
+    public void setIndeterminate(boolean indeterminate) {
         if (ProgressBarMain != null)
             ProgressBarMain.setIndeterminate(indeterminate);
         else
@@ -247,13 +227,11 @@ public class ProgressDialog extends AlertDialog
     }
 
     @Override
-    public void setMessage(CharSequence title)
-    {
+    public void setMessage(CharSequence title) {
         Title = title;
     }
 
-    private void onProgressChanged()
-    {
+    private void onProgressChanged() {
         if (ViewUpdateHandler != null && !ViewUpdateHandler.hasMessages(0))
             ViewUpdateHandler.sendEmptyMessage(0);
     }

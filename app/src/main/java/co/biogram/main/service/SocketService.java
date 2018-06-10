@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
-public class SocketService extends Service
-{
+public class SocketService extends Service {
     private static final String BROADCAST_NOTIFICATION = "BIOGRAM_NOTIFICATION";
 
     @Override
-    public int onStartCommand(Intent intent, int Flags, int StartID)
-    {
+    public int onStartCommand(Intent intent, int Flags, int StartID) {
         /*final Context context = SocketService.this;
 
         try
@@ -49,14 +47,14 @@ public class SocketService extends Service
 
                         if (!Result.getString("Result").equals(""))
                         {
-                            int Type = 2;
+                            int Type = audio_start;
                             String Data = Result.getString("PostID");
                             String Message = Result.getString("Username") + " ";
 
                             switch (Result.getInt("Type"))
                             {
                                 case 1: Message += Misc.String(R.string.NotificationFragmentPostTag);     break;
-                                case 2: Message += Misc.String(R.string.NotificationFragmentPostLike);    break;
+                                case audio_start: Message += Misc.String(R.string.NotificationFragmentPostLike);    break;
                                 case 3:
                                     Type = 1;
                                     Data = Result.getString("Username");
@@ -90,14 +88,12 @@ public class SocketService extends Service
     }
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
+    public IBinder onBind(Intent intent) {
         return null;
     }
 
 
-    private void CreateNotification(Context context, String Message, String Data, int Type)
-    {
+    private void CreateNotification(Context context, String Message, String Data, int Type) {
         /*NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
         .setSmallIcon(R.drawable.ic_notification)
         .setContentTitle("Biogram")

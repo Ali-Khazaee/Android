@@ -11,14 +11,12 @@ import android.widget.LinearLayout;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class ScrollNumber extends LinearLayout
-{
+public class ScrollNumber extends LinearLayout {
     private TextView Number;
     private int Value;
     private int Max;
 
-    public ScrollNumber(Context c)
-    {
+    public ScrollNumber(Context c) {
         super(c);
 
         setOrientation(VERTICAL);
@@ -27,11 +25,9 @@ public class ScrollNumber extends LinearLayout
         ImageView Up = new ImageView(c);
         Up.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32)));
         Up.setImageResource(R.drawable._write_arrow_up);
-        Up.setOnClickListener(new OnClickListener()
-        {
+        Up.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 if (++Value >= Max)
                     Value = Max;
 
@@ -52,11 +48,9 @@ public class ScrollNumber extends LinearLayout
         ImageView Down = new ImageView(c);
         Down.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32)));
         Down.setImageResource(R.drawable.__general_arrow_blue_down);
-        Down.setOnClickListener(new OnClickListener()
-        {
+        Down.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 if (--Value < 0)
                     Value = 0;
 
@@ -67,28 +61,25 @@ public class ScrollNumber extends LinearLayout
         addView(Down);
     }
 
-    public int GetValue()
-    {
+    public int GetValue() {
         return Value;
     }
 
-    public void SetValues(int current, int max)
-    {
+    public void SetValues(int current, int max) {
         Max = max;
         Value = current;
 
         Number.setText(String.valueOf(Value));
     }
 
-    private void Anim()
-    {
+    private void Anim() {
         ObjectAnimator SizeX = ObjectAnimator.ofFloat(Number, "scaleX", 1.5f);
         SizeX.setDuration(100);
 
         ObjectAnimator SizeY = ObjectAnimator.ofFloat(Number, "scaleY", 1.5f);
         SizeY.setDuration(100);
 
-        ObjectAnimator Fade = ObjectAnimator.ofFloat(Number, "alpha",  0.1f, 1f);
+        ObjectAnimator Fade = ObjectAnimator.ofFloat(Number, "alpha", 0.1f, 1f);
         Fade.setDuration(200);
 
         ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(Number, "scaleX", 1f);

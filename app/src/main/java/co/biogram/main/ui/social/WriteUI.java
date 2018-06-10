@@ -73,8 +73,7 @@ import co.biogram.main.ui.view.ScrollNumber;
 import co.biogram.main.ui.view.TextView;
 import co.biogram.media.MediaTransCoder;
 
-class WriteUI extends FragmentView
-{
+class WriteUI extends FragmentView {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
     private ImageView ImageViewImage;
@@ -93,8 +92,7 @@ class WriteUI extends FragmentView
     private int IsWorld = 0;
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final TextView TextViewSelect = new TextView(Activity, 16, false);
         final TextView TextViewCount = new TextView(Activity, 14, false);
         final RelativeLayout RelativeLayoutVideo = new RelativeLayout(Activity);
@@ -110,31 +108,24 @@ class WriteUI extends FragmentView
         RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
-        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             int LastDiffHeight = 0;
 
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 Rect rect = new Rect();
                 RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DiffHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DiffHeight > ScreenHeight / 3 && DiffHeight != LastDiffHeight)
-                {
+                if (DiffHeight > ScreenHeight / 3 && DiffHeight != LastDiffHeight) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DiffHeight));
                     LastDiffHeight = DiffHeight;
-                }
-                else if (DiffHeight != LastDiffHeight)
-                {
+                } else if (DiffHeight != LastDiffHeight) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                     LastDiffHeight = DiffHeight;
-                }
-                else if (LastDiffHeight != 0)
-                {
+                } else if (LastDiffHeight != 0) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(LastDiffHeight)));
                     LastDiffHeight = 0;
                 }
@@ -157,7 +148,12 @@ class WriteUI extends FragmentView
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_blue : R.drawable.z_general_back_blue);
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
         ImageViewBack.setId(Misc.generateViewId());
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -181,19 +177,14 @@ class WriteUI extends FragmentView
         ImageViewWorld.setLayoutParams(ImageViewWorldParam);
         ImageViewWorld.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewWorld.setImageResource(R.drawable._write_global_gray);
-        ImageViewWorld.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewWorld.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (IsWorld == 0)
-                {
+            public void onClick(View v) {
+                if (IsWorld == 0) {
                     IsWorld = 1;
                     ((ImageView) v).setImageResource(R.drawable._write_global_blue);
                     Misc.ToastOld(Misc.String(R.string.WriteUIWorld));
-                }
-                else
-                {
+                } else {
                     IsWorld = 0;
                     ((ImageView) v).setImageResource(R.drawable._write_global_gray);
                     Misc.ToastOld(Misc.String(R.string.WriteUIWorld2));
@@ -227,25 +218,26 @@ class WriteUI extends FragmentView
         EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextMessage.setHintTextColor(Misc.Color(Misc.IsDark() ? R.color.Gray : R.color.Gray));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(300) });
+        EditTextMessage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(300)});
         EditTextMessage.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         EditTextMessage.setCustomSelectionActionModeCallback(null);
-        EditTextMessage.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override public void afterTextChanged(Editable editable) { }
+        EditTextMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2)
-            {
+            public void afterTextChanged(Editable editable) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 TextViewCount.setText(String.valueOf(300 - s.length()));
             }
         });
-        EditTextMessage.setOnLongClickListener(new View.OnLongClickListener()
-        {
+        EditTextMessage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v)
-            {
+            public boolean onLongClick(View v) {
                 final Dialog DialogOption = new Dialog(Activity);
                 DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogOption.setCancelable(true);
@@ -279,7 +271,12 @@ class WriteUI extends FragmentView
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                 ImageViewClose.setImageResource(R.drawable.close_blue);
                 ImageViewClose.setPadding(Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7));
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogOption.dismiss(); } });
+                ImageViewClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogOption.dismiss();
+                    }
+                });
 
                 RelativeLayoutHeader.addView(ImageViewClose);
 
@@ -294,11 +291,9 @@ class WriteUI extends FragmentView
                 TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                 TextViewDelete.setText(Misc.String(R.string.WriteUIDelete));
                 TextViewDelete.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-                TextViewDelete.setOnClickListener(new View.OnClickListener()
-                {
+                TextViewDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         EditTextMessage.setText("");
                         DialogOption.dismiss();
                     }
@@ -317,15 +312,12 @@ class WriteUI extends FragmentView
                 TextViewPaste.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                 TextViewPaste.setText(Misc.String(R.string.WriteUIPaste));
                 TextViewPaste.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-                TextViewPaste.setOnClickListener(new View.OnClickListener()
-                {
+                TextViewPaste.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         ClipboardManager clipboard = (ClipboardManager) Activity.getSystemService(Context.CLIPBOARD_SERVICE);
 
-                        if (clipboard != null && clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription().hasMimeType("text/plain"))
-                        {
+                        if (clipboard != null && clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription().hasMimeType("text/plain")) {
                             ClipData.Item ClipItem = clipboard.getPrimaryClip().getItemAt(0);
                             String Message = EditTextMessage.getText().toString() + ClipItem.getText().toString();
                             EditTextMessage.setText(Message);
@@ -348,11 +340,9 @@ class WriteUI extends FragmentView
                 TextViewCopy.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                 TextViewCopy.setText(Misc.String(R.string.WriteUICopy));
                 TextViewCopy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-                TextViewCopy.setOnClickListener(new View.OnClickListener()
-                {
+                TextViewCopy.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         ClipboardManager clipboard = (ClipboardManager) Activity.getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("WriteMessage", EditTextMessage.getText().toString());
 
@@ -388,53 +378,42 @@ class WriteUI extends FragmentView
         ImageViewImage.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         ImageViewImage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         ImageViewImage.setImageResource(Misc.IsDark() ? R.drawable.camera_gray : R.drawable.camera_bluegray);
-        ImageViewImage.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                if (SelectImage.size() >= 3)
-                {
+            public void onClick(View view) {
+                if (SelectImage.size() >= 3) {
                     Misc.ToastOld(Misc.String(R.string.WriteUIMaximumImage));
                     return;
                 }
 
-                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener()
-                {
+                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
                     List<String> ImageURL = new ArrayList<>();
 
                     @Override
-                    public void OnSelection(String URL)
-                    {
+                    public void OnSelection(String URL) {
                         ImageURL.add(URL);
                     }
 
                     @Override
-                    public void OnRemove(String URL)
-                    {
+                    public void OnRemove(String URL) {
                         ImageURL.remove(URL);
                     }
 
                     @Override
-                    public void OnSave()
-                    {
+                    public void OnSave() {
                         if (ImageURL.size() <= 0)
                             return;
 
                         ChangeType(1);
                         ViewPagerImage.setVisibility(View.VISIBLE);
 
-                        AsyncTask.execute(new Runnable()
-                        {
+                        AsyncTask.execute(new Runnable() {
                             @Override
-                            public void run()
-                            {
-                                try
-                                {
+                            public void run() {
+                                try {
                                     int Size = Misc.ToDP(150);
 
-                                    for (String I : ImageURL)
-                                    {
+                                    for (String I : ImageURL) {
                                         BitmapFactory.Options O = new BitmapFactory.Options();
                                         O.inJustDecodeBounds = true;
 
@@ -459,10 +438,13 @@ class WriteUI extends FragmentView
                                         SelectImage.add(file.getAbsolutePath());
                                     }
 
-                                    Misc.UIThread(new Runnable() { @Override public void run() { AdapterImage.notifyDataSetChanged(); } }, 2);
-                                }
-                                catch (Exception e)
-                                {
+                                    Misc.UIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            AdapterImage.notifyDataSetChanged();
+                                        }
+                                    }, 2);
+                                } catch (Exception e) {
                                     Misc.Debug("WriteUI-Compress: " + e.toString());
                                 }
                             }
@@ -471,13 +453,10 @@ class WriteUI extends FragmentView
                 };
 
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
-                {
+                PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
                     @Override
-                    public void OnChoice(boolean Allow)
-                    {
-                        if (!Allow)
-                        {
+                    public void OnChoice(boolean Allow) {
+                        if (!Allow) {
                             Misc.ToastOld(Misc.String(R.string.PermissionStorage));
                             return;
                         }
@@ -492,38 +471,30 @@ class WriteUI extends FragmentView
         ImageViewVideo.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         ImageViewVideo.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.video_bluegray);
-        ImageViewVideo.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewVideo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener()
-                {
+            public void onClick(View view) {
+                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
                     String VideoURL;
 
                     @Override
-                    public void OnSelection(String URL)
-                    {
+                    public void OnSelection(String URL) {
                         VideoURL = URL;
                     }
 
                     @Override
-                    public void OnRemove(String URL)
-                    {
+                    public void OnRemove(String URL) {
                         VideoURL = "";
                     }
 
                     @Override
-                    public void OnSave()
-                    {
-                        if (!VideoURL.equals(""))
-                        {
+                    public void OnSave() {
+                        if (!VideoURL.equals("")) {
                             MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
                             Retriever.setDataSource(VideoURL);
                             int Time = Math.round(Integer.parseInt(Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) / 1000);
 
-                            if (Time > 240)
-                            {
+                            if (Time > 240) {
                                 Misc.ToastOld(Misc.String(R.string.WriteUIVideoLength));
                                 return;
                             }
@@ -540,13 +511,10 @@ class WriteUI extends FragmentView
                 };
 
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
-                {
+                PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
                     @Override
-                    public void OnChoice(boolean Allow)
-                    {
-                        if (!Allow)
-                        {
+                    public void OnChoice(boolean Allow) {
+                        if (!Allow) {
                             Misc.ToastOld(Misc.String(R.string.PermissionStorage));
                             return;
                         }
@@ -561,11 +529,9 @@ class WriteUI extends FragmentView
         ImageViewVote.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         ImageViewVote.setPadding(Misc.ToDP(16), Misc.ToDP(16), Misc.ToDP(16), Misc.ToDP(16));
         ImageViewVote.setImageResource(Misc.IsDark() ? R.drawable.vote_gray : R.drawable.vote_bluegray);
-        ImageViewVote.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewVote.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 ChangeType(3);
                 ScrollViewVote.setVisibility(View.VISIBLE);
             }
@@ -575,16 +541,12 @@ class WriteUI extends FragmentView
         ImageViewFile.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         ImageViewFile.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.attach_bluegray);
-        ImageViewFile.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewFile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener()
-                {
+            public void onClick(View view) {
+                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
                     @Override
-                    public void OnSelection(String URL)
-                    {
+                    public void OnSelection(String URL) {
                         ChangeType(4);
                         SelectFile = new File(URL);
                         RelativeLayoutFile.setVisibility(View.VISIBLE);
@@ -592,24 +554,25 @@ class WriteUI extends FragmentView
                         TextViewFileDetail.setText((new DecimalFormat("#.##").format((double) SelectFile.length() / 1048576.0) + " " + Misc.String(R.string.WriteUIMB) + " / " + SelectFile.getName().substring(SelectFile.getName().lastIndexOf(".")).substring(1).toUpperCase()));
                     }
 
-                    @Override public void OnRemove(String URL) { }
-                    @Override public void OnSave() { }
+                    @Override
+                    public void OnRemove(String URL) {
+                    }
+
+                    @Override
+                    public void OnSave() {
+                    }
                 };
 
-                if (Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
-                {
+                if (Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     Activity.GetManager().OpenView(new GalleryViewUI(1, 3, L), "GalleryViewUI", true);
                     return;
                 }
 
                 PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
-                {
+                PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
                     @Override
-                    public void OnChoice(boolean Allow)
-                    {
-                        if (!Allow)
-                        {
+                    public void OnChoice(boolean Allow) {
+                        if (!Allow) {
                             Misc.ToastOld(Misc.String(R.string.PermissionStorage));
                             return;
                         }
@@ -632,17 +595,14 @@ class WriteUI extends FragmentView
         TextViewSend.setGravity(Gravity.CENTER);
         TextViewSend.SetColor(R.color.Primary);
 
-        if (Misc.IsRTL())
-        {
+        if (Misc.IsRTL()) {
             LinearLayoutBottom.addView(TextViewSend);
             LinearLayoutBottom.addView(TextViewCount);
             LinearLayoutBottom.addView(ImageViewFile);
             LinearLayoutBottom.addView(ImageViewVote);
             LinearLayoutBottom.addView(ImageViewVideo);
             LinearLayoutBottom.addView(ImageViewImage);
-        }
-        else
-        {
+        } else {
             LinearLayoutBottom.addView(ImageViewImage);
             LinearLayoutBottom.addView(ImageViewVideo);
             LinearLayoutBottom.addView(ImageViewVote);
@@ -670,11 +630,9 @@ class WriteUI extends FragmentView
         LinearLayoutCategory.setId(Misc.generateViewId());
         LinearLayoutCategory.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayoutCategory.setGravity(Misc.IsRTL() ? Gravity.END : Gravity.START);
-        LinearLayoutCategory.setOnClickListener(new View.OnClickListener()
-        {
+        LinearLayoutCategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog DialogCategory = new Dialog(Activity);
                 DialogCategory.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogCategory.setCancelable(false);
@@ -698,7 +656,12 @@ class WriteUI extends FragmentView
                 ImageViewBack.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
                 ImageViewBack.setLayoutParams(ImageViewBackParam);
                 ImageViewBack.setImageResource(R.drawable.close_blue);
-                ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { DialogCategory.dismiss(); } });
+                ImageViewBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DialogCategory.dismiss();
+                    }
+                });
 
                 RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -731,36 +694,102 @@ class WriteUI extends FragmentView
                 RecyclerViewCategory.setLayoutManager(new LinearLayoutManager(Activity));
                 RecyclerViewCategory.setAdapter(new AdapterCategory());
                 RecyclerViewCategory.setLayoutParams(RecyclerViewCategoryParam);
-                RecyclerViewCategory.addOnItemTouchListener(new OnClickRecyclerView(Activity, new OnClickRecyclerView.OnItemClickListener()
-                {
+                RecyclerViewCategory.addOnItemTouchListener(new OnClickRecyclerView(Activity, new OnClickRecyclerView.OnItemClickListener() {
                     @Override
-                    public void OnClick(int Position)
-                    {
-                        switch (Position)
-                        {
-                            case 0:  TextViewSelect.setText(Misc.String(R.string.CategoryNews));       SelectCategory = 1;  break;
-                            case 1:  TextViewSelect.setText(Misc.String(R.string.CategoryFun));        SelectCategory = 2;  break;
-                            case 2:  TextViewSelect.setText(Misc.String(R.string.CategoryMusic));      SelectCategory = 3;  break;
-                            case 3:  TextViewSelect.setText(Misc.String(R.string.CategorySport));      SelectCategory = 4;  break;
-                            case 4:  TextViewSelect.setText(Misc.String(R.string.CategoryFashion));    SelectCategory = 5;  break;
-                            case 5:  TextViewSelect.setText(Misc.String(R.string.CategoryFood));       SelectCategory = 6;  break;
-                            case 6:  TextViewSelect.setText(Misc.String(R.string.CategoryTechnology)); SelectCategory = 7;  break;
-                            case 7:  TextViewSelect.setText(Misc.String(R.string.CategoryArt));        SelectCategory = 8;  break;
-                            case 8:  TextViewSelect.setText(Misc.String(R.string.CategoryArtist));     SelectCategory = 9;  break;
-                            case 9:  TextViewSelect.setText(Misc.String(R.string.CategoryMedia));      SelectCategory = 10; break;
-                            case 10: TextViewSelect.setText(Misc.String(R.string.CategoryBusiness));   SelectCategory = 11; break;
-                            case 11: TextViewSelect.setText(Misc.String(R.string.CategoryEconomy));    SelectCategory = 12; break;
-                            case 12: TextViewSelect.setText(Misc.String(R.string.CategoryLiterature)); SelectCategory = 13; break;
-                            case 13: TextViewSelect.setText(Misc.String(R.string.CategoryTravel));     SelectCategory = 14; break;
-                            case 14: TextViewSelect.setText(Misc.String(R.string.CategoryPolitics));   SelectCategory = 15; break;
-                            case 15: TextViewSelect.setText(Misc.String(R.string.CategoryHealth));     SelectCategory = 16; break;
-                            case 16: TextViewSelect.setText(Misc.String(R.string.CategoryReligious));  SelectCategory = 17; break;
-                            case 17: TextViewSelect.setText(Misc.String(R.string.CategoryKnowledge));  SelectCategory = 18; break;
-                            case 18: TextViewSelect.setText(Misc.String(R.string.CategoryNature));     SelectCategory = 19; break;
-                            case 19: TextViewSelect.setText(Misc.String(R.string.CategoryWeather));    SelectCategory = 20; break;
-                            case 20: TextViewSelect.setText(Misc.String(R.string.CategoryHistorical)); SelectCategory = 21; break;
-                            case 21: TextViewSelect.setText(Misc.String(R.string.CategoryRomantic));   SelectCategory = 22; break;
-                            default: TextViewSelect.setText(Misc.String(R.string.CategoryOther));      SelectCategory = 100; break;
+                    public void OnClick(int Position) {
+                        switch (Position) {
+                            case 0:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryNews));
+                                SelectCategory = 1;
+                                break;
+                            case 1:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryFun));
+                                SelectCategory = 2;
+                                break;
+                            case 2:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryMusic));
+                                SelectCategory = 3;
+                                break;
+                            case 3:
+                                TextViewSelect.setText(Misc.String(R.string.CategorySport));
+                                SelectCategory = 4;
+                                break;
+                            case 4:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryFashion));
+                                SelectCategory = 5;
+                                break;
+                            case 5:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryFood));
+                                SelectCategory = 6;
+                                break;
+                            case 6:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryTechnology));
+                                SelectCategory = 7;
+                                break;
+                            case 7:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryArt));
+                                SelectCategory = 8;
+                                break;
+                            case 8:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryArtist));
+                                SelectCategory = 9;
+                                break;
+                            case 9:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryMedia));
+                                SelectCategory = 10;
+                                break;
+                            case 10:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryBusiness));
+                                SelectCategory = 11;
+                                break;
+                            case 11:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryEconomy));
+                                SelectCategory = 12;
+                                break;
+                            case 12:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryLiterature));
+                                SelectCategory = 13;
+                                break;
+                            case 13:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryTravel));
+                                SelectCategory = 14;
+                                break;
+                            case 14:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryPolitics));
+                                SelectCategory = 15;
+                                break;
+                            case 15:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryHealth));
+                                SelectCategory = 16;
+                                break;
+                            case 16:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryReligious));
+                                SelectCategory = 17;
+                                break;
+                            case 17:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryKnowledge));
+                                SelectCategory = 18;
+                                break;
+                            case 18:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryNature));
+                                SelectCategory = 19;
+                                break;
+                            case 19:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryWeather));
+                                SelectCategory = 20;
+                                break;
+                            case 20:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryHistorical));
+                                SelectCategory = 21;
+                                break;
+                            case 21:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryRomantic));
+                                SelectCategory = 22;
+                                break;
+                            default:
+                                TextViewSelect.setText(Misc.String(R.string.CategoryOther));
+                                SelectCategory = 100;
+                                break;
                         }
 
                         DialogCategory.dismiss();
@@ -797,15 +826,12 @@ class WriteUI extends FragmentView
         ImageViewArrow.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(20), RelativeLayout.LayoutParams.MATCH_PARENT));
         ImageViewArrow.setImageResource(R.drawable.__general_arrow_blue_down);
 
-        if (Misc.IsRTL())
-        {
+        if (Misc.IsRTL()) {
             LinearLayoutCategory.addView(ImageViewArrow);
             LinearLayoutCategory.addView(TextViewSelect);
             LinearLayoutCategory.addView(TextViewCategory);
             LinearLayoutCategory.addView(ImageViewCategory);
-        }
-        else
-        {
+        } else {
             LinearLayoutCategory.addView(ImageViewCategory);
             LinearLayoutCategory.addView(TextViewCategory);
             LinearLayoutCategory.addView(TextViewSelect);
@@ -839,11 +865,9 @@ class WriteUI extends FragmentView
         ImageViewClose.setImageResource(R.drawable._write_remove);
         ImageViewClose.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
         ImageViewClose.setId(Misc.generateViewId());
-        ImageViewClose.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewClose.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 ChangeType(0);
                 ScrollViewVote.setVisibility(View.GONE);
             }
@@ -859,7 +883,12 @@ class WriteUI extends FragmentView
         Disable.setStroke(Misc.ToDP(1), Misc.Color(R.color.Gray));
         Disable.setCornerRadius(Misc.ToDP(4));
 
-        View.OnFocusChangeListener OnFocus = new View.OnFocusChangeListener() { @Override public void onFocusChange(View view, boolean hasFocus) { view.setBackground(hasFocus ? Enable : Disable); } };
+        View.OnFocusChangeListener OnFocus = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                view.setBackground(hasFocus ? Enable : Disable);
+            }
+        };
 
         RelativeLayout.LayoutParams EditTextVote1Param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
         EditTextVote1Param.addRule(RelativeLayout.LEFT_OF, ImageViewClose.getId());
@@ -874,7 +903,7 @@ class WriteUI extends FragmentView
         EditTextVote1.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextVote1.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        EditTextVote1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(24) });
+        EditTextVote1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote1.setOnFocusChangeListener(OnFocus);
 
         RelativeLayoutVote.addView(EditTextVote1);
@@ -893,7 +922,7 @@ class WriteUI extends FragmentView
         EditTextVote2.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextVote2.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        EditTextVote2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(24) });
+        EditTextVote2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote2.setOnFocusChangeListener(OnFocus);
 
         RelativeLayoutVote.addView(EditTextVote2);
@@ -912,7 +941,7 @@ class WriteUI extends FragmentView
         EditTextVote3.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextVote3.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        EditTextVote3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(24) });
+        EditTextVote3.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote3.setOnFocusChangeListener(OnFocus);
         EditTextVote3.setVisibility(View.GONE);
 
@@ -931,7 +960,7 @@ class WriteUI extends FragmentView
         EditTextVote4.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextVote4.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        EditTextVote4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
+        EditTextVote4.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
         EditTextVote4.setOnFocusChangeListener(OnFocus);
         EditTextVote4.setVisibility(View.GONE);
         EditTextVote4.setId(Misc.generateViewId());
@@ -951,7 +980,7 @@ class WriteUI extends FragmentView
         EditTextVote5.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextVote5.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextVote5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        EditTextVote5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(24) });
+        EditTextVote5.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote5.setOnFocusChangeListener(OnFocus);
         EditTextVote5.setVisibility(View.GONE);
         EditTextVote5.setId(Misc.generateViewId());
@@ -965,11 +994,9 @@ class WriteUI extends FragmentView
         final TextView TextViewLengthVote = new TextView(Activity, 14, false);
         TextViewLengthVote.setLayoutParams(TextViewLengthParam);
         TextViewLengthVote.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
-        TextViewLengthVote.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewLengthVote.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog DialogLength = new Dialog(Activity);
                 DialogLength.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogLength.setCancelable(true);
@@ -1072,27 +1099,28 @@ class WriteUI extends FragmentView
                 TextViewCancel.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                 TextViewCancel.setText(Misc.String(R.string.WriteUILengthCancel));
                 TextViewCancel.setGravity(Gravity.CENTER);
-                TextViewCancel.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLength.dismiss(); } });
+                TextViewCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogLength.dismiss();
+                    }
+                });
 
                 TextView TextViewSet = new TextView(Activity, 14, false);
                 TextViewSet.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
                 TextViewSet.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                 TextViewSet.setText(Misc.String(R.string.WriteUILengthSet));
                 TextViewSet.setGravity(Gravity.CENTER);
-                TextViewSet.setOnClickListener(new View.OnClickListener()
-                {
+                TextViewSet.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        VoteTime = (System.currentTimeMillis() + (((Days.GetValue() * 86400) +  (Hours.GetValue() * 3600) + (Mins.GetValue() * 60)) * 1000));
+                    public void onClick(View v) {
+                        VoteTime = (System.currentTimeMillis() + (((Days.GetValue() * 86400) + (Hours.GetValue() * 3600) + (Mins.GetValue() * 60)) * 1000));
                         TextViewLengthVote.setText((Misc.String(R.string.WriteUILength) + " " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(VoteTime)), TextView.BufferType.SPANNABLE);
 
                         Spannable Span = (Spannable) TextViewLengthVote.getText();
-                        CharacterStyle SpanMessage = new CharacterStyle()
-                        {
+                        CharacterStyle SpanMessage = new CharacterStyle() {
                             @Override
-                            public void updateDrawState(TextPaint t)
-                            {
+                            public void updateDrawState(TextPaint t) {
                                 t.setColor(Misc.Color(R.color.Primary));
                             }
                         };
@@ -1102,13 +1130,10 @@ class WriteUI extends FragmentView
                     }
                 });
 
-                if (Misc.IsRTL())
-                {
+                if (Misc.IsRTL()) {
                     LinearLayoutButton.addView(TextViewSet);
                     LinearLayoutButton.addView(TextViewCancel);
-                }
-                else
-                {
+                } else {
                     LinearLayoutButton.addView(TextViewCancel);
                     LinearLayoutButton.addView(TextViewSet);
                 }
@@ -1121,11 +1146,9 @@ class WriteUI extends FragmentView
         TextViewLengthVote.setText((Misc.String(R.string.WriteUILength) + " " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis())), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewLengthVote.getText();
-        CharacterStyle SpanMessage = new CharacterStyle()
-        {
+        CharacterStyle SpanMessage = new CharacterStyle() {
             @Override
-            public void updateDrawState(TextPaint t)
-            {
+            public void updateDrawState(TextPaint t) {
                 t.setColor(Misc.Color(R.color.Primary));
             }
         };
@@ -1141,11 +1164,9 @@ class WriteUI extends FragmentView
         ImageViewAdd.setLayoutParams(ImageViewAddParam);
         ImageViewAdd.setImageResource(R.drawable._write_addition);
         ImageViewAdd.setPadding(Misc.ToDP(17), Misc.ToDP(17), Misc.ToDP(17), Misc.ToDP(17));
-        ImageViewAdd.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ImageViewRemove.setVisibility(View.VISIBLE);
 
                 if (EditTextVote3.getVisibility() != View.VISIBLE)
@@ -1167,17 +1188,14 @@ class WriteUI extends FragmentView
         ImageViewRemove.setImageResource(R.drawable._write_negative);
         ImageViewRemove.setPadding(Misc.ToDP(17), Misc.ToDP(17), Misc.ToDP(17), Misc.ToDP(17));
         ImageViewRemove.setVisibility(View.GONE);
-        ImageViewRemove.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewRemove.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 if (EditTextVote5.getVisibility() == View.VISIBLE)
                     EditTextVote5.setVisibility(View.GONE);
                 else if (EditTextVote4.getVisibility() == View.VISIBLE)
                     EditTextVote4.setVisibility(View.GONE);
-                else if (EditTextVote3.getVisibility() == View.VISIBLE)
-                {
+                else if (EditTextVote3.getVisibility() == View.VISIBLE) {
                     v.setVisibility(View.GONE);
                     EditTextVote3.setVisibility(View.GONE);
                 }
@@ -1244,11 +1262,9 @@ class WriteUI extends FragmentView
         ImageView ImageViewRemoveFile = new ImageView(Activity);
         ImageViewRemoveFile.setLayoutParams(ImageViewRemoveFileParam);
         ImageViewRemoveFile.setImageResource(R.drawable._write_remove);
-        ImageViewRemoveFile.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewRemoveFile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 ChangeType(0);
                 SelectFile = null;
                 RelativeLayoutFile.setVisibility(View.GONE);
@@ -1275,7 +1291,12 @@ class WriteUI extends FragmentView
         RelativeLayoutContent.addView(RelativeLayoutVideo);
 
         ImageViewThumb.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        ImageViewThumb.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.GetManager().OpenView(new VideoPreviewUI(SelectVideo.getAbsolutePath(), true, false), "VideoPreviewUI", true); } });
+        ImageViewThumb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.GetManager().OpenView(new VideoPreviewUI(SelectVideo.getAbsolutePath(), true, false), "VideoPreviewUI", true);
+            }
+        });
         ImageViewThumb.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         RelativeLayoutVideo.addView(ImageViewThumb);
@@ -1288,11 +1309,9 @@ class WriteUI extends FragmentView
         ImageViewRemoveVideo.setLayoutParams(ImageViewRemoveVideoParam);
         ImageViewRemoveVideo.setImageResource(R.drawable._write_remove);
         ImageViewRemoveVideo.setId(Misc.generateViewId());
-        ImageViewRemoveVideo.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewRemoveVideo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 ChangeType(0);
                 SelectVideo = null;
                 ImageViewThumb.setImageResource(android.R.color.transparent);
@@ -1310,13 +1329,10 @@ class WriteUI extends FragmentView
         ImageView ImageViewCompress = new ImageView(Activity);
         ImageViewCompress.setLayoutParams(ImageViewCompressParam);
         ImageViewCompress.setImageResource(R.drawable._write_compress);
-        ImageViewCompress.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewCompress.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                if (Build.VERSION.SDK_INT <= 17)
-                {
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT <= 17) {
                     Misc.ToastOld(Misc.String(R.string.WriteUICantCompress));
                     return;
                 }
@@ -1333,76 +1349,74 @@ class WriteUI extends FragmentView
                 Progress.setProgress(0);
                 Progress.show();
 
-                MediaTransCoder.Start(OldPath, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy()
-                {
-                    @Override
-                    public MediaFormat CreateVideo(MediaFormat Format)
-                    {
-                        int Frame = 30;
-                        int BitRate = 500000;
-                        int Width = Format.getInteger(MediaFormat.KEY_WIDTH);
-                        int Height = Format.getInteger(MediaFormat.KEY_HEIGHT);
+                MediaTransCoder.Start(OldPath, SelectVideo.getAbsolutePath(), new MediaTransCoder.MediaStrategy() {
+                            @Override
+                            public MediaFormat CreateVideo(MediaFormat Format) {
+                                int Frame = 30;
+                                int BitRate = 500000;
+                                int Width = Format.getInteger(MediaFormat.KEY_WIDTH);
+                                int Height = Format.getInteger(MediaFormat.KEY_HEIGHT);
 
-                        if (Width > 640 || Height > 640)
-                        {
-                            Width = Width / 2;
-                            Height = Height / 2;
-                        }
+                                if (Width > 640 || Height > 640) {
+                                    Width = Width / 2;
+                                    Height = Height / 2;
+                                }
 
-                        try { Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE); } catch (Exception e) { /* */ }
+                                try {
+                                    Frame = Format.getInteger(MediaFormat.KEY_FRAME_RATE);
+                                } catch (Exception e) { /* */ }
 
-                        MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
-                        format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
-                        format.setInteger(MediaFormat.KEY_FRAME_RATE, Frame);
-                        format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
-                        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, 0x7F000789);
-                        return format;
-                    }
+                                MediaFormat format = MediaFormat.createVideoFormat("video/avc", Width, Height);
+                                format.setInteger(MediaFormat.KEY_BIT_RATE, BitRate);
+                                format.setInteger(MediaFormat.KEY_FRAME_RATE, Frame);
+                                format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
+                                format.setInteger(MediaFormat.KEY_COLOR_FORMAT, 0x7F000789);
+                                return format;
+                            }
 
-                    @Override
-                    public MediaFormat CreateAudio(MediaFormat Format)
-                    {
-                        int Sample = 44100;
-                        int Channel = 1;
+                            @Override
+                            public MediaFormat CreateAudio(MediaFormat Format) {
+                                int Sample = 44100;
+                                int Channel = 1;
 
-                        try { Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE); } catch (Exception e) { /* */ }
-                        try { Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT); } catch (Exception e) { /* */ }
+                                try {
+                                    Sample = Format.getInteger(MediaFormat.KEY_SAMPLE_RATE);
+                                } catch (Exception e) { /* */ }
+                                try {
+                                    Channel = Format.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
+                                } catch (Exception e) { /* */ }
 
-                        int Bitrate = Sample * Channel;
+                                int Bitrate = Sample * Channel;
 
-                        MediaFormat format = MediaFormat.createAudioFormat("audio/mp4a-latm", Sample, Channel);
-                        format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
-                        format.setInteger(MediaFormat.KEY_BIT_RATE, Bitrate);
-                        return format;
-                    }
-                },
-                new MediaTransCoder.CallBack()
-                {
-                    @Override
-                    public void OnProgress(double progress)
-                    {
-                        Progress.setProgress((int) (((progress + 0.001) * 100) % 100));
-                    }
+                                MediaFormat format = MediaFormat.createAudioFormat("audio/mp4a-latm", Sample, Channel);
+                                format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
+                                format.setInteger(MediaFormat.KEY_BIT_RATE, Bitrate);
+                                return format;
+                            }
+                        },
+                        new MediaTransCoder.CallBack() {
+                            @Override
+                            public void OnProgress(double progress) {
+                                Progress.setProgress((int) (((progress + 0.001) * 100) % 100));
+                            }
 
-                    @Override
-                    public void OnCompleted()
-                    {
-                        Progress.cancel();
+                            @Override
+                            public void OnCompleted() {
+                                Progress.cancel();
 
-                        MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
-                        Retriever.setDataSource(SelectVideo.getAbsolutePath());
+                                MediaMetadataRetriever Retriever = new MediaMetadataRetriever();
+                                Retriever.setDataSource(SelectVideo.getAbsolutePath());
 
-                        TextViewSize.setText((new DecimalFormat("#.##").format((double) SelectVideo.length() / 1048576.0) + " " + Misc.String(R.string.WriteUIMB)));
-                        ImageViewThumb.setImageBitmap(Retriever.getFrameAtTime(100));
-                    }
+                                TextViewSize.setText((new DecimalFormat("#.##").format((double) SelectVideo.length() / 1048576.0) + " " + Misc.String(R.string.WriteUIMB)));
+                                ImageViewThumb.setImageBitmap(Retriever.getFrameAtTime(100));
+                            }
 
-                    @Override
-                    public void OnFailed(Exception e)
-                    {
-                        Progress.cancel();
-                        Misc.Debug("WriteUI-VideoCompress: " + e.toString());
-                    }
-                });
+                            @Override
+                            public void OnFailed(Exception e) {
+                                Progress.cancel();
+                                Misc.Debug("WriteUI-VideoCompress: " + e.toString());
+                            }
+                        });
             }
         });
 
@@ -1442,25 +1456,20 @@ class WriteUI extends FragmentView
 
         RelativeLayoutVideo.addView(ImageViewPlay);
 
-        TextViewSend.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (SelectCategory == 0)
-                {
+            public void onClick(View v) {
+                if (SelectCategory == 0) {
                     Misc.ToastOld(Misc.String(R.string.WriteUIPickCategory));
                     return;
                 }
 
-                if (SelectType == 3 && (VoteTime == 0 || VoteTime < System.currentTimeMillis()))
-                {
+                if (SelectType == 3 && (VoteTime == 0 || VoteTime < System.currentTimeMillis())) {
                     Misc.ToastOld(Misc.String(R.string.WriteUISetLength));
                     return;
                 }
 
-                if (EditTextMessage.getText().length() <= 30 && SelectType == 0)
-                {
+                if (EditTextMessage.getText().length() <= 30 && SelectType == 0) {
                     Misc.ToastOld(Misc.String(R.string.WriteUIStatement));
                     return;
                 }
@@ -1468,19 +1477,14 @@ class WriteUI extends FragmentView
                 JSONObject Vote = new JSONObject();
                 Map<String, File> UploadFile = new HashMap<>();
 
-                if (SelectType == 1)
-                {
+                if (SelectType == 1) {
                     for (int I = 1; I <= SelectImage.size(); I++)
                         UploadFile.put(("Image" + I), new File(SelectImage.get(I - 1)));
-                }
-                else if (SelectType == 2)
+                } else if (SelectType == 2)
                     UploadFile.put("Video", SelectVideo);
-                else if (SelectType == 3)
-                {
-                    try
-                    {
-                        if (EditTextVote1.getText().toString().isEmpty() || EditTextVote2.getText().toString().isEmpty())
-                        {
+                else if (SelectType == 3) {
+                    try {
+                        if (EditTextVote1.getText().toString().isEmpty() || EditTextVote2.getText().toString().isEmpty()) {
                             Misc.ToastOld(Misc.String(R.string.WriteUISetVote));
                             return;
                         }
@@ -1498,13 +1502,10 @@ class WriteUI extends FragmentView
                             Vote.put("Vote5", EditTextVote5.getText().toString());
 
                         Vote.put("Time", (VoteTime / 1000));
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Misc.Debug("WriteUI-Vote: " + e.toString());
                     }
-                }
-                else if (SelectType == 4)
+                } else if (SelectType == 4)
                     UploadFile.put("File", SelectFile);
                 else
                     UploadFile = null;
@@ -1518,66 +1519,57 @@ class WriteUI extends FragmentView
                 Progress.show();
 
                 AndroidNetworking.upload(Misc.GetRandomServer("PostWrite"))
-                .addMultipartParameter("Message", EditTextMessage.getText().toString())
-                .addMultipartParameter("Category", String.valueOf(SelectCategory))
-                .addMultipartParameter("Type", String.valueOf(SelectType))
-                .addMultipartParameter("Vote", Vote.toString())
-                .addMultipartParameter("World", String.valueOf(IsWorld))
-                .addHeaders("token", Misc.GetString("Token"))
-                .addMultipartFile(UploadFile)
-                .setTag("WriteFragment")
-                .build()
-                .setUploadProgressListener(new UploadProgressListener()
-                {
-                    @Override
-                    public void onProgress(long bytesUploaded, long totalBytes)
-                    {
-                        Progress.setProgress((int) (100 * bytesUploaded / totalBytes));
-                    }
-                })
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        Progress.cancel();
-
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            switch (Result.getInt("Message"))
-                            {
-                                case 0:
-                                    InboxUI inboxUI = (InboxUI) Activity.GetManager().FindByTag("InboxUI");
-
-                                    if (inboxUI != null)
-                                        inboxUI.Update(Result.getJSONObject("Result"));
-
-                                    Activity.onBackPressed();
-                                break;
-                                case 3:
-                                    // TODO Add Message for all types
-                                    Misc.ToastOld(Misc.String(R.string.WriteUISetVote));
-                                    break;
-                                default:
-                                    Misc.GeneralError(Result.getInt("Message"));
-                                break;
+                        .addMultipartParameter("Message", EditTextMessage.getText().toString())
+                        .addMultipartParameter("Category", String.valueOf(SelectCategory))
+                        .addMultipartParameter("Type", String.valueOf(SelectType))
+                        .addMultipartParameter("Vote", Vote.toString())
+                        .addMultipartParameter("World", String.valueOf(IsWorld))
+                        .addHeaders("token", Misc.GetString("Token"))
+                        .addMultipartFile(UploadFile)
+                        .setTag("WriteFragment")
+                        .build()
+                        .setUploadProgressListener(new UploadProgressListener() {
+                            @Override
+                            public void onProgress(long bytesUploaded, long totalBytes) {
+                                Progress.setProgress((int) (100 * bytesUploaded / totalBytes));
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("WriteUI-RequestPost: " + e.toString());
-                        }
-                    }
+                        })
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String Response) {
+                                Progress.cancel();
 
-                    @Override
-                    public void onError(ANError e)
-                    {
-                        Progress.cancel();
-                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                    }
-                });
+                                try {
+                                    JSONObject Result = new JSONObject(Response);
+
+                                    switch (Result.getInt("Message")) {
+                                        case 0:
+                                            InboxUI inboxUI = (InboxUI) Activity.GetManager().FindByTag("InboxUI");
+
+                                            if (inboxUI != null)
+                                                inboxUI.Update(Result.getJSONObject("Result"));
+
+                                            Activity.onBackPressed();
+                                            break;
+                                        case 3:
+                                            // TODO Add Message for all types
+                                            Misc.ToastOld(Misc.String(R.string.WriteUISetVote));
+                                            break;
+                                        default:
+                                            Misc.GeneralError(Result.getInt("Message"));
+                                            break;
+                                    }
+                                } catch (Exception e) {
+                                    Misc.Debug("WriteUI-RequestPost: " + e.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError e) {
+                                Progress.cancel();
+                                Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                            }
+                        });
             }
         });
 
@@ -1591,24 +1583,20 @@ class WriteUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
         Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("WriteUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    private void ChangeType(int type)
-    {
-        if (type == 0)
-        {
+    private void ChangeType(int type) {
+        if (type == 0) {
             SelectType = 0;
 
             ImageViewImage.setEnabled(true);
@@ -1631,37 +1619,34 @@ class WriteUI extends FragmentView
         ImageViewFile.setEnabled(false);
         ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_bluegray : R.drawable.attach_gray);
 
-        switch (type)
-        {
+        switch (type) {
             case 1:
                 SelectType = 1;
                 ImageViewImage.setEnabled(true);
                 ImageViewImage.setImageResource(Misc.IsDark() ? R.drawable.camera_gray : R.drawable.camera_bluegray);
-            break;
+                break;
             case 2:
                 SelectType = 2;
                 ImageViewVideo.setEnabled(true);
                 ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.video_bluegray);
-            break;
+                break;
             case 3:
                 SelectType = 3;
                 ImageViewVote.setEnabled(true);
                 ImageViewVote.setImageResource(Misc.IsDark() ? R.drawable.vote_gray : R.drawable.vote_bluegray);
-            break;
+                break;
             case 4:
                 SelectType = 4;
                 ImageViewFile.setEnabled(true);
                 ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.attach_bluegray);
-            break;
+                break;
         }
     }
 
-    private class ViewPagerAdapter extends PagerAdapter
-    {
+    private class ViewPagerAdapter extends PagerAdapter {
         @NonNull
         @Override
-        public Object instantiateItem(@NonNull ViewGroup Container, final int Position)
-        {
+        public Object instantiateItem(@NonNull ViewGroup Container, final int Position) {
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
@@ -1671,11 +1656,9 @@ class WriteUI extends FragmentView
             ImageView ImageViewImage = new ImageView(Activity);
             ImageViewImage.setLayoutParams(ImageViewImageParam);
             ImageViewImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ImageViewImage.setOnClickListener(new View.OnClickListener()
-            {
+            ImageViewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     if (SelectImage.size() > 0)
                         Activity.GetManager().OpenView(new ImagePreviewUI(SelectImage.get(Position), false), "ImagePreviewUI", true);
                 }
@@ -1693,16 +1676,13 @@ class WriteUI extends FragmentView
             ImageViewRemove.setLayoutParams(ImageViewRemoveParam);
             ImageViewRemove.setImageResource(R.drawable._write_remove);
             ImageViewRemove.setId(Misc.generateViewId());
-            ImageViewRemove.setOnClickListener(new View.OnClickListener()
-            {
+            ImageViewRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
+                public void onClick(View view) {
                     SelectImage.remove(Position);
                     AdapterImage.notifyDataSetChanged();
 
-                    if (SelectImage.size() <= 0)
-                    {
+                    if (SelectImage.size() <= 0) {
                         ChangeType(0);
                         ViewPagerImage.setVisibility(View.GONE);
                     }
@@ -1719,22 +1699,18 @@ class WriteUI extends FragmentView
             ImageView ImageViewCrop = new ImageView(Activity);
             ImageViewCrop.setLayoutParams(ImageViewCropParam);
             ImageViewCrop.setImageResource(R.drawable._write_crop);
-            ImageViewCrop.setOnClickListener(new View.OnClickListener()
-            {
+            ImageViewCrop.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
-                    Activity.GetManager().OpenView(new CropViewUI(SelectImage.get(Position), false, new CropViewUI.OnCropListener()
-                    {
+                public void onClick(View view) {
+                    Activity.GetManager().OpenView(new CropViewUI(SelectImage.get(Position), false, new CropViewUI.OnCropListener() {
                         @Override
-                        public void OnCrop(Bitmap bitmap)
-                        {
+                        public void OnCrop(Bitmap bitmap) {
                             SelectImage.remove(Position);
                             //SelectImage.add(Path);
                             // TODO Add bitmap to file
                             AdapterImage.notifyDataSetChanged();
                         }
-                    }),  "CropViewUI", true);
+                    }), "CropViewUI", true);
                 }
             });
 
@@ -1746,39 +1722,33 @@ class WriteUI extends FragmentView
         }
 
         @Override
-        public void destroyItem(@NonNull ViewGroup Container, int position, @NonNull Object object)
-        {
+        public void destroyItem(@NonNull ViewGroup Container, int position, @NonNull Object object) {
             Container.removeView((View) object);
         }
 
         @Override
-        public int getItemPosition(@NonNull Object object)
-        {
+        public int getItemPosition(@NonNull Object object) {
             return POSITION_NONE;
         }
 
         @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object)
-        {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return SelectImage.size();
         }
     }
 
-    private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderMain>
-    {
+    private class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolderMain> {
         private List<Struct> CategoryList = new ArrayList<>();
         private int ID_ICON = Misc.generateViewId();
         private int ID_NAME = Misc.generateViewId();
         private int ID_LINE = Misc.generateViewId();
 
-        AdapterCategory()
-        {
+        AdapterCategory() {
             CategoryList.clear();
             CategoryList.add(new Struct(Misc.String(R.string.CategoryNews), !Misc.IsDark() ? R.drawable._category_news_black : R.drawable._category_news_white));
             CategoryList.add(new Struct(Misc.String(R.string.CategoryFun), !Misc.IsDark() ? R.drawable._category_fun_black : R.drawable._category_fun_white));
@@ -1805,24 +1775,8 @@ class WriteUI extends FragmentView
             CategoryList.add(new Struct(Misc.String(R.string.CategoryOther), !Misc.IsDark() ? R.drawable._category_other_black : R.drawable._category_other_white));
         }
 
-        class ViewHolderMain extends RecyclerView.ViewHolder
-        {
-            ImageView ImageViewIcon;
-            TextView TextViewName;
-            View ViewLine;
-
-            ViewHolderMain(View view)
-            {
-                super(view);
-                ImageViewIcon = view.findViewById(ID_ICON);
-                TextViewName = view.findViewById(ID_NAME);
-                ViewLine = view.findViewById(ID_LINE);
-            }
-        }
-
         @Override
-        public void onBindViewHolder(ViewHolderMain Holder, int p)
-        {
+        public void onBindViewHolder(ViewHolderMain Holder, int p) {
             int Position = Holder.getAdapterPosition();
 
             GlideApp.with(Activity).load(CategoryList.get(Position).Image).dontAnimate().into(Holder.ImageViewIcon);
@@ -1836,8 +1790,7 @@ class WriteUI extends FragmentView
         }
 
         @Override
-        public ViewHolderMain onCreateViewHolder(ViewGroup parent, int ViewType)
-        {
+        public ViewHolderMain onCreateViewHolder(ViewGroup parent, int ViewType) {
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
             RelativeLayoutMain.setClickable(true);
@@ -1877,18 +1830,28 @@ class WriteUI extends FragmentView
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return CategoryList.size();
         }
 
-        class Struct
-        {
+        class ViewHolderMain extends RecyclerView.ViewHolder {
+            ImageView ImageViewIcon;
+            TextView TextViewName;
+            View ViewLine;
+
+            ViewHolderMain(View view) {
+                super(view);
+                ImageViewIcon = view.findViewById(ID_ICON);
+                TextViewName = view.findViewById(ID_NAME);
+                ViewLine = view.findViewById(ID_LINE);
+            }
+        }
+
+        class Struct {
             String Name;
             int Image;
 
-            Struct(String name, int image)
-            {
+            Struct(String name, int image) {
                 Name = name;
                 Image = image;
             }

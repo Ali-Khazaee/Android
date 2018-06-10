@@ -13,8 +13,7 @@ import co.biogram.main.handler.Misc;
 
 // TODO: Scroll B Samte Bala Bug e, Nabayad Scroll She Ta Vaghti k Pull View Hanoz Height esh 0 Nashode
 
-public class PullToRefreshView extends RelativeLayout
-{
+public class PullToRefreshView extends RelativeLayout {
     private static final int STATE_NORMAL = 0;
     private static final int STATE_RELEASE = 1;
     private static final int STATE_REFRESHING = 2;
@@ -28,8 +27,7 @@ public class PullToRefreshView extends RelativeLayout
     private int RefreshHeight;
     private float LastY = -1;
 
-    public PullToRefreshView(Context c)
-    {
+    public PullToRefreshView(Context c) {
         super(c);
 
         RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
@@ -58,13 +56,11 @@ public class PullToRefreshView extends RelativeLayout
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent e)
-    {
-        switch (e.getAction())
-        {
+    public boolean onTouchEvent(MotionEvent e) {
+        switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 LastY = e.getRawY();
-            break;
+                break;
             case MotionEvent.ACTION_MOVE:
                 float MoveY = e.getRawY() - LastY;
                 LastY = e.getRawY();
@@ -72,8 +68,7 @@ public class PullToRefreshView extends RelativeLayout
                 if (MoveY > 80.0f || (getHeight() == 0 && MoveY < 0))
                     return super.onTouchEvent(e);
 
-                if (RefreshState != STATE_REFRESHING)
-                {
+                if (RefreshState != STATE_REFRESHING) {
                     int Y = (int) (MoveY / 2);
                     int NewVisibleHeight = getHeight() + Y;
 
@@ -86,18 +81,15 @@ public class PullToRefreshView extends RelativeLayout
 
                     SetVisibleHeight(NewVisibleHeight);
                 }
-            break;
+                break;
             case MotionEvent.ACTION_UP:
                 if (getHeight() <= 0)
                     super.onTouchEvent(e);
 
-                if (RefreshState == STATE_NORMAL)
-                {
+                if (RefreshState == STATE_NORMAL) {
                     SmoothScrollTo(0);
                     RefreshState = STATE_DONE;
-                }
-                else if (RefreshState == STATE_RELEASE)
-                {
+                } else if (RefreshState == STATE_RELEASE) {
                     RefreshState = STATE_REFRESHING;
                     CircleViewMain.setVisibility(GONE);
                     LoadingViewMain.setVisibility(VISIBLE);
@@ -105,19 +97,17 @@ public class PullToRefreshView extends RelativeLayout
                     SmoothScrollTo(GetScreenHeight() / 9);
                     Listener.OnRefresh();
                 }
-            break;
+                break;
         }
 
         return super.onTouchEvent(e);
     }
 
-    public void SetOnRefreshListener(OnRefreshListener l)
-    {
+    public void SetOnRefreshListener(OnRefreshListener l) {
         Listener = l;
     }
 
-    private void SetVisibleHeight(int Height)
-    {
+    private void SetVisibleHeight(int Height) {
         if (Height > RefreshHeight)
             Height = RefreshHeight;
         else if (Height < 0)
@@ -125,17 +115,14 @@ public class PullToRefreshView extends RelativeLayout
 
         ViewGroup.LayoutParams LayoutParam = getLayoutParams();
 
-        if (LayoutParam != null)
-        {
+        if (LayoutParam != null) {
             LayoutParam.height = Height;
             setLayoutParams(LayoutParam);
         }
     }
 
-    public void SetRefreshComplete()
-    {
-        if (RefreshState == STATE_REFRESHING)
-        {
+    public void SetRefreshComplete() {
+        if (RefreshState == STATE_REFRESHING) {
             RefreshState = STATE_DONE;
             LoadingViewMain.Stop();
             LoadingViewMain.setVisibility(GONE);
@@ -144,23 +131,19 @@ public class PullToRefreshView extends RelativeLayout
         }
     }
 
-    private int GetScreenHeight()
-    {
+    private int GetScreenHeight() {
         DisplayMetrics DisplayMetric = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(DisplayMetric);
 
         return DisplayMetric.heightPixels;
     }
 
-    private void SmoothScrollTo(int Dest)
-    {
+    private void SmoothScrollTo(int Dest) {
         ValueAnimator Anim = ValueAnimator.ofInt(getHeight(), Dest);
         Anim.setDuration(300).start();
-        Anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
+        Anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator a)
-            {
+            public void onAnimationUpdate(ValueAnimator a) {
                 CircleViewMain.SetProgressPercentage(Math.max(1, getHeight()) / (RefreshHeight / 100));
                 SetVisibleHeight((int) a.getAnimatedValue());
             }
@@ -168,8 +151,7 @@ public class PullToRefreshView extends RelativeLayout
         Anim.start();
     }
 
-    public interface OnRefreshListener
-    {
+    public interface OnRefreshListener {
         void OnRefresh();
     }
 }

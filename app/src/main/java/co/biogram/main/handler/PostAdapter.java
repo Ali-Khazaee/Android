@@ -59,29 +59,13 @@ import co.biogram.main.ui.view.PullToRefreshView;
 import co.biogram.main.ui.view.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain>
-{
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain> {
+    private static DBHandler DB;
     private ArrayList<PostStruct> PostList = new ArrayList<>();
     private GradientDrawable DrawableBorder;
     private PullToRefreshView RefreshView;
     private FragmentActivity Activity;
-    private static DBHandler DB;
     private String Tag;
-
-    public PostAdapter(FragmentActivity activity, String tag)
-    {
-        Tag = tag;
-        Activity = activity;
-
-        PostList.add(new PostStruct(0));
-
-        DrawableBorder = new GradientDrawable();
-        DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
-        DrawableBorder.setCornerRadius(Misc.ToDP(6));
-
-        DB = new DBHandler(Activity);
-    }
-
     private int ID1_MAIN = Misc.generateViewId();
     private int ID1_PROFILE = Misc.generateViewId();
     private int ID1_NAME = Misc.generateViewId();
@@ -151,270 +135,118 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     private int ID1_FILE_DETAIL = Misc.generateViewId();
     private int ID1_VIEW_LINE = Misc.generateViewId();
 
-    class ViewHolderMain extends RecyclerView.ViewHolder
-    {
-        RelativeLayout RelativeLayoutMain;
-        CircleImageView CircleImageViewProfile;
-        TextView TextViewName;
-        ImageView ImageViewMedal;
-        TextView TextViewUsername;
-        TextView TextViewTime;
-        TextView TextViewMessage;
-        ImageView ImageViewOption;
-        ImageView ImageViewLike;
-        TextView TextViewLikeCount;
-        ImageView ImageViewComment;
-        TextView TextViewCommentCount;
-        CircleImageView CircleImageViewPerson1;
-        CircleImageView CircleImageViewPerson2;
-        CircleImageView CircleImageViewPerson3;
-        CircleImageView CircleImageViewPerson4;
-        View ViewLine;
-        RelativeLayout RelativeLayoutImage;
-        ImageView ImageViewSingle;
-        LinearLayout LinearLayoutDouble;
-        ImageView ImageViewDouble1;
-        ImageView ImageViewDouble2;
-        LinearLayout LinearLayoutTriple;
-        ImageView ImageViewTriple1;
-        ImageView ImageViewTriple2;
-        ImageView ImageViewTriple3;
-        RelativeLayout RelativeLayoutVideo;
-        ImageView ImageViewVideo;
-        TextView TextViewDurotion;
-        RelativeLayout RelativeLayoutVote;
-        LinearLayout LinearLayoutVoteType1;
-        LinearLayout LinearLayoutVoteLin1;
-        LinearLayout LinearLayoutVoteLin2;
-        LinearLayout LinearLayoutVoteLin3;
-        LinearLayout LinearLayoutVoteLin4;
-        LinearLayout LinearLayoutVoteLin5;
-        View ViewType1Sel1;
-        View ViewType1Sel2;
-        View ViewType1Sel3;
-        View ViewType1Sel4;
-        View ViewType1Sel5;
-        TextView TextViewType1Text1;
-        TextView TextViewType1Text2;
-        TextView TextViewType1Text3;
-        TextView TextViewType1Text4;
-        TextView TextViewType1Text5;
-        TextView TextViewType1Submit;
-        TextView TextViewType1Result;
-        TextView TextViewType1Time;
-        RelativeLayout RelativeLayoutVoteType2;
-        TextView TextViewType2Text1;
-        TextView TextViewType2Text2;
-        TextView TextViewType2Text3;
-        TextView TextViewType2Text4;
-        TextView TextViewType2Text5;
-        TextView TextViewType2Per1;
-        TextView TextViewType2Per2;
-        TextView TextViewType2Per3;
-        TextView TextViewType2Per4;
-        TextView TextViewType2Per5;
-        ImageView ImageViewType2Select;
-        TextView TextViewType2Result;
-        TextView TextViewType2Time;
-        RelativeLayout RelativeLayoutFile;
-        ImageView ImageViewFile;
-        TextView TextViewFile;
-        TextView TextViewFileName;
-        TextView TextViewFileDetail;
+    public PostAdapter(FragmentActivity activity, String tag) {
+        Tag = tag;
+        Activity = activity;
 
-        ViewHolderMain(View v, int type)
-        {
-            super(v);
+        PostList.add(new PostStruct(0));
 
-            if (type == 1)
-            {
-                RelativeLayoutMain = v.findViewById(ID1_MAIN);
-                CircleImageViewProfile = v.findViewById(ID1_PROFILE);
-                TextViewName = v.findViewById(ID1_NAME);
-                ImageViewMedal = v.findViewById(ID1_MEDAL);
-                TextViewUsername = v.findViewById(ID1_USERNAME);
-                TextViewTime = v.findViewById(ID1_TIME);
-                TextViewMessage = v.findViewById(ID1_MESSAGE);
-                ImageViewOption = v.findViewById(ID1_OPTION);
-                CircleImageViewPerson1 = v.findViewById(ID1_PERSON1);
-                CircleImageViewPerson2 = v.findViewById(ID1_PERSON2);
-                CircleImageViewPerson3 = v.findViewById(ID1_PERSON3);
-                CircleImageViewPerson4 = v.findViewById(ID1_PERSON4);
-                ImageViewLike = v.findViewById(ID1_LIKE);
-                TextViewLikeCount = v.findViewById(ID1_LIKE_COUNT);
-                ImageViewComment = v.findViewById(ID1_COMMENT);
-                TextViewCommentCount = v.findViewById(ID1_COMMENT_COUNT);
-                ViewLine = v.findViewById(ID1_VIEW_LINE);
-                RelativeLayoutImage = v.findViewById(ID1_IMAGE_LAYOUT);
-                ImageViewSingle = v.findViewById(ID1_SINGLE);
-                LinearLayoutDouble = v.findViewById(ID1_DOUBLE_LAYOUT);
-                ImageViewDouble1 = v.findViewById(ID1_DOUBLE1);
-                ImageViewDouble2 = v.findViewById(ID1_DOUBLE2);
-                LinearLayoutTriple = v.findViewById(ID1_TRIPLE_LAYOUT);
-                ImageViewTriple1 = v.findViewById(ID1_TRIPLE1);
-                ImageViewTriple2 = v.findViewById(ID1_TRIPLE2);
-                ImageViewTriple3 = v.findViewById(ID1_TRIPLE3);
-                RelativeLayoutVideo = v.findViewById(ID1_VIDEO_LAYOUT);
-                ImageViewVideo = v.findViewById(ID1_VIDEO_IMAGE);
-                TextViewDurotion = v.findViewById(ID1_VIDEO_DURATION);
-                RelativeLayoutVote = v.findViewById(ID1_VOTE_LAYOUT);
-                LinearLayoutVoteType1 = v.findViewById(ID1_VOTE_TYPE1);
-                LinearLayoutVoteLin1 = v.findViewById(ID1_VOTE_TYPE1_LIN1);
-                LinearLayoutVoteLin2 = v.findViewById(ID1_VOTE_TYPE1_LIN2);
-                LinearLayoutVoteLin3 = v.findViewById(ID1_VOTE_TYPE1_LIN3);
-                LinearLayoutVoteLin4 = v.findViewById(ID1_VOTE_TYPE1_LIN4);
-                LinearLayoutVoteLin5 = v.findViewById(ID1_VOTE_TYPE1_LIN5);
-                ViewType1Sel1 = v.findViewById(ID1_VOTE_TYPE1_SEL1);
-                ViewType1Sel2 = v.findViewById(ID1_VOTE_TYPE1_SEL2);
-                ViewType1Sel3 = v.findViewById(ID1_VOTE_TYPE1_SEL3);
-                ViewType1Sel4 = v.findViewById(ID1_VOTE_TYPE1_SEL4);
-                ViewType1Sel5 = v.findViewById(ID1_VOTE_TYPE1_SEL5);
-                TextViewType1Text1 = v.findViewById(ID1_VOTE_TYPE1_TEXT1);
-                TextViewType1Text2 = v.findViewById(ID1_VOTE_TYPE1_TEXT2);
-                TextViewType1Text3 = v.findViewById(ID1_VOTE_TYPE1_TEXT3);
-                TextViewType1Text4 = v.findViewById(ID1_VOTE_TYPE1_TEXT4);
-                TextViewType1Text5 = v.findViewById(ID1_VOTE_TYPE1_TEXT5);
-                TextViewType1Submit = v.findViewById(ID1_VOTE_TYPE1_SUBMIT);
-                TextViewType1Result = v.findViewById(ID1_VOTE_TYPE1_RESULT);
-                TextViewType1Time = v.findViewById(ID1_VOTE_TYPE1_TIME);
-                RelativeLayoutVoteType2 = v.findViewById(ID1_VOTE_TYPE2);
-                TextViewType2Text1 = v.findViewById(ID1_VOTE_TYPE2_TEXT1);
-                TextViewType2Text2 = v.findViewById(ID1_VOTE_TYPE2_TEXT2);
-                TextViewType2Text3 = v.findViewById(ID1_VOTE_TYPE2_TEXT3);
-                TextViewType2Text4 = v.findViewById(ID1_VOTE_TYPE2_TEXT4);
-                TextViewType2Text5 = v.findViewById(ID1_VOTE_TYPE2_TEXT5);
-                TextViewType2Per1 = v.findViewById(ID1_VOTE_TYPE2_PER1);
-                TextViewType2Per2 = v.findViewById(ID1_VOTE_TYPE2_PER2);
-                TextViewType2Per3 = v.findViewById(ID1_VOTE_TYPE2_PER3);
-                TextViewType2Per4 = v.findViewById(ID1_VOTE_TYPE2_PER4);
-                TextViewType2Per5 = v.findViewById(ID1_VOTE_TYPE2_PER5);
-                ImageViewType2Select = v.findViewById(ID1_VOTE_TYPE2_SELECT);
-                TextViewType2Result = v.findViewById(ID1_VOTE_TYPE2_RESULT);
-                TextViewType2Time = v.findViewById(ID1_VOTE_TYPE2_TIME);
-                RelativeLayoutFile = v.findViewById(ID1_FILE_LAYOUT);
-                ImageViewFile = v.findViewById(ID1_FILE_IMAGE);
-                TextViewFile = v.findViewById(ID1_FILE_TEXT);
-                TextViewFileName = v.findViewById(ID1_FILE_NAME);
-                TextViewFileDetail = v.findViewById(ID1_FILE_DETAIL);
-            }
-        }
+        DrawableBorder = new GradientDrawable();
+        DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
+        DrawableBorder.setCornerRadius(Misc.ToDP(6));
+
+        DB = new DBHandler(Activity);
     }
 
     @Override
-    public PostAdapter.ViewHolderMain onCreateViewHolder(ViewGroup vg, int type)
-    {
-        if (type == 0)
-        {
+    public PostAdapter.ViewHolderMain onCreateViewHolder(ViewGroup vg, int type) {
+        if (type == 0) {
             RefreshView = new PullToRefreshView(Activity);
             RefreshView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0));
-            RefreshView.SetOnRefreshListener(new PullToRefreshView.OnRefreshListener()
-            {
+            RefreshView.SetOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
                 @Override
-                public void OnRefresh()
-                {
+                public void OnRefresh() {
                     int Time = 0;
 
                     if (PostList.size() > 1)
                         Time = PostList.get(1).Time;
 
-                    if (Time == 0)
-                    {
+                    if (Time == 0) {
                         Update();
                         return;
                     }
 
                     AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
-                    .addBodyParameter("Time", String.valueOf(Time))
-                    .addHeaders("Token", Misc.GetString( "Token"))
-                    .setTag(Tag)
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
+                            .addBodyParameter("Time", String.valueOf(Time))
+                            .addHeaders("Token", Misc.GetString("Token"))
+                            .setTag(Tag)
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String Response) {
+                                    try {
+                                        JSONObject Result = new JSONObject(Response);
 
-                                if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
-                                {
-                                    JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                                        if (Result.getInt("Message") == 0 && !Result.isNull("Result")) {
+                                            JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                                    for (int K = 0; K < ResultList.length(); K++)
-                                    {
-                                        JSONObject D = ResultList.getJSONObject(K);
+                                            for (int K = 0; K < ResultList.length(); K++) {
+                                                JSONObject D = ResultList.getJSONObject(K);
 
-                                        PostStruct P = new PostStruct();
-                                        P.ID = D.getString("ID");
+                                                PostStruct P = new PostStruct();
+                                                P.ID = D.getString("ID");
 
-                                        if (!D.isNull("Profile"))
-                                            P.Profile = D.getString("Profile");
+                                                if (!D.isNull("Profile"))
+                                                    P.Profile = D.getString("Profile");
 
-                                        P.Name = D.getString("Name");
+                                                P.Name = D.getString("Name");
 
-                                        if (!D.isNull("Medal"))
-                                            P.Medal = D.getString("Medal");
+                                                if (!D.isNull("Medal"))
+                                                    P.Medal = D.getString("Medal");
 
-                                        P.Username = D.getString("Username");
-                                        P.Time = D.getInt("Time");
+                                                P.Username = D.getString("Username");
+                                                P.Time = D.getInt("Time");
 
-                                        if (!D.isNull("Message"))
-                                            P.Message = D.getString("Message");
+                                                if (!D.isNull("Message"))
+                                                    P.Message = D.getString("Message");
 
-                                        if (D.getInt("Type") != 0)
-                                        {
-                                            P.Type = D.getInt("Type");
-                                            P.Data = D.getString("Data");
+                                                if (D.getInt("Type") != 0) {
+                                                    P.Type = D.getInt("Type");
+                                                    P.Data = D.getString("Data");
+                                                }
+
+                                                P.Owner = D.getString("Owner");
+
+                                                if (!D.isNull("View"))
+                                                    P.View = D.getInt("View");
+
+                                                P.Category = D.getInt("Category");
+                                                P.LikeCount = D.getInt("LikeCount");
+                                                P.CommentCount = D.getInt("CommentCount");
+                                                P.IsLike = D.getInt("Like") != 0;
+                                                P.IsFollow = D.getInt("Follow") != 0;
+
+                                                if (!D.isNull("Comment"))
+                                                    P.IsComment = D.getInt("Comment") != 0;
+
+                                                P.IsBookmark = D.getInt("Bookmark") != 0;
+
+                                                PostList.add(P);
+
+                                                DB.InboxUpdate(P);
+                                            }
+
+                                            OnChanged();
                                         }
-
-                                        P.Owner = D.getString("Owner");
-
-                                        if (!D.isNull("View"))
-                                            P.View = D.getInt("View");
-
-                                        P.Category = D.getInt("Category");
-                                        P.LikeCount = D.getInt("LikeCount");
-                                        P.CommentCount = D.getInt("CommentCount");
-                                        P.IsLike = D.getInt("Like") != 0;
-                                        P.IsFollow = D.getInt("Follow") != 0;
-
-                                        if (!D.isNull("Comment"))
-                                            P.IsComment = D.getInt("Comment") != 0;
-
-                                        P.IsBookmark = D.getInt("Bookmark") != 0;
-
-                                        PostList.add(P);
-
-                                        DB.InboxUpdate(P);
+                                    } catch (Exception e) {
+                                        Misc.Debug("PostAdapter-Refresh: " + e.toString());
                                     }
 
-                                    OnChanged();
+                                    RefreshView.SetRefreshComplete();
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                Misc.Debug("PostAdapter-Refresh: " + e.toString());
-                            }
 
-                            RefreshView.SetRefreshComplete();
-                        }
-
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            RefreshView.SetRefreshComplete();
-                        }
-                    });
+                                @Override
+                                public void onError(ANError e) {
+                                    RefreshView.SetRefreshComplete();
+                                }
+                            });
                 }
             });
 
             return new ViewHolderMain(RefreshView, type);
-        }
-        else if (type == 1)
-        {
+        } else if (type == 1) {
             StateListDrawable StatePress = new StateListDrawable();
-            StatePress.addState(new int[] { android.R.attr.state_pressed }, new ColorDrawable(Color.parseColor("#b0eeeeee")));
+            StatePress.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.parseColor("#b0eeeeee")));
 
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -1083,7 +915,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             RelativeLayout.LayoutParams TextViewFileDetailParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             TextViewFileDetailParam.addRule(RelativeLayout.RIGHT_OF, RelativeLayoutFile2.getId());
             TextViewFileDetailParam.addRule(RelativeLayout.BELOW, ID1_FILE_NAME);
-            TextViewFileDetailParam.setMargins(Misc.ToDP(8),0, 0, 0);
+            TextViewFileDetailParam.setMargins(Misc.ToDP(8), 0, 0, 0);
 
             TextView TextViewFileDetail = new TextView(Activity, 12, false);
             TextViewFileDetail.setLayoutParams(TextViewFileDetailParam);
@@ -1221,50 +1053,45 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolderMain Holder, int position)
-    {
+    public void onBindViewHolder(final ViewHolderMain Holder, int position) {
         final int Position = Holder.getAdapterPosition();
 
-        if (Holder.getItemViewType() == 1)
-        {
-            try
-            {
-                Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new PostUI(PostList.get(Position).ID), "PostUI", false); } });
-
-                GlideApp.with(Activity).load(PostList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
-                Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
-                {
+        if (Holder.getItemViewType() == 1) {
+            try {
+                Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
+                        Activity.GetManager().OpenView(new PostUI(PostList.get(Position).ID), "PostUI", false);
+                    }
+                });
+
+                // GlideApp.with(Activity).load(PostList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
+                Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         // TODO Open Profile
                     }
                 });
 
                 Holder.TextViewName.setText(PostList.get(Position).Name);
-                Holder.TextViewName.setOnClickListener(new View.OnClickListener()
-                {
+                Holder.TextViewName.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         // TODO Open Profile
                     }
                 });
 
                 if (PostList.get(Position).Medal == null || PostList.get(Position).Medal.isEmpty())
                     Holder.ImageViewMedal.setVisibility(View.GONE);
-                else
-                {
+                else {
                     Holder.ImageViewMedal.setVisibility(View.VISIBLE);
-                    GlideApp.with(Activity).load(PostList.get(Position).Medal).into(Holder.ImageViewMedal);
+                    //    GlideApp.with(Activity).load(PostList.get(Position).Medal).into(Holder.ImageViewMedal);
                 }
 
                 Holder.TextViewUsername.setText(("@" + PostList.get(Position).Username));
-                Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
-                {
+                Holder.TextViewUsername.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         // TODO Open Profile
                     }
                 });
@@ -1273,8 +1100,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 if (PostList.get(Position).Message == null || PostList.get(Position).Message.isEmpty())
                     Holder.TextViewMessage.setVisibility(View.GONE);
-                else
-                {
+                else {
                     Holder.TextViewMessage.setVisibility(View.VISIBLE);
                     Holder.TextViewMessage.setText(PostList.get(Position).Message);
 
@@ -1286,10 +1112,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                 Holder.RelativeLayoutImage.setVisibility(View.GONE);
                 Holder.RelativeLayoutFile.setVisibility(View.GONE);
 
-                switch (PostList.get(Position).Type)
-                {
-                    case 1:
-                    {
+                switch (PostList.get(Position).Type) {
+                    case 1: {
                         Holder.RelativeLayoutImage.setVisibility(View.VISIBLE);
                         Holder.ImageViewSingle.setVisibility(View.GONE);
                         Holder.LinearLayoutDouble.setVisibility(View.GONE);
@@ -1297,54 +1121,79 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         JSONArray URL = new JSONArray(PostList.get(Position).Data);
 
-                        switch (URL.length())
-                        {
-                            case 1:
-                            {
+                        switch (URL.length()) {
+                            case 1: {
                                 final String URL1 = URL.get(0).toString();
 
                                 Holder.ImageViewSingle.setVisibility(View.VISIBLE);
-                                Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, true), "ImagePreviewUI", true); } });
+                                Holder.ImageViewSingle.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Activity.GetManager().OpenView(new ImagePreviewUI(URL1, true), "ImagePreviewUI", true);
+                                    }
+                                });
 
-                                GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewSingle);
+                                //      GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewSingle);
                             }
                             break;
-                            case 2:
-                            {
+                            case 2: {
                                 final String URL1 = URL.get(0).toString();
                                 final String URL2 = URL.get(1).toString();
 
                                 Holder.LinearLayoutDouble.setVisibility(View.VISIBLE);
 
-                                Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, true), "ImagePreviewUI", true); } });
-                                Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL1, true), "ImagePreviewUI", true); } });
+                                Holder.ImageViewDouble1.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, true), "ImagePreviewUI", true);
+                                    }
+                                });
+                                Holder.ImageViewDouble2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL1, true), "ImagePreviewUI", true);
+                                    }
+                                });
 
-                                GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble1);
-                                GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble2);
+                                //    GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble1);
+                                //     GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewDouble2);
                             }
                             break;
-                            case 3:
-                            {
+                            case 3: {
                                 final String URL1 = URL.get(0).toString();
                                 final String URL2 = URL.get(1).toString();
                                 final String URL3 = URL.get(2).toString();
 
                                 Holder.LinearLayoutTriple.setVisibility(View.VISIBLE);
 
-                                Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, URL3, true), "ImagePreviewUI", true); } });
-                                Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL3, URL1, true), "ImagePreviewUI", true); } });
-                                Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new ImagePreviewUI(URL3, URL1, URL2, true), "ImagePreviewUI", true); } });
+                                Holder.ImageViewTriple1.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Activity.GetManager().OpenView(new ImagePreviewUI(URL1, URL2, URL3, true), "ImagePreviewUI", true);
+                                    }
+                                });
+                                Holder.ImageViewTriple2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Activity.GetManager().OpenView(new ImagePreviewUI(URL2, URL3, URL1, true), "ImagePreviewUI", true);
+                                    }
+                                });
+                                Holder.ImageViewTriple3.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Activity.GetManager().OpenView(new ImagePreviewUI(URL3, URL1, URL2, true), "ImagePreviewUI", true);
+                                    }
+                                });
 
-                                GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple1);
-                                GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple2);
-                                GlideApp.with(Activity).load(URL3).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple3);
+                                //    GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple1);
+                                //     GlideApp.with(Activity).load(URL2).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple2);
+                                //     GlideApp.with(Activity).load(URL3).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(Holder.ImageViewTriple3);
                             }
                             break;
                         }
                     }
                     break;
-                    case 2:
-                    {
+                    case 2: {
                         JSONObject Video = new JSONObject(PostList.get(Position).Data);
 
                         final String URL = Video.getString("URL");
@@ -1353,27 +1202,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         Holder.RelativeLayoutVideo.setVisibility(View.VISIBLE);
 
-                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new VideoPreviewUI(URL, false, true), "VideoPreviewUI", true); } });
+                        Holder.ImageViewVideo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Activity.GetManager().OpenView(new VideoPreviewUI(URL, false, true), "VideoPreviewUI", true);
+                            }
+                        });
 
-                        GlideApp.with(Activity).load(URL.substring(0, URL.length() - 3) + "png").placeholder(R.color.Gray).transforms(new CenterCrop()).into(Holder.ImageViewVideo);
+                        //   GlideApp.with(Activity).load(URL.substring(0, URL.length() - 3) + "png").placeholder(R.color.Gray).transforms(new CenterCrop()).into(Holder.ImageViewVideo);
 
                         int Time = Integer.parseInt(Video.getString("Duration")) / 1000;
                         int Min = Time / 60;
                         int Sec = Time - (Min * 60);
 
-                        Holder.TextViewDurotion.setText(((Min < 10 ?  "0" : "") + String.valueOf(Min) + ":" + (Sec < 10 ?  "0" : "") + String.valueOf(Sec)));
+                        Holder.TextViewDurotion.setText(((Min < 10 ? "0" : "") + String.valueOf(Min) + ":" + (Sec < 10 ? "0" : "") + String.valueOf(Sec)));
                     }
                     break;
-                    case 3:
-                    {
+                    case 3: {
                         Holder.RelativeLayoutVote.setVisibility(View.VISIBLE);
                         Holder.LinearLayoutVoteType1.setVisibility(View.GONE);
                         Holder.RelativeLayoutVoteType2.setVisibility(View.GONE);
 
                         final JSONObject Vote = new JSONObject(PostList.get(Position).Data);
 
-                        if (Vote.isNull("Vote"))
-                        {
+                        if (Vote.isNull("Vote")) {
                             Holder.LinearLayoutVoteType1.setVisibility(View.VISIBLE);
 
                             Holder.TextViewType1Text1.setText(Vote.getString("Vote1"));
@@ -1381,24 +1233,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                             if (Vote.isNull("Vote3"))
                                 Holder.LinearLayoutVoteLin3.setVisibility(View.GONE);
-                            else
-                            {
+                            else {
                                 Holder.LinearLayoutVoteLin3.setVisibility(View.VISIBLE);
                                 Holder.TextViewType1Text3.setText(Vote.getString("Vote3"));
                             }
 
                             if (Vote.isNull("Vote4"))
                                 Holder.LinearLayoutVoteLin4.setVisibility(View.GONE);
-                            else
-                            {
+                            else {
                                 Holder.LinearLayoutVoteLin4.setVisibility(View.VISIBLE);
                                 Holder.TextViewType1Text4.setText(Vote.getString("Vote4"));
                             }
 
                             if (Vote.isNull("Vote5"))
                                 Holder.LinearLayoutVoteLin5.setVisibility(View.GONE);
-                            else
-                            {
+                            else {
                                 Holder.LinearLayoutVoteLin5.setVisibility(View.VISIBLE);
                                 Holder.TextViewType1Text5.setText(Vote.getString("Vote5"));
                             }
@@ -1423,11 +1272,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             Holder.TextViewType1Result.setText((Total + " " + Misc.String(R.string.PostAdapterVotes)));
                             Holder.TextViewType1Time.setText(Misc.TimeLeft(Vote.getInt("Time")));
 
-                            View.OnClickListener VoteSelection = new View.OnClickListener()
-                            {
+                            View.OnClickListener VoteSelection = new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v)
-                                {
+                                public void onClick(View v) {
                                     GradientDrawable Select = new GradientDrawable();
                                     Select.setStroke(Misc.ToDP(1), Misc.Color(R.color.Gray));
                                     Select.setShape(GradientDrawable.OVAL);
@@ -1437,7 +1284,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     Circle.setShape(GradientDrawable.OVAL);
                                     Circle.setColor(Color.BLACK);
 
-                                    LayerDrawable Layer = new LayerDrawable(new Drawable[] { Select, Circle });
+                                    LayerDrawable Layer = new LayerDrawable(new Drawable[]{Select, Circle});
 
                                     Holder.ViewType1Sel1.setBackground(Select);
                                     Holder.ViewType1Sel2.setBackground(Select);
@@ -1451,28 +1298,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     Holder.ViewType1Sel4.setTag("0");
                                     Holder.ViewType1Sel5.setTag("0");
 
-                                    if (v.getId() == ID1_VOTE_TYPE1_LIN1)
-                                    {
+                                    if (v.getId() == ID1_VOTE_TYPE1_LIN1) {
                                         Holder.ViewType1Sel1.setBackground(Layer);
                                         Holder.ViewType1Sel1.setTag("1");
-                                    }
-                                    else if (v.getId() == ID1_VOTE_TYPE1_LIN2)
-                                    {
+                                    } else if (v.getId() == ID1_VOTE_TYPE1_LIN2) {
                                         Holder.ViewType1Sel2.setBackground(Layer);
                                         Holder.ViewType1Sel2.setTag("1");
-                                    }
-                                    else if (v.getId() == ID1_VOTE_TYPE1_LIN3)
-                                    {
+                                    } else if (v.getId() == ID1_VOTE_TYPE1_LIN3) {
                                         Holder.ViewType1Sel3.setBackground(Layer);
                                         Holder.ViewType1Sel3.setTag("1");
-                                    }
-                                    else if (v.getId() == ID1_VOTE_TYPE1_LIN4)
-                                    {
+                                    } else if (v.getId() == ID1_VOTE_TYPE1_LIN4) {
                                         Holder.ViewType1Sel4.setBackground(Layer);
                                         Holder.ViewType1Sel4.setTag("1");
-                                    }
-                                    else if (v.getId() == ID1_VOTE_TYPE1_LIN5)
-                                    {
+                                    } else if (v.getId() == ID1_VOTE_TYPE1_LIN5) {
                                         Holder.ViewType1Sel5.setBackground(Layer);
                                         Holder.ViewType1Sel5.setTag("1");
                                     }
@@ -1485,11 +1323,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             Holder.LinearLayoutVoteLin4.setOnClickListener(VoteSelection);
                             Holder.LinearLayoutVoteLin5.setOnClickListener(VoteSelection);
 
-                            Holder.TextViewType1Submit.setOnClickListener(new View.OnClickListener()
-                            {
+                            Holder.TextViewType1Submit.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v)
-                                {
+                                public void onClick(View v) {
                                     int S = 0;
 
                                     if (Holder.ViewType1Sel1.getTag() == "1")
@@ -1509,67 +1345,61 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     final int Sel = S;
 
                                     AndroidNetworking.post(Misc.GetRandomServer("PostVote"))
-                                    .addBodyParameter("Post", PostList.get(Position).ID)
-                                    .addBodyParameter("Vote", String.valueOf(Sel))
-                                    .addHeaders("Token", Misc.GetString( "Token"))
-                                    .setTag(Tag)
-                                    .build()
-                                    .getAsString(new StringRequestListener()
-                                    {
-                                        @Override
-                                        public void onResponse(String Response)
-                                        {
-                                            try
-                                            {
-                                                JSONObject Result = new JSONObject(Response);
+                                            .addBodyParameter("Post", PostList.get(Position).ID)
+                                            .addBodyParameter("Vote", String.valueOf(Sel))
+                                            .addHeaders("Token", Misc.GetString("Token"))
+                                            .setTag(Tag)
+                                            .build()
+                                            .getAsString(new StringRequestListener() {
+                                                @Override
+                                                public void onResponse(String Response) {
+                                                    try {
+                                                        JSONObject Result = new JSONObject(Response);
 
-                                                if (Result.getInt("Message") == 0)
-                                                {
-                                                    JSONObject Data = new JSONObject();
+                                                        if (Result.getInt("Message") == 0) {
+                                                            JSONObject Data = new JSONObject();
 
-                                                    Data.put("Vote" , Sel);
-                                                    Data.put("Count1" , Result.getInt("Count1"));
-                                                    Data.put("Count2" , Result.getInt("Count2"));
+                                                            Data.put("Vote", Sel);
+                                                            Data.put("Count1", Result.getInt("Count1"));
+                                                            Data.put("Count2", Result.getInt("Count2"));
 
-                                                    if (!Result.isNull("Count3"))
-                                                        Data.put("Count3" , Result.getString("Count3"));
+                                                            if (!Result.isNull("Count3"))
+                                                                Data.put("Count3", Result.getString("Count3"));
 
-                                                    if (!Result.isNull("Count4"))
-                                                        Data.put("Count4" , Result.getString("Count4"));
+                                                            if (!Result.isNull("Count4"))
+                                                                Data.put("Count4", Result.getString("Count4"));
 
-                                                    if (!Result.isNull("Count5"))
-                                                        Data.put("Count5" , Result.getString("Count5"));
+                                                            if (!Result.isNull("Count5"))
+                                                                Data.put("Count5", Result.getString("Count5"));
 
-                                                    Data.put("Vote1" , Vote.getString("Vote1"));
-                                                    Data.put("Vote2" , Vote.getString("Vote2"));
+                                                            Data.put("Vote1", Vote.getString("Vote1"));
+                                                            Data.put("Vote2", Vote.getString("Vote2"));
 
-                                                    if (!Vote.isNull("Vote3"))
-                                                        Data.put("Vote3" , Vote.getString("Vote3"));
+                                                            if (!Vote.isNull("Vote3"))
+                                                                Data.put("Vote3", Vote.getString("Vote3"));
 
-                                                    if (!Vote.isNull("Vote4"))
-                                                        Data.put("Vote4" , Vote.getString("Vote4"));
+                                                            if (!Vote.isNull("Vote4"))
+                                                                Data.put("Vote4", Vote.getString("Vote4"));
 
-                                                    if (!Vote.isNull("Vote5"))
-                                                        Data.put("Vote5" , Vote.getString("Vote5"));
+                                                            if (!Vote.isNull("Vote5"))
+                                                                Data.put("Vote5", Vote.getString("Vote5"));
 
-                                                    PostList.get(Position).Data = Data.toString();
+                                                            PostList.get(Position).Data = Data.toString();
 
-                                                    notifyDataSetChanged();
+                                                            notifyDataSetChanged();
+                                                        }
+                                                    } catch (Exception e) {
+                                                        Misc.Debug("PostAdapter-Vote: " + e.toString());
+                                                    }
                                                 }
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                Misc.Debug("PostAdapter-Vote: " + e.toString());
-                                            }
-                                        }
 
-                                        @Override public void onError(ANError e) { }
-                                    });
+                                                @Override
+                                                public void onError(ANError e) {
+                                                }
+                                            });
                                 }
                             });
-                        }
-                        else
-                        {
+                        } else {
                             Holder.RelativeLayoutVoteType2.setVisibility(View.VISIBLE);
 
                             int C1 = Vote.isNull("Count1") ? 0 : Vote.getInt("Count1");
@@ -1588,13 +1418,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             Holder.TextViewType2Text2.FillBackground(C2 == 0 ? 0 : C2 * 100 / Total);
                             Holder.TextViewType2Per2.setText((C2 == 0 ? "0%" : String.valueOf(C2 * 100 / Total) + "%"));
 
-                            if (Vote.isNull("Vote3"))
-                            {
+                            if (Vote.isNull("Vote3")) {
                                 Holder.TextViewType2Per3.setVisibility(View.GONE);
                                 Holder.TextViewType2Text3.setVisibility(View.GONE);
-                            }
-                            else
-                            {
+                            } else {
                                 Holder.TextViewType2Per3.setVisibility(View.VISIBLE);
                                 Holder.TextViewType2Per3.setText((C3 == 0 ? "0%" : String.valueOf(C3 * 100 / Total) + "%"));
 
@@ -1603,13 +1430,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewType2Text3.FillBackground(C3 == 0 ? 0 : C3 * 100 / Total);
                             }
 
-                            if (Vote.isNull("Vote4"))
-                            {
+                            if (Vote.isNull("Vote4")) {
                                 Holder.TextViewType2Per4.setVisibility(View.GONE);
                                 Holder.TextViewType2Text4.setVisibility(View.GONE);
-                            }
-                            else
-                            {
+                            } else {
                                 Holder.TextViewType2Per4.setVisibility(View.VISIBLE);
                                 Holder.TextViewType2Per4.setText((C4 == 0 ? "0%" : String.valueOf(C4 * 100 / Total) + "%"));
 
@@ -1618,13 +1442,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewType2Text4.FillBackground(C4 == 0 ? 0 : C4 * 100 / Total);
                             }
 
-                            if (Vote.isNull("Vote5"))
-                            {
+                            if (Vote.isNull("Vote5")) {
                                 Holder.TextViewType2Per5.setVisibility(View.GONE);
                                 Holder.TextViewType2Text5.setVisibility(View.GONE);
-                            }
-                            else
-                            {
+                            } else {
                                 Holder.TextViewType2Per5.setVisibility(View.VISIBLE);
                                 Holder.TextViewType2Per5.setText((C5 == 0 ? "0%" : String.valueOf(C5 * 100 / Total) + "%"));
 
@@ -1636,13 +1457,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             int ID = 0;
                             Holder.ImageViewType2Select.setVisibility(View.VISIBLE);
 
-                            switch (Vote.getInt("Vote"))
-                            {
-                                case 0: Holder.ImageViewType2Select.setVisibility(View.GONE); break;
-                                case 2: ID = Holder.TextViewType2Text1.getId(); break;
-                                case 3: ID = Holder.TextViewType2Text2.getId(); break;
-                                case 4: ID = Holder.TextViewType2Text3.getId(); break;
-                                case 5: ID = Holder.TextViewType2Text5.getId(); break;
+                            switch (Vote.getInt("Vote")) {
+                                case 0:
+                                    Holder.ImageViewType2Select.setVisibility(View.GONE);
+                                    break;
+                                case 2:
+                                    ID = Holder.TextViewType2Text1.getId();
+                                    break;
+                                case 3:
+                                    ID = Holder.TextViewType2Text2.getId();
+                                    break;
+                                case 4:
+                                    ID = Holder.TextViewType2Text3.getId();
+                                    break;
+                                case 5:
+                                    ID = Holder.TextViewType2Text5.getId();
+                                    break;
                             }
 
                             RelativeLayout.LayoutParams Param = (RelativeLayout.LayoutParams) Holder.ImageViewType2Select.getLayoutParams();
@@ -1657,8 +1487,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         }
                     }
                     break;
-                    case 4:
-                    {
+                    case 4: {
                         final JSONObject file = new JSONObject(PostList.get(Position).Data);
                         final String URL = file.getString("URL");
                         final String FileName = file.getString("Name");
@@ -1672,33 +1501,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         final File Download = new File(Misc.Dir(Misc.DIR_DOWNLOAD), FileName);
 
-                        if (PostList.get(Position).IsDownloading)
-                        {
+                        if (PostList.get(Position).IsDownloading) {
                             Holder.ImageViewFile.setVisibility(View.GONE);
                             Holder.TextViewFile.setVisibility(View.VISIBLE);
-                        }
-                        else if (Download.exists())
-                        {
+                        } else if (Download.exists()) {
                             Holder.TextViewFile.setVisibility(View.GONE);
                             Holder.ImageViewFile.setVisibility(View.VISIBLE);
                             Holder.ImageViewFile.setImageResource(R.drawable._inbox_downloaded);
                             Holder.ImageViewFile.setPadding(Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7));
-                        }
-                        else
-                        {
+                        } else {
                             Holder.TextViewFile.setVisibility(View.GONE);
                             Holder.ImageViewFile.setVisibility(View.VISIBLE);
                             Holder.ImageViewFile.setImageResource(R.drawable._general_download);
                             Holder.ImageViewFile.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
                         }
 
-                        Holder.RelativeLayoutFile.setOnClickListener(new View.OnClickListener()
-                        {
+                        Holder.RelativeLayoutFile.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View view)
-                            {
-                                if (PostList.get(Position).IsDownloading)
-                                {
+                            public void onClick(View view) {
+                                if (PostList.get(Position).IsDownloading) {
                                     final Dialog DialogCancel = new Dialog(Activity);
                                     DialogCancel.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                     DialogCancel.setCancelable(true);
@@ -1734,11 +1555,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     TextViewYes.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                                     TextViewYes.setText(Misc.String(R.string.PostAdapterYes));
                                     TextViewYes.setGravity(Gravity.CENTER);
-                                    TextViewYes.setOnClickListener(new View.OnClickListener()
-                                    {
+                                    TextViewYes.setOnClickListener(new View.OnClickListener() {
                                         @Override
-                                        public void onClick(View view)
-                                        {
+                                        public void onClick(View view) {
                                             AndroidNetworking.forceCancel(PostList.get(Position).ID);
 
                                             Holder.TextViewFile.setVisibility(View.GONE);
@@ -1755,15 +1574,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     TextViewNo.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                                     TextViewNo.setText(Misc.String(R.string.PostAdapterNo));
                                     TextViewNo.setGravity(Gravity.CENTER);
-                                    TextViewNo.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { DialogCancel.dismiss(); } });
+                                    TextViewNo.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            DialogCancel.dismiss();
+                                        }
+                                    });
 
-                                    if (Misc.IsRTL())
-                                    {
+                                    if (Misc.IsRTL()) {
                                         LinearLayoutButton.addView(TextViewNo);
                                         LinearLayoutButton.addView(TextViewYes);
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         LinearLayoutButton.addView(TextViewYes);
                                         LinearLayoutButton.addView(TextViewNo);
                                     }
@@ -1771,11 +1592,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                     DialogCancel.setContentView(LinearLayoutMain);
                                     DialogCancel.show();
                                     return;
-                                }
-                                else if (Download.exists())
-                                {
-                                    try
-                                    {
+                                } else if (Download.exists()) {
+                                    try {
                                         Uri URI = Uri.fromFile(Download);
                                         String URL = Download.getAbsolutePath();
                                         Intent I = new Intent(Intent.ACTION_VIEW);
@@ -1786,7 +1604,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                             I.setDataAndType(URI, "application/pdf");
                                         else if (URL.contains(".ppt") || URL.contains(".pptx"))
                                             I.setDataAndType(URI, "application/vnd.ms-powerpoint");
-                                        else if (URL.contains(".xls") ||URL.contains(".xlsx"))
+                                        else if (URL.contains(".xls") || URL.contains(".xlsx"))
                                             I.setDataAndType(URI, "application/vnd.ms-excel");
                                         else if (URL.contains(".zip") || URL.contains(".rar"))
                                             I.setDataAndType(URI, "application/x-wav");
@@ -1808,9 +1626,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         I.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                                         Activity.startActivity(I);
-                                    }
-                                    catch (Exception e)
-                                    {
+                                    } catch (Exception e) {
                                         Misc.ToastOld(Misc.String(R.string.PostAdapterNoHandle));
                                     }
 
@@ -1824,132 +1640,105 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 Holder.TextViewFile.setText("0%");
 
                                 AndroidNetworking.download(URL, Misc.Dir(Misc.DIR_DOWNLOAD).getAbsolutePath(), FileName)
-                                .setPriority(Priority.MEDIUM)
-                                .setTag(PostList.get(Position).ID)
-                                .build()
-                                .setDownloadProgressListener(new DownloadProgressListener()
-                                {
-                                    @Override
-                                    public void onProgress(long D, long T)
-                                    {
-                                        Holder.TextViewFile.setText((String.valueOf(D * 100 / T) + "%"));
-                                    }
-                                })
-                                .startDownload(new DownloadListener()
-                                {
-                                    @Override
-                                    public void onDownloadComplete()
-                                    {
-                                        PostList.get(Position).IsDownloading = false;
+                                        .setPriority(Priority.MEDIUM)
+                                        .setTag(PostList.get(Position).ID)
+                                        .build()
+                                        .setDownloadProgressListener(new DownloadProgressListener() {
+                                            @Override
+                                            public void onProgress(long D, long T) {
+                                                Holder.TextViewFile.setText((String.valueOf(D * 100 / T) + "%"));
+                                            }
+                                        })
+                                        .startDownload(new DownloadListener() {
+                                            @Override
+                                            public void onDownloadComplete() {
+                                                PostList.get(Position).IsDownloading = false;
 
-                                        Holder.TextViewFile.setVisibility(View.GONE);
-                                        Holder.ImageViewFile.setVisibility(View.VISIBLE);
-                                        Holder.ImageViewFile.setImageResource(R.drawable._inbox_downloaded);
-                                        Holder.ImageViewFile.setPadding(Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7));
-                                    }
+                                                Holder.TextViewFile.setVisibility(View.GONE);
+                                                Holder.ImageViewFile.setVisibility(View.VISIBLE);
+                                                Holder.ImageViewFile.setImageResource(R.drawable._inbox_downloaded);
+                                                Holder.ImageViewFile.setPadding(Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7), Misc.ToDP(7));
+                                            }
 
-                                    @Override
-                                    public void onError(ANError e)
-                                    {
-                                        PostList.get(Position).IsDownloading = false;
+                                            @Override
+                                            public void onError(ANError e) {
+                                                PostList.get(Position).IsDownloading = false;
 
-                                        Holder.TextViewFile.setVisibility(View.GONE);
-                                        Holder.ImageViewFile.setVisibility(View.VISIBLE);
-                                        Holder.ImageViewFile.setImageResource(R.drawable._general_download);
-                                    }
-                                });
+                                                Holder.TextViewFile.setVisibility(View.GONE);
+                                                Holder.ImageViewFile.setVisibility(View.VISIBLE);
+                                                Holder.ImageViewFile.setImageResource(R.drawable._general_download);
+                                            }
+                                        });
                             }
                         });
                     }
                     break;
                 }
 
-                if (PostList.get(Position).Person1Avatar != null && !PostList.get(Position).Person1Avatar.isEmpty())
-                {
-                    GlideApp.with(Activity).load(PostList.get(Position).Person1Avatar).into(Holder.CircleImageViewPerson1);
+                if (PostList.get(Position).Person1Avatar != null && !PostList.get(Position).Person1Avatar.isEmpty()) {
+                    //  GlideApp.with(Activity).load(PostList.get(Position).Person1Avatar).into(Holder.CircleImageViewPerson1);
                     Holder.CircleImageViewPerson1.setVisibility(View.VISIBLE);
-                    Holder.CircleImageViewPerson1.setOnClickListener(new View.OnClickListener()
-                    {
+                    Holder.CircleImageViewPerson1.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view)
-                        {
+                        public void onClick(View view) {
                             // TODO Open Profile
                         }
                     });
-                }
-                else
+                } else
                     Holder.CircleImageViewPerson1.setVisibility(View.GONE);
 
-                if (PostList.get(Position).Person2Avatar != null && !PostList.get(Position).Person2Avatar.isEmpty())
-                {
-                    GlideApp.with(Activity).load(PostList.get(Position).Person2Avatar).into(Holder.CircleImageViewPerson2);
+                if (PostList.get(Position).Person2Avatar != null && !PostList.get(Position).Person2Avatar.isEmpty()) {
+                    //    GlideApp.with(Activity).load(PostList.get(Position).Person2Avatar).into(Holder.CircleImageViewPerson2);
                     Holder.CircleImageViewPerson2.setVisibility(View.VISIBLE);
-                    Holder.CircleImageViewPerson2.setOnClickListener(new View.OnClickListener()
-                    {
+                    Holder.CircleImageViewPerson2.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view)
-                        {
+                        public void onClick(View view) {
                             // TODO Open Profile
                         }
                     });
-                }
-                else
+                } else
                     Holder.CircleImageViewPerson2.setVisibility(View.GONE);
 
-                if (PostList.get(Position).Person3Avatar != null && !PostList.get(Position).Person3Avatar.isEmpty())
-                {
-                    GlideApp.with(Activity).load(PostList.get(Position).Person3Avatar).into(Holder.CircleImageViewPerson3);
+                if (PostList.get(Position).Person3Avatar != null && !PostList.get(Position).Person3Avatar.isEmpty()) {
+                    //   GlideApp.with(Activity).load(PostList.get(Position).Person3Avatar).into(Holder.CircleImageViewPerson3);
                     Holder.CircleImageViewPerson3.setVisibility(View.VISIBLE);
-                    Holder.CircleImageViewPerson3.setOnClickListener(new View.OnClickListener()
-                    {
+                    Holder.CircleImageViewPerson3.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view)
-                        {
+                        public void onClick(View view) {
                             // TODO Open Profile
                         }
                     });
-                }
-                else
+                } else
                     Holder.CircleImageViewPerson3.setVisibility(View.GONE);
 
-                if (PostList.get(Position).Person4Avatar != null && !PostList.get(Position).Person4Avatar.isEmpty())
-                {
-                    GlideApp.with(Activity).load(PostList.get(Position).Person4Avatar).into(Holder.CircleImageViewPerson4);
+                if (PostList.get(Position).Person4Avatar != null && !PostList.get(Position).Person4Avatar.isEmpty()) {
+                    //  GlideApp.with(Activity).load(PostList.get(Position).Person4Avatar).into(Holder.CircleImageViewPerson4);
                     Holder.CircleImageViewPerson4.setVisibility(View.VISIBLE);
-                    Holder.CircleImageViewPerson4.setOnClickListener(new View.OnClickListener()
-                    {
+                    Holder.CircleImageViewPerson4.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view)
-                        {
+                        public void onClick(View view) {
                             // TODO Open Profile
                         }
                     });
-                }
-                else
+                } else
                     Holder.CircleImageViewPerson4.setVisibility(View.GONE);
 
-                if (PostList.get(Position).IsLike)
-                {
+                if (PostList.get(Position).IsLike) {
                     Holder.TextViewLikeCount.SetColor(R.color.Red);
-                    GlideApp.with(Activity).load(R.drawable._general_like_red).into(Holder.ImageViewLike);
-                }
-                else
-                {
+                    //  GlideApp.with(Activity).load(R.drawable._general_like_red).into(Holder.ImageViewLike);
+                } else {
                     Holder.TextViewLikeCount.SetColor(R.color.Gray);
-                    GlideApp.with(Activity).load(R.drawable._general_like).into(Holder.ImageViewLike);
+                    //  GlideApp.with(Activity).load(R.drawable._general_like).into(Holder.ImageViewLike);
                 }
 
-                Holder.ImageViewLike.setOnClickListener(new View.OnClickListener()
-                {
+                Holder.ImageViewLike.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        if (PostList.get(Position).IsLike)
-                        {
+                    public void onClick(View v) {
+                        if (PostList.get(Position).IsLike) {
                             Holder.TextViewLikeCount.SetColor(R.color.Gray);
                             Holder.ImageViewLike.setImageResource(R.drawable._general_like);
 
-                            ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
+                            ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha", 0.1f, 1f);
                             Fade.setDuration(200);
 
                             AnimatorSet AnimationSet = new AnimatorSet();
@@ -1960,9 +1749,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             PostList.get(Position).RevLike();
 
                             Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
-                        }
-                        else
-                        {
+                        } else {
                             Holder.TextViewLikeCount.SetColor(R.color.Red);
                             Holder.ImageViewLike.setImageResource(R.drawable._general_like_red);
 
@@ -1972,7 +1759,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             ObjectAnimator SizeY = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleY", 1.5f);
                             SizeY.setDuration(200);
 
-                            ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
+                            ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha", 0.1f, 1f);
                             Fade.setDuration(400);
 
                             ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1f);
@@ -1994,37 +1781,47 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         }
 
                         AndroidNetworking.post(Misc.GetRandomServer("PostLike"))
-                        .addBodyParameter("PostID", PostList.get(Position).ID)
-                        .addHeaders("Token", Misc.GetString( "Token"))
-                        .setTag(Tag)
-                        .build()
-                        .getAsString(null);
+                                .addBodyParameter("PostID", PostList.get(Position).ID)
+                                .addHeaders("Token", Misc.GetString("Token"))
+                                .setTag(Tag)
+                                .build()
+                                .getAsString(null);
                     }
                 });
 
                 Holder.TextViewLikeCount.setText(String.valueOf(PostList.get(Position).LikeCount));
-                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID, false), "LikeUI", true); } });
+                Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Activity.GetManager().OpenView(new LikeUI(PostList.get(Position).ID, false), "LikeUI", true);
+                    }
+                });
 
-                if (PostList.get(Position).IsComment)
-                {
+                if (PostList.get(Position).IsComment) {
                     Holder.ImageViewComment.setVisibility(View.GONE);
                     Holder.TextViewCommentCount.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     Holder.ImageViewComment.setVisibility(View.VISIBLE);
-                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), "CommentUI", true); } });
+                    Holder.ImageViewComment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Activity.GetManager().OpenView(new CommentUI(PostList, Position), "CommentUI", true);
+                        }
+                    });
 
                     Holder.TextViewCommentCount.setVisibility(View.VISIBLE);
                     Holder.TextViewCommentCount.setText(String.valueOf(PostList.get(Position).CommentCount));
-                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new CommentUI(PostList, Position), "CommentUI", true); } });
+                    Holder.TextViewCommentCount.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Activity.GetManager().OpenView(new CommentUI(PostList, Position), "CommentUI", true);
+                        }
+                    });
                 }
 
-                Holder.ImageViewOption.setOnClickListener(new View.OnClickListener()
-                {
+                Holder.ImageViewOption.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         final Dialog DialogOption = new Dialog(Activity);
                         DialogOption.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         DialogOption.setCancelable(true);
@@ -2034,37 +1831,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
                         LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
-                        if (PostList.get(Position).Owner.equals(Misc.GetString( "ID")))
-                        {
+                        if (PostList.get(Position).Owner.equals(Misc.GetString("ID"))) {
                             TextView TextViewDelete = new TextView(Activity, 14, false);
                             TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
                             TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                             TextViewDelete.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                             TextViewDelete.setText(Misc.String(R.string.PostAdapterOptionDelete));
                             TextViewDelete.setGravity(Gravity.CENTER_VERTICAL);
-                            TextViewDelete.setOnClickListener(new View.OnClickListener()
-                            {
+                            TextViewDelete.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v)
-                                {
+                                public void onClick(View v) {
                                     AndroidNetworking.post(Misc.GetRandomServer("PostDelete"))
-                                    .addBodyParameter("PostID", PostList.get(Position).ID)
-                                    .addHeaders("Token", Misc.GetString( "Token"))
-                                    .setTag(Tag)
-                                    .build()
-                                    .getAsString(new StringRequestListener()
-                                    {
-                                        @Override
-                                        public void onResponse(String e)
-                                        {
-                                            DB.InboxDelete(PostList.get(Position).ID);
-                                            Misc.ToastOld(Activity.getString(R.string.PostAdapterPostDeleted));
-                                            PostList.remove(Position);
-                                            notifyDataSetChanged();
-                                        }
+                                            .addBodyParameter("PostID", PostList.get(Position).ID)
+                                            .addHeaders("Token", Misc.GetString("Token"))
+                                            .setTag(Tag)
+                                            .build()
+                                            .getAsString(new StringRequestListener() {
+                                                @Override
+                                                public void onResponse(String e) {
+                                                    DB.InboxDelete(PostList.get(Position).ID);
+                                                    Misc.ToastOld(Activity.getString(R.string.PostAdapterPostDeleted));
+                                                    PostList.remove(Position);
+                                                    notifyDataSetChanged();
+                                                }
 
-                                        @Override public void onError(ANError e) { }
-                                    });
+                                                @Override
+                                                public void onError(ANError e) {
+                                                }
+                                            });
 
                                     DialogOption.dismiss();
                                 }
@@ -2072,8 +1866,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                             LinearLayoutMain.addView(TextViewDelete);
 
-                            if ((PostList.get(Position).Time + 172800) > ((System.currentTimeMillis() / 1000)))
-                            {
+                            if ((PostList.get(Position).Time + 172800) > ((System.currentTimeMillis() / 1000))) {
                                 View ViewLine = new View(Activity);
                                 ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                                 ViewLine.setBackgroundResource(R.color.LineWhite);
@@ -2086,11 +1879,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                 TextViewEdit.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                 TextViewEdit.setText(Misc.String(R.string.PostAdapterOptionEdit));
                                 TextViewEdit.setGravity(Gravity.CENTER_VERTICAL);
-                                TextViewEdit.setOnClickListener(new View.OnClickListener()
-                                {
+                                TextViewEdit.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                    public void onClick(View v)
-                                    {
+                                    public void onClick(View v) {
                                         DialogOption.dismiss();
 
                                         final Dialog DialogEdit = new Dialog(Activity);
@@ -2128,7 +1919,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         EditTextMessage.setSelection(EditTextMessage.getText().length());
                                         EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
                                         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                        EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(300) });
+                                        EditTextMessage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(300)});
 
                                         LinearLayoutMain.addView(EditTextMessage);
 
@@ -2143,53 +1934,46 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         TextViewSubmit.SetColor(R.color.Primary);
                                         TextViewSubmit.setText(Misc.String(R.string.PostAdapterOptionEditSubmit));
                                         TextViewSubmit.setGravity(Gravity.CENTER);
-                                        TextViewSubmit.setOnClickListener(new View.OnClickListener()
-                                        {
+                                        TextViewSubmit.setOnClickListener(new View.OnClickListener() {
                                             @Override
-                                            public void onClick(View view)
-                                            {
+                                            public void onClick(View view) {
                                                 AndroidNetworking.post(Misc.GetRandomServer("PostEdit"))
-                                                .addBodyParameter("PostID", PostList.get(Position).ID)
-                                                .addBodyParameter("Message", EditTextMessage.getText().toString())
-                                                .addHeaders("Token", Misc.GetString("Token"))
-                                                .setTag(Tag)
-                                                .build()
-                                                .getAsString(new StringRequestListener()
-                                                {
-                                                    @Override
-                                                    public void onResponse(String Response)
-                                                    {
-                                                        try
-                                                        {
-                                                            JSONObject Result = new JSONObject(Response);
+                                                        .addBodyParameter("PostID", PostList.get(Position).ID)
+                                                        .addBodyParameter("Message", EditTextMessage.getText().toString())
+                                                        .addHeaders("Token", Misc.GetString("Token"))
+                                                        .setTag(Tag)
+                                                        .build()
+                                                        .getAsString(new StringRequestListener() {
+                                                            @Override
+                                                            public void onResponse(String Response) {
+                                                                try {
+                                                                    JSONObject Result = new JSONObject(Response);
 
-                                                            if (Result.getInt("Message") == 0)
-                                                            {
-                                                                PostList.get(Position).Message = Result.getString("Text");
+                                                                    if (Result.getInt("Message") == 0) {
+                                                                        PostList.get(Position).Message = Result.getString("Text");
 
-                                                                if (PostList.get(Position).Message == null || PostList.get(Position).Message.isEmpty())
-                                                                    Holder.TextViewMessage.setVisibility(View.GONE);
-                                                                else
-                                                                {
-                                                                    Holder.TextViewMessage.setVisibility(View.VISIBLE);
-                                                                    Holder.TextViewMessage.setText(PostList.get(Position).Message);
+                                                                        if (PostList.get(Position).Message == null || PostList.get(Position).Message.isEmpty())
+                                                                            Holder.TextViewMessage.setVisibility(View.GONE);
+                                                                        else {
+                                                                            Holder.TextViewMessage.setVisibility(View.VISIBLE);
+                                                                            Holder.TextViewMessage.setText(PostList.get(Position).Message);
 
-                                                                    TagHandler.Show(Holder.TextViewMessage);
+                                                                            TagHandler.Show(Holder.TextViewMessage);
+                                                                        }
+
+                                                                        DB.InboxMessage(PostList.get(Position).ID, PostList.get(Position).Message);
+
+                                                                        notifyDataSetChanged();
+                                                                    }
+                                                                } catch (Exception e) {
+                                                                    Misc.Debug("PostAdapter-Edit: " + e.toString());
                                                                 }
-
-                                                                DB.InboxMessage(PostList.get(Position).ID, PostList.get(Position).Message);
-
-                                                                notifyDataSetChanged();
                                                             }
-                                                        }
-                                                        catch (Exception e)
-                                                        {
-                                                            Misc.Debug("PostAdapter-Edit: " + e.toString());
-                                                        }
-                                                    }
 
-                                                    @Override public void onError(ANError e) { }
-                                                });
+                                                            @Override
+                                                            public void onError(ANError e) {
+                                                            }
+                                                        });
 
                                                 DialogEdit.dismiss();
                                             }
@@ -2204,36 +1988,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                 LinearLayoutMain.addView(TextViewEdit);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             TextView TextViewFollow = new TextView(Activity, 14, false);
                             TextViewFollow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
                             TextViewFollow.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                             TextViewFollow.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                             TextViewFollow.setText(Misc.String(PostList.get(Position).IsFollow ? R.string.PostAdapterOptionUnfollow : R.string.PostAdapterOptionFollow));
                             TextViewFollow.setGravity(Gravity.CENTER_VERTICAL);
-                            TextViewFollow.setOnClickListener(new View.OnClickListener()
-                            {
+                            TextViewFollow.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v)
-                                {
+                                public void onClick(View v) {
                                     AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
-                                    .addBodyParameter("Username", PostList.get(Position).Username)
-                                    .addHeaders("Token", Misc.GetString( "Token"))
-                                    .setTag(Tag)
-                                    .build()
-                                    .getAsString(new StringRequestListener()
-                                    {
-                                        @Override
-                                        public void onResponse(String e)
-                                        {
-                                            PostList.get(Position).IsFollow = !PostList.get(Position).IsFollow;
-                                            Misc.ToastOld(PostList.get(Position).Username + " " + (PostList.get(Position).IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
-                                        }
+                                            .addBodyParameter("Username", PostList.get(Position).Username)
+                                            .addHeaders("Token", Misc.GetString("Token"))
+                                            .setTag(Tag)
+                                            .build()
+                                            .getAsString(new StringRequestListener() {
+                                                @Override
+                                                public void onResponse(String e) {
+                                                    PostList.get(Position).IsFollow = !PostList.get(Position).IsFollow;
+                                                    Misc.ToastOld(PostList.get(Position).Username + " " + (PostList.get(Position).IsFollow ? Activity.getString(R.string.PostAdapterUserFollowed) : Activity.getString(R.string.PostAdapterUserFollowed)));
+                                                }
 
-                                        @Override public void onError(ANError e) { }
-                                    });
+                                                @Override
+                                                public void onError(ANError e) {
+                                                }
+                                            });
 
                                     DialogOption.dismiss();
                                 }
@@ -2254,11 +2034,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewReport.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewReport.setText(Misc.String(R.string.PostAdapterOptionReport));
                         TextViewReport.setGravity(Gravity.CENTER_VERTICAL);
-                        TextViewReport.setOnClickListener(new View.OnClickListener()
-                        {
+                        TextViewReport.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 // TODO Safe Report
                             }
                         });
@@ -2267,8 +2045,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                         ViewLine2.setBackgroundResource(R.color.LineWhite);
 
-                        if (!PostList.get(Position).Owner.equals(Misc.GetString( "ID")))
-                        {
+                        if (!PostList.get(Position).Owner.equals(Misc.GetString("ID"))) {
                             LinearLayoutMain.addView(TextViewReport);
                             LinearLayoutMain.addView(ViewLine2);
                         }
@@ -2279,13 +2056,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewCopy.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewCopy.setText(Misc.String(R.string.PostAdapterOptionCopy));
                         TextViewCopy.setGravity(Gravity.CENTER_VERTICAL);
-                        TextViewCopy.setOnClickListener(new View.OnClickListener()
-                        {
+                        TextViewCopy.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 ClipboardManager clipboard = (ClipboardManager) Activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                                ClipData clip = ClipData.newPlainText("InboxMessage:"+ PostList.get(Position).ID, PostList.get(Position).Message);
+                                ClipData clip = ClipData.newPlainText("InboxMessage:" + PostList.get(Position).ID, PostList.get(Position).Message);
 
                                 if (clipboard != null)
                                     clipboard.setPrimaryClip(clip);
@@ -2299,8 +2074,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         ViewLine4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
                         ViewLine4.setBackgroundResource(R.color.LineWhite);
 
-                        if (PostList.get(Position).Message != null && !PostList.get(Position).Message.isEmpty())
-                        {
+                        if (PostList.get(Position).Message != null && !PostList.get(Position).Message.isEmpty()) {
 
                             LinearLayoutMain.addView(TextViewCopy);
                             LinearLayoutMain.addView(ViewLine4);
@@ -2312,27 +2086,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewBookmark.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewBookmark.setText(Misc.String(PostList.get(Position).IsBookmark ? R.string.PostAdapterOptionUnbookmark : R.string.PostAdapterOptionBookmark));
                         TextViewBookmark.setGravity(Gravity.CENTER_VERTICAL);
-                        TextViewBookmark.setOnClickListener(new View.OnClickListener()
-                        {
+                        TextViewBookmark.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 AndroidNetworking.post(Misc.GetRandomServer("PostBookmark"))
-                                .addBodyParameter("PostID", PostList.get(Position).ID)
-                                .addHeaders("Token", Misc.GetString( "Token"))
-                                .setTag(Tag)
-                                .build()
-                                .getAsString(new StringRequestListener()
-                                {
-                                    @Override
-                                    public void onResponse(String e)
-                                    {
-                                        PostList.get(Position).IsBookmark = !PostList.get(Position).IsBookmark;
-                                        Misc.ToastOld(Activity.getString(R.string.PostAdapterPostBookmark));
-                                    }
+                                        .addBodyParameter("PostID", PostList.get(Position).ID)
+                                        .addHeaders("Token", Misc.GetString("Token"))
+                                        .setTag(Tag)
+                                        .build()
+                                        .getAsString(new StringRequestListener() {
+                                            @Override
+                                            public void onResponse(String e) {
+                                                PostList.get(Position).IsBookmark = !PostList.get(Position).IsBookmark;
+                                                Misc.ToastOld(Activity.getString(R.string.PostAdapterPostBookmark));
+                                            }
 
-                                    @Override public void onError(ANError e) { }
-                                });
+                                            @Override
+                                            public void onError(ANError e) {
+                                            }
+                                        });
 
                                 DialogOption.dismiss();
                             }
@@ -2352,14 +2124,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         TextViewShare.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewShare.setText(Misc.String(R.string.PostAdapterOptionShare));
                         TextViewShare.setGravity(Gravity.CENTER_VERTICAL);
-                        TextViewShare.setOnClickListener(new View.OnClickListener()
-                        {
+                        TextViewShare.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 String Message = PostList.get(Position).Name + " " + Activity.getString(R.string.PostAdapterPostShare1) + "\n";
                                 Message += PostList.get(Position).Message == null ? "" : PostList.get(Position).Message;
-                                Message += "\n" +  Activity.getString(R.string.PostAdapterPostShare1) + "\nhttp://biogram.co/post/" + PostList.get(Position).ID;
+                                Message += "\n" + Activity.getString(R.string.PostAdapterPostShare1) + "\nhttp://biogram.co/post/" + PostList.get(Position).ID;
 
                                 Intent I = new Intent();
                                 I.setAction(Intent.ACTION_SEND);
@@ -2382,47 +2152,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                     Holder.ViewLine.setVisibility(View.GONE);
                 else
                     Holder.ViewLine.setVisibility(View.VISIBLE);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Misc.Debug("PostAdapter-ViewType1: " + e.toString());
             }
         }
     }
 
     @Override
-    public int getItemViewType(int Position)
-    {
+    public int getItemViewType(int Position) {
         return PostList.get(Position).ViewType;
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return PostList.size();
     }
 
-    private void OnChanged()
-    {
+    private void OnChanged() {
         Collections.sort(PostList, new PostSort());
 
         notifyDataSetChanged();
     }
 
-    public void OnTouchEvent(MotionEvent e)
-    {
+    public void OnTouchEvent(MotionEvent e) {
         if (RefreshView != null)
             RefreshView.onTouchEvent(e);
     }
 
-    public void Update()
-    {
+    public void Update() {
         int Size = GetSize();
         Cursor cursor = DB.InboxPost(Size);
         StringBuilder ID = new StringBuilder();
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             PostStruct P = new PostStruct();
             P.ID = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_ID));
             P.Profile = cursor.getString(cursor.getColumnIndex(DBHandler.INBOX_POST_PROFILE));
@@ -2464,162 +2226,144 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ID2 = ID2.substring(0, ID2.length() - 1);
 
         AndroidNetworking.post(Misc.GetRandomServer("PostDeleteCheck"))
-        .addBodyParameter("List", ID2)
-        .addHeaders("Token", Misc.GetString( "Token"))
-        .setTag(Tag)
-        .build()
-        .getAsString(new StringRequestListener()
-        {
-            @Override
-            public void onResponse(String Response)
-            {
-                try
-                {
-                    JSONObject Result = new JSONObject(Response);
+                .addBodyParameter("List", ID2)
+                .addHeaders("Token", Misc.GetString("Token"))
+                .setTag(Tag)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            JSONObject Result = new JSONObject(Response);
 
-                    if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
-                    {
-                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                            if (Result.getInt("Message") == 0 && !Result.isNull("Result")) {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int I = 0; I < ResultList.length(); I++)
-                        {
-                            String ID = ResultList.getJSONObject(I).getString("ID");
+                                for (int I = 0; I < ResultList.length(); I++) {
+                                    String ID = ResultList.getJSONObject(I).getString("ID");
 
-                            DB.InboxDelete(ID);
+                                    DB.InboxDelete(ID);
 
-                            Iterator itr = PostList.iterator();
+                                    Iterator itr = PostList.iterator();
 
-                            while (itr.hasNext())
-                            {
-                                PostStruct Post = (PostStruct) itr.next();
+                                    while (itr.hasNext()) {
+                                        PostStruct Post = (PostStruct) itr.next();
 
-                                if (ID.equals(Post.ID))
-                                    itr.remove();
+                                        if (ID.equals(Post.ID))
+                                            itr.remove();
+                                    }
+                                }
+
+                                OnChanged();
                             }
+                        } catch (Exception e) {
+                            Misc.Debug("PostAdapter-Delete: " + e.toString());
                         }
-
-                        OnChanged();
                     }
-                }
-                catch (Exception e)
-                {
-                    Misc.Debug("PostAdapter-Delete: " + e.toString());
-                }
-            }
 
-            @Override public void onError(ANError e) { }
-        });
+                    @Override
+                    public void onError(ANError e) {
+                    }
+                });
 
         AndroidNetworking.post(Misc.GetRandomServer("PostListInbox"))
-        .addBodyParameter("Skip", String.valueOf(Size))
-        .addHeaders("Token", Misc.GetString( "Token"))
-        .setTag(Tag)
-        .build()
-        .getAsString(new StringRequestListener()
-        {
-            @Override
-            public void onResponse(String Response)
-            {
-                try
-                {
-                    JSONObject Result = new JSONObject(Response);
+                .addBodyParameter("Skip", String.valueOf(Size))
+                .addHeaders("Token", Misc.GetString("Token"))
+                .setTag(Tag)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            JSONObject Result = new JSONObject(Response);
 
-                    if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
-                    {
-                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                            if (Result.getInt("Message") == 0 && !Result.isNull("Result")) {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < ResultList.length(); K++)
-                        {
-                            JSONObject D = ResultList.getJSONObject(K);
+                                for (int K = 0; K < ResultList.length(); K++) {
+                                    JSONObject D = ResultList.getJSONObject(K);
 
-                            PostStruct P = new PostStruct();
-                            P.ID = D.getString("ID");
+                                    PostStruct P = new PostStruct();
+                                    P.ID = D.getString("ID");
 
-                            if (!D.isNull("Profile"))
-                                P.Profile = D.getString("Profile");
+                                    if (!D.isNull("Profile"))
+                                        P.Profile = D.getString("Profile");
 
-                            P.Name = D.getString("Name");
+                                    P.Name = D.getString("Name");
 
-                            if (!D.isNull("Medal"))
-                                P.Medal = D.getString("Medal");
+                                    if (!D.isNull("Medal"))
+                                        P.Medal = D.getString("Medal");
 
-                            P.Username = D.getString("Username");
-                            P.Time = D.getInt("Time");
+                                    P.Username = D.getString("Username");
+                                    P.Time = D.getInt("Time");
 
-                            if (!D.isNull("Message"))
-                                P.Message = D.getString("Message");
+                                    if (!D.isNull("Message"))
+                                        P.Message = D.getString("Message");
 
-                            if (D.getInt("Type") != 0)
-                            {
-                                P.Type = D.getInt("Type");
-                                P.Data = D.getString("Data");
+                                    if (D.getInt("Type") != 0) {
+                                        P.Type = D.getInt("Type");
+                                        P.Data = D.getString("Data");
+                                    }
+
+                                    P.Owner = D.getString("Owner");
+
+                                    if (!D.isNull("View"))
+                                        P.View = D.getInt("View");
+
+                                    P.Category = D.getInt("Category");
+                                    P.LikeCount = D.getInt("LikeCount");
+                                    P.CommentCount = D.getInt("CommentCount");
+                                    P.IsLike = D.getInt("Like") != 0;
+                                    P.IsFollow = D.getInt("Follow") != 0;
+
+                                    if (!D.isNull("Comment"))
+                                        P.IsComment = D.getInt("Comment") != 0;
+
+                                    P.IsBookmark = D.getInt("Bookmark") != 0;
+
+                                    if (!D.isNull("I1")) {
+                                        P.Person1ID = D.getString("I1");
+                                        P.Person1Avatar = D.getString("I1P");
+                                    }
+
+                                    if (!D.isNull("I2")) {
+                                        P.Person2ID = D.getString("I2");
+                                        P.Person2Avatar = D.getString("I2P");
+                                    }
+
+                                    if (!D.isNull("I3")) {
+                                        P.Person3ID = D.getString("I3");
+                                        P.Person3Avatar = D.getString("I3P");
+                                    }
+
+                                    if (!D.isNull("I4")) {
+                                        P.Person4ID = D.getString("I4");
+                                        P.Person4Avatar = D.getString("I4P");
+                                    }
+
+                                    int I = PostList.indexOf(P);
+
+                                    if (I != -1)
+                                        PostList.set(I, P);
+
+                                    DB.InboxUpdate(P);
+                                }
+
+                                OnChanged();
                             }
-
-                            P.Owner = D.getString("Owner");
-
-                            if (!D.isNull("View"))
-                                P.View = D.getInt("View");
-
-                            P.Category = D.getInt("Category");
-                            P.LikeCount = D.getInt("LikeCount");
-                            P.CommentCount = D.getInt("CommentCount");
-                            P.IsLike = D.getInt("Like") != 0;
-                            P.IsFollow = D.getInt("Follow") != 0;
-
-                            if (!D.isNull("Comment"))
-                                P.IsComment = D.getInt("Comment") != 0;
-
-                            P.IsBookmark = D.getInt("Bookmark") != 0;
-
-                            if (!D.isNull("I1"))
-                            {
-                                P.Person1ID = D.getString("I1");
-                                P.Person1Avatar = D.getString("I1P");
-                            }
-
-                            if (!D.isNull("I2"))
-                            {
-                                P.Person2ID = D.getString("I2");
-                                P.Person2Avatar = D.getString("I2P");
-                            }
-
-                            if (!D.isNull("I3"))
-                            {
-                                P.Person3ID = D.getString("I3");
-                                P.Person3Avatar = D.getString("I3P");
-                            }
-
-                            if (!D.isNull("I4"))
-                            {
-                                P.Person4ID = D.getString("I4");
-                                P.Person4Avatar = D.getString("I4P");
-                            }
-
-                            int I = PostList.indexOf(P);
-
-                            if (I != -1)
-                                PostList.set(I, P);
-
-                            DB.InboxUpdate(P);
+                        } catch (Exception e) {
+                            Misc.Debug("PostAdapter-Update: " + e.toString());
                         }
-
-                        OnChanged();
                     }
-                }
-                catch (Exception e)
-                {
-                    Misc.Debug("PostAdapter-Update: " + e.toString());
-                }
-            }
 
-            @Override public void onError(ANError e) { }
-        });
+                    @Override
+                    public void onError(ANError e) {
+                    }
+                });
     }
 
-    public void Insert(JSONObject D)
-    {
-        try
-        {
+    public void Insert(JSONObject D) {
+        try {
             PostStruct P = new PostStruct();
             P.ID = D.getString("_id");
             P.Profile = Misc.GetString("Avatar");
@@ -2631,8 +2375,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             if (!D.isNull("Message"))
                 P.Message = D.getString("Message");
 
-            if (D.getInt("Type") != 0)
-            {
+            if (D.getInt("Type") != 0) {
                 P.Type = D.getInt("Type");
                 P.Data = D.getString("Data");
             }
@@ -2646,15 +2389,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             DB.InboxUpdate(P);
 
             OnChanged();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Misc.Debug("PostAdapter-Insert: " + e.toString());
         }
     }
 
-    private int GetSize()
-    {
+    private int GetSize() {
         int Size = 0;
 
         for (PostStruct P : PostList)
@@ -2664,8 +2404,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         return Size;
     }
 
-    public static class PostStruct
-    {
+    public static class PostStruct {
         public String ID;
         public String Profile;
         public String Name;
@@ -2674,7 +2413,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         public String Owner;
         public int Time;
         public String Message;
-        public int Type; // 0: Message 1: Image 2: Video 3: Vote 4: File
+        public int Type; // 0: Message 1: Image audio_start: Video 3: Vote 4: File
         public String Data;
         public int View;
         public int Category;
@@ -2692,45 +2431,190 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         public String Person3Avatar;
         public String Person4ID;
         public String Person4Avatar;
-
-        int ViewType = 1; // 0: Pull 1: Post
         public boolean IsDownloading = false;
+        int ViewType = 1; // 0: Pull 1: Post
 
-        public PostStruct() { }
-        PostStruct(int v) { ViewType = v; }
+        public PostStruct() {
+        }
 
-        public void RevLike() { IsLike = !IsLike; }
+        PostStruct(int v) {
+            ViewType = v;
+        }
 
-        public void InsLike()
-        {
+        public void RevLike() {
+            IsLike = !IsLike;
+        }
+
+        public void InsLike() {
             LikeCount++;
             DB.InboxLike(ID, true);
         }
 
-        public void DesLike()
-        {
+        public void DesLike() {
             LikeCount--;
             DB.InboxLike(ID, false);
         }
 
-        public void InsComment()
-        {
+        public void InsComment() {
             CommentCount++;
             DB.InboxComment(ID, true);
         }
 
-        public void DesComment()
-        {
+        public void DesComment() {
             CommentCount--;
             DB.InboxComment(ID, false);
         }
     }
 
-    private class PostSort implements Comparator<PostStruct>
-    {
+    class ViewHolderMain extends RecyclerView.ViewHolder {
+        RelativeLayout RelativeLayoutMain;
+        CircleImageView CircleImageViewProfile;
+        TextView TextViewName;
+        ImageView ImageViewMedal;
+        TextView TextViewUsername;
+        TextView TextViewTime;
+        TextView TextViewMessage;
+        ImageView ImageViewOption;
+        ImageView ImageViewLike;
+        TextView TextViewLikeCount;
+        ImageView ImageViewComment;
+        TextView TextViewCommentCount;
+        CircleImageView CircleImageViewPerson1;
+        CircleImageView CircleImageViewPerson2;
+        CircleImageView CircleImageViewPerson3;
+        CircleImageView CircleImageViewPerson4;
+        View ViewLine;
+        RelativeLayout RelativeLayoutImage;
+        ImageView ImageViewSingle;
+        LinearLayout LinearLayoutDouble;
+        ImageView ImageViewDouble1;
+        ImageView ImageViewDouble2;
+        LinearLayout LinearLayoutTriple;
+        ImageView ImageViewTriple1;
+        ImageView ImageViewTriple2;
+        ImageView ImageViewTriple3;
+        RelativeLayout RelativeLayoutVideo;
+        ImageView ImageViewVideo;
+        TextView TextViewDurotion;
+        RelativeLayout RelativeLayoutVote;
+        LinearLayout LinearLayoutVoteType1;
+        LinearLayout LinearLayoutVoteLin1;
+        LinearLayout LinearLayoutVoteLin2;
+        LinearLayout LinearLayoutVoteLin3;
+        LinearLayout LinearLayoutVoteLin4;
+        LinearLayout LinearLayoutVoteLin5;
+        View ViewType1Sel1;
+        View ViewType1Sel2;
+        View ViewType1Sel3;
+        View ViewType1Sel4;
+        View ViewType1Sel5;
+        TextView TextViewType1Text1;
+        TextView TextViewType1Text2;
+        TextView TextViewType1Text3;
+        TextView TextViewType1Text4;
+        TextView TextViewType1Text5;
+        TextView TextViewType1Submit;
+        TextView TextViewType1Result;
+        TextView TextViewType1Time;
+        RelativeLayout RelativeLayoutVoteType2;
+        TextView TextViewType2Text1;
+        TextView TextViewType2Text2;
+        TextView TextViewType2Text3;
+        TextView TextViewType2Text4;
+        TextView TextViewType2Text5;
+        TextView TextViewType2Per1;
+        TextView TextViewType2Per2;
+        TextView TextViewType2Per3;
+        TextView TextViewType2Per4;
+        TextView TextViewType2Per5;
+        ImageView ImageViewType2Select;
+        TextView TextViewType2Result;
+        TextView TextViewType2Time;
+        RelativeLayout RelativeLayoutFile;
+        ImageView ImageViewFile;
+        TextView TextViewFile;
+        TextView TextViewFileName;
+        TextView TextViewFileDetail;
+
+        ViewHolderMain(View v, int type) {
+            super(v);
+
+            if (type == 1) {
+                RelativeLayoutMain = v.findViewById(ID1_MAIN);
+                CircleImageViewProfile = v.findViewById(ID1_PROFILE);
+                TextViewName = v.findViewById(ID1_NAME);
+                ImageViewMedal = v.findViewById(ID1_MEDAL);
+                TextViewUsername = v.findViewById(ID1_USERNAME);
+                TextViewTime = v.findViewById(ID1_TIME);
+                TextViewMessage = v.findViewById(ID1_MESSAGE);
+                ImageViewOption = v.findViewById(ID1_OPTION);
+                CircleImageViewPerson1 = v.findViewById(ID1_PERSON1);
+                CircleImageViewPerson2 = v.findViewById(ID1_PERSON2);
+                CircleImageViewPerson3 = v.findViewById(ID1_PERSON3);
+                CircleImageViewPerson4 = v.findViewById(ID1_PERSON4);
+                ImageViewLike = v.findViewById(ID1_LIKE);
+                TextViewLikeCount = v.findViewById(ID1_LIKE_COUNT);
+                ImageViewComment = v.findViewById(ID1_COMMENT);
+                TextViewCommentCount = v.findViewById(ID1_COMMENT_COUNT);
+                ViewLine = v.findViewById(ID1_VIEW_LINE);
+                RelativeLayoutImage = v.findViewById(ID1_IMAGE_LAYOUT);
+                ImageViewSingle = v.findViewById(ID1_SINGLE);
+                LinearLayoutDouble = v.findViewById(ID1_DOUBLE_LAYOUT);
+                ImageViewDouble1 = v.findViewById(ID1_DOUBLE1);
+                ImageViewDouble2 = v.findViewById(ID1_DOUBLE2);
+                LinearLayoutTriple = v.findViewById(ID1_TRIPLE_LAYOUT);
+                ImageViewTriple1 = v.findViewById(ID1_TRIPLE1);
+                ImageViewTriple2 = v.findViewById(ID1_TRIPLE2);
+                ImageViewTriple3 = v.findViewById(ID1_TRIPLE3);
+                RelativeLayoutVideo = v.findViewById(ID1_VIDEO_LAYOUT);
+                ImageViewVideo = v.findViewById(ID1_VIDEO_IMAGE);
+                TextViewDurotion = v.findViewById(ID1_VIDEO_DURATION);
+                RelativeLayoutVote = v.findViewById(ID1_VOTE_LAYOUT);
+                LinearLayoutVoteType1 = v.findViewById(ID1_VOTE_TYPE1);
+                LinearLayoutVoteLin1 = v.findViewById(ID1_VOTE_TYPE1_LIN1);
+                LinearLayoutVoteLin2 = v.findViewById(ID1_VOTE_TYPE1_LIN2);
+                LinearLayoutVoteLin3 = v.findViewById(ID1_VOTE_TYPE1_LIN3);
+                LinearLayoutVoteLin4 = v.findViewById(ID1_VOTE_TYPE1_LIN4);
+                LinearLayoutVoteLin5 = v.findViewById(ID1_VOTE_TYPE1_LIN5);
+                ViewType1Sel1 = v.findViewById(ID1_VOTE_TYPE1_SEL1);
+                ViewType1Sel2 = v.findViewById(ID1_VOTE_TYPE1_SEL2);
+                ViewType1Sel3 = v.findViewById(ID1_VOTE_TYPE1_SEL3);
+                ViewType1Sel4 = v.findViewById(ID1_VOTE_TYPE1_SEL4);
+                ViewType1Sel5 = v.findViewById(ID1_VOTE_TYPE1_SEL5);
+                TextViewType1Text1 = v.findViewById(ID1_VOTE_TYPE1_TEXT1);
+                TextViewType1Text2 = v.findViewById(ID1_VOTE_TYPE1_TEXT2);
+                TextViewType1Text3 = v.findViewById(ID1_VOTE_TYPE1_TEXT3);
+                TextViewType1Text4 = v.findViewById(ID1_VOTE_TYPE1_TEXT4);
+                TextViewType1Text5 = v.findViewById(ID1_VOTE_TYPE1_TEXT5);
+                TextViewType1Submit = v.findViewById(ID1_VOTE_TYPE1_SUBMIT);
+                TextViewType1Result = v.findViewById(ID1_VOTE_TYPE1_RESULT);
+                TextViewType1Time = v.findViewById(ID1_VOTE_TYPE1_TIME);
+                RelativeLayoutVoteType2 = v.findViewById(ID1_VOTE_TYPE2);
+                TextViewType2Text1 = v.findViewById(ID1_VOTE_TYPE2_TEXT1);
+                TextViewType2Text2 = v.findViewById(ID1_VOTE_TYPE2_TEXT2);
+                TextViewType2Text3 = v.findViewById(ID1_VOTE_TYPE2_TEXT3);
+                TextViewType2Text4 = v.findViewById(ID1_VOTE_TYPE2_TEXT4);
+                TextViewType2Text5 = v.findViewById(ID1_VOTE_TYPE2_TEXT5);
+                TextViewType2Per1 = v.findViewById(ID1_VOTE_TYPE2_PER1);
+                TextViewType2Per2 = v.findViewById(ID1_VOTE_TYPE2_PER2);
+                TextViewType2Per3 = v.findViewById(ID1_VOTE_TYPE2_PER3);
+                TextViewType2Per4 = v.findViewById(ID1_VOTE_TYPE2_PER4);
+                TextViewType2Per5 = v.findViewById(ID1_VOTE_TYPE2_PER5);
+                ImageViewType2Select = v.findViewById(ID1_VOTE_TYPE2_SELECT);
+                TextViewType2Result = v.findViewById(ID1_VOTE_TYPE2_RESULT);
+                TextViewType2Time = v.findViewById(ID1_VOTE_TYPE2_TIME);
+                RelativeLayoutFile = v.findViewById(ID1_FILE_LAYOUT);
+                ImageViewFile = v.findViewById(ID1_FILE_IMAGE);
+                TextViewFile = v.findViewById(ID1_FILE_TEXT);
+                TextViewFileName = v.findViewById(ID1_FILE_NAME);
+                TextViewFileDetail = v.findViewById(ID1_FILE_DETAIL);
+            }
+        }
+    }
+
+    private class PostSort implements Comparator<PostStruct> {
         @Override
-        public int compare(PostStruct P1, PostStruct P2)
-        {
+        public int compare(PostStruct P1, PostStruct P2) {
             if (P1.ViewType == 0 || P2.ViewType == 0)
                 return 0;
 

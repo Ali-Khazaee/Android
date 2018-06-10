@@ -13,13 +13,11 @@ import java.util.regex.Pattern;
 
 import co.biogram.main.handler.Misc;
 
-public class BroadCastService extends BroadcastReceiver
-{
+public class BroadCastService extends BroadcastReceiver {
     private static boolean IsSMS = false;
 
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
+    public void onReceive(Context context, Intent intent) {
         if (intent.getAction() == null)
             return;
 
@@ -29,34 +27,26 @@ public class BroadCastService extends BroadcastReceiver
         if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Request") && intent.getExtras() != null)
             IsSMS = intent.getExtras().getBoolean("SetWaiting", false);
 
-        if (IsSMS && intent.getAction().equalsIgnoreCase("android.provider.Telephony.SMS_RECEIVED"))
-        {
+        if (IsSMS && intent.getAction().equalsIgnoreCase("android.provider.Telephony.SMS_RECEIVED")) {
             Bundle bundle = intent.getExtras();
 
-            if (bundle != null)
-            {
-                try
-                {
+            if (bundle != null) {
+                try {
                     SmsMessage[] SMS;
                     StringBuilder Message = new StringBuilder();
 
-                    if (Build.VERSION.SDK_INT > 18)
-                    {
+                    if (Build.VERSION.SDK_INT > 18) {
                         SMS = Telephony.Sms.Intents.getMessagesFromIntent(intent);
 
                         for (SmsMessage sms : SMS)
                             Message.append(sms.getMessageBody());
-                    }
-                    else
-                    {
+                    } else {
                         Object[] Data = (Object[]) bundle.get("pdus");
 
-                        if (Data != null)
-                        {
+                        if (Data != null) {
                             SMS = new SmsMessage[Data.length];
 
-                            for (int i = 0; i < SMS.length; i++)
-                            {
+                            for (int i = 0; i < SMS.length; i++) {
                                 // noinspection all
                                 SMS[i] = SmsMessage.createFromPdu((byte[]) Data[i]);
                                 Message.append(SMS[i].getMessageBody());
@@ -66,16 +56,13 @@ public class BroadCastService extends BroadcastReceiver
 
                     Matcher matcher = Pattern.compile("[0-9]+").matcher(Message.toString());
 
-                    if (matcher.find())
-                    {
+                    if (matcher.find()) {
                         Intent i = new Intent("Biogram.SMS.Verify");
                         i.putExtra("Issue", matcher.group(0));
 
                         context.sendBroadcast(i);
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Misc.Debug("BroadCastService: " + e.toString());
                 }
             }

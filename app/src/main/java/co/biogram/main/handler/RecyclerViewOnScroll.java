@@ -4,15 +4,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-public abstract class RecyclerViewOnScroll extends RecyclerView.OnScrollListener
-{
+public abstract class RecyclerViewOnScroll extends RecyclerView.OnScrollListener {
     private RecyclerView.LayoutManager LayoutManager;
     private int PreviousTotalCount = 0;
     private boolean IsLoading = true;
 
     @Override
-    public void onScrolled(RecyclerView rc, int X, int Y)
-    {
+    public void onScrolled(RecyclerView rc, int X, int Y) {
         if (LayoutManager == null)
             LayoutManager = rc.getLayoutManager();
 
@@ -21,8 +19,7 @@ public abstract class RecyclerViewOnScroll extends RecyclerView.OnScrollListener
 
         int TotalCount = LayoutManager.getItemCount();
 
-        if (IsLoading && (TotalCount > PreviousTotalCount))
-        {
+        if (IsLoading && (TotalCount > PreviousTotalCount)) {
             IsLoading = false;
             PreviousTotalCount = TotalCount;
         }
@@ -34,16 +31,14 @@ public abstract class RecyclerViewOnScroll extends RecyclerView.OnScrollListener
         else if (LayoutManager instanceof GridLayoutManager)
             LastPosition += ((GridLayoutManager) LayoutManager).findLastVisibleItemPosition();
 
-        if (!IsLoading && LastPosition > TotalCount)
-        {
+        if (!IsLoading && LastPosition > TotalCount) {
             OnLoadMore();
             IsLoading = true;
             PreviousTotalCount++;
         }
     }
 
-    public void ResetState(boolean Full)
-    {
+    public void ResetState(boolean Full) {
         IsLoading = false;
 
         if (Full)

@@ -5,37 +5,30 @@ import android.os.Build;
 
 import java.nio.ByteBuffer;
 
-class MediaCodecBufferCompatWrapper
-{
+class MediaCodecBufferCompatWrapper {
     private final MediaCodec mMediaCodec;
     private final ByteBuffer[] mInputBuffers;
     private final ByteBuffer[] mOutputBuffers;
 
-    MediaCodecBufferCompatWrapper(MediaCodec mediaCodec)
-    {
+    MediaCodecBufferCompatWrapper(MediaCodec mediaCodec) {
         mMediaCodec = mediaCodec;
 
-        if (Build.VERSION.SDK_INT < 21)
-        {
+        if (Build.VERSION.SDK_INT < 21) {
             mInputBuffers = mediaCodec.getInputBuffers();
             mOutputBuffers = mediaCodec.getOutputBuffers();
-        }
-        else
-        {
+        } else {
             mInputBuffers = mOutputBuffers = null;
         }
     }
 
-    ByteBuffer getInputBuffer(final int index)
-    {
+    ByteBuffer getInputBuffer(final int index) {
         if (Build.VERSION.SDK_INT >= 21)
             return mMediaCodec.getInputBuffer(index);
 
         return mInputBuffers[index];
     }
 
-    ByteBuffer getOutputBuffer(final int index)
-    {
+    ByteBuffer getOutputBuffer(final int index) {
         if (Build.VERSION.SDK_INT >= 21)
             return mMediaCodec.getOutputBuffer(index);
 

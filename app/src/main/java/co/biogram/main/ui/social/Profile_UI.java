@@ -29,68 +29,58 @@ import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.StatefulLayout;
 
-public class Profile_UI extends FragmentView
-{
+public class Profile_UI extends FragmentView {
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         View view = View.inflate(Activity, R.layout.social_profile, null);
 
-        view.findViewById(R.id.ImageViewSetting).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.ImageViewSetting).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Open Setting Page
             }
         });
 
-        view.findViewById(R.id.ImageViewProfile).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.ImageViewProfile).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Open Profile Page
             }
         });
 
         final CircleImageView CircleImageViewProfile = view.findViewById(R.id.CircleImageViewProfile);
-        CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
-        {
+        CircleImageViewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_avatar, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
-
-                dialogView.findViewById(R.id.TextViewCamera).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialogView.findViewById(R.id.TextViewCamera).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         dialog.dismiss();
 
-                        new PermissionDialog(Activity).SetContentView(R.drawable.z_general_permission_camera, R.string.SocialProfileUIAvatarCameraMessage, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener()
-                        {
+                        new PermissionDialog(Activity).SetContentView(R.drawable.z_general_permission_camera, R.string.SocialProfileUIAvatarCameraMessage, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener() {
                             @Override
-                            public void OnChoice(boolean Result)
-                            {
-                                if (!Result)
-                                {
+                            public void OnChoice(boolean Result) {
+                                if (!Result) {
                                     Misc.ToastOld(R.string.SocialProfileUIAvatarCameraMessage);
                                     return;
                                 }
 
-                                Activity.GetManager().OpenView(new CameraViewUI(Misc.ToDP(250), Misc.ToDP(250), true, new CameraViewUI.OnCaptureListener()
-                                {
+                                Activity.GetManager().OpenView(new CameraViewUI(Misc.ToDP(250), Misc.ToDP(250), true, new CameraViewUI.OnCaptureListener() {
                                     @Override
-                                    public void OnCapture(Bitmap bitmap)
-                                    {
+                                    public void OnCapture(Bitmap bitmap) {
                                         // TODO Update Profile
                                     }
                                 }), "CameraViewUI", true);
@@ -99,48 +89,37 @@ public class Profile_UI extends FragmentView
                     }
                 });
 
-                dialogView.findViewById(R.id.TextViewGallery).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewGallery).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
-                        new PermissionDialog(Activity).SetContentView(R.drawable.z_general_permission_storage, R.string.SocialProfileUIAvatarGalleryMessage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
-                        {
+                        new PermissionDialog(Activity).SetContentView(R.drawable.z_general_permission_storage, R.string.SocialProfileUIAvatarGalleryMessage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
                             @Override
-                            public void OnChoice(boolean Result)
-                            {
-                                if (!Result)
-                                {
+                            public void OnChoice(boolean Result) {
+                                if (!Result) {
                                     Misc.ToastOld(R.string.SocialProfileUIAvatarGalleryMessage);
                                     return;
                                 }
 
-                                Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_IMAGE, new GalleryViewUI.GalleryListener()
-                                {
+                                Activity.GetManager().OpenView(new GalleryViewUI(1, GalleryViewUI.TYPE_IMAGE, new GalleryViewUI.GalleryListener() {
                                     private String Path = "";
 
                                     @Override
-                                    public void OnSelection(String path)
-                                    {
+                                    public void OnSelection(String path) {
                                         Path = path;
                                     }
 
                                     @Override
-                                    public void OnRemove(String path)
-                                    {
+                                    public void OnRemove(String path) {
                                         Path = path;
                                     }
 
                                     @Override
-                                    public void OnSave()
-                                    {
-                                        Activity.GetManager().OpenView(new CropViewUI(Path, true, new CropViewUI.OnCropListener()
-                                        {
+                                    public void OnSave() {
+                                        Activity.GetManager().OpenView(new CropViewUI(Path, true, new CropViewUI.OnCropListener() {
                                             @Override
-                                            public void OnCrop(Bitmap bitmap)
-                                            {
+                                            public void OnCrop(Bitmap bitmap) {
                                                 Activity.onBackPressed();
 
                                                 // TODO Send avaar
@@ -153,11 +132,9 @@ public class Profile_UI extends FragmentView
                     }
                 });
 
-                dialogView.findViewById(R.id.TextViewDelete).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewDelete).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
                         CircleImageViewProfile.setImageResource(R.drawable.z_social_profile_avatar);
 
@@ -171,18 +148,21 @@ public class Profile_UI extends FragmentView
         });
 
         final TextView TextViewName = view.findViewById(R.id.TextViewName);
-        TextViewName.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewName.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_name, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 final EditText EditTextName = dialogView.findViewById(R.id.EditTextName);
                 EditTextName.setText(TextViewName.getText());
@@ -194,11 +174,9 @@ public class Profile_UI extends FragmentView
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
                         // TODO Update Name
@@ -211,18 +189,21 @@ public class Profile_UI extends FragmentView
         });
 
         final TextView TextViewUsername = view.findViewById(R.id.TextViewUsername);
-        TextViewUsername.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewUsername.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_username, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 final EditText EditTextUsername = dialogView.findViewById(R.id.EditTextUsername);
                 EditTextUsername.setText(TextViewUsername.getText().toString().substring(1));
@@ -234,11 +215,9 @@ public class Profile_UI extends FragmentView
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
                         // TODO Update Username
@@ -250,41 +229,33 @@ public class Profile_UI extends FragmentView
             }
         });
 
-        view.findViewById(R.id.LinearLayoutBookmark).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutBookmark).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Open Saved Page
             }
         });
 
         final TextView TextViewFollowing = view.findViewById(R.id.TextViewFollowing);
-        TextViewFollowing.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewFollowing.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Open Following Page
             }
         });
 
         final TextView TextViewFollower = view.findViewById(R.id.TextViewFollower);
-        TextViewFollower.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewFollower.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Open Follower Page
             }
         });
 
         final TextView TextViewProfileView = view.findViewById(R.id.TextViewProfileView);
-        TextViewProfileView.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewProfileView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Open ProfileView Page
             }
         });
@@ -292,38 +263,37 @@ public class Profile_UI extends FragmentView
         final TextView TextViewRating = view.findViewById(R.id.TextViewRating);
         final TextView TextViewRate = view.findViewById(R.id.TextViewRate);
 
-        view.findViewById(R.id.LinearLayoutRating).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutRating).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Open Rating Page
             }
         });
 
-        view.findViewById(R.id.LinearLayoutSpecial).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutSpecial).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Activity.GetManager().OpenView(new Profile_SpecialCenterUI(), "Profile_SpecialCenterUI", true);
             }
         });
 
         final TextView TextViewPhoneNumber = view.findViewById(R.id.TextViewPhoneNumber);
 
-        view.findViewById(R.id.LinearLayoutPhoneNumber).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutPhoneNumber).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_phone, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 final EditText EditTextPhone = dialogView.findViewById(R.id.EditTextPhone);
                 EditTextPhone.setText(TextViewPhoneNumber.getText());
@@ -335,11 +305,9 @@ public class Profile_UI extends FragmentView
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
                         // TODO Update Phone
@@ -353,18 +321,21 @@ public class Profile_UI extends FragmentView
 
         final TextView TextViewEmailAddress = view.findViewById(R.id.TextViewEmailAddress);
 
-        view.findViewById(R.id.LinearLayoutEmail).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutEmail).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_email, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 final EditText EditTextEmail = dialogView.findViewById(R.id.EditTextEmail);
                 EditTextEmail.setText(TextViewEmailAddress.getText());
@@ -376,11 +347,9 @@ public class Profile_UI extends FragmentView
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
                         // TODO Update Email
@@ -394,18 +363,21 @@ public class Profile_UI extends FragmentView
 
         final TextView TextViewAboutMe = view.findViewById(R.id.TextViewAboutMe);
 
-        view.findViewById(R.id.LinearLayoutAboutMe).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutAboutMe).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_about, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 final EditText EditTextAbout = dialogView.findViewById(R.id.EditTextAbout);
                 EditTextAbout.setText(TextViewAboutMe.getText());
@@ -417,11 +389,9 @@ public class Profile_UI extends FragmentView
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
                         // TODO Update AboutMe
@@ -435,18 +405,21 @@ public class Profile_UI extends FragmentView
 
         final TextView TextViewWebsite = view.findViewById(R.id.TextViewWebsite);
 
-        view.findViewById(R.id.LinearLayoutWebsite).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutWebsite).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_website, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 String URL = TextViewWebsite.length() == 0 ? "http://" : TextViewWebsite.getText().toString();
 
@@ -460,11 +433,9 @@ public class Profile_UI extends FragmentView
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
                         // TODO Update Website
@@ -478,18 +449,21 @@ public class Profile_UI extends FragmentView
 
         final TextView TextViewLocation = view.findViewById(R.id.TextViewLocation);
 
-        view.findViewById(R.id.LinearLayoutLocation).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutLocation).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_location, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 EditText EditTextLocation = dialogView.findViewById(R.id.EditTextLocation);
 
@@ -501,23 +475,19 @@ public class Profile_UI extends FragmentView
 
                 final ListView ListViewSearch = dialogView.findViewById(R.id.ListViewSearch);
 
-                dialogView.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        String[] values = new String[] { "Android", "iPhone", "WindowsMobile", "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2", "Android", "iPhone", "WindowsMobile" };
+                    public void onClick(View v) {
+                        String[] values = new String[]{"Android", "iPhone", "WindowsMobile", "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/audio_start", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/audio_start", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/audio_start", "Android", "iPhone", "WindowsMobile"};
 
 
                         ListViewSearch.setAdapter(new ArrayAdapter<>(Activity, android.R.layout.simple_list_item_1, values));
                     }
                 });
 
-                ListViewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                {
+                ListViewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-                    {
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
                     }
                 });
@@ -535,40 +505,39 @@ public class Profile_UI extends FragmentView
         final TextView TextViewFeature6 = view.findViewById(R.id.TextViewFeature6);
         final TextView TextViewFeature7 = view.findViewById(R.id.TextViewFeature7);
 
-        view.findViewById(R.id.LinearLayoutFeature).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.LinearLayoutFeature).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog dialog = new Dialog(Activity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
 
                 View dialogView = View.inflate(Activity, R.layout.social_profile_dialog_feature, null);
 
-                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                dialogView.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 final EditTextTag EditTagFeature = dialogView.findViewById(R.id.EditTextTagFeature);
 
                 if (dialog.getWindow() != null)
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewSubmit).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         dialog.dismiss();
 
                         // TODO Update Feature
                     }
                 });
 
-                dialogView.findViewById(R.id.TextViewAdd).setOnClickListener(new View.OnClickListener()
-                {
+                dialogView.findViewById(R.id.TextViewAdd).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         EditTagFeature.Add();
                     }
                 });
@@ -580,8 +549,7 @@ public class Profile_UI extends FragmentView
 
         final StatefulLayout StatefulLayoutMain = view.findViewById(R.id.StatefulLayoutMain);
 
-        switch (new Random().nextInt(3))
-        {
+        switch (new Random().nextInt(3)) {
             case 0:
                 StatefulLayoutMain.Connection(Misc.ToDP(120));
                 break;
@@ -593,11 +561,9 @@ public class Profile_UI extends FragmentView
                 break;
         }
 
-        new Handler().postDelayed(new Runnable()
-        {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 StatefulLayoutMain.Hide();
             }
         }, 5000);

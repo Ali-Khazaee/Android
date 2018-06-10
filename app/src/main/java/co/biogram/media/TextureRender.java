@@ -9,15 +9,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-class TextureRender
-{
+class TextureRender {
     private static final int FLOAT_SIZE_BYTES = 4;
     private static final int TRIANGLE_VERTICES_DATA_STRIDE_BYTES = 5 * FLOAT_SIZE_BYTES;
     private static final int TRIANGLE_VERTICES_DATA_POS_OFFSET = 0;
     private static final int TRIANGLE_VERTICES_DATA_UV_OFFSET = 3;
-    private final FloatBuffer mTriangleVertices;
     private static final String VERTEX_SHADER = "uniform mat4 uMVPMatrix;\n" + "uniform mat4 uSTMatrix;\n" + "attribute vec4 aPosition;\n" + "attribute vec4 aTextureCoord;\n" + "varying vec2 vTextureCoord;\n" + "void main() {\n" + "  gl_Position = uMVPMatrix * aPosition;\n" + "  vTextureCoord = (uSTMatrix * aTextureCoord).xy;\n" + "}\n";
     private static final String FRAGMENT_SHADER = "#extension GL_OES_EGL_image_external : require\n" + "precision mediump float;\n" + "varying vec2 vTextureCoord;\n" + "uniform samplerExternalOES sTexture;\n" + "void main() {\n" + "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n" + "}\n";
+    private final FloatBuffer mTriangleVertices;
     private final float[] mMVPMatrix = new float[16];
     private final float[] mSTMatrix = new float[16];
     private int mProgram;
@@ -27,28 +26,25 @@ class TextureRender
     private int maPositionHandle;
     private int maTextureHandle;
 
-    TextureRender()
-    {
+    TextureRender() {
         float[] mTriangleVerticesData =
-        {
-            -1.0f, -1.0f, 0, 0.f, 0.f,
-            1.0f, -1.0f, 0, 1.f, 0.f,
-            -1.0f,  1.0f, 0, 0.f, 1.f,
-            1.0f,  1.0f, 0, 1.f, 1.f,
-        };
+                {
+                        -1.0f, -1.0f, 0, 0.f, 0.f,
+                        1.0f, -1.0f, 0, 1.f, 0.f,
+                        -1.0f, 1.0f, 0, 0.f, 1.f,
+                        1.0f, 1.0f, 0, 1.f, 1.f,
+                };
 
         mTriangleVertices = ByteBuffer.allocateDirect(mTriangleVerticesData.length * FLOAT_SIZE_BYTES).order(ByteOrder.nativeOrder()).asFloatBuffer();
         mTriangleVertices.put(mTriangleVerticesData).position(0);
         Matrix.setIdentityM(mSTMatrix, 0);
     }
 
-    int getTextureId()
-    {
+    int getTextureId() {
         return mTextureID;
     }
 
-    void drawFrame(SurfaceTexture st)
-    {
+    void drawFrame(SurfaceTexture st) {
         checkGlError("onDrawFrame start");
         st.getTransformMatrix(mSTMatrix);
         GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
@@ -75,8 +71,7 @@ class TextureRender
         GLES20.glFinish();
     }
 
-    void surfaceCreated()
-    {
+    void surfaceCreated() {
         mProgram = createProgram();
 
         if (mProgram == 0)
@@ -118,8 +113,7 @@ class TextureRender
         checkGlError("glTexParameter");
     }
 
-    private int loadShader(int shaderType, String source)
-    {
+    private int loadShader(int shaderType, String source) {
         int shader = GLES20.glCreateShader(shaderType);
         checkGlError("glCreateShader type=" + shaderType);
         GLES20.glShaderSource(shader, source);
@@ -127,8 +121,7 @@ class TextureRender
         int[] compiled = new int[1];
         GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
 
-        if (compiled[0] == 0)
-        {
+        if (compiled[0] == 0) {
             GLES20.glDeleteShader(shader);
             shader = 0;
         }
@@ -136,8 +129,7 @@ class TextureRender
         return shader;
     }
 
-    private int createProgram()
-    {
+    private int createProgram() {
         int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, TextureRender.VERTEX_SHADER);
 
         if (vertexShader == 0)
@@ -159,8 +151,7 @@ class TextureRender
         int[] linkStatus = new int[1];
         GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, linkStatus, 0);
 
-        if (linkStatus[0] != GLES20.GL_TRUE)
-        {
+        if (linkStatus[0] != GLES20.GL_TRUE) {
             GLES20.glDeleteProgram(program);
             program = 0;
         }
@@ -168,8 +159,7 @@ class TextureRender
         return program;
     }
 
-    void checkGlError(String op)
-    {
+    void checkGlError(String op) {
         int error;
 
         if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR)

@@ -83,55 +83,9 @@
     <string name="SocialProfileUISubmit">Submit</string>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- General -->
     <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
+    <string name="PermissionMic">To use this section you must allow biogram to get access to your microphone</string>
 
     <string name="GeneralNoInternet">Check your connection</string>
 
@@ -417,27 +371,17 @@
     <string name="MyLevelUI">My Level</string>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- General Dialog Permission -->
     <string name="GeneralDialogPermissionAccept">ALLOW</string>
     <string name="GeneralDialogPermissionDecline">NOT NOW</string>
+
+
+    <!-- Chat UI -->
+    <string name="ChatUISearch">Search</string>
+    <string name="ChatUIMessage">Message</string>
+    <string name="ChatUISendMessage">Send Message</string>
+    <string name="ChatUIGroup">Group info</string>
+    <string name="ChatUIGroupHelp">To create a group, you need to complete the profile</string>
+    <string name="ChatUIGroupName">Group name</string>
+    <string name="ChatUIGroupMembers">Group members</string>
 </resources>

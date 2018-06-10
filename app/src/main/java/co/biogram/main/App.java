@@ -16,13 +16,24 @@ import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.Misc;
 
-public class App extends Application
-{
+public class App extends Application {
     private static volatile OkHttpClient OKClient;
 
+    public static OkHttpClient GetOKClient() {
+        if (OKClient == null) {
+            OKClient = new OkHttpClient()
+                    .newBuilder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .build();
+        }
+
+        return OKClient;
+    }
+
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
 
         if (LeakCanary.isInAnalyzerProcess(this))
@@ -36,8 +47,7 @@ public class App extends Application
     }
 
     @Override
-    protected void attachBaseContext(Context base)
-    {
+    protected void attachBaseContext(Context base) {
 
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
@@ -65,20 +75,5 @@ public class App extends Application
         }*/
 
         super.attachBaseContext(base);
-    }
-
-    public static OkHttpClient GetOKClient()
-    {
-        if (OKClient == null)
-        {
-            OKClient = new OkHttpClient()
-            .newBuilder()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .build();
-        }
-
-        return OKClient;
     }
 }

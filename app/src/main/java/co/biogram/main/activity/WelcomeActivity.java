@@ -12,11 +12,9 @@ import co.biogram.main.handler.Misc;
 
 import co.biogram.main.ui.welcome.WelcomeUI;
 
-public class WelcomeActivity extends FragmentActivity
-{
+public class WelcomeActivity extends FragmentActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         startActivity(new Intent(this, SocialActivity.class));
@@ -26,7 +24,7 @@ public class WelcomeActivity extends FragmentActivity
         /*if (Misc.GetBoolean("IsLogin"))
         {
             if (Misc.GetString("Activity").equals("Chat"))
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, Chat_ListUI.class));
             else
                 startActivity(new Intent(this, SocialActivity.class));
 

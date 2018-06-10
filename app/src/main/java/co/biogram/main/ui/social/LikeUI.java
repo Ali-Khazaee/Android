@@ -33,22 +33,19 @@ import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class LikeUI extends FragmentView
-{
+public class LikeUI extends FragmentView {
     private List<Struct> PeopleList = new ArrayList<>();
     private AdapterLike Adapter;
     private boolean IsComment;
     private String ID;
 
-    public LikeUI(String id, boolean isComment)
-    {
+    public LikeUI(String id, boolean isComment) {
         ID = id;
-        IsComment= isComment;
+        IsComment = isComment;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         LinearLayout LinearLayoutMain = new LinearLayout(Activity);
         LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
@@ -68,7 +65,12 @@ public class LikeUI extends FragmentView
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_blue : R.drawable.z_general_back_blue);
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
         ImageViewBack.setId(Misc.generateViewId());
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -102,7 +104,12 @@ public class LikeUI extends FragmentView
         RecyclerViewMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMain.setAdapter(Adapter = new AdapterLike());
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() { @Override public void OnLoadMore() { Update(null); } });
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() {
+            @Override
+            public void OnLoadMore() {
+                Update(null);
+            }
+        });
 
         RelativeLayoutContent.addView(RecyclerViewMain);
 
@@ -119,125 +126,101 @@ public class LikeUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("LikeUI");
     }
 
-    private void Update(final LoadingView Loading)
-    {
-        if (IsComment)
-        {
+    private void Update(final LoadingView Loading) {
+        if (IsComment) {
             AndroidNetworking.post(Misc.GetRandomServer("PostCommentLikeList"))
-            .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
-            .addBodyParameter("CommentID", ID)
-            .addHeaders("Token", Misc.GetString("Token"))
-            .setTag("LikeUI")
-            .build()
-            .getAsString(new StringRequestListener()
-            {
-                @Override
-                public void onResponse(String Response)
-                {
-                    try
-                    {
-                        JSONObject Result = new JSONObject(Response);
+                    .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
+                    .addBodyParameter("CommentID", ID)
+                    .addHeaders("Token", Misc.GetString("Token"))
+                    .setTag("LikeUI")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String Response) {
+                            try {
+                                JSONObject Result = new JSONObject(Response);
 
-                        if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
-                        {
-                            JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                                if (Result.getInt("Message") == 0 && !Result.isNull("Result")) {
+                                    JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                            for (int K = 0; K < ResultList.length(); K++)
-                            {
-                                JSONObject D = ResultList.getJSONObject(K);
+                                    for (int K = 0; K < ResultList.length(); K++) {
+                                        JSONObject D = ResultList.getJSONObject(K);
 
-                                PeopleList.add(new Struct(D.getString("ID"), D.getString("Name"), D.getString("Username"), D.getString("Avatar"), D.getBoolean("Follow")));
+                                        PeopleList.add(new Struct(D.getString("ID"), D.getString("Name"), D.getString("Username"), D.getString("Avatar"), D.getBoolean("Follow")));
+                                    }
+
+                                    Adapter.notifyDataSetChanged();
+                                }
+                            } catch (Exception e) {
+                                Misc.Debug("LikeUI-Update: " + e.toString());
                             }
 
-                            Adapter.notifyDataSetChanged();
+                            if (Loading != null) {
+                                Loading.Stop();
+                                Loading.setVisibility(View.GONE);
+                            }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Misc.Debug("LikeUI-Update: " + e.toString());
-                    }
 
-                    if (Loading != null)
-                    {
-                        Loading.Stop();
-                        Loading.setVisibility(View.GONE);
-                    }
-                }
-
-                @Override
-                public void onError(ANError e)
-                {
-                    if (Loading != null)
-                    {
-                        Loading.Stop();
-                        Loading.setVisibility(View.GONE);
-                    }
-                }
-            });
+                        @Override
+                        public void onError(ANError e) {
+                            if (Loading != null) {
+                                Loading.Stop();
+                                Loading.setVisibility(View.GONE);
+                            }
+                        }
+                    });
 
             return;
         }
 
         AndroidNetworking.post(Misc.GetRandomServer("PostLikeList"))
-        .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
-        .addBodyParameter("PostID", ID)
-        .addHeaders("Token", Misc.GetString("Token"))
-        .setTag("LikeUI")
-        .build()
-        .getAsString(new StringRequestListener()
-        {
-            @Override
-            public void onResponse(String Response)
-            {
-                try
-                {
-                    JSONObject Result = new JSONObject(Response);
+                .addBodyParameter("Skip", String.valueOf(PeopleList.size()))
+                .addBodyParameter("PostID", ID)
+                .addHeaders("Token", Misc.GetString("Token"))
+                .setTag("LikeUI")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            JSONObject Result = new JSONObject(Response);
 
-                    if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
-                    {
-                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                            if (Result.getInt("Message") == 0 && !Result.isNull("Result")) {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < ResultList.length(); K++)
-                        {
-                            JSONObject D = ResultList.getJSONObject(K);
+                                for (int K = 0; K < ResultList.length(); K++) {
+                                    JSONObject D = ResultList.getJSONObject(K);
 
-                            PeopleList.add(new Struct(D.getString("ID"), D.getString("Name"), D.getString("Username"), D.getString("Avatar"), D.getBoolean("Follow")));
+                                    PeopleList.add(new Struct(D.getString("ID"), D.getString("Name"), D.getString("Username"), D.getString("Avatar"), D.getBoolean("Follow")));
+                                }
+
+                                Adapter.notifyDataSetChanged();
+                            }
+                        } catch (Exception e) {
+                            Misc.Debug("LikeUI-Update: " + e.toString());
                         }
 
-                        Adapter.notifyDataSetChanged();
+                        if (Loading != null) {
+                            Loading.Stop();
+                            Loading.setVisibility(View.GONE);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    Misc.Debug("LikeUI-Update: " + e.toString());
-                }
 
-                if (Loading != null)
-                {
-                    Loading.Stop();
-                    Loading.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onError(ANError e)
-            {
-                if (Loading != null)
-                {
-                    Loading.Stop();
-                    Loading.setVisibility(View.GONE);
-                }
-            }
-        });
+                    @Override
+                    public void onError(ANError e) {
+                        if (Loading != null) {
+                            Loading.Stop();
+                            Loading.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 
-    private class AdapterLike extends RecyclerView.Adapter<AdapterLike.ViewHolderMain>
-    {
+    private class AdapterLike extends RecyclerView.Adapter<AdapterLike.ViewHolderMain> {
         private int ID_PROFILE = Misc.generateViewId();
         private int ID_NAME = Misc.generateViewId();
         private int ID_USERNAME = Misc.generateViewId();
@@ -247,8 +230,7 @@ public class LikeUI extends FragmentView
         private GradientDrawable DrawableFollow;
         private GradientDrawable DrawableUnfollow;
 
-        AdapterLike()
-        {
+        AdapterLike() {
             DrawableFollow = new GradientDrawable();
             DrawableFollow.setColor(Misc.Color(R.color.Primary));
             DrawableFollow.setCornerRadius(Misc.ToDP(20));
@@ -258,63 +240,33 @@ public class LikeUI extends FragmentView
             DrawableUnfollow.setCornerRadius(Misc.ToDP(20));
         }
 
-        class ViewHolderMain extends RecyclerView.ViewHolder
-        {
-            CircleImageView CircleImageViewProfile;
-            TextView TextViewName;
-            TextView TextViewUsername;
-            TextView TextViewFollow;
-            View ViewLine;
-
-            ViewHolderMain(View v, boolean NoContent)
-            {
-                super(v);
-
-                if (NoContent)
-                    return;
-
-                CircleImageViewProfile = v.findViewById(ID_PROFILE);
-                TextViewName = v.findViewById(ID_NAME);
-                TextViewUsername = v.findViewById(ID_USERNAME);
-                TextViewFollow = v.findViewById(ID_FOLLOW);
-                ViewLine = v.findViewById(ID_LINE);
-            }
-        }
-
         @Override
-        public void onBindViewHolder(ViewHolderMain Holder, int p)
-        {
+        public void onBindViewHolder(ViewHolderMain Holder, int p) {
             if (Holder.getItemViewType() == 0)
                 return;
 
             final int Position = Holder.getAdapterPosition();
 
             GlideApp.with(Activity).load(PeopleList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
-            Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     // TODO Open Profile
                 }
             });
 
             Holder.TextViewName.setText(PeopleList.get(Position).Name);
-            Holder.TextViewName.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.TextViewName.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     // TODO Open Profile
                 }
             });
 
             Holder.TextViewUsername.setText(("@" + PeopleList.get(Position).Username));
-            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     // TODO Open Profile
                 }
             });
@@ -324,30 +276,25 @@ public class LikeUI extends FragmentView
             else
                 Holder.TextViewFollow.setVisibility(View.VISIBLE);
 
-            if (PeopleList.get(Position).Follow)
-            {
+            if (PeopleList.get(Position).Follow) {
                 Holder.TextViewFollow.SetColor(R.color.TextDark);
                 Holder.TextViewFollow.setText(Activity.getString(R.string.LikeUIUnfollow));
                 Holder.TextViewFollow.setBackground(DrawableUnfollow);
-            }
-            else
-            {
+            } else {
                 Holder.TextViewFollow.SetColor(R.color.TextDark);
                 Holder.TextViewFollow.setText(Activity.getString(R.string.LikeUIFollow));
                 Holder.TextViewFollow.setBackground(DrawableFollow);
             }
 
-            Holder.TextViewFollow.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.TextViewFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     AndroidNetworking.post(Misc.GetRandomServer("ProfileFollow"))
-                    .addBodyParameter("Username", PeopleList.get(Position).Username)
-                    .addHeaders("Token", Misc.GetString("Token"))
-                    .setTag("LikeUI")
-                    .build()
-                    .getAsString(null);
+                            .addBodyParameter("Username", PeopleList.get(Position).Username)
+                            .addHeaders("Token", Misc.GetString("Token"))
+                            .setTag("LikeUI")
+                            .build()
+                            .getAsString(null);
 
                     PeopleList.get(Position).Follow = !PeopleList.get(Position).Follow;
                     notifyDataSetChanged();
@@ -363,10 +310,8 @@ public class LikeUI extends FragmentView
         }
 
         @Override
-        public ViewHolderMain onCreateViewHolder(ViewGroup p, int ViewType)
-        {
-            if (ViewType == 0)
-            {
+        public ViewHolderMain onCreateViewHolder(ViewGroup p, int ViewType) {
+            if (ViewType == 0) {
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
@@ -405,7 +350,7 @@ public class LikeUI extends FragmentView
             }
 
             StateListDrawable StatePress = new StateListDrawable();
-            StatePress.addState(new int[] { android.R.attr.state_pressed }, new ColorDrawable(Color.parseColor("#b0eeeeee")));
+            StatePress.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.parseColor("#b0eeeeee")));
 
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -473,28 +418,45 @@ public class LikeUI extends FragmentView
         }
 
         @Override
-        public int getItemViewType(int Position)
-        {
+        public int getItemViewType(int Position) {
             return PeopleList.size() == 0 ? 0 : 1;
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return PeopleList.size() == 0 ? 1 : PeopleList.size();
+        }
+
+        class ViewHolderMain extends RecyclerView.ViewHolder {
+            CircleImageView CircleImageViewProfile;
+            TextView TextViewName;
+            TextView TextViewUsername;
+            TextView TextViewFollow;
+            View ViewLine;
+
+            ViewHolderMain(View v, boolean NoContent) {
+                super(v);
+
+                if (NoContent)
+                    return;
+
+                CircleImageViewProfile = v.findViewById(ID_PROFILE);
+                TextViewName = v.findViewById(ID_NAME);
+                TextViewUsername = v.findViewById(ID_USERNAME);
+                TextViewFollow = v.findViewById(ID_FOLLOW);
+                ViewLine = v.findViewById(ID_LINE);
+            }
         }
     }
 
-    private class Struct
-    {
+    private class Struct {
         String ID;
         String Name;
         String Username;
         String Profile;
         boolean Follow;
 
-        Struct(String I, String N, String U,String P, boolean F)
-        {
+        Struct(String I, String N, String U, String P, boolean F) {
             ID = I;
             Name = N;
             Username = U;

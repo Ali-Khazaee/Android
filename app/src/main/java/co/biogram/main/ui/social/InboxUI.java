@@ -19,13 +19,11 @@ import co.biogram.main.handler.RecyclerViewOnScroll;
 import co.biogram.main.handler.PostAdapter;
 import co.biogram.main.ui.view.TextView;
 
-public class InboxUI extends FragmentView
-{
+public class InboxUI extends FragmentView {
     private PostAdapter Adapter;
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
@@ -59,7 +57,10 @@ public class InboxUI extends FragmentView
         ImageViewSearch.setId(Misc.generateViewId());
         ImageViewSearch.setImageResource(R.drawable._inbox_search);
         ImageViewSearch.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        ImageViewSearch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { /* TODO Search */  } });
+        ImageViewSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { /* TODO Search */ }
+        });
 
         RelativeLayoutHeader.addView(ImageViewSearch);
 
@@ -70,7 +71,12 @@ public class InboxUI extends FragmentView
         ImageViewWrite.setLayoutParams(ImageViewWriteParam);
         ImageViewWrite.setImageResource(R.drawable._inbox_write);
         ImageViewWrite.setPadding(Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5), Misc.ToDP(5));
-        ImageViewWrite.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new WriteUI(), "WriteUI", true);  } });
+        ImageViewWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.GetManager().OpenView(new WriteUI(), "WriteUI", true);
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewWrite);
 
@@ -87,11 +93,9 @@ public class InboxUI extends FragmentView
         RelativeLayout.LayoutParams RecyclerViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         RecyclerViewMainParam.addRule(RelativeLayout.BELOW, ViewLine.getId());
 
-        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(Activity)
-        {
+        LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(Activity) {
             @Override
-            public boolean canScrollHorizontally()
-            {
+            public boolean canScrollHorizontally() {
                 return false;
             }
         };
@@ -100,12 +104,15 @@ public class InboxUI extends FragmentView
         RecyclerViewMain.setLayoutParams(RecyclerViewMainParam);
         RecyclerViewMain.setAdapter(Adapter = new PostAdapter(Activity, "InboxUI"));
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() { @Override public void OnLoadMore() { Adapter.Update(); } });
-        RecyclerViewMain.setOnTouchListener(new View.OnTouchListener()
-        {
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() {
             @Override
-            public boolean onTouch(View v, MotionEvent e)
-            {
+            public void OnLoadMore() {
+                Adapter.Update();
+            }
+        });
+        RecyclerViewMain.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent e) {
                 Adapter.OnTouchEvent(e);
                 return false;
             }
@@ -117,8 +124,7 @@ public class InboxUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         Misc.IsFullScreen(Activity, true);
 
         if (Build.VERSION.SDK_INT > 20)
@@ -128,14 +134,12 @@ public class InboxUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         Misc.IsFullScreen(Activity, false);
         AndroidNetworking.forceCancel("InboxUI");
     }
 
-    void Update(JSONObject post)
-    {
+    void Update(JSONObject post) {
         Adapter.Insert(post);
     }
 }

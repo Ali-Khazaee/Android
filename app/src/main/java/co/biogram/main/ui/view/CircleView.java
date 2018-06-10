@@ -13,8 +13,7 @@ import android.view.View;
 
 import co.biogram.main.handler.Misc;
 
-public class CircleView extends View
-{
+public class CircleView extends View {
     private RectF InnerRectF;
     private Bitmap bitmap;
     private int ViewSize;
@@ -40,8 +39,7 @@ public class CircleView extends View
     private float SubMessageSpace;
     private TextPaint SubMessagePaint;
 
-    public CircleView(Context context)
-    {
+    public CircleView(Context context) {
         super(context);
 
         InnerRectF = new RectF();
@@ -67,8 +65,7 @@ public class CircleView extends View
     }
 
     @Override
-    protected void onMeasure(int widthMeasure, int heightMeasure)
-    {
+    protected void onMeasure(int widthMeasure, int heightMeasure) {
         super.onMeasure(widthMeasure, heightMeasure);
 
         int Width = resolveSize(96, widthMeasure);
@@ -80,8 +77,7 @@ public class CircleView extends View
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
-    {
+    protected void onDraw(Canvas canvas) {
         InnerRectF.set(0, 0, ViewSize, ViewSize);
         InnerRectF.offset((getWidth() - ViewSize) / 2, (getHeight() - ViewSize) / 2);
 
@@ -106,80 +102,65 @@ public class CircleView extends View
             canvas.drawBitmap(bitmap, XPos - Misc.ToDP(10), YPos, null);
     }
 
-    public void SetBitmap(int resource, int size)
-    {
+    public void SetBitmap(int resource, int size) {
         bitmap = BitmapFactory.decodeResource(getContext().getResources(), resource);
         bitmap = Bitmap.createScaledBitmap(bitmap, Misc.ToDP(size), Misc.ToDP(size), true);
     }
 
-    public void SetMessage(String message)
-    {
+    public void SetMessage(String message) {
         Message = message;
     }
 
-    public void SetMessageBold()
-    {
+    public void SetMessageBold() {
         MessageBold = true;
     }
 
-    public void SetMessageSize(int size)
-    {
+    public void SetMessageSize(int size) {
         MessageSize = Misc.ToDP(size);
     }
 
-    public void SetMessageColor(int color)
-    {
+    public void SetMessageColor(int color) {
         MessageColor = ContextCompat.getColor(getContext(), color);
     }
 
-    public void SetSubMessage(String message)
-    {
+    public void SetSubMessage(String message) {
         SubMessage = message;
     }
 
-    public void SetSubMessageSize(int size)
-    {
+    public void SetSubMessageSize(int size) {
         SubMessageSize = Misc.ToDP(size);
     }
 
-    public void SetSubMessageColor(int color)
-    {
+    public void SetSubMessageColor(int color) {
         SubMessageColor = ContextCompat.getColor(getContext(), color);
     }
 
-    public void SetSubMessageSpace(int size)
-    {
+    public void SetSubMessageSpace(int size) {
         SubMessageSpace = Misc.ToDP(size);
     }
 
-    public void SetStrokeColor(int color)
-    {
+    public void SetStrokeColor(int color) {
         StrokeColor = ContextCompat.getColor(getContext(), color);
     }
 
-    public void SetStrokeWidth(int width)
-    {
+    public void SetStrokeWidth(int width) {
         StrokeWidth = Misc.ToDP(width);
     }
 
-    public void SetProgressColor(int color)
-    {
+    public void SetProgressColor(int color) {
         ProgressColor = ContextCompat.getColor(getContext(), color);
     }
 
-    public void SetProgressWidth(int width)
-    {
+    public void SetProgressWidth(int width) {
         ProgressWidth = Misc.ToDP(width);
     }
 
-    public void SetProgressPercentage(int percent)
-    {
+    public void SetProgressPercentage(int percent) {
         ProgressSweep = 360 * percent / 100;
         invalidate();
     }
 
-    public void InvalidateTextPaints()
-    {
+    public void InvalidateTextPaints() {
         if (MessageBold)
             MessagePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         else

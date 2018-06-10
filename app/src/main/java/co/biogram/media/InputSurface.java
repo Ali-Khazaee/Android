@@ -10,16 +10,14 @@ import android.opengl.EGLSurface;
 import android.view.Surface;
 
 @TargetApi(18)
-class InputSurface
-{
+class InputSurface {
     private static final int EGL_RECORDABLE_ANDROID = 0x3142;
     private EGLDisplay mEGLDisplay = EGL14.EGL_NO_DISPLAY;
     private EGLContext mEGLContext = EGL14.EGL_NO_CONTEXT;
     private EGLSurface mEGLSurface = EGL14.EGL_NO_SURFACE;
     private Surface mSurface;
 
-    InputSurface(Surface surface)
-    {
+    InputSurface(Surface surface) {
         if (surface == null)
             throw new NullPointerException();
 
@@ -27,8 +25,7 @@ class InputSurface
         eglSetup();
     }
 
-    private void eglSetup()
-    {
+    private void eglSetup() {
         mEGLDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY);
 
         if (mEGLDisplay == EGL14.EGL_NO_DISPLAY)
@@ -36,21 +33,20 @@ class InputSurface
 
         int[] version = new int[2];
 
-        if (!EGL14.eglInitialize(mEGLDisplay, version, 0, version, 1))
-        {
+        if (!EGL14.eglInitialize(mEGLDisplay, version, 0, version, 1)) {
             mEGLDisplay = null;
             throw new RuntimeException("unable to initialize EGL14");
         }
 
         int[] attribList =
-        {
-            EGL14.EGL_RED_SIZE, 8,
-            EGL14.EGL_GREEN_SIZE, 8,
-            EGL14.EGL_BLUE_SIZE, 8,
-            EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
-            EGL_RECORDABLE_ANDROID, 1,
-            EGL14.EGL_NONE
-        };
+                {
+                        EGL14.EGL_RED_SIZE, 8,
+                        EGL14.EGL_GREEN_SIZE, 8,
+                        EGL14.EGL_BLUE_SIZE, 8,
+                        EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
+                        EGL_RECORDABLE_ANDROID, 1,
+                        EGL14.EGL_NONE
+                };
 
         EGLConfig[] configs = new EGLConfig[1];
         int[] numConfigs = new int[1];
@@ -59,10 +55,10 @@ class InputSurface
             throw new RuntimeException("unable to find RGB888+recordable ES2 EGL config");
 
         int[] attrib_list =
-        {
-            EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
-            EGL14.EGL_NONE
-        };
+                {
+                        EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
+                        EGL14.EGL_NONE
+                };
 
         mEGLContext = EGL14.eglCreateContext(mEGLDisplay, configs[0], EGL14.EGL_NO_CONTEXT, attrib_list, 0);
         checkEglError("eglCreateContext");
@@ -70,7 +66,7 @@ class InputSurface
         if (mEGLContext == null)
             throw new RuntimeException("null context");
 
-        int[] surfaceAttribs = { EGL14.EGL_NONE };
+        int[] surfaceAttribs = {EGL14.EGL_NONE};
         mEGLSurface = EGL14.eglCreateWindowSurface(mEGLDisplay, configs[0], mSurface, surfaceAttribs, 0);
         checkEglError("eglCreateWindowSurface");
 
@@ -78,10 +74,8 @@ class InputSurface
             throw new RuntimeException("surface was null");
     }
 
-    void release()
-    {
-        if (mEGLDisplay != EGL14.EGL_NO_DISPLAY)
-        {
+    void release() {
+        if (mEGLDisplay != EGL14.EGL_NO_DISPLAY) {
             EGL14.eglDestroySurface(mEGLDisplay, mEGLSurface);
             EGL14.eglDestroyContext(mEGLDisplay, mEGLContext);
             EGL14.eglReleaseThread();
@@ -95,24 +89,20 @@ class InputSurface
         mSurface = null;
     }
 
-    void makeCurrent()
-    {
+    void makeCurrent() {
         if (!EGL14.eglMakeCurrent(mEGLDisplay, mEGLSurface, mEGLSurface, mEGLContext))
             throw new RuntimeException("eglMakeCurrent failed");
     }
 
-    void swapBuffers()
-    {
+    void swapBuffers() {
         EGL14.eglSwapBuffers(mEGLDisplay, mEGLSurface);
     }
 
-    void setPresentationTime(long nsecs)
-    {
+    void setPresentationTime(long nsecs) {
         EGLExt.eglPresentationTimeANDROID(mEGLDisplay, mEGLSurface, nsecs);
     }
 
-    private void checkEglError(String msg)
-    {
+    private void checkEglError(String msg) {
         int error;
 
         if ((error = EGL14.eglGetError()) != EGL14.EGL_SUCCESS)

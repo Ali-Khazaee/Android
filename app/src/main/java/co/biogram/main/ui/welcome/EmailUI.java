@@ -35,22 +35,19 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class EmailUI extends FragmentView
-{
-    private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
-    private RelativeLayout RelativeLayoutMain;
+class EmailUI extends FragmentView {
     private final String Username;
     private final String Password;
+    private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
+    private RelativeLayout RelativeLayoutMain;
 
-    EmailUI(String username, String password)
-    {
+    EmailUI(String username, String password) {
         Username = username;
         Password = password;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final Button ButtonNext = new Button(Activity, 16, false);
         final LoadingView LoadingViewNext = new LoadingView(Activity);
 
@@ -59,31 +56,24 @@ class EmailUI extends FragmentView
         RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
-        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             int HeightDifference = 0;
 
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 Rect rect = new Rect();
                 RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != HeightDifference)
-                {
+                if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (DifferenceHeight != HeightDifference)
-                {
+                } else if (DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (HeightDifference != 0)
-                {
+                } else if (HeightDifference != 0) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
                     HeightDifference = 0;
                 }
@@ -108,7 +98,12 @@ class EmailUI extends FragmentView
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -166,21 +161,21 @@ class EmailUI extends FragmentView
         EditTextEmail.setLayoutParams(EditTextEmailParam);
         EditTextEmail.setId(Misc.generateViewId());
         EditTextEmail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextEmail.setFilters(new InputFilter[] { new InputFilter.LengthFilter(64) });
+        EditTextEmail.setFilters(new InputFilter[]{new InputFilter.LengthFilter(64)});
         EditTextEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         EditTextEmail.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextEmail.requestFocus();
-        EditTextEmail.addTextChangedListener(new TextWatcher()
-        {
+        EditTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ButtonNext.setEnabled(s.length() > 6 && Patterns.EMAIL_ADDRESS.matcher(s).matches());
             }
         });
@@ -216,7 +211,12 @@ class EmailUI extends FragmentView
         TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co")));
+            }
+        });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
@@ -233,8 +233,8 @@ class EmailUI extends FragmentView
         DrawableDisable.setColor(ContextCompat.getColor(Activity, R.color.Gray));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
-        ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
-        ListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
+        ListDrawableNext.addState(new int[]{android.R.attr.state_enabled}, DrawableEnable);
+        ListDrawableNext.addState(new int[]{-android.R.attr.state_enabled}, DrawableDisable);
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(Activity);
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
@@ -246,81 +246,72 @@ class EmailUI extends FragmentView
         ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
-        ButtonNext.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ButtonNext.setVisibility(View.GONE);
                 LoadingViewNext.Start();
 
                 AndroidNetworking.post(Misc.GetRandomServer("SignUpEmail"))
-                .addBodyParameter("Username", Username)
-                .addBodyParameter("Password", Password)
-                .addBodyParameter("Email", EditTextEmail.getText().toString())
-                .setTag("EmailUI")
-                .build()
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
+                        .addBodyParameter("Username", Username)
+                        .addBodyParameter("Password", Password)
+                        .addBodyParameter("Email", EditTextEmail.getText().toString())
+                        .setTag("EmailUI")
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String Response) {
+                                LoadingViewNext.Stop();
+                                ButtonNext.setVisibility(View.VISIBLE);
 
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
+                                try {
+                                    JSONObject Result = new JSONObject(Response);
 
-                            switch (Result.getInt("Message"))
-                            {
-                                case 0:
-                                    TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                    Anim.setDuration(200);
+                                    switch (Result.getInt("Message")) {
+                                        case 0:
+                                            TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                            Anim.setDuration(200);
 
-                                    RelativeLayoutMain.setAnimation(Anim);
+                                            RelativeLayoutMain.setAnimation(Anim);
 
-                                    Misc.ToastOld( Misc.String(R.string.EmailUIError5));
+                                            Misc.ToastOld(Misc.String(R.string.EmailUIError5));
 
-                                    Activity.GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), "EmailVerifyUI", true);
-                                    break;
-                                case 1:
-                                case 2:
-                                case 3:
-                                case 4:
-                                    Misc.ToastOld( Misc.String(R.string.EmailUIError1));
-                                    break;
-                                case 5:
-                                case 6:
-                                case 7:
-                                    Misc.ToastOld( Misc.String(R.string.EmailUIError2));
-                                    break;
-                                case 8:
-                                case 9:
-                                    Misc.ToastOld( Misc.String(R.string.EmailUIError3));
-                                    break;
-                                case 10:
-                                    Misc.ToastOld( Misc.String(R.string.EmailUIError4));
-                                    break;
-                                default:
-                                    Misc.GeneralError(Result.getInt("Message"));
-                                    break;
+                                            Activity.GetManager().OpenView(new EmailVerifyUI(Username, Password, EditTextEmail.getText().toString()), "EmailVerifyUI", true);
+                                            break;
+                                        case 1:
+                                        case 2:
+                                        case 3:
+                                        case 4:
+                                            Misc.ToastOld(Misc.String(R.string.EmailUIError1));
+                                            break;
+                                        case 5:
+                                        case 6:
+                                        case 7:
+                                            Misc.ToastOld(Misc.String(R.string.EmailUIError2));
+                                            break;
+                                        case 8:
+                                        case 9:
+                                            Misc.ToastOld(Misc.String(R.string.EmailUIError3));
+                                            break;
+                                        case 10:
+                                            Misc.ToastOld(Misc.String(R.string.EmailUIError4));
+                                            break;
+                                        default:
+                                            Misc.GeneralError(Result.getInt("Message"));
+                                            break;
+                                    }
+                                } catch (Exception e) {
+                                    Misc.Debug("EmailUI: " + e.toString());
+                                }
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("EmailUI: " + e.toString());
-                        }
-                    }
 
-                    @Override
-                    public void onError(ANError anError)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setVisibility(View.VISIBLE);
-                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                    }
-                });
+                            @Override
+                            public void onError(ANError anError) {
+                                LoadingViewNext.Stop();
+                                ButtonNext.setVisibility(View.VISIBLE);
+                                Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                            }
+                        });
             }
         });
 
@@ -336,11 +327,19 @@ class EmailUI extends FragmentView
 
         TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
-        Anim.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { Misc.ShowSoftKey(EditTextEmail); }
+        Anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Misc.ShowSoftKey(EditTextEmail);
+            }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -349,14 +348,12 @@ class EmailUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         Misc.HideSoftKey(Activity);
         AndroidNetworking.forceCancel("EmailUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);

@@ -27,20 +27,17 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.TextView;
 
-class PasswordUI extends FragmentView
-{
+class PasswordUI extends FragmentView {
+    private final String Username;
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
-    private final String Username;
 
-    PasswordUI(String username)
-    {
+    PasswordUI(String username) {
         Username = username;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final Button ButtonNext = new Button(Activity, 16, false);
 
         RelativeLayoutMain = new RelativeLayout(Activity);
@@ -48,31 +45,24 @@ class PasswordUI extends FragmentView
         RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
-        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             int HeightDifference = 0;
 
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 Rect rect = new Rect();
                 RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != HeightDifference)
-                {
+                if (DifferenceHeight > ScreenHeight / 3 && DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (DifferenceHeight != HeightDifference)
-                {
+                } else if (DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (HeightDifference != 0)
-                {
+                } else if (HeightDifference != 0) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
                     HeightDifference = 0;
                 }
@@ -97,7 +87,12 @@ class PasswordUI extends FragmentView
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -155,21 +150,21 @@ class PasswordUI extends FragmentView
         EditTextPassword.setLayoutParams(EditTextPasswordParam);
         EditTextPassword.setId(Misc.generateViewId());
         EditTextPassword.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextPassword.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32) });
+        EditTextPassword.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
         EditTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         EditTextPassword.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextPassword.requestFocus();
-        EditTextPassword.addTextChangedListener(new TextWatcher()
-        {
+        EditTextPassword.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ButtonNext.setEnabled(s.length() > 5);
             }
         });
@@ -205,7 +200,12 @@ class PasswordUI extends FragmentView
         TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co")));
+            }
+        });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
@@ -222,8 +222,8 @@ class PasswordUI extends FragmentView
         DrawableDisable.setColor(ContextCompat.getColor(Activity, R.color.Gray));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
-        ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
-        ListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
+        ListDrawableNext.addState(new int[]{android.R.attr.state_enabled}, DrawableEnable);
+        ListDrawableNext.addState(new int[]{-android.R.attr.state_enabled}, DrawableDisable);
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(Activity);
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
@@ -235,11 +235,9 @@ class PasswordUI extends FragmentView
         ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(ListDrawableNext);
         ButtonNext.setEnabled(false);
-        ButtonNext.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                 Anim.setDuration(200);
 
@@ -253,11 +251,19 @@ class PasswordUI extends FragmentView
 
         TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
-        Anim.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { Misc.ShowSoftKey(EditTextPassword); }
+        Anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Misc.ShowSoftKey(EditTextPassword);
+            }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -266,14 +272,12 @@ class PasswordUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         Misc.HideSoftKey(Activity);
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }

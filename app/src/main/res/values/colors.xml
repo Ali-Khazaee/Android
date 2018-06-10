@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="TextWhite">#000</color>
     <color name="LineWhite">#eee</color>
     <color name="GroundWhite">#fff</color>
@@ -19,4 +20,8 @@
     <color name="Primary">#1da1f2</color>
     <color name="Gray">#ababab</color>
     <color name="Red">#de1e5a</color>
+    <color name="ChatBlue">#49a4ff</color>
+
+    <color name="colorAccent">#fff</color>
+
 </resources>

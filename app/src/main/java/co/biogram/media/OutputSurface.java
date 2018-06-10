@@ -9,19 +9,17 @@ import android.opengl.EGLSurface;
 import android.view.Surface;
 
 @TargetApi(18)
-class OutputSurface implements SurfaceTexture.OnFrameAvailableListener
-{
+class OutputSurface implements SurfaceTexture.OnFrameAvailableListener {
+    private final Object mFrameSyncObject = new Object();
     private EGLDisplay mEGLDisplay = EGL14.EGL_NO_DISPLAY;
     private EGLContext mEGLContext = EGL14.EGL_NO_CONTEXT;
     private EGLSurface mEGLSurface = EGL14.EGL_NO_SURFACE;
     private SurfaceTexture mSurfaceTexture;
     private Surface mSurface;
-    private final Object mFrameSyncObject = new Object();
     private boolean mFrameAvailable;
     private TextureRender mTextureRender;
 
-    OutputSurface()
-    {
+    OutputSurface() {
         mTextureRender = new TextureRender();
         mTextureRender.surfaceCreated();
         mSurfaceTexture = new SurfaceTexture(mTextureRender.getTextureId());
@@ -29,10 +27,8 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener
         mSurface = new Surface(mSurfaceTexture);
     }
 
-    public void release()
-    {
-        if (mEGLDisplay != EGL14.EGL_NO_DISPLAY)
-        {
+    public void release() {
+        if (mEGLDisplay != EGL14.EGL_NO_DISPLAY) {
             EGL14.eglDestroySurface(mEGLDisplay, mEGLSurface);
             EGL14.eglDestroyContext(mEGLDisplay, mEGLContext);
             EGL14.eglReleaseThread();
@@ -48,28 +44,21 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener
         mSurfaceTexture = null;
     }
 
-    Surface getSurface()
-    {
+    Surface getSurface() {
         return mSurface;
     }
 
-    void awaitNewImage()
-    {
+    void awaitNewImage() {
         final int TIMEOUT_MS = 10000;
 
-        synchronized (mFrameSyncObject)
-        {
-            while (!mFrameAvailable)
-            {
-                try
-                {
+        synchronized (mFrameSyncObject) {
+            while (!mFrameAvailable) {
+                try {
                     mFrameSyncObject.wait(TIMEOUT_MS);
 
                     if (!mFrameAvailable)
                         throw new RuntimeException("Surface frame wait timed out");
-                }
-                catch (InterruptedException ie)
-                {
+                } catch (InterruptedException ie) {
                     throw new RuntimeException(ie);
                 }
             }
@@ -81,16 +70,13 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener
         mSurfaceTexture.updateTexImage();
     }
 
-    void drawImage()
-    {
+    void drawImage() {
         mTextureRender.drawFrame(mSurfaceTexture);
     }
 
     @Override
-    public void onFrameAvailable(SurfaceTexture st)
-    {
-        synchronized (mFrameSyncObject)
-        {
+    public void onFrameAvailable(SurfaceTexture st) {
+        synchronized (mFrameSyncObject) {
             if (mFrameAvailable)
                 throw new RuntimeException("mFrameAvailable already set, frame could be dropped");
 

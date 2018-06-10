@@ -12,18 +12,15 @@ import android.util.TypedValue;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class TextView extends android.widget.TextView
-{
+public class TextView extends android.widget.TextView {
     private int Width;
     private Paint PaintFill;
 
-    private TextView(Context context)
-    {
+    private TextView(Context context) {
         super(context);
     }
 
-    public TextView(Context context, float size, boolean isBold)
-    {
+    public TextView(Context context, float size, boolean isBold) {
         this(context);
 
         if (isBold)
@@ -36,10 +33,8 @@ public class TextView extends android.widget.TextView
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
-    {
-        if (Width > 0)
-        {
+    protected void onDraw(Canvas canvas) {
+        if (Width > 0) {
             // noinspection all
             RectF RectRound = new RectF(0, 0, (getWidth() * Width / 100), getHeight());
             canvas.drawRoundRect(RectRound, Misc.ToDP(5), Misc.ToDP(5), PaintFill);
@@ -48,13 +43,11 @@ public class TextView extends android.widget.TextView
         super.onDraw(canvas);
     }
 
-    public void SetColor(int C)
-    {
+    public void SetColor(int C) {
         setTextColor(Misc.Color(C));
     }
 
-    public void FillBackground(int width)
-    {
+    public void FillBackground(int width) {
         Width = width;
         String FillColor = "#1da1f2";
 

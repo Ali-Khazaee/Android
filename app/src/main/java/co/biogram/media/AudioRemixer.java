@@ -2,25 +2,19 @@ package co.biogram.media;
 
 import java.nio.ShortBuffer;
 
-interface AudioRemixer
-{
-    void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff);
-
-    AudioRemixer DOWNMIX = new AudioRemixer()
-    {
+interface AudioRemixer {
+    AudioRemixer DOWNMIX = new AudioRemixer() {
         private static final int SIGNED_SHORT_LIMIT = 32768;
         private static final int UNSIGNED_SHORT_MAX = 65535;
 
         @Override
-        public void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff)
-        {
+        public void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff) {
 
             final int inRemaining = inSBuff.remaining() / 2;
             final int outSpace = outSBuff.remaining();
             final int samplesToBeProcessed = Math.min(inRemaining, outSpace);
 
-            for (int i = 0; i < samplesToBeProcessed; ++i)
-            {
+            for (int i = 0; i < samplesToBeProcessed; ++i) {
                 int m;
                 final int a = inSBuff.get() + SIGNED_SHORT_LIMIT;
                 final int b = inSBuff.get() + SIGNED_SHORT_LIMIT;
@@ -37,31 +31,26 @@ interface AudioRemixer
             }
         }
     };
-
-    AudioRemixer UPMIX = new AudioRemixer()
-    {
+    AudioRemixer UPMIX = new AudioRemixer() {
         @Override
-        public void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff)
-        {
+        public void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff) {
             final int inRemaining = inSBuff.remaining();
             final int outSpace = outSBuff.remaining() / 2;
 
             final int samplesToBeProcessed = Math.min(inRemaining, outSpace);
-            for (int i = 0; i < samplesToBeProcessed; ++i)
-            {
+            for (int i = 0; i < samplesToBeProcessed; ++i) {
                 final short inSample = inSBuff.get();
                 outSBuff.put(inSample);
                 outSBuff.put(inSample);
             }
         }
     };
-
-    AudioRemixer PASSTHROUGH = new AudioRemixer()
-    {
+    AudioRemixer PASSTHROUGH = new AudioRemixer() {
         @Override
-        public void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff)
-        {
+        public void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff) {
             outSBuff.put(inSBuff);
         }
     };
+
+    void remix(final ShortBuffer inSBuff, final ShortBuffer outSBuff);
 }

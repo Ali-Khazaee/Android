@@ -35,14 +35,12 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class PasswordResetUI extends FragmentView
-{
+class PasswordResetUI extends FragmentView {
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final Button ButtonFinish = new Button(Activity, 16, false);
         final LoadingView LoadingViewFinish = new LoadingView(Activity);
 
@@ -51,31 +49,24 @@ class PasswordResetUI extends FragmentView
         RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
-        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             int HeightDifference = 0;
 
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 Rect rect = new Rect();
                 RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference)
-                {
+                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (DifferenceHeight != HeightDifference)
-                {
+                } else if (DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (HeightDifference != 0)
-                {
+                } else if (HeightDifference != 0) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
                     HeightDifference = 0;
                 }
@@ -100,7 +91,12 @@ class PasswordResetUI extends FragmentView
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -159,18 +155,21 @@ class PasswordResetUI extends FragmentView
         EditTextEmailOrUsername.setLayoutParams(EditTextUsernameParam);
         EditTextEmailOrUsername.setId(Misc.generateViewId());
         EditTextEmailOrUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        EditTextEmailOrUsername.setFilters(new InputFilter[] { new InputFilter.LengthFilter(128) });
+        EditTextEmailOrUsername.setFilters(new InputFilter[]{new InputFilter.LengthFilter(128)});
         EditTextEmailOrUsername.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         EditTextEmailOrUsername.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextEmailOrUsername.requestFocus();
-        EditTextEmailOrUsername.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
+        EditTextEmailOrUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ButtonFinish.setEnabled(s.length() > 2 && Patterns.EMAIL_ADDRESS.matcher(s).matches());
             }
         });
@@ -206,7 +205,12 @@ class PasswordResetUI extends FragmentView
         TextViewPrivacy.SetColor(R.color.Primary);
         TextViewPrivacy.setText(Misc.String(R.string.GeneralTerm));
         TextViewPrivacy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co")));
+            }
+        });
 
         RelativeLayoutBottom.addView(TextViewPrivacy);
 
@@ -223,8 +227,8 @@ class PasswordResetUI extends FragmentView
         DrawableDisable.setColor(ContextCompat.getColor(Activity, R.color.Gray));
 
         StateListDrawable ListDrawableNext = new StateListDrawable();
-        ListDrawableNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
-        ListDrawableNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
+        ListDrawableNext.addState(new int[]{android.R.attr.state_enabled}, DrawableEnable);
+        ListDrawableNext.addState(new int[]{-android.R.attr.state_enabled}, DrawableDisable);
 
         RelativeLayout RelativeLayoutNext = new RelativeLayout(Activity);
         RelativeLayoutNext.setLayoutParams(RelativeLayoutNextParam);
@@ -236,62 +240,53 @@ class PasswordResetUI extends FragmentView
         ButtonFinish.setText(Misc.String(R.string.PasswordResetUIFinish));
         ButtonFinish.setBackground(ListDrawableNext);
         ButtonFinish.setEnabled(false);
-        ButtonFinish.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ButtonFinish.setVisibility(View.GONE);
                 LoadingViewFinish.Start();
 
                 AndroidNetworking.post(Misc.GetRandomServer("ResetPassword"))
-                .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
-                .setTag("PasswordResetUI")
-                .build()
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewFinish.Stop();
-                        ButtonFinish.setVisibility(View.VISIBLE);
+                        .addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString())
+                        .setTag("PasswordResetUI")
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String Response) {
+                                LoadingViewFinish.Stop();
+                                ButtonFinish.setVisibility(View.VISIBLE);
 
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
+                                try {
+                                    JSONObject Result = new JSONObject(Response);
 
-                            switch (Result.getInt("Message"))
-                            {
-                                case 0:
-                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError4));
-                                    break;
-                                case 1:
-                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError1));
-                                    break;
-                                case 2:
-                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError2));
-                                    break;
-                                case 3:
-                                    Misc.ToastOld( Misc.String(R.string.PasswordResetUIError3));
-                                    break;
-                                default:
-                                    Misc.GeneralError(Result.getInt("Message"));
+                                    switch (Result.getInt("Message")) {
+                                        case 0:
+                                            Misc.ToastOld(Misc.String(R.string.PasswordResetUIError4));
+                                            break;
+                                        case 1:
+                                            Misc.ToastOld(Misc.String(R.string.PasswordResetUIError1));
+                                            break;
+                                        case 2:
+                                            Misc.ToastOld(Misc.String(R.string.PasswordResetUIError2));
+                                            break;
+                                        case 3:
+                                            Misc.ToastOld(Misc.String(R.string.PasswordResetUIError3));
+                                            break;
+                                        default:
+                                            Misc.GeneralError(Result.getInt("Message"));
+                                    }
+                                } catch (Exception e) {
+                                    Misc.Debug("PasswordResetUI: " + e.toString());
+                                }
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("PasswordResetUI: " + e.toString());
-                        }
-                    }
 
-                    @Override
-                    public void onError(ANError e)
-                    {
-                        LoadingViewFinish.Stop();
-                        ButtonFinish.setVisibility(View.VISIBLE);
-                        Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                    }
-                });
+                            @Override
+                            public void onError(ANError e) {
+                                LoadingViewFinish.Stop();
+                                ButtonFinish.setVisibility(View.VISIBLE);
+                                Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                            }
+                        });
             }
         });
 
@@ -307,11 +302,19 @@ class PasswordResetUI extends FragmentView
 
         TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
         Anim.setDuration(200);
-        Anim.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override public void onAnimationRepeat(Animation animation) { }
-            @Override public void onAnimationEnd(Animation animation) { Misc.ShowSoftKey(EditTextEmailOrUsername); }
+        Anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Misc.ShowSoftKey(EditTextEmailOrUsername);
+            }
         });
 
         RelativeLayoutMain.startAnimation(Anim);
@@ -320,14 +323,12 @@ class PasswordResetUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("PasswordResetUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }

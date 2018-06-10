@@ -10,11 +10,9 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.StickyScrollView;
 import co.biogram.main.ui.view.TextView;
 
-public class MyLevelUI extends FragmentView
-{
+public class MyLevelUI extends FragmentView {
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
@@ -36,7 +34,12 @@ public class MyLevelUI extends FragmentView
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setImageResource(R.drawable.z_general_back_blue);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -74,7 +77,6 @@ public class MyLevelUI extends FragmentView
         RelativeLayoutScroll.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         ScrollViewMain.addView(RelativeLayoutScroll);
-
 
 
         ViewMain = RelativeLayoutMain;

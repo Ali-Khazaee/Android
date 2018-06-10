@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?GroundColor"
     android:fillViewport="true">
 
@@ -13,37 +13,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?TextColor"
-            android:textSize="@dimen/FontVerySmall"
-            android:padding="25dp"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/TextViewMoney"
-            android:text="@string/SocialProfileSpecialCenterUICreditTotal" />
+            android:padding="25dp"
+            android:text="@string/SocialProfileSpecialCenterUICreditTotal"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontVerySmall" />
 
         <TextView
             android:id="@+id/TextViewAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:textColor="?TextColor"
-            android:textSize="@dimen/FontMedium"
-            android:textStyle="bold"
             android:paddingBottom="25dp"
-            android:paddingTop="20dp"
             android:paddingEnd="25dp"
             android:paddingStart="5dp"
-            android:text="15,000" />
+            android:paddingTop="20dp"
+            android:text="15,000"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontMedium"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/TextViewMoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/TextViewAmount"
-            android:textColor="@color/Gray"
-            android:textSize="@dimen/FontVerySmall"
             android:paddingBottom="25dp"
             android:paddingTop="25dp"
-            android:text="@string/SocialProfileSpecialCenterUICreditRial" />
+            android:text="@string/SocialProfileSpecialCenterUICreditRial"
+            android:textColor="@color/Gray"
+            android:textSize="@dimen/FontVerySmall" />
 
         <View
             android:layout_width="match_parent"
@@ -56,44 +56,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/TextViewAmount"
-            android:textColor="?TextColor"
-            android:textSize="@dimen/FontVerySmall"
             android:padding="25dp"
-            android:text="@string/SocialProfileSpecialCenterUICreditIncrease" />
+            android:text="@string/SocialProfileSpecialCenterUICreditIncrease"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontVerySmall" />
 
         <EditText
             android:id="@+id/EditTextAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_below="@+id/TextViewAmount"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="25dp"
-            android:textSize="@dimen/FontVerySmall"
+            android:layout_marginTop="22dp"
+            android:layout_toEndOf="@+id/TextViewIncrease"
+            android:background="@drawable/z_social_profile_specialcenter_edittext"
+            android:gravity="center"
+            android:hint="@string/SocialProfileSpecialCenterUICreditEnter"
+            android:imeOptions="actionDone"
+            android:inputType="numberSigned"
             android:padding="5dp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
-            android:gravity="center"
-            android:inputType="numberSigned"
-            android:imeOptions="actionDone"
-            android:hint="@string/SocialProfileSpecialCenterUICreditEnter"
-            android:background="@drawable/z_social_profile_specialcenter_edittext"
-            android:layout_below="@+id/TextViewAmount"
-            android:layout_toEndOf="@+id/TextViewIncrease" />
+            android:textSize="@dimen/FontVerySmall" />
 
         <TextView
             android:id="@+id/TextViewAddCredit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_below="@+id/EditTextAmount"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="25dp"
             android:layout_marginStart="25dp"
-            android:layout_marginBottom="15dp"
             android:background="@color/Primary"
-            android:textColor="@android:color/white"
-            android:text="@string/SocialProfileSpecialCenterUICreditAdd"
-            android:textStyle="bold"
-            android:textSize="@dimen/FontVerySmall"
             android:gravity="center"
-            android:layout_below="@+id/EditTextAmount" />
+            android:text="@string/SocialProfileSpecialCenterUICreditAdd"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/FontVerySmall"
+            android:textStyle="bold" />
 
         <View
             android:id="@+id/ViewLine"

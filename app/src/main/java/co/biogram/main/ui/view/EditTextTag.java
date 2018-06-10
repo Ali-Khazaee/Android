@@ -25,8 +25,7 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class EditTextTag extends FrameLayout implements View.OnClickListener, TextView.OnEditorActionListener, View.OnKeyListener
-{
+public class EditTextTag extends FrameLayout implements View.OnClickListener, TextView.OnEditorActionListener, View.OnKeyListener {
     private Drawable DrawableTag;
     private EditText EditTextMain;
     private FlowLayout FlowLayoutMain;
@@ -34,18 +33,15 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
     private boolean IsDelAction = false;
     private List<String> TagList = new ArrayList<>();
 
-    public EditTextTag(Context context)
-    {
+    public EditTextTag(Context context) {
         this(context, null);
     }
 
-    public EditTextTag(Context context, AttributeSet attrs)
-    {
+    public EditTextTag(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EditTextTag(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+    public EditTextTag(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         FlowLayoutMain = new FlowLayout(getContext());
@@ -72,8 +68,7 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
         FlowLayoutMain.addView(EditTextMain);
     }
 
-    private TextView CreateTag(String Message)
-    {
+    private TextView CreateTag(String Message) {
         MarginLayoutParams TagParam = new MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         TagParam.setMargins(Misc.ToDP(5), 0, Misc.ToDP(5), Misc.ToDP(10));
 
@@ -90,45 +85,33 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
     }
 
     @Override
-    public boolean onKey(View v, int keyCode, KeyEvent e)
-    {
+    public boolean onKey(View v, int keyCode, KeyEvent e) {
         boolean Handle = false;
 
-        if (keyCode == KeyEvent.KEYCODE_DEL && e.getAction() == KeyEvent.ACTION_DOWN)
-        {
+        if (keyCode == KeyEvent.KEYCODE_DEL && e.getAction() == KeyEvent.ACTION_DOWN) {
             String Tag = EditTextMain.getText().toString();
 
-            if (TextUtils.isEmpty(Tag))
-            {
+            if (TextUtils.isEmpty(Tag)) {
                 int Count = FlowLayoutMain.getChildCount();
 
-                if (LastSelectTagView == null && Count > 1)
-                {
-                    if (IsDelAction)
-                    {
+                if (LastSelectTagView == null && Count > 1) {
+                    if (IsDelAction) {
                         FlowLayoutMain.removeViewAt(Count - 2);
                         TagList.remove(Count - 2);
                         Handle = true;
-                    }
-                    else
-                    {
+                    } else {
                         LastSelectTagView = (TextView) FlowLayoutMain.getChildAt(Count - 2);
                         IsDelAction = true;
                     }
-                }
-                else
-                {
-                    if (TagList.size() > 0 && LastSelectTagView != null)
-                    {
+                } else {
+                    if (TagList.size() > 0 && LastSelectTagView != null) {
                         IsDelAction = false;
                         TagList.remove(FlowLayoutMain.indexOfChild(LastSelectTagView));
                         FlowLayoutMain.removeView(LastSelectTagView);
                         LastSelectTagView = null;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 int Length = Tag.length();
                 EditTextMain.getText().delete(Length, Length);
             }
@@ -138,8 +121,7 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
     }
 
     @Override
-    public boolean onEditorAction(TextView v, int ActionID, KeyEvent e)
-    {
+    public boolean onEditorAction(TextView v, int ActionID, KeyEvent e) {
         boolean Handle = false;
 
         if (ActionID == EditorInfo.IME_ACTION_DONE)
@@ -148,15 +130,13 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
         return Handle;
     }
 
-    public boolean Add()
-    {
+    public boolean Add() {
         if (TagList.size() > 7)
             return false;
 
         String Tag = EditTextMain.getText().toString();
 
-        if (Tag.length() > 1 && Tag.length() < 32)
-        {
+        if (Tag.length() > 1 && Tag.length() < 32) {
             TextView TagView = CreateTag(Tag);
             TagView.setOnClickListener(EditTextTag.this);
 
@@ -176,43 +156,30 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
     }
 
     @Override
-    public void onClick(View v)
-    {
-        if (v.getTag() == null)
-        {
-            if (LastSelectTagView == null)
-            {
+    public void onClick(View v) {
+        if (v.getTag() == null) {
+            if (LastSelectTagView == null) {
                 LastSelectTagView = (TextView) v;
                 v.setBackgroundResource(R.color.Red);
-            }
-            else
-            {
-                if (LastSelectTagView.equals(v))
-                {
+            } else {
+                if (LastSelectTagView.equals(v)) {
                     v.setBackground(DrawableTag);
                     LastSelectTagView = null;
-                }
-                else
-                {
+                } else {
                     v.setBackgroundResource(R.color.Red);
                     LastSelectTagView = (TextView) v;
                 }
             }
-        }
-        else
-        {
-            if (LastSelectTagView != null)
-            {
+        } else {
+            if (LastSelectTagView != null) {
                 LastSelectTagView.setBackground(DrawableTag);
                 LastSelectTagView = null;
             }
         }
     }
 
-    public void AddTag(List<String> list)
-    {
-        for (int I = 0; I < list.size(); I++)
-        {
+    public void AddTag(List<String> list) {
+        for (int I = 0; I < list.size(); I++) {
             String Tag = list.get(I);
 
             if (TextUtils.isEmpty(Tag))
@@ -233,34 +200,54 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
         }
     }
 
-    public List<String> GetTagList()
-    {
+    public void AddTag(List<String> list, OnClickListener listener) {
+
+        for (int I = 0; I < list.size(); I++) {
+            String Tag = list.get(I);
+
+            if (TextUtils.isEmpty(Tag))
+                return;
+
+            TextView TagView = CreateTag(Tag);
+            TagView.setOnClickListener(listener);
+
+            if (DrawableTag == null)
+                DrawableTag = TagView.getBackground();
+
+            FlowLayoutMain.addView(TagView, FlowLayoutMain.getChildCount() - 1);
+
+            TagList.add(Tag);
+            EditTextMain.getText().clear();
+            EditTextMain.performClick();
+            IsDelAction = false;
+        }
+    }
+
+    public void hideEditText() {
+        EditTextMain.setVisibility(View.GONE);
+    }
+
+    public List<String> GetTagList() {
         return TagList;
     }
 
-    private class TagEditText extends AppCompatEditText
-    {
-        public TagEditText(Context context)
-        {
+    private class TagEditText extends AppCompatEditText {
+        public TagEditText(Context context) {
             super(context);
         }
 
         @Override
-        public InputConnection onCreateInputConnection(EditorInfo outAttrs)
-        {
+        public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
             return new TagInputConnection(super.onCreateInputConnection(outAttrs), true);
         }
 
-        private class TagInputConnection extends InputConnectionWrapper
-        {
-            TagInputConnection(InputConnection target, boolean mutable)
-            {
+        private class TagInputConnection extends InputConnectionWrapper {
+            TagInputConnection(InputConnection target, boolean mutable) {
                 super(target, mutable);
             }
 
             @Override
-            public boolean deleteSurroundingText(int beforeLength, int afterLength)
-            {
+            public boolean deleteSurroundingText(int beforeLength, int afterLength) {
                 if (beforeLength == 1 && afterLength == 0)
                     return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)) && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
 

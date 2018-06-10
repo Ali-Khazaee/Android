@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,8 +7,8 @@
         android:id="@+id/LinearLayoutIcon"
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:gravity="center"
-        android:background="@color/Primary">
+        android:background="@color/Primary"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/ImageViewIcon"
@@ -22,35 +21,35 @@
         android:id="@+id/TextViewMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_below="@+id/LinearLayoutIcon" />
+        android:layout_below="@+id/LinearLayoutIcon"
+        android:layout_margin="15dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@+id/TextViewMessage"
         android:gravity="end"
-        android:layout_below="@+id/TextViewMessage">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/TextViewDecline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="15dp"
             android:text="@string/GeneralDialogPermissionDecline"
-            android:textSize="@dimen/FontVerySmall"
-            android:textStyle="bold"
             android:textColor="@color/Gray"
-            android:padding="15dp" />
+            android:textSize="@dimen/FontVerySmall"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/TextViewAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="15dp"
             android:text="@string/GeneralDialogPermissionAccept"
-            android:textSize="@dimen/FontVerySmall"
-            android:textStyle="bold"
             android:textColor="@color/Primary"
-            android:padding="15dp" />
+            android:textSize="@dimen/FontVerySmall"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

@@ -24,25 +24,85 @@ import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.fragment.FragmentView;
 
-public class CameraViewUI extends FragmentView
-{
+public class CameraViewUI extends FragmentView {
     private int Width = 0;
     private int Height = 0;
     private boolean IsProfile = true;
     private CameraView CameraViewMain;
     private OnCaptureListener Listener;
 
-    public CameraViewUI(int W, int H, boolean P, OnCaptureListener L)
-    {
+    public CameraViewUI(int W, int H, boolean P, OnCaptureListener L) {
         Width = W;
         Height = H;
         IsProfile = P;
         Listener = L;
     }
 
+    private static Bitmap DecodeBitmap(byte[] Source, int MW, int MH) {
+        int O = 0;
+        boolean Flip = false;
+
+        try {
+            InputStream IS = new ByteArrayInputStream(Source);
+            Integer O2 = new ExifInterface(IS).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            IS.close();
+
+            switch (O2) {
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                    O = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                case ExifInterface.ORIENTATION_TRANSPOSE:
+                    O = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                case ExifInterface.ORIENTATION_TRANSVERSE:
+                    O = 270;
+                    break;
+            }
+
+            Flip = O2 == ExifInterface.ORIENTATION_FLIP_HORIZONTAL || O2 == ExifInterface.ORIENTATION_FLIP_VERTICAL || O2 == ExifInterface.ORIENTATION_TRANSPOSE || O2 == ExifInterface.ORIENTATION_TRANSVERSE;
+        } catch (Exception e) {
+            Misc.Debug("CameraViewUI-DecodeBitmap: " + e.toString());
+        }
+
+        Bitmap bitmap;
+
+        if (MW != 0 || MH != 0) {
+            BitmapFactory.Options O2 = new BitmapFactory.Options();
+            O2.inJustDecodeBounds = true;
+
+            BitmapFactory.decodeByteArray(Source, 0, Source.length, O2);
+
+            int H = O2.outHeight;
+            int W = O2.outWidth;
+
+            if (O % 180 != 0) {
+                H = O2.outWidth;
+                W = O2.outHeight;
+            }
+
+            O2.inSampleSize = Misc.SampleSize(W, H, MW, MH);
+            O2.inJustDecodeBounds = false;
+
+            bitmap = BitmapFactory.decodeByteArray(Source, 0, Source.length, O2);
+        } else {
+            bitmap = BitmapFactory.decodeByteArray(Source, 0, Source.length);
+        }
+
+        if (O != 0 || Flip) {
+            Matrix matrix = new Matrix();
+            matrix.setRotate(O);
+
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        }
+
+        return bitmap;
+    }
+
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
@@ -55,16 +115,12 @@ public class CameraViewUI extends FragmentView
         CameraViewMain.mapGesture(Gesture.PINCH, GestureAction.ZOOM);
         CameraViewMain.mapGesture(Gesture.TAP, GestureAction.FOCUS_WITH_MARKER);
         CameraViewMain.mapGesture(Gesture.LONG_TAP, GestureAction.CAPTURE);
-        CameraViewMain.addCameraListener(new CameraListener()
-        {
+        CameraViewMain.addCameraListener(new CameraListener() {
             @Override
-            public void onPictureTaken(byte[] Source)
-            {
-                Activity.GetManager().OpenView(new CropViewUI(DecodeBitmap(Source, Width, Height), IsProfile, new CropViewUI.OnCropListener()
-                {
+            public void onPictureTaken(byte[] Source) {
+                Activity.GetManager().OpenView(new CropViewUI(DecodeBitmap(Source, Width, Height), IsProfile, new CropViewUI.OnCropListener() {
                     @Override
-                    public void OnCrop(Bitmap bitmap)
-                    {
+                    public void OnCrop(Bitmap bitmap) {
                         Listener.OnCapture(bitmap);
                         Activity.onBackPressed();
                     }
@@ -90,11 +146,9 @@ public class CameraViewUI extends FragmentView
         ImageViewPick.setLayoutParams(ImageViewPickParam);
         ImageViewPick.setImageResource(R.drawable.___general_camera_pick);
         ImageViewPick.setId(Misc.generateViewId());
-        ImageViewPick.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewPick.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ObjectAnimator SizeX = ObjectAnimator.ofFloat(v, "scaleX", 1.35f);
                 SizeX.setDuration(200);
 
@@ -127,15 +181,12 @@ public class CameraViewUI extends FragmentView
         ImageViewFlash.setLayoutParams(ImageViewFlashParam);
         ImageViewFlash.setImageResource(R.drawable.___general_camera_flash_auto);
         ImageViewFlash.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
-        ImageViewFlash.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewFlash.setOnClickListener(new View.OnClickListener() {
             private int Type = 2;
 
             @Override
-            public void onClick(View v)
-            {
-                switch (Type)
-                {
+            public void onClick(View v) {
+                switch (Type) {
                     case 0:
                         ImageViewFlash.setImageResource(R.drawable.___general_camera_flash_on);
                         CameraViewMain.setFlash(Flash.ON);
@@ -165,7 +216,12 @@ public class CameraViewUI extends FragmentView
         ImageViewSwitch.setLayoutParams(ImageViewSwitchParam);
         ImageViewSwitch.setImageResource(R.drawable.___general_camera_switch);
         ImageViewSwitch.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
-        ImageViewSwitch.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { CameraViewMain.toggleFacing(); } });
+        ImageViewSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CameraViewMain.toggleFacing();
+            }
+        });
 
         RelativeLayoutBottom.addView(ImageViewSwitch);
 
@@ -173,100 +229,23 @@ public class CameraViewUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         CameraViewMain.start();
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         CameraViewMain.stop();
     }
 
     @Override
-    public void OnDestroy()
-    {
+    public void OnDestroy() {
         CameraViewMain.destroy();
     }
 
-    public interface OnCaptureListener
-    {
+    public interface OnCaptureListener {
         void OnCapture(Bitmap bitmap);
-    }
-
-    private static Bitmap DecodeBitmap(byte[] Source, int MW, int MH)
-    {
-        int O = 0;
-        boolean Flip = false;
-
-        try
-        {
-            InputStream IS = new ByteArrayInputStream(Source);
-            Integer O2 = new ExifInterface(IS).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            IS.close();
-
-            switch (O2)
-            {
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-                    O = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                case ExifInterface.ORIENTATION_TRANSPOSE:
-                    O = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                case ExifInterface.ORIENTATION_TRANSVERSE:
-                    O = 270;
-                    break;
-            }
-
-            Flip = O2 == ExifInterface.ORIENTATION_FLIP_HORIZONTAL || O2 == ExifInterface.ORIENTATION_FLIP_VERTICAL || O2 == ExifInterface.ORIENTATION_TRANSPOSE || O2 == ExifInterface.ORIENTATION_TRANSVERSE;
-        }
-        catch (Exception e)
-        {
-            Misc.Debug("CameraViewUI-DecodeBitmap: " + e.toString());
-        }
-
-        Bitmap bitmap;
-
-        if (MW != 0 || MH != 0)
-        {
-            BitmapFactory.Options O2 = new BitmapFactory.Options();
-            O2.inJustDecodeBounds = true;
-
-            BitmapFactory.decodeByteArray(Source, 0, Source.length, O2);
-
-            int H = O2.outHeight;
-            int W = O2.outWidth;
-
-            if (O % 180 != 0)
-            {
-                H = O2.outWidth;
-                W = O2.outHeight;
-            }
-
-            O2.inSampleSize = Misc.SampleSize(W, H, MW, MH);
-            O2.inJustDecodeBounds = false;
-
-            bitmap = BitmapFactory.decodeByteArray(Source, 0, Source.length, O2);
-        }
-        else
-        {
-            bitmap = BitmapFactory.decodeByteArray(Source, 0, Source.length);
-        }
-
-        if (O != 0 || Flip)
-        {
-            Matrix matrix = new Matrix();
-            matrix.setRotate(O);
-
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        }
-
-        return bitmap;
     }
 }

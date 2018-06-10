@@ -50,8 +50,7 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class VideoPreviewUI extends FragmentView
-{
+public class VideoPreviewUI extends FragmentView {
     private SimpleExoPlayerView SimpleExoPlayerViewMain;
     private SimpleExoPlayer SimpleExoPlayerMain;
     private OnSelectListener SelectListener;
@@ -61,16 +60,14 @@ public class VideoPreviewUI extends FragmentView
     private String VideoURL = "";
     private Runnable runnable;
 
-    public VideoPreviewUI(String URL, boolean isLocal, boolean anim)
-    {
+    public VideoPreviewUI(String URL, boolean isLocal, boolean anim) {
         Anim = anim;
         VideoURL = URL;
         IsLocal = isLocal;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
@@ -92,7 +89,12 @@ public class VideoPreviewUI extends FragmentView
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
         ImageViewBack.setId(Misc.generateViewId());
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.onBackPressed();
+            }
+        });
 
         RelativeLayoutHeader.addView(ImageViewBack);
 
@@ -138,7 +140,7 @@ public class VideoPreviewUI extends FragmentView
 
                 NotifyBuilder.setContentTitle("Bio Video Download").setContentText("Download in progress").setSmallIcon(R.drawable._general_download).addAction(0, "Cancel", PendingIntent.getActivity(Activity, NotifyID, i, 0));
 
-                AndroidNetworking.download(VideoURL, CacheHandler.GetDir().getAbsolutePath(), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()).toString() + ".mp4")
+                AndroidNetworking.download(VideoURL, CacheHandler.GetDir().getAbsolutePath(), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getCurrentTime()).toString() + ".mp4")
                 .setTag(NotifyID)
                 .build()
                 .setDownloadProgressListener(new DownloadProgressListener()
@@ -150,7 +152,7 @@ public class VideoPreviewUI extends FragmentView
                     {
                         int Percent = (int) (D * 100 / T);
 
-                        if (Last != Percent && Percent % 2 == 0 && NotifyManager != null)
+                        if (Last != Percent && Percent % audio_start == 0 && NotifyManager != null)
                         {
                             Last = Percent;
 
@@ -187,8 +189,7 @@ public class VideoPreviewUI extends FragmentView
         if (!IsLocal)
             RelativeLayoutHeader.addView(ImageViewDownload);*/
 
-        if (SelectListener != null)
-        {
+        if (SelectListener != null) {
             final GradientDrawable DrawableSelect = new GradientDrawable();
             DrawableSelect.setShape(GradientDrawable.OVAL);
             DrawableSelect.setStroke(Misc.ToDP(2), Color.WHITE);
@@ -205,20 +206,15 @@ public class VideoPreviewUI extends FragmentView
 
             View ViewCircle = new View(Activity);
             ViewCircle.setLayoutParams(ViewCircleParam);
-            ViewCircle.setOnClickListener(new View.OnClickListener()
-            {
+            ViewCircle.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     Activity.onBackPressed();
 
-                    if (Selected)
-                    {
+                    if (Selected) {
                         Selected = false;
                         v.setBackground(DrawableSelect);
-                    }
-                    else
-                    {
+                    } else {
                         Selected = true;
                         v.setBackground(DrawableSelected);
                     }
@@ -299,27 +295,22 @@ public class VideoPreviewUI extends FragmentView
         SimpleExoPlayerViewMain.setVisibility(View.GONE);
         SimpleExoPlayerViewMain.setPlayer(SimpleExoPlayerMain);
         SimpleExoPlayerViewMain.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
-        SimpleExoPlayerViewMain.getVideoSurfaceView().setOnClickListener(new View.OnClickListener()
-        {
+        SimpleExoPlayerViewMain.getVideoSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 long Current = SimpleExoPlayerMain.getCurrentPosition();
                 long Duration = SimpleExoPlayerMain.getDuration();
 
                 TextViewTime.setText((StringForTime(Current) + " / " + StringForTime(Duration)));
                 SeekBarMain.setProgress((int) (1000L * Current / Duration));
 
-                if (SimpleExoPlayerMain.getPlayWhenReady())
-                {
+                if (SimpleExoPlayerMain.getPlayWhenReady()) {
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     RelativeLayoutControl.setVisibility(View.VISIBLE);
                     ImageViewPlay.setImageResource(R.drawable.play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
                     SimpleExoPlayerViewMain.removeCallbacks(runnable);
-                }
-                else
-                {
+                } else {
                     RelativeLayoutHeader.setVisibility(View.GONE);
                     RelativeLayoutControl.setVisibility(View.GONE);
                     ImageViewPlay.setImageResource(R.drawable.pause_white);
@@ -334,50 +325,62 @@ public class VideoPreviewUI extends FragmentView
 
         MediaSource MediaSourceMain = null;
 
-        try
-        {
-            if (IsLocal)
-            {
+        try {
+            if (IsLocal) {
                 final FileDataSource FDS = new FileDataSource();
                 FDS.open(new DataSpec(Uri.parse(VideoURL)));
-                DataSource.Factory DataSourceMain = new DataSource.Factory() { @Override public DataSource createDataSource() { return FDS; } };
+                DataSource.Factory DataSourceMain = new DataSource.Factory() {
+                    @Override
+                    public DataSource createDataSource() {
+                        return FDS;
+                    }
+                };
                 MediaSourceMain = new ExtractorMediaSource(FDS.getUri(), DataSourceMain, new DefaultExtractorsFactory(), null, null);
-            }
-            else
-            {
+            } else {
                 Cache CacheMain = new SimpleCache(new File(Activity.getCacheDir(), "BioVideo"), new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024));
                 DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(App.GetOKClient(), "Bio", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
                 MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain, new DefaultExtractorsFactory(), null, null);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Misc.Debug("VideoPreviewUI-MediaSource: " + e.toString());
         }
 
         SimpleExoPlayerMain.prepare(MediaSourceMain);
         SimpleExoPlayerMain.setPlayWhenReady(true);
-        SimpleExoPlayerMain.addListener(new Player.EventListener()
-        {
+        SimpleExoPlayerMain.addListener(new Player.EventListener() {
             boolean IsLoading = false;
 
-            @Override public void onTimelineChanged(Timeline timeline, Object manifest) { }
-            @Override public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) { }
-            @Override public void onRepeatModeChanged(int repeatMode) { }
-            @Override public void onPlayerError(ExoPlaybackException error) { }
-            @Override public void onPositionDiscontinuity() { }
-            @Override public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) { }
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest) {
+            }
 
             @Override
-            public void onLoadingChanged(boolean isLoading)
-            {
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+            }
+
+            @Override
+            public void onPositionDiscontinuity() {
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
                 IsLoading = isLoading;
 
-                Misc.UIThread(new Runnable()
-                {
+                Misc.UIThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         if (IsLoading)
                             LoadingViewMain.Start();
                         else
@@ -387,10 +390,8 @@ public class VideoPreviewUI extends FragmentView
             }
 
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
-            {
-                if (playbackState == 4)
-                {
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == 4) {
                     SeekBarMain.setProgress(1000);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     RelativeLayoutControl.setVisibility(View.VISIBLE);
@@ -399,9 +400,7 @@ public class VideoPreviewUI extends FragmentView
                     SeekBarMain.setProgress(0);
                     SimpleExoPlayerMain.seekTo(0);
                     SimpleExoPlayerViewMain.removeCallbacks(runnable);
-                }
-                else if (playbackState == 3)
-                {
+                } else if (playbackState == 3) {
                     if (SimpleExoPlayerViewMain.getVisibility() == View.GONE)
                         SimpleExoPlayerViewMain.setVisibility(View.VISIBLE);
 
@@ -410,14 +409,18 @@ public class VideoPreviewUI extends FragmentView
             }
         });
 
-        SeekBarMain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override public void onStopTrackingTouch(SeekBar seekBar) { }
-            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                if (fromUser)
-                {
+        SeekBarMain.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
                     long Duration = SimpleExoPlayerMain.getDuration();
                     long NewPosition = (Duration * progress) / 1000L;
 
@@ -427,27 +430,22 @@ public class VideoPreviewUI extends FragmentView
             }
         });
 
-        ImageViewPlay.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewPlay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 long Current = SimpleExoPlayerMain.getCurrentPosition();
                 long Duration = SimpleExoPlayerMain.getDuration();
 
                 SeekBarMain.setProgress((int) (1000L * Current / Duration));
                 TextViewTime.setText((StringForTime(Current) + " / " + StringForTime(Duration)));
 
-                if (SimpleExoPlayerMain.getPlayWhenReady())
-                {
+                if (SimpleExoPlayerMain.getPlayWhenReady()) {
                     RelativeLayoutControl.setVisibility(View.VISIBLE);
                     RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     ImageViewPlay.setImageResource(R.drawable.play_white);
                     SimpleExoPlayerMain.setPlayWhenReady(false);
                     SimpleExoPlayerViewMain.removeCallbacks(runnable);
-                }
-                else
-                {
+                } else {
                     RelativeLayoutControl.setVisibility(View.GONE);
                     RelativeLayoutHeader.setVisibility(View.GONE);
                     ImageViewPlay.setImageResource(R.drawable.pause_white);
@@ -457,26 +455,20 @@ public class VideoPreviewUI extends FragmentView
             }
         });
 
-        runnable = new Runnable()
-        {
+        runnable = new Runnable() {
             @Override
-            public void run()
-            {
-                try
-                {
-                    if (SimpleExoPlayerMain.getPlayWhenReady())
-                    {
+            public void run() {
+                try {
+                    if (SimpleExoPlayerMain.getPlayWhenReady()) {
                         long Current = SimpleExoPlayerMain.getCurrentPosition();
                         long Duration = SimpleExoPlayerMain.getDuration();
                         long Position = 1000L * Current / Duration;
 
                         SeekBarMain.setProgress((int) Position);
-                        SeekBarMain.setSecondaryProgress(SimpleExoPlayerMain.getBufferedPercentage()* 10);
+                        SeekBarMain.setSecondaryProgress(SimpleExoPlayerMain.getBufferedPercentage() * 10);
                         TextViewTime.setText((StringForTime(Current) + " / " + StringForTime(Duration)));
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Misc.Debug("VideoPreviewUI-Runnable: " + e.toString());
                 }
 
@@ -487,8 +479,7 @@ public class VideoPreviewUI extends FragmentView
         RelativeLayoutHeader.bringToFront();
         RelativeLayoutControl.bringToFront();
 
-        if (Anim)
-        {
+        if (Anim) {
             TranslateAnimation Trans = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
             Trans.setDuration(200);
 
@@ -499,8 +490,7 @@ public class VideoPreviewUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         SimpleExoPlayerViewMain.postDelayed(runnable, 500);
 
         Activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -511,46 +501,41 @@ public class VideoPreviewUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         SimpleExoPlayerViewMain.removeCallbacks(runnable);
         SimpleExoPlayerMain.setPlayWhenReady(false);
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
-    public void OnDestroy()
-    {
+    public void OnDestroy() {
         SimpleExoPlayerMain.release();
 
         if (Build.VERSION.SDK_INT > 20)
             Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
     }
 
-    void SetType(boolean select, OnSelectListener l)
-    {
+    void SetType(boolean select, OnSelectListener l) {
         Selected = select;
         SelectListener = l;
     }
 
-    interface OnSelectListener
-    {
-        void OnSelect();
-    }
-
-    private String StringForTime(long Time)
-    {
+    private String StringForTime(long Time) {
         if (Time < 0)
             Time = 0;
 
         long TotalSeconds = Time / 1000;
         long Seconds = TotalSeconds % 60;
         long Minutes = (TotalSeconds / 60) % 60;
-        long Hours   = TotalSeconds / 3600;
+        long Hours = TotalSeconds / 3600;
 
         if (Hours > 0)
             return String.valueOf(Hours) + ":" + String.valueOf(Minutes) + ":" + String.valueOf(Seconds);
 
         return String.valueOf(Minutes) + ":" + String.valueOf(Seconds);
+    }
+
+    interface OnSelectListener {
+        void OnSelect();
     }
 }

@@ -42,8 +42,7 @@ import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CommentUI extends FragmentView
-{
+public class CommentUI extends FragmentView {
     private ArrayList<PostAdapter.PostStruct> PostList;
     private ArrayList<Struct> CommentList = new ArrayList<>();
     private EditText EditTextMessage;
@@ -53,15 +52,13 @@ public class CommentUI extends FragmentView
     private int PositionPost;
     private PostAdapter.PostStruct Post;
 
-    CommentUI(PostAdapter.PostStruct p)
-    {
+    CommentUI(PostAdapter.PostStruct p) {
         Post = p;
         PostID = p.ID;
         IsOwner = Misc.GetString("ID").equals(p.Owner);
     }
 
-    public CommentUI(ArrayList<PostAdapter.PostStruct> pl, int p)
-    {
+    public CommentUI(ArrayList<PostAdapter.PostStruct> pl, int p) {
         PostList = pl;
         PositionPost = p;
         PostID = PostList.get(p).ID;
@@ -69,8 +66,7 @@ public class CommentUI extends FragmentView
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final LinearLayoutManager LinearLayoutManagerMain = new LinearLayoutManager(Activity);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
@@ -92,7 +88,12 @@ public class CommentUI extends FragmentView
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_blue : R.drawable.z_general_back_blue);
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
         ImageViewBack.setId(Misc.generateViewId());
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -168,11 +169,9 @@ public class CommentUI extends FragmentView
 
         RelativeLayoutSend.addView(LoadingViewSend);
 
-        ImageViewSend.setOnClickListener(new View.OnClickListener()
-        {
+        ImageViewSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 if (EditTextMessage.getText().length() == 0)
                     return;
 
@@ -180,50 +179,43 @@ public class CommentUI extends FragmentView
                 LoadingViewSend.Start();
 
                 AndroidNetworking.post(Misc.GetRandomServer("PostComment"))
-                .addBodyParameter("Message", EditTextMessage.getText().toString())
-                .addBodyParameter("PostID", PostID)
-                .addHeaders("Token", Misc.GetString("Token"))
-                .setTag("CommentUI")
-                .build()
-                .getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewSend.Stop();
-                        ImageViewSend.setVisibility(View.VISIBLE);
+                        .addBodyParameter("Message", EditTextMessage.getText().toString())
+                        .addBodyParameter("PostID", PostID)
+                        .addHeaders("Token", Misc.GetString("Token"))
+                        .setTag("CommentUI")
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String Response) {
+                                LoadingViewSend.Stop();
+                                ImageViewSend.setVisibility(View.VISIBLE);
 
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
+                                try {
+                                    JSONObject Result = new JSONObject(Response);
 
-                            if (Result.getInt("Message") == 0)
-                            {
-                                CommentList.add(0, new Struct(Result.getString("ID"), Misc.GetString("Username"), Misc.GetString("Avatar"), EditTextMessage.getText().toString(), Misc.GetString("ID"), 0, (int) (System.currentTimeMillis() / 1000), false));
-                                Adapter.notifyDataSetChanged();
-                                EditTextMessage.setText("");
+                                    if (Result.getInt("Message") == 0) {
+                                        CommentList.add(0, new Struct(Result.getString("ID"), Misc.GetString("Username"), Misc.GetString("Avatar"), EditTextMessage.getText().toString(), Misc.GetString("ID"), 0, (int) (System.currentTimeMillis() / 1000), false));
+                                        Adapter.notifyDataSetChanged();
+                                        EditTextMessage.setText("");
 
-                                LinearLayoutManagerMain.scrollToPositionWithOffset(0, 0);
+                                        LinearLayoutManagerMain.scrollToPositionWithOffset(0, 0);
 
-                                if (Post != null)
-                                    Post.InsComment();
-                                else
-                                    PostList.get(PositionPost).InsComment();
+                                        if (Post != null)
+                                            Post.InsComment();
+                                        else
+                                            PostList.get(PositionPost).InsComment();
+                                    }
+                                } catch (Exception e) {
+                                    Misc.Debug("CommentUI-Send: " + e.toString());
+                                }
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("CommentUI-Send: " + e.toString());
-                        }
-                    }
 
-                    @Override
-                    public void onError(ANError e)
-                    {
-                        LoadingViewSend.Stop();
-                        ImageViewSend.setVisibility(View.VISIBLE);
-                    }
-                });
+                            @Override
+                            public void onError(ANError e) {
+                                LoadingViewSend.Stop();
+                                ImageViewSend.setVisibility(View.VISIBLE);
+                            }
+                        });
             }
         });
 
@@ -241,16 +233,19 @@ public class CommentUI extends FragmentView
         EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
         EditTextMessage.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        EditTextMessage.setFilters(new InputFilter[] { new InputFilter.LengthFilter(300) });
+        EditTextMessage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(300)});
         EditTextMessage.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        EditTextMessage.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override public void afterTextChanged(Editable editable) { }
+        EditTextMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2)
-            {
+            public void afterTextChanged(Editable editable) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 ImageViewSend.setImageResource(s.length() == 0 ? R.drawable._comment_send_gray : R.drawable._comment_send_blue);
             }
         });
@@ -280,7 +275,12 @@ public class CommentUI extends FragmentView
         RecyclerViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RecyclerViewMain.setAdapter(Adapter = new AdapterComment());
         RecyclerViewMain.setLayoutManager(LinearLayoutManagerMain);
-        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() { @Override public void OnLoadMore() { Update(null); } });
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() {
+            @Override
+            public void OnLoadMore() {
+                Update(null);
+            }
+        });
 
         RelativeLayoutContent.addView(RecyclerViewMain);
 
@@ -297,69 +297,56 @@ public class CommentUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("CommentUI");
         Misc.HideSoftKey(Activity);
     }
 
-    private void Update(final LoadingView Loading)
-    {
+    private void Update(final LoadingView Loading) {
         AndroidNetworking.post(Misc.GetRandomServer("PostCommentList"))
-        .addBodyParameter("Skip", String.valueOf(CommentList.size()))
-        .addBodyParameter("PostID", PostID)
-        .addHeaders("Token", Misc.GetString("Token"))
-        .setTag("CommentUI")
-        .build()
-        .getAsString(new StringRequestListener()
-        {
-            @Override
-            public void onResponse(String Response)
-            {
-                try
-                {
-                    JSONObject Result = new JSONObject(Response);
+                .addBodyParameter("Skip", String.valueOf(CommentList.size()))
+                .addBodyParameter("PostID", PostID)
+                .addHeaders("Token", Misc.GetString("Token"))
+                .setTag("CommentUI")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            JSONObject Result = new JSONObject(Response);
 
-                    if (Result.getInt("Message") == 0 && !Result.isNull("Result"))
-                    {
-                        JSONArray ResultList = new JSONArray(Result.getString("Result"));
+                            if (Result.getInt("Message") == 0 && !Result.isNull("Result")) {
+                                JSONArray ResultList = new JSONArray(Result.getString("Result"));
 
-                        for (int K = 0; K < ResultList.length(); K++)
-                        {
-                            JSONObject D = ResultList.getJSONObject(K);
+                                for (int K = 0; K < ResultList.length(); K++) {
+                                    JSONObject D = ResultList.getJSONObject(K);
 
-                            CommentList.add(new Struct(D.getString("ID"), D.getString("Username"), D.getString("Avatar"), D.getString("Message"), D.getString("Owner"), D.getInt("Count"), D.getInt("Time"), D.getBoolean("Like")));
+                                    CommentList.add(new Struct(D.getString("ID"), D.getString("Username"), D.getString("Avatar"), D.getString("Message"), D.getString("Owner"), D.getInt("Count"), D.getInt("Time"), D.getBoolean("Like")));
+                                }
+
+                                Adapter.notifyDataSetChanged();
+                            }
+                        } catch (Exception e) {
+                            Misc.Debug("CommentUI-Update: " + e.toString());
                         }
 
-                        Adapter.notifyDataSetChanged();
+                        if (Loading != null) {
+                            Loading.Stop();
+                            Loading.setVisibility(View.GONE);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    Misc.Debug("CommentUI-Update: " + e.toString());
-                }
 
-                if (Loading != null)
-                {
-                    Loading.Stop();
-                    Loading.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onError(ANError e)
-            {
-                if (Loading != null)
-                {
-                    Loading.Stop();
-                    Loading.setVisibility(View.GONE);
-                }
-            }
-        });
+                    @Override
+                    public void onError(ANError e) {
+                        if (Loading != null) {
+                            Loading.Stop();
+                            Loading.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 
-    private class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHolderMain>
-    {
+    private class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHolderMain> {
         private int ID_PROFILE = Misc.generateViewId();
         private int ID_USERNAME = Misc.generateViewId();
         private int ID_TIME = Misc.generateViewId();
@@ -370,61 +357,25 @@ public class CommentUI extends FragmentView
         private int ID_LIKE_COUNT = Misc.generateViewId();
         private int ID_LINE = Misc.generateViewId();
 
-        class ViewHolderMain extends RecyclerView.ViewHolder
-        {
-            CircleImageView CircleImageViewProfile;
-            TextView TextViewUsername;
-            TextView TextViewTime;
-            TextView TextViewMessage;
-            ImageView ImageViewLike;
-            ImageView ImageViewShort;
-            ImageView ImageViewDelete;
-            TextView TextViewLikeCount;
-            View ViewLine;
-
-            ViewHolderMain(View v, boolean NoContent)
-            {
-                super(v);
-
-                if (NoContent)
-                    return;
-
-                CircleImageViewProfile = v.findViewById(ID_PROFILE);
-                TextViewUsername = v.findViewById(ID_USERNAME);
-                TextViewTime = v.findViewById(ID_TIME);
-                TextViewMessage = v.findViewById(ID_MESSAGE);
-                ImageViewLike = v.findViewById(ID_LIKE);
-                ImageViewShort = v.findViewById(ID_SHORTCUT);
-                ImageViewDelete = v.findViewById(ID_DELETE);
-                TextViewLikeCount = v.findViewById(ID_LIKE_COUNT);
-                ViewLine = v.findViewById(ID_LINE);
-            }
-        }
-
         @Override
-        public void onBindViewHolder(final ViewHolderMain Holder, int p)
-        {
+        public void onBindViewHolder(final ViewHolderMain Holder, int p) {
             if (Holder.getItemViewType() == 0)
                 return;
 
             final int Position = Holder.getAdapterPosition();
 
             GlideApp.with(Activity).load(CommentList.get(Position).Profile).placeholder(R.drawable._general_avatar).into(Holder.CircleImageViewProfile);
-            Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.CircleImageViewProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     // TODO Open Profile
                 }
             });
 
             Holder.TextViewUsername.setText(CommentList.get(Position).Username);
-            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.TextViewUsername.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     // TODO Open Profile
                 }
             });
@@ -437,25 +388,27 @@ public class CommentUI extends FragmentView
                 Holder.TextViewLikeCount.setVisibility(View.GONE);
             else
                 Holder.TextViewLikeCount.setVisibility(View.VISIBLE);
-            
+
             Holder.TextViewLikeCount.setText((CommentList.get(Position).LikeCount + " " + Activity.getString(R.string.CommentUILike)));
-            Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.GetManager().OpenView(new LikeUI(CommentList.get(Position).ID, true), "LikeUI", true); } });
+            Holder.TextViewLikeCount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Activity.GetManager().OpenView(new LikeUI(CommentList.get(Position).ID, true), "LikeUI", true);
+                }
+            });
 
             if (CommentList.get(Position).Like)
                 GlideApp.with(Activity).load(R.drawable._general_like_red).into(Holder.ImageViewLike);
             else
                 GlideApp.with(Activity).load(R.drawable._general_like).into(Holder.ImageViewLike);
 
-            Holder.ImageViewLike.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.ImageViewLike.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (CommentList.get(Position).Like)
-                    {
+                public void onClick(View v) {
+                    if (CommentList.get(Position).Like) {
                         Holder.ImageViewLike.setImageResource(R.drawable._general_like);
 
-                        ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
+                        ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha", 0.1f, 1f);
                         Fade.setDuration(200);
 
                         AnimatorSet AnimationSet = new AnimatorSet();
@@ -466,9 +419,7 @@ public class CommentUI extends FragmentView
                         CommentList.get(Position).RevLike();
 
                         Holder.TextViewLikeCount.setText((String.valueOf(CommentList.get(Position).LikeCount) + " " + Activity.getString(R.string.CommentUILike)));
-                    }
-                    else
-                    {
+                    } else {
                         Holder.ImageViewLike.setImageResource(R.drawable._general_like_red);
 
                         ObjectAnimator SizeX = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1.5f);
@@ -477,7 +428,7 @@ public class CommentUI extends FragmentView
                         ObjectAnimator SizeY = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleY", 1.5f);
                         SizeY.setDuration(200);
 
-                        ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha",  0.1f, 1f);
+                        ObjectAnimator Fade = ObjectAnimator.ofFloat(Holder.ImageViewLike, "alpha", 0.1f, 1f);
                         Fade.setDuration(400);
 
                         ObjectAnimator SizeX2 = ObjectAnimator.ofFloat(Holder.ImageViewLike, "scaleX", 1f);
@@ -504,19 +455,17 @@ public class CommentUI extends FragmentView
                         Holder.TextViewLikeCount.setVisibility(View.VISIBLE);
 
                     AndroidNetworking.post(Misc.GetRandomServer("PostCommentLike"))
-                    .addBodyParameter("CommentID", CommentList.get(Position).ID)
-                    .addHeaders("Token", Misc.GetString( "Token"))
-                    .setTag("CommentUI")
-                    .build()
-                    .getAsString(null);
+                            .addBodyParameter("CommentID", CommentList.get(Position).ID)
+                            .addHeaders("Token", Misc.GetString("Token"))
+                            .setTag("CommentUI")
+                            .build()
+                            .getAsString(null);
                 }
             });
 
-            Holder.ImageViewShort.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.ImageViewShort.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     if (EditTextMessage.getText().toString().length() >= 300)
                         return;
 
@@ -533,11 +482,9 @@ public class CommentUI extends FragmentView
             else
                 Holder.ImageViewDelete.setVisibility(View.GONE);
 
-            Holder.ImageViewDelete.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.ImageViewDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     final Dialog DialogDelete = new Dialog(Activity);
                     DialogDelete.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     DialogDelete.setCancelable(true);
@@ -573,17 +520,15 @@ public class CommentUI extends FragmentView
                     TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                     TextViewDelete.setText(Misc.String(R.string.CommentUIDelete));
                     TextViewDelete.setGravity(Gravity.CENTER);
-                    TextViewDelete.setOnClickListener(new View.OnClickListener()
-                    {
+                    TextViewDelete.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             AndroidNetworking.post(Misc.GetRandomServer("PostCommentDelete"))
-                            .addBodyParameter("CommentID", CommentList.get(Position).ID)
-                            .addHeaders("Token", Misc.GetString( "Token"))
-                            .setTag("CommentUI")
-                            .build()
-                            .getAsString(null);
+                                    .addBodyParameter("CommentID", CommentList.get(Position).ID)
+                                    .addHeaders("Token", Misc.GetString("Token"))
+                                    .setTag("CommentUI")
+                                    .build()
+                                    .getAsString(null);
 
                             if (Post != null)
                                 Post.DesComment();
@@ -601,15 +546,17 @@ public class CommentUI extends FragmentView
                     TextViewCancel.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
                     TextViewCancel.setText(Misc.String(R.string.CommentUICancel));
                     TextViewCancel.setGravity(Gravity.CENTER);
-                    TextViewCancel.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogDelete.dismiss(); } });
+                    TextViewCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DialogDelete.dismiss();
+                        }
+                    });
 
-                    if (Misc.IsRTL())
-                    {
+                    if (Misc.IsRTL()) {
                         LinearLayoutButton.addView(TextViewCancel);
                         LinearLayoutButton.addView(TextViewDelete);
-                    }
-                    else
-                    {
+                    } else {
                         LinearLayoutButton.addView(TextViewDelete);
                         LinearLayoutButton.addView(TextViewCancel);
                     }
@@ -626,10 +573,8 @@ public class CommentUI extends FragmentView
         }
 
         @Override
-        public ViewHolderMain onCreateViewHolder(ViewGroup p, int ViewType)
-        {
-            if (ViewType == 0)
-            {
+        public ViewHolderMain onCreateViewHolder(ViewGroup p, int ViewType) {
+            if (ViewType == 0) {
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
                 RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
@@ -668,7 +613,7 @@ public class CommentUI extends FragmentView
             }
 
             StateListDrawable StatePress = new StateListDrawable();
-            StatePress.addState(new int[] { android.R.attr.state_pressed }, new ColorDrawable(Color.parseColor("#b0eeeeee")));
+            StatePress.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.parseColor("#b0eeeeee")));
 
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -782,20 +727,46 @@ public class CommentUI extends FragmentView
         }
 
         @Override
-        public int getItemViewType(int Position)
-        {
+        public int getItemViewType(int Position) {
             return CommentList.size() == 0 ? 0 : 1;
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return CommentList.size() == 0 ? 1 : CommentList.size();
+        }
+
+        class ViewHolderMain extends RecyclerView.ViewHolder {
+            CircleImageView CircleImageViewProfile;
+            TextView TextViewUsername;
+            TextView TextViewTime;
+            TextView TextViewMessage;
+            ImageView ImageViewLike;
+            ImageView ImageViewShort;
+            ImageView ImageViewDelete;
+            TextView TextViewLikeCount;
+            View ViewLine;
+
+            ViewHolderMain(View v, boolean NoContent) {
+                super(v);
+
+                if (NoContent)
+                    return;
+
+                CircleImageViewProfile = v.findViewById(ID_PROFILE);
+                TextViewUsername = v.findViewById(ID_USERNAME);
+                TextViewTime = v.findViewById(ID_TIME);
+                TextViewMessage = v.findViewById(ID_MESSAGE);
+                ImageViewLike = v.findViewById(ID_LIKE);
+                ImageViewShort = v.findViewById(ID_SHORTCUT);
+                ImageViewDelete = v.findViewById(ID_DELETE);
+                TextViewLikeCount = v.findViewById(ID_LIKE_COUNT);
+                ViewLine = v.findViewById(ID_LINE);
+            }
         }
     }
 
-    private class Struct
-    {
+    private class Struct {
         String ID;
         String Username;
         String Profile;
@@ -805,8 +776,7 @@ public class CommentUI extends FragmentView
         int Time;
         boolean Like;
 
-        Struct(String I, String U,String P, String M, String O, int LC, int T, boolean L)
-        {
+        Struct(String I, String U, String P, String M, String O, int LC, int T, boolean L) {
             ID = I;
             Username = U;
             Profile = P;
@@ -817,8 +787,16 @@ public class CommentUI extends FragmentView
             Like = L;
         }
 
-        void RevLike() { Like = !Like; }
-        void InsLike() { LikeCount++; }
-        void DesLike() { LikeCount--; }
+        void RevLike() {
+            Like = !Like;
+        }
+
+        void InsLike() {
+            LikeCount++;
+        }
+
+        void DesLike() {
+            LikeCount--;
+        }
     }
 }

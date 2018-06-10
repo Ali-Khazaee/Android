@@ -46,8 +46,10 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-class PhoneVerifyUI extends FragmentView
-{
+class PhoneVerifyUI extends FragmentView {
+    private final String Code;
+    private final String Phone;
+    private final boolean IsSignUp;
     private ViewTreeObserver.OnGlobalLayoutListener LayoutListener;
     private RelativeLayout RelativeLayoutMain;
     private EditText EditTextCode1;
@@ -55,26 +57,48 @@ class PhoneVerifyUI extends FragmentView
     private EditText EditTextCode3;
     private EditText EditTextCode4;
     private EditText EditTextCode5;
+    private final BroadcastReceiver VerifyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() == null || intent.getExtras() == null)
+                return;
+
+            if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Verify")) {
+                String VerifyCode = intent.getExtras().getString("Issue", "");
+
+                if (VerifyCode.length() < 4)
+                    return;
+
+                final String[] Separated = VerifyCode.split("(?!^)");
+
+                Misc.UIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EditTextCode1.setText(Separated[0]);
+                        EditTextCode2.setText(Separated[1]);
+                        EditTextCode3.setText(Separated[2]);
+                        EditTextCode4.setText(Separated[3]);
+                        EditTextCode5.setText(Separated[4]);
+                    }
+                }, 0);
+            }
+        }
+    };
     private CountDownTimer CountDownTimerResend;
     private boolean Field1 = false;
     private boolean Field2 = false;
     private boolean Field3 = false;
     private boolean Field4 = false;
     private boolean Field5 = false;
-    private final String Code;
-    private final String Phone;
-    private final boolean IsSignUp;
 
-    PhoneVerifyUI(String code, String phone, boolean isSignUp)
-    {
+    PhoneVerifyUI(String code, String phone, boolean isSignUp) {
         Code = code;
         Phone = phone;
         IsSignUp = isSignUp;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         final Button ButtonNext = new Button(Activity, 16, false);
         final LoadingView LoadingViewNext = new LoadingView(Activity);
 
@@ -85,31 +109,24 @@ class PhoneVerifyUI extends FragmentView
         RelativeLayoutMain.setFocusable(true);
         RelativeLayoutMain.setClickable(true);
 
-        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             int HeightDifference = 0;
 
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 Rect rect = new Rect();
                 RelativeLayoutMain.getWindowVisibleDisplayFrame(rect);
 
                 int ScreenHeight = RelativeLayoutMain.getHeight();
                 int DifferenceHeight = ScreenHeight - (rect.bottom - rect.top);
 
-                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference)
-                {
+                if (DifferenceHeight > (ScreenHeight / 3) && DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight - DifferenceHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (DifferenceHeight != HeightDifference)
-                {
+                } else if (DifferenceHeight != HeightDifference) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight));
                     HeightDifference = DifferenceHeight;
-                }
-                else if (HeightDifference != 0)
-                {
+                } else if (HeightDifference != 0) {
                     RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ScreenHeight + Math.abs(HeightDifference)));
                     HeightDifference = 0;
                 }
@@ -133,7 +150,12 @@ class PhoneVerifyUI extends FragmentView
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -215,16 +237,19 @@ class PhoneVerifyUI extends FragmentView
         EditTextCode1.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextCode1.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode1.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextCode1.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
         EditTextCode1.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextCode1.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
+        EditTextCode1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field1 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -249,16 +274,19 @@ class PhoneVerifyUI extends FragmentView
         EditTextCode2.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextCode2.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode2.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextCode2.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
         EditTextCode2.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextCode2.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
+        EditTextCode2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field2 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -271,13 +299,10 @@ class PhoneVerifyUI extends FragmentView
                 NextField.requestFocus();
             }
         });
-        EditTextCode2.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode2.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode2.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode2.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
@@ -298,16 +323,19 @@ class PhoneVerifyUI extends FragmentView
         EditTextCode3.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextCode3.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode3.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextCode3.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode3.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
         EditTextCode3.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextCode3.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
+        EditTextCode3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field3 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -320,13 +348,10 @@ class PhoneVerifyUI extends FragmentView
                 NextField.requestFocus();
             }
         });
-        EditTextCode3.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode3.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode3.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode3.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
@@ -347,16 +372,19 @@ class PhoneVerifyUI extends FragmentView
         EditTextCode4.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextCode4.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode4.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextCode4.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        EditTextCode4.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
         EditTextCode4.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        EditTextCode4.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
+        EditTextCode4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field4 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -369,13 +397,10 @@ class PhoneVerifyUI extends FragmentView
                 NextField.requestFocus();
             }
         });
-        EditTextCode4.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode4.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode4.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode4.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
@@ -396,33 +421,32 @@ class PhoneVerifyUI extends FragmentView
         EditTextCode5.getBackground().setColorFilter(ContextCompat.getColor(Activity, R.color.Primary), PorterDuff.Mode.SRC_ATOP);
         EditTextCode5.setGravity(Gravity.CENTER_HORIZONTAL);
         EditTextCode5.setInputType(InputType.TYPE_CLASS_PHONE);
-        EditTextCode5.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
-        EditTextCode5.addTextChangedListener(new TextWatcher()
-        {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
+        EditTextCode5.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+        EditTextCode5.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field5 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
-                if (s.length() == 0)
-                {
+                if (s.length() == 0) {
                     EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
             }
         });
-        EditTextCode5.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode5.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode5.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode5.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
@@ -446,11 +470,9 @@ class PhoneVerifyUI extends FragmentView
         TextViewMessage.setText((Misc.String(R.string.PhoneVerifyUIMessage) + " " + (Code + Phone)), TextView.BufferType.SPANNABLE);
 
         Spannable Span = (Spannable) TextViewMessage.getText();
-        CharacterStyle CharacterStyleMessage = new CharacterStyle()
-        {
+        CharacterStyle CharacterStyleMessage = new CharacterStyle() {
             @Override
-            public void updateDrawState(TextPaint t)
-            {
+            public void updateDrawState(TextPaint t) {
                 t.setColor(ContextCompat.getColor(Activity, R.color.Gray));
                 t.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             }
@@ -484,151 +506,129 @@ class PhoneVerifyUI extends FragmentView
         TextViewResend.SetColor(R.color.Gray);
         TextViewResend.setText(Misc.String(R.string.PhoneVerifyUIResend));
         TextViewResend.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-        TextViewResend.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewResend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 if (!TextViewResend.isEnabled())
                     return;
 
                 TextViewResend.setVisibility(View.GONE);
                 LoadingViewResend.Start();
 
-                if (IsSignUp)
-                {
+                if (IsSignUp) {
                     AndroidNetworking.post(Misc.GetRandomServer("SignUpPhone"))
-                    .addBodyParameter("Issue", Code)
-                    .addBodyParameter("Phone", Phone)
-                    .setTag("PhoneVerifyUI")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            LoadingViewResend.Stop();
-                            TextViewResend.setVisibility(View.VISIBLE);
+                            .addBodyParameter("Issue", Code)
+                            .addBodyParameter("Phone", Phone)
+                            .setTag("PhoneVerifyUI")
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String Response) {
+                                    LoadingViewResend.Stop();
+                                    TextViewResend.setVisibility(View.VISIBLE);
 
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
+                                    try {
+                                        JSONObject Result = new JSONObject(Response);
 
-                                switch (Result.getInt("Message"))
-                                {
-                                    case 0:
-                                        CountDownTimerResend.start();
-                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUIResendDone));
-                                        break;
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
-                                        break;
-                                    case 4:
-                                    case 5:
-                                    case 6:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
-                                        break;
-                                    case 7:
-                                        Misc.ToastOld( Misc.String(R.string.PhoneUIError));
-                                        break;
-                                    default:
-                                        Misc.GeneralError(Result.getInt("Message"));
-                                        break;
+                                        switch (Result.getInt("Message")) {
+                                            case 0:
+                                                CountDownTimerResend.start();
+                                                Misc.ToastOld(Misc.String(R.string.PhoneVerifyUIResendDone));
+                                                break;
+                                            case 1:
+                                            case 2:
+                                            case 3:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
+                                                break;
+                                            case 4:
+                                            case 5:
+                                            case 6:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhone));
+                                                break;
+                                            case 7:
+                                                Misc.ToastOld(Misc.String(R.string.PhoneUIError));
+                                                break;
+                                            default:
+                                                Misc.GeneralError(Result.getInt("Message"));
+                                                break;
+                                        }
+                                    } catch (Exception e) {
+                                        Misc.Debug("PhoneVerifyUI-SignUpPhone: " + e.toString());
+                                    }
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                Misc.Debug("PhoneVerifyUI-SignUpPhone: " + e.toString());
-                            }
-                        }
 
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            LoadingViewResend.Stop();
-                            TextViewResend.setVisibility(View.VISIBLE);
-                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                        }
-                    });
-                }
-                else
-                {
+                                @Override
+                                public void onError(ANError e) {
+                                    LoadingViewResend.Stop();
+                                    TextViewResend.setVisibility(View.VISIBLE);
+                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                                }
+                            });
+                } else {
                     AndroidNetworking.post(Misc.GetRandomServer("SignInPhone"))
-                    .addBodyParameter("Issue", Code)
-                    .addBodyParameter("Phone", Phone)
-                    .setTag("PhoneVerifyUI")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            LoadingViewResend.Stop();
-                            TextViewResend.setVisibility(View.VISIBLE);
+                            .addBodyParameter("Issue", Code)
+                            .addBodyParameter("Phone", Phone)
+                            .setTag("PhoneVerifyUI")
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String Response) {
+                                    LoadingViewResend.Stop();
+                                    TextViewResend.setVisibility(View.VISIBLE);
 
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
+                                    try {
+                                        JSONObject Result = new JSONObject(Response);
 
-                                switch (Result.getInt("Message"))
-                                {
-                                    case 0:
-                                        CountDownTimerResend.start();
-                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUIResendDone));
-                                        break;
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
-                                        break;
-                                    case 4:
-                                    case 5:
-                                    case 6:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
-                                        break;
-                                    case 7:
-                                        Misc.ToastOld( Misc.String(R.string.PhoneUIError2));
-                                        break;
-                                    default:
-                                        Misc.GeneralError(Result.getInt("Message"));
-                                        break;
+                                        switch (Result.getInt("Message")) {
+                                            case 0:
+                                                CountDownTimerResend.start();
+                                                Misc.ToastOld(Misc.String(R.string.PhoneVerifyUIResendDone));
+                                                break;
+                                            case 1:
+                                            case 2:
+                                            case 3:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
+                                                break;
+                                            case 4:
+                                            case 5:
+                                            case 6:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhone));
+                                                break;
+                                            case 7:
+                                                Misc.ToastOld(Misc.String(R.string.PhoneUIError2));
+                                                break;
+                                            default:
+                                                Misc.GeneralError(Result.getInt("Message"));
+                                                break;
+                                        }
+                                    } catch (Exception e) {
+                                        Misc.Debug("PhoneVerifyUI-SignInPhone: " + e.toString());
+                                    }
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                Misc.Debug("PhoneVerifyUI-SignInPhone: " + e.toString());
-                            }
-                        }
 
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            LoadingViewResend.Stop();
-                            TextViewResend.setVisibility(View.VISIBLE);
-                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                        }
-                    });
+                                @Override
+                                public void onError(ANError e) {
+                                    LoadingViewResend.Stop();
+                                    TextViewResend.setVisibility(View.VISIBLE);
+                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                                }
+                            });
                 }
             }
         });
 
         // TODO Memory Leak
-        CountDownTimerResend = new CountDownTimer(120000, 1000)
-        {
+        CountDownTimerResend = new CountDownTimer(120000, 1000) {
             private boolean Enabled = true;
 
             @Override
-            public void onTick(long Counter)
-            {
+            public void onTick(long Counter) {
                 long Min = (Counter / 1000) / 60;
                 long Sec = (Counter / 1000) - (Min * 60);
 
                 TextViewTime.setText(("0" + Min + ":" + (Sec < 9 ? "0" + String.valueOf(Sec) : String.valueOf(Sec))));
 
-                if (Enabled)
-                {
+                if (Enabled) {
                     Enabled = false;
                     TextViewResend.setEnabled(false);
                     TextViewResend.SetColor(R.color.Gray);
@@ -636,8 +636,7 @@ class PhoneVerifyUI extends FragmentView
             }
 
             @Override
-            public void onFinish()
-            {
+            public void onFinish() {
                 cancel();
 
                 Enabled = true;
@@ -660,8 +659,8 @@ class PhoneVerifyUI extends FragmentView
         DrawableDisable.setColor(ContextCompat.getColor(Activity, R.color.Gray));
 
         StateListDrawable StateListNext = new StateListDrawable();
-        StateListNext.addState(new int[] { android.R.attr.state_enabled }, DrawableEnable);
-        StateListNext.addState(new int[] { -android.R.attr.state_enabled }, DrawableDisable);
+        StateListNext.addState(new int[]{android.R.attr.state_enabled}, DrawableEnable);
+        StateListNext.addState(new int[]{-android.R.attr.state_enabled}, DrawableDisable);
 
         RelativeLayout.LayoutParams RelativeLayoutNextParam = new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35));
         RelativeLayoutNextParam.setMargins(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -677,161 +676,142 @@ class PhoneVerifyUI extends FragmentView
         ButtonNext.setText(Misc.String(R.string.GeneralNext));
         ButtonNext.setBackground(StateListNext);
         ButtonNext.setEnabled(false);
-        ButtonNext.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ButtonNext.setVisibility(View.GONE);
                 LoadingViewNext.Start();
 
                 final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
 
-                if (IsSignUp)
-                {
+                if (IsSignUp) {
                     AndroidNetworking.post(Misc.GetRandomServer("SignUpPhoneVerify"))
-                    .addBodyParameter("Issue", Code)
-                    .addBodyParameter("Phone", Phone)
-                    .addBodyParameter("VerifyCode", VerifyCode)
-                    .setTag("PhoneVerifyUI")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            LoadingViewNext.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
+                            .addBodyParameter("Issue", Code)
+                            .addBodyParameter("Phone", Phone)
+                            .addBodyParameter("VerifyCode", VerifyCode)
+                            .setTag("PhoneVerifyUI")
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String Response) {
+                                    LoadingViewNext.Stop();
+                                    ButtonNext.setVisibility(View.VISIBLE);
 
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
+                                    try {
+                                        JSONObject Result = new JSONObject(Response);
 
-                                switch (Result.getInt("Message"))
-                                {
-                                    case 0:
-                                        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                        Anim.setDuration(200);
+                                        switch (Result.getInt("Message")) {
+                                            case 0:
+                                                TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                                Anim.setDuration(200);
 
-                                        RelativeLayoutMain.setAnimation(Anim);
+                                                RelativeLayoutMain.setAnimation(Anim);
 
-                                        Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), "UsernameUI", true);
-                                        break;
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
-                                        break;
-                                    case 4:
-                                    case 5:
-                                    case 6:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
-                                        break;
-                                    case 7:
-                                    case 8:
-                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeCount));
-                                        break;
-                                    case 9:
-                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeWrong));
-                                        break;
-                                    default:
-                                        Misc.GeneralError(Result.getInt("Message"));
-                                        break;
+                                                Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), "UsernameUI", true);
+                                                break;
+                                            case 1:
+                                            case 2:
+                                            case 3:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
+                                                break;
+                                            case 4:
+                                            case 5:
+                                            case 6:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhone));
+                                                break;
+                                            case 7:
+                                            case 8:
+                                                Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeCount));
+                                                break;
+                                            case 9:
+                                                Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeWrong));
+                                                break;
+                                            default:
+                                                Misc.GeneralError(Result.getInt("Message"));
+                                                break;
+                                        }
+                                    } catch (Exception e) {
+                                        Misc.Debug("PhoneVerifyUI-SignUpPhoneVerify: " + e.toString());
+                                    }
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                Misc.Debug("PhoneVerifyUI-SignUpPhoneVerify: " + e.toString());
-                            }
-                        }
 
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            LoadingViewNext.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
-                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                        }
-                    });
-                }
-                else
-                {
+                                @Override
+                                public void onError(ANError e) {
+                                    LoadingViewNext.Stop();
+                                    ButtonNext.setVisibility(View.VISIBLE);
+                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                                }
+                            });
+                } else {
                     AndroidNetworking.post(Misc.GetRandomServer("SignInPhoneVerify"))
-                    .addBodyParameter("Issue", Code)
-                    .addBodyParameter("Phone", Phone)
-                    .addBodyParameter("VerifyCode", VerifyCode)
-                    .addBodyParameter("Session", Misc.GenerateSession())
-                    .setTag("PhoneVerifyUI")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            LoadingViewNext.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
+                            .addBodyParameter("Issue", Code)
+                            .addBodyParameter("Phone", Phone)
+                            .addBodyParameter("VerifyCode", VerifyCode)
+                            .addBodyParameter("Session", Misc.GenerateSession())
+                            .setTag("PhoneVerifyUI")
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String Response) {
+                                    LoadingViewNext.Stop();
+                                    ButtonNext.setVisibility(View.VISIBLE);
 
-                            try
-                            {
-                                JSONObject Result = new JSONObject(Response);
+                                    try {
+                                        JSONObject Result = new JSONObject(Response);
 
-                                switch (Result.getInt("Message"))
-                                {
-                                    case 0:
-                                        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                        Anim.setDuration(200);
+                                        switch (Result.getInt("Message")) {
+                                            case 0:
+                                                TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                                Anim.setDuration(200);
 
-                                        RelativeLayoutMain.setAnimation(Anim);
+                                                RelativeLayoutMain.setAnimation(Anim);
 
-                                        Misc.SetBoolean("IsLogin", true);
-                                        Misc.SetBoolean("IsGoogle", false);
-                                        Misc.SetString("Token", Result.getString("Token"));
-                                        Misc.SetString("ID", Result.getString("ID"));
-                                        Misc.SetString("Username", Result.getString("Username"));
-                                        Misc.SetString("Avatar", Result.getString("Avatar"));
+                                                Misc.SetBoolean("IsLogin", true);
+                                                Misc.SetBoolean("IsGoogle", false);
+                                                Misc.SetString("Token", Result.getString("Token"));
+                                                Misc.SetString("ID", Result.getString("ID"));
+                                                Misc.SetString("Username", Result.getString("Username"));
+                                                Misc.SetString("Avatar", Result.getString("Avatar"));
 
-                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                                        Activity.finish();
-                                        break;
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhoneCode));
-                                        break;
-                                    case 4:
-                                    case 5:
-                                    case 6:
-                                        Misc.ToastOld( Misc.String(R.string.GeneralPhone));
-                                        break;
-                                    case 7:
-                                    case 8:
-                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeCount));
-                                        break;
-                                    case 9:
-                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeWrong));
-                                        break;
-                                    case 10:
-                                        Misc.ToastOld( Misc.String(R.string.PhoneVerifyUICodeNotFound));
-                                        break;
-                                    default:
-                                        Misc.GeneralError(Result.getInt("Message"));
-                                        break;
+                                                Activity.startActivity(new Intent(Activity, SocialActivity.class));
+                                                Activity.finish();
+                                                break;
+                                            case 1:
+                                            case 2:
+                                            case 3:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
+                                                break;
+                                            case 4:
+                                            case 5:
+                                            case 6:
+                                                Misc.ToastOld(Misc.String(R.string.GeneralPhone));
+                                                break;
+                                            case 7:
+                                            case 8:
+                                                Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeCount));
+                                                break;
+                                            case 9:
+                                                Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeWrong));
+                                                break;
+                                            case 10:
+                                                Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeNotFound));
+                                                break;
+                                            default:
+                                                Misc.GeneralError(Result.getInt("Message"));
+                                                break;
+                                        }
+                                    } catch (Exception e) {
+                                        Misc.Debug("PhoneVerifyUI-SignInPhoneVerify: " + e.toString());
+                                    }
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                Misc.Debug("PhoneVerifyUI-SignInPhoneVerify: " + e.toString());
-                            }
-                        }
 
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            LoadingViewNext.Stop();
-                            ButtonNext.setVisibility(View.VISIBLE);
-                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                        }
-                    });
+                                @Override
+                                public void onError(ANError e) {
+                                    LoadingViewNext.Stop();
+                                    ButtonNext.setVisibility(View.VISIBLE);
+                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                                }
+                            });
                 }
             }
         });
@@ -855,8 +835,7 @@ class PhoneVerifyUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         RelativeLayoutMain.getViewTreeObserver().addOnGlobalLayoutListener(LayoutListener);
 
         Intent i = new Intent("Biogram.SMS.Request");
@@ -867,15 +846,13 @@ class PhoneVerifyUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("PhoneVerifyUI");
         RelativeLayoutMain.getViewTreeObserver().removeOnGlobalLayoutListener(LayoutListener);
     }
 
     @Override
-    public void OnDestroy()
-    {
+    public void OnDestroy() {
         Intent i = new Intent("Biogram.SMS.Request");
         i.putExtra("SetWaiting", false);
 
@@ -884,37 +861,4 @@ class PhoneVerifyUI extends FragmentView
 
         CountDownTimerResend.cancel();
     }
-
-    private final BroadcastReceiver VerifyReceiver = new BroadcastReceiver()
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            if (intent.getAction() == null || intent.getExtras() == null)
-                return;
-
-            if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Verify"))
-            {
-                String VerifyCode = intent.getExtras().getString("Issue", "");
-
-                if (VerifyCode.length() < 4)
-                    return;
-
-                final String[] Separated = VerifyCode.split("(?!^)");
-
-                Misc.UIThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        EditTextCode1.setText(Separated[0]);
-                        EditTextCode2.setText(Separated[1]);
-                        EditTextCode3.setText(Separated[2]);
-                        EditTextCode4.setText(Separated[3]);
-                        EditTextCode5.setText(Separated[4]);
-                    }
-                }, 0);
-            }
-        }
-    };
 }

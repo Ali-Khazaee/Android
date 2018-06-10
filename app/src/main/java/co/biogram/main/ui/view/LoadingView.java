@@ -18,8 +18,7 @@ import java.util.List;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 
-public class LoadingView extends LinearLayout
-{
+public class LoadingView extends LinearLayout {
     private List<ValueAnimator> AnimatorList = new ArrayList<>();
     private List<Bounce> BounceList = new ArrayList<>();
 
@@ -28,13 +27,11 @@ public class LoadingView extends LinearLayout
     private int BounceColor;
     private int BounceSize;
 
-    public LoadingView(Context context)
-    {
+    public LoadingView(Context context) {
         this(context, null);
     }
 
-    public LoadingView(Context context, AttributeSet attrs)
-    {
+    public LoadingView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setOrientation(HORIZONTAL);
@@ -46,23 +43,20 @@ public class LoadingView extends LinearLayout
     }
 
     @Override
-    public void onDetachedFromWindow()
-    {
+    public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         LocalStop();
     }
 
     @Override
-    public void onAttachedToWindow()
-    {
+    public void onAttachedToWindow() {
         super.onAttachedToWindow();
 
         if (ShouldPlay)
             Start();
     }
 
-    public void Start()
-    {
+    public void Start() {
         LocalStop();
 
         LayoutParams BounceParam = new LayoutParams(BounceSize, BounceSize);
@@ -72,8 +66,7 @@ public class LoadingView extends LinearLayout
         DrawableBounce.setShape(GradientDrawable.OVAL);
         DrawableBounce.setColor(BounceColor);
 
-        for (int I = 0; I < 3; I++)
-        {
+        for (int I = 0; I < 3; I++) {
             Bounce bounce = new Bounce(getContext());
             bounce.setBackground(DrawableBounce);
 
@@ -84,21 +77,17 @@ public class LoadingView extends LinearLayout
                 addView(new View(getContext()), SpaceParam);
         }
 
-        for (int I = 0; I < 3; I++)
-        {
+        for (int I = 0; I < 3; I++) {
             int BounceSpeed = 300;
             Bounce bounce = BounceList.get(I);
 
             ValueAnimator ValueAnimatorGrow = ObjectAnimator.ofFloat(bounce, "scale", 1.0f, BounceScale, 1.0f);
             ValueAnimatorGrow.setDuration(BounceSpeed);
 
-            if (I == 2)
-            {
-                ValueAnimatorGrow.addListener(new AnimatorListenerAdapter()
-                {
+            if (I == 2) {
+                ValueAnimatorGrow.addListener(new AnimatorListenerAdapter() {
                     @Override
-                    public void onAnimationEnd(Animator animation)
-                    {
+                    public void onAnimationEnd(Animator animation) {
                         for (ValueAnimator animator : AnimatorList)
                             if (animator != null)
                                 animator.start();
@@ -116,25 +105,21 @@ public class LoadingView extends LinearLayout
         setVisibility(VISIBLE);
     }
 
-    public void Stop()
-    {
+    public void Stop() {
         LocalStop();
         ShouldPlay = false;
         setVisibility(INVISIBLE);
     }
 
-    private void LocalStop()
-    {
-        for (Bounce bounce : BounceList)
-        {
+    private void LocalStop() {
+        for (Bounce bounce : BounceList) {
             if (bounce == null)
                 continue;
 
             bounce.clearAnimation();
         }
 
-        for (ValueAnimator animator : AnimatorList)
-        {
+        for (ValueAnimator animator : AnimatorList) {
             if (animator == null)
                 continue;
 
@@ -150,31 +135,25 @@ public class LoadingView extends LinearLayout
         removeAllViews();
     }
 
-    public void SetSize(int Size)
-    {
+    public void SetSize(int Size) {
         BounceSize = Misc.ToDP(Size);
     }
 
-    public void SetScale(float Scale)
-    {
+    public void SetScale(float Scale) {
         BounceScale = Scale;
     }
 
-    public void SetColor(int Color)
-    {
+    public void SetColor(int Color) {
         BounceColor = Misc.Color(Color);
     }
 
-    private class Bounce extends View
-    {
-        Bounce(Context context)
-        {
+    private class Bounce extends View {
+        Bounce(Context context) {
             super(context);
         }
 
         @Keep
-        public void setScale(float Scale)
-        {
+        public void setScale(float Scale) {
             setScaleX(Scale);
             setScaleY(Scale);
         }

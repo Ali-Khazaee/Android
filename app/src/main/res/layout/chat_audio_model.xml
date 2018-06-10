@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ConstraintLayoutChat"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/z_blue_chat_background"
+        android:minWidth="140dp"
+        android:padding="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/TextViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/ActionBarWhite"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AudioSeekBar"
+            tools:text="22:30" />
+
+        <ImageView
+            android:id="@+id/ImageViewSeen"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/TextViewTime"
+            app:layout_constraintEnd_toStartOf="@+id/TextViewTime"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/TextViewTime"
+            app:srcCompat="@drawable/ic_follow123_block" />
+
+        <Button
+            android:id="@+id/ButtonPlay"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/ic_play_arrow_white_256dp"
+            app:layout_constraintBottom_toBottomOf="@+id/AudioSeekBar"
+            app:layout_constraintEnd_toStartOf="@+id/AudioSeekBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/AudioSeekBar" />
+
+        <SeekBar
+            android:id="@+id/AudioSeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:maxWidth="90dp"
+            android:minWidth="70dp"
+            android:theme="@style/BarColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/TextViewLength"
+            app:layout_constraintHeight_max="170dp"
+            app:layout_constraintStart_toEndOf="@+id/ButtonPlay"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/TextViewLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="2:50"
+            android:textColor="?ActionBarColor"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/AudioSeekBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/AudioSeekBar"
+            app:layout_constraintTop_toTopOf="@+id/AudioSeekBar" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

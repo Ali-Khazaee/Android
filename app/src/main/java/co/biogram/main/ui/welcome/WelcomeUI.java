@@ -38,8 +38,7 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class WelcomeUI extends FragmentView
-{
+public class WelcomeUI extends FragmentView {
     private LoadingView LoadingViewGoogle;
     private RelativeLayout RelativeLayoutGoogle;
     private ScrollView ScrollViewMain;
@@ -47,8 +46,7 @@ public class WelcomeUI extends FragmentView
     private boolean IsGoogleAvailable;
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         ScrollViewMain = new ScrollView(Activity);
         ScrollViewMain.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
         ScrollViewMain.setBackgroundResource(R.color.TextDark);
@@ -80,11 +78,9 @@ public class WelcomeUI extends FragmentView
         TextViewLanguage.setLayoutParams(TextViewLanguageParam);
         TextViewLanguage.setText(Misc.String(R.string.WelcomeUILanguage));
         TextViewLanguage.setId(Misc.generateViewId());
-        TextViewLanguage.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 final Dialog DialogLanguage = new Dialog(Activity);
                 DialogLanguage.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogLanguage.setCancelable(true);
@@ -117,7 +113,12 @@ public class WelcomeUI extends FragmentView
                 ImageViewClose.setLayoutParams(ImageViewCloseParam);
                 ImageViewClose.setImageResource(R.drawable.close_blue);
                 ImageViewClose.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
-                ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); } });
+                ImageViewClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogLanguage.dismiss();
+                    }
+                });
 
                 RelativeLayoutHeader.addView(ImageViewClose);
 
@@ -136,7 +137,13 @@ public class WelcomeUI extends FragmentView
                 TextViewEnglish.setText(Misc.String(R.string.WelcomeUILanguageEnglish));
                 TextViewEnglish.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewEnglish.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
-                TextViewEnglish.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); Misc.ChangeLanguage("en"); } });
+                TextViewEnglish.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogLanguage.dismiss();
+                        Misc.ChangeLanguage("en");
+                    }
+                });
 
                 LinearLayoutLanguage.addView(TextViewEnglish);
 
@@ -155,7 +162,13 @@ public class WelcomeUI extends FragmentView
                 TextViewPersian.setText(Misc.String(R.string.WelcomeUILanguagePersian));
                 TextViewPersian.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewPersian.setGravity(Misc.Gravity("R") | Gravity.CENTER_VERTICAL);
-                TextViewPersian.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { DialogLanguage.dismiss(); Misc.ChangeLanguage("fa"); } });
+                TextViewPersian.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogLanguage.dismiss();
+                        Misc.ChangeLanguage("fa");
+                    }
+                });
 
                 LinearLayoutLanguage.addView(TextViewPersian);
 
@@ -212,11 +225,9 @@ public class WelcomeUI extends FragmentView
         ButtonSignUp.setText(Misc.String(R.string.GeneralSignUp));
         ButtonSignUp.setId(Misc.generateViewId());
         ButtonSignUp.setBackground(DrawableSignUp);
-        ButtonSignUp.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                 Anim.setDuration(200);
 
@@ -281,11 +292,9 @@ public class WelcomeUI extends FragmentView
         LinearLayoutGoogle.setLayoutParams(LinearLayoutGoogleParam);
         LinearLayoutGoogle.setGravity(Gravity.CENTER);
         LinearLayoutGoogle.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayoutGoogle.setOnClickListener(new View.OnClickListener()
-        {
+        LinearLayoutGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 if (Build.VERSION.SDK_INT > 20)
                     Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.TextWhite));
 
@@ -323,11 +332,9 @@ public class WelcomeUI extends FragmentView
         RelativeLayoutSignIn.setBackgroundResource(R.color.ActionBarWhite);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
         RelativeLayoutSignIn.setId(Misc.generateViewId());
-        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener()
-        {
+        RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
                 Anim.setDuration(200);
 
@@ -381,7 +388,12 @@ public class WelcomeUI extends FragmentView
         TextViewTerm2.SetColor(R.color.Gray);
         TextViewTerm2.setText(Misc.String(R.string.WelcomeUITerm2));
         TextViewTerm2.setId(Misc.generateViewId());
-        TextViewTerm2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co"))); } });
+        TextViewTerm2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co")));
+            }
+        });
 
         RelativeLayoutMain.addView(TextViewTerm2);
 
@@ -417,31 +429,27 @@ public class WelcomeUI extends FragmentView
 
         IsGoogleAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Activity) == ConnectionResult.SUCCESS;
 
-        if (IsGoogleAvailable)
-        {
+        if (IsGoogleAvailable) {
             GoogleApiClient = new GoogleApiClient.Builder(Activity.getApplicationContext())
-            .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com")
-            .build())
-            .build();
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestEmail()
+                            .requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com")
+                            .build())
+                    .build();
         }
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
         if (IsGoogleAvailable)
             GoogleApiClient.connect();
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("WelcomeUI");
 
-        if (IsGoogleAvailable)
-        {
+        if (IsGoogleAvailable) {
             if (GoogleApiClient.isConnected())
                 Auth.GoogleSignInApi.signOut(GoogleApiClient);
 
@@ -450,100 +458,83 @@ public class WelcomeUI extends FragmentView
     }
 
     @Override
-    public void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
-    {
-        if (RequestCode == 100)
-        {
+    public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) {
+        if (RequestCode == 100) {
             GoogleSignInResult Result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
 
-            if (Result.isSuccess())
-            {
+            if (Result.isSuccess()) {
                 final GoogleSignInAccount Result2 = Result.getSignInAccount();
 
-                if (Result2 != null)
-                {
+                if (Result2 != null) {
                     AndroidNetworking.post(Misc.GetRandomServer("SignInGoogle"))
-                    .addBodyParameter("Token", Result2.getIdToken())
-                    .addBodyParameter("Session", Misc.GenerateSession())
-                    .setTag("WelcomeUI")
-                    .build()
-                    .getAsString(new StringRequestListener()
-                    {
-                        @Override
-                        public void onResponse(String Response)
-                        {
-                            HideGoogleLoading();
+                            .addBodyParameter("Token", Result2.getIdToken())
+                            .addBodyParameter("Session", Misc.GenerateSession())
+                            .setTag("WelcomeUI")
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String Response) {
+                                    HideGoogleLoading();
 
-                            try
-                            {
-                                JSONObject Result3 = new JSONObject(Response);
+                                    try {
+                                        JSONObject Result3 = new JSONObject(Response);
 
-                                switch (Result3.getInt("Message"))
-                                {
-                                    case 0:
-                                        if (Result3.getBoolean("Registered"))
-                                        {
-                                            Misc.SetBoolean("IsLogin", true);
-                                            Misc.SetBoolean("IsGoogle", true);
-                                            Misc.SetString("Token", Result3.getString("Token"));
-                                            Misc.SetString("ID", Result3.getString("ID"));
-                                            Misc.SetString("Username", Result3.getString("Username"));
-                                            Misc.SetString("Avatar", Result3.getString("Avatar"));
+                                        switch (Result3.getInt("Message")) {
+                                            case 0:
+                                                if (Result3.getBoolean("Registered")) {
+                                                    Misc.SetBoolean("IsLogin", true);
+                                                    Misc.SetBoolean("IsGoogle", true);
+                                                    Misc.SetString("Token", Result3.getString("Token"));
+                                                    Misc.SetString("ID", Result3.getString("ID"));
+                                                    Misc.SetString("Username", Result3.getString("Username"));
+                                                    Misc.SetString("Avatar", Result3.getString("Avatar"));
 
-                                            Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                                            Activity.finish();
-                                            return;
+                                                    Activity.startActivity(new Intent(Activity, SocialActivity.class));
+                                                    Activity.finish();
+                                                    return;
+                                                }
+
+                                                TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
+                                                Anim.setDuration(200);
+
+                                                ScrollViewMain.setAnimation(Anim);
+
+                                                Activity.GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), "UsernameUI", true);
+                                                break;
+                                            case 1:
+                                            case 2:
+                                            case 3:
+                                            case 4:
+                                            case 5:
+                                                Misc.ToastOld(Misc.String(R.string.WelcomeUIGoogleError1));
+                                                break;
+                                            case 6:
+                                                Misc.ToastOld(Misc.String(R.string.WelcomeUIGoogleError2));
+                                                break;
+                                            default:
+                                                Misc.GeneralError(Result3.getInt("Message"));
                                         }
-
-                                        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                        Anim.setDuration(200);
-
-                                        ScrollViewMain.setAnimation(Anim);
-
-                                        Activity.GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), "UsernameUI", true);
-                                        break;
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                    case 4:
-                                    case 5:
-                                        Misc.ToastOld( Misc.String(R.string.WelcomeUIGoogleError1));
-                                        break;
-                                    case 6:
-                                        Misc.ToastOld( Misc.String(R.string.WelcomeUIGoogleError2));
-                                        break;
-                                    default:
-                                        Misc.GeneralError(Result3.getInt("Message"));
+                                    } catch (Exception e) {
+                                        Misc.Debug("WelcomeUI: " + e.toString());
+                                    }
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                Misc.Debug("WelcomeUI: " + e.toString());
-                            }
-                        }
 
-                        @Override
-                        public void onError(ANError e)
-                        {
-                            HideGoogleLoading();
-                            Misc.ToastOld( Misc.String(R.string.GeneralNoInternet));
-                        }
-                    });
-                }
-                else
-                {
+                                @Override
+                                public void onError(ANError e) {
+                                    HideGoogleLoading();
+                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                                }
+                            });
+                } else {
                     HideGoogleLoading();
                 }
-            }
-            else
-            {
+            } else {
                 HideGoogleLoading();
             }
         }
     }
 
-    private void HideGoogleLoading()
-    {
+    private void HideGoogleLoading() {
         if (Build.VERSION.SDK_INT > 20)
             Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.Primary));
 

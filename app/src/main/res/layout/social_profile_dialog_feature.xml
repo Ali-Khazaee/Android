@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentStart="true"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_alignParentStart="true"
-        android:text="@string/SocialProfileUIFeatureTitle"
-        android:textStyle="bold"
-        android:textSize="@dimen/FontVerySmall"
+        android:layout_toStartOf="@+id/ImageViewClose"
         android:gravity="center_vertical"
+        android:text="@string/SocialProfileUIFeatureTitle"
         android:textColor="?TextColor"
-        android:layout_toStartOf="@+id/ImageViewClose" />
+        android:textSize="@dimen/FontVerySmall"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/ImageViewClose"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentEnd="true"
         android:padding="9dp"
-        android:src="@drawable/z_general_close_blue"
-        android:layout_alignParentEnd="true" />
+        android:src="@drawable/z_general_close_blue" />
 
     <View
         android:id="@+id/ViewLine"
@@ -36,43 +35,43 @@
         android:id="@+id/TextViewMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/Gray"
-        android:textSize="@dimen/FontVerySmall"
-        android:paddingTop="10dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
         android:layout_below="@+id/ViewLine"
-        android:text="@string/SocialProfileUIFeatureMessage" />
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:text="@string/SocialProfileUIFeatureMessage"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontVerySmall" />
 
     <co.biogram.main.ui.view.EditTextTag
         android:id="@+id/EditTextTagFeature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_below="@+id/TextViewMessage"
         android:layout_marginEnd="10dp"
-        android:layout_below="@+id/TextViewMessage" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/TextViewSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/EditTextTagFeature"
         android:layout_alignParentEnd="true"
+        android:layout_below="@+id/EditTextTagFeature"
+        android:padding="20dp"
         android:text="@string/SocialProfileUISubmit"
         android:textColor="@color/Primary"
-        android:textSize="@dimen/FontMedium"
-        android:padding="20dp" />
+        android:textSize="@dimen/FontMedium" />
 
     <TextView
         android:id="@+id/TextViewAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/EditTextTagFeature"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/EditTextTagFeature"
+        android:padding="20dp"
         android:text="@string/SocialProfileUIFeatureAdd"
         android:textColor="@color/Primary"
-        android:textSize="@dimen/FontSmall"
-        android:padding="20dp" />
+        android:textSize="@dimen/FontSmall" />
 
 </RelativeLayout>

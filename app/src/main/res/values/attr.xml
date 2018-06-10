@@ -7,4 +7,5 @@
     <attr name="StatusBarColor" format="reference|color" />
     <attr name="ToastColor" format="reference|color" />
     <attr name="ToastLineColor" format="reference|color" />
+
 </resources>

@@ -17,8 +17,7 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PostUI extends FragmentView
-{
+public class PostUI extends FragmentView {
     private int ID1_PROFILE = Misc.generateViewId();
     private int ID1_NAME = Misc.generateViewId();
     private int ID1_MEDAL = Misc.generateViewId();
@@ -89,14 +88,12 @@ public class PostUI extends FragmentView
 
     private String ID;
 
-    public PostUI(String id)
-    {
+    public PostUI(String id) {
         ID = id;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
@@ -116,7 +113,12 @@ public class PostUI extends FragmentView
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_blue : R.drawable.z_general_back_blue);
-        ImageViewBack.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
         ImageViewBack.setId(Misc.generateViewId());
 
         RelativeLayoutHeader.addView(ImageViewBack);
@@ -583,16 +585,6 @@ public class PostUI extends FragmentView
         LinearLayoutResult.addView(TextViewVoteTime);
 
 
-
-
-
-
-
-
-
-
-
-
         RelativeLayout RelativeLayoutType2 = new RelativeLayout(Activity);
         RelativeLayoutType2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         RelativeLayoutType2.setVisibility(View.GONE);
@@ -828,7 +820,7 @@ public class PostUI extends FragmentView
 
         RelativeLayout.LayoutParams TextViewFileNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         TextViewFileNameParam.addRule(RelativeLayout.RIGHT_OF, RelativeLayoutFile2.getId());
-        TextViewFileNameParam.setMargins(Misc.ToDP(8), Misc.ToDP(2), 0, 0);
+        TextViewFileNameParam.setMargins(Misc.ToDP(8), Misc.ToDP(audio_start), 0, 0);
 
         final TextView TextViewFileName = new TextView(Activity, 14, false);
         TextViewFileName.setLayoutParams(TextViewFileNameParam);
@@ -1153,7 +1145,7 @@ public class PostUI extends FragmentView
                                         GlideApp.with(Activity).load(URL1).placeholder(R.color.LineWhite).transforms(new CenterCrop(), new RoundedCorners(Misc.ToDP(6))).into(ImageViewSingle);
                                     }
                                     break;
-                                    case 2:
+                                    case audio_start:
                                     {
                                         final String URL1 = URL.get(0).toString();
                                         final String URL2 = URL.get(1).toString();
@@ -1171,7 +1163,7 @@ public class PostUI extends FragmentView
                                     {
                                         final String URL1 = URL.get(0).toString();
                                         final String URL2 = URL.get(1).toString();
-                                        final String URL3 = URL.get(2).toString();
+                                        final String URL3 = URL.get(audio_start).toString();
 
                                         LinearLayoutTriple.setVisibility(View.VISIBLE);
 
@@ -1187,7 +1179,7 @@ public class PostUI extends FragmentView
                                 }
                             }
                             break;
-                            case 2:
+                            case audio_start:
                             {
                                 JSONObject Video = new JSONObject(P.Data);
 
@@ -1339,7 +1331,7 @@ public class PostUI extends FragmentView
                                             if (ViewType1Sel1.getTag() == "1")
                                                 S = 1;
                                             else if (ViewType1Sel2.getTag() == "1")
-                                                S = 2;
+                                                S = audio_start;
                                             else if (ViewType1Sel3.getTag() == "1")
                                                 S = 3;
                                             else if (ViewType1Sel4.getTag() == "1")
@@ -1483,7 +1475,7 @@ public class PostUI extends FragmentView
                                     switch (Vote.getInt("Vote"))
                                     {
                                         case 0: ImageViewType2Select.setVisibility(View.GONE); break;
-                                        case 2: ID = TextViewType2Text1.getId(); break;
+                                        case audio_start: ID = TextViewType2Text1.getId(); break;
                                         case 3: ID = TextViewType2Text2.getId(); break;
                                         case 4: ID = TextViewType2Text3.getId(); break;
                                         case 5: ID = TextViewType2Text5.getId(); break;
@@ -2243,8 +2235,7 @@ public class PostUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("WriteUI");
     }
 }

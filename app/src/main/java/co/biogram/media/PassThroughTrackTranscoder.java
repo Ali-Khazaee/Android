@@ -7,8 +7,7 @@ import android.media.MediaFormat;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-class PassThroughTrackTranscoder implements TrackTranscoder
-{
+class PassThroughTrackTranscoder implements TrackTranscoder {
     private final MediaExtractor mExtractor;
     private final int mTrackIndex;
     private final QueuedMuxer mMuxer;
@@ -18,8 +17,7 @@ class PassThroughTrackTranscoder implements TrackTranscoder
     private boolean mIsEOS;
     private long mWrittenPresentationTimeUs;
 
-    PassThroughTrackTranscoder(MediaExtractor extractor, int trackIndex, QueuedMuxer muxer, QueuedMuxer.SampleType sampleType)
-    {
+    PassThroughTrackTranscoder(MediaExtractor extractor, int trackIndex, QueuedMuxer muxer, QueuedMuxer.SampleType sampleType) {
         mExtractor = extractor;
         mTrackIndex = trackIndex;
         mMuxer = muxer;
@@ -32,17 +30,16 @@ class PassThroughTrackTranscoder implements TrackTranscoder
     }
 
     @Override
-    public void setup() { }
+    public void setup() {
+    }
 
 
     @Override
-    public boolean stepPipeline()
-    {
+    public boolean stepPipeline() {
         if (mIsEOS) return false;
         int trackIndex = mExtractor.getSampleTrackIndex();
 
-        if (trackIndex < 0)
-        {
+        if (trackIndex < 0) {
             mBuffer.clear();
             mBufferInfo.set(0, 0, 0, MediaCodec.BUFFER_FLAG_END_OF_STREAM);
             mMuxer.writeSampleData(mSampleType, mBuffer, mBufferInfo);
@@ -65,17 +62,16 @@ class PassThroughTrackTranscoder implements TrackTranscoder
     }
 
     @Override
-    public long getWrittenPresentationTimeUs()
-    {
+    public long getWrittenPresentationTimeUs() {
         return mWrittenPresentationTimeUs;
     }
 
     @Override
-    public boolean isFinished()
-    {
+    public boolean isFinished() {
         return mIsEOS;
     }
 
     @Override
-    public void release() { }
+    public void release() {
+    }
 }

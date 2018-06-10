@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,12 +16,12 @@
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/ImageViewProfile"
             android:gravity="center_vertical"
-            android:textStyle="bold"
             android:paddingEnd="15dp"
             android:paddingStart="15dp"
             android:text="@string/SocialProfileUI"
             android:textColor="?TextColor"
-            android:textSize="@dimen/FontMedium" />
+            android:textSize="@dimen/FontMedium"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/ImageViewSetting"
@@ -63,39 +62,39 @@
                 android:id="@+id/CircleImageViewProfile"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:src="@drawable/z_social_profile_avatar"
                 android:layout_margin="15dp"
-                app:civ_border_width="1dp"
-                app:civ_border_color="@color/Gray" />
+                android:src="@drawable/z_social_profile_avatar"
+                app:civ_border_color="@color/Gray"
+                app:civ_border_width="1dp" />
 
             <TextView
                 android:id="@+id/TextViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/FontSmall"
-                android:textStyle="bold"
                 android:layout_marginTop="27dp"
+                android:layout_toEndOf="@+id/CircleImageViewProfile"
                 android:layout_toStartOf="@+id/LinearLayoutBookmark"
-                android:layout_toEndOf="@+id/CircleImageViewProfile" />
+                android:textSize="@dimen/FontSmall"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/TextViewUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/FontVerySmall"
                 android:layout_below="@+id/TextViewName"
-                android:layout_toEndOf="@+id/CircleImageViewProfile" />
+                android:layout_toEndOf="@+id/CircleImageViewProfile"
+                android:textSize="@dimen/FontVerySmall" />
 
             <LinearLayout
                 android:id="@+id/LinearLayoutBookmark"
                 android:layout_width="90dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginEnd="15dp"
-                android:orientation="horizontal"
-                android:gravity="center"
                 android:layout_alignParentEnd="true"
-                android:background="@drawable/z_social_profile_saved">
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/z_social_profile_saved"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="20dp"
@@ -105,11 +104,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/FontVerySmall"
-                    android:textColor="?TextColor"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
-                    android:text="@string/SocialProfileUIBookmark" />
+                    android:text="@string/SocialProfileUIBookmark"
+                    android:textColor="?TextColor"
+                    android:textSize="@dimen/FontVerySmall" />
 
             </LinearLayout>
 
@@ -117,9 +116,9 @@
                 android:id="@+id/LinearLayoutCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_below="@+id/CircleImageViewProfile"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -134,18 +133,18 @@
                         android:id="@+id/TextViewFollowing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:paddingBottom="5dp"
                         android:textColor="?TextColor"
-                        android:textStyle="bold"
-                        android:paddingBottom="5dp" />
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUIFollowing"
                         android:textColor="@color/Gray"
-                        android:textStyle="bold"
-                        android:text="@string/SocialProfileUIFollowing" />
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -160,18 +159,18 @@
                         android:id="@+id/TextViewFollower"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:paddingBottom="5dp"
                         android:textColor="?TextColor"
-                        android:textStyle="bold"
-                        android:paddingBottom="5dp" />
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUIFollower"
                         android:textColor="@color/Gray"
-                        android:textStyle="bold"
-                        android:text="@string/SocialProfileUIFollower" />
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -186,18 +185,18 @@
                         android:id="@+id/TextViewProfileView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:paddingBottom="5dp"
                         android:textColor="?TextColor"
-                        android:textStyle="bold"
-                        android:paddingBottom="5dp" />
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUIProfileView"
                         android:textColor="@color/Gray"
-                        android:textStyle="bold"
-                        android:text="@string/SocialProfileUIProfileView" />
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -220,9 +219,9 @@
                     android:id="@+id/LinearLayoutRating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
                     android:gravity="start|center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="15dp">
 
                     <ImageView
                         android:layout_width="32dp"
@@ -233,37 +232,37 @@
                         android:id="@+id/TextViewRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
-                        android:textStyle="bold"
-                        android:textColor="?TextColor"
                         android:paddingEnd="5dp"
-                        android:paddingStart="5dp" />
+                        android:paddingStart="5dp"
+                        android:textColor="?TextColor"
+                        android:textSize="@dimen/FontSmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
+                        android:text="@string/SocialProfileUIRating"
                         android:textColor="?TextColor"
-                        android:textStyle="bold"
-                        android:text="@string/SocialProfileUIRating" />
+                        android:textSize="@dimen/FontSmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/TextViewRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontMinimal"
-                        android:textColor="@color/Gray"
-                        android:paddingTop="3dp"
                         android:paddingEnd="5dp"
-                        android:paddingStart="5dp" />
+                        android:paddingStart="5dp"
+                        android:paddingTop="3dp"
+                        android:textColor="@color/Gray"
+                        android:textSize="@dimen/FontMinimal" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontMinimal"
                         android:paddingTop="3dp"
+                        android:text="@string/SocialProfileUIRate"
                         android:textColor="@color/Gray"
-                        android:text="@string/SocialProfileUIRate" />
+                        android:textSize="@dimen/FontMinimal" />
 
                 </LinearLayout>
 
@@ -276,9 +275,9 @@
                     android:id="@+id/LinearLayoutSpecial"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
                     android:gravity="start|center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="15dp">
 
                     <ImageView
                         android:layout_width="32dp"
@@ -288,12 +287,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
-                        android:textStyle="bold"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
                         android:text="@string/SocialProfileUISpecial"
                         android:textColor="?TextColor"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp" />
+                        android:textSize="@dimen/FontSmall"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -306,28 +305,28 @@
                     android:id="@+id/LinearLayoutPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
+                    android:orientation="vertical"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:orientation="vertical">
+                    android:paddingTop="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
-                        android:textColor="?TextColor"
-                        android:textStyle="bold"
                         android:paddingBottom="5dp"
-                        android:text="@string/SocialProfileUIPhoneNumber" />
+                        android:text="@string/SocialProfileUIPhoneNumber"
+                        android:textColor="?TextColor"
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/TextViewPhoneNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUINotSet"
                         android:textColor="@color/Gray"
-                        android:text="@string/SocialProfileUINotSet" />
+                        android:textSize="@dimen/FontVerySmall" />
 
                 </LinearLayout>
 
@@ -340,28 +339,28 @@
                     android:id="@+id/LinearLayoutEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
+                    android:orientation="vertical"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:orientation="vertical">
+                    android:paddingTop="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
-                        android:textColor="?TextColor"
-                        android:textStyle="bold"
                         android:paddingBottom="5dp"
-                        android:text="@string/SocialProfileUIEmailAddress" />
+                        android:text="@string/SocialProfileUIEmailAddress"
+                        android:textColor="?TextColor"
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/TextViewEmailAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUINotSet"
                         android:textColor="@color/Gray"
-                        android:text="@string/SocialProfileUINotSet" />
+                        android:textSize="@dimen/FontVerySmall" />
 
                 </LinearLayout>
 
@@ -374,28 +373,28 @@
                     android:id="@+id/LinearLayoutAboutMe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
+                    android:orientation="vertical"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:orientation="vertical">
+                    android:paddingTop="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
-                        android:textColor="?TextColor"
-                        android:textStyle="bold"
                         android:paddingBottom="5dp"
-                        android:text="@string/SocialProfileUIAboutMe" />
+                        android:text="@string/SocialProfileUIAboutMe"
+                        android:textColor="?TextColor"
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/TextViewAboutMe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUINotSet"
                         android:textColor="@color/Gray"
-                        android:text="@string/SocialProfileUINotSet" />
+                        android:textSize="@dimen/FontVerySmall" />
 
                 </LinearLayout>
 
@@ -408,28 +407,28 @@
                     android:id="@+id/LinearLayoutWebsite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
+                    android:orientation="vertical"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:orientation="vertical">
+                    android:paddingTop="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
-                        android:textColor="?TextColor"
-                        android:textStyle="bold"
                         android:paddingBottom="5dp"
-                        android:text="@string/SocialProfileUIWebsite" />
+                        android:text="@string/SocialProfileUIWebsite"
+                        android:textColor="?TextColor"
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/TextViewWebsite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUINotSet"
                         android:textColor="@color/Gray"
-                        android:text="@string/SocialProfileUINotSet" />
+                        android:textSize="@dimen/FontVerySmall" />
 
                 </LinearLayout>
 
@@ -442,28 +441,28 @@
                     android:id="@+id/LinearLayoutLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
+                    android:orientation="vertical"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:orientation="vertical">
+                    android:paddingTop="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
-                        android:textColor="?TextColor"
-                        android:textStyle="bold"
                         android:paddingBottom="5dp"
-                        android:text="@string/SocialProfileUILocation" />
+                        android:text="@string/SocialProfileUILocation"
+                        android:textColor="?TextColor"
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/TextViewLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:text="@string/SocialProfileUINotSet"
                         android:textColor="@color/Gray"
-                        android:text="@string/SocialProfileUINotSet" />
+                        android:textSize="@dimen/FontVerySmall" />
 
                 </LinearLayout>
 
@@ -476,20 +475,20 @@
                     android:id="@+id/LinearLayoutFeature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
+                    android:orientation="vertical"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
-                    android:orientation="vertical">
+                    android:paddingTop="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
-                        android:textColor="?TextColor"
-                        android:textStyle="bold"
                         android:paddingBottom="5dp"
-                        android:text="@string/SocialProfileUIFeature" />
+                        android:text="@string/SocialProfileUIFeature"
+                        android:textColor="?TextColor"
+                        android:textSize="@dimen/FontVerySmall"
+                        android:textStyle="bold" />
 
                     <co.biogram.main.ui.view.FlowLayout
                         android:layout_width="match_parent"
@@ -500,106 +499,106 @@
                             android:id="@+id/TextViewFeature1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="@dimen/FontMinimal"
                             android:background="@drawable/z_social_profile_feature"
-                            android:textColor="@color/Primary" />
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/Primary"
+                            android:textSize="@dimen/FontMinimal" />
 
                         <TextView
                             android:id="@+id/TextViewFeature2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="@dimen/FontMinimal"
                             android:background="@drawable/z_social_profile_feature"
-                            android:textColor="@color/Primary" />
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/Primary"
+                            android:textSize="@dimen/FontMinimal" />
 
                         <TextView
                             android:id="@+id/TextViewFeature3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="@dimen/FontMinimal"
                             android:background="@drawable/z_social_profile_feature"
-                            android:textColor="@color/Primary" />
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/Primary"
+                            android:textSize="@dimen/FontMinimal" />
 
                         <TextView
                             android:id="@+id/TextViewFeature4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="@dimen/FontMinimal"
                             android:background="@drawable/z_social_profile_feature"
-                            android:textColor="@color/Primary" />
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/Primary"
+                            android:textSize="@dimen/FontMinimal" />
 
                         <TextView
                             android:id="@+id/TextViewFeature5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="@dimen/FontMinimal"
                             android:background="@drawable/z_social_profile_feature"
-                            android:textColor="@color/Primary" />
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/Primary"
+                            android:textSize="@dimen/FontMinimal" />
 
                         <TextView
                             android:id="@+id/TextViewFeature6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="@dimen/FontMinimal"
                             android:background="@drawable/z_social_profile_feature"
-                            android:textColor="@color/Primary" />
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/Primary"
+                            android:textSize="@dimen/FontMinimal" />
 
                         <TextView
                             android:id="@+id/TextViewFeature7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="@dimen/FontMinimal"
                             android:background="@drawable/z_social_profile_feature"
-                            android:textColor="@color/Primary" />
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/Primary"
+                            android:textSize="@dimen/FontMinimal" />
 
                     </co.biogram.main.ui.view.FlowLayout>
 

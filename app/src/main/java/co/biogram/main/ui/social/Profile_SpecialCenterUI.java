@@ -25,31 +25,49 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.RecyclerViewOnScroll;
 
-public class Profile_SpecialCenterUI extends FragmentView
-{
+public class Profile_SpecialCenterUI extends FragmentView {
     private TextView TextViewCredit;
     private TextView TextViewBadge;
     private TextView TextViewSpecialPost;
     private FrameLayout FrameLayoutMain;
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         View view = View.inflate(Activity, R.layout.social_profile_specialcenter, null);
 
         ImageView ImageViewClose = view.findViewById(R.id.ImageViewClose);
-        ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
+        ImageViewClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.onBackPressed();
+            }
+        });
 
         TextViewCredit = view.findViewById(R.id.TextViewCredit);
-        TextViewCredit.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(1); } });
+        TextViewCredit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeTab(1);
+            }
+        });
         TextViewCredit.setTypeface(Misc.GetTypeface(), Typeface.BOLD);
 
         TextViewBadge = view.findViewById(R.id.TextViewBadge);
-        TextViewBadge.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(2); } });
+        TextViewBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeTab(2);
+            }
+        });
         TextViewBadge.setTypeface(Misc.GetTypeface(), Typeface.BOLD);
 
         TextViewSpecialPost = view.findViewById(R.id.TextViewSpecialPost);
-        TextViewSpecialPost.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ChangeTab(3); } });
+        TextViewSpecialPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeTab(3);
+            }
+        });
         TextViewSpecialPost.setTypeface(Misc.GetTypeface(), Typeface.BOLD);
 
         FrameLayoutMain = view.findViewById(R.id.FrameLayoutMain);
@@ -59,8 +77,7 @@ public class Profile_SpecialCenterUI extends FragmentView
         ViewMain = view;
     }
 
-    private void ChangeTab(int Tab)
-    {
+    private void ChangeTab(int Tab) {
         TypedValue Value = new TypedValue();
         Activity.getTheme().resolveAttribute(R.attr.TextColor, Value, true);
 
@@ -70,8 +87,7 @@ public class Profile_SpecialCenterUI extends FragmentView
 
         View view;
 
-        switch (Tab)
-        {
+        switch (Tab) {
             default:
                 view = Credit();
                 TextViewCredit.setTextColor(Misc.Color(R.color.Primary));
@@ -90,16 +106,13 @@ public class Profile_SpecialCenterUI extends FragmentView
         FrameLayoutMain.addView(view);
     }
 
-    private View Credit()
-    {
+    private View Credit() {
         View view = View.inflate(Activity, R.layout.social_profile_specialcenter_credit, null);
 
         TextView TextViewAddCredit = view.findViewById(R.id.TextViewAddCredit);
-        TextViewAddCredit.setOnClickListener(new View.OnClickListener()
-        {
+        TextViewAddCredit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // TODO Add Billing
             }
         });
@@ -109,11 +122,9 @@ public class Profile_SpecialCenterUI extends FragmentView
         RecyclerViewMain.setLayoutManager(new LinearLayoutManager(Activity));
         RecyclerViewMain.setNestedScrollingEnabled(false);
         RecyclerViewMain.setHasFixedSize(false);
-        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll()
-        {
+        RecyclerViewMain.addOnScrollListener(new RecyclerViewOnScroll() {
             @Override
-            public void OnLoadMore()
-            {
+            public void OnLoadMore() {
                 Misc.Debug("On Load More Called");
             }
         });
@@ -126,12 +137,18 @@ public class Profile_SpecialCenterUI extends FragmentView
         return view;
     }
 
-    private class CreditAdapter extends RecyclerView.Adapter<CreditAdapter.ViewHolderMain>
-    {
+    private View Badge() {
+        return null;
+    }
+
+    private View SpecialPost() {
+        return null;
+    }
+
+    private class CreditAdapter extends RecyclerView.Adapter<CreditAdapter.ViewHolderMain> {
         private ArrayList<Credit> MainList = new ArrayList<>();
 
-        private CreditAdapter()
-        {
+        private CreditAdapter() {
             MainList.add(new Credit(150000, 1524768367, 1, "1050", 1, ""));
             MainList.add(new Credit(100000, 1524668367, 2, "1050", 2, ""));
             MainList.add(new Credit(191000, 1524868367, 3, "1050", 3, ""));
@@ -155,45 +172,20 @@ public class Profile_SpecialCenterUI extends FragmentView
             MainList.add(new Credit(191000, 1524868367, 3, "1050", 3, ""));
             MainList.add(new Credit(150000, 1524768367, 4, "1050", 1, ""));
             MainList.add(new Credit(100000, 1524668367, 5, "1050", 2, ""));
-        }
-
-        class ViewHolderMain extends RecyclerView.ViewHolder
-        {
-            private RelativeLayout RelativeLayoutMain;
-            private ImageView ImageViewIcon;
-            private TextView TextViewMessage;
-            private TextView TextViewAmount;
-            private TextView TextViewDate;
-            private View ViewLine;
-
-            ViewHolderMain(View v)
-            {
-                super(v);
-                RelativeLayoutMain = v.findViewById(R.id.RelativeLayoutMain);
-                ImageViewIcon = v.findViewById(R.id.ImageViewIcon);
-                TextViewMessage = v.findViewById(R.id.TextViewMessage);
-                TextViewAmount = v.findViewById(R.id.TextViewAmount2);
-                TextViewDate = v.findViewById(R.id.TextViewDate);
-                ViewLine = v.findViewById(R.id.ViewLine);
-            }
         }
 
         @NonNull
-        public CreditAdapter.ViewHolderMain onCreateViewHolder(@NonNull ViewGroup vg, int type)
-        {
+        public CreditAdapter.ViewHolderMain onCreateViewHolder(@NonNull ViewGroup vg, int type) {
             return new ViewHolderMain(View.inflate(Activity, R.layout.social_profile_specialcenter_credit_row, null));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CreditAdapter.ViewHolderMain Holder, int p)
-        {
+        public void onBindViewHolder(@NonNull CreditAdapter.ViewHolderMain Holder, int p) {
             int Pos = Holder.getAdapterPosition();
 
-            Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener()
-            {
+            Holder.RelativeLayoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     final Dialog dialog = new Dialog(Activity);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setCancelable(true);
@@ -201,7 +193,12 @@ public class Profile_SpecialCenterUI extends FragmentView
                     View dialogView = View.inflate(Activity, R.layout.social_profile_specialcenter_credit_dialog, null);
 
                     ImageView ImageViewClose = dialogView.findViewById(R.id.ImageViewClose);
-                    ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { dialog.dismiss(); } });
+                    ImageViewClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
 
                     dialog.setContentView(dialogView);
                     dialog.show();
@@ -211,38 +208,32 @@ public class Profile_SpecialCenterUI extends FragmentView
             Holder.TextViewAmount.setText(String.valueOf(MainList.get(Pos).Amount));
             Holder.TextViewDate.setText(new SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.getDefault()).format(new Date(MainList.get(Pos).Date * 1000L)));
 
-            switch (MainList.get(Pos).Type)
-            {
-                case Credit.TYPE_CREDIT:
-                {
+            switch (MainList.get(Pos).Type) {
+                case Credit.TYPE_CREDIT: {
                     Holder.ImageViewIcon.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
                     Holder.ImageViewIcon.setImageResource(R.drawable.z_social_profile_specialcenter_credit);
                     Holder.TextViewMessage.setText(Misc.String(R.string.SocialProfileSpecialCenterUICreditRowIns));
                     break;
                 }
-                case Credit.TYPE_BADGE:
-                {
+                case Credit.TYPE_BADGE: {
                     Holder.ImageViewIcon.setPadding(Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14), Misc.ToDP(14));
                     Holder.ImageViewIcon.setImageResource(R.drawable.z_social_profile_specialcenter_badge);
                     Holder.TextViewMessage.setText(Misc.String(R.string.SocialProfileSpecialCenterUICreditRowBadge));
                     break;
                 }
-                case Credit.TYPE_PURCHASE:
-                {
+                case Credit.TYPE_PURCHASE: {
                     Holder.ImageViewIcon.setPadding(Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10), Misc.ToDP(10));
                     Holder.ImageViewIcon.setImageResource(R.drawable.z_social_profile_specialcenter_purchase);
                     Holder.TextViewMessage.setText(Misc.String(R.string.SocialProfileSpecialCenterUICreditRowPurchase));
                     break;
                 }
-                case Credit.TYPE_REQUEST:
-                {
+                case Credit.TYPE_REQUEST: {
                     Holder.ImageViewIcon.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
                     Holder.ImageViewIcon.setImageResource(R.drawable.z_social_profile_specialcenter_request);
                     Holder.TextViewMessage.setText(Misc.String(R.string.SocialProfileSpecialCenterUICreditRowRequest));
                     break;
                 }
-                case Credit.TYPE_SPONSERED:
-                {
+                case Credit.TYPE_SPONSERED: {
                     Holder.ImageViewIcon.setPadding(Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6), Misc.ToDP(6));
                     Holder.ImageViewIcon.setImageResource(R.drawable.z_social_profile_specialcenter_sponsered);
                     Holder.TextViewMessage.setText(Misc.String(R.string.SocialProfileSpecialCenterUICreditRowSponsored));
@@ -254,19 +245,35 @@ public class Profile_SpecialCenterUI extends FragmentView
         }
 
         @Override
-        public int getItemViewType(int Position)
-        {
+        public int getItemViewType(int Position) {
             return MainList.get(Position).Type;
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return MainList.size();
         }
 
-        class Credit
-        {
+        class ViewHolderMain extends RecyclerView.ViewHolder {
+            private RelativeLayout RelativeLayoutMain;
+            private ImageView ImageViewIcon;
+            private TextView TextViewMessage;
+            private TextView TextViewAmount;
+            private TextView TextViewDate;
+            private View ViewLine;
+
+            ViewHolderMain(View v) {
+                super(v);
+                RelativeLayoutMain = v.findViewById(R.id.RelativeLayoutMain);
+                ImageViewIcon = v.findViewById(R.id.ImageViewIcon);
+                TextViewMessage = v.findViewById(R.id.TextViewMessage);
+                TextViewAmount = v.findViewById(R.id.TextViewAmount2);
+                TextViewDate = v.findViewById(R.id.TextViewDate);
+                ViewLine = v.findViewById(R.id.ViewLine);
+            }
+        }
+
+        class Credit {
             private final static int TYPE_CREDIT = 1;
             private final static int TYPE_BADGE = 2;
             private final static int TYPE_PURCHASE = 3;
@@ -280,8 +287,7 @@ public class Profile_SpecialCenterUI extends FragmentView
             public int Status;
             public String Detail;
 
-            Credit(int amount, int date, int type, String issue, int status, String detail)
-            {
+            Credit(int amount, int date, int type, String issue, int status, String detail) {
                 Amount = amount;
                 Date = date;
                 Type = type;
@@ -290,15 +296,5 @@ public class Profile_SpecialCenterUI extends FragmentView
                 Detail = detail;
             }
         }
-    }
-
-    private View Badge()
-    {
-        return null;
-    }
-
-    private View SpecialPost()
-    {
-        return null;
     }
 }

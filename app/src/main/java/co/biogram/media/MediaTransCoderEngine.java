@@ -9,10 +9,33 @@ import android.media.MediaMuxer;
 import java.io.FileDescriptor;
 
 @TargetApi(18)
-class MediaTransCoderEngine
-{
-    void TransCodeVideo(FileDescriptor InPut, String OutPut, MediaTransCoder.MediaStrategy Strategy, ProgressCallback CallbackProgress) throws Exception
-    {
+class MediaTransCoderEngine {
+    private static TrackResult GetFirstVideoAndAudioTrack(MediaExtractor Extractor) {
+        TrackResult Track = new TrackResult();
+        Track.VideoIndex = -1;
+        Track.AudioIndex = -1;
+        int trackCount = Extractor.getTrackCount();
+
+        for (int i = 0; i < trackCount; i++) {
+            MediaFormat Format = Extractor.getTrackFormat(i);
+            String Mime = Format.getString(MediaFormat.KEY_MIME);
+
+            if (Track.VideoIndex < 0 && Mime.startsWith("video/")) {
+                Track.VideoIndex = i;
+                Track.VideoFormat = Format;
+            } else if (Track.AudioIndex < 0 && Mime.startsWith("audio/")) {
+                Track.AudioIndex = i;
+                Track.AudioFormat = Format;
+            }
+
+            if (Track.VideoIndex >= 0 && Track.AudioIndex >= 0)
+                break;
+        }
+
+        return Track;
+    }
+
+    void TransCodeVideo(FileDescriptor InPut, String OutPut, MediaTransCoder.MediaStrategy Strategy, ProgressCallback CallbackProgress) throws Exception {
         MediaExtractor Extractor = new MediaExtractor();
         Extractor.setDataSource(InPut);
 
@@ -51,13 +74,11 @@ class MediaTransCoderEngine
 
         long LoopCount = 0;
 
-        while (!(VideoTrackTransCoder.isFinished() && AudioTrackTransCoder.isFinished()))
-        {
+        while (!(VideoTrackTransCoder.isFinished() && AudioTrackTransCoder.isFinished())) {
             LoopCount++;
             boolean Step = VideoTrackTransCoder.stepPipeline() || AudioTrackTransCoder.stepPipeline();
 
-            if (Duration > 0 && LoopCount % 10 == 0)
-            {
+            if (Duration > 0 && LoopCount % 10 == 0) {
                 double VideoProgress = VideoTrackTransCoder.isFinished() ? 1.0 : Math.min(1.0, (double) VideoTrackTransCoder.getWrittenPresentationTimeUs() / Duration);
                 double AudioProgress = AudioTrackTransCoder.isFinished() ? 1.0 : Math.min(1.0, (double) AudioTrackTransCoder.getWrittenPresentationTimeUs() / Duration);
                 double Progress = (VideoProgress + AudioProgress) / 2.0;
@@ -76,47 +97,15 @@ class MediaTransCoderEngine
         Muxer.release();
     }
 
-    private static class TrackResult
-    {
+    interface ProgressCallback {
+        void OnProgress(double progress);
+    }
+
+    private static class TrackResult {
         int VideoIndex;
         MediaFormat VideoFormat;
 
         int AudioIndex;
         MediaFormat AudioFormat;
-    }
-
-    private static TrackResult GetFirstVideoAndAudioTrack(MediaExtractor Extractor)
-    {
-        TrackResult Track = new TrackResult();
-        Track.VideoIndex = -1;
-        Track.AudioIndex = -1;
-        int trackCount = Extractor.getTrackCount();
-
-        for (int i = 0; i < trackCount; i++)
-        {
-            MediaFormat Format = Extractor.getTrackFormat(i);
-            String Mime = Format.getString(MediaFormat.KEY_MIME);
-
-            if (Track.VideoIndex < 0 && Mime.startsWith("video/"))
-            {
-                Track.VideoIndex = i;
-                Track.VideoFormat = Format;
-            }
-            else if (Track.AudioIndex < 0 && Mime.startsWith("audio/"))
-            {
-                Track.AudioIndex = i;
-                Track.AudioFormat = Format;
-            }
-
-            if (Track.VideoIndex >= 0 && Track.AudioIndex >= 0)
-                break;
-        }
-
-        return Track;
-    }
-
-    interface ProgressCallback
-    {
-        void OnProgress(double progress);
     }
 }
