@@ -2,6 +2,7 @@ package co.biogram.main;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 
@@ -15,6 +16,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.Misc;
+import co.biogram.main.service.NetworkService;
 
 public class App extends Application {
     private static volatile OkHttpClient OKClient;
@@ -42,6 +44,8 @@ public class App extends Application {
         LeakCanary.install(this);
 
         Misc.Initial(getApplicationContext());
+
+        startService(new Intent(getApplicationContext(), NetworkService.class));
 
         AndroidNetworking.initialize(getApplicationContext(), GetOKClient());
     }

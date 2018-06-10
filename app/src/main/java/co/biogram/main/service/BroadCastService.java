@@ -22,7 +22,7 @@ public class BroadCastService extends BroadcastReceiver {
             return;
 
         if (intent.getAction().equalsIgnoreCase("android.intent.action.BOOT_COMPLETED"))
-            context.startService(new Intent(context, SocketService.class));
+            context.startService(new Intent(context, NetworkService.class));
 
         if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Request") && intent.getExtras() != null)
             IsSMS = intent.getExtras().getBoolean("SetWaiting", false);

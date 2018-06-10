@@ -59,7 +59,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.SocketService" />
+        <service android:name=".service.NetworkService" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
