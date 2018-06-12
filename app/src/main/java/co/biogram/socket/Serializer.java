@@ -26,10 +26,11 @@ class Serializer {
     static final byte MT_LEAVE_ROOM = 9;
     static final byte MT_LEAVE_ALL_ROOMS = 10;
 
-    static byte[] serialize(byte[] event, byte[] data, byte mt, byte dt, int messageId) {
+    static byte[] serialize(byte[] event, byte[] data, byte mt, byte dt, int messageId)
+    {
         short eventLength = (short) event.length;
         int dataLength = data.length;
-        int messageLength = 8 + 2 + eventLength + 4 + dataLength;
+        int messageLength = 4 + 1 + 1 + 4 + 2 + eventLength + 4 + dataLength;
 
         byte[] buffer = new byte[4 + messageLength];
         int offset = 0;
@@ -37,8 +38,6 @@ class Serializer {
         Utils.writeInt(messageLength, buffer, offset);
         offset += 4;
 
-        buffer[offset++] = VERSION;
-        buffer[offset++] = 0;
         buffer[offset++] = dt;
         buffer[offset++] = mt;
 
@@ -59,15 +58,10 @@ class Serializer {
         return buffer;
     }
 
-    static Message deserialize(byte[] buffer) throws UnsupportedEncodingException {
-        int offset = 4; // Skip message length
+    static Message deserialize(byte[] buffer) throws Exception
+    {
+        int offset = 4;
 
-        byte version = buffer[offset++];
-        if (version != VERSION) {
-            return new Message("Serializer version mismatch. Remote " + version + " Local " + VERSION);
-        }
-
-        offset++; // Skip unused flags
         byte dt = buffer[offset++];
         byte mt = buffer[offset++];
 
