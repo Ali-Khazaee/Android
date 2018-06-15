@@ -4,6 +4,6 @@
     <gradient
         android:angle="90"
         android:dither="true"
-        android:endColor="@color/ChatBlue"
-        android:startColor="@color/ChatBlue" />
+        android:endColor="@color/Primary"
+        android:startColor="@color/Primary" />
 </shape>

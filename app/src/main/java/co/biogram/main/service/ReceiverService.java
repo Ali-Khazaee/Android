@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import co.biogram.main.handler.Misc;
 
-public class BroadCastService extends BroadcastReceiver {
+public class ReceiverService extends BroadcastReceiver {
     private static boolean IsSMS = false;
 
     @Override
@@ -63,7 +63,7 @@ public class BroadCastService extends BroadcastReceiver {
                         context.sendBroadcast(i);
                     }
                 } catch (Exception e) {
-                    Misc.Debug("BroadCastService: " + e.toString());
+                    Misc.Debug("ReceiverService: " + e.toString());
                 }
             }
         }

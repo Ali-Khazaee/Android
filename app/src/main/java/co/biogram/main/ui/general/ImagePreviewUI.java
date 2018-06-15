@@ -107,7 +107,7 @@ public class ImagePreviewUI extends FragmentView {
     public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
+        RelativeLayoutMain.setBackgroundResource(R.color.Primary);
         RelativeLayoutMain.setClickable(true);
 
         if (bitmap != null) {
@@ -357,7 +357,7 @@ public class ImagePreviewUI extends FragmentView {
     @Override
     public void OnPause() {
         if (Build.VERSION.SDK_INT > 20)
-            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
+            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
     }
 
     void SetType(boolean select, boolean isMax, OnSelectListener l) {
@@ -397,7 +397,7 @@ public class ImagePreviewUI extends FragmentView {
 
             final LoadingView LoadingViewMain = new LoadingView(Activity);
             LoadingViewMain.setLayoutParams(LoadingViewMainParam);
-            LoadingViewMain.SetColor(R.color.TextDark);
+            LoadingViewMain.SetColor(R.color.Primary);
             LoadingViewMain.Start();
 
             RelativeLayoutMain.addView(LoadingViewMain);

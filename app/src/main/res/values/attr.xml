@@ -1,11 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="TextColor" format="reference|color" />
+    <attr name="StatusColor" format="reference|color" />
+    <attr name="ActionColor" format="reference|color" />
     <attr name="LineColor" format="reference|color" />
-    <attr name="GroundColor" format="reference|color" />
-    <attr name="ActionBarColor" format="reference|color" />
-    <attr name="StatusBarColor" format="reference|color" />
-    <attr name="ToastColor" format="reference|color" />
-    <attr name="ToastLineColor" format="reference|color" />
+    <attr name="BgColor" format="reference|color" />
+    <attr name="TextColor" format="reference|color" />
+    <attr name="ReverseTextColor" format="reference|color" />
 
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_background_color" format="color" />
+    </declare-styleable>
 </resources>

@@ -105,7 +105,7 @@ public class CameraViewUI extends FragmentView {
     public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
+        RelativeLayoutMain.setBackgroundResource(R.color.Primary);
 
         CameraViewMain = new CameraView(Activity);
         CameraViewMain.setLayoutParams(new CameraView.LayoutParams(CameraView.LayoutParams.MATCH_PARENT, CameraView.LayoutParams.MATCH_PARENT));

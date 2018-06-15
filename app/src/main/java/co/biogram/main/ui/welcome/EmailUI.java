@@ -53,7 +53,7 @@ class EmailUI extends FragmentView {
 
         RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
+        RelativeLayoutMain.setBackgroundResource(R.color.Primary);
         RelativeLayoutMain.setClickable(true);
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -187,7 +187,7 @@ class EmailUI extends FragmentView {
 
         TextView TextViewMessage = new TextView(Activity, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.SetColor(R.color.TextWhite);
+        TextViewMessage.SetColor(R.color.Primary);
         TextViewMessage.setText(Misc.String(R.string.EmailUIMessage));
         TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -321,7 +321,7 @@ class EmailUI extends FragmentView {
         LoadingViewUsernameParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewUsernameParam);
-        LoadingViewNext.SetColor(R.color.TextDark);
+        LoadingViewNext.SetColor(R.color.Primary);
 
         RelativeLayoutNext.addView(LoadingViewNext);
 

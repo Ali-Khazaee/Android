@@ -72,7 +72,7 @@ class EmailVerifyUI extends FragmentView {
 
         RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
+        RelativeLayoutMain.setBackgroundResource(R.color.Primary);
         RelativeLayoutMain.setFocusableInTouchMode(true);
         RelativeLayoutMain.setFocusable(true);
         RelativeLayoutMain.setClickable(true);
@@ -431,7 +431,7 @@ class EmailVerifyUI extends FragmentView {
 
         TextView TextViewMessage = new TextView(Activity, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.SetColor(R.color.TextWhite);
+        TextViewMessage.SetColor(R.color.Primary);
         TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
         TextViewMessage.setMovementMethod(LinkMovementMethod.getInstance());
@@ -661,7 +661,7 @@ class EmailVerifyUI extends FragmentView {
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);
-        LoadingViewNext.SetColor(R.color.TextDark);
+        LoadingViewNext.SetColor(R.color.Primary);
 
         RelativeLayoutNext.addView(LoadingViewNext);
 

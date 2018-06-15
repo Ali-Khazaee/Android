@@ -30,7 +30,7 @@ public class GlideHandler extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(App.GetOKClient()));
+        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(App.OKClient()));
     }
 
     @Override

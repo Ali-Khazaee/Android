@@ -21,7 +21,7 @@
             android:background="@null"
             android:padding="12dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_search_blue" />
+            android:src="@drawable/xxx_messenger_search_black" />
 
         <EditText
             android:id="@+id/EditTextSearch"

@@ -26,12 +26,12 @@ public class InboxUI extends FragmentView {
     public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -43,7 +43,7 @@ public class InboxUI extends FragmentView {
 
         TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setText(Misc.String(R.string.InboxUI));
 
@@ -85,7 +85,7 @@ public class InboxUI extends FragmentView {
 
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -128,7 +128,7 @@ public class InboxUI extends FragmentView {
         Misc.IsFullScreen(Activity, true);
 
         if (Build.VERSION.SDK_INT > 20)
-            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
+            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
 
         Adapter.Update();
     }

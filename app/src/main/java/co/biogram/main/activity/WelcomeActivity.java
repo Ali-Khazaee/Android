@@ -1,30 +1,25 @@
 package co.biogram.main.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
 import co.biogram.main.fragment.FragmentActivity;
-import co.biogram.main.R;
-import co.biogram.main.handler.Misc;
 
-import co.biogram.main.ui.welcome.WelcomeUI;
-
-public class WelcomeActivity extends FragmentActivity {
+public class WelcomeActivity extends FragmentActivity
+{
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
-        startActivity(new Intent(this, SocialActivity.class));
+        startActivity(new Intent(this, MessengerActivity.class));
 
         finish();
 
         /*if (Misc.GetBoolean("IsLogin"))
         {
             if (Misc.GetString("Activity").equals("Chat"))
-                startActivity(new Intent(this, Chat_ListUI.class));
+                startActivity(new Intent(this, Chat_List_UI.class));
             else
                 startActivity(new Intent(this, SocialActivity.class));
 

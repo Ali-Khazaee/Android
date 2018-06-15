@@ -15,12 +15,12 @@ public class MyLevelUI extends FragmentView {
     public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -50,7 +50,7 @@ public class MyLevelUI extends FragmentView {
         TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setTextColor(Misc.Color(R.color.TextWhite));
+        TextViewTitle.setTextColor(Misc.Color(R.color.Primary));
         TextViewTitle.setText(Misc.String(R.string.MyLevelUI));
 
         RelativeLayoutHeader.addView(TextViewTitle);
@@ -60,7 +60,7 @@ public class MyLevelUI extends FragmentView {
 
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?GroundColor">
+    android:background="?BgColor">
 
     <RelativeLayout
         android:id="@+id/RelativeLayoutHeader"
@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/ActionBar"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/ImageViewProfile"
+            android:layout_toStartOf="@+id/CircleImageViewProfile"
             android:gravity="center_vertical"
             android:paddingEnd="15dp"
             android:paddingStart="15dp"
@@ -32,7 +32,7 @@
             android:src="@drawable/z_social_profile_setting" />
 
         <ImageView
-            android:id="@+id/ImageViewProfile"
+            android:id="@+id/CircleImageViewProfile"
             android:layout_width="@dimen/ActionBar"
             android:layout_height="@dimen/ActionBar"
             android:layout_toStartOf="@+id/ImageViewSetting"
@@ -58,14 +58,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/CircleImageViewProfile"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_margin="15dp"
-                android:src="@drawable/z_social_profile_avatar"
-                app:civ_border_color="@color/Gray"
-                app:civ_border_width="1dp" />
+                android:src="@drawable/z_social_profile_avatar" />
 
             <TextView
                 android:id="@+id/TextViewName"
@@ -614,6 +612,6 @@
         android:id="@+id/StatefulLayoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?GroundColor" />
+        android:background="?BgColor" />
 
 </RelativeLayout>

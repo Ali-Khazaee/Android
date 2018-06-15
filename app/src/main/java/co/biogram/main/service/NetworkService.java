@@ -13,9 +13,9 @@ public class NetworkService extends Service
     private static Socket socket;
 
     @Override
-    public int onStartCommand(Intent intent, int Flags, int StartID)
+    public void onCreate()
     {
-        Analyze.Debug("NetworkService", "onStartCommand Called");
+        Analyze.Debug("NetworkService", "onCreate Called");
 
         try
         {
@@ -26,6 +26,12 @@ public class NetworkService extends Service
         {
             Analyze.Log("NetworkService", e);
         }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int Flags, int StartID)
+    {
+        Analyze.Debug("NetworkService", "onStartCommand Called");
 
         return START_STICKY;
     }
@@ -39,13 +45,22 @@ public class NetworkService extends Service
     public static void Emit(String Event, String Data, Emitter.Listener Listener)
     {
         Analyze.Debug("NetworkService", "Emit: " + Event);
+
         socket.emit(Event, Data, Listener);
     }
 
-    public void On(String Event, Emitter.Listener Listener)
+    public static void On(String Event, Emitter.Listener Listener)
     {
         Analyze.Debug("NetworkService", "On: " + Event);
+
         socket.on(Event, Listener);
+    }
+
+    public static void Off(String Event, Emitter.Listener Listener)
+    {
+        Analyze.Debug("NetworkService", "On: " + Event);
+
+        socket.removeListener(Event, Listener);
     }
 
     private String GetBestServer()

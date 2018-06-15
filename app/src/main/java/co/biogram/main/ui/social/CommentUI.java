@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import co.biogram.main.ui.component.CircleImageView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
@@ -40,7 +41,6 @@ import co.biogram.main.handler.PostAdapter;
 import co.biogram.main.handler.TagHandler;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentUI extends FragmentView {
     private ArrayList<PostAdapter.PostStruct> PostList;
@@ -71,12 +71,12 @@ public class CommentUI extends FragmentView {
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -104,7 +104,7 @@ public class CommentUI extends FragmentView {
 
         TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         TextViewTitle.setText(Misc.String(R.string.CommentUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
 
@@ -115,7 +115,7 @@ public class CommentUI extends FragmentView {
 
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -125,7 +125,7 @@ public class CommentUI extends FragmentView {
 
         RelativeLayout RelativeLayoutBottom = new RelativeLayout(Activity);
         RelativeLayoutBottom.setLayoutParams(RelativeLayoutBottomParam);
-        RelativeLayoutBottom.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutBottom.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutBottom.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutBottom);
@@ -230,7 +230,7 @@ public class CommentUI extends FragmentView {
         EditTextMessage.setHint(R.string.CommentUIComment);
         EditTextMessage.setBackground(null);
         EditTextMessage.setTypeface(Misc.GetTypeface());
-        EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
         EditTextMessage.setHintTextColor(Misc.Color(R.color.Gray));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextMessage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(300)});
@@ -257,7 +257,7 @@ public class CommentUI extends FragmentView {
 
         View ViewLine2 = new View(Activity);
         ViewLine2.setLayoutParams(ViewLine2Param);
-        ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         ViewLine2.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine2);
@@ -286,7 +286,7 @@ public class CommentUI extends FragmentView {
 
         LoadingView LoadingViewMain = new LoadingView(Activity);
         LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        LoadingViewMain.setBackgroundResource(R.color.GroundWhite);
+        LoadingViewMain.setBackgroundResource(R.color.Primary);
         LoadingViewMain.Start();
 
         RelativeLayoutContent.addView(LoadingViewMain);
@@ -491,12 +491,12 @@ public class CommentUI extends FragmentView {
 
                     LinearLayout LinearLayoutMain = new LinearLayout(Activity);
                     LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                    LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                     LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                     TextView TextViewTitle = new TextView(Activity, 16, true);
                     TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                    TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                    TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                     TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                     TextViewTitle.setText(Misc.String(R.string.CommentUIMessage));
                     TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
@@ -505,7 +505,7 @@ public class CommentUI extends FragmentView {
 
                     View ViewLine = new View(Activity);
                     ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                    ViewLine.setBackgroundResource(R.color.LineWhite);
+                    ViewLine.setBackgroundResource(R.color.Primary);
 
                     LinearLayoutMain.addView(ViewLine);
 
@@ -517,7 +517,7 @@ public class CommentUI extends FragmentView {
 
                     TextView TextViewDelete = new TextView(Activity, 14, false);
                     TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                    TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                    TextViewDelete.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                     TextViewDelete.setText(Misc.String(R.string.CommentUIDelete));
                     TextViewDelete.setGravity(Gravity.CENTER);
                     TextViewDelete.setOnClickListener(new View.OnClickListener() {
@@ -543,7 +543,7 @@ public class CommentUI extends FragmentView {
 
                     TextView TextViewCancel = new TextView(Activity, 14, false);
                     TextViewCancel.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                    TextViewCancel.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                    TextViewCancel.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                     TextViewCancel.setText(Misc.String(R.string.CommentUICancel));
                     TextViewCancel.setGravity(Gravity.CENTER);
                     TextViewCancel.setOnClickListener(new View.OnClickListener() {
@@ -638,7 +638,7 @@ public class CommentUI extends FragmentView {
 
             TextView TextViewUsername = new TextView(Activity, 14, true);
             TextViewUsername.setLayoutParams(TextViewUsernameParam);
-            TextViewUsername.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+            TextViewUsername.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
             TextViewUsername.setId(ID_USERNAME);
 
             RelativeLayoutMain.addView(TextViewUsername);
@@ -660,7 +660,7 @@ public class CommentUI extends FragmentView {
 
             TextView TextViewMessage = new TextView(Activity, 14, false);
             TextViewMessage.setLayoutParams(TextViewMessageParam);
-            TextViewMessage.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+            TextViewMessage.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
             TextViewMessage.setPadding(0, 0, Misc.ToDP(8), 0);
             TextViewMessage.setId(ID_MESSAGE);
 
@@ -718,7 +718,7 @@ public class CommentUI extends FragmentView {
 
             View ViewLine = new View(Activity);
             ViewLine.setLayoutParams(ViewLineParam);
-            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
             ViewLine.setId(ID_LINE);
 
             RelativeLayoutMain.addView(ViewLine);

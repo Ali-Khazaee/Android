@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Application -->
-    <string name="ApplicationName">کانل</string>
+    <string name="Application">کانل</string>
 
     <!-- Social Profile Special Center UI -->
     <string name="SocialProfileSpecialCenterUI">مرکز ویژه</string>

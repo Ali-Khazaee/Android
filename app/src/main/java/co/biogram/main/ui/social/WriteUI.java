@@ -136,7 +136,7 @@ class WriteUI extends FragmentView {
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -164,7 +164,7 @@ class WriteUI extends FragmentView {
 
         TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         TextViewTitle.setText(Misc.String(R.string.WriteUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
 
@@ -199,7 +199,7 @@ class WriteUI extends FragmentView {
 
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -215,7 +215,7 @@ class WriteUI extends FragmentView {
         EditTextMessage.setHint(R.string.WriteUIMessage);
         EditTextMessage.setBackground(null);
         EditTextMessage.setTypeface(Misc.GetTypeface());
-        EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
         EditTextMessage.setHintTextColor(Misc.Color(Misc.IsDark() ? R.color.Gray : R.color.Gray));
         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         EditTextMessage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(300)});
@@ -244,7 +244,7 @@ class WriteUI extends FragmentView {
 
                 LinearLayout LinearLayoutMain = new LinearLayout(Activity);
                 LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
@@ -260,7 +260,7 @@ class WriteUI extends FragmentView {
                 TextViewTitle.setText(Misc.String(R.string.WriteUIOptions));
                 TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
-                TextViewTitle.SetColor(R.color.TextWhite);
+                TextViewTitle.SetColor(R.color.Primary);
 
                 RelativeLayoutHeader.addView(TextViewTitle);
 
@@ -282,13 +282,13 @@ class WriteUI extends FragmentView {
 
                 View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                ViewLine.setBackgroundResource(R.color.LineWhite);
+                ViewLine.setBackgroundResource(R.color.Primary);
 
                 LinearLayoutMain.addView(ViewLine);
 
                 TextView TextViewDelete = new TextView(Activity, 14, false);
                 TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewDelete.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewDelete.setText(Misc.String(R.string.WriteUIDelete));
                 TextViewDelete.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewDelete.setOnClickListener(new View.OnClickListener() {
@@ -303,13 +303,13 @@ class WriteUI extends FragmentView {
 
                 View DeleteLine = new View(Activity);
                 DeleteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                DeleteLine.setBackgroundResource(R.color.LineWhite);
+                DeleteLine.setBackgroundResource(R.color.Primary);
 
                 LinearLayoutMain.addView(DeleteLine);
 
                 TextView TextViewPaste = new TextView(Activity, 14, false);
                 TextViewPaste.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewPaste.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewPaste.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewPaste.setText(Misc.String(R.string.WriteUIPaste));
                 TextViewPaste.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewPaste.setOnClickListener(new View.OnClickListener() {
@@ -331,13 +331,13 @@ class WriteUI extends FragmentView {
 
                 View PasteLine = new View(Activity);
                 PasteLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                PasteLine.setBackgroundResource(R.color.LineWhite);
+                PasteLine.setBackgroundResource(R.color.Primary);
 
                 LinearLayoutMain.addView(PasteLine);
 
                 TextView TextViewCopy = new TextView(Activity, 14, false);
                 TextViewCopy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                TextViewCopy.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewCopy.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewCopy.setText(Misc.String(R.string.WriteUICopy));
                 TextViewCopy.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
                 TextViewCopy.setOnClickListener(new View.OnClickListener() {
@@ -616,7 +616,7 @@ class WriteUI extends FragmentView {
 
         View ViewLine2 = new View(Activity);
         ViewLine2.setLayoutParams(ViewLine2Param);
-        ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         ViewLine2.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine2);
@@ -639,12 +639,12 @@ class WriteUI extends FragmentView {
 
                 RelativeLayout LinearLayoutMain = new RelativeLayout(Activity);
                 LinearLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-                LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 LinearLayoutMain.setClickable(true);
 
                 RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
                 RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+                RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 RelativeLayoutHeader.setId(Misc.generateViewId());
 
                 LinearLayoutMain.addView(RelativeLayoutHeader);
@@ -672,7 +672,7 @@ class WriteUI extends FragmentView {
 
                 TextView TextViewName = new TextView(Activity, 16, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewName.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewName.setText(Misc.String(R.string.WriteUICategory));
 
                 RelativeLayoutHeader.addView(TextViewName);
@@ -682,7 +682,7 @@ class WriteUI extends FragmentView {
 
                 View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 ViewLine.setId(Misc.generateViewId());
 
                 LinearLayoutMain.addView(ViewLine);
@@ -901,7 +901,7 @@ class WriteUI extends FragmentView {
         EditTextVote1.setHint(R.string.WriteUIChoice1);
         EditTextVote1.setBackground(Disable);
         EditTextVote1.setHintTextColor(Misc.Color(R.color.Gray));
-        EditTextVote1.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        EditTextVote1.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
         EditTextVote1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote1.setOnFocusChangeListener(OnFocus);
@@ -920,7 +920,7 @@ class WriteUI extends FragmentView {
         EditTextVote2.setHint(R.string.WriteUIChoice2);
         EditTextVote2.setBackground(Disable);
         EditTextVote2.setHintTextColor(Misc.Color(R.color.Gray));
-        EditTextVote2.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        EditTextVote2.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
         EditTextVote2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote2.setOnFocusChangeListener(OnFocus);
@@ -939,7 +939,7 @@ class WriteUI extends FragmentView {
         EditTextVote3.setHint(R.string.WriteUIChoice3);
         EditTextVote3.setBackground(Disable);
         EditTextVote3.setHintTextColor(Misc.Color(R.color.Gray));
-        EditTextVote3.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        EditTextVote3.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
         EditTextVote3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote3.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote3.setOnFocusChangeListener(OnFocus);
@@ -958,7 +958,7 @@ class WriteUI extends FragmentView {
         EditTextVote4.setHint(R.string.WriteUIChoice4);
         EditTextVote4.setBackground(Disable);
         EditTextVote4.setHintTextColor(Misc.Color(R.color.Gray));
-        EditTextVote4.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        EditTextVote4.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
         EditTextVote4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote4.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
         EditTextVote4.setOnFocusChangeListener(OnFocus);
@@ -978,7 +978,7 @@ class WriteUI extends FragmentView {
         EditTextVote5.setHint(R.string.WriteUIChoice5);
         EditTextVote5.setBackground(Disable);
         EditTextVote5.setHintTextColor(Misc.Color(R.color.Gray));
-        EditTextVote5.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+        EditTextVote5.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
         EditTextVote5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         EditTextVote5.setFilters(new InputFilter[]{new InputFilter.LengthFilter(24)});
         EditTextVote5.setOnFocusChangeListener(OnFocus);
@@ -993,7 +993,7 @@ class WriteUI extends FragmentView {
 
         final TextView TextViewLengthVote = new TextView(Activity, 14, false);
         TextViewLengthVote.setLayoutParams(TextViewLengthParam);
-        TextViewLengthVote.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewLengthVote.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         TextViewLengthVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1012,14 +1012,14 @@ class WriteUI extends FragmentView {
                 TextView TextViewTitle = new TextView(Activity, 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
                 TextViewTitle.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), 0);
-                TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewTitle.setText(Misc.String(R.string.WriteUILength2));
 
                 LinearLayoutMain.addView(TextViewTitle);
 
                 View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
 
                 LinearLayoutMain.addView(ViewLine);
 
@@ -1036,7 +1036,7 @@ class WriteUI extends FragmentView {
 
                 TextView TextViewDays = new TextView(Activity, 14, false);
                 TextViewDays.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                TextViewDays.SetColor(R.color.TextWhite);
+                TextViewDays.SetColor(R.color.Primary);
                 TextViewDays.setText(Misc.String(R.string.WriteUILengthDays));
                 TextViewDays.setGravity(Gravity.CENTER);
 
@@ -1044,7 +1044,7 @@ class WriteUI extends FragmentView {
 
                 TextView TextViewHours = new TextView(Activity, 14, false);
                 TextViewHours.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                TextViewHours.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewHours.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewHours.setText(Misc.String(R.string.WriteUILengthHours));
                 TextViewHours.setGravity(Gravity.CENTER);
 
@@ -1052,7 +1052,7 @@ class WriteUI extends FragmentView {
 
                 TextView TextViewMins = new TextView(Activity, 14, false);
                 TextViewMins.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                TextViewMins.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewMins.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewMins.setText(Misc.String(R.string.WriteUILengthMins));
                 TextViewMins.setGravity(Gravity.CENTER);
 
@@ -1084,7 +1084,7 @@ class WriteUI extends FragmentView {
 
                 View ViewLine2 = new View(Activity);
                 ViewLine2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+                ViewLine2.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
 
                 LinearLayoutMain.addView(ViewLine2);
 
@@ -1096,7 +1096,7 @@ class WriteUI extends FragmentView {
 
                 TextView TextViewCancel = new TextView(Activity, 14, false);
                 TextViewCancel.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                TextViewCancel.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewCancel.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewCancel.setText(Misc.String(R.string.WriteUILengthCancel));
                 TextViewCancel.setGravity(Gravity.CENTER);
                 TextViewCancel.setOnClickListener(new View.OnClickListener() {
@@ -1108,7 +1108,7 @@ class WriteUI extends FragmentView {
 
                 TextView TextViewSet = new TextView(Activity, 14, false);
                 TextViewSet.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                TextViewSet.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewSet.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                 TextViewSet.setText(Misc.String(R.string.WriteUILengthSet));
                 TextViewSet.setGravity(Gravity.CENTER);
                 TextViewSet.setOnClickListener(new View.OnClickListener() {
@@ -1209,7 +1209,7 @@ class WriteUI extends FragmentView {
         RelativeLayoutFileParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         GradientDrawable Border = new GradientDrawable();
-        Border.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
+        Border.setStroke(Misc.ToDP(1), Misc.Color(R.color.Primary));
         Border.setCornerRadius(Misc.ToDP(6));
 
         RelativeLayoutFile.setLayoutParams(RelativeLayoutFileParam);
@@ -1240,7 +1240,7 @@ class WriteUI extends FragmentView {
         TextViewFileNameParam.setMargins(0, Misc.ToDP(12), 0, 0);
 
         TextViewFileName.setLayoutParams(TextViewFileNameParam);
-        TextViewFileName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewFileName.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         TextViewFileName.setId(Misc.generateViewId());
 
         RelativeLayoutFile.addView(TextViewFileName);
@@ -1575,7 +1575,7 @@ class WriteUI extends FragmentView {
 
         RelativeLayout RelativeLayoutBack = new RelativeLayout(Activity);
         RelativeLayoutBack.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutBack.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutBack.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutBack.setClickable(true);
         RelativeLayoutBack.addView(RelativeLayoutMain);
 
@@ -1811,7 +1811,7 @@ class WriteUI extends FragmentView {
 
             TextView TextViewName = new TextView(Activity, 16, false);
             TextViewName.setLayoutParams(TextViewNameParam);
-            TextViewName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+            TextViewName.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
             TextViewName.setId(ID_NAME);
 
             RelativeLayoutMain.addView(TextViewName);
@@ -1821,7 +1821,7 @@ class WriteUI extends FragmentView {
 
             View ViewLine = new View(Activity);
             ViewLine.setLayoutParams(ViewLineParam);
-            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
             ViewLine.setId(ID_LINE);
 
             RelativeLayoutMain.addView(ViewLine);

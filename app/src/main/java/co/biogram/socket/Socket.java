@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -67,7 +68,7 @@ public class Socket
             @Override
             public Void call() throws Exception
             {
-                Log.e("QQ", "connecting to: " + host);
+
                 socket = new java.net.Socket(host, 7000);
 
                 bufferedInputStream = new BufferedInputStream(socket.getInputStream());
@@ -81,7 +82,6 @@ public class Socket
             public void onSuccess(Void result)
             {
                 connected = true;
-                Log.e("QQ", "vasl shod");
 
                 try
                 {
@@ -494,7 +494,7 @@ public class Socket
     public static class Options
     {
         private boolean reconnect = true;
-        private long reconnectInterval = 1000;
+        private long reconnectInterval = 60000;
         private boolean useQueue = true;
         private int queueSize = 1024;
         private int timeout = 0; // Disabled by default
@@ -603,7 +603,14 @@ public class Socket
                     ArrayList<byte[]> buffers = reader.read(chunk, bytesRead);
                     for (byte[] buffer : buffers)
                     {
-                        process(Serializer.deserialize(buffer));
+                        try
+                        {
+                            process(Serializer.deserialize(buffer));
+                        }
+                        catch (Exception e)
+                        {
+                            //
+                        }
                     }
                 }
             }

@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import co.biogram.main.ui.component.CircleImageView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -57,7 +58,7 @@ import co.biogram.main.ui.social.LikeUI;
 import co.biogram.main.ui.social.PostUI;
 import co.biogram.main.ui.view.PullToRefreshView;
 import co.biogram.main.ui.view.TextView;
-import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain> {
     private static DBHandler DB;
@@ -142,7 +143,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
         PostList.add(new PostStruct(0));
 
         DrawableBorder = new GradientDrawable();
-        DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
+        DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.Primary));
         DrawableBorder.setCornerRadius(Misc.ToDP(6));
 
         DB = new DBHandler(Activity);
@@ -271,7 +272,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewName = new TextView(Activity, 14, true);
             TextViewName.setLayoutParams(TextViewNameParam);
-            TextViewName.SetColor(R.color.TextWhite);
+            TextViewName.SetColor(R.color.Primary);
             TextViewName.setId(ID1_NAME);
 
             RelativeLayoutMain.addView(TextViewName);
@@ -315,7 +316,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewMessage = new TextView(Activity, 14, false);
             TextViewMessage.setLayoutParams(TextViewMessageParam);
-            TextViewMessage.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+            TextViewMessage.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
             TextViewMessage.setId(ID1_MESSAGE);
 
             RelativeLayoutMain.addView(TextViewMessage);
@@ -569,7 +570,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote1 = new TextView(Activity, 14, false);
                 TextViewVote1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-                TextViewVote1.SetColor(R.color.TextWhite);
+                TextViewVote1.SetColor(R.color.Primary);
                 TextViewVote1.setPadding(Misc.ToDP(5), 0, 0, 0);
                 TextViewVote1.setGravity(Gravity.LEFT);
                 TextViewVote1.setId(ID1_VOTE_TYPE1_TEXT1);
@@ -578,7 +579,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote2 = new TextView(Activity, 14, false);
                 TextViewVote2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-                TextViewVote2.SetColor(R.color.TextWhite);
+                TextViewVote2.SetColor(R.color.Primary);
                 TextViewVote2.setPadding(Misc.ToDP(5), 0, 0, 0);
                 TextViewVote2.setGravity(Gravity.LEFT);
                 TextViewVote2.setId(ID1_VOTE_TYPE1_TEXT2);
@@ -587,7 +588,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote3 = new TextView(Activity, 14, false);
                 TextViewVote3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-                TextViewVote3.SetColor(R.color.TextWhite);
+                TextViewVote3.SetColor(R.color.Primary);
                 TextViewVote3.setPadding(Misc.ToDP(5), 0, 0, 0);
                 TextViewVote3.setId(ID1_VOTE_TYPE1_TEXT3);
                 TextViewVote3.setGravity(Gravity.LEFT);
@@ -596,7 +597,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote4 = new TextView(Activity, 14, false);
                 TextViewVote4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-                TextViewVote4.SetColor(R.color.TextWhite);
+                TextViewVote4.SetColor(R.color.Primary);
                 TextViewVote4.setPadding(Misc.ToDP(5), 0, 0, 0);
                 TextViewVote4.setId(ID1_VOTE_TYPE1_TEXT4);
                 TextViewVote4.setGravity(Gravity.LEFT);
@@ -605,7 +606,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote5 = new TextView(Activity, 14, false);
                 TextViewVote5.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-                TextViewVote5.SetColor(R.color.TextWhite);
+                TextViewVote5.SetColor(R.color.Primary);
                 TextViewVote5.setPadding(Misc.ToDP(5), 0, 0, 0);
                 TextViewVote5.setId(ID1_VOTE_TYPE1_TEXT5);
                 TextViewVote5.setGravity(Gravity.LEFT);
@@ -619,7 +620,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 View ViewVoteLine2 = new View(Activity);
                 ViewVoteLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                ViewVoteLine2.setBackgroundResource(R.color.LineWhite);
+                ViewVoteLine2.setBackgroundResource(R.color.Primary);
 
                 LinearLayoutType1.addView(ViewVoteLine2);
 
@@ -679,7 +680,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewPercent1 = new TextView(Activity, 14, false);
                 TextViewPercent1.setLayoutParams(TextViewPercent1Param);
-                TextViewPercent1.SetColor(R.color.TextWhite);
+                TextViewPercent1.SetColor(R.color.Primary);
                 TextViewPercent1.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
                 TextViewPercent1.setGravity(Gravity.CENTER);
                 TextViewPercent1.setId(ID1_VOTE_TYPE2_PER1);
@@ -692,7 +693,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewPercent2 = new TextView(Activity, 14, false);
                 TextViewPercent2.setLayoutParams(TextViewPercent2Param);
-                TextViewPercent2.SetColor(R.color.TextWhite);
+                TextViewPercent2.SetColor(R.color.Primary);
                 TextViewPercent2.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
                 TextViewPercent2.setGravity(Gravity.CENTER);
                 TextViewPercent2.setId(ID1_VOTE_TYPE2_PER2);
@@ -705,7 +706,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewPercent3 = new TextView(Activity, 14, false);
                 TextViewPercent3.setLayoutParams(TextViewPercent3Param);
-                TextViewPercent3.SetColor(R.color.TextWhite);
+                TextViewPercent3.SetColor(R.color.Primary);
                 TextViewPercent3.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
                 TextViewPercent3.setGravity(Gravity.CENTER);
                 TextViewPercent3.setVisibility(View.GONE);
@@ -719,7 +720,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewPercent4 = new TextView(Activity, 14, false);
                 TextViewPercent4.setLayoutParams(TextViewPercent4Param);
-                TextViewPercent4.SetColor(R.color.TextWhite);
+                TextViewPercent4.SetColor(R.color.Primary);
                 TextViewPercent4.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
                 TextViewPercent4.setGravity(Gravity.CENTER);
                 TextViewPercent4.setVisibility(View.GONE);
@@ -733,7 +734,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewPercent5 = new TextView(Activity, 14, false);
                 TextViewPercent5.setLayoutParams(TextViewPercent5Param);
-                TextViewPercent5.SetColor(R.color.TextWhite);
+                TextViewPercent5.SetColor(R.color.Primary);
                 TextViewPercent5.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
                 TextViewPercent5.setGravity(Gravity.CENTER);
                 TextViewPercent5.setVisibility(View.GONE);
@@ -747,7 +748,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote1 = new TextView(Activity, 14, false);
                 TextViewVote1.setLayoutParams(TextViewVote1Param);
-                TextViewVote1.SetColor(R.color.TextWhite);
+                TextViewVote1.SetColor(R.color.Primary);
                 TextViewVote1.setPadding(Misc.ToDP(3), Misc.ToDP(1), 0, 0);
                 TextViewVote1.setGravity(Gravity.LEFT);
                 TextViewVote1.setId(ID1_VOTE_TYPE2_TEXT1);
@@ -761,7 +762,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote2 = new TextView(Activity, 14, false);
                 TextViewVote2.setLayoutParams(TextViewVote2Param);
-                TextViewVote2.SetColor(R.color.TextWhite);
+                TextViewVote2.SetColor(R.color.Primary);
                 TextViewVote2.setPadding(Misc.ToDP(3), Misc.ToDP(1), 0, 0);
                 TextViewVote2.setGravity(Gravity.LEFT);
                 TextViewVote2.setId(ID1_VOTE_TYPE2_TEXT2);
@@ -775,7 +776,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote3 = new TextView(Activity, 14, false);
                 TextViewVote3.setLayoutParams(TextViewVote3Param);
-                TextViewVote3.SetColor(R.color.TextWhite);
+                TextViewVote3.SetColor(R.color.Primary);
                 TextViewVote3.setPadding(Misc.ToDP(3), Misc.ToDP(1), 0, 0);
                 TextViewVote3.setGravity(Gravity.LEFT);
                 TextViewVote3.setVisibility(View.GONE);
@@ -790,7 +791,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote4 = new TextView(Activity, 14, false);
                 TextViewVote4.setLayoutParams(TextViewVote4Param);
-                TextViewVote4.SetColor(R.color.TextWhite);
+                TextViewVote4.SetColor(R.color.Primary);
                 TextViewVote4.setPadding(Misc.ToDP(3), Misc.ToDP(1), 0, 0);
                 TextViewVote4.setGravity(Gravity.LEFT);
                 TextViewVote4.setVisibility(View.GONE);
@@ -805,7 +806,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 TextView TextViewVote5 = new TextView(Activity, 14, false);
                 TextViewVote5.setLayoutParams(TextViewVote5Param);
-                TextViewVote5.SetColor(R.color.TextWhite);
+                TextViewVote5.SetColor(R.color.Primary);
                 TextViewVote5.setPadding(Misc.ToDP(3), Misc.ToDP(1), 0, 0);
                 TextViewVote5.setGravity(Gravity.LEFT);
                 TextViewVote5.setVisibility(View.GONE);
@@ -826,7 +827,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                 View ViewVote = new View(Activity);
                 ViewVote.setLayoutParams(ViewVoteParam);
-                ViewVote.setBackgroundResource(R.color.LineWhite);
+                ViewVote.setBackgroundResource(R.color.Primary);
                 ViewVote.setId(Misc.generateViewId());
 
                 RelativeLayoutType2.addView(ViewVote);
@@ -907,7 +908,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             TextView TextViewFileName = new TextView(Activity, 14, false);
             TextViewFileName.setLayoutParams(TextViewFileNameParam);
-            TextViewFileName.SetColor(R.color.TextWhite);
+            TextViewFileName.SetColor(R.color.Primary);
             TextViewFileName.setId(ID1_FILE_NAME);
 
             RelativeLayoutFile.addView(TextViewFileName);
@@ -1041,7 +1042,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
             View ViewLine = new View(Activity);
             ViewLine.setLayoutParams(ViewLineParam);
-            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
             ViewLine.setId(ID1_VIEW_LINE);
 
             RelativeLayoutMain.addView(ViewLine);
@@ -1526,12 +1527,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                     LinearLayout LinearLayoutMain = new LinearLayout(Activity);
                                     LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                                    LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                                    LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                                     LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                                     TextView TextViewTitle = new TextView(Activity, 14, false);
                                     TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                                    TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                                    TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                                     TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                     TextViewTitle.setText(Misc.String(R.string.PostAdapterCancel));
                                     TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
@@ -1540,7 +1541,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                     View ViewLine = new View(Activity);
                                     ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                                    ViewLine.setBackgroundResource(R.color.LineWhite);
+                                    ViewLine.setBackgroundResource(R.color.Primary);
 
                                     LinearLayoutMain.addView(ViewLine);
 
@@ -1552,7 +1553,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                     TextView TextViewYes = new TextView(Activity, 14, false);
                                     TextViewYes.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                                    TextViewYes.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                                    TextViewYes.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                                     TextViewYes.setText(Misc.String(R.string.PostAdapterYes));
                                     TextViewYes.setGravity(Gravity.CENTER);
                                     TextViewYes.setOnClickListener(new View.OnClickListener() {
@@ -1571,7 +1572,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                     TextView TextViewNo = new TextView(Activity, 14, false);
                                     TextViewNo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                                    TextViewNo.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                                    TextViewNo.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                                     TextViewNo.setText(Misc.String(R.string.PostAdapterNo));
                                     TextViewNo.setGravity(Gravity.CENTER);
                                     TextViewNo.setOnClickListener(new View.OnClickListener() {
@@ -1828,13 +1829,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         LinearLayout LinearLayoutMain = new LinearLayout(Activity);
                         LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                        LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                        LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                         LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                         if (PostList.get(Position).Owner.equals(Misc.GetString("ID"))) {
                             TextView TextViewDelete = new TextView(Activity, 14, false);
                             TextViewDelete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                            TextViewDelete.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                            TextViewDelete.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                             TextViewDelete.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                             TextViewDelete.setText(Misc.String(R.string.PostAdapterOptionDelete));
                             TextViewDelete.setGravity(Gravity.CENTER_VERTICAL);
@@ -1869,13 +1870,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                             if ((PostList.get(Position).Time + 172800) > ((System.currentTimeMillis() / 1000))) {
                                 View ViewLine = new View(Activity);
                                 ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                                ViewLine.setBackgroundResource(R.color.LineWhite);
+                                ViewLine.setBackgroundResource(R.color.Primary);
 
                                 LinearLayoutMain.addView(ViewLine);
 
                                 TextView TextViewEdit = new TextView(Activity, 14, false);
                                 TextViewEdit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                                TextViewEdit.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                                TextViewEdit.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                                 TextViewEdit.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                 TextViewEdit.setText(Misc.String(R.string.PostAdapterOptionEdit));
                                 TextViewEdit.setGravity(Gravity.CENTER_VERTICAL);
@@ -1890,12 +1891,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         LinearLayout LinearLayoutMain = new LinearLayout(Activity);
                                         LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                                        LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                                        LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                                         LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
 
                                         TextView TextViewTitle = new TextView(Activity, 14, true);
                                         TextViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                                        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                                        TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                                         TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                                         TextViewTitle.setText(Misc.String(R.string.PostAdapterOptionEditTitle));
                                         TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
@@ -1904,7 +1905,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         View ViewLine = new View(Activity);
                                         ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                                        ViewLine.setBackgroundResource(R.color.LineWhite);
+                                        ViewLine.setBackgroundResource(R.color.Primary);
 
                                         LinearLayoutMain.addView(ViewLine);
 
@@ -1917,7 +1918,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                                         EditTextMessage.setHint(R.string.PostAdapterOptionEditMessage);
                                         EditTextMessage.setHintTextColor(Misc.Color(R.color.Gray));
                                         EditTextMessage.setSelection(EditTextMessage.getText().length());
-                                        EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite));
+                                        EditTextMessage.setTextColor(Misc.Color(Misc.IsDark() ? R.color.Primary : R.color.Primary));
                                         EditTextMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                                         EditTextMessage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(300)});
 
@@ -1925,7 +1926,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                                         View ViewLine2 = new View(Activity);
                                         ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                                        ViewLine2.setBackgroundResource(R.color.LineWhite);
+                                        ViewLine2.setBackgroundResource(R.color.Primary);
 
                                         LinearLayoutMain.addView(ViewLine2);
 
@@ -1991,7 +1992,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
                         } else {
                             TextView TextViewFollow = new TextView(Activity, 14, false);
                             TextViewFollow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                            TextViewFollow.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                            TextViewFollow.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                             TextViewFollow.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                             TextViewFollow.setText(Misc.String(PostList.get(Position).IsFollow ? R.string.PostAdapterOptionUnfollow : R.string.PostAdapterOptionFollow));
                             TextViewFollow.setGravity(Gravity.CENTER_VERTICAL);
@@ -2024,13 +2025,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         View ViewLine = new View(Activity);
                         ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                        ViewLine.setBackgroundResource(R.color.LineWhite);
+                        ViewLine.setBackgroundResource(R.color.Primary);
 
                         LinearLayoutMain.addView(ViewLine);
 
                         TextView TextViewReport = new TextView(Activity, 14, false);
                         TextViewReport.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                        TextViewReport.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                        TextViewReport.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                         TextViewReport.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewReport.setText(Misc.String(R.string.PostAdapterOptionReport));
                         TextViewReport.setGravity(Gravity.CENTER_VERTICAL);
@@ -2043,7 +2044,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         View ViewLine2 = new View(Activity);
                         ViewLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                        ViewLine2.setBackgroundResource(R.color.LineWhite);
+                        ViewLine2.setBackgroundResource(R.color.Primary);
 
                         if (!PostList.get(Position).Owner.equals(Misc.GetString("ID"))) {
                             LinearLayoutMain.addView(TextViewReport);
@@ -2052,7 +2053,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         TextView TextViewCopy = new TextView(Activity, 14, false);
                         TextViewCopy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                        TextViewCopy.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                        TextViewCopy.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                         TextViewCopy.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewCopy.setText(Misc.String(R.string.PostAdapterOptionCopy));
                         TextViewCopy.setGravity(Gravity.CENTER_VERTICAL);
@@ -2072,7 +2073,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         View ViewLine4 = new View(Activity);
                         ViewLine4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                        ViewLine4.setBackgroundResource(R.color.LineWhite);
+                        ViewLine4.setBackgroundResource(R.color.Primary);
 
                         if (PostList.get(Position).Message != null && !PostList.get(Position).Message.isEmpty()) {
 
@@ -2082,7 +2083,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         TextView TextViewBookmark = new TextView(Activity, 14, false);
                         TextViewBookmark.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                        TextViewBookmark.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                        TextViewBookmark.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                         TextViewBookmark.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewBookmark.setText(Misc.String(PostList.get(Position).IsBookmark ? R.string.PostAdapterOptionUnbookmark : R.string.PostAdapterOptionBookmark));
                         TextViewBookmark.setGravity(Gravity.CENTER_VERTICAL);
@@ -2114,13 +2115,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
 
                         View ViewLine5 = new View(Activity);
                         ViewLine5.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-                        ViewLine5.setBackgroundResource(R.color.LineWhite);
+                        ViewLine5.setBackgroundResource(R.color.Primary);
 
                         LinearLayoutMain.addView(ViewLine5);
 
                         TextView TextViewShare = new TextView(Activity, 14, false);
                         TextViewShare.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                        TextViewShare.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                        TextViewShare.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
                         TextViewShare.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                         TextViewShare.setText(Misc.String(R.string.PostAdapterOptionShare));
                         TextViewShare.setGravity(Gravity.CENTER_VERTICAL);

@@ -39,7 +39,89 @@ import co.biogram.main.R;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.activity.WelcomeActivity;
 
-public class Misc {
+public class Misc
+{
+    public static int GetTheme()
+    {
+        return R.style.ThemeLight;
+    }
+
+    public static int Attr(Context context, int ID)
+    {
+        TypedValue Value = new TypedValue();
+        context.getTheme().resolveAttribute(ID, Value, true);
+
+        return Value.data;
+    }
+
+    public static String TimeAgo(long Time)
+    {
+        Time = Time * 1000;
+        long Now = System.currentTimeMillis();
+
+        if (Time > Now || Time <= 0)
+            return "";
+
+        int Diff = Math.round((Math.abs(Now - Time) / 1000) / 60);
+
+        if (Diff == 0)
+            return String(R.string.TimeAgoNow);
+        else if (Diff == 1)
+            return String(R.string.TimeAgoMin);
+        else if (Diff >= 2 && Diff <= 59)
+            return Diff + " " + String(R.string.TimeAgoMins);
+        else if (Diff >= 60 && Diff <= 119)
+            return String(R.string.TimeAgoHour);
+        else if (Diff >= 120 && Diff <= 1439)
+            return (Math.round(Diff / 60)) + " " + String(R.string.TimeAgoHours);
+        else if (Diff >= 1440 && Diff <= 2519)
+            return String(R.string.TimeAgoDay);
+        else if (Diff >= 2520 && Diff <= 43199)
+            return (Math.round(Diff / 1440)) + " " + String(R.string.TimeAgoDays);
+        else if (Diff >= 43200 && Diff <= 86399)
+            return String(R.string.TimeAgoMonth);
+        else if (Diff >= 86400 && Diff <= 525599)
+            return (Math.round(Diff / 43200)) + " " + String(R.string.TimeAgoMonths);
+        else if (Diff >= 525600 && Diff <= 655199)
+            return String(R.string.TimeAgoYear);
+
+        return Math.round(Diff / 525600) + " " + String(R.string.TimeAgoYears);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static final String TAG = "channel";
 
     public static final int DIR_DOWNLOAD = 0;
@@ -57,10 +139,12 @@ public class Misc {
     private static boolean IsFa = false;
     private static boolean IsFaInit = true;
 
-    private Misc() {
+    private Misc()
+    {
     }
 
-    public static void Initial(Context c) {
+    public static void Initial(Context c)
+    {
         context = c;
 
         File TempFolder = Temp();
@@ -70,7 +154,8 @@ public class Misc {
                 file.delete();
     }
 
-    public static File Temp() {
+    public static File Temp()
+    {
         File TempFolder = new File(context.getCacheDir(), "Temp");
 
         if (!TempFolder.exists())
@@ -79,10 +164,12 @@ public class Misc {
         return TempFolder;
     }
 
-    public static File Dir(int Type) {
+    public static File Dir(int Type)
+    {
         String Folder = "";
 
-        switch (Type) {
+        switch (Type)
+        {
             case DIR_DOWNLOAD:
                 Folder = "Download";
                 break;
@@ -116,26 +203,32 @@ public class Misc {
         return DirFolder;
     }
 
-    public static Typeface GetTypeface() {
+    public static Typeface GetTypeface()
+    {
         if (TypeFontCache == null)
             TypeFontCache = Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf");
 
         return TypeFontCache;
     }
 
-    public static int Color(int C) {
+    public static int Color(int C)
+    {
         return ContextCompat.getColor(context, C);
     }
 
-    public static String String(int S) {
+    public static String String(int S)
+    {
         return context.getString(S);
     }
 
-    public static int SampleSize(int W, int H, int MW, int MH) {
+    public static int SampleSize(int W, int H, int MW, int MH)
+    {
         int S = 1;
 
-        if (H > MH || W > MW) {
-            while ((H / S) >= MH || (W / S) >= MW) {
+        if (H > MH || W > MW)
+        {
+            while ((H / S) >= MH || (W / S) >= MW)
+            {
                 S *= 2;
             }
         }
@@ -143,12 +236,15 @@ public class Misc {
         return S;
     }
 
-    public static boolean CheckPermission(String p) {
+    public static boolean CheckPermission(String p)
+    {
         return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void SetCursorColor(View view, int Color) {
-        try {
+    public static void SetCursorColor(View view, int Color)
+    {
+        try
+        {
             Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
             field.setAccessible(true);
 
@@ -164,48 +260,58 @@ public class Misc {
 
             field = Editor.getClass().getDeclaredField("mCursorDrawable");
             field.setAccessible(true);
-            field.set(Editor, new Drawable[]{drawable, drawable});
-        } catch (Exception e) {
+            field.set(Editor, new Drawable[] { drawable, drawable });
+        }
+        catch (Exception e)
+        {
             //
         }
     }
 
-    public static void SetString(String Key, String Value) {
+    public static void SetString(String Key, String Value)
+    {
         SharedPreferences.Editor Editor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
         Editor.putString(Key, Value);
         Editor.apply();
     }
 
-    public static String GetString(String Key) {
+    public static String GetString(String Key)
+    {
         return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, "");
     }
 
-    public static String GetString(String Key, String Value) {
+    public static String GetString(String Key, String Value)
+    {
         return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, Value);
     }
 
-    public static void SetBoolean(String Key, boolean Value) {
+    public static void SetBoolean(String Key, boolean Value)
+    {
         SharedPreferences.Editor Editor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
         Editor.putBoolean(Key, Value);
         Editor.apply();
     }
 
-    public static boolean GetBoolean(String Key) {
+    public static boolean GetBoolean(String Key)
+    {
         return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getBoolean(Key, false);
     }
 
-    public static int ToDP(float Value) {
+    public static int ToDP(float Value)
+    {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
     }
 
-    public static void ChangeTheme() {
+    public static void ChangeTheme()
+    {
         SharedPreferences.Editor Editor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
         Editor.putBoolean("ThemeDark", !Misc.GetBoolean("ThemeDark"));
         // noinspection all
         Editor.commit();
     }
 
-    public static void ShowSoftKey(View v) {
+    public static void ShowSoftKey(View v)
+    {
         InputMethodManager IMM = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (IMM == null)
@@ -214,7 +320,8 @@ public class Misc {
         IMM.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public static void HideSoftKey(Activity a) {
+    public static void HideSoftKey(Activity a)
+    {
         View v = a.getCurrentFocus();
 
         if (v == null)
@@ -228,10 +335,11 @@ public class Misc {
         IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public static void ToastOld(int Message) {
+    public static void ToastOld(int Message)
+    {
         GradientDrawable drawableToast = new GradientDrawable();
-        drawableToast.setStroke(ToDP(1), Color(R.color.ToastLine));
-        drawableToast.setColor(Color(R.color.Toast));
+        drawableToast.setStroke(ToDP(1), Color(R.color.Primary));
+        drawableToast.setColor(Color(R.color.Primary));
         drawableToast.setCornerRadius(10.0f);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
@@ -247,7 +355,7 @@ public class Misc {
         TextViewMessage.setTypeface(GetTypeface());
         TextViewMessage.setText(String(Message));
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewMessage.setTextColor(Color(R.color.TextDark));
+        TextViewMessage.setTextColor(Color(R.color.Primary));
 
         RelativeLayoutMain.addView(TextViewMessage);
 
@@ -258,15 +366,17 @@ public class Misc {
         toast.show();
     }
 
-    public static int generateViewId() {
+    public static int generateViewId()
+    {
 
         return View.generateViewId();
 
-
     }
 
-    public static boolean IsRTL() {
-        if (IsRTLInit) {
+    public static boolean IsRTL()
+    {
+        if (IsRTLInit)
+        {
             Locale locale = Locale.getDefault();
             String Language = locale.getLanguage();
 
@@ -280,8 +390,10 @@ public class Misc {
         return IsRTL;
     }
 
-    public static boolean IsFa() {
-        if (IsFaInit) {
+    public static boolean IsFa()
+    {
+        if (IsFaInit)
+        {
             Locale locale = Locale.getDefault();
             String Language = locale.getLanguage();
 
@@ -295,33 +407,36 @@ public class Misc {
         return IsFa;
     }
 
-    public static int Align(String Direction) {
+    public static int Align(String Direction)
+    {
         if (Direction.equals("R"))
             return IsRTL() ? RelativeLayout.ALIGN_PARENT_RIGHT : RelativeLayout.ALIGN_PARENT_LEFT;
         else
             return IsRTL() ? RelativeLayout.ALIGN_PARENT_LEFT : RelativeLayout.ALIGN_PARENT_RIGHT;
     }
 
-    public static int AlignTo(String Direction) {
+    public static int AlignTo(String Direction)
+    {
         if (Direction.equals("R"))
             return IsRTL() ? RelativeLayout.LEFT_OF : RelativeLayout.RIGHT_OF;
         else
             return IsRTL() ? RelativeLayout.RIGHT_OF : RelativeLayout.LEFT_OF;
     }
 
-    public static int Gravity(String Direction) {
+    public static int Gravity(String Direction)
+    {
         if (Direction.equals("R"))
             return IsRTL() ? Gravity.START : Gravity.END;
         else
             return IsRTL() ? Gravity.END : Gravity.START;
     }
 
-
-    public static void ToastOld(String Message) {
+    public static void ToastOld(String Message)
+    {
         GradientDrawable DrawableToast = new GradientDrawable();
-        DrawableToast.setColor(ContextCompat.getColor(context, R.color.Toast));
+        DrawableToast.setColor(ContextCompat.getColor(context, R.color.Primary));
         DrawableToast.setCornerRadius(10.0f);
-        DrawableToast.setStroke(ToDP(1), ContextCompat.getColor(context, R.color.ToastLine));
+        DrawableToast.setStroke(ToDP(1), ContextCompat.getColor(context, R.color.Primary));
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -344,23 +459,26 @@ public class Misc {
         ToastMain.show();
     }
 
-
-    public static void UIThread(Runnable r, long d) {
+    public static void UIThread(Runnable r, long d)
+    {
         new Handler(context.getApplicationContext().getMainLooper()).postDelayed(r, d);
     }
 
-    public static int SampleSize(BitmapFactory.Options o, int RW, int RH) {
+    public static int SampleSize(BitmapFactory.Options o, int RW, int RH)
+    {
         int H = o.outHeight;
         int W = o.outWidth;
 
         int S = 1;
 
-        if (H > RH || W > RW) {
+        if (H > RH || W > RW)
+        {
 
             int HH = H / 2;
             int HW = W / 2;
 
-            while ((HH / S) >= RH && (HW / S) >= RW) {
+            while ((HH / S) >= RH && (HW / S) >= RW)
+            {
                 S *= 2;
             }
         }
@@ -368,8 +486,8 @@ public class Misc {
         return S;
     }
 
-
-    public static void ChangeLanguage(String Language) {
+    public static void ChangeLanguage(String Language)
+    {
         SharedPreferences.Editor Editor = context.getSharedPreferences("BioGram", Context.MODE_PRIVATE).edit();
         Editor.putString("Language", Language);
         // noinspection all
@@ -383,8 +501,10 @@ public class Misc {
         System.exit(0);
     }
 
-    public static void GeneralError(int Error) {
-        switch (Error) {
+    public static void GeneralError(int Error)
+    {
+        switch (Error)
+        {
             case -1:
                 ToastOld(String(R.string.GeneralError1));
                 break;
@@ -406,60 +526,33 @@ public class Misc {
         }
     }
 
-
-    public static boolean IsDark() {
+    public static boolean IsDark()
+    {
         return Misc.GetBoolean("IsDark");
     }
 
-    public static void IsFullScreen(Activity activity, boolean Show) {
+    public static void IsFullScreen(Activity activity, boolean Show)
+    {
         if (Show && Misc.GetBoolean("IsFullScreen"))
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         else if (!Show && !Misc.GetBoolean("IsFullScreen"))
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    public static String GetRandomServer(String URL) {
+    public static String GetRandomServer(String URL)
+    {
         return "http://5.160.219.218:5000/" + URL;
     }
 
-    public static String GenerateSession() {
+    public static String GenerateSession()
+    {
         return "BioGram Android " + BuildConfig.VERSION_NAME + " - " + Build.MODEL + " - " + Build.MANUFACTURER + " - API " + Build.VERSION.SDK_INT;
     }
 
-    public static String TimeAgo(long Time) {
-        Time = Time * 1000;
-        long Now = System.currentTimeMillis();
 
-        if (Time > Now || Time <= 0)
-            return "";
 
-        int Diff = Math.round((Math.abs(Now - Time) / 1000) / 60);
-
-        if (Diff == 0)
-            return String(R.string.TimeAgoNow);
-        else if (Diff == 1)
-            return String(R.string.TimeAgoMin);
-        else if (Diff >= 2 && Diff <= 59)
-            return Diff + " " + String(R.string.TimeAgoMins);
-        else if (Diff >= 60 && Diff <= 119)
-            return String(R.string.TimeAgoHour);
-        else if (Diff >= 120 && Diff <= 1439)
-            return (Math.round(Diff / 60)) + " " + String(R.string.TimeAgoHours);
-        else if (Diff >= 1440 && Diff <= 2519)
-            return String(R.string.TimeAgoDay);
-        else if (Diff >= 2520 && Diff <= 43199)
-            return (Math.round(Diff / 1440)) + " " + String(R.string.TimeAgoDays);
-        else if (Diff >= 43200 && Diff <= 86399)
-            return String(R.string.TimeAgoMonth);
-        else if (Diff >= 86400 && Diff <= 525599)
-            return (Math.round(Diff / 43200)) + " " + String(R.string.TimeAgoMonths);
-        else if (Diff >= 525600 && Diff <= 655199)
-            return String(R.string.TimeAgoYear);
-
-        return Math.round(Diff / 525600) + " " + String(R.string.TimeAgoYears);
-    }
-
-    public static String TimeLeft(long Time) {
+    public static String TimeLeft(long Time)
+    {
         Time = Time * 1000;
         long Now = System.currentTimeMillis();
 
@@ -484,12 +577,15 @@ public class Misc {
         return (Math.round(Diff / 1440)) + " " + String(R.string.TimeLeftDays);
     }
 
-    public static void Debug(String Message) {
+    public static void Debug(String Message)
+    {
         Log.e("Debug", Message);
     }
 
-    public static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
-        if (maxHeight > 0 && maxWidth > 0) {
+    public static Bitmap resize(Bitmap image, int maxWidth, int maxHeight)
+    {
+        if (maxHeight > 0 && maxWidth > 0)
+        {
             int width = image.getWidth();
             int height = image.getHeight();
             float ratioBitmap = (float) width / (float) height;
@@ -497,45 +593,53 @@ public class Misc {
 
             int finalWidth = maxWidth;
             int finalHeight = maxHeight;
-            if (ratioMax > ratioBitmap) {
+            if (ratioMax > ratioBitmap)
+            {
                 finalWidth = (int) ((float) maxHeight * ratioBitmap);
-            } else {
+            }
+            else
+            {
                 finalHeight = (int) ((float) maxWidth / ratioBitmap);
             }
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
             return image;
-        } else {
+        }
+        else
+        {
             return image;
         }
     }
 
-    public static void closeKeyboard(Activity activity) {
+    public static void closeKeyboard(Activity activity)
+    {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
-
-    public static String createFile(int type, @NonNull String subFolder, String format) {
+    public static String createFile(int type, @NonNull String subFolder, String format)
+    {
         String filepath = Misc.Dir(type).getPath();
         File file = new File(filepath, subFolder);
-        if (!file.exists()) {
+        if (!file.exists())
+        {
             file.mkdirs();
         }
         return (file.getPath() + "/" + System.currentTimeMillis() + format);
     }
 
-
-    public static String createFile(int type) {
+    public static String createFile(int type)
+    {
         String filepath = Misc.Dir(type).getPath();
         File file = new File(filepath);
-        if (!file.exists()) {
+        if (!file.exists())
+        {
             file.mkdirs();
         }
         return (file.getPath() + "/");
     }
 
-
-    public static Bitmap scale(Bitmap bitmap) {
+    public static Bitmap scale(Bitmap bitmap)
+    {
         float scale = 1f;
 
         if (bitmap.getWidth() < 200 || bitmap.getHeight() < 250)
@@ -557,33 +661,33 @@ public class Misc {
 
     }
 
+    //    public static void CreateThumbNail(String fileName, int width, int height) {
+    //        try
+    //        {
+    //            final int THUMBNAIL_SIZE = 64;
+    //
+    //            FileInputStream fis = new FileInputStream(fileName);
+    //            Bitmap imageBitmap = BitmapFactory.decodeStream(fis);
+    //
+    //            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, THUMBNAIL_SIZE, THUMBNAIL_SIZE, false);
+    //
+    //            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    //            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+    //
+    //        }
+    //        catch(Exception ex) {
+    //
+    //        }
+    //    }
 
-//    public static void CreateThumbNail(String fileName, int width, int height) {
-//        try
-//        {
-//            final int THUMBNAIL_SIZE = 64;
-//
-//            FileInputStream fis = new FileInputStream(fileName);
-//            Bitmap imageBitmap = BitmapFactory.decodeStream(fis);
-//
-//            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, THUMBNAIL_SIZE, THUMBNAIL_SIZE, false);
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//
-//        }
-//        catch(Exception ex) {
-//
-//        }
-//    }
-
-    public static Bitmap Blurry(Bitmap sentBitmap) {
+    public static Bitmap Blurry(Bitmap sentBitmap)
+    {
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
         int radius = 25;
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int[] Pixel = new int[width * height];
+        int[] Pixel = new int[ width * height ];
 
         bitmap.getPixels(Pixel, 0, width, 0, 0, width, height);
 
@@ -592,23 +696,24 @@ public class Misc {
         int wh = width * height;
         int div = radius + radius + 1;
 
-        int r[] = new int[wh];
-        int g[] = new int[wh];
-        int b[] = new int[wh];
+        int r[] = new int[ wh ];
+        int g[] = new int[ wh ];
+        int b[] = new int[ wh ];
         int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
-        int vmin[] = new int[Math.max(width, height)];
+        int vmin[] = new int[ Math.max(width, height) ];
 
         int divsum = (div + 1) >> 1;
         divsum *= divsum;
-        int dv[] = new int[256 * divsum];
+        int dv[] = new int[ 256 * divsum ];
 
-        for (i = 0; i < 256 * divsum; i++) {
-            dv[i] = (i / divsum);
+        for (i = 0; i < 256 * divsum; i++)
+        {
+            dv[ i ] = (i / divsum);
         }
 
         yw = yi = 0;
 
-        int[][] stack = new int[div][3];
+        int[][] stack = new int[ div ][ 3 ];
         int stackpointer;
         int stackstart;
         int[] sir;
@@ -617,78 +722,85 @@ public class Misc {
         int routsum, goutsum, boutsum;
         int rinsum, ginsum, binsum;
 
-        for (y = 0; y < height; y++) {
+        for (y = 0; y < height; y++)
+        {
             rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
 
-            for (i = -radius; i <= radius; i++) {
-                p = Pixel[yi + Math.min(widthMaximum, Math.max(i, 0))];
-                sir = stack[i + radius];
-                sir[0] = (p & 0xff0000) >> 16;
-                sir[1] = (p & 0x00ff00) >> 8;
-                sir[2] = (p & 0x0000ff);
+            for (i = -radius; i <= radius; i++)
+            {
+                p = Pixel[ yi + Math.min(widthMaximum, Math.max(i, 0)) ];
+                sir = stack[ i + radius ];
+                sir[ 0 ] = (p & 0xff0000) >> 16;
+                sir[ 1 ] = (p & 0x00ff00) >> 8;
+                sir[ 2 ] = (p & 0x0000ff);
                 rbs = r1 - Math.abs(i);
-                rsum += sir[0] * rbs;
-                gsum += sir[1] * rbs;
-                bsum += sir[2] * rbs;
+                rsum += sir[ 0 ] * rbs;
+                gsum += sir[ 1 ] * rbs;
+                bsum += sir[ 2 ] * rbs;
 
-                if (i > 0) {
-                    rinsum += sir[0];
-                    ginsum += sir[1];
-                    binsum += sir[2];
-                } else {
-                    routsum += sir[0];
-                    goutsum += sir[1];
-                    boutsum += sir[2];
+                if (i > 0)
+                {
+                    rinsum += sir[ 0 ];
+                    ginsum += sir[ 1 ];
+                    binsum += sir[ 2 ];
+                }
+                else
+                {
+                    routsum += sir[ 0 ];
+                    goutsum += sir[ 1 ];
+                    boutsum += sir[ 2 ];
                 }
             }
 
             stackpointer = radius;
 
-            for (x = 0; x < width; x++) {
+            for (x = 0; x < width; x++)
+            {
 
-                r[yi] = dv[rsum];
-                g[yi] = dv[gsum];
-                b[yi] = dv[bsum];
+                r[ yi ] = dv[ rsum ];
+                g[ yi ] = dv[ gsum ];
+                b[ yi ] = dv[ bsum ];
 
                 rsum -= routsum;
                 gsum -= goutsum;
                 bsum -= boutsum;
 
                 stackstart = stackpointer - radius + div;
-                sir = stack[stackstart % div];
+                sir = stack[ stackstart % div ];
 
-                routsum -= sir[0];
-                goutsum -= sir[1];
-                boutsum -= sir[2];
+                routsum -= sir[ 0 ];
+                goutsum -= sir[ 1 ];
+                boutsum -= sir[ 2 ];
 
-                if (y == 0) {
-                    vmin[x] = Math.min(x + radius + 1, widthMaximum);
+                if (y == 0)
+                {
+                    vmin[ x ] = Math.min(x + radius + 1, widthMaximum);
                 }
 
-                p = Pixel[yw + vmin[x]];
+                p = Pixel[ yw + vmin[ x ] ];
 
-                sir[0] = (p & 0xff0000) >> 16;
-                sir[1] = (p & 0x00ff00) >> 8;
-                sir[2] = (p & 0x0000ff);
+                sir[ 0 ] = (p & 0xff0000) >> 16;
+                sir[ 1 ] = (p & 0x00ff00) >> 8;
+                sir[ 2 ] = (p & 0x0000ff);
 
-                rinsum += sir[0];
-                ginsum += sir[1];
-                binsum += sir[2];
+                rinsum += sir[ 0 ];
+                ginsum += sir[ 1 ];
+                binsum += sir[ 2 ];
 
                 rsum += rinsum;
                 gsum += ginsum;
                 bsum += binsum;
 
                 stackpointer = (stackpointer + 1) % div;
-                sir = stack[(stackpointer) % div];
+                sir = stack[ (stackpointer) % div ];
 
-                routsum += sir[0];
-                goutsum += sir[1];
-                boutsum += sir[2];
+                routsum += sir[ 0 ];
+                goutsum += sir[ 1 ];
+                boutsum += sir[ 2 ];
 
-                rinsum -= sir[0];
-                ginsum -= sir[1];
-                binsum -= sir[2];
+                rinsum -= sir[ 0 ];
+                ginsum -= sir[ 1 ];
+                binsum -= sir[ 2 ];
 
                 yi++;
             }
@@ -696,83 +808,91 @@ public class Misc {
             yw += width;
         }
 
-        for (x = 0; x < width; x++) {
+        for (x = 0; x < width; x++)
+        {
             rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
             yp = -radius * width;
 
-            for (i = -radius; i <= radius; i++) {
+            for (i = -radius; i <= radius; i++)
+            {
                 yi = Math.max(0, yp) + x;
 
-                sir = stack[i + radius];
+                sir = stack[ i + radius ];
 
-                sir[0] = r[yi];
-                sir[1] = g[yi];
-                sir[2] = b[yi];
+                sir[ 0 ] = r[ yi ];
+                sir[ 1 ] = g[ yi ];
+                sir[ 2 ] = b[ yi ];
 
                 rbs = r1 - Math.abs(i);
 
-                rsum += r[yi] * rbs;
-                gsum += g[yi] * rbs;
-                bsum += b[yi] * rbs;
+                rsum += r[ yi ] * rbs;
+                gsum += g[ yi ] * rbs;
+                bsum += b[ yi ] * rbs;
 
-                if (i > 0) {
-                    rinsum += sir[0];
-                    ginsum += sir[1];
-                    binsum += sir[2];
-                } else {
-                    routsum += sir[0];
-                    goutsum += sir[1];
-                    boutsum += sir[2];
+                if (i > 0)
+                {
+                    rinsum += sir[ 0 ];
+                    ginsum += sir[ 1 ];
+                    binsum += sir[ 2 ];
+                }
+                else
+                {
+                    routsum += sir[ 0 ];
+                    goutsum += sir[ 1 ];
+                    boutsum += sir[ 2 ];
                 }
 
-                if (i < heightMaximum) {
+                if (i < heightMaximum)
+                {
                     yp += width;
                 }
             }
             yi = x;
             stackpointer = radius;
-            for (y = 0; y < height; y++) {
+            for (y = 0; y < height; y++)
+            {
                 // Preserve alpha channel: ( 0xff000000 & pix[yi] )
-                Pixel[yi] = (0xff000000 & Pixel[yi]) | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
+                Pixel[ yi ] = (0xff000000 & Pixel[ yi ]) | (dv[ rsum ] << 16) | (dv[ gsum ] << 8) | dv[ bsum ];
 
                 rsum -= routsum;
                 gsum -= goutsum;
                 bsum -= boutsum;
 
                 stackstart = stackpointer - radius + div;
-                sir = stack[stackstart % div];
+                sir = stack[ stackstart % div ];
 
-                routsum -= sir[0];
-                goutsum -= sir[1];
-                boutsum -= sir[2];
+                routsum -= sir[ 0 ];
+                goutsum -= sir[ 1 ];
+                boutsum -= sir[ 2 ];
 
-                if (x == 0) {
-                    vmin[y] = Math.min(y + r1, heightMaximum) * width;
+                if (x == 0)
+                {
+                    vmin[ y ] = Math.min(y + r1, heightMaximum) * width;
                 }
-                p = x + vmin[y];
+                p = x + vmin[ y ];
 
-                sir[0] = r[p];
-                sir[1] = g[p];
-                sir[2] = b[p];
+                sir[ 0 ] = r[ p ];
+                sir[ 1 ] = g[ p ];
+                sir[ 2 ] = b[ p ];
 
-                rinsum += sir[0];
-                ginsum += sir[1];
-                binsum += sir[2];
+                rinsum += sir[ 0 ];
+                ginsum += sir[ 1 ];
+                binsum += sir[ 2 ];
 
                 rsum += rinsum;
                 gsum += ginsum;
                 bsum += binsum;
 
                 stackpointer = (stackpointer + 1) % div;
-                sir = stack[stackpointer];
+                sir = stack[ stackpointer ];
 
-                routsum += sir[0];
-                goutsum += sir[1];
-                boutsum += sir[2];
+                routsum += sir[ 0 ];
+                goutsum += sir[ 1 ];
+                boutsum += sir[ 2 ];
 
-                rinsum -= sir[0];
-                ginsum -= sir[1];
-                binsum -= sir[2];
+                rinsum -= sir[ 0 ];
+                ginsum -= sir[ 1 ];
+                binsum -= sir[ 2 ];
 
                 yi += width;
             }

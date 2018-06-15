@@ -1,39 +1,10 @@
 <resources>
-
-    <style name="AppThemeLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
-
-        <item name="TextColor">#000</item>
+    <style name="ThemeLight">
+        <item name="StatusColor">#ddd</item>
+        <item name="ActionColor">#fff</item>
         <item name="LineColor">#eee</item>
-        <item name="GroundColor">#fff</item>
-        <item name="ActionBarColor">#fff</item>
-        <item name="StatusBarColor">#ddd</item>
-        <item name="ToastColor">#144766</item>
-        <item name="ToastLineColor">#0a3148</item>
+        <item name="BgColor">#fff</item>
+        <item name="TextColor">#000</item>
+        <item name="ReverseTextColor">#fff</item>
     </style>
-
-    <style name="AppThemeDark" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <item name="TextColor">#fff</item>
-        <item name="LineColor">#2b4159</item>
-        <item name="GroundColor">#1b2936</item>
-        <item name="ActionBarColor">#233446</item>
-        <item name="StatusBarColor">#1b2936</item>
-        <item name="ToastColor">#144766</item>
-        <item name="ToastLineColor">#0a3148</item>
-    </style>
-
-    <style name="WhiteAccentColor" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <item name="colorAccent">#e57373</item>
-
-    </style>
-
-    <style name="BarColor" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <item name="colorAccent">#fff</item>
-
-    </style>
-
-
 </resources>

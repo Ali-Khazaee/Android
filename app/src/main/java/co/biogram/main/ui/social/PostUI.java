@@ -9,13 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import co.biogram.main.ui.component.CircleImageView;
 import com.androidnetworking.AndroidNetworking;
 
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.TextView;
-import de.hdodenhof.circleimageview.CircleImageView;
+;
 
 public class PostUI extends FragmentView {
     private int ID1_PROFILE = Misc.generateViewId();
@@ -96,12 +97,12 @@ public class PostUI extends FragmentView {
     public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         RelativeLayoutHeader.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -129,7 +130,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         TextViewTitle.setText(Misc.String(R.string.PostUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
 
@@ -150,7 +151,7 @@ public class PostUI extends FragmentView {
 
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -187,7 +188,7 @@ public class PostUI extends FragmentView {
 
         final TextView TextViewName = new TextView(Activity, 14, true);
         TextViewName.setLayoutParams(TextViewNameParam);
-        TextViewName.SetColor(R.color.TextWhite);
+        TextViewName.SetColor(R.color.Primary);
         TextViewName.setId(ID1_NAME);
 
         RelativeLayoutScroll.addView(TextViewName);
@@ -231,7 +232,7 @@ public class PostUI extends FragmentView {
 
         final TextView TextViewMessage = new TextView(Activity, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewMessage.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
         TextViewMessage.setId(ID1_MESSAGE);
 
         RelativeLayoutScroll.addView(TextViewMessage);
@@ -384,7 +385,7 @@ public class PostUI extends FragmentView {
         RelativeLayoutVoteParam.setMargins(0, 0, Misc.ToDP(5), 0);
 
         GradientDrawable DrawableBorder = new GradientDrawable();
-        DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.LineWhite));
+        DrawableBorder.setStroke(Misc.ToDP(1), Misc.Color(R.color.Primary));
         DrawableBorder.setCornerRadius(Misc.ToDP(6));
 
         final RelativeLayout RelativeLayoutVote = new RelativeLayout(Activity);
@@ -488,7 +489,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewVote1 = new TextView(Activity, 14, false);
         TextViewVote1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-        TextViewVote1.SetColor(R.color.TextWhite);
+        TextViewVote1.SetColor(R.color.Primary);
         TextViewVote1.setPadding(Misc.ToDP(5), 0, 0, 0);
         TextViewVote1.setGravity(Gravity.LEFT);
         TextViewVote1.setId(ID1_VOTE_TYPE1_TEXT1);
@@ -497,7 +498,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewVote2 = new TextView(Activity, 14, false);
         TextViewVote2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-        TextViewVote2.SetColor(R.color.TextWhite);
+        TextViewVote2.SetColor(R.color.Primary);
         TextViewVote2.setPadding(Misc.ToDP(5), 0, 0, 0);
         TextViewVote2.setGravity(Gravity.LEFT);
         TextViewVote2.setId(ID1_VOTE_TYPE1_TEXT2);
@@ -506,7 +507,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewVote3 = new TextView(Activity, 14, false);
         TextViewVote3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-        TextViewVote3.SetColor(R.color.TextWhite);
+        TextViewVote3.SetColor(R.color.Primary);
         TextViewVote3.setPadding(Misc.ToDP(5), 0, 0, 0);
         TextViewVote3.setId(ID1_VOTE_TYPE1_TEXT3);
         TextViewVote3.setGravity(Gravity.LEFT);
@@ -515,7 +516,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewVote4 = new TextView(Activity, 14, false);
         TextViewVote4.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-        TextViewVote4.SetColor(R.color.TextWhite);
+        TextViewVote4.SetColor(R.color.Primary);
         TextViewVote4.setPadding(Misc.ToDP(5), 0, 0, 0);
         TextViewVote4.setId(ID1_VOTE_TYPE1_TEXT4);
         TextViewVote4.setGravity(Gravity.LEFT);
@@ -524,7 +525,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewVote5 = new TextView(Activity, 14, false);
         TextViewVote5.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(20)));
-        TextViewVote5.SetColor(R.color.TextWhite);
+        TextViewVote5.SetColor(R.color.Primary);
         TextViewVote5.setPadding(Misc.ToDP(5), 0, 0, 0);
         TextViewVote5.setId(ID1_VOTE_TYPE1_TEXT5);
         TextViewVote5.setGravity(Gravity.LEFT);
@@ -538,7 +539,7 @@ public class PostUI extends FragmentView {
 
         View ViewVoteLine2 = new View(Activity);
         ViewVoteLine2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-        ViewVoteLine2.setBackgroundResource(R.color.LineWhite);
+        ViewVoteLine2.setBackgroundResource(R.color.Primary);
 
         LinearLayoutType1.addView(ViewVoteLine2);
 
@@ -597,7 +598,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewPercent1 = new TextView(Activity, 14, false);
         TextViewPercent1.setLayoutParams(TextViewPercent1Param);
-        TextViewPercent1.SetColor(R.color.TextWhite);
+        TextViewPercent1.SetColor(R.color.Primary);
         TextViewPercent1.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
         TextViewPercent1.setGravity(Gravity.CENTER);
         TextViewPercent1.setId(ID1_VOTE_TYPE2_PER1);
@@ -610,7 +611,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewPercent2 = new TextView(Activity, 14, false);
         TextViewPercent2.setLayoutParams(TextViewPercent2Param);
-        TextViewPercent2.SetColor(R.color.TextWhite);
+        TextViewPercent2.SetColor(R.color.Primary);
         TextViewPercent2.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
         TextViewPercent2.setGravity(Gravity.CENTER);
         TextViewPercent2.setId(ID1_VOTE_TYPE2_PER2);
@@ -623,7 +624,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewPercent3 = new TextView(Activity, 14, false);
         TextViewPercent3.setLayoutParams(TextViewPercent3Param);
-        TextViewPercent3.SetColor(R.color.TextWhite);
+        TextViewPercent3.SetColor(R.color.Primary);
         TextViewPercent3.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
         TextViewPercent3.setGravity(Gravity.CENTER);
         TextViewPercent3.setVisibility(View.GONE);
@@ -637,7 +638,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewPercent4 = new TextView(Activity, 14, false);
         TextViewPercent4.setLayoutParams(TextViewPercent4Param);
-        TextViewPercent4.SetColor(R.color.TextWhite);
+        TextViewPercent4.SetColor(R.color.Primary);
         TextViewPercent4.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
         TextViewPercent4.setGravity(Gravity.CENTER);
         TextViewPercent4.setVisibility(View.GONE);
@@ -651,7 +652,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewPercent5 = new TextView(Activity, 14, false);
         TextViewPercent5.setLayoutParams(TextViewPercent5Param);
-        TextViewPercent5.SetColor(R.color.TextWhite);
+        TextViewPercent5.SetColor(R.color.Primary);
         TextViewPercent5.setPadding(Misc.ToDP(5), Misc.ToDP(7), 0, 0);
         TextViewPercent5.setGravity(Gravity.CENTER);
         TextViewPercent5.setVisibility(View.GONE);
@@ -665,7 +666,7 @@ public class PostUI extends FragmentView {
 
         TextView TextViewVote1 = new TextView(Activity, 14, false);
         TextViewVote1.setLayoutParams(TextViewVote1Param);
-        TextViewVote1.SetColor(R.color.TextWhite);
+        TextViewVote1.SetColor(R.color.Primary);
         TextViewVote1.setPadding(Misc.ToDP(3), Misc.ToDP(1), 0, 0);
         TextViewVote1.setGravity(Gravity.LEFT);
         TextViewVote1.setId(ID1_VOTE_TYPE2_TEXT1);

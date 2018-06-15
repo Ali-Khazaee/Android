@@ -1,0 +1,71 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <co.biogram.main.ui.component.CircleImageView
+        android:id="@+id/CircleImageViewProfile"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:civ_border_color="@color/Gray"
+        app:civ_border_width="1dp" />
+
+    <TextView
+        android:id="@+id/TextViewUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/CircleImageViewProfile"
+        android:layout_toStartOf="@+id/TextViewTime"
+        android:textSize="@dimen/FontSmall"
+        android:textColor="?TextColor"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/TextViewMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/CircleImageViewProfile"
+        android:layout_toStartOf="@+id/TextViewCount"
+        android:textSize="@dimen/FontVerySmall"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/TextViewUsername" />
+
+    <TextView
+        android:id="@+id/TextViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/Gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="@dimen/FontMinimal" />
+
+    <TextView
+        android:id="@+id/TextViewCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/TextViewTime"
+        android:textSize="@dimen/FontMinimal"
+        android:textColor="@color/White"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:paddingBottom="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/xxx_messenger_chat_list_bg" />
+
+    <View
+        android:id="@+id/ViewLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionLine"
+        android:background="?LineColor"
+        android:layout_below="@+id/CircleImageViewProfile" />
+
+</RelativeLayout>

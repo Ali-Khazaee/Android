@@ -63,7 +63,7 @@ class PhoneUI extends FragmentView {
 
         RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
+        RelativeLayoutMain.setBackgroundResource(R.color.Primary);
         RelativeLayoutMain.setClickable(true);
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -205,7 +205,7 @@ class PhoneUI extends FragmentView {
 
                 TextView TextViewTitle = new TextView(Activity, 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
-                TextViewTitle.SetColor(R.color.TextWhite);
+                TextViewTitle.SetColor(R.color.Primary);
                 TextViewTitle.setText(Misc.String(R.string.PhoneUIPreCode));
                 TextViewTitle.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewTitle.setGravity(Gravity.CENTER);
@@ -257,7 +257,7 @@ class PhoneUI extends FragmentView {
 
                 TextView TextViewIran = new TextView(Activity, 16, false);
                 TextViewIran.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-                TextViewIran.SetColor(R.color.TextWhite);
+                TextViewIran.SetColor(R.color.Primary);
                 TextViewIran.setText(Iran);
                 TextViewIran.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                 TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
@@ -345,7 +345,7 @@ class PhoneUI extends FragmentView {
 
         TextView TextViewMessage = new TextView(Activity, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.SetColor(R.color.TextWhite);
+        TextViewMessage.SetColor(R.color.Primary);
         TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setMovementMethod(new LinkMovementMethod());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -448,7 +448,7 @@ class PhoneUI extends FragmentView {
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewNext.setLayoutParams(LoadingViewNextParam);
-        LoadingViewNext.SetColor(R.color.TextDark);
+        LoadingViewNext.SetColor(R.color.Primary);
 
         RelativeLayoutNext.addView(LoadingViewNext);
 

@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Application -->
-    <string name="ApplicationName">Channel</string>
+    <string name="Application">Channel</string>
+
+    <!-- Time Ago -->
+    <string name="TimeAgoNow">just now</string>
+    <string name="TimeAgoMin">a min ago</string>
+    <string name="TimeAgoMins">mins ago</string>
+    <string name="TimeAgoHour">an hour ago</string>
+    <string name="TimeAgoHours">hours ago</string>
+    <string name="TimeAgoDay">a day ago</string>
+    <string name="TimeAgoDays">days ago</string>
+    <string name="TimeAgoMonth">a month ago</string>
+    <string name="TimeAgoMonths">months ago</string>
+    <string name="TimeAgoYear">a year ago</string>
+    <string name="TimeAgoYears">years ago</string>
+
+    <!-- Chat List UI -->
+    <string name="ChatListUI">Messenger</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Stateful Layout -->
     <string name="StatefulLayoutNoConnection">No Internet Connection</string>
@@ -297,19 +326,6 @@
     <string name="WriteUILengthMins">Minutes</string>
     <string name="WriteUISetLength">Please, set vote length</string>
     <string name="WriteUISetVote">Please, add more votes</string>
-
-    <!-- Time Ago -->
-    <string name="TimeAgoNow">just now</string>
-    <string name="TimeAgoMin">a min ago</string>
-    <string name="TimeAgoMins">mins ago</string>
-    <string name="TimeAgoHour">an hour ago</string>
-    <string name="TimeAgoHours">hours ago</string>
-    <string name="TimeAgoDay">a day ago</string>
-    <string name="TimeAgoDays">days ago</string>
-    <string name="TimeAgoMonth">a month ago</string>
-    <string name="TimeAgoMonths">months ago</string>
-    <string name="TimeAgoYear">a year ago</string>
-    <string name="TimeAgoYears">yers ago</string>
 
     <!-- Time Left -->
     <string name="TimeLeftNow">just now</string>

@@ -49,7 +49,7 @@ public class WelcomeUI extends FragmentView {
     public void OnCreate() {
         ScrollViewMain = new ScrollView(Activity);
         ScrollViewMain.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
-        ScrollViewMain.setBackgroundResource(R.color.TextDark);
+        ScrollViewMain.setBackgroundResource(R.color.Primary);
         ScrollViewMain.setFillViewport(true);
 
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
@@ -99,7 +99,7 @@ public class WelcomeUI extends FragmentView {
 
                 TextView TextViewTitle = new TextView(Activity, 16, false);
                 TextViewTitle.setLayoutParams(TextViewTitleParam);
-                TextViewTitle.SetColor(R.color.TextWhite);
+                TextViewTitle.SetColor(R.color.Primary);
                 TextViewTitle.setText(Misc.String(R.string.WelcomeUILanguageSelect));
                 TextViewTitle.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewTitle.setGravity(Gravity.CENTER_VERTICAL);
@@ -133,7 +133,7 @@ public class WelcomeUI extends FragmentView {
 
                 TextView TextViewEnglish = new TextView(Activity, 16, false);
                 TextViewEnglish.setLayoutParams(TextViewEnglishParam);
-                TextViewEnglish.SetColor(R.color.TextWhite);
+                TextViewEnglish.SetColor(R.color.Primary);
                 TextViewEnglish.setText(Misc.String(R.string.WelcomeUILanguageEnglish));
                 TextViewEnglish.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewEnglish.setGravity(Misc.Gravity("L") | Gravity.CENTER_VERTICAL);
@@ -158,7 +158,7 @@ public class WelcomeUI extends FragmentView {
 
                 TextView TextViewPersian = new TextView(Activity, 16, false);
                 TextViewPersian.setLayoutParams(TextViewPersianParam);
-                TextViewPersian.SetColor(R.color.TextWhite);
+                TextViewPersian.SetColor(R.color.Primary);
                 TextViewPersian.setText(Misc.String(R.string.WelcomeUILanguagePersian));
                 TextViewPersian.setPadding(Misc.ToDP(15), 0, Misc.ToDP(15), 0);
                 TextViewPersian.setGravity(Misc.Gravity("R") | Gravity.CENTER_VERTICAL);
@@ -296,7 +296,7 @@ public class WelcomeUI extends FragmentView {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT > 20)
-                    Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.TextWhite));
+                    Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.Primary));
 
                 RelativeLayoutGoogle.setVisibility(View.VISIBLE);
                 LoadingViewGoogle.Start();
@@ -329,7 +329,7 @@ public class WelcomeUI extends FragmentView {
 
         RelativeLayout RelativeLayoutSignIn = new RelativeLayout(Activity);
         RelativeLayoutSignIn.setLayoutParams(RelativeLayoutSignInParam);
-        RelativeLayoutSignIn.setBackgroundResource(R.color.ActionBarWhite);
+        RelativeLayoutSignIn.setBackgroundResource(R.color.Primary);
         RelativeLayoutSignIn.setGravity(Gravity.CENTER);
         RelativeLayoutSignIn.setId(Misc.generateViewId());
         RelativeLayoutSignIn.setOnClickListener(new View.OnClickListener() {
@@ -421,7 +421,7 @@ public class WelcomeUI extends FragmentView {
 
         LoadingViewGoogle = new LoadingView(Activity);
         LoadingViewGoogle.setLayoutParams(LoadingViewGoogleParam);
-        LoadingViewGoogle.SetColor(R.color.TextDark);
+        LoadingViewGoogle.SetColor(R.color.Primary);
 
         RelativeLayoutGoogle.addView(LoadingViewGoogle);
 
