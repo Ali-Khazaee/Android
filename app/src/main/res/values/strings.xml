@@ -19,6 +19,8 @@
     <!-- Chat List UI -->
     <string name="ChatListUI">Messenger</string>
 
+    <!-- Chat UI -->
+    <string name="ChatUIMessage">Your Message</string>
 
 
 
@@ -394,7 +396,6 @@
 
     <!-- Chat UI -->
     <string name="ChatUISearch">Search</string>
-    <string name="ChatUIMessage">Message</string>
     <string name="ChatUISendMessage">Send Message</string>
     <string name="ChatUIGroup">Group info</string>
     <string name="ChatUIGroupHelp">To create a group, you need to complete the profile</string>

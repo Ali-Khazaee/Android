@@ -470,7 +470,7 @@ class WriteUI extends FragmentView {
         ImageViewVideo = new ImageView(Activity);
         ImageViewVideo.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         ImageViewVideo.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.video_bluegray);
+        ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.xxx_messenger_chat_video);
         ImageViewVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -540,7 +540,7 @@ class WriteUI extends FragmentView {
         ImageViewFile = new ImageView(Activity);
         ImageViewFile.setLayoutParams(new LinearLayout.LayoutParams(0, Misc.ToDP(56), 1.0f));
         ImageViewFile.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
-        ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.attach_bluegray);
+        ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.xxx_messenger_chat_file);
         ImageViewFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1602,22 +1602,22 @@ class WriteUI extends FragmentView {
             ImageViewImage.setEnabled(true);
             ImageViewImage.setImageResource(Misc.IsDark() ? R.drawable.camera_gray : R.drawable.camera_bluegray);
             ImageViewVideo.setEnabled(true);
-            ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.video_bluegray);
+            ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.xxx_messenger_chat_video);
             ImageViewVote.setEnabled(true);
             ImageViewVote.setImageResource(Misc.IsDark() ? R.drawable.vote_gray : R.drawable.vote_bluegray);
             ImageViewFile.setEnabled(true);
-            ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.attach_bluegray);
+            ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.xxx_messenger_chat_file);
             return;
         }
 
         ImageViewImage.setEnabled(false);
         ImageViewImage.setImageResource(Misc.IsDark() ? R.drawable.camera_bluegray : R.drawable.camera_gray);
         ImageViewVideo.setEnabled(false);
-        ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_bluegray : R.drawable.video_gray);
+        ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.xxx_messenger_chat_video : R.drawable.video_gray);
         ImageViewVote.setEnabled(false);
         ImageViewVote.setImageResource(Misc.IsDark() ? R.drawable.vote_bluegray : R.drawable.vote_gray);
         ImageViewFile.setEnabled(false);
-        ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_bluegray : R.drawable.attach_gray);
+        ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.xxx_messenger_chat_file : R.drawable.attach_gray);
 
         switch (type) {
             case 1:
@@ -1628,7 +1628,7 @@ class WriteUI extends FragmentView {
             case 2:
                 SelectType = 2;
                 ImageViewVideo.setEnabled(true);
-                ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.video_bluegray);
+                ImageViewVideo.setImageResource(Misc.IsDark() ? R.drawable.video_gray : R.drawable.xxx_messenger_chat_video);
                 break;
             case 3:
                 SelectType = 3;
@@ -1638,7 +1638,7 @@ class WriteUI extends FragmentView {
             case 4:
                 SelectType = 4;
                 ImageViewFile.setEnabled(true);
-                ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.attach_bluegray);
+                ImageViewFile.setImageResource(Misc.IsDark() ? R.drawable.attach_gray : R.drawable.xxx_messenger_chat_file);
                 break;
         }
     }

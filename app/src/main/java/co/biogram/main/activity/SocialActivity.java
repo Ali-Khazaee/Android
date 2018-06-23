@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.chat.Chat_List_UI;
+import co.biogram.main.ui.messenger.Contact_List_UI;
 import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
@@ -108,8 +108,8 @@ public class SocialActivity extends FragmentActivity
                 ImageViewMoment.setImageResource(R.drawable.z_social_activity_moment_blue);
                 break;
             case 3:
-                Tag = "Chat_List_UI";
-                Fragment = new Chat_List_UI();
+                Tag = "Contact_List_UI";
+                Fragment = new Contact_List_UI();
                 ImageViewChat.setImageResource(R.drawable.z_social_activity_chat);
                 break;
             case 4:

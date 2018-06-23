@@ -1,19 +1,32 @@
 package co.biogram.main.activity;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.widget.FrameLayout;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.chat.Chat_List_UI;
+import co.biogram.main.ui.messenger.Contact_List_UI;
 import co.biogram.main.fragment.FragmentActivity;
+
+import java.util.Locale;
 
 public class MessengerActivity extends FragmentActivity
 {
     @Override
     protected void onCreate(Bundle bundle)
     {
+        Locale locale = new Locale("fa");
+        Locale.setDefault(locale);
+
+        Configuration Config = new Configuration();
+        Config.locale = locale;
+
+        getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
+
         super.onCreate(bundle);
 
         setTheme(Misc.GetTheme());
@@ -30,6 +43,6 @@ public class MessengerActivity extends FragmentActivity
 
         setContentView(FrameLayoutMain);
 
-        GetManager().OpenView(new Chat_List_UI(), "Chat_List_UI", true);
+        GetManager().OpenView(new Contact_List_UI(), "Contact_List_UI", true);
     }
 }
