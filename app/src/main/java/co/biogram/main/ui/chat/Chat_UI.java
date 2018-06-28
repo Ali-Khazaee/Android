@@ -226,7 +226,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
 
             case R.id.ImageButtonBack: {
-                Activity.GetManager().OpenView(new Chat_ListUI(), "Chat_ListUI", false);
+                Activity.GetManager().OpenView(new Contact_List_UI(), "Chat_ListUI", false);
                 break;
             }
 

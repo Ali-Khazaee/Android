@@ -2,6 +2,7 @@ package co.biogram.main.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.chat.Chat_UI;
+
+import java.util.Locale;
 
 public class ChatActivity extends FragmentActivity {
 
@@ -26,6 +29,16 @@ public class ChatActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         EmojiManager.install(new IosEmojiProvider());
+
+        Locale locale = new Locale("fa");
+        Locale.setDefault(locale);
+
+        Configuration Config = new Configuration();
+        Config.locale = locale;
+
+        getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
+
+
 
         setTheme(Misc.GetBoolean("ThemeDark") ? R.style.AppThemeDark : R.style.AppThemeLight);
 
