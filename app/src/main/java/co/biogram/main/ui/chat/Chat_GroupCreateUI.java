@@ -5,11 +5,17 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -53,7 +59,7 @@ public class Chat_GroupCreateUI extends FragmentView implements View.OnClickList
 
         ImageButtonBack = view.findViewById(R.id.ImageButtonBack);
         ImageButtonCreate = view.findViewById(R.id.ImageButtonCreate);
-        ImageViewPhoto = view.findViewById(R.id.CircleImageViewProfile);
+        ImageViewPhoto = view.findViewById(R.id.ImageViewProfile);
         EditTextName = view.findViewById(R.id.EditTextName);
         EditTagMembers = view.findViewById(R.id.MembersList);
 
@@ -83,7 +89,7 @@ public class Chat_GroupCreateUI extends FragmentView implements View.OnClickList
                 Activity.onBackPressed();
                 break;
             }
-            case R.id.CircleImageViewProfile: {
+            case R.id.ImageViewProfile: {
 
                 final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
                     String ImageURL;

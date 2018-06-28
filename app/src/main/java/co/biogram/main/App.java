@@ -1,24 +1,41 @@
 package co.biogram.main;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
+
+import com.androidnetworking.AndroidNetworking;
 
 import com.squareup.leakcanary.LeakCanary;
 
 import okhttp3.OkHttpClient;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import co.biogram.main.handler.Misc;
 import co.biogram.main.service.NetworkService;
 
-public class App extends Application
-{
-    private static OkHttpClient OKClient;
+public class App extends Application {
+    private static volatile OkHttpClient OKClient;
+
+    public static OkHttpClient GetOKClient() {
+        if (OKClient == null) {
+            OKClient = new OkHttpClient()
+                    .newBuilder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .build();
+        }
+
+        return OKClient;
+    }
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
 
         if (LeakCanary.isInAnalyzerProcess(this))
@@ -29,13 +46,38 @@ public class App extends Application
         Misc.Initial(getApplicationContext());
 
         startService(new Intent(getApplicationContext(), NetworkService.class));
+
+        AndroidNetworking.initialize(getApplicationContext(), GetOKClient());
     }
 
-    public static OkHttpClient OKClient()
-    {
-        if (OKClient == null)
-            OKClient = new OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build();
+    @Override
+    protected void attachBaseContext(Context base) {
 
-        return OKClient;
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        {
+            Locale locale = new Locale(Misc.GetString("Language", "fa"));
+            Locale.setDefault(locale);
+
+            Configuration configuration = base.getResources().getConfiguration();
+            configuration.setLocale(locale);
+            configuration.setLayoutDirection(locale);
+
+            base = base.createConfigurationContext(configuration);
+        }
+        else
+        {
+            Locale locale = new Locale(Misc.GetString("Language", "fa"));
+            Locale.setDefault(locale);
+
+            Configuration config = new Configuration();
+            // noinspection deprecation
+            config.locale = locale;
+
+            // noinspection deprecation
+            base.getResources().updateConfiguration(config, base.getResources().getDisplayMetrics());
+        }*/
+
+        super.attachBaseContext(base);
     }
 }

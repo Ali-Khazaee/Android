@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?BgColor">
+    android:background="?GroundColor">
 
     <LinearLayout
         android:id="@+id/LinearLayoutMenu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ActionBar"
         android:layout_alignParentBottom="true"
-        android:background="?BgColor"
+        android:background="?ActionBarColor"
         android:orientation="horizontal">
 
         <ImageView
@@ -42,7 +42,7 @@
             android:padding="16dp" />
 
         <ImageView
-            android:id="@+id/CircleImageViewProfile"
+            android:id="@+id/ImageViewProfile"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

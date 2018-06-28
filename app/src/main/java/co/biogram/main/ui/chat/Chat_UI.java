@@ -226,7 +226,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
 
             case R.id.ImageButtonBack: {
-                Activity.GetManager().OpenView(new Chat_List_UI(), "Chat_List_UI", false);
+                Activity.GetManager().OpenView(new Chat_ListUI(), "Chat_ListUI", false);
                 break;
             }
 
@@ -1148,7 +1148,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
                 if (getChatType() != IMAGE || getChatType() != VIDEO)
                     chatModel.setBackgroundResource(isSecond() ? R.drawable.z_blue_chat_background_round : R.drawable.z_blue_chat_background);
 
-                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 params.setMarginStart(Misc.ToDP(40));
                 params.setMarginEnd(Misc.ToDP((getChatType() != IMAGE || getChatType() != VIDEO) ? 16 : 8));
                 ((LinearLayout) view.getRootView()).setGravity(Gravity.END);
@@ -1158,10 +1158,10 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
             } else {
                 if (getChatType() == IMAGE || getChatType() == VIDEO) {
-                    ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                    ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 } else {
                     chatModel.setBackgroundResource(isSecond() ? R.drawable.z_white_chat_background_round : R.drawable.z_white_chat_background);
-                    ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                    ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 }
 
                 params.setMarginStart(Misc.ToDP((getChatType() != IMAGE || getChatType() != VIDEO) ? 16 : 8));
@@ -1205,9 +1205,9 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             super.setLayout(view);
 
             if (isFromUser())
-                ((TextView) view.findViewById(R.id.TextViewMessage)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                ((TextView) view.findViewById(R.id.TextViewMessage)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
             else
-                ((TextView) view.findViewById(R.id.TextViewMessage)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                ((TextView) view.findViewById(R.id.TextViewMessage)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
 
         }
 
@@ -1315,8 +1315,8 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             super.setLayout(view);
 
             if (isFromUser()) {
-                ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
-                ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+                ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_white_chat_file_bg);
                 if (isDownloaded())
                     ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable.__gallery_file);
@@ -1324,8 +1324,8 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 //                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable._general_download);
 
             } else {
-                ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
-                ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
+                ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_blue_chat_file_bg);
                 if (isDownloaded())
                     ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable.__gallery_folder);
@@ -1365,11 +1365,11 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
             if (isFromUser()) {
                 // TODO Change Colors to Attrs
-                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
 
             } else {
                 // TODO Change Colors to Attrs
-                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
+                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
             }
 
         }

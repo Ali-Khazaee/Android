@@ -14,12 +14,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/profile_gray" />
+        android:src="@drawable/z_social_profile_avatar"
+        app:civ_border_color="#838383"
+        app:civ_border_width="0.5dp" />
 
     <TextView
         android:id="@+id/Username"
@@ -37,7 +40,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ProfileImage"
         app:layout_constraintEnd_toStartOf="@+id/Time"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toEndOf="@+id/ProfileImage"
         app:layout_constraintTop_toTopOf="@+id/ProfileImage"
         app:layout_constraintVertical_bias="0.0" />
@@ -83,7 +86,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/Time"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/chat_background_cunter"
@@ -95,7 +97,8 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/Message"
         app:layout_constraintEnd_toEndOf="@+id/Time"
-        app:layout_constraintStart_toStartOf="@+id/Time"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/Message"
         tools:text="60" />
 

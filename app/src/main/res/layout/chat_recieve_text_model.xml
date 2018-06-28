@@ -42,7 +42,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/Primary"
+            android:textColor="@color/TextWhite"
             app:layout_constraintBottom_toTopOf="@+id/TextViewTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

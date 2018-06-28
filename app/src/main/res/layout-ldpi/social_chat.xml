@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/ic_back_blue" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/CircleImageViewProfile"
+            android:id="@+id/ImageViewProfile"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginBottom="8dp"
@@ -51,11 +51,11 @@
             android:layout_marginTop="8dp"
             android:layout_weight="9.6"
             android:text="Username"
-            android:textColor="@color/Primary"
+            android:textColor="@color/TextWhite"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/CircleImageViewProfile"
-            app:layout_constraintTop_toTopOf="@+id/CircleImageViewProfile" />
+            app:layout_constraintStart_toEndOf="@+id/ImageViewProfile"
+            app:layout_constraintTop_toTopOf="@+id/ImageViewProfile" />
 
         <ImageButton
             android:id="@+id/ImageButtomMore"
@@ -88,7 +88,7 @@
         android:id="@+id/MessageControls"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/Primary"
+        android:background="@color/ActionBarWhite"
         android:maxHeight="300dp"
         android:minHeight="56dp"
         android:orientation="vertical"
@@ -111,9 +111,9 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@color/Primary"
+                android:background="@color/ActionBarWhite"
                 android:hint="@string/ChatUIMessage"
-                android:textColor="@color/Primary"
+                android:textColor="@color/TextWhite"
                 android:textColorHint="@color/Gray"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -233,7 +233,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_profile123_black"
-        android:theme="@style/ThemeLight"
+        android:theme="@style/WhiteAccentColor"
         android:visibility="gone"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/MessageControls"

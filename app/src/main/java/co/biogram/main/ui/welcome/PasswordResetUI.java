@@ -46,7 +46,7 @@ class PasswordResetUI extends FragmentView {
 
         RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.Primary);
+        RelativeLayoutMain.setBackgroundResource(R.color.TextDark);
         RelativeLayoutMain.setClickable(true);
 
         LayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -181,7 +181,7 @@ class PasswordResetUI extends FragmentView {
 
         TextView TextViewMessage = new TextView(Activity, 14, false);
         TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.SetColor(R.color.Primary);
+        TextViewMessage.SetColor(R.color.TextWhite);
         TextViewMessage.setText(Misc.String(R.string.PasswordResetUIMessage));
         TextViewMessage.setId(Misc.generateViewId());
         TextViewMessage.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
@@ -296,7 +296,7 @@ class PasswordResetUI extends FragmentView {
         LoadingViewNextParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         LoadingViewFinish.setLayoutParams(LoadingViewNextParam);
-        LoadingViewFinish.SetColor(R.color.Primary);
+        LoadingViewFinish.SetColor(R.color.TextDark);
 
         RelativeLayoutNext.addView(LoadingViewFinish);
 

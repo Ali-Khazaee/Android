@@ -10,29 +10,24 @@ import java.util.ArrayList;
 
 import co.biogram.main.R;
 
-public class FragmentManager
-{
+public class FragmentManager {
     private ArrayList<FragmentView> FragmentList = new ArrayList<>();
     private FragmentActivity Activity;
     private FragmentView CurrentFrag;
 
-    FragmentManager(FragmentActivity a)
-    {
+    FragmentManager(FragmentActivity a) {
         Activity = a;
     }
 
-    public void OpenView(FragmentView Frag, String Tag, boolean Full)
-    {
-        if (CurrentFrag != null && CurrentFrag.Tag.equals(Tag))
-        {
+    public void OpenView(FragmentView Frag, String Tag, boolean Full) {
+        if (CurrentFrag != null && CurrentFrag.Tag.equals(Tag)) {
             CurrentFrag.OnOpen();
             return;
         }
 
         // TODO If Exist ReOpen FindByTag(Tag);
 
-        if (FragmentList.size() > 0)
-        {
+        if (FragmentList.size() > 0) {
             FragmentView Frag2 = FragmentList.get(FragmentList.size() - 1);
 
             Frag2.OnPause();
@@ -47,8 +42,7 @@ public class FragmentManager
         CurrentFrag.OnCreate();
         CurrentFrag.OnResume();
 
-        if (CurrentFrag.ViewMain != null)
-        {
+        if (CurrentFrag.ViewMain != null) {
             FrameLayout FrameLayoutMain = Activity.findViewById(Full ? R.id.ContainerFull : R.id.Container);
             FrameLayoutMain.addView(CurrentFrag.ViewMain);
         }
@@ -56,16 +50,13 @@ public class FragmentManager
         FragmentList.add(CurrentFrag);
     }
 
-    boolean HandleBack()
-    {
-        if (FragmentList.size() > 1)
-        {
+    boolean HandleBack() {
+        if (FragmentList.size() > 1) {
             FragmentView Frag = FragmentList.get(FragmentList.size() - 1);
             Frag.OnPause();
             Frag.OnDestroy();
 
-            if (Frag.ViewMain != null)
-            {
+            if (Frag.ViewMain != null) {
                 ViewGroup Parent = (ViewGroup) Frag.ViewMain.getParent();
 
                 if (Parent != null)
@@ -89,8 +80,7 @@ public class FragmentManager
     }
 
     @Nullable
-    public FragmentView FindByTag(String Tag)
-    {
+    public FragmentView FindByTag(String Tag) {
         for (FragmentView Frag : FragmentList)
             if (Frag.Tag.equals(Tag))
                 return Frag;
@@ -98,10 +88,8 @@ public class FragmentManager
         return null;
     }
 
-    void OnResume()
-    {
-        if (CurrentFrag != null)
-        {
+    void OnResume() {
+        if (CurrentFrag != null) {
             if (CurrentFrag.ViewMain != null && CurrentFrag.ViewMain.getVisibility() == View.GONE)
                 CurrentFrag.ViewMain.setVisibility(View.VISIBLE);
 
@@ -109,14 +97,12 @@ public class FragmentManager
         }
     }
 
-    void OnPause()
-    {
+    void OnPause() {
         if (CurrentFrag != null)
             CurrentFrag.OnPause();
     }
 
-    void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
-    {
+    void OnActivityResult(int RequestCode, int ResultCode, Intent intent) {
         if (CurrentFrag != null)
             CurrentFrag.OnActivityResult(RequestCode, ResultCode, intent);
     }

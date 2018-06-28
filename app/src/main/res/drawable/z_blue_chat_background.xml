@@ -7,6 +7,6 @@
         android:bottomRightRadius="2dp"
         android:topLeftRadius="8dp"
         android:topRightRadius="8dp" />
-    <solid android:color="@color/Primary" />
+    <solid android:color="@color/ChatBlue" />
 
 </shape>

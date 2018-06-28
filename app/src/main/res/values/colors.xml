@@ -1,6 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="TextWhite">#000</color>
+    <color name="LineWhite">#eee</color>
+    <color name="GroundWhite">#fff</color>
+    <color name="ActionBarWhite">#fff</color>
+    <color name="StatusBarWhite">#ddd</color>
+
+    <color name="TextDark">#fff</color>
+    <color name="LineDark">#2b4159</color>
+    <color name="GroundDark">#1b2936</color>
+    <color name="ActionBarDark">#233446</color>
+    <color name="StatusBarDark">#1b2936</color>
+
+    <color name="Toast">#144766</color>
+    <color name="ToastLine">#0a3148</color>
+
+    <color name="HashTag">#1da1f2</color>
     <color name="Primary">#1da1f2</color>
-    <color name="White">#fff</color>
     <color name="Gray">#ababab</color>
     <color name="Red">#de1e5a</color>
+    <color name="ChatBlue">#49a4ff</color>
+
+    <color name="colorAccent">#fff</color>
+
 </resources>

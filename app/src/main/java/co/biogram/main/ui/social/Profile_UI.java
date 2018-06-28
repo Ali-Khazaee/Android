@@ -17,9 +17,10 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.ui.component.CircleImageView;
 import co.biogram.main.ui.view.EditTextTag;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.general.CameraViewUI;
@@ -40,7 +41,7 @@ public class Profile_UI extends FragmentView {
             }
         });
 
-        view.findViewById(R.id.CircleImageViewProfile).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ImageViewProfile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Open Profile Page

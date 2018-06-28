@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import co.biogram.main.ui.component.CircleImageView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
@@ -32,6 +31,7 @@ import co.biogram.main.handler.RecyclerViewOnScroll;
 
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LikeUI extends FragmentView {
     private List<Struct> PeopleList = new ArrayList<>();
@@ -48,13 +48,13 @@ public class LikeUI extends FragmentView {
     public void OnCreate() {
         LinearLayout LinearLayoutMain = new LinearLayout(Activity);
         LinearLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
+        LinearLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
         LinearLayoutMain.setOrientation(LinearLayout.VERTICAL);
         LinearLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
 
         LinearLayoutMain.addView(RelativeLayoutHeader);
 
@@ -81,7 +81,7 @@ public class LikeUI extends FragmentView {
 
         TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
+        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
         TextViewTitle.setText(Misc.String(R.string.LikeUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
 
@@ -89,7 +89,7 @@ public class LikeUI extends FragmentView {
 
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(1)));
-        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
+        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
 
         LinearLayoutMain.addView(ViewLine);
 
@@ -115,7 +115,7 @@ public class LikeUI extends FragmentView {
 
         LoadingView LoadingViewMain = new LoadingView(Activity);
         LoadingViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        LoadingViewMain.setBackgroundResource(R.color.Primary);
+        LoadingViewMain.setBackgroundResource(R.color.GroundWhite);
         LoadingViewMain.Start();
 
         RelativeLayoutContent.addView(LoadingViewMain);
@@ -277,11 +277,11 @@ public class LikeUI extends FragmentView {
                 Holder.TextViewFollow.setVisibility(View.VISIBLE);
 
             if (PeopleList.get(Position).Follow) {
-                Holder.TextViewFollow.SetColor(R.color.Primary);
+                Holder.TextViewFollow.SetColor(R.color.TextDark);
                 Holder.TextViewFollow.setText(Activity.getString(R.string.LikeUIUnfollow));
                 Holder.TextViewFollow.setBackground(DrawableUnfollow);
             } else {
-                Holder.TextViewFollow.SetColor(R.color.Primary);
+                Holder.TextViewFollow.SetColor(R.color.TextDark);
                 Holder.TextViewFollow.setText(Activity.getString(R.string.LikeUIFollow));
                 Holder.TextViewFollow.setBackground(DrawableFollow);
             }
@@ -375,7 +375,7 @@ public class LikeUI extends FragmentView {
 
             TextView TextViewName = new TextView(Activity, 14, false);
             TextViewName.setLayoutParams(TextViewNameParam);
-            TextViewName.SetColor(Misc.IsDark() ? R.color.Primary : R.color.Primary);
+            TextViewName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
             TextViewName.setId(ID_NAME);
 
             RelativeLayoutMain.addView(TextViewName);
@@ -409,7 +409,7 @@ public class LikeUI extends FragmentView {
 
             View ViewLine = new View(Activity);
             ViewLine.setLayoutParams(ViewLineParam);
-            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.Primary : R.color.Primary);
+            ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
             ViewLine.setId(ID_LINE);
 
             RelativeLayoutMain.addView(ViewLine);

@@ -1,5 +1,6 @@
 package co.biogram.main.ui.chat;
 
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,10 +25,15 @@ import java.util.ArrayList;
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.ui.component.CircleImageView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ContactUI extends FragmentView implements View.OnClickListener, TextWatcher
-{
+
+/**
+ * Created by soh_mil97
+ */
+
+
+public class ContactUI extends FragmentView implements View.OnClickListener, TextWatcher {
 
     private RecyclerView RecyclerView;
     private ContactAdapter ContactAdapter;
@@ -39,8 +45,7 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
     private Button ButtonMessage;
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         View view = View.inflate(Activity, R.layout.social_contact, null);
 
         Activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -50,6 +55,7 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
         ImageButtonSearch = view.findViewById(R.id.ImageButtonSearch);
         ImageButtonClear = view.findViewById(R.id.ImageButtonClear);
         ButtonMessage = view.findViewById(R.id.ButtonNewMessage);
+
 
         ContactList = new ArrayList<>();
         setData();
@@ -65,7 +71,7 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
         ButtonMessage.setOnClickListener(this);
         EditTextSearch.addTextChangedListener(this);
 
-        //        EditTextSearch.requestFocus();
+//        EditTextSearch.requestFocus();
         InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(EditTextSearch, InputMethodManager.SHOW_IMPLICIT);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -73,8 +79,7 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
         ViewMain = view;
     }
 
-    private void setData()
-    {
+    private void setData() {
         ContactList.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
         ContactList.add(new ContactEntity(R.drawable.z_social_profile_avatar, "amir", "@hello"));
         ContactList.add(new ContactEntity(R.drawable.z_social_profile_avatar, "ali", "@mor"));
@@ -106,52 +111,45 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
         ContactList.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
         ContactList.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
 
+
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
-            case R.id.ImageButtonClear:
-            {
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ImageButtonClear: {
                 EditTextSearch.setText("");
                 ContactAdapter.filter("");
                 break;
             }
-            case R.id.ImageButtonSearch:
-            {
+            case R.id.ImageButtonSearch: {
                 ContactAdapter.filter(EditTextSearch.getText().toString());
                 break;
             }
 
-            case R.id.ButtonNewMessage:
-            {
+            case R.id.ButtonNewMessage: {
                 Activity.GetManager().OpenView(new Chat_GroupCreateUI(ContactList), "Chat_Group", false);
             }
         }
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after)
-    {
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count)
-    {
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
         ContactAdapter.filter(s.toString());
     }
 
     @Override
-    public void afterTextChanged(Editable s)
-    {
+    public void afterTextChanged(Editable s) {
 
     }
 
-    private class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>
-    {
+
+    private class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
         private ArrayList<ContactEntity> Contacts = new ArrayList<>();
         private ArrayList<ContactEntity> DataCopy = new ArrayList<>();
@@ -159,35 +157,28 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
         //TODO Change It When JSON Format Is Available
         private SparseBooleanArray CheckState = new SparseBooleanArray();
 
-        public ContactAdapter(ArrayList<ContactEntity> data)
-        {
+        public ContactAdapter(ArrayList<ContactEntity> data) {
             this.Contacts.addAll(data);
             this.DataCopy.addAll(data);
         }
 
-        private void reset()
-        {
+        private void reset() {
             Contacts.clear();
             Contacts.addAll(DataCopy);
         }
 
-        public void filter(String query)
-        {
+        public void filter(String query) {
 
-            if (!query.isEmpty())
-            {
+            if (!query.isEmpty()) {
                 ArrayList<ContactEntity> result = new ArrayList<>();
-                for (ContactEntity contact : Contacts)
-                {
+                for (ContactEntity contact : Contacts) {
                     if (contact.getUsername().toLowerCase().contains(query.trim().toLowerCase()) || contact.getUserID().substring(1).toLowerCase().contains(query.toLowerCase()))
                         result.add(contact);
                 }
                 Contacts.clear();
                 Contacts.addAll(result);
 
-            }
-            else if (Contacts.size() != DataCopy.size())
-            {
+            } else if (Contacts.size() != DataCopy.size()) {
                 reset();
             }
             notifyDataSetChanged();
@@ -195,32 +186,27 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
 
         @NonNull
         @Override
-        public ContactAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-        {
+        public ContactAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_item_model, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ContactAdapter.ViewHolder holder, int position)
-        {
+        public void onBindViewHolder(@NonNull ContactAdapter.ViewHolder holder, int position) {
             holder.bind(position);
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return Contacts.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-        {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             CircleImageView ProfileImage;
             TextView Username;
             TextView UserId;
             ImageView SelectState;
 
-            public ViewHolder(View itemView)
-            {
+            public ViewHolder(View itemView) {
                 super(itemView);
                 ProfileImage = itemView.findViewById(R.id.ProfileImage);
                 Username = itemView.findViewById(R.id.Username);
@@ -230,34 +216,26 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
 
             }
 
-            public void bind(int position)
-            {
+            public void bind(int position) {
                 ContactEntity model = Contacts.get(position);
                 ProfileImage.setImageResource(model.getProfile());
                 Username.setText(model.Username);
                 UserId.setText(model.UserID);
 
-                if (CheckState.size() == 0 || !CheckState.get(position))
-                {
+                if (CheckState.size() == 0 || !CheckState.get(position)) {
                     SelectState.setVisibility(View.INVISIBLE);
-                }
-                else
-                {
+                } else {
                     SelectState.setVisibility(View.VISIBLE);
                 }
 
             }
 
             @Override
-            public void onClick(View v)
-            {
-                if (SelectState.getVisibility() == View.VISIBLE)
-                {
+            public void onClick(View v) {
+                if (SelectState.getVisibility() == View.VISIBLE) {
                     CheckState.put(getAdapterPosition(), false);
                     SelectState.setVisibility(View.INVISIBLE);
-                }
-                else
-                {
+                } else {
                     CheckState.put(getAdapterPosition(), true);
                     SelectState.setVisibility(View.VISIBLE);
                 }
@@ -268,48 +246,41 @@ public class ContactUI extends FragmentView implements View.OnClickListener, Tex
         }
     }
 
-    public class ContactEntity
-    {
+    public class ContactEntity {
 
         int Profile;
         String Username;
         String UserID;
 
-        public ContactEntity(int profile, String username, String userID)
-        {
+
+        public ContactEntity(int profile, String username, String userID) {
             this.Profile = profile;
             this.Username = username;
             this.UserID = userID;
 
         }
 
-        public int getProfile()
-        {
+        public int getProfile() {
             return Profile;
         }
 
-        public void setProfile(int profile)
-        {
+        public void setProfile(int profile) {
             this.Profile = profile;
         }
 
-        public String getUsername()
-        {
+        public String getUsername() {
             return Username;
         }
 
-        public void setUsername(String username)
-        {
+        public void setUsername(String username) {
             Username = username;
         }
 
-        public String getUserID()
-        {
+        public String getUserID() {
             return UserID;
         }
 
-        public void setUserID(String userID)
-        {
+        public void setUserID(String userID) {
             UserID = userID;
         }
 

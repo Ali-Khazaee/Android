@@ -61,6 +61,6 @@
         android:layout_below="@id/textView_time"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/xxx_messenger_chat_list_bg"/>
+        android:background="@drawable/chat_background_cunter"/>
 
 </RelativeLayout>

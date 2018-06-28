@@ -40,7 +40,7 @@ public class ScrollNumber extends LinearLayout {
         Number = new TextView(c, 14, false);
         Number.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32)));
         Number.setGravity(Gravity.CENTER);
-        Number.SetColor(R.color.Primary);
+        Number.SetColor(R.color.TextWhite);
         Number.setText("0");
 
         addView(Number);
