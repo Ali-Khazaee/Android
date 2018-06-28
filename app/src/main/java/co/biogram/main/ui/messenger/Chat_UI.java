@@ -141,6 +141,13 @@ public class Chat_UI extends FragmentView implements View.OnClickListener
         // private static final int TYPE_VOTE = 7;
         // private static final int TYPE_QUERY = 8;
 
+        ChatAdapter()
+        {
+            AddText("Salam Chetori ?");
+            AddText("My Love Chikara mikoni ??");
+            AddText("حالت خوبه ؟");
+            AddText("چطوری");
+        }
 
         @NonNull
         @Override
@@ -157,7 +164,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener
                 case TYPE_FILE:
                     return new ViewHolderText(View.inflate(Activity, R.layout.messenger_chat_list_row, null));
                 default:
-                    return new ViewHolderText(View.inflate(Activity, R.layout.messenger_chat_list_row, null));
+                    return new ViewHolderText(View.inflate(Activity, R.layout.messenger_chat_model_text, null));
             }
         }
 
@@ -199,6 +206,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener
         void AddText(String Message)
         {
             ChatList.add(new ChatEntity(0, TYPE_TEXT, Misc.GetString("ID"), Message, "", Misc.Time()));
+            notifyItemInserted(getItemCount());
         }
 
         class ViewHolderText extends RecyclerView.ViewHolder
@@ -1005,7 +1013,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener
             if (isFromUser())
             {
                 if (getChatType() != IMAGE || getChatType() != VIDEO)
-                    chatModel.setBackgroundResource(isSecond() ? R.drawable.z_blue_chat_background_round : R.drawable.z_blue_chat_background);
+                    chatModel.setBackgroundResource(isSecond() ? R.drawable.z_blue_chat_background_round : R.drawable.messenger_chat_model_text_bg);
 
                 ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
                 params.setMarginStart(Misc.ToDP(40));
