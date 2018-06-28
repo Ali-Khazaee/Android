@@ -603,7 +603,14 @@ public class Socket
                     ArrayList<byte[]> buffers = reader.read(chunk, bytesRead);
                     for (byte[] buffer : buffers)
                     {
-                        process(Serializer.deserialize(buffer));
+                        try
+                        {
+                            process(Serializer.deserialize(buffer));
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
                 }
             }
