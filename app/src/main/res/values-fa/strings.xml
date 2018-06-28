@@ -1,41 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Application -->
-    <string name="Application">کانال</string>
-
-    <!-- Time Ago -->
-    <string name="TimeAgoNow">همین الان</string>
-    <string name="TimeAgoMin">یک دقیقه پیش</string>
-    <string name="TimeAgoMins">دقیقه پیش</string>
-    <string name="TimeAgoHour">یک ساعت پیش</string>
-    <string name="TimeAgoHours">ساعت پیش</string>
-    <string name="TimeAgoDay">یک روز پیش</string>
-    <string name="TimeAgoDays">روز پیش</string>
-    <string name="TimeAgoMonth">یک ماه پیش</string>
-    <string name="TimeAgoMonths">ماه پیش</string>
-    <string name="TimeAgoYear">یک سال پیش</string>
-    <string name="TimeAgoYears">سال پیش</string>
-
-    <!-- Chat List UI -->
-    <string name="ChatListUI">پیام رسان</string>
-
-    <!-- Chat UI -->
-    <string name="ChatUIMessage">پیغام شما</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="Application">کانل</string>
 
     <!-- Social Profile Special Center UI -->
     <string name="SocialProfileSpecialCenterUI">مرکز ویژه</string>
@@ -264,6 +230,15 @@
     <string name="WriteUILengthMins">Minutes</string>
     <string name="WriteUISetLength">Please, set vote length</string>
     <string name="WriteUISetVote">Please, add more votes</string>
+
+    <!-- Time Ago -->
+    <string name="TimeAgoNow">همین الان</string>
+    <string name="TimeAgoMin">یک دیقیقه پیش</string>
+    <string name="TimeAgoMins">دقیقه پیش</string>
+    <string name="TimeAgoHour">یک ساعت پیش</string>
+    <string name="TimeAgoHours">ساعت پیش</string>
+    <string name="TimeAgoDay">یک روز پیش</string>
+    <string name="TimeAgoDays">روز پیش</string>
 
     <!-- Time Left -->
     <string name="TimeLeftNow">همین الان</string>

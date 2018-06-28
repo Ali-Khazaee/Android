@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <application android:name=".App" android:label="@string/Application" android:icon="@drawable/ic_launcher" android:supportsRtl="true" android:allowBackup="false" android:theme="@style/ThemeLight">
+    <application android:name=".App" android:label="@string/Application" android:icon="@drawable/ic_launcher" android:allowBackup="false" android:theme="@style/ThemeLight">
 
         <activity android:name=".activity.WelcomeActivity" android:screenOrientation="portrait">
             <intent-filter>

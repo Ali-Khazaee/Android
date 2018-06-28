@@ -1,4 +1,4 @@
-package co.biogram.main.ui.messenger;
+package co.biogram.main.ui.chat;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

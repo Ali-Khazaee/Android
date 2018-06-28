@@ -2,8 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layoutDirection="ltr">
+    android:layout_height="wrap_content">
 
     <co.biogram.main.ui.component.CircleImageView
         android:id="@+id/CircleImageViewProfile"
@@ -24,17 +23,15 @@
         android:layout_toStartOf="@+id/TextViewTime"
         android:textSize="@dimen/FontSmall"
         android:textColor="?TextColor"
-        android:textAlignment="viewStart"
         android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/TextViewMessage"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/CircleImageViewProfile"
         android:layout_toStartOf="@+id/TextViewCount"
         android:textSize="@dimen/FontVerySmall"
-        android:textAlignment="viewStart"
         android:layout_marginTop="5dp"
         android:layout_below="@id/TextViewUsername" />
 
@@ -44,7 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:textColor="@color/Gray"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:textSize="@dimen/FontMinimal" />

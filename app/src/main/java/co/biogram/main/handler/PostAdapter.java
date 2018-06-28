@@ -36,6 +36,9 @@ import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -937,7 +940,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderMain
             ImageView ImageViewOption = new ImageView(Activity);
             ImageViewOption.setLayoutParams(ImageViewOptionParam);
             ImageViewOption.setPadding(Misc.ToDP(4), Misc.ToDP(4), Misc.ToDP(4), Misc.ToDP(4));
-            ImageViewOption.setImageResource(R.drawable.xxx_messenger_option);
+            ImageViewOption.setImageResource(R.drawable._inbox_option);
             ImageViewOption.setId(ID1_OPTION);
 
             RelativeLayoutTool.addView(ImageViewOption);

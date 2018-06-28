@@ -25,7 +25,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,11 +41,6 @@ import co.biogram.main.activity.WelcomeActivity;
 
 public class Misc
 {
-    public static final String TAG = "channel";
-
-    @SuppressLint("StaticFieldLeak")
-    private static volatile Context context;
-
     public static int GetTheme()
     {
         return R.style.ThemeLight;
@@ -94,15 +88,7 @@ public class Misc
         return Math.round(Diff / 525600) + " " + String(R.string.TimeAgoYears);
     }
 
-    public static long Time()
-    {
-        return System.currentTimeMillis() / 1000;
-    }
 
-    public static String GetString(String Key)
-    {
-        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, "");
-    }
 
 
 
@@ -136,69 +122,7 @@ public class Misc
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private static volatile Typeface TypeFontCache;
-
-    public static Typeface GetTypeface()
-    {
-        if (TypeFontCache == null)
-            TypeFontCache = Typeface.createFromAsset(context.getAssets(), "rmedium.ttf");
-
-        return TypeFontCache;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static final String TAG = "channel";
 
     public static final int DIR_DOWNLOAD = 0;
     public static final int DIR_DOCUMENT = 1;
@@ -207,8 +131,9 @@ public class Misc
     public static final int DIR_AUDIO = 4;
     public static final int DIR_FILE = 5;
 
-
-
+    @SuppressLint("StaticFieldLeak")
+    private static volatile Context context;
+    private static volatile Typeface TypeFontCache;
     private static boolean IsRTL = false;
     private static boolean IsRTLInit = true;
     private static boolean IsFa = false;
@@ -278,7 +203,13 @@ public class Misc
         return DirFolder;
     }
 
+    public static Typeface GetTypeface()
+    {
+        if (TypeFontCache == null)
+            TypeFontCache = Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf");
 
+        return TypeFontCache;
+    }
 
     public static int Color(int C)
     {
@@ -344,7 +275,10 @@ public class Misc
         Editor.apply();
     }
 
-
+    public static String GetString(String Key)
+    {
+        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, "");
+    }
 
     public static String GetString(String Key, String Value)
     {

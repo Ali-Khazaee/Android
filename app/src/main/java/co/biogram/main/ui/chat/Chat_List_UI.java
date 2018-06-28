@@ -1,4 +1,4 @@
-package co.biogram.main.ui.messenger;
+package co.biogram.main.ui.chat;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
@@ -7,17 +7,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import android.widget.TextView;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.ui.component.CircleImageView;
 
-public class Contact_List_UI extends FragmentView
+public class Chat_List_UI extends FragmentView
 {
     @Override
     public void OnCreate()
@@ -25,29 +25,10 @@ public class Contact_List_UI extends FragmentView
         View view = View.inflate(Activity, R.layout.messenger_chat_list, null);
 
         final CircleImageView CircleImageViewWrite = view.findViewById(R.id.CircleImageViewWrite);
-        CircleImageViewWrite.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // TODO Open Write
-                Misc.ToastOld("Write Click Shod");
-            }
-        });
-
-        view.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // TODO Open Search
-                Misc.ToastOld("Search Click Shod");
-            }
-        });
 
         RecyclerView RecyclerViewMain = view.findViewById(R.id.RecyclerViewMain);
         RecyclerViewMain.setLayoutManager(new LinearLayoutManager(Activity));
-        RecyclerViewMain.setAdapter(new ContactListAdapter());
+        RecyclerViewMain.setAdapter(new ChatListAdapter());
         RecyclerViewMain.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             private boolean IsLoading = false;
@@ -102,47 +83,67 @@ public class Contact_List_UI extends FragmentView
                         {
 
                         }
-                    }).withLayer().start();
+                    }).withLayer().setListener(null).start();
                 }
+            }
+        });
+
+        view.findViewById(R.id.ImageViewSearch).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // TODO Open Search
+                Misc.ToastOld("Search Click Shod");
+            }
+        });
+
+        CircleImageViewWrite.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // TODO Open Write
+                Misc.ToastOld("Write Click Shod");
             }
         });
 
         ViewMain = view;
     }
 
-    private class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolderMain>
+    private class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHolder>
     {
-        private ArrayList<ContactEntity> ContactList = new ArrayList<>();
+        private ArrayList<ChatEntity> ChatList = new ArrayList<>();
 
-        ContactListAdapter()
+        ChatListAdapter()
         {
-            ContactList.add(new ContactEntity("1", "http://198.50.232.192:9000/1.jpg", "Ali", "Test Message For Fake List", 0, 1528008709));
-            ContactList.add(new ContactEntity("2", "http://198.50.232.192:9000/2.jpg", "Hesam", "Test Message For Fake List", 551, 1529001709));
-            ContactList.add(new ContactEntity("3", "http://198.50.232.192:9000/3.jpg", "Ali Ebne Sina", "Test Message For Fake List", 31, 1527008709));
-            ContactList.add(new ContactEntity("4", "", "Ali e Karar", "Test Message For Fake List", 22, 1528508709));
-            ContactList.add(new ContactEntity("5", "http://198.50.232.192:9000/5.jpg", "Ali e Dodol Tala", "Test Message For Fake List", 1, 1529008709));
-            ContactList.add(new ContactEntity("6", "http://198.50.232.192:9000/1.jpg", "Salam Sosis", "Test Message For Fake List", 0, 1429008709));
-            ContactList.add(new ContactEntity("7", "http://198.50.232.192:9000/2.jpg", "Edraki", "Test Message For Fake List", 1, 1529008709));
-            ContactList.add(new ContactEntity("8", "http://198.50.232.192:9000/3.jpg", "QQ Bang Bang", "Test Message For Fake List", 0, 1529008709));
-            ContactList.add(new ContactEntity("9", "http://198.50.232.192:9000/4.jpg", "...", "Test Message For Fake List", 0, 1529008709));
-            ContactList.add(new ContactEntity("10", "http://198.50.232.192:9000/5.jpg", "09385454000", "Test Message For Fake List", 552, 1529008709));
-            ContactList.add(new ContactEntity("11", "http://198.50.232.192:9000/1.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
-            ContactList.add(new ContactEntity("12", "http://198.50.232.192:9000/2.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
-            ContactList.add(new ContactEntity("13", "http://198.50.232.192:9000/3.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
-            ContactList.add(new ContactEntity("14", "http://198.50.232.192:9000/4.jpg", "سوسیسسوسیسسوسیسسوسیسسوسیسسوسیسسوسیس سلام", "کی بریم بیرونسوسیسسوسیسسوسیسسوسیسسوسیسسوسیس", 1000, 1529008709));
-            ContactList.add(new ContactEntity("15", "http://198.50.232.192:9000/5.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
-            ContactList.add(new ContactEntity("16", "http://198.50.232.192:9000/1.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("1", "http://198.50.232.192:9000/1.jpg", "Ali", "Test Message For Fake List", 0, 1528008709));
+            ChatList.add(new ChatEntity("2", "http://198.50.232.192:9000/2.jpg", "Hesam", "Test Message For Fake List", 551, 1529001709));
+            ChatList.add(new ChatEntity("3", "http://198.50.232.192:9000/3.jpg", "Ali Ebne Sina", "Test Message For Fake List", 31, 1527008709));
+            ChatList.add(new ChatEntity("4", "", "Ali e Karar", "Test Message For Fake List", 22, 1528508709));
+            ChatList.add(new ChatEntity("5", "http://198.50.232.192:9000/5.jpg", "Ali e Dodol Tala", "Test Message For Fake List", 1, 1529008709));
+            ChatList.add(new ChatEntity("6", "http://198.50.232.192:9000/1.jpg", "Salam Sosis", "Test Message For Fake List", 0, 1429008709));
+            ChatList.add(new ChatEntity("7", "http://198.50.232.192:9000/2.jpg", "Edraki", "Test Message For Fake List", 1, 1529008709));
+            ChatList.add(new ChatEntity("8", "http://198.50.232.192:9000/3.jpg", "QQ Bang Bang", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("9", "http://198.50.232.192:9000/4.jpg", "...", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("10", "http://198.50.232.192:9000/5.jpg", "09385454000", "Test Message For Fake List", 552, 1529008709));
+            ChatList.add(new ChatEntity("11", "http://198.50.232.192:9000/1.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("12", "http://198.50.232.192:9000/2.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("13", "http://198.50.232.192:9000/3.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("14", "http://198.50.232.192:9000/4.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("15", "http://198.50.232.192:9000/5.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
+            ChatList.add(new ChatEntity("16", "http://198.50.232.192:9000/1.jpg", "UserName", "Test Message For Fake List", 0, 1529008709));
         }
 
         @NonNull
         @Override
-        public ViewHolderMain onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+        public ChatListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
         {
-            return new ViewHolderMain(View.inflate(Activity, R.layout.messenger_chat_list_row, null));
+            return new ViewHolder(View.inflate(Activity, R.layout.messenger_chat_list_row, null));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolderMain holder, int position)
+        public void onBindViewHolder(@NonNull ChatListAdapter.ViewHolder holder, int position)
         {
             holder.BindView(position);
         }
@@ -150,10 +151,10 @@ public class Contact_List_UI extends FragmentView
         @Override
         public int getItemCount()
         {
-            return ContactList.size();
+            return ChatList.size();
         }
 
-        class ViewHolderMain extends RecyclerView.ViewHolder
+        public class ViewHolder extends RecyclerView.ViewHolder
         {
             CircleImageView CircleImageViewProfile;
             TextView TextViewUsername;
@@ -162,7 +163,7 @@ public class Contact_List_UI extends FragmentView
             TextView TextViewCount;
             View ViewLine;
 
-            ViewHolderMain(View view)
+            public ViewHolder(View view)
             {
                 super(view);
 
@@ -176,30 +177,30 @@ public class Contact_List_UI extends FragmentView
 
             void BindView(int Pos)
             {
-                final ContactEntity Chat = ContactList.get(Pos);
+                ChatEntity Chat = ChatList.get(Pos);
 
                 GlideApp.with(Activity).load(Chat.Profile).placeholder(R.color.Primary).into(CircleImageViewProfile);
 
-                TextViewUsername.setText(Chat.Username.length() > 19 ? (Chat.Username.substring(0, 19) + "...") : Chat.Username);
-                TextViewMessage.setText(Chat.Message.length() > 24 ? (Chat.Message.substring(0, 24) + "...") : Chat.Message);
+                TextViewUsername.setText(Chat.Username.length() > 28 ? (Chat.Username.substring(0, 28) + "...") : Chat.Username);
+                TextViewMessage.setText(Chat.Message.length() > 28 ? (Chat.Message.substring(0, 28) + "...") : Chat.Message);
                 TextViewTime.setText(Misc.TimeAgo(Chat.Time));
                 TextViewCount.setVisibility(Chat.Count == 0 ? View.GONE : View.VISIBLE);
                 TextViewCount.setText(Chat.Count > 99 ? "99+" : String.valueOf(Chat.Count));
-                ViewLine.setVisibility(ContactList.size() - 1 == Pos ? View.VISIBLE : View.GONE);
+                ViewLine.setVisibility(ChatList.size() - 1 == Pos ? View.VISIBLE : View.GONE);
 
                 itemView.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new Chat_UI(Chat.ID), "Chat_UI", true);
+                        Activity.GetManager().OpenView(new Chat_List_UI(), "Chat_List_UI", true);
                     }
                 });
             }
         }
     }
 
-    private class ContactEntity
+    private class ChatEntity
     {
         String ID;
         String Profile;
@@ -208,7 +209,7 @@ public class Contact_List_UI extends FragmentView
         String Message;
         int Count;
 
-        ContactEntity(String id, String profile, String username, String message, int count, int time)
+        ChatEntity(String id, String profile, String username, String message, int count, int time)
         {
             ID = id;
             Profile = profile;

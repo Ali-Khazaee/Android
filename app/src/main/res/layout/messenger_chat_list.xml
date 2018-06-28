@@ -22,7 +22,7 @@
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
         android:layout_alignParentEnd="true"
-        android:padding="15dp"
+        android:padding="12dp"
         android:src="@drawable/xxx_messenger_search_black" />
 
     <View
@@ -45,6 +45,7 @@
         android:src="@drawable/xxx_messenger_plus_white"
         android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         app:civ_background_color="@color/Primary"
         app:civ_border_color="@color/Primary"
         app:civ_border_width="8dp" />

@@ -532,6 +532,7 @@ public class CircleImageView extends ImageView
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private class OutlineProvider extends ViewOutlineProvider
     {
+
         @Override
         public void getOutline(View view, Outline outline)
         {
@@ -539,5 +540,7 @@ public class CircleImageView extends ImageView
             mBorderRect.roundOut(bounds);
             outline.setRoundRect(bounds, bounds.width() / 2.0f);
         }
+
     }
+
 }
