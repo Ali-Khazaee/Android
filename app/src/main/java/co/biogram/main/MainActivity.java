@@ -1,11 +1,14 @@
 package co.biogram.main;
 
 import android.content.res.Configuration;
+import android.widget.FrameLayout;
 import android.os.Bundle;
+import android.os.Build;
 
 import java.util.Locale;
 
 import co.biogram.main.fragment.FragmentActivity;
+import co.biogram.main.handler.Misc;
 
 public class MainActivity extends FragmentActivity
 {
@@ -22,16 +25,21 @@ public class MainActivity extends FragmentActivity
 
         getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
 
-        /*if (Misc.GetBoolean("IsLogin"))
-        {
-            if (Misc.GetString("Activity").equals("Chat"))
-                startActivity(new Intent(this, Chat_ListUI.class));
-            else
-                startActivity(new Intent(this, SocialActivity.class));
+        if (Build.VERSION.SDK_INT > 20)
+            getWindow().setStatusBarColor(Misc.Color(R.color.Primary));
 
-            finish();
-            return;
-        }
+        FrameLayout FrameLayoutMain = new FrameLayout(this);
+        FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        FrameLayoutMain.setId(R.id.ContainerFull);
+
+        setContentView(FrameLayoutMain);
+
+        // GetManager().OpenView(new WelcomeUI(), R.id.ContainerFull, "WelcomeUI");
+    }
+}
+
+
+/*
 public class SocialActivity extends FragmentActivity
 {
     private boolean NotificationAvailable = false;
@@ -156,18 +164,4 @@ public class SocialActivity extends FragmentActivity
         GetManager().OpenView(Fragment, Tag, false);
     }
 }
-
-        if (Build.VERSION.SDK_INT > 20)
-            getWindow().setStatusBarColor(Misc.Color(R.color.Primary));
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(this);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setId(R.id.ContainerFull);
-
-        setContentView(RelativeLayoutMain);
-
-        GetManager().OpenView(new WelcomeUI(), R.id.ContainerFull, "WelcomeUI");*/
-    }
-}
+*/
