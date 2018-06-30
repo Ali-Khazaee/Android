@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.service.NetworkService;
 
-public class App extends Application {
+public class Application extends android.app.Application
+{
     private static volatile OkHttpClient OKClient;
 
     public static OkHttpClient GetOKClient() {

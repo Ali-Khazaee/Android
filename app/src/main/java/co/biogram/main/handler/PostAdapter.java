@@ -35,9 +35,6 @@ import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -52,9 +49,6 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
-import co.biogram.main.ui.social.CommentUI;
-import co.biogram.main.ui.social.LikeUI;
-import co.biogram.main.ui.social.PostUI;
 import co.biogram.main.ui.view.PullToRefreshView;
 import co.biogram.main.ui.view.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;

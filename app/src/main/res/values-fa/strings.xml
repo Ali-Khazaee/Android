@@ -1,6 +1,5 @@
 <resources>
     <!-- Application -->
-    <string name="Application">کانال</string>
 
     <!-- Time Ago -->
     <string name="TimeAgoNow">همین الان</string>
@@ -16,24 +15,10 @@
     <string name="TimeAgoYears">سال پیش</string>
 
     <!-- Chat List UI -->
-    <string name="ChatListUI">پیام رسان</string>
 
     <!-- Chat UI -->
-    <string name="ChatUIMessage">پیغام شما</string>
-
-
 
     <!-- Social Profile Special Center UI -->
-    <string name="SocialProfileSpecialCenterUI">مرکز ویژه</string>
-    <string name="SocialProfileSpecialCenterUICredit">اعتبار</string>
-    <string name="SocialProfileSpecialCenterUIBadge">نشان</string>
-    <string name="SocialProfileSpecialCenterUISpecialPost">پست ویژه</string>
-    <string name="SocialProfileSpecialCenterUICreditTotal">کل اعتبار</string>
-    <string name="SocialProfileSpecialCenterUICreditRial">ريال</string>
-    <string name="SocialProfileSpecialCenterUICreditIncrease">افزایش اعتبار</string>
-    <string name="SocialProfileSpecialCenterUICreditEnter">مقدار اعتبار</string>
-    <string name="SocialProfileSpecialCenterUICreditAdd">افزودن اعتبار</string>
-
 
     <!-- Dialog Permission -->
 

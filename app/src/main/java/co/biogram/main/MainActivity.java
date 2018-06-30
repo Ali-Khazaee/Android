@@ -1,24 +1,37 @@
-package co.biogram.main.activity;
+package co.biogram.main;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-
-import co.biogram.main.R;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.chat.Contact_List_UI;
-import co.biogram.main.ui.social.InboxUI;
-import co.biogram.main.ui.social.MomentUI;
-import co.biogram.main.ui.social.NotificationUI;
-import co.biogram.main.ui.social.Profile_UI;
-import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.fragment.FragmentActivity;
-import com.vanniktech.emoji.EmojiManager;
-import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 import java.util.Locale;
 
+import co.biogram.main.fragment.FragmentActivity;
+
+public class MainActivity extends FragmentActivity
+{
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        Locale locale = new Locale("fa");
+        Locale.setDefault(locale);
+
+        Configuration Config = new Configuration();
+        Config.locale = locale;
+
+        getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
+
+        /*if (Misc.GetBoolean("IsLogin"))
+        {
+            if (Misc.GetString("Activity").equals("Chat"))
+                startActivity(new Intent(this, Chat_ListUI.class));
+            else
+                startActivity(new Intent(this, SocialActivity.class));
+
+            finish();
+            return;
+        }
 public class SocialActivity extends FragmentActivity
 {
     private boolean NotificationAvailable = false;
@@ -41,7 +54,7 @@ public class SocialActivity extends FragmentActivity
         getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
 
         EmojiManager.install(new IosEmojiProvider());
-        
+
         setTheme(Misc.GetBoolean("ThemeDark") ? R.style.AppThemeDark : R.style.AppThemeLight);
 
         super.onCreate(savedInstanceState);
@@ -141,5 +154,20 @@ public class SocialActivity extends FragmentActivity
         }
 
         GetManager().OpenView(Fragment, Tag, false);
+    }
+}
+
+        if (Build.VERSION.SDK_INT > 20)
+            getWindow().setStatusBarColor(Misc.Color(R.color.Primary));
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(this);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        RelativeLayoutMain.setId(R.id.ContainerFull);
+
+        setContentView(RelativeLayoutMain);
+
+        GetManager().OpenView(new WelcomeUI(), R.id.ContainerFull, "WelcomeUI");*/
     }
 }

@@ -29,15 +29,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
 import co.biogram.main.R;
 import co.biogram.main.BuildConfig;
-import co.biogram.main.activity.WelcomeActivity;
+import co.biogram.main.MainActivity;
 
 public class Misc {
     public static final String TAG = "channel";
@@ -378,7 +376,7 @@ public class Misc {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (alarmManager != null)
-            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, new Intent(context, WelcomeActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+            alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, new Intent(context, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
 
         System.exit(0);
     }

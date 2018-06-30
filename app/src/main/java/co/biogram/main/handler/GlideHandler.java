@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.io.InputStream;
 
-import co.biogram.main.App;
+import co.biogram.main.Application;
 
 @GlideModule
 public class GlideHandler extends AppGlideModule {
@@ -30,7 +30,7 @@ public class GlideHandler extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(App.GetOKClient()));
+        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(Application.GetOKClient()));
     }
 
     @Override

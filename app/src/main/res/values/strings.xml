@@ -9,79 +9,16 @@
     <string name="StatefulLayoutTry">Try Again</string>
 
     <!-- Social Profile Special Center UI -->
-    <string name="SocialProfileSpecialCenterUI">Special Center</string>
-    <string name="SocialProfileSpecialCenterUICredit">Credit</string>
-    <string name="SocialProfileSpecialCenterUIBadge">Badge</string>
-    <string name="SocialProfileSpecialCenterUISpecialPost">Special Post</string>
-    <string name="SocialProfileSpecialCenterUICreditTotal">Total Amount</string>
-    <string name="SocialProfileSpecialCenterUICreditRial">Rial</string>
-    <string name="SocialProfileSpecialCenterUICreditIncrease">Increase credit</string>
-    <string name="SocialProfileSpecialCenterUICreditEnter">Enter the amount</string>
-    <string name="SocialProfileSpecialCenterUICreditAdd">Add credit</string>
     <string name="SocialProfileSpecialCenterUICreditRowIns">Your credit has been increased</string>
     <string name="SocialProfileSpecialCenterUICreditRowBadge">Your purchase for the badge has been submited</string>
     <string name="SocialProfileSpecialCenterUICreditRowSponsored">Your purchase for the sponsored post has been submited</string>
     <string name="SocialProfileSpecialCenterUICreditRowPurchase">Your purchase for the goods has been submited</string>
     <string name="SocialProfileSpecialCenterUICreditRowRequest">Your request has been submited</string>
-    <string name="SocialProfileSpecialCenterUICreditRowAmount">Amount:</string>
-    <string name="SocialProfileSpecialCenterUICreditRowRial">Rial</string>
-    <string name="SocialProfileSpecialCenterUICreditDialog">Issue Details</string>
-    <string name="SocialProfileSpecialCenterUICreditDialogAmount">Amount:</string>
-    <string name="SocialProfileSpecialCenterUICreditDialogRial">Rial</string>
-    <string name="SocialProfileSpecialCenterUICreditDialogIssue">Issue:</string>
-    <string name="SocialProfileSpecialCenterUICreditDialogDetail">Detail:</string>
-    <string name="SocialProfileSpecialCenterUICreditDialogTime">Time:</string>
-    <string name="SocialProfileSpecialCenterUICreditDialogStatus">Status:</string>
 
     <!-- Profile UI -->
-    <string name="SocialProfileUI">Profile</string>
-    <string name="SocialProfileUIAvatar">Set Profile Photo</string>
-    <string name="SocialProfileUIAvatarCamera">Set From Camera</string>
     <string name="SocialProfileUIAvatarCameraMessage">To allow take picture from camera you should allow camera permission</string>
-    <string name="SocialProfileUIAvatarGallery">Set From Gallery</string>
     <string name="SocialProfileUIAvatarGalleryMessage">To allow pick image from gallery you should allow read sotrage permission</string>
-    <string name="SocialProfileUIAvatarDelete">Remove Profile Photo</string>
-    <string name="SocialProfileUIBookmark">Saved</string>
-    <string name="SocialProfileUIFollower">Followers</string>
-    <string name="SocialProfileUIFollowing">Following</string>
-    <string name="SocialProfileUIProfileView">Profile View</string>
-    <string name="SocialProfileUIName">Set Your Name</string>
-    <string name="SocialProfileUINameHint">Name</string>
-    <string name="SocialProfileUINameMessage">Message</string>
-    <string name="SocialProfileUIUsername">Set Your Username</string>
-    <string name="SocialProfileUIUsernameHint">Username</string>
-    <string name="SocialProfileUIUsernameMessage">Message</string>
-    <string name="SocialProfileUIRating">Rating</string>
-    <string name="SocialProfileUIRate">Rate</string>
-    <string name="SocialProfileUISpecial">Special Center</string>
-    <string name="SocialProfileUIPhoneNumber">Phone Number</string>
-    <string name="SocialProfileUIPhone">Set Your Phone</string>
-    <string name="SocialProfileUIPhoneHint">Phone</string>
-    <string name="SocialProfileUIPhoneMessage">Message</string>
-    <string name="SocialProfileUIEmailAddress">Email Address</string>
-    <string name="SocialProfileUIEmail">Set Your Email</string>
-    <string name="SocialProfileUIEmailHint">Email</string>
-    <string name="SocialProfileUIEmailMessage">Message</string>
-    <string name="SocialProfileUIAboutMe">About Me</string>
-    <string name="SocialProfileUIAbout">Set Your About</string>
-    <string name="SocialProfileUIAboutHint">About Me</string>
-    <string name="SocialProfileUIAboutMessage">Message</string>
-    <string name="SocialProfileUIWebsite">Website</string>
-    <string name="SocialProfileUIWebsiteTitle">Set Your Website</string>
-    <string name="SocialProfileUIWebsiteHint">Website</string>
-    <string name="SocialProfileUIWebsiteMessage">Message</string>
-    <string name="SocialProfileUILocation">Location</string>
-    <string name="SocialProfileUILocationTitle">Set Your Location</string>
-    <string name="SocialProfileUILocationHint">Location</string>
-    <string name="SocialProfileUILocationMessage">Message</string>
-    <string name="SocialProfileUIFeature">Features</string>
-    <string name="SocialProfileUIFeatureTitle">Set Your Features</string>
-    <string name="SocialProfileUIFeatureMessage">Add your features so those other can identify you based on them</string>
     <string name="SocialProfileUIFeatureTag">Write Your Feature</string>
-    <string name="SocialProfileUIFeatureAdd">Add</string>
-    <string name="SocialProfileUINotSet">Not Set</string>
-    <string name="SocialProfileUISubmit">Submit</string>
-
 
     <!-- General -->
     <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
@@ -372,16 +309,6 @@
 
 
     <!-- General Dialog Permission -->
-    <string name="GeneralDialogPermissionAccept">ALLOW</string>
-    <string name="GeneralDialogPermissionDecline">NOT NOW</string>
-
 
     <!-- Chat UI -->
-    <string name="ChatUISearch">Search</string>
-    <string name="ChatUIMessage">Message</string>
-    <string name="ChatUISendMessage">Send Message</string>
-    <string name="ChatUIGroup">Group info</string>
-    <string name="ChatUIGroupHelp">To create a group, you need to complete the profile</string>
-    <string name="ChatUIGroupName">Group name</string>
-    <string name="ChatUIGroupMembers">Group members</string>
 </resources>

@@ -14,8 +14,8 @@ android
         applicationId "co.biogram.main"
         targetSdkVersion 27
         minSdkVersion 17
-        versionCode 400
-        versionName "4.0.0"
+        versionCode 0
+        versionName "0.0.1"
     }
 
     /*signingConfigs

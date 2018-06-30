@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
+import co.biogram.main.Application;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -43,7 +44,6 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 import java.io.File;
 
-import co.biogram.main.App;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
@@ -338,7 +338,7 @@ public class VideoPreviewUI extends FragmentView {
                 MediaSourceMain = new ExtractorMediaSource(FDS.getUri(), DataSourceMain, new DefaultExtractorsFactory(), null, null);
             } else {
                 Cache CacheMain = new SimpleCache(new File(Activity.getCacheDir(), "BioVideo"), new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024));
-                DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(App.GetOKClient(), "Bio", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
+                DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(Application.GetOKClient(), "Bio", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
                 MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain, new DefaultExtractorsFactory(), null, null);
             }
         } catch (Exception e) {
