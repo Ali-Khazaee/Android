@@ -16,6 +16,7 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.ui.component.CircleImageView;
+import co.biogram.main.ui.general.GalleryViewUI;
 
 public class Contact_List_UI extends FragmentView
 {
@@ -30,8 +31,8 @@ public class Contact_List_UI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                // TODO Open Write
-                Misc.ToastOld("Write Click Shod");
+                Activity.GetManager().OpenView(new Contact_UI(),"Contact_UI",false);
+
             }
         });
 

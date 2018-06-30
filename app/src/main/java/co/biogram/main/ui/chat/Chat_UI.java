@@ -74,7 +74,7 @@ import static android.widget.SeekBar.*;
  */
 
 
-public class Chat_UI extends FragmentView implements View.OnClickListener, OnTouchListener, TextWatcher, KeyboardHeightObserver {
+public class Chat_UI extends FragmentView implements KeyboardHeightObserver {
 
     public static final int MODE_SINGLE = 0;
     public static final int MODE_GROUP = 1;
@@ -89,14 +89,9 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
     private final int AUDIO = 4;
     private final int FILE = 5;
 
-    private EditText EditTextMessage;
     private FloatingActionButton FABAudio;
-    private ImageButton ImageButtonAudio;
-    private ImageButton ImageButtonImage;
-    private ImageButton ImageButtonVideo;
-    private ImageButton ImageButtonAttach;
-    private ImageButton ImageButtonSend;
-    private ImageButton ImageButtonEmoji;
+
+
     private RecyclerView ChatRecyclerView;
     private ChatAdapter ChatAdapter;
 
@@ -143,13 +138,13 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
         ImageView buttonBack = view.findViewById(R.id.ImageButtonBack);
         ChatRecyclerView = view.findViewById(R.id.RecycelerViewChat);
-        EditTextMessage = view.findViewById(R.id.EditTextMessage);
-        ImageButtonSend = view.findViewById(R.id.ImageButtonSend);
-        ImageButtonAttach = view.findViewById(R.id.ImageButtonAttach);
-        ImageButtonAudio = view.findViewById(R.id.ImageButtonAudio);
-        ImageButtonEmoji = view.findViewById(R.id.ImageButtonEmoji);
-        ImageButtonImage = view.findViewById(R.id.ImageButtonImage);
-        ImageButtonVideo = view.findViewById(R.id.ImageButtonVideo);
+        final EditText EditTextMessage = view.findViewById(R.id.EditTextMessage);
+        final ImageButton ImageButtonSend = view.findViewById(R.id.ImageButtonSend);
+        ImageButton ImageButtonAttach = view.findViewById(R.id.ImageButtonAttach);
+        ImageButton ImageButtonAudio = view.findViewById(R.id.ImageButtonAudio);
+        ImageButton ImageButtonEmoji = view.findViewById(R.id.ImageButtonEmoji);
+        ImageButton ImageButtonImage = view.findViewById(R.id.ImageButtonImage);
+        ImageButton ImageButtonVideo = view.findViewById(R.id.ImageButtonVideo);
         FABAudio = view.findViewById(R.id.ButtonAudio);
 
         Emoji = EmojiPopup.Builder.fromRootView(view).build((EmojiEditText) EditTextMessage);
@@ -175,67 +170,36 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
         ChatRecyclerView.setAdapter(ChatAdapter);
 
 
-        EditTextMessage.addTextChangedListener(this);
-        ImageButtonSend.setOnClickListener(this);
-        ImageButtonAttach.setOnClickListener(this);
-        ImageButtonAudio.setOnTouchListener(this);
-        ImageButtonEmoji.setOnClickListener(this);
-        ImageButtonImage.setOnClickListener(this);
-        ImageButtonVideo.setOnClickListener(this);
-        buttonBack.setOnClickListener(this);
-
-        AudioPlayer.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+        EditTextMessage.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                AudioPlayer.play(sampleId, 1f, 1f, 10, 0, 1f);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (EditTextMessage.getText().toString().trim().length() > 0) {
+                    if (isSendIconGray) {
+                        ImageButtonSend.setImageResource(R.drawable.ic_back112323_blue_fa);
+                        isSendIconGray = false;
+                    }
+                } else {
+                    if (!isSendIconGray) {
+                        ImageButtonSend.setImageResource(R.drawable.ic_back123_bl123ue_fa);
+                        isSendIconGray = true;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
-        setData();
-
-        ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-
-
-        ViewMain = view;
-
-    }
-
-    @Override
-    public void OnPause() {
-        keyboardHeightProvider.setKeyboardHeightObserver(null);
-        keyboardHeightProvider.close();
-        super.OnPause();
-    }
-
-    @Override
-    public void OnResume() {
-        super.OnResume();
-        keyboardHeightProvider.setKeyboardHeightObserver(this);
-    }
-
-    @Override
-    public void OnDestroy() {
-        super.OnDestroy();
-    }
-
-    @Override
-    public void onClick(View v) {
-
-
-        switch (v.getId()) {
-
-
-            case R.id.ImageButtonBack: {
-                Activity.GetManager().OpenView(new Contact_List_UI(), "Chat_ListUI", false);
-                break;
-            }
-
-            case R.id.ImageButtonEmoji: {
-                Emoji.toggle();
-            }
-
-            case R.id.ImageButtonSend: {
-
+        ImageButtonSend.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (!EditTextMessage.getText().toString().equals("")) {
                     ChatAdapter.addChat(new TextChatModel(EditTextMessage.getText().toString()));
                     EditTextMessage.setText("");
@@ -244,13 +208,73 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
                     AudioPlayer.load(Activity.getBaseContext(),
                             R.raw.message_send, 1);
                 }
-                break;
             }
+        });
 
-            case R.id.ImageButtonImage: {
+        ImageButtonAttach.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //   Misc.closeKeyboard(Activity);
 
 
-                Misc.closeKeyboard(Activity);
+                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
+
+                    @Override
+                    public void OnSelection(String URL) {
+                        if (URL != null && !URL.equals("")) {
+
+                            ChatAdapter.addChat(new FileChatModel(URL));
+                            EditTextMessage.setText("");
+                            ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
+                            AudioPlayer.load(Activity.getBaseContext(),
+                                    R.raw.message_send, 1);
+
+                        }
+                    }
+
+                    @Override
+                    public void OnRemove(String URL) {
+                    }
+
+                    @Override
+                    public void OnSave() {
+
+                    }
+                };
+
+                if (!Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    if (PermissionRequest == null)
+                        PermissionRequest = new PermissionDialog(Activity);
+                    if (!PermissionRequest.isShowing()) {
+                        PermissionRequest.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
+                            @Override
+                            public void OnChoice(boolean Allow) {
+                                if (!Allow) {
+                                    Misc.ToastOld(Misc.String(R.string.PermissionStorage));
+                                    return;
+                                }
+                            }
+                        });
+                        return;
+                    }
+                }
+                Activity.GetManager().OpenView(new GalleryViewUI(Integer.MAX_VALUE, GalleryViewUI.TYPE_FILE, L), "GalleryViewUI", true);
+
+            }
+        });
+
+        ImageButtonEmoji.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Emoji.toggle();
+            }
+        });
+
+        ImageButtonImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //   Misc.closeKeyboard(Activity);
 
                 final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
                     List<String> ImageURL = new ArrayList<>();
@@ -342,19 +366,20 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
                                 }
                             }
                         });
-                        break;
+                        return;
                     }
                 }
                 Activity.GetManager().OpenView(new GalleryViewUI(Integer.MAX_VALUE, GalleryViewUI.TYPE_IMAGE, L), "GalleryViewUI", true);
 
-                break;
-
 
             }
+        });
 
-            case R.id.ImageButtonVideo: {
+        ImageButtonVideo.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                Misc.closeKeyboard(Activity);
+                // Misc.closeKeyboard(Activity);
 
                 final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
                     String VideoURL;
@@ -482,76 +507,175 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
                                 }
                             }
                         });
-                        break;
+                        return;
                     }
                 }
                 Activity.GetManager().OpenView(new GalleryViewUI(Integer.MAX_VALUE, GalleryViewUI.TYPE_VIDEO, L), "GalleryViewUI", true);
-                break;
 
             }
+        });
 
-            case R.id.ImageButtonAttach: {
+        buttonBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity.GetManager().OpenView(new Contact_List_UI(), "Chat_ListUI", false);
 
-                Misc.closeKeyboard(Activity);
+            }
+        });
 
+        ImageButtonAudio.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Misc.closeKeyboard(Activity);
 
-                final GalleryViewUI.GalleryListener L = new GalleryViewUI.GalleryListener() {
-
-                    @Override
-                    public void OnSelection(String URL) {
-                        if (URL != null && !URL.equals("")) {
-
-                            ChatAdapter.addChat(new FileChatModel(URL));
-                            EditTextMessage.setText("");
-                            ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-                            AudioPlayer.load(Activity.getBaseContext(),
-                                    R.raw.message_send, 1);
-
-                        }
-                    }
-
-                    @Override
-                    public void OnRemove(String URL) {
-                    }
-
-                    @Override
-                    public void OnSave() {
-
-                    }
-                };
-
-                if (!Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (!Misc.CheckPermission(Manifest.permission.RECORD_AUDIO)) {
                     if (PermissionRequest == null)
                         PermissionRequest = new PermissionDialog(Activity);
-                    if (!PermissionRequest.isShowing()) {
-                        PermissionRequest.SetContentView(R.drawable.z_general_permission_storage, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
+                    if (!PermissionRequest.isShowing())
+                        PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.PermissionMic, Manifest.permission.RECORD_AUDIO, new PermissionDialog.OnChoiceListener() {
                             @Override
-                            public void OnChoice(boolean Allow) {
-                                if (!Allow) {
-                                    Misc.ToastOld(Misc.String(R.string.PermissionStorage));
-                                    return;
-                                }
+                            public void OnChoice(boolean Result) {
                             }
                         });
-                        break;
+                }
+
+//        if (!Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//            if (PermissionRequest == null)
+//                PermissionRequest = new PermissionDialog(Activity);
+//            if (!PermissionRequest.isShowing())
+//                PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.PermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
+//                    @Override
+//                    public void OnChoice(boolean Result) {
+//                    }
+//                });
+//        }
+                else if (v.getId() == R.id.ImageButtonAudio) {
+
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+
+
+                            FABAudio.setVisibility(View.VISIBLE);
+
+
+                            AnimationSet anim = new AnimationSet(true);
+
+                            ScaleAnimation scaleAnim = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                            AlphaAnimation alphaAnim = new AlphaAnimation(0, 1);
+
+                            anim.addAnimation(scaleAnim);
+                            anim.addAnimation(alphaAnim);
+                            anim.setDuration(100);
+                            anim.setInterpolator(new AccelerateDecelerateInterpolator());
+
+                            anim.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    FABAudio.clearAnimation();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+
+                            });
+
+                            FABAudio.startAnimation(anim);
+
+                            startRecord();
+                            AudioPlayer.load(Activity.getBaseContext(),
+                                    R.raw.auido_hold, 1);
+
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+
+
+                            AnimationSet anim = new AnimationSet(true);
+
+                            ScaleAnimation scaleAnim = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                            AlphaAnimation alphaAnim = new AlphaAnimation(1, 0);
+
+                            anim.addAnimation(scaleAnim);
+                            anim.addAnimation(alphaAnim);
+                            anim.setDuration(100);
+                            anim.setInterpolator(new AccelerateDecelerateInterpolator());
+
+                            anim.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    FABAudio.setVisibility(View.GONE);
+                                    FABAudio.clearAnimation();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+
+                            });
+
+                            FABAudio.startAnimation(anim);
+
+                            pauseRecord();
+
+                            AudioChatModel model = new AudioChatModel(Filename);
+
+                            AudioPlayer.load(Activity.getBaseContext(),
+                                    R.raw.audio_release, 1);
+
+                            EditTextMessage.setText("");
+                            if (!model.getLength().equals("00:00")) {
+                                ChatAdapter.addChat(model);
+                                ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
+                            }
+                        }
                     }
                 }
-                Activity.GetManager().OpenView(new GalleryViewUI(Integer.MAX_VALUE, GalleryViewUI.TYPE_FILE, L), "GalleryViewUI", true);
-                break;
 
+
+                return true;
             }
+        });
+
+        AudioPlayer.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                AudioPlayer.play(sampleId, 1f, 1f, 10, 0, 1f);
+            }
+        });
+
+        ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
 
 
-        }
+        ViewMain = view;
 
     }
 
-
-    private void setData() {
-        ChatAdapter.addChat(new TextChatModel("Hello World"));
-        ChatAdapter.addChat(new TextChatModel("Building The Message System"));
-        ChatAdapter.addChat(new TextChatModel("User Message is Like This"));
+    @Override
+    public void OnPause() {
+        keyboardHeightProvider.setKeyboardHeightObserver(null);
+        keyboardHeightProvider.close();
+        super.OnPause();
     }
+
+    @Override
+    public void OnResume() {
+        super.OnResume();
+        keyboardHeightProvider.setKeyboardHeightObserver(this);
+    }
+
 
     private void startRecord() {
         Recorder = new MediaRecorder();
@@ -579,157 +703,6 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             Recorder.release();
             Recorder = null;
         }
-
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        Misc.closeKeyboard(Activity);
-
-
-        if (!Misc.CheckPermission(Manifest.permission.RECORD_AUDIO)) {
-            if (PermissionRequest == null)
-                PermissionRequest = new PermissionDialog(Activity);
-            if (!PermissionRequest.isShowing())
-                PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.PermissionMic, Manifest.permission.RECORD_AUDIO, new PermissionDialog.OnChoiceListener() {
-                    @Override
-                    public void OnChoice(boolean Result) {
-                    }
-                });
-        }
-
-//        if (!Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//            if (PermissionRequest == null)
-//                PermissionRequest = new PermissionDialog(Activity);
-//            if (!PermissionRequest.isShowing())
-//                PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.PermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
-//                    @Override
-//                    public void OnChoice(boolean Result) {
-//                    }
-//                });
-//        }
-        else if (v.getId() == R.id.ImageButtonAudio) {
-
-
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-
-
-                    FABAudio.setVisibility(View.VISIBLE);
-
-
-                    AnimationSet anim = new AnimationSet(true);
-
-                    ScaleAnimation scaleAnim = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    AlphaAnimation alphaAnim = new AlphaAnimation(0, 1);
-
-                    anim.addAnimation(scaleAnim);
-                    anim.addAnimation(alphaAnim);
-                    anim.setDuration(100);
-                    anim.setInterpolator(new AccelerateDecelerateInterpolator());
-
-                    anim.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            FABAudio.clearAnimation();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-
-                    });
-
-                    FABAudio.startAnimation(anim);
-
-                    startRecord();
-                    AudioPlayer.load(Activity.getBaseContext(),
-                            R.raw.auido_hold, 1);
-
-                    break;
-                }
-                case MotionEvent.ACTION_UP: {
-
-
-                    AnimationSet anim = new AnimationSet(true);
-
-                    ScaleAnimation scaleAnim = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    AlphaAnimation alphaAnim = new AlphaAnimation(1, 0);
-
-                    anim.addAnimation(scaleAnim);
-                    anim.addAnimation(alphaAnim);
-                    anim.setDuration(100);
-                    anim.setInterpolator(new AccelerateDecelerateInterpolator());
-
-                    anim.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            FABAudio.setVisibility(View.GONE);
-                            FABAudio.clearAnimation();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-
-                    });
-
-                    FABAudio.startAnimation(anim);
-
-                    pauseRecord();
-
-                    AudioChatModel model = new AudioChatModel(Filename);
-
-                    AudioPlayer.load(Activity.getBaseContext(),
-                            R.raw.audio_release, 1);
-
-                    EditTextMessage.setText("");
-                    if (!model.getLength().equals("00:00")) {
-                        ChatAdapter.addChat(model);
-                        ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-                    }
-                }
-            }
-        }
-
-
-        return true;
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (EditTextMessage.getText().toString().trim().length() > 0) {
-            if (isSendIconGray) {
-                ImageButtonSend.setImageResource(R.drawable.ic_back112323_blue_fa);
-                isSendIconGray = false;
-            }
-        } else {
-            if (!isSendIconGray) {
-                ImageButtonSend.setImageResource(R.drawable.ic_back123_bl123ue_fa);
-                isSendIconGray = true;
-            }
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
 
     }
 
@@ -823,7 +796,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
         @Override
         public int getItemViewType(int position) {
-            return MessageList.get(position).getChatType();
+            return MessageList.get(position).ChatType;
         }
 
         public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -837,11 +810,11 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             }
 
             public void bind(int position) {
-                TextViewTime.setText(MessageList.get(position).getCurrentTime());
-                ImageViewSeen.setVisibility((MessageList.get(position).isSeen() ? VISIBLE : GONE));
+                TextViewTime.setText(MessageList.get(position).CurrentTime);
+                ImageViewSeen.setVisibility((MessageList.get(position).IsSeen ? VISIBLE : GONE));
 
-                if (position > 0 && MessageList.get(position).isFromUser() == MessageList.get(position - 1).isFromUser()) {
-                    MessageList.get(position - 1).setSecond(true);
+                if (position > 0 && MessageList.get(position).IsFromUser == MessageList.get(position - 1).IsFromUser) {
+                    MessageList.get(position - 1).IsSecond = true;
                 }
 
                 MessageList.get(position).setLayout(itemView);
@@ -870,7 +843,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
         }
 
-        private class AudioViewHolder extends CustomViewHolder implements OnSeekBarChangeListener, OnClickListener, MediaPlayer.OnPreparedListener {
+        private class AudioViewHolder extends CustomViewHolder {
             private Button ButtonPlay;
             private TextView TextViewLength;
             private SeekBar SeekBarVoice;
@@ -878,8 +851,6 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             private AudioHandler Player;
             private boolean isPlaying;
 
-            private Handler SeekBarHandler = new Handler();
-            private Runnable SeekBarRunnable = null;
 
             public AudioViewHolder(View itemView) {
                 super(itemView);
@@ -894,82 +865,84 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             public void bind(int position) {
 
                 super.bind(position);
+                final Handler SeekBarHandler = new Handler();
+                final Runnable SeekBarRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        SeekBarVoice.setProgress(Player.getPlayer().getCurrentPosition());
+                        SeekBarHandler.postDelayed(this, 50);
+                    }
+                };
+                ;
+                ButtonPlay.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                ButtonPlay.setOnClickListener(this);
+                        if (!isPlaying && !isAudioPlaying) {
+                            ButtonPlay.setBackgroundResource(R.drawable.ic_pause_white_256dp);
+
+                            Player.seekTo(SeekBarVoice.getProgress());
+
+                            Player.play();
+
+                            Log.d(TAQ, String.valueOf(Player.getPlayer().getDuration()));
+
+                            SeekBarHandler.postDelayed(SeekBarRunnable, 0);
+                            isPlaying = true;
+                            isAudioPlaying = true;
+                        } else {
+                            ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
+                            Player.pause();
+                            isPlaying = false;
+                            isAudioPlaying = false;
+                        }
+
+                    }
+                });
 
                 TextViewLength.setText(((AudioChatModel) MessageList.get(position)).getLength());
 
-                Player.getPlayer().setOnPreparedListener(this);
-                SeekBarVoice.setOnSeekBarChangeListener(this);
+                Player.getPlayer().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        Player.setState(AudioHandler.MP_STATES.MPS_PREPARED);
+                        SeekBarVoice.setMax(Player.getPlayer().getDuration());
+                    }
+
+                });
+                SeekBarVoice.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser)
+                            Player.seekTo(progress);
+                        else if (progress == seekBar.getMax()) {
+                            ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
+                            SeekBarHandler.removeCallbacks(SeekBarRunnable);
+                            SeekBarVoice.setProgress(0);
+                            isPlaying = false;
+                            isAudioPlaying = false;
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        Player.pause();
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        //  play();
+                    }
+                });
 
                 Player.setData(((AudioChatModel) MessageList.get(position)).getFile().getAbsolutePath());
 
             }
 
-            @Override
-            public void onClick(View v) {
-
-                if (!isPlaying && !isAudioPlaying) {
-                    ButtonPlay.setBackgroundResource(R.drawable.ic_pause_white_256dp);
-
-                    Player.seekTo(SeekBarVoice.getProgress());
-
-                    Player.play();
-
-                    Log.d(TAQ, String.valueOf(Player.getPlayer().getDuration()));
-
-                    SeekBarRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            SeekBarVoice.setProgress(Player.getPlayer().getCurrentPosition());
-                            SeekBarHandler.postDelayed(this, 50);
-                        }
-                    };
-                    SeekBarHandler.postDelayed(SeekBarRunnable, 0);
-                    isPlaying = true;
-                    isAudioPlaying = true;
-                } else {
-                    ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
-                    Player.pause();
-                    isPlaying = false;
-                    isAudioPlaying = false;
-                }
-
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser)
-                    Player.seekTo(progress);
-                else if (progress == seekBar.getMax()) {
-                    ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
-                    SeekBarHandler.removeCallbacks(SeekBarRunnable);
-                    SeekBarVoice.setProgress(0);
-                    isPlaying = false;
-                    isAudioPlaying = false;
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                Player.pause();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                //  play();
-            }
-
-
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                Player.setState(AudioHandler.MP_STATES.MPS_PREPARED);
-                SeekBarVoice.setMax(Player.getPlayer().getDuration());
-            }
 
         }
 
-        private class ImageViewHolder extends CustomViewHolder implements OnClickListener {
+        private class ImageViewHolder extends CustomViewHolder {
             private ImageView ImageViewMain;
 
 
@@ -992,18 +965,19 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
                 ImageViewMain.setLayoutParams(layoutParams);
                 ImageViewMain.setBackground(new BitmapDrawable(bitmap));
-                itemView.setOnClickListener(this);
+                itemView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", false);
+
+                    }
+                });
 
             }
 
-            @Override
-            public void onClick(View v) {
-                Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", false);
-
-            }
         }
 
-        private class VideoViewHolder extends CustomViewHolder implements OnClickListener {
+        private class VideoViewHolder extends CustomViewHolder {
             private ImageButton ImageButtonPlay;
             private TextView TextViewSize;
             private ImageView ImageViewMain;
@@ -1031,17 +1005,25 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
                 ImageViewMain.setLayoutParams(layoutParams);
                 ImageViewMain.setBackground(new BitmapDrawable(bitmap));
-                itemView.setOnClickListener(this);
-                ImageButtonPlay.setOnClickListener(this);
+                itemView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", false);
+
+                    }
+                });
+                ImageButtonPlay.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", false);
+
+                    }
+                });
             }
 
-            @Override
-            public void onClick(View v) {
-                Activity.GetManager().OpenView(new VideoPreviewUI(((VideoChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), true, false), "VideoPreviewUI", true);
-            }
         }
 
-        private class FileViewHolder extends CustomViewHolder implements OnClickListener {
+        private class FileViewHolder extends CustomViewHolder {
 
             private TextView TextViewName;
             private TextView TextViewDetail;
@@ -1061,29 +1043,29 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
                 TextViewName.setText((((FileChatModel) MessageList.get(position)).getFileName()));
                 TextViewDetail.setText((((FileChatModel) MessageList.get(position)).getFileDetail()));
-                ImageButtonDownload.setOnClickListener(this);
+                ImageButtonDownload.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!((BaseFileChatModel) MessageList.get(getAdapterPosition())).IsDownloaded) {
+                            ((FileChatModel) MessageList.get(getAdapterPosition())).saveFile();
+                        }
 
-            }
+                        MimeTypeMap map = MimeTypeMap.getSingleton();
+                        String ext = MimeTypeMap.getFileExtensionFromUrl(((FileChatModel) MessageList.get(getAdapterPosition())).getFile().getName());
+                        String type = map.getMimeTypeFromExtension(ext);
 
-            @Override
-            public void onClick(View v) {
-                if (!((BaseFileChatModel) MessageList.get(getAdapterPosition())).isDownloaded()) {
-                    ((FileChatModel) MessageList.get(getAdapterPosition())).saveFile();
-                }
+                        if (type == null)
+                            type = "*/*";
 
-                MimeTypeMap map = MimeTypeMap.getSingleton();
-                String ext = MimeTypeMap.getFileExtensionFromUrl(((FileChatModel) MessageList.get(getAdapterPosition())).getFile().getName());
-                String type = map.getMimeTypeFromExtension(ext);
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        Uri data = Uri.fromFile(((FileChatModel) MessageList.get(getAdapterPosition())).getFile());
 
-                if (type == null)
-                    type = "*/*";
+                        intent.setDataAndType(data, type);
 
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.fromFile(((FileChatModel) MessageList.get(getAdapterPosition())).getFile());
+                        Activity.startActivity(Intent.createChooser(intent, "Select An App"));
+                    }
+                });
 
-                intent.setDataAndType(data, type);
-
-                Activity.startActivity(Intent.createChooser(intent, "Select An App"));
             }
         }
 
@@ -1091,12 +1073,12 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
     private abstract class ChatModel {
 
-        private String UserID;
-        private String CurrentTime;
-        private boolean IsFromUser;
-        private boolean IsSeen;
-        private boolean IsSecond;
-        private int ChatType;
+        String UserID;
+        String CurrentTime;
+        boolean IsFromUser;
+        boolean IsSeen;
+        boolean IsSecond;
+        int ChatType;
 
         public ChatModel(boolean isFromUser, boolean isSeen, int chatType) {
             Time today = new Time(Time.getCurrentTimezone());
@@ -1107,64 +1089,32 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             ChatType = chatType;
         }
 
-        public String getCurrentTime() {
-            return CurrentTime;
-        }
-
-        public void setCurrentTime(String currentTime) {
-            CurrentTime = currentTime;
-        }
-
-        public boolean isFromUser() {
-            return IsFromUser;
-        }
-
-        public void setFromUser(boolean fromUser) {
-            IsFromUser = fromUser;
-        }
-
-        public boolean isSeen() {
-            return IsSeen;
-        }
-
-        public void setSeen(boolean seen) {
-            IsSeen = seen;
-        }
-
-        public int getChatType() {
-            return ChatType;
-        }
-
-        public void setChatType(int chatType) {
-            ChatType = chatType;
-        }
-
         public void setLayout(View view) {
             View chatModel = view.findViewById(R.id.ConstraintLayoutChat);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) chatModel.getLayoutParams();
 
 
-            if (isFromUser()) {
-                if (getChatType() != IMAGE || getChatType() != VIDEO)
-                    chatModel.setBackgroundResource(isSecond() ? R.drawable.z_blue_chat_background_round : R.drawable.z_blue_chat_background);
+            if (IsFromUser) {
+                if (ChatType != IMAGE || ChatType != VIDEO)
+                    chatModel.setBackgroundResource(IsSecond ? R.drawable.z_blue_chat_background_round : R.drawable.z_blue_chat_background);
 
                 ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 params.setMarginStart(Misc.ToDP(40));
-                params.setMarginEnd(Misc.ToDP((getChatType() != IMAGE || getChatType() != VIDEO) ? 16 : 8));
+                params.setMarginEnd(Misc.ToDP((ChatType != IMAGE || ChatType != VIDEO) ? 16 : 8));
                 ((LinearLayout) view.getRootView()).setGravity(Gravity.END);
 
-                if (isSeen())
+                if (IsSeen)
                     view.findViewById(R.id.ImageViewSeen).setVisibility(View.VISIBLE);
 
             } else {
-                if (getChatType() == IMAGE || getChatType() == VIDEO) {
+                if (ChatType == IMAGE || ChatType == VIDEO) {
                     ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 } else {
-                    chatModel.setBackgroundResource(isSecond() ? R.drawable.z_white_chat_background_round : R.drawable.z_white_chat_background);
+                    chatModel.setBackgroundResource(IsSecond ? R.drawable.z_white_chat_background_round : R.drawable.z_white_chat_background);
                     ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 }
 
-                params.setMarginStart(Misc.ToDP((getChatType() != IMAGE || getChatType() != VIDEO) ? 16 : 8));
+                params.setMarginStart(Misc.ToDP((ChatType != IMAGE || ChatType != VIDEO) ? 16 : 8));
                 params.setMarginEnd(Misc.ToDP(40));
                 ((LinearLayout) view.getRootView()).setGravity(Gravity.START);
 
@@ -1174,21 +1124,6 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
         }
 
-        public boolean isSecond() {
-            return IsSecond;
-        }
-
-        public void setSecond(boolean second) {
-            IsSecond = second;
-        }
-
-        public String getUserID() {
-            return UserID;
-        }
-
-        public void setUserID(String userID) {
-            UserID = userID;
-        }
     }
 
     public class TextChatModel extends ChatModel {
@@ -1204,7 +1139,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
         public void setLayout(View view) {
             super.setLayout(view);
 
-            if (isFromUser())
+            if (IsFromUser)
                 ((TextView) view.findViewById(R.id.TextViewMessage)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
             else
                 ((TextView) view.findViewById(R.id.TextViewMessage)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
@@ -1222,8 +1157,8 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
     }
 
     public class BaseFileChatModel extends ChatModel {
-        private File File;
-        private boolean IsDownloaded;
+        File File;
+        boolean IsDownloaded;
 
         public BaseFileChatModel(String filePath) {
             super(true, false, FILE);
@@ -1242,7 +1177,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             }
             this.File = new File(filePath);
             if (isFromUser)
-                this.IsDownloaded = true;
+               this.IsDownloaded = true;
             else
                 this.IsDownloaded = this.File.exists();
 
@@ -1277,7 +1212,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
         }
 
         public boolean saveFile() {
-            String output = Misc.createFile(getChatType());
+            String output = Misc.createFile(ChatType);
             if (!File.exists()) {
                 try {
                     File file = new File(output + this.getFileName(true));
@@ -1294,14 +1229,6 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
             return true;
 
         }
-
-        public boolean isDownloaded() {
-            return IsDownloaded;
-        }
-
-        public void setDownloaded(boolean downloaded) {
-            IsDownloaded = downloaded;
-        }
     }
 
     public class FileChatModel extends BaseFileChatModel {
@@ -1314,11 +1241,11 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
         public void setLayout(View view) {
             super.setLayout(view);
 
-            if (isFromUser()) {
+            if (IsFromUser) {
                 ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_white_chat_file_bg);
-                if (isDownloaded())
+                if (IsDownloaded)
                     ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable.__gallery_file);
 //                else
 //                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable._general_download);
@@ -1327,10 +1254,10 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
                 ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_blue_chat_file_bg);
-                if (isDownloaded())
+                if (IsDownloaded)
                     ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable.__gallery_folder);
 //                else
-//                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable._general_download);
+//                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable._general_download);a
             }
 
         }
@@ -1363,7 +1290,7 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
 
             super.setLayout(view);
 
-            if (isFromUser()) {
+            if (IsFromUser) {
                 // TODO Change Colors to Attrs
                 ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
 
@@ -1409,7 +1336,6 @@ public class Chat_UI extends FragmentView implements View.OnClickListener, OnTou
         @Override
         public void setLayout(View view) {
             super.setLayout(view);
-
 
         }
     }
