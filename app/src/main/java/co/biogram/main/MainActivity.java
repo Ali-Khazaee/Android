@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.social.Profile_Private_UI;
 
 public class MainActivity extends FragmentActivity
 {
@@ -25,16 +26,22 @@ public class MainActivity extends FragmentActivity
 
         getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
 
+        setTheme(Misc.GetTheme());
+
+        if (getActionBar() != null)
+            getActionBar().hide();
+
         if (Build.VERSION.SDK_INT > 20)
-            getWindow().setStatusBarColor(Misc.Color(R.color.Primary));
+            getWindow().setStatusBarColor(Misc.Attr(this, R.attr.StatusColor));
 
         FrameLayout FrameLayoutMain = new FrameLayout(this);
         FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        FrameLayoutMain.setBackgroundColor(Misc.Attr(this, R.attr.BgColor));
         FrameLayoutMain.setId(R.id.ContainerFull);
 
         setContentView(FrameLayoutMain);
 
-        // GetManager().OpenView(new WelcomeUI(), R.id.ContainerFull, "WelcomeUI");
+        GetManager().OpenView(new Profile_Private_UI(), "Profile_Private_UI");
     }
 }
 

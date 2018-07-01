@@ -1,5 +1,5 @@
 <resources>
-    <!-- Application -->
+    <!-- App -->
 
     <!-- Time Ago -->
     <string name="TimeAgoNow">همین الان</string>
@@ -82,26 +82,6 @@
     <string name="TimeLeftFinish">اتمام زمان</string>
 
     <!-- Post Adapter -->
-    <string name="PostAdapterSubmit">ثبت</string>
-    <string name="PostAdapterVotes">رای</string>
-    <string name="PostAdapterVideo">فیلم</string>
-    <string name="PostAdapterCancel">لغو پروس دانلود ؟</string>
-    <string name="PostAdapterYes">بله</string>
-    <string name="PostAdapterNo">خیر</string>
-    <string name="PostAdapterNoHandle">There are no applications to handle this file</string>
-    <string name="PostAdapterOptionFollow">پیروی</string>
-    <string name="PostAdapterOptionUnfollow">لغو پیروی</string>
-    <string name="PostAdapterOptionReport">گزارش</string>
-    <string name="PostAdapterOptionCopy">کپی متن</string>
-    <string name="PostAdapterOptionDelete">پاک کردن</string>
-    <string name="PostAdapterOptionBookmark">Bookmark</string>
-    <string name="PostAdapterOptionUnbookmark">Unbookmark</string>
-    <string name="PostAdapterOptionShare">اشتراک گذاشتن</string>
-    <string name="PostAdapterOptionCopy2">Text copied to clipboard</string>
-    <string name="PostAdapterUserFollowed">added to your following</string>
-    <string name="PostAdapterPostBookmark">This post added to your bookmarks</string>
-    <string name="PostAdapterPostDeleted">The post has been deleted</string>
-    <string name="PostAdapterPostShare1">want you to see this post</string>
 
     <!-- Like UI -->
 

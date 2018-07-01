@@ -3,7 +3,7 @@
         <item name="BgColor">#fff</item>
         <item name="LineColor">#eee</item>
         <item name="TextColor">#000</item>
-        <item name="StatusColor">#ddd</item>
+        <item name="StatusColor">#ccc</item>
         <item name="ActionColor">#fff</item>
         <item name="ReverseTextColor">#fff</item>
     </style>

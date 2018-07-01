@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Application -->
+    <!-- App -->
     <string name="ApplicationName">Channel</string>
 
     <!-- Stateful Layout -->
@@ -86,30 +86,6 @@
     <string name="TimeLeftFinish">Time is finished</string>
 
     <!-- Post Adapter -->
-    <string name="PostAdapterSubmit">Submit</string>
-    <string name="PostAdapterVotes">Votes</string>
-    <string name="PostAdapterVideo">Video</string>
-    <string name="PostAdapterCancel">Cancel the download process ?</string>
-    <string name="PostAdapterYes">Yes</string>
-    <string name="PostAdapterNo">No</string>
-    <string name="PostAdapterNoHandle">There are no applications to handle this file</string>
-    <string name="PostAdapterOptionFollow">Follow</string>
-    <string name="PostAdapterOptionUnfollow">Unfollow</string>
-    <string name="PostAdapterOptionReport">Report</string>
-    <string name="PostAdapterOptionCopy">Copy Text</string>
-    <string name="PostAdapterOptionDelete">Delete</string>
-    <string name="PostAdapterOptionEdit">Edit</string>
-    <string name="PostAdapterOptionEditTitle">Edit your post message</string>
-    <string name="PostAdapterOptionEditMessage">Write your message</string>
-    <string name="PostAdapterOptionEditSubmit">Submit</string>
-    <string name="PostAdapterOptionBookmark">Bookmark</string>
-    <string name="PostAdapterOptionUnbookmark">Unbookmark</string>
-    <string name="PostAdapterOptionShare">Share</string>
-    <string name="PostAdapterOptionCopy2">Text copied to clipboard</string>
-    <string name="PostAdapterUserFollowed">added to your following</string>
-    <string name="PostAdapterPostBookmark">This post added to your bookmarks</string>
-    <string name="PostAdapterPostDeleted">The post has been deleted</string>
-    <string name="PostAdapterPostShare1">want you to see this post</string>
 
     <!-- Like UI -->
 

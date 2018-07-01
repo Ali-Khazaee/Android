@@ -85,32 +85,7 @@ public class KeyboardHeightProvider extends PopupWindow {
      *
      * @param activity The parent activity
      */
-    public KeyboardHeightProvider(Activity activity) {
-        super(activity);
-        this.activity = activity;
 
-        LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        this.popupView = inflater.inflate(R.layout.popupwindow, null, false);
-        setContentView(popupView);
-
-        setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_RESIZE | LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-
-        parentView = activity.findViewById(android.R.id.content);
-
-        setWidth(0);
-        setHeight(LayoutParams.MATCH_PARENT);
-
-        popupView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-            @Override
-            public void onGlobalLayout() {
-                if (popupView != null) {
-                    handleOnGlobalLayout();
-                }
-            }
-        });
-    }
 
     /**
      * Start the KeyboardHeightProvider, this must be called after the onResume of the Activity.

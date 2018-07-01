@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
-import co.biogram.main.Application;
+import co.biogram.main.App;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -70,7 +70,7 @@ public class VideoPreviewUI extends FragmentView {
     public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
         final RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
@@ -237,7 +237,7 @@ public class VideoPreviewUI extends FragmentView {
 
         final LoadingView LoadingViewMain = new LoadingView(Activity);
         LoadingViewMain.setLayoutParams(LoadingViewMainParam);
-        LoadingViewMain.SetColor(R.color.TextDark);
+        LoadingViewMain.SetColor(R.color.White);
         LoadingViewMain.SetScale(1.7f);
         LoadingViewMain.SetSize(5);
 
@@ -278,7 +278,7 @@ public class VideoPreviewUI extends FragmentView {
 
         final SeekBar SeekBarMain = new SeekBar(Activity, null, android.R.attr.progressBarStyleHorizontal);
         SeekBarMain.setLayoutParams(SeekBarMainParam);
-        SeekBarMain.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(Activity, R.color.TextDark), PorterDuff.Mode.MULTIPLY));
+        SeekBarMain.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(Activity, R.color.White), PorterDuff.Mode.MULTIPLY));
         SeekBarMain.setMax(1000);
         SeekBarMain.setProgress(1);
 
@@ -338,8 +338,8 @@ public class VideoPreviewUI extends FragmentView {
                 MediaSourceMain = new ExtractorMediaSource(FDS.getUri(), DataSourceMain, new DefaultExtractorsFactory(), null, null);
             } else {
                 Cache CacheMain = new SimpleCache(new File(Activity.getCacheDir(), "BioVideo"), new LeastRecentlyUsedCacheEvictor(256 * 1024 * 1024));
-                DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(Application.GetOKClient(), "Bio", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
-                MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain, new DefaultExtractorsFactory(), null, null);
+                //DataSource.Factory DataSourceMain = new CacheDataSourceFactory(CacheMain, new OkHttpDataSourceFactory(App.GetOKClient(), "Bio", null), CacheDataSource.FLAG_BLOCK_ON_CACHE, 256 * 1024 * 1024);
+                //MediaSourceMain = new ExtractorMediaSource(Uri.parse(VideoURL), DataSourceMain, new DefaultExtractorsFactory(), null, null);
             }
         } catch (Exception e) {
             Misc.Debug("VideoPreviewUI-MediaSource: " + e.toString());
@@ -512,7 +512,7 @@ public class VideoPreviewUI extends FragmentView {
         SimpleExoPlayerMain.release();
 
         if (Build.VERSION.SDK_INT > 20)
-            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
+            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.White : R.color.White));
     }
 
     void SetType(boolean select, OnSelectListener l) {

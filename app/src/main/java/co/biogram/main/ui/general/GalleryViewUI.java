@@ -52,12 +52,12 @@ public class GalleryViewUI extends FragmentView {
     public void OnCreate() {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+        RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.White : R.color.White);
         RelativeLayoutMain.setClickable(true);
 
         RelativeLayout RelativeLayoutHeader = new RelativeLayout(Activity);
         RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.ActionBarDark : R.color.ActionBarWhite);
+        RelativeLayoutHeader.setBackgroundResource(Misc.IsDark() ? R.color.White : R.color.White);
         RelativeLayoutHeader.setId(View.generateViewId());
 
         RelativeLayoutMain.addView(RelativeLayoutHeader);
@@ -85,7 +85,7 @@ public class GalleryViewUI extends FragmentView {
 
         final TextView TextViewTitle = new TextView(Activity, 16, true);
         TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+        TextViewTitle.SetColor(Misc.IsDark() ? R.color.White : R.color.White);
         TextViewTitle.setText(GalleryType == TYPE_FILE ? Misc.String(R.string.GalleryViewUIStorage) : Misc.String(R.string.GalleryViewUI));
         TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
         TextViewTitle.setId(View.generateViewId());
@@ -156,7 +156,7 @@ public class GalleryViewUI extends FragmentView {
 
         View ViewLine = new View(Activity);
         ViewLine.setLayoutParams(ViewLineParam);
-        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+        ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.White : R.color.White);
         ViewLine.setId(Misc.generateViewId());
 
         RelativeLayoutMain.addView(ViewLine);
@@ -375,7 +375,7 @@ public class GalleryViewUI extends FragmentView {
                             }
                         });
 
-                        Activity.GetManager().OpenView(vp, "VideoPreviewUI", true);
+                        Activity.GetManager().OpenView(vp, "VideoPreviewUI");
                     } else if (GalleryType == TYPE_IMAGE) {
                         ImagePreviewUI ip = new ImagePreviewUI(FileList.get(Position).Path, false);
                         ip.SetType(FileList.get(Position).Selection, Count <= Selection, new ImagePreviewUI.OnSelectListener() {
@@ -400,7 +400,7 @@ public class GalleryViewUI extends FragmentView {
                             }
                         });
 
-                        Activity.GetManager().OpenView(ip, "ImagePreviewUI", true);
+                        Activity.GetManager().OpenView(ip, "ImagePreviewUI");
                     }
                 }
             });
@@ -411,7 +411,7 @@ public class GalleryViewUI extends FragmentView {
             if (ViewType == 1) {
                 RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
                 RelativeLayoutMain.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, Misc.ToDP(57)));
-                RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.GroundDark : R.color.GroundWhite);
+                RelativeLayoutMain.setBackgroundResource(Misc.IsDark() ? R.color.White : R.color.White);
                 RelativeLayoutMain.setId(ID1_MAIN);
 
                 ImageView ImageViewIcon = new ImageView(Activity);
@@ -426,7 +426,7 @@ public class GalleryViewUI extends FragmentView {
 
                 TextView TextViewName = new TextView(Activity, 14, true);
                 TextViewName.setLayoutParams(TextViewNameParam);
-                TextViewName.SetColor(Misc.IsDark() ? R.color.TextDark : R.color.TextWhite);
+                TextViewName.SetColor(Misc.IsDark() ? R.color.White : R.color.White);
                 TextViewName.setId(ID1_NAME);
 
                 RelativeLayoutMain.addView(TextViewName);
@@ -436,7 +436,7 @@ public class GalleryViewUI extends FragmentView {
 
                 View ViewLine = new View(Activity);
                 ViewLine.setLayoutParams(ViewLineParam);
-                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.LineDark : R.color.LineWhite);
+                ViewLine.setBackgroundResource(Misc.IsDark() ? R.color.White : R.color.White);
 
                 RelativeLayoutMain.addView(ViewLine);
 

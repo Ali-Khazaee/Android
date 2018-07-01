@@ -29,7 +29,7 @@ public class PermissionDialog extends Dialog {
             return;
         }
 
-        View dialogView = View.inflate(getContext(), R.layout.social_dialog_permession, null);
+        /*View dialogView = View.inflate(getContext(), R.layout.social_dialog_permession, null);
 
         ImageView ImageViewIcon = dialogView.findViewById(R.id.ImageViewIcon);
         ImageViewIcon.setImageResource(Icon);
@@ -57,9 +57,9 @@ public class PermissionDialog extends Dialog {
                 dismiss();
                 Listener.OnChoice(false);
             }
-        });
+        });*/
 
-        setContentView(dialogView);
+        //setContentView(dialogView);
         show();
     }
 

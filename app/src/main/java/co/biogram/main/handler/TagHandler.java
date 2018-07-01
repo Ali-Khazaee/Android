@@ -74,7 +74,7 @@ public class TagHandler {
 
         @Override
         public void updateDrawState(TextPaint tp) {
-            tp.setColor(Misc.Color(R.color.HashTag));
+            tp.setColor(Misc.Color(R.color.Primary));
         }
 
         @Override

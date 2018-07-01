@@ -80,38 +80,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return getReadableDatabase().rawQuery("SELECT * FROM `" + INBOX_POST + "` ORDER BY `Time` DESC LIMIT " + Skip + ",8", null);
     }
 
-    public void InboxUpdate(PostAdapter.PostStruct P) {
-        ContentValues Value = new ContentValues();
-        Value.put(INBOX_POST_ID, P.ID);
-        Value.put(INBOX_POST_PROFILE, P.Profile);
-        Value.put(INBOX_POST_NAME, P.Name);
-        Value.put(INBOX_POST_MEDAL, P.Medal);
-        Value.put(INBOX_POST_USERNAME, P.Username);
-        Value.put(INBOX_POST_TIME, P.Time);
-        Value.put(INBOX_POST_MESSAGE, P.Message);
-        Value.put(INBOX_POST_TYPE, P.Type);
-        Value.put(INBOX_POST_DATA, P.Data);
-        Value.put(INBOX_POST_OWNER, P.Owner);
-        Value.put(INBOX_POST_VIEW, P.View);
-        Value.put(INBOX_POST_CATEGORY, P.Category);
-        Value.put(INBOX_POST_LIKECOUNT, P.LikeCount);
-        Value.put(INBOX_POST_COMMENTCOUNT, P.CommentCount);
-        Value.put(INBOX_POST_LIKE, P.IsLike);
-        Value.put(INBOX_POST_FOLLOW, P.IsFollow);
-        Value.put(INBOX_POST_COMMENT, P.IsComment);
-        Value.put(INBOX_POST_BOOKMARK, P.IsBookmark);
-        Value.put(INBOX_POST_I1, P.Person1ID);
-        Value.put(INBOX_POST_I1P, P.Person1Avatar);
-        Value.put(INBOX_POST_I2, P.Person2ID);
-        Value.put(INBOX_POST_I2P, P.Person2Avatar);
-        Value.put(INBOX_POST_I3, P.Person3ID);
-        Value.put(INBOX_POST_I3P, P.Person3Avatar);
-        Value.put(INBOX_POST_I4, P.Person4ID);
-        Value.put(INBOX_POST_I4P, P.Person4Avatar);
-
-        getWritableDatabase().replace(INBOX_POST, null, Value);
-    }
-
     void InboxLike(String ID, boolean Ins) {
         String SQL = "UPDATE `" + INBOX_POST + "` SET `" + INBOX_POST_LIKECOUNT + "` = '" + INBOX_POST_LIKECOUNT + "'" + (Ins ? " + " : " - ") + "1 WHERE `ID` = '" + ID + "'";
 

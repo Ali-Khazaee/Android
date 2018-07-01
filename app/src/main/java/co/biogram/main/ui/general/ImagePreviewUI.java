@@ -42,11 +42,11 @@ import co.biogram.main.R;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.PhotoView;
-import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 
-public class ImagePreviewUI extends FragmentView {
+public class ImagePreviewUI extends FragmentView
+{
     private List<String> UrlList = new ArrayList<>();
     private RelativeLayout RelativeLayoutHeader;
     private OnSelectListener SelectListener;
@@ -57,8 +57,10 @@ public class ImagePreviewUI extends FragmentView {
     private boolean IsMax = false;
     private int Type = 0;
 
-    ImagePreviewUI(byte[] Data, int O) {
-        try {
+    ImagePreviewUI(byte[] Data, int O)
+    {
+        try
+        {
             Type = 1;
 
             BitmapFactory.Options o = new BitmapFactory.Options();
@@ -80,23 +82,28 @@ public class ImagePreviewUI extends FragmentView {
                 matrix.postScale(-1, 1, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
 
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Misc.Debug("ImagePreviewUI: " + e.toString());
         }
     }
 
-    public ImagePreviewUI(String URL, boolean anim) {
+    public ImagePreviewUI(String URL, boolean anim)
+    {
         Anim = anim;
         UrlList.add(URL);
     }
 
-    public ImagePreviewUI(String URL, String URL2, boolean anim) {
+    public ImagePreviewUI(String URL, String URL2, boolean anim)
+    {
         Anim = anim;
         UrlList.add(URL);
         UrlList.add(URL2);
     }
 
-    public ImagePreviewUI(String URL, String URL2, String URL3, boolean anim) {
+    public ImagePreviewUI(String URL, String URL2, String URL3, boolean anim)
+    {
         Anim = anim;
         UrlList.add(URL);
         UrlList.add(URL2);
@@ -104,19 +111,23 @@ public class ImagePreviewUI extends FragmentView {
     }
 
     @Override
-    public void OnCreate() {
+    public void OnCreate()
+    {
         RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
         RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.TextWhite);
+        RelativeLayoutMain.setBackgroundResource(R.color.White);
         RelativeLayoutMain.setClickable(true);
 
-        if (bitmap != null) {
+        if (bitmap != null)
+        {
             PhotoView PhotoViewMain = new PhotoView(Activity);
             PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             PhotoViewMain.setImageBitmap(bitmap);
-            PhotoViewMain.setOnClickListener(new View.OnClickListener() {
+            PhotoViewMain.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     if (RelativeLayoutHeader.getVisibility() == View.GONE)
                         RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     else
@@ -125,22 +136,33 @@ public class ImagePreviewUI extends FragmentView {
             });
 
             RelativeLayoutMain.addView(PhotoViewMain);
-        } else {
-            ViewPagerMain = new ViewPager(Activity) {
+        }
+        else
+        {
+            ViewPagerMain = new ViewPager(Activity)
+            {
                 @Override
-                public boolean onTouchEvent(MotionEvent ev) {
-                    try {
+                public boolean onTouchEvent(MotionEvent ev)
+                {
+                    try
+                    {
                         return super.onTouchEvent(ev);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         return false;
                     }
                 }
 
                 @Override
-                public boolean onInterceptTouchEvent(MotionEvent ev) {
-                    try {
+                public boolean onInterceptTouchEvent(MotionEvent ev)
+                {
+                    try
+                    {
                         return super.onInterceptTouchEvent(ev);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         return false;
                     }
                 }
@@ -166,9 +188,11 @@ public class ImagePreviewUI extends FragmentView {
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
         ImageViewBack.setId(Misc.generateViewId());
-        ImageViewBack.setOnClickListener(new View.OnClickListener() {
+        ImageViewBack.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Activity.onBackPressed();
             }
         });
@@ -186,7 +210,8 @@ public class ImagePreviewUI extends FragmentView {
 
         RelativeLayoutHeader.addView(TextViewTitle);
 
-        if (Type == 1) {
+        if (Type == 1)
+        {
             final CropImageView CropImageViewMain = new CropImageView(Activity);
 
             RelativeLayout.LayoutParams ImageViewDoneParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
@@ -197,9 +222,11 @@ public class ImagePreviewUI extends FragmentView {
             ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone.setLayoutParams(ImageViewDoneParam);
             ImageViewDone.setImageResource(R.drawable.___general_done_white);
-            ImageViewDone.setOnClickListener(new View.OnClickListener() {
+            ImageViewDone.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     CropImageViewMain.setVisibility(View.VISIBLE);
                     CropImageViewMain.setImageBitmap(bitmap);
                 }
@@ -229,10 +256,13 @@ public class ImagePreviewUI extends FragmentView {
             ImageViewDone2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ImageViewDone2.setLayoutParams(ImageViewDone2Param);
             ImageViewDone2.setImageResource(R.drawable.___general_done_white);
-            ImageViewDone2.setOnClickListener(new View.OnClickListener() {
+            ImageViewDone2.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
-                    try {
+                public void onClick(View v)
+                {
+                    try
+                    {
                         CropImageViewMain.setVisibility(View.GONE);
 
                         ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
@@ -245,21 +275,25 @@ public class ImagePreviewUI extends FragmentView {
                         FOS.flush();
                         FOS.close();
 
-                        DescriptionUI SignUpDescription = (DescriptionUI) Activity.GetManager().FindByTag("DescriptionUI");
+                        /*DescriptionUI SignUpDescription = (DescriptionUI) Activity.GetManager().FindByTag("DescriptionUI");
 
                         if (SignUpDescription != null)
-                            SignUpDescription.Update(ProfileFile, false);
+                            SignUpDescription.Update(ProfileFile, false);*/
 
                         Activity.onBackPressed();
                         Activity.onBackPressed();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         Misc.Debug("ImagePreviewUI-Type1: " + e.toString());
                     }
                 }
             });
 
             RelativeLayoutCrop.addView(ImageViewDone2);
-        } else if (Type == 2) {
+        }
+        else if (Type == 2)
+        {
             final GradientDrawable DrawableSelect = new GradientDrawable();
             DrawableSelect.setShape(GradientDrawable.OVAL);
             DrawableSelect.setStroke(Misc.ToDP(2), Color.WHITE);
@@ -276,20 +310,26 @@ public class ImagePreviewUI extends FragmentView {
 
             View ViewCircle = new View(Activity);
             ViewCircle.setLayoutParams(ViewCircleParam);
-            ViewCircle.setOnClickListener(new View.OnClickListener() {
+            ViewCircle.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     Activity.onBackPressed();
 
-                    if (IsMax) {
+                    if (IsMax)
+                    {
                         Misc.ToastOld(Misc.String(R.string.GalleryViewUIReach));
                         return;
                     }
 
-                    if (Selected) {
+                    if (Selected)
+                    {
                         v.setBackground(DrawableSelect);
                         Selected = false;
-                    } else {
+                    }
+                    else
+                    {
                         Selected = true;
                         v.setBackground(DrawableSelected);
                     }
@@ -304,7 +344,9 @@ public class ImagePreviewUI extends FragmentView {
                 ViewCircle.setBackground(DrawableSelect);
 
             RelativeLayoutHeader.addView(ViewCircle);
-        } else {
+        }
+        else
+        {
             RelativeLayout.LayoutParams ImageViewOptionParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
             ImageViewOptionParam.addRule(Misc.Align("L"));
 
@@ -312,33 +354,38 @@ public class ImagePreviewUI extends FragmentView {
             ImageViewDownload.setPadding(Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13), Misc.ToDP(13));
             ImageViewDownload.setLayoutParams(ImageViewOptionParam);
             ImageViewDownload.setImageResource(R.drawable._general_download);
-            ImageViewDownload.setOnClickListener(new View.OnClickListener() {
+            ImageViewDownload.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
-                    GlideApp.with(Activity)
-                            .asBitmap()
-                            .load(UrlList.get(ViewPagerMain.getCurrentItem()))
-                            .into(new SimpleTarget<Bitmap>() {
-                                @Override
-                                public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                    try {
-                                        OutputStream OS = new FileOutputStream(new File(Misc.Dir(Misc.DIR_DOWNLOAD), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
-                                        resource.compress(Bitmap.CompressFormat.PNG, 100, OS);
-                                        OS.close();
+                public void onClick(View v)
+                {
+                    GlideApp.with(Activity).asBitmap().load(UrlList.get(ViewPagerMain.getCurrentItem())).into(new SimpleTarget<Bitmap>()
+                    {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition)
+                        {
+                            try
+                            {
+                                OutputStream OS = new FileOutputStream(new File(Misc.Dir(Misc.DIR_DOWNLOAD), DateFormat.format("yyyy_mm_dd_hh_mm_ss", new Date().getTime()) + ".jpg"));
+                                resource.compress(Bitmap.CompressFormat.PNG, 100, OS);
+                                OS.close();
 
-                                        Misc.ToastOld(Misc.String(R.string.ImagePreviewUIDownloaded));
-                                    } catch (Exception e) {
-                                        Misc.Debug("ImagePreviewUI-Download: " + e.toString());
-                                    }
-                                }
-                            });
+                                Misc.ToastOld(Misc.String(R.string.ImagePreviewUIDownloaded));
+                            }
+                            catch (Exception e)
+                            {
+                                Misc.Debug("ImagePreviewUI-Download: " + e.toString());
+                            }
+                        }
+                    });
                 }
             });
 
             RelativeLayoutHeader.addView(ImageViewDownload);
         }
 
-        if (Anim) {
+        if (Anim)
+        {
             TranslateAnimation Trans = Misc.IsRTL() ? new TranslateAnimation(1000f, 0f, 0f, 0f) : new TranslateAnimation(-1000f, 0f, 0f, 0f);
             Trans.setDuration(200);
 
@@ -349,40 +396,48 @@ public class ImagePreviewUI extends FragmentView {
     }
 
     @Override
-    public void OnResume() {
+    public void OnResume()
+    {
         if (Build.VERSION.SDK_INT > 20)
             Activity.getWindow().setStatusBarColor(Color.BLACK);
     }
 
     @Override
-    public void OnPause() {
+    public void OnPause()
+    {
         if (Build.VERSION.SDK_INT > 20)
-            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.StatusBarDark : R.color.StatusBarWhite));
+            Activity.getWindow().setStatusBarColor(Misc.Color(Misc.IsDark() ? R.color.White : R.color.White));
     }
 
-    void SetType(boolean select, boolean isMax, OnSelectListener l) {
+    void SetType(boolean select, boolean isMax, OnSelectListener l)
+    {
         Type = 2;
         IsMax = isMax;
         Selected = select;
         SelectListener = l;
     }
 
-    interface OnSelectListener {
+    interface OnSelectListener
+    {
         void OnSelect();
     }
 
-    private class PreviewAdapter extends PagerAdapter {
+    private class PreviewAdapter extends PagerAdapter
+    {
         @NonNull
         @Override
-        public Object instantiateItem(@NonNull ViewGroup Container, int Position) {
+        public Object instantiateItem(@NonNull ViewGroup Container, int Position)
+        {
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
             PhotoView PhotoViewMain = new PhotoView(Activity);
             PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            PhotoViewMain.setOnClickListener(new View.OnClickListener() {
+            PhotoViewMain.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     if (RelativeLayoutHeader.getVisibility() == View.GONE)
                         RelativeLayoutHeader.setVisibility(View.VISIBLE);
                     else
@@ -397,27 +452,27 @@ public class ImagePreviewUI extends FragmentView {
 
             final LoadingView LoadingViewMain = new LoadingView(Activity);
             LoadingViewMain.setLayoutParams(LoadingViewMainParam);
-            LoadingViewMain.SetColor(R.color.TextDark);
+            LoadingViewMain.SetColor(R.color.White);
             LoadingViewMain.Start();
 
             RelativeLayoutMain.addView(LoadingViewMain);
 
-            GlideApp.with(Activity)
-                    .load(UrlList.get(Position))
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            LoadingViewMain.Stop();
-                            return false;
-                        }
+            GlideApp.with(Activity).load(UrlList.get(Position)).listener(new RequestListener<Drawable>()
+            {
+                @Override
+                public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)
+                {
+                    LoadingViewMain.Stop();
+                    return false;
+                }
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            LoadingViewMain.Stop();
-                            return false;
-                        }
-                    })
-                    .into(PhotoViewMain);
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource)
+                {
+                    LoadingViewMain.Stop();
+                    return false;
+                }
+            }).into(PhotoViewMain);
 
             Container.addView(RelativeLayoutMain);
 
@@ -425,22 +480,26 @@ public class ImagePreviewUI extends FragmentView {
         }
 
         @Override
-        public void destroyItem(@NonNull ViewGroup Container, int position, @NonNull Object object) {
+        public void destroyItem(@NonNull ViewGroup Container, int position, @NonNull Object object)
+        {
             Container.removeView((View) object);
         }
 
         @Override
-        public int getItemPosition(@NonNull Object object) {
+        public int getItemPosition(@NonNull Object object)
+        {
             return POSITION_NONE;
         }
 
         @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object)
+        {
             return view == object;
         }
 
         @Override
-        public int getCount() {
+        public int getCount()
+        {
             return UrlList.size();
         }
     }

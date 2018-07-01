@@ -1,0 +1,29 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ConstraintLayoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionBar"
+        android:background="?ActionColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/ApplicationName"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionLine"
+        android:background="?LineColor"
+        app:layout_constraintBottom_toBottomOf="@+id/ConstraintLayoutHeader" />
+
+</android.support.constraint.ConstraintLayout>

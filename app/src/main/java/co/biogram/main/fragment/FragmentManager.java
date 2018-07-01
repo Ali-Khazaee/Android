@@ -21,7 +21,7 @@ public class FragmentManager
         Activity = a;
     }
 
-    public void OpenView(FragmentView Frag, String Tag, boolean Full)
+    public void OpenView(FragmentView Frag, String Tag)
     {
         if (CurrentFrag != null && CurrentFrag.Tag.equals(Tag))
         {
@@ -49,7 +49,7 @@ public class FragmentManager
 
         if (CurrentFrag.ViewMain != null)
         {
-            FrameLayout FrameLayoutMain = Activity.findViewById(Full ? R.id.ContainerFull : R.id.Container);
+            FrameLayout FrameLayoutMain = Activity.findViewById(R.id.ContainerFull);
             FrameLayoutMain.addView(CurrentFrag.ViewMain);
         }
 
