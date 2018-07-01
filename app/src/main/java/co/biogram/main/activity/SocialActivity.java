@@ -4,16 +4,15 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
 import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentActivity;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.chat.Contact_List_UI;
+import co.biogram.main.ui.chat.Message_UI;
 import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
 import co.biogram.main.ui.social.Profile_UI;
-import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.fragment.FragmentActivity;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 
@@ -124,7 +123,7 @@ public class SocialActivity extends FragmentActivity
                 break;
             case 3:
                 Tag = "Chat_ListUI";
-                Fragment = new Contact_List_UI();
+                Fragment = new Message_UI();
                 ImageViewChat.setImageResource(R.drawable.z_social_activity_chat);
                 break;
             case 4:

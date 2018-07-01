@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/CircleImageViewProfile"
         android:layout_toStartOf="@+id/TextViewTime"
-        android:textSize="@dimen/FontSmall"
+        android:textSize="14sp"
         android:textColor="?TextColor"
         android:textAlignment="viewStart"
         android:layout_marginTop="10dp" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/CircleImageViewProfile"
         android:layout_toStartOf="@+id/TextViewCount"
-        android:textSize="@dimen/FontVerySmall"
+        android:textSize="11sp"
         android:textAlignment="viewStart"
         android:layout_marginTop="5dp"
         android:layout_below="@id/TextViewUsername" />
@@ -47,7 +47,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:textSize="@dimen/FontMinimal" />
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/TextViewCount"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/TextViewTime"
-        android:textSize="@dimen/FontMinimal"
+        android:textSize="10sp"
         android:textColor="@color/White"
         android:paddingTop="4dp"
         android:paddingRight="8dp"

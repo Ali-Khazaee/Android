@@ -1,106 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/Toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:gravity="center_vertical"
-        android:weightSum="10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
 
-        <ImageButton
-            android:id="@+id/ImageButtonBack"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="12dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_back_blue" />
+    <ImageButton
+        android:id="@+id/ImageButtonBack"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="12dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/z_general_back_blue" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ImageViewProfile"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="0.4"
-            android:padding="7dp"
-            android:src="@drawable/z_social_profile_avatar"
-            app:civ_border_color="#838383"
-            app:civ_border_width="0.5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewBack"
-            app:layout_constraintTop_toTopOf="parent" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ImageViewProfile"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:padding="8dp"
+        android:layout_toEndOf="@id/ImageButtonBack"
+        android:src="@drawable/z_social_profile_avatar"
+        app:civ_border_color="#838383"
+        app:civ_border_width="0.5dp" />
 
-        <TextView
-            android:id="@+id/TextViewName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="9.6"
-            android:text="Username"
-            android:textColor="@color/TextWhite"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ImageViewProfile"
-            app:layout_constraintTop_toTopOf="@+id/ImageViewProfile" />
+    <TextView
+        android:id="@+id/TextViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/ActionBar"
+        android:text="Username"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical|start"
+        android:layout_toEndOf="@id/ImageViewProfile"
+        android:textColor="@color/TextWhite"
+        android:textAlignment="viewStart"
+        android:textSize="16sp" />
 
-        <ImageButton
-            android:id="@+id/ImageButtomMore"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="12dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_profile_blac123k" />
+    <ImageButton
+        android:id="@+id/ImageButtomMore"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="12dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_profile_blac123k" />
 
-
-    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecycelerViewChat"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/MessageControls"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Toolbar"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_above="@id/view2"
+        android:layout_below="@id/view1"
+        android:layoutDirection="ltr" />
 
     <LinearLayout
         android:id="@+id/MessageControls"
         android:layout_width="match_parent"
-        android:layout_height="112dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/ActionBarWhite"
         android:maxHeight="300dp"
         android:minHeight="56dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="50dp"
             android:gravity="center_vertical">
-
 
             <com.vanniktech.emoji.EmojiEditText
                 android:id="@+id/EditTextMessage"
@@ -119,8 +92,8 @@
 
             <ImageButton
                 android:id="@+id/ImageButtonSend"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
@@ -129,12 +102,12 @@
                 android:focusable="true"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_back123_bl123ue_fa" />
+                android:src="@drawable/ic_back123_bl123ue_fa" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="50dp"
             android:weightSum="5">
 
             <ImageButton
@@ -147,7 +120,7 @@
                 android:focusable="true"
                 android:padding="@dimen/padding_icon_chat"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_profile_emoji_black" />
+                android:src="@drawable/ic_profile_emoji_black" />
 
             <ImageButton
                 android:id="@+id/ImageButtonAttach"
@@ -159,7 +132,7 @@
                 android:focusable="true"
                 android:padding="@dimen/padding_icon_chat"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/attach_bluegray" />
+                android:src="@drawable/attach_bluegray" />
 
             <ImageButton
                 android:id="@+id/ImageButtonAudio"
@@ -171,7 +144,7 @@
                 android:focusable="true"
                 android:padding="@dimen/padding_icon_chat"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_profile123_black" />
+                android:src="@drawable/ic_profile123_black" />
 
             <ImageButton
                 android:id="@+id/ImageButtonImage"
@@ -183,7 +156,7 @@
                 android:focusable="true"
                 android:padding="@dimen/padding_icon_chat"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_back123_blue_fa" />
+                android:src="@drawable/ic_back123_blue_fa" />
 
             <ImageButton
                 android:id="@+id/ImageButtonVideo"
@@ -195,7 +168,7 @@
                 android:focusable="true"
                 android:padding="@dimen/padding_icon_chat"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/video_bluegray" />
+                android:src="@drawable/video_bluegray" />
 
         </LinearLayout>
 
@@ -206,42 +179,33 @@
         android:id="@+id/view1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e1e1e1"
-        app:layout_constraintBottom_toTopOf="@+id/MessageControls"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecycelerViewChat"
-        app:layout_constraintVertical_bias="1.0" />
+        android:layout_below="@id/ImageButtonBack"
+        android:background="#e1e1e1" />
 
     <View
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e1e1e1"
-        app:layout_constraintBottom_toTopOf="@id/RecycelerViewChat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Toolbar" />
+        android:layout_above="@id/MessageControls"
+        android:background="#e1e1e1" />
 
-    <android.support.design.widget.FloatingActionButton
+    <co.biogram.main.ui.component.CircleImageView
         android:id="@+id/ButtonAudio"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_profile123_black"
-        android:theme="@style/WhiteAccentColor"
         android:visibility="gone"
+        app:civ_background_color="@color/Primary"
+        app:civ_border_color="@color/Primary"
+        app:civ_border_width="8dp"
+        app:fabSize="mini" />
 
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="@+id/MessageControls"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/MessageControls"
-        app:layout_constraintVertical_bias="1.0" />
-
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

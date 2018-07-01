@@ -7,18 +7,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.GlideApp;
+import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.component.CircleImageView;
 
 import java.util.ArrayList;
 
-import android.widget.TextView;
-import co.biogram.main.R;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.GlideApp;
-import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.ui.component.CircleImageView;
-import co.biogram.main.ui.general.GalleryViewUI;
-
-public class Contact_List_UI extends FragmentView
+public class Message_UI extends FragmentView
 {
     @Override
     public void OnCreate()
@@ -26,12 +24,13 @@ public class Contact_List_UI extends FragmentView
         View view = View.inflate(Activity, R.layout.messenger_chat_list, null);
 
         final CircleImageView CircleImageViewWrite = view.findViewById(R.id.CircleImageViewWrite);
+
         CircleImageViewWrite.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Activity.GetManager().OpenView(new Contact_UI(),"Contact_UI",false);
+                Activity.GetManager().OpenView(new Contact_UI(), "Contact_UI", false);
 
             }
         });
@@ -45,6 +44,8 @@ public class Contact_List_UI extends FragmentView
                 Misc.ToastOld("Search Click Shod");
             }
         });
+
+        ((TextView) view.findViewById(R.id.TextViewToolBar)).setTypeface(Misc.GetTypeface());
 
         RecyclerView RecyclerViewMain = view.findViewById(R.id.RecyclerViewMain);
         RecyclerViewMain.setLayoutManager(new LinearLayoutManager(Activity));
@@ -173,6 +174,11 @@ public class Contact_List_UI extends FragmentView
                 TextViewTime = view.findViewById(R.id.TextViewTime);
                 TextViewCount = view.findViewById(R.id.TextViewCount);
                 ViewLine = view.findViewById(R.id.ViewLine);
+
+                TextViewMessage.setTypeface(Misc.GetTypeface());
+                TextViewCount.setTypeface(Misc.GetTypeface());
+                TextViewTime.setTypeface(Misc.GetTypeface());
+                TextViewUsername.setTypeface(Misc.GetTypeface());
             }
 
             void BindView(int Pos)

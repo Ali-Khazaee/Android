@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <ImageButton
+        android:id="@+id/ImageButtonSearch"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentEnd="true"
+        android:background="@null"
+        android:padding="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_search_blue" />
+
+    <EditText
+        android:id="@+id/EditTextSearch"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/ActionBar"
+        android:layout_toEndOf="@+id/ImageButtonClear"
+        android:layout_toStartOf="@id/ImageButtonSearch"
+        android:layout_alignTop="@id/ImageButtonSearch"
+        android:layout_alignBottom="@id/ImageButtonSearch"
+        android:background="#00ffffff"
+        android:hint="@string/ChatUISearch"
+        android:textAlignment="viewStart"/>
+
+    <ImageButton
+        android:id="@+id/ImageButtonClear"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:padding="9dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/_comment_delete" />
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/ImageButtonSearch"
+        android:background="#e1e1e1" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerViewContacts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ButtonNewMessage"
+        android:layout_below="@id/view" />
+
+
+    <Button
+        android:id="@+id/ButtonNewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/layout_send_message"
+        android:gravity="center"
+        android:text="@string/ChatUISendMessage"
+        android:textColor="#fff"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -28,16 +28,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import co.biogram.main.BuildConfig;
+import co.biogram.main.R;
+import co.biogram.main.activity.WelcomeActivity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.util.Locale;
-
-import co.biogram.main.R;
-import co.biogram.main.BuildConfig;
-import co.biogram.main.activity.WelcomeActivity;
 
 public class Misc {
     public static final String TAG = "channel";
@@ -510,8 +507,10 @@ public class Misc {
     }
 
     public static void closeKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        if (activity.getCurrentFocus() != null){
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
 

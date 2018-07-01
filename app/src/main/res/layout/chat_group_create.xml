@@ -1,99 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:id="@+id/Toolbar"
-        android:layout_width="0dp"
+    <ImageButton
+        android:id="@+id/ImageButtonBack"
+        android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
-        android:gravity="center_vertical"
-        android:weightSum="10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="12dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/z_general_back_blue" />
 
+    <TextView
+        android:id="@+id/TextViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/ActionBar"
+        android:text="اطلاعات"
+        android:gravity="start|center_vertical"
+        android:layout_toEndOf="@id/ImageButtonBack"
+        android:layout_toStartOf="@id/ImageButtonCreate"
+        android:textColor="@color/TextWhite"
+        android:textAlignment="viewStart"
+        android:textSize="18sp" />
 
-        <ImageButton
-            android:id="@+id/ImageButtonBack"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="12dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_back_blue" />
+    <ImageButton
+        android:id="@+id/ImageButtonCreate"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="6dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/__general_done_blue" />
 
-
-        <TextView
-            android:id="@+id/TextViewName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="10"
-            android:text="@string/ChatUIGroup"
-            android:textColor="@color/TextWhite"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ImageViewProfile"
-            app:layout_constraintTop_toTopOf="@+id/ImageViewProfile" />
-
-        <ImageButton
-            android:id="@+id/ImageButtonCreate"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@null"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="6dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/__general_done_blue" />
-
-    </LinearLayout>
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e1e1e1"
-        app:layout_constraintBottom_toTopOf="@+id/mainContent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Toolbar"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_below="@id/TextViewName"
+        android:background="#e1e1e1" />
 
     <LinearLayout
         android:id="@+id/mainContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Toolbar"
         android:orientation="vertical">
 
 
         <TextView
+            android:id="@+id/TextViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ChatUIGroupHelp"
             android:textColor="#424242"
-            android:textSize="16sp" />
+            android:textAlignment="viewStart"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -123,17 +97,20 @@
                 android:maxWidth="180dp"
                 android:padding="10dp"
                 android:textColor="?TextColor"
+                android:textDirection="rtl"
                 android:textSize="@dimen/FontMedium" />
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/TextViewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="@string/ChatUIGroupMembers"
+            android:textAlignment="viewStart"
             android:textColor="#939393"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <co.biogram.main.ui.view.EditTextTag
@@ -141,13 +118,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Toolbar"
             app:layout_constraintVertical_bias="0.0" />
 
     </LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

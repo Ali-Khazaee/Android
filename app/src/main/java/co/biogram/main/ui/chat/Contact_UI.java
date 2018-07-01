@@ -1,6 +1,5 @@
 package co.biogram.main.ui.chat;
 
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,37 +13,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.GlideApp;
+import co.biogram.main.handler.Misc;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import java.util.ArrayList;
 
 /**
  * Created by soh_mil97
  */
 
-
-public class Contact_UI extends FragmentView {
-
+public class Contact_UI extends FragmentView
+{
 
     @Override
-    public void OnCreate() {
-        View view = View.inflate(Activity, R.layout.social_contact, null);
+    public void OnCreate()
+    {
+        View view = View.inflate(Activity, R.layout.chat_contact, null);
 
         Activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         RecyclerView RecyclerView = view.findViewById(R.id.RecyclerViewContacts);
 
-
         final EditText EditTextSearch = view.findViewById(R.id.EditTextSearch);
-
+        Button SendButton = view.findViewById(R.id.ButtonNewMessage);
 
         final ContactAdapter ContactAdapter = new ContactAdapter(null);
 
@@ -52,42 +51,55 @@ public class Contact_UI extends FragmentView {
         RecyclerView.setLayoutManager(layoutManager);
         RecyclerView.setAdapter(ContactAdapter);
 
-        view.findViewById(R.id.ImageButtonClear).setOnClickListener(new View.OnClickListener() {
+        SendButton.setTypeface(Misc.GetTypeface());
+        EditTextSearch.setTypeface(Misc.GetTypeface());
+
+        view.findViewById(R.id.ImageButtonClear).setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 EditTextSearch.setText("");
                 ContactAdapter.filter("");
             }
         });
 
-        view.findViewById(R.id.ImageButtonSearch).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ImageButtonSearch).setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 ContactAdapter.filter(EditTextSearch.getText().toString());
             }
         });
 
-        view.findViewById(R.id.ButtonNewMessage).setOnClickListener(new View.OnClickListener() {
+        SendButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Activity.GetManager().OpenView(new Chat_GroupCreate_UI(ContactAdapter.getSelectedData()), "Chat_Group", false);
             }
         });
 
-        EditTextSearch.addTextChangedListener(new TextWatcher() {
+        EditTextSearch.addTextChangedListener(new TextWatcher()
+        {
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
                 ContactAdapter.filter(s.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
 
             }
 
@@ -100,8 +112,8 @@ public class Contact_UI extends FragmentView {
         ViewMain = view;
     }
 
-
-    private class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
+    private class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>
+    {
 
         private ArrayList<ContactEntity> Contacts = new ArrayList<>();
         private ArrayList<ContactEntity> DataCopy = new ArrayList<>();
@@ -109,67 +121,78 @@ public class Contact_UI extends FragmentView {
         //TODO Change It When JSON Format Is Available
         private SparseBooleanArray CheckState = new SparseBooleanArray();
 
-        public ContactAdapter(ArrayList<ContactEntity> data) {
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "amir", "@hello"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "ali", "@mor"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "hassan", "@mor"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "farhad", "@far"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "hadi", "@hadi"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
-            Contacts.add(new ContactEntity(R.drawable.z_social_profile_avatar, "Hessam", "@hesam"));
+        public ContactAdapter(ArrayList<ContactEntity> data)
+        {
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "amir", "@hello"));
+            Contacts.add(new ContactEntity("hes", "ali", "@mor"));
+            Contacts.add(new ContactEntity("hes", "hassan", "@mor"));
+            Contacts.add(new ContactEntity("hes", "farhad", "@far"));
+            Contacts.add(new ContactEntity("hes", "hadi", "@hadi"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
+            Contacts.add(new ContactEntity("hes", "Hessam", "@hesam"));
             DataCopy.addAll(Contacts);
 
         }
 
-        private void reset() {
+        private void reset()
+        {
             Contacts.clear();
             Contacts.addAll(DataCopy);
         }
 
-        public ArrayList<ContactEntity> getSelectedData() {
+        public ArrayList<ContactEntity> getSelectedData()
+        {
             ArrayList<ContactEntity> result = new ArrayList<>();
             for (int i = 0; i < Contacts.size(); i++)
-                if (CheckState.get(i)) {
+                if (CheckState.get(i))
+                {
                     result.add(Contacts.get(i));
                 }
             return result;
         }
 
-        public void filter(String query) {
+        public void filter(String query)
+        {
 
-            if (!query.isEmpty()) {
+            if (!query.isEmpty())
+            {
+                Contacts.clear();
+                Contacts.addAll(DataCopy);
                 ArrayList<ContactEntity> result = new ArrayList<>();
-                for (ContactEntity contact : Contacts) {
+                for (ContactEntity contact : Contacts)
+                {
                     if (contact.Username.toLowerCase().contains(query.trim().toLowerCase()) || contact.UserID.substring(1).toLowerCase().contains(query.toLowerCase()))
                         result.add(contact);
                 }
                 Contacts.clear();
                 Contacts.addAll(result);
 
-            } else if (Contacts.size() != DataCopy.size()) {
+            }
+            else if (Contacts.size() != DataCopy.size())
+            {
                 reset();
             }
             notifyDataSetChanged();
@@ -177,39 +200,53 @@ public class Contact_UI extends FragmentView {
 
         @NonNull
         @Override
-        public ContactAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ContactAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+        {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_item_model, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ContactAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ContactAdapter.ViewHolder holder, int position)
+        {
             holder.bind(position);
         }
 
         @Override
-        public int getItemCount() {
+        public int getItemCount()
+        {
             return Contacts.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder
+        {
             CircleImageView ProfileImage;
             TextView Username;
             TextView UserId;
             ImageView SelectState;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(View itemView)
+            {
                 super(itemView);
                 ProfileImage = itemView.findViewById(R.id.ProfileImage);
                 Username = itemView.findViewById(R.id.Username);
                 UserId = itemView.findViewById(R.id.UserID);
                 SelectState = itemView.findViewById(R.id.SelectState);
-                itemView.setOnClickListener(new View.OnClickListener() {
+
+                Username.setTypeface(Misc.GetTypeface());
+                UserId.setTypeface(Misc.GetTypeface());
+
+                itemView.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
-                        if (SelectState.getVisibility() == View.VISIBLE) {
+                    public void onClick(View v)
+                    {
+                        if (SelectState.getVisibility() == View.VISIBLE)
+                        {
                             CheckState.put(getAdapterPosition(), false);
                             SelectState.setVisibility(View.INVISIBLE);
-                        } else {
+                        }
+                        else
+                        {
                             CheckState.put(getAdapterPosition(), true);
                             SelectState.setVisibility(View.VISIBLE);
                         }
@@ -220,15 +257,20 @@ public class Contact_UI extends FragmentView {
 
             }
 
-            public void bind(int position) {
+            public void bind(int position)
+            {
                 ContactEntity model = Contacts.get(position);
-                ProfileImage.setImageResource(model.Profile);
+
+                GlideApp.with(Activity).load(model.Profile).placeholder(R.color.Primary).into(ProfileImage);
                 Username.setText(model.Username);
                 UserId.setText(model.UserID);
 
-                if (CheckState.size() == 0 || !CheckState.get(position)) {
+                if (CheckState.size() == 0 || !CheckState.get(position))
+                {
                     SelectState.setVisibility(View.INVISIBLE);
-                } else {
+                }
+                else
+                {
                     SelectState.setVisibility(View.VISIBLE);
                 }
 
@@ -237,14 +279,15 @@ public class Contact_UI extends FragmentView {
         }
     }
 
-    public class ContactEntity {
+    public class ContactEntity
+    {
 
-        int Profile;
+        String Profile;
         String Username;
         String UserID;
 
-
-        public ContactEntity(int profile, String username, String userID) {
+        public ContactEntity(String profile, String username, String userID)
+        {
             this.Profile = profile;
             this.Username = username;
             this.UserID = userID;
