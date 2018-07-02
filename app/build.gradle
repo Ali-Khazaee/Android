@@ -18,6 +18,30 @@ android
         versionName "0.0.1"
     }
 
+    buildTypes
+    {
+        debug
+        {
+            crunchPngs false
+            debuggable true
+            jniDebuggable false
+            ext.enableCrashlytics = false
+            ext.alwaysUpdateBuildId = false
+        }
+
+        release
+        {
+            crunchPngs true
+            debuggable false
+            jniDebuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // signingConfig signingConfigs.release
+        }
+    }
+
     /*signingConfigs
     {
         release
@@ -29,20 +53,7 @@ android
             v2SigningEnabled false
         }
     }
-
-    buildTypes
-    {
-        release
-        {
-            debuggable true
-            jniDebuggable false
-            minifyEnabled true
-            zipAlignEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-    }*/
+    */
 }
 
 dependencies

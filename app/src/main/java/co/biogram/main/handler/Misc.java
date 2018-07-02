@@ -41,6 +41,7 @@ public class Misc
 {
     @SuppressLint("StaticFieldLeak")
     private static volatile Context context;
+    private static volatile Typeface TypeFontCache;
 
     public static void SetUp(Context c)
     {
@@ -81,6 +82,27 @@ public class Misc
         return ContextCompat.getColor(context, ID);
     }
 
+    public static Typeface GetTypeface()
+    {
+        if (TypeFontCache == null)
+            TypeFontCache = Typeface.createFromAsset(context.getAssets(), "IranSans.ttf");
+
+        return TypeFontCache;
+    }
+
+    public static int ToDP(float Value)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -117,7 +139,7 @@ public class Misc
     public static final int DIR_FILE = 5;
 
 
-    private static volatile Typeface TypeFontCache;
+
     private static boolean IsRTL = false;
     private static boolean IsRTLInit = true;
     private static boolean IsFa = false;
@@ -167,13 +189,7 @@ public class Misc
         return DirFolder;
     }
 
-    public static Typeface GetTypeface()
-    {
-        if (TypeFontCache == null)
-            TypeFontCache = Typeface.createFromAsset(context.getAssets(), "iran-sans.ttf");
 
-        return TypeFontCache;
-    }
 
 
 
@@ -258,10 +274,7 @@ public class Misc
         return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getBoolean(Key, false);
     }
 
-    public static int ToDP(float Value)
-    {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
-    }
+
 
     public static void ChangeTheme()
     {

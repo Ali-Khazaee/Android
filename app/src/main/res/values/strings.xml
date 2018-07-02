@@ -1,7 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App -->
-    <string name="ApplicationName">Channel</string>
+    <!-- Application -->
+    <string name="Application">کانال</string>
+
+    <!-- Social Profile Private-->
+    <string name="SocialProfilePrivate">صفحه شخصی</string>
+    <string name="SocialProfilePrivateFollowing">دنبال شدگان</string>
+    <string name="SocialProfilePrivateFollower">دنبال کنندگان</string>
+    <string name="SocialProfilePrivateVisitor">بازدید کننده</string>
+    <string name="SocialProfilePrivateHolding">موجودی حساب</string>
+    <string name="SocialProfilePrivateIncrease">افزایش موجودی</string>
+    <string name="SocialProfilePrivateRial">ريال</string>
+    <string name="SocialProfilePrivateCheckOut">تسویه حساب</string>
+    <string name="SocialProfilePrivateTransAction">تراکنش ها</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Stateful Layout -->
     <string name="StatefulLayoutNoConnection">No Internet Connection</string>
@@ -14,33 +44,12 @@
     <string name="SocialProfileUIFeatureTag">Write Your Feature</string>
 
     <!-- General -->
-
     <string name="GeneralError1">Please Try again</string> <!-- DataBase -->
     <string name="GeneralError2">Please Try again later</string> <!-- Exceed -->
     <string name="GeneralError3">Please Try again</string> <!-- Bcrypt -->
     <string name="GeneralError4">Something went wrong, Please Try to login again</string> <!-- Auth -->
     <string name="GeneralError6">Please Try again</string> <!-- Request -->
     <string name="GeneralError7">Please Try again</string> <!-- Formidable -->
-
-    <!-- Welcome UI -->
-
-    <!-- Username UI -->
-
-    <!-- Description UI -->
-
-    <!-- Phone UI -->
-
-    <!-- Phone Verify UI -->
-
-    <!-- Password UI -->
-
-    <!-- Email UI -->
-
-    <!-- Email Verify UI -->
-
-    <!-- Email Sign In UI -->
-
-    <!-- Email UI -->
 
     <!-- Video Preview UI -->
     <string name="VideoPreviewUI">Video Preview</string>
@@ -55,12 +64,6 @@
     <string name="GalleryViewUI2">Gallery</string>
     <string name="GalleryViewUIMaximum">Maximum selection is </string>
     <string name="GalleryViewUIReach">You have been reached maximum selection</string>
-
-    <!-- Inbox UI -->
-
-    <!-- Category List -->
-
-    <!-- Write UI -->
 
     <!-- Time Ago -->
     <string name="TimeAgoNow">just now</string>
@@ -84,18 +87,4 @@
     <string name="TimeLeftDay">a day left</string>
     <string name="TimeLeftDays">days left</string>
     <string name="TimeLeftFinish">Time is finished</string>
-
-    <!-- Post Adapter -->
-
-    <!-- Like UI -->
-
-    <!-- Comment UI -->
-
-    <!-- Post UI -->
-
-    <!-- My Level UI -->
-
-    <!-- General Dialog Permission -->
-
-    <!-- Chat UI -->
 </resources>

@@ -1,29 +1,268 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/ConstraintLayoutHeader"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/TextViewProfile"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/ActionBar"
-        android:background="?ActionColor">
+        android:text="@string/SocialProfilePrivate"
+        android:textSize="@dimen/FontMedium"
+        android:textColor="?TextColor"
+        android:gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:tag="1"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/ApplicationName"
-            android:layout_marginStart="10dp"
-            app:layout_constraintStart_toStartOf="parent" />
+    <ImageView
+        android:id="@+id/ImageViewSetting"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@color/Gray" />
 
-    </android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/ImageViewSwitch"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:src="@color/Gray"
+        app:layout_constraintEnd_toStartOf="@id/ImageViewSetting" />
 
     <View
+        android:id="@+id/ViewLine"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ActionLine"
         android:background="?LineColor"
-        app:layout_constraintBottom_toBottomOf="@+id/ConstraintLayoutHeader" />
+        app:layout_constraintBottom_toBottomOf="@+id/ImageViewSetting" />
+
+    <co.biogram.main.ui.component.CircleImageView
+        android:id="@+id/CircleImageViewProfile"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:src="@color/Primary"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/Gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ViewLine" />
+
+    <TextView
+        android:id="@+id/TextViewName"
+        android:text="علی خزایی"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:textSize="@dimen/FontSmall"
+        android:textStyle="bold"
+        android:textColor="?TextColor"
+        app:layout_constraintTop_toTopOf="@+id/ViewLine"
+        app:layout_constraintStart_toEndOf="@id/CircleImageViewProfile" />
+
+    <TextView
+        android:id="@+id/TextViewUsername"
+        android:text="ali.khazaee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="10dp"
+        android:textSize="@dimen/FontSmall"
+        android:textColor="@color/Gray"
+        app:layout_constraintTop_toTopOf="@+id/TextViewName"
+        app:layout_constraintStart_toEndOf="@id/CircleImageViewProfile" />
+
+    <ImageView
+        android:id="@+id/ImageViewBadge"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="5dp"
+        android:src="@color/Primary"
+        app:layout_constraintStart_toEndOf="@id/TextViewUsername"
+        app:layout_constraintTop_toTopOf="@+id/TextViewName" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutDetails"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionBar"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/CircleImageViewProfile">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TextViewFollower"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/FontVerySmall"
+                android:textStyle="bold"
+                android:textColor="?TextColor"
+                android:gravity="center"
+                android:text="5.21K" />
+
+            <TextView
+                android:id="@+id/TextViewFollower2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/FontVerySmall"
+                android:textColor="@color/Gray"
+                android:gravity="center"
+                android:text="@string/SocialProfilePrivateFollower" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TextViewFollowing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/FontVerySmall"
+                android:textStyle="bold"
+                android:textColor="?TextColor"
+                android:gravity="center"
+                android:text="5.21K" />
+
+            <TextView
+                android:id="@+id/TextViewFollowing2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/FontVerySmall"
+                android:textColor="@color/Gray"
+                android:gravity="center"
+                android:text="@string/SocialProfilePrivateFollowing" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TextViewVisitor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/FontVerySmall"
+                android:textStyle="bold"
+                android:textColor="?TextColor"
+                android:gravity="center"
+                android:text="5.21K" />
+
+            <TextView
+                android:id="@+id/TextViewVisitor2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/FontVerySmall"
+                android:textColor="@color/Gray"
+                android:gravity="center"
+                android:text="@string/SocialProfilePrivateVisitor" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/ViewLine2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionLine"
+        android:background="?LineColor"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/LinearLayoutDetails" />
+
+    <TextView
+        android:id="@+id/TextViewHolding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontSmall"
+        android:text="@string/SocialProfilePrivateHolding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ViewLine2" />
+
+    <TextView
+        android:id="@+id/TextViewIncrease"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textColor="@color/Primary"
+        android:textSize="@dimen/FontVerySmall"
+        android:textStyle="bold"
+        android:text="@string/SocialProfilePrivateIncrease"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewHolding" />
+
+    <TextView
+        android:id="@+id/TextViewMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textColor="?TextColor"
+        android:textSize="@dimen/FontVerySmall"
+        android:textStyle="bold"
+        android:text="20,150,000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewHolding" />
+
+    <TextView
+        android:id="@+id/TextViewRial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/Gray"
+        android:textSize="@dimen/FontVerySmall"
+        android:text="ريال"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewHolding"
+        app:layout_constraintEnd_toStartOf="@+id/TextViewMoney" />
+
+    <TextView
+        android:id="@+id/TextViewCheckOut"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/SocialProfilePrivateCheckOut"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="@dimen/FontMedium"
+        android:textColor="?ReverseTextColor"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewRial"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/TextViewTransAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/SocialProfilePrivateTransAction"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="@dimen/FontSmall"
+        android:textColor="@color/Gray"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewCheckOut"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

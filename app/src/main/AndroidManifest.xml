@@ -20,7 +20,7 @@
         android:allowBackup="false"
         android:theme="@style/ThemeLight"
         android:icon="@drawable/application"
-        android:label="@string/ApplicationName">
+        android:label="@string/Application">
 
         <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
