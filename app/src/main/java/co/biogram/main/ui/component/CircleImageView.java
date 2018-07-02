@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Outline;
 import android.graphics.Paint;
@@ -19,8 +18,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
@@ -30,52 +27,29 @@ import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
 import co.biogram.main.R;
+import co.biogram.main.handler.Misc;
 
 @SuppressLint("AppCompatCustomView")
 public class CircleImageView extends ImageView
 {
-    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
-
-    private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
-    private static final int COLORDRAWABLE_DIMENSION = 2;
-
-    private static final int DEFAULT_BORDER_WIDTH = 0;
-    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
-    private static final int DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT;
-    private static final boolean DEFAULT_BORDER_OVERLAY = false;
-
-    private final RectF mDrawableRect = new RectF();
-    private final RectF mBorderRect = new RectF();
-
-    private final Matrix mShaderMatrix = new Matrix();
-    private final Paint mBitmapPaint = new Paint();
-    private final Paint mBorderPaint = new Paint();
-    private final Paint mCircleBackgroundPaint = new Paint();
-
-    private int mBorderColor = DEFAULT_BORDER_COLOR;
-    private int mBorderWidth = DEFAULT_BORDER_WIDTH;
-    private int mCircleBackgroundColor = DEFAULT_CIRCLE_BACKGROUND_COLOR;
-
-    private Bitmap mBitmap;
-    private BitmapShader mBitmapShader;
-    private int mBitmapWidth;
-    private int mBitmapHeight;
-
-    private float mDrawableRadius;
-    private float mBorderRadius;
-
-    private ColorFilter mColorFilter;
-
-    private boolean mReady;
-    private boolean mSetupPending;
-    private boolean mBorderOverlay;
-    private boolean mDisableCircularTransformation;
+    private boolean IsReady;
+    private boolean IsSetUp;
+    private int BorderColor;
+    private int BorderWidth;
+    private Bitmap BitmapMain;
+    private float BorderRadius;
+    private int BackgroundColor;
+    private float DrawableRadius;
+    private final RectF BorderRect = new RectF();
+    private final Paint BitmapPaint = new Paint();
+    private final Paint BorderPaint = new Paint();
+    private final RectF DrawableRect = new RectF();
+    private final Matrix ShaderMatrix = new Matrix();
+    private final Paint BackgroundPaint = new Paint();
 
     public CircleImageView(Context context)
     {
-        super(context);
-
-        init();
+        this(context, null, 0);
     }
 
     public CircleImageView(Context context, AttributeSet attrs)
@@ -86,447 +60,206 @@ public class CircleImageView extends ImageView
     public CircleImageView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+        super.setScaleType(ScaleType.CENTER_CROP);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
-
-        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH);
-        mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
-        mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
-        mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_background_color, DEFAULT_CIRCLE_BACKGROUND_COLOR);
-
+        BorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, Misc.ToDP(1));
+        BorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, Misc.Color(R.color.Gray));
+        BackgroundColor = a.getColor(R.styleable.CircleImageView_civ_background_color, Color.TRANSPARENT);
         a.recycle();
 
-        init();
-    }
-
-    private void init()
-    {
-        super.setScaleType(SCALE_TYPE);
-        mReady = true;
+        IsReady = true;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
             setOutlineProvider(new OutlineProvider());
-        }
 
-        if (mSetupPending)
+        if (IsSetUp)
         {
-            setup();
-            mSetupPending = false;
+            SetUp();
+            IsSetUp = false;
         }
     }
 
     @Override
-    public ScaleType getScaleType()
+    @SuppressLint("ClickableViewAccessibility")
+    public boolean onTouchEvent(MotionEvent event)
     {
-        return SCALE_TYPE;
-    }
-
-    @Override
-    public void setScaleType(ScaleType scaleType)
-    {
-        if (scaleType != SCALE_TYPE)
-        {
-            throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
-        }
-    }
-
-    @Override
-    public void setAdjustViewBounds(boolean adjustViewBounds)
-    {
-        if (adjustViewBounds)
-        {
-            throw new IllegalArgumentException("adjustViewBounds not supported.");
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas)
-    {
-        if (mDisableCircularTransformation)
-        {
-            super.onDraw(canvas);
-            return;
-        }
-
-        if (mBitmap == null)
-        {
-            return;
-        }
-
-        if (mCircleBackgroundColor != Color.TRANSPARENT)
-        {
-            canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mCircleBackgroundPaint);
-        }
-        canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
-        if (mBorderWidth > 0)
-        {
-            canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
-        }
+        return Math.pow(event.getX() - BorderRect.centerX(), 2) + Math.pow(event.getY() - BorderRect.centerY(), 2) <= Math.pow(BorderRadius, 2) && super.onTouchEvent(event);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
         super.onSizeChanged(w, h, oldw, oldh);
-        setup();
+        SetUp();
     }
 
     @Override
     public void setPadding(int left, int top, int right, int bottom)
     {
         super.setPadding(left, top, right, bottom);
-        setup();
+        SetUp();
     }
 
     @Override
     public void setPaddingRelative(int start, int top, int end, int bottom)
     {
         super.setPaddingRelative(start, top, end, bottom);
-        setup();
-    }
-
-    public int getBorderColor()
-    {
-        return mBorderColor;
-    }
-
-    public void setBorderColor(@ColorInt int borderColor)
-    {
-        if (borderColor == mBorderColor)
-        {
-            return;
-        }
-
-        mBorderColor = borderColor;
-        mBorderPaint.setColor(mBorderColor);
-        invalidate();
-    }
-
-    /**
-     * @deprecated Use {@link #setBorderColor(int)} instead
-     */
-    @Deprecated
-    public void setBorderColorResource(@ColorRes int borderColorRes)
-    {
-        setBorderColor(getContext().getResources().getColor(borderColorRes));
-    }
-
-    public int getCircleBackgroundColor()
-    {
-        return mCircleBackgroundColor;
-    }
-
-    public void setCircleBackgroundColor(@ColorInt int circleBackgroundColor)
-    {
-        if (circleBackgroundColor == mCircleBackgroundColor)
-        {
-            return;
-        }
-
-        mCircleBackgroundColor = circleBackgroundColor;
-        mCircleBackgroundPaint.setColor(circleBackgroundColor);
-        invalidate();
-    }
-
-    public void setCircleBackgroundColorResource(@ColorRes int circleBackgroundRes)
-    {
-        setCircleBackgroundColor(getContext().getResources().getColor(circleBackgroundRes));
-    }
-
-    /**
-     * Return the color drawn behind the circle-shaped drawable.
-     *
-     * @return The color drawn behind the drawable
-     *
-     * @deprecated Use {@link #getCircleBackgroundColor()} instead.
-     */
-    @Deprecated
-    public int getFillColor()
-    {
-        return getCircleBackgroundColor();
-    }
-
-    /**
-     * Set a color to be drawn behind the circle-shaped drawable. Note that
-     * this has no effect if the drawable is opaque or no drawable is set.
-     *
-     * @param fillColor The color to be drawn behind the drawable
-     *
-     * @deprecated Use {@link #setCircleBackgroundColor(int)} instead.
-     */
-    @Deprecated
-    public void setFillColor(@ColorInt int fillColor)
-    {
-        setCircleBackgroundColor(fillColor);
-    }
-
-    /**
-     * Set a color to be drawn behind the circle-shaped drawable. Note that
-     * this has no effect if the drawable is opaque or no drawable is set.
-     *
-     * @param fillColorRes The color resource to be resolved to a color and
-     *                     drawn behind the drawable
-     *
-     * @deprecated Use {@link #setCircleBackgroundColorResource(int)} instead.
-     */
-    @Deprecated
-    public void setFillColorResource(@ColorRes int fillColorRes)
-    {
-        setCircleBackgroundColorResource(fillColorRes);
-    }
-
-    public int getBorderWidth()
-    {
-        return mBorderWidth;
-    }
-
-    public void setBorderWidth(int borderWidth)
-    {
-        if (borderWidth == mBorderWidth)
-        {
-            return;
-        }
-
-        mBorderWidth = borderWidth;
-        setup();
-    }
-
-    public boolean isBorderOverlay()
-    {
-        return mBorderOverlay;
-    }
-
-    public void setBorderOverlay(boolean borderOverlay)
-    {
-        if (borderOverlay == mBorderOverlay)
-        {
-            return;
-        }
-
-        mBorderOverlay = borderOverlay;
-        setup();
-    }
-
-    public boolean isDisableCircularTransformation()
-    {
-        return mDisableCircularTransformation;
-    }
-
-    public void setDisableCircularTransformation(boolean disableCircularTransformation)
-    {
-        if (mDisableCircularTransformation == disableCircularTransformation)
-        {
-            return;
-        }
-
-        mDisableCircularTransformation = disableCircularTransformation;
-        initializeBitmap();
+        SetUp();
     }
 
     @Override
     public void setImageBitmap(Bitmap bm)
     {
         super.setImageBitmap(bm);
-        initializeBitmap();
+        SetUpBitmap();
     }
 
     @Override
     public void setImageDrawable(Drawable drawable)
     {
         super.setImageDrawable(drawable);
-        initializeBitmap();
+        SetUpBitmap();
     }
 
     @Override
     public void setImageResource(@DrawableRes int resId)
     {
         super.setImageResource(resId);
-        initializeBitmap();
+        SetUpBitmap();
     }
 
     @Override
     public void setImageURI(Uri uri)
     {
         super.setImageURI(uri);
-        initializeBitmap();
+        SetUpBitmap();
     }
 
     @Override
-    public void setColorFilter(ColorFilter cf)
+    protected void onDraw(Canvas canvas)
     {
-        if (cf == mColorFilter)
-        {
+        if (BitmapMain == null)
             return;
-        }
 
-        mColorFilter = cf;
-        applyColorFilter();
-        invalidate();
+        if (BackgroundColor != Color.TRANSPARENT)
+            canvas.drawCircle(DrawableRect.centerX(), DrawableRect.centerY(), DrawableRadius, BackgroundPaint);
+
+        canvas.drawCircle(DrawableRect.centerX(), DrawableRect.centerY(), DrawableRadius, BitmapPaint);
+
+        if (BorderWidth > 0)
+            canvas.drawCircle(BorderRect.centerX(), BorderRect.centerY(), BorderRadius, BorderPaint);
     }
 
-    @Override
-    public ColorFilter getColorFilter()
+    private void SetUpBitmap()
     {
-        return mColorFilter;
-    }
+        Drawable drawable = getDrawable();
 
-    private void applyColorFilter()
-    {
-        if (mBitmapPaint != null)
-        {
-            mBitmapPaint.setColorFilter(mColorFilter);
-        }
-    }
-
-    private Bitmap getBitmapFromDrawable(Drawable drawable)
-    {
         if (drawable == null)
-        {
-            return null;
-        }
-
-        if (drawable instanceof BitmapDrawable)
-        {
-            return ((BitmapDrawable) drawable).getBitmap();
-        }
-
-        try
-        {
-            Bitmap bitmap;
-
-            if (drawable instanceof ColorDrawable)
-            {
-                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
-            }
-            else
-            {
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
-            }
-
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            return bitmap;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private void initializeBitmap()
-    {
-        if (mDisableCircularTransformation)
-        {
-            mBitmap = null;
-        }
+            BitmapMain = null;
+        else if (drawable instanceof BitmapDrawable)
+            BitmapMain = ((BitmapDrawable) drawable).getBitmap();
         else
         {
-            mBitmap = getBitmapFromDrawable(getDrawable());
+            try
+            {
+                Bitmap bitmap;
+
+                if (drawable instanceof ColorDrawable)
+                    bitmap = Bitmap.createBitmap(2, 2, Bitmap.Config.ARGB_8888);
+                else
+                    bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+                Canvas canvas = new Canvas(bitmap);
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);
+
+                BitmapMain = bitmap;
+            }
+            catch (Exception e)
+            {
+                BitmapMain = null;
+            }
         }
-        setup();
+
+        SetUp();
     }
 
-    private void setup()
+    private void SetUp()
     {
-        if (!mReady)
+        if (!IsReady)
         {
-            mSetupPending = true;
+            IsSetUp = true;
             return;
         }
 
         if (getWidth() == 0 && getHeight() == 0)
-        {
             return;
-        }
 
-        if (mBitmap == null)
+        if (BitmapMain == null)
         {
             invalidate();
             return;
         }
 
-        mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        BitmapShader BitmapShaderMain = new BitmapShader(BitmapMain, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
-        mBitmapPaint.setAntiAlias(true);
-        mBitmapPaint.setShader(mBitmapShader);
+        BitmapPaint.setAntiAlias(true);
+        BitmapPaint.setShader(BitmapShaderMain);
 
-        mBorderPaint.setStyle(Paint.Style.STROKE);
-        mBorderPaint.setAntiAlias(true);
-        mBorderPaint.setColor(mBorderColor);
-        mBorderPaint.setStrokeWidth(mBorderWidth);
+        BorderPaint.setStyle(Paint.Style.STROKE);
+        BorderPaint.setAntiAlias(true);
+        BorderPaint.setColor(BorderColor);
+        BorderPaint.setStrokeWidth(BorderWidth);
 
-        mCircleBackgroundPaint.setStyle(Paint.Style.FILL);
-        mCircleBackgroundPaint.setAntiAlias(true);
-        mCircleBackgroundPaint.setColor(mCircleBackgroundColor);
+        BackgroundPaint.setStyle(Paint.Style.FILL);
+        BackgroundPaint.setAntiAlias(true);
+        BackgroundPaint.setColor(BackgroundColor);
 
-        mBitmapHeight = mBitmap.getHeight();
-        mBitmapWidth = mBitmap.getWidth();
+        int BitmapHeight = BitmapMain.getHeight();
+        int BitmapWidth = BitmapMain.getWidth();
 
-        mBorderRect.set(calculateBounds());
-        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f);
+        int AvailableWidth = getWidth() - getPaddingLeft() - getPaddingRight();
+        int AvailableHeight = getHeight() - getPaddingTop() - getPaddingBottom();
 
-        mDrawableRect.set(mBorderRect);
-        if (!mBorderOverlay && mBorderWidth > 0)
+        int SideLength = Math.min(AvailableWidth, AvailableHeight);
+
+        float Left = getPaddingLeft() + (AvailableWidth - SideLength) / 2f;
+        float Top = getPaddingTop() + (AvailableHeight - SideLength) / 2f;
+
+        BorderRect.set(new RectF(Left, Top, Left + SideLength, Top + SideLength));
+        BorderRadius = Math.min((BorderRect.height() - BorderWidth) / 2.0f, (BorderRect.width() - BorderWidth) / 2.0f);
+
+        DrawableRect.set(BorderRect);
+
+        if (BorderWidth > 0)
+            DrawableRect.inset(BorderWidth - 1.0f, BorderWidth - 1.0f);
+
+        DrawableRadius = Math.min(DrawableRect.height() / 2.0f, DrawableRect.width() / 2.0f);
+
+        float Scale;
+        float DX = 0;
+        float DY = 0;
+
+        ShaderMatrix.set(null);
+
+        if (BitmapWidth * DrawableRect.height() > DrawableRect.width() * BitmapHeight)
         {
-            mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f);
-        }
-        mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
-
-        applyColorFilter();
-        updateShaderMatrix();
-        invalidate();
-    }
-
-    private RectF calculateBounds()
-    {
-        int availableWidth = getWidth() - getPaddingLeft() - getPaddingRight();
-        int availableHeight = getHeight() - getPaddingTop() - getPaddingBottom();
-
-        int sideLength = Math.min(availableWidth, availableHeight);
-
-        float left = getPaddingLeft() + (availableWidth - sideLength) / 2f;
-        float top = getPaddingTop() + (availableHeight - sideLength) / 2f;
-
-        return new RectF(left, top, left + sideLength, top + sideLength);
-    }
-
-    private void updateShaderMatrix()
-    {
-        float scale;
-        float dx = 0;
-        float dy = 0;
-
-        mShaderMatrix.set(null);
-
-        if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight)
-        {
-            scale = mDrawableRect.height() / (float) mBitmapHeight;
-            dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
+            Scale = DrawableRect.height() / (float) BitmapHeight;
+            DX = (DrawableRect.width() - BitmapWidth * Scale) * 0.5f;
         }
         else
         {
-            scale = mDrawableRect.width() / (float) mBitmapWidth;
-            dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
+            Scale = DrawableRect.width() / (float) BitmapWidth;
+            DY = (DrawableRect.height() - BitmapHeight * Scale) * 0.5f;
         }
 
-        mShaderMatrix.setScale(scale, scale);
-        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);
+        ShaderMatrix.setScale(Scale, Scale);
+        ShaderMatrix.postTranslate((int) (DX + 0.5f) + DrawableRect.left, (int) (DY + 0.5f) + DrawableRect.top);
 
-        mBitmapShader.setLocalMatrix(mShaderMatrix);
-    }
+        BitmapShaderMain.setLocalMatrix(ShaderMatrix);
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-        return inTouchableArea(event.getX(), event.getY()) && super.onTouchEvent(event);
-    }
-
-    private boolean inTouchableArea(float x, float y)
-    {
-        return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
+        invalidate();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -536,7 +269,7 @@ public class CircleImageView extends ImageView
         public void getOutline(View view, Outline outline)
         {
             Rect bounds = new Rect();
-            mBorderRect.roundOut(bounds);
+            BorderRect.roundOut(bounds);
             outline.setRoundRect(bounds, bounds.width() / 2.0f);
         }
     }
