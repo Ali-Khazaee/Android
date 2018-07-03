@@ -4,70 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="50dp"
-    android:gravity="start">
+    android:gravity="start"
+    android:minHeight="50dp">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:id="@+id/ConstraintLayoutChat"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:layout_height="match_parent"
         android:layout_marginTop="4dp"
+        android:gravity="start"
         android:minWidth="100dp"
-        android:padding="4dp"
-        tools:background="@drawable/z_blue_chat_background"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:orientation="vertical"
+        android:paddingBottom="4dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        tools:background="@drawable/z_blue_chat_background">
 
         <TextView
-            android:id="@+id/TextViewTime"
+            android:id="@+id/TextViewUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:gravity="start"
             android:textColor="@color/ActionBarWhite"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/TextViewMessage"
-            app:layout_constraintTop_toBottomOf="@+id/TextViewMessage"
+            android:textSize="8sp"
+            android:visibility="gone"
             tools:text="22:30" />
 
-        <ImageView
-            android:id="@+id/ImageViewSeen"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="20dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/TextViewTime"
-            app:layout_constraintEnd_toStartOf="@+id/TextViewTime"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/TextViewTime"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_follow123_block" />
 
         <com.vanniktech.emoji.EmojiTextView
             android:id="@+id/TextViewMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
+            android:gravity="start"
             android:maxWidth="200dp"
-            android:textSize="14sp"
             android:textColor="@color/ActionBarWhite"
-            app:layout_constraintBottom_toTopOf="@+id/TextViewTime"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="12sp"
             tools:text="Hello Chat World!" />
-    </android.support.constraint.ConstraintLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/TextViewTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ActionBarWhite"
+                android:textSize="8sp"
+                tools:text="22:30" />
+
+            <ImageView
+                android:id="@+id/ImageViewSeen"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="4dp"
+                app:srcCompat="@drawable/ic_follow123_block" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.*;
+import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,21 +23,23 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.*;
-import co.biogram.main.BuildConfig;
-import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.AudioHandler;
-import co.biogram.main.handler.KeyboardHeightObserver;
-import co.biogram.main.handler.KeyboardHeightProvider;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.general.GalleryViewUI;
-import co.biogram.main.ui.general.ImagePreviewUI;
-import co.biogram.main.ui.view.PermissionDialog;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
@@ -45,7 +51,22 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.widget.SeekBar.*;
+import co.biogram.main.BuildConfig;
+import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.AudioHandler;
+import co.biogram.main.handler.KeyboardHeightObserver;
+import co.biogram.main.handler.KeyboardHeightProvider;
+import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.general.GalleryViewUI;
+import co.biogram.main.ui.general.ImagePreviewUI;
+import co.biogram.main.ui.view.PermissionDialog;
+
+import static android.widget.SeekBar.GONE;
+import static android.widget.SeekBar.OnClickListener;
+import static android.widget.SeekBar.OnSeekBarChangeListener;
+import static android.widget.SeekBar.OnTouchListener;
+import static android.widget.SeekBar.VISIBLE;
 
 /**
  * Created by soh_mil97
@@ -74,7 +95,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
     private SoundPool AudioPlayer;
     private EmojiPopup Emoji;
     private PermissionDialog PermissionRequest;
-    private int CHAT_MODE;
+    private int CHAT_MODE ;
 
     private int[] output_formats = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
     private String[] file_types = { AUDIO_RECORDER_FILE_EXT_MP3, AUDIO_RECORDER_FILE_EXT_3GP };
@@ -799,18 +820,23 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             protected TextView TextViewTime;
             protected ImageView ImageViewSeen;
+            protected TextView TextViewUserName;
 
             public CustomViewHolder(View itemView)
             {
                 super(itemView);
                 TextViewTime = itemView.findViewById(R.id.TextViewTime);
                 ImageViewSeen = itemView.findViewById(R.id.ImageViewSeen);
+                if (CHAT_MODE == MODE_GROUP)
+                    TextViewUserName = itemView.findViewById(R.id.TextViewUserName);
             }
 
             public void bind(int position)
             {
                 TextViewTime.setText(MessageList.get(position).CurrentTime);
                 ImageViewSeen.setVisibility((MessageList.get(position).IsSeen ? VISIBLE : GONE));
+                if (CHAT_MODE == MODE_GROUP)
+                    TextViewUserName.setText(MessageList.get(position).UserID);
 
                 if (position > 0 && MessageList.get(position).IsFromUser == MessageList.get(position - 1).IsFromUser)
                 {
@@ -831,6 +857,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             {
                 super(itemView);
                 TextViewChat = itemView.findViewById(R.id.TextViewMessage);
+
             }
 
             @Override
@@ -1118,8 +1145,9 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             Time today = new Time(Time.getCurrentTimezone());
             today.setToNow();
+            UserID = "SOH_MIL";
             CurrentTime = today.format("%k:%M");
-            IsFromUser = false;
+            IsFromUser = true;
             IsSeen = isSeen;
             ChatType = chatType;
         }
@@ -1130,8 +1158,16 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) chatModel.getLayoutParams();
 
             TextView timeTextView = view.findViewById(R.id.TextViewTime);
-            timeTextView.setTypeface(timeTextView.getTypeface());
+            timeTextView.setTypeface(Misc.GetTypeface());
             LinearLayout rootView = (LinearLayout) view.getRootView();
+            TextView UserNameTextView = null;
+
+            if (CHAT_MODE == MODE_GROUP)
+            {
+                UserNameTextView = view.findViewById(R.id.TextViewUserName);
+                UserNameTextView.setVisibility(VISIBLE);
+                UserNameTextView.setTypeface(Misc.GetTypeface());
+            }
 
             if (IsFromUser)
             {
@@ -1145,6 +1181,10 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                 if (IsSeen)
                     view.findViewById(R.id.ImageViewSeen).setVisibility(View.VISIBLE);
+
+                if (CHAT_MODE == MODE_GROUP){
+                    UserNameTextView.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+                }
 
             }
             else
@@ -1164,6 +1204,10 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 rootView.setGravity(Gravity.START);
 
                 view.findViewById(R.id.ImageViewSeen).setVisibility(View.GONE);
+
+                if (CHAT_MODE == MODE_GROUP){
+                    UserNameTextView.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
+                }
             }
             chatModel.setLayoutParams(params);
 
