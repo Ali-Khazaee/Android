@@ -51,7 +51,6 @@
                 android:layout_height="65dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="15dp"
-                android:src="@color/Primary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/ViewLine" />
 
@@ -82,9 +81,10 @@
                 android:id="@+id/ImageViewBadge"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="5dp"
-                android:src="@color/Primary"
-                app:layout_constraintEnd_toEndOf="@id/TextViewUsername"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintStart_toEndOf="@id/TextViewName"
                 app:layout_constraintTop_toTopOf="@+id/TextViewName" />
 
             <LinearLayout

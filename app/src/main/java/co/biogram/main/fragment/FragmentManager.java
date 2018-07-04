@@ -1,7 +1,6 @@
 package co.biogram.main.fragment;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -12,13 +11,19 @@ import co.biogram.main.R;
 
 public class FragmentManager
 {
-    private ArrayList<FragmentView> FragmentList = new ArrayList<>();
+    private ArrayList<FragmentDialog> FragmentDialogList = new ArrayList<>();
+    private ArrayList<FragmentView> FragmentViewList = new ArrayList<>();
     private FragmentActivity Activity;
     private FragmentView CurrentFrag;
 
     FragmentManager(FragmentActivity a)
     {
         Activity = a;
+    }
+
+    public void OpenDialog(FragmentDialog Frag, String Tag)
+    {
+
     }
 
     public void OpenView(FragmentView Frag, String Tag)
@@ -29,16 +34,14 @@ public class FragmentManager
             return;
         }
 
-        // TODO If Exist ReOpen FindByTag(Tag);
-
-        if (FragmentList.size() > 0)
+        if (FragmentViewList.size() > 0)
         {
-            FragmentView Frag2 = FragmentList.get(FragmentList.size() - 1);
+            FragmentView LastFrag = FragmentViewList.get(FragmentViewList.size() - 1);
 
-            Frag2.OnPause();
+            LastFrag.OnPause();
 
-            if (Frag2.ViewMain != null && Frag2.ViewMain.getVisibility() == View.VISIBLE)
-                Frag2.ViewMain.setVisibility(View.GONE);
+            if (LastFrag.ViewMain != null && LastFrag.ViewMain.getVisibility() == View.VISIBLE)
+                LastFrag.ViewMain.setVisibility(View.GONE);
         }
 
         CurrentFrag = Frag;
@@ -53,14 +56,14 @@ public class FragmentManager
             FrameLayoutMain.addView(CurrentFrag.ViewMain);
         }
 
-        FragmentList.add(CurrentFrag);
+        FragmentViewList.add(CurrentFrag);
     }
 
     boolean HandleBack()
     {
-        if (FragmentList.size() > 1)
+        if (FragmentViewList.size() > 1)
         {
-            FragmentView Frag = FragmentList.get(FragmentList.size() - 1);
+            FragmentView Frag = FragmentViewList.get(FragmentViewList.size() - 1);
             Frag.OnPause();
             Frag.OnDestroy();
 
@@ -74,9 +77,9 @@ public class FragmentManager
                 Frag.ViewMain = null;
             }
 
-            FragmentList.remove(FragmentList.size() - 1);
+            FragmentViewList.remove(FragmentViewList.size() - 1);
 
-            CurrentFrag = FragmentList.get(FragmentList.size() - 1);
+            CurrentFrag = FragmentViewList.get(FragmentViewList.size() - 1);
             CurrentFrag.OnResume();
 
             if (CurrentFrag.ViewMain != null && CurrentFrag.ViewMain.getVisibility() == View.GONE)
@@ -86,16 +89,6 @@ public class FragmentManager
         }
 
         return true;
-    }
-
-    @Nullable
-    public FragmentView FindByTag(String Tag)
-    {
-        for (FragmentView Frag : FragmentList)
-            if (Frag.Tag.equals(Tag))
-                return Frag;
-
-        return null;
     }
 
     void OnResume()

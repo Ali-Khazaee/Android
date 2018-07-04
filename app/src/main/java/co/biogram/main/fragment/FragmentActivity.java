@@ -73,12 +73,12 @@ public abstract class FragmentActivity extends Activity
         }
     }
 
-    public void RequestPermission(String p, OnPermissionListener l)
+    public void RequestPermission(String permission, OnPermissionListener listener)
     {
-        Listener = l;
-        Permission = p;
+        Listener = listener;
+        Permission = permission;
 
-        ActivityCompat.requestPermissions(this, new String[] { p }, 555);
+        ActivityCompat.requestPermissions(this, new String[] { permission }, 555);
     }
 
     public interface OnPermissionListener

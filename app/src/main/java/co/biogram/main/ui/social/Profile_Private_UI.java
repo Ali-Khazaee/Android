@@ -9,6 +9,7 @@ import android.view.View;
 import co.biogram.main.R;
 import co.biogram.main.databinding.SocialProfilePrivateBinding;
 import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 
 public class Profile_Private_UI extends FragmentView
@@ -223,11 +224,16 @@ public class Profile_Private_UI extends FragmentView
         Binding.TextViewTag7.setTypeface(IranSans);
 
 
-
-
+        GlideApp.with(Activity)
+                .load("http://icons.iconarchive.com/icons/iconarchive/blue-election/128/Election-Badge-Outline-icon.png1")
+                .placeholder(R.drawable.social_profile_private)
+                .into(Binding.CircleImageViewProfile);
 
         Binding.TextViewName.setText("علی خزایی");
         Binding.TextViewUsername.setText("ali.khazaee");
+
+        GlideApp.with(Activity).load("http://icons.iconarchive.com/icons/iconarchive/blue-election/128/Election-Badge-Outline-icon.png").into(Binding.ImageViewBadge);
+
         Binding.TextViewFollower.setText("52.9K");
         Binding.TextViewFollowing.setText("1920");
         Binding.TextViewVisitor.setText("850K");
