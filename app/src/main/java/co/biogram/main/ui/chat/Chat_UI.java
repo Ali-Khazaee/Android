@@ -51,7 +51,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.AudioHandler;
@@ -78,8 +77,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
     public static final int MODE_SINGLE = 0;
     public static final int MODE_GROUP = 1;
 
-    private static final String TAQ = "CHAT_UI";
-    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
     private static final String AUDIO_RECORDER_FILE_EXT_MP3 = ".mp3";
 
     private final int TEXT = 1;
@@ -97,35 +94,12 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
     private PermissionDialog PermissionRequest;
     private int CHAT_MODE ;
 
-    private int[] output_formats = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
-    private String[] file_types = { AUDIO_RECORDER_FILE_EXT_MP3, AUDIO_RECORDER_FILE_EXT_3GP };
     private String Filename;
 
     private boolean isSendIconGray = true;
     private boolean isAudioPlaying;
 
     private KeyboardHeightProvider keyboardHeightProvider;
-
-    private MediaRecorder.OnErrorListener errorListener = new MediaRecorder.OnErrorListener()
-    {
-        @Override
-        public void onError(MediaRecorder mr, int what, int extra)
-        {
-            if (BuildConfig.DEBUG)
-                Log.d(TAQ, "Error: " + what + ", " + extra);
-
-        }
-    };
-
-    private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener()
-    {
-        @Override
-        public void onInfo(MediaRecorder mr, int what, int extra)
-        {
-            if (BuildConfig.DEBUG)
-                Log.d(TAQ, "Warning: " + what + ", " + extra);
-        }
-    };
 
     public Chat_UI(int chatMode)
     {
@@ -676,15 +650,15 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
     private void startRecord()
     {
         Recorder = new MediaRecorder();
-        Filename = Misc.createFile(Misc.DIR_AUDIO, "Upload", file_types[ 0 ]);
+        Filename = Misc.createFile(Misc.DIR_AUDIO, "Upload",AUDIO_RECORDER_FILE_EXT_MP3);
 
         Recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        Recorder.setOutputFormat(output_formats[ 0 ]);
+        Recorder.setOutputFormat( MediaRecorder.OutputFormat.MPEG_4);
         Recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         Recorder.setOutputFile(Filename);
-        Recorder.setOnErrorListener(errorListener);
-        Recorder.setOnInfoListener(infoListener);
+//        Recorder.setOnErrorListener(errorListener);
+//        Recorder.setOnInfoListener(infoListener);
 
         try
         {
@@ -718,7 +692,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         ViewMain.findViewById(R.id.MessageControls).setLayoutParams(params);
 
         ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-        Log.d(TAQ, String.valueOf(height));
     }
 
     private class ChatAdapter extends RecyclerView.Adapter<Chat_UI.ChatAdapter.CustomViewHolder>
@@ -838,7 +811,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 if (CHAT_MODE == MODE_GROUP)
                     TextViewUserName.setText(MessageList.get(position).UserID);
 
-                if (position > 0 && MessageList.get(position).IsFromUser == MessageList.get(position - 1).IsFromUser)
+                if (position > 0 && MessageList.get(position).UserID.equals(MessageList.get(position - 1).UserID))
                 {
                     MessageList.get(position - 1).IsSecond = true;
                 }
@@ -905,7 +878,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                         SeekBarHandler.postDelayed(this, 50);
                     }
                 };
-                ;
+
                 ButtonPlay.setOnClickListener(new OnClickListener()
                 {
                     @Override
@@ -919,8 +892,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                             Player.seekTo(SeekBarVoice.getProgress());
 
                             Player.play();
-
-                            Log.d(TAQ, String.valueOf(Player.getPlayer().getDuration()));
 
                             SeekBarHandler.postDelayed(SeekBarRunnable, 0);
                             isPlaying = true;

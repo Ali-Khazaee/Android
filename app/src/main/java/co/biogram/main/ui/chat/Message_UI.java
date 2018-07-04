@@ -8,13 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
-
-import java.util.ArrayList;
 
 public class Message_UI extends FragmentView
 {
@@ -181,7 +182,7 @@ public class Message_UI extends FragmentView
                 TextViewUsername.setTypeface(Misc.GetTypeface());
             }
 
-            void BindView(int Pos)
+            void BindView(final int Pos)
             {
                 final ContactEntity Chat = ContactList.get(Pos);
 
@@ -199,7 +200,7 @@ public class Message_UI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new Chat_UI(1), "Chat_UI", true);
+                        Activity.GetManager().OpenView(new Chat_UI(Pos%2), "Chat_UI", true);
                     }
                 });
             }
