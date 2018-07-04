@@ -95,6 +95,56 @@ public class Misc
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
     }
 
+    public static String String(int ID)
+    {
+        return context.getString(ID);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -193,10 +243,7 @@ public class Misc
 
 
 
-    public static String String(int S)
-    {
-        return context.getString(S);
-    }
+
 
     public static int SampleSize(int W, int H, int MW, int MH)
     {

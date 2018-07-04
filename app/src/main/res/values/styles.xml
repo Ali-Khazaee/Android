@@ -6,5 +6,7 @@
         <item name="StatusColor">#ccc</item>
         <item name="ActionColor">#fff</item>
         <item name="ReverseTextColor">#fff</item>
+
+        <item name="android:overScrollMode">never</item>
     </style>
 </resources>

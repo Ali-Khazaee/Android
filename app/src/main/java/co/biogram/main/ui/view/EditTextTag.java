@@ -24,6 +24,7 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.component.FlowLayout;
 
 public class EditTextTag extends FrameLayout implements View.OnClickListener, TextView.OnEditorActionListener, View.OnKeyListener {
     private Drawable DrawableTag;
@@ -74,7 +75,7 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
 
         TextView Tag = new TextView(getContext());
         Tag.setPadding(Misc.ToDP(10), Misc.ToDP(5), Misc.ToDP(10), Misc.ToDP(5));
-        Tag.setBackgroundResource(R.drawable.z_social_profile_feature);
+        Tag.setBackgroundResource(R.drawable.social_profile_private_tag);
         Tag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         Tag.setTextColor(Misc.Color(R.color.Primary));
         Tag.setGravity(Gravity.CENTER);
