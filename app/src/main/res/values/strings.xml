@@ -6,7 +6,7 @@
     <string name="SocialProfilePrivate">صفحه شخصی</string>
     <string name="SocialProfilePrivateFollowing">دنبال شدگان</string>
     <string name="SocialProfilePrivateFollower">دنبال کنندگان</string>
-    <string name="SocialProfilePrivateVisitor">بازدید کننده</string>
+    <string name="SocialProfilePrivateVisitor">بازدید کنندگان</string>
     <string name="SocialProfilePrivateRating">رتبه</string>
     <string name="SocialProfilePrivateHolding">موجودی حساب</string>
     <string name="SocialProfilePrivateIncrease">افزایش موجودی</string>
@@ -14,11 +14,14 @@
     <string name="SocialProfilePrivateCheckOut">تسویه حساب</string>
     <string name="SocialProfilePrivateTransAction">تراکنش ها</string>
     <string name="SocialProfilePrivateNone">ثبت نشده</string>
+    <string name="SocialProfilePrivateDescription">توصیف حال</string>
     <string name="SocialProfilePrivatePhone">شماره تماس</string>
     <string name="SocialProfilePrivateEmail">پست الکترونیک</string>
     <string name="SocialProfilePrivateLink">پل ارتباطی</string>
     <string name="SocialProfilePrivateLocation">موقعیت</string>
     <string name="SocialProfilePrivateTag">برچسب ها</string>
+
+    <string name="SocialProfilePrivateProfile">انتخاب ها</string>
 
 
 

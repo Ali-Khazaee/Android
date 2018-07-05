@@ -13,8 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/TextViewProfile"
+            <co.biogram.main.ui.component.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/ActionBar"
                 android:text="@string/SocialProfilePrivate"
@@ -28,14 +27,16 @@
                 android:id="@+id/ImageViewSetting"
                 android:layout_width="@dimen/ActionBar"
                 android:layout_height="@dimen/ActionBar"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@color/Gray" />
+                android:padding="9dp"
+                android:src="@drawable/social_profile_private_setting"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:id="@+id/ImageViewSwitch"
                 android:layout_width="@dimen/ActionBar"
                 android:layout_height="@dimen/ActionBar"
-                android:src="@color/Gray"
+                android:padding="7dp"
+                android:src="@drawable/social_profile_private_switch"
                 app:layout_constraintEnd_toStartOf="@id/ImageViewSetting" />
 
             <View
@@ -54,7 +55,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/ViewLine" />
 
-            <TextView
+            <co.biogram.main.ui.component.TextView
                 android:id="@+id/TextViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,7 +67,7 @@
                 app:layout_constraintTop_toTopOf="@+id/ViewLine"
                 app:layout_constraintStart_toEndOf="@id/CircleImageViewProfile" />
 
-            <TextView
+            <co.biogram.main.ui.component.TextView
                 android:id="@+id/TextViewUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +104,7 @@
                     android:gravity="bottom"
                     android:orientation="vertical">
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewFollower"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -112,8 +113,7 @@
                         android:textColor="?TextColor"
                         android:gravity="center" />
 
-                    <TextView
-                        android:id="@+id/TextViewFollower2"
+                    <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/FontVerySmall"
@@ -130,7 +130,7 @@
                     android:gravity="bottom"
                     android:orientation="vertical">
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewFollowing"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -139,8 +139,7 @@
                         android:textColor="?TextColor"
                         android:gravity="center" />
 
-                    <TextView
-                        android:id="@+id/TextViewFollowing2"
+                    <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/FontVerySmall"
@@ -157,7 +156,7 @@
                     android:gravity="bottom"
                     android:orientation="vertical">
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewVisitor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -166,8 +165,7 @@
                         android:textColor="?TextColor"
                         android:gravity="center" />
 
-                    <TextView
-                        android:id="@+id/TextViewVisitor2"
+                    <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/FontVerySmall"
@@ -184,7 +182,7 @@
                     android:gravity="bottom"
                     android:orientation="vertical">
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewRating"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -193,8 +191,7 @@
                         android:textColor="?TextColor"
                         android:gravity="center" />
 
-                    <TextView
-                        android:id="@+id/TextViewRating2"
+                    <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/FontVerySmall"
@@ -215,7 +212,7 @@
                 android:layout_marginBottom="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/LinearLayoutDetails" />
 
-            <TextView
+            <co.biogram.main.ui.component.TextView
                 android:id="@+id/TextViewHolding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -227,7 +224,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ViewLine2" />
 
-            <TextView
+            <co.biogram.main.ui.component.TextView
                 android:id="@+id/TextViewIncrease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -239,7 +236,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextViewHolding" />
 
-            <TextView
+            <co.biogram.main.ui.component.TextView
                 android:id="@+id/TextViewMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -250,8 +247,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextViewHolding" />
 
-            <TextView
-                android:id="@+id/TextViewRial"
+            <co.biogram.main.ui.component.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -264,7 +260,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/TextViewHolding"
                 app:layout_constraintStart_toEndOf="@+id/TextViewMoney" />
 
-            <TextView
+            <co.biogram.main.ui.component.TextView
                 android:id="@+id/TextViewCheckOut"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
@@ -274,11 +270,11 @@
                 android:gravity="center"
                 android:textSize="@dimen/FontMedium"
                 android:textColor="?ReverseTextColor"
-                app:layout_constraintTop_toBottomOf="@+id/TextViewRial"
+                app:layout_constraintTop_toBottomOf="@+id/TextViewMoney"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
+            <co.biogram.main.ui.component.TextView
                 android:id="@+id/TextViewTransAction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -293,15 +289,50 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <LinearLayout
-                android:id="@+id/LinearLayoutPhone"
+                android:id="@+id/LinearLayoutDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/TextViewTransAction">
 
-                <TextView
-                    android:id="@+id/TextViewPhone2"
+                <co.biogram.main.ui.component.TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textSize="@dimen/FontSmall"
+                    android:textStyle="bold"
+                    android:textColor="?TextColor"
+                    android:text="@string/SocialProfilePrivateDescription" />
+
+                <co.biogram.main.ui.component.TextView
+                    android:id="@+id/TextViewDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textSize="@dimen/FontSmall"
+                    android:textStyle="bold"
+                    android:textColor="?TextColor" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/ActionLine"
+                    android:background="?LineColor"
+                    android:layout_marginTop="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayoutPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/LinearLayoutDescription">
+
+                <co.biogram.main.ui.component.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -311,7 +342,7 @@
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivatePhone" />
 
-                <TextView
+                <co.biogram.main.ui.component.TextView
                     android:id="@+id/TextViewPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -337,8 +368,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/LinearLayoutPhone">
 
-                <TextView
-                    android:id="@+id/TextViewEmail2"
+                <co.biogram.main.ui.component.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -348,7 +378,7 @@
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateEmail" />
 
-                <TextView
+                <co.biogram.main.ui.component.TextView
                     android:id="@+id/TextViewEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -374,8 +404,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/LinearLayoutEmail">
 
-                <TextView
-                    android:id="@+id/TextViewLink2"
+                <co.biogram.main.ui.component.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -385,7 +414,7 @@
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateLink" />
 
-                <TextView
+                <co.biogram.main.ui.component.TextView
                     android:id="@+id/TextViewLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -411,8 +440,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/LinearLayoutLink">
 
-                <TextView
-                    android:id="@+id/TextViewLocation2"
+                <co.biogram.main.ui.component.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -422,7 +450,7 @@
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateLocation" />
 
-                <TextView
+                <co.biogram.main.ui.component.TextView
                     android:id="@+id/TextViewLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -448,7 +476,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/LinearLayoutLocation">
 
-                <TextView
+                <co.biogram.main.ui.component.TextView
                     android:id="@+id/TextViewTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -469,7 +497,7 @@
                     app:flexWrap="wrap"
                     app:justifyContent="center">
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewTag1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -484,7 +512,7 @@
                         android:textSize="@dimen/FontMinimal"
                         android:textColor="@color/Primary" />
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewTag2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -499,7 +527,7 @@
                         android:textSize="@dimen/FontMinimal"
                         android:textColor="@color/Primary" />
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewTag3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -514,7 +542,7 @@
                         android:textSize="@dimen/FontMinimal"
                         android:textColor="@color/Primary" />
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewTag4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -529,7 +557,7 @@
                         android:textSize="@dimen/FontMinimal"
                         android:textColor="@color/Primary" />
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewTag5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -544,7 +572,7 @@
                         android:textSize="@dimen/FontMinimal"
                         android:textColor="@color/Primary" />
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewTag6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -559,7 +587,7 @@
                         android:textSize="@dimen/FontMinimal"
                         android:textColor="@color/Primary" />
 
-                    <TextView
+                    <co.biogram.main.ui.component.TextView
                         android:id="@+id/TextViewTag7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

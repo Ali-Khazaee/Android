@@ -186,7 +186,7 @@ public class ImagePreviewUI extends FragmentView
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
         ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_white : R.drawable.z_general_back_white);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.general_back : R.drawable.general_back);
         ImageViewBack.setId(Misc.generateViewId());
         ImageViewBack.setOnClickListener(new View.OnClickListener()
         {

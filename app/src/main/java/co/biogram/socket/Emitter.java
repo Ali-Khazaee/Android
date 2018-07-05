@@ -5,15 +5,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class Emitter {
+public class Emitter
+{
     private Map<String, LinkedList<Listener>> callbacks = new HashMap<>();
 
-    Emitter() {
+    Emitter()
+    {
     }
 
-    Emitter on(String event, Listener fn) {
+    Emitter on(String event, Listener fn)
+    {
         LinkedList<Listener> callbacksList = callbacks.get(event);
-        if (callbacksList == null) {
+        if (callbacksList == null)
+        {
             callbacksList = new LinkedList<>();
             callbacks.put(event, callbacksList);
         }
@@ -21,23 +25,29 @@ public class Emitter {
         return this;
     }
 
-    Emitter once(String event, Listener fn) {
+    Emitter once(String event, Listener fn)
+    {
         on(event, new OnceListener(event, fn));
         return this;
     }
 
-    Emitter removeAllListeners(String event) {
+    Emitter removeAllListeners(String event)
+    {
         callbacks.remove(event);
         return this;
     }
 
-    Emitter removeListener(String event, Listener fn) {
+    Emitter removeListener(String event, Listener fn)
+    {
         LinkedList<Listener> callbacks = this.callbacks.get(event);
-        if (callbacks != null) {
+        if (callbacks != null)
+        {
             Iterator<Listener> it = callbacks.iterator();
-            while (it.hasNext()) {
+            while (it.hasNext())
+            {
                 Listener internal = it.next();
-                if (sameAs(fn, internal)) {
+                if (sameAs(fn, internal))
+                {
                     it.remove();
                     break;
                 }
@@ -46,50 +56,65 @@ public class Emitter {
         return this;
     }
 
-    Emitter emit(String event, Object... args) {
+    Emitter emit(String event, Object... args)
+    {
         LinkedList<Listener> callbacks = this.callbacks.get(event);
-        if (callbacks != null) {
-            for (Listener fn : callbacks) {
+        if (callbacks != null)
+        {
+            for (Listener fn : callbacks)
+            {
                 fn.call(args);
             }
         }
         return this;
     }
 
-    int listenerCount(String event) {
+    int listenerCount(String event)
+    {
         LinkedList<Listener> callbacks = this.callbacks.get(event);
         return callbacks == null ? 0 : callbacks.size();
     }
 
-    boolean hasListeners(String event) {
+    boolean hasListeners(String event)
+    {
         return listenerCount(event) > 0;
     }
 
-    public interface Listener {
+    public interface Listener
+    {
         void call(Object... args);
     }
 
-    private boolean sameAs(Listener fn, Listener internal) {
-        if (fn.equals(internal)) {
+    private boolean sameAs(Listener fn, Listener internal)
+    {
+        if (fn.equals(internal))
+        {
             return true;
-        } else if (internal instanceof OnceListener) {
+        }
+        else if (internal instanceof OnceListener)
+        {
             return fn.equals(((OnceListener) internal).fn);
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
 
-    private class OnceListener implements Listener {
+    private class OnceListener implements Listener
+    {
         private final String event;
         private final Listener fn;
 
-        private OnceListener(String event, Listener fn) {
+        private OnceListener(String event, Listener fn)
+        {
             this.event = event;
             this.fn = fn;
         }
 
         @Override
-        public void call(Object... args) {
+        public void call(Object... args)
+        {
             removeListener(event, this);
             fn.call(args);
         }

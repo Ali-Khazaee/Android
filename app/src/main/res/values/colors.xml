@@ -1,5 +1,7 @@
 <resources>
+    <color name="SemiBlack">#7f000000</color>
     <color name="Primary">#1da1f2</color>
+    <color name="Black">#000000</color>
     <color name="White">#ffffff</color>
     <color name="Gray">#ababab</color>
     <color name="Red">#de1e5a</color>

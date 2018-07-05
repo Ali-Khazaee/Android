@@ -2,7 +2,8 @@ package co.biogram.socket;
 
 import java.util.ArrayList;
 
-class Reader {
+class Reader
+{
     private byte[] buffer;
     private int offset;
     private int bytesRead;
@@ -10,20 +11,27 @@ class Reader {
 
     private int offsetChunk;
 
-    ArrayList<byte[]> read(byte[] chunk, int effectiveChunkLength) {
+    ArrayList<byte[]> read(byte[] chunk, int effectiveChunkLength)
+    {
         offsetChunk = 0;
         ArrayList<byte[]> buffers = new ArrayList<>();
 
-        while (offsetChunk < effectiveChunkLength) {
-            if (bytesRead < 4) {
-                if (readMessageLength(chunk, effectiveChunkLength)) {
+        while (offsetChunk < effectiveChunkLength)
+        {
+            if (bytesRead < 4)
+            {
+                if (readMessageLength(chunk, effectiveChunkLength))
+                {
                     createBuffer();
-                } else {
+                }
+                else
+                {
                     break;
                 }
             }
 
-            if (bytesRead < buffer.length && !readMessageContent(chunk, effectiveChunkLength)) {
+            if (bytesRead < buffer.length && !readMessageContent(chunk, effectiveChunkLength))
+            {
                 break;
             }
 
@@ -37,15 +45,18 @@ class Reader {
         return buffers;
     }
 
-    private boolean readMessageLength(byte[] chunk, int effectiveChunkLength) {
-        for (; offsetChunk < effectiveChunkLength && bytesRead < 4; offsetChunk++, bytesRead++) {
-            messageLength |= chunk[offsetChunk] << (bytesRead * 8);
+    private boolean readMessageLength(byte[] chunk, int effectiveChunkLength)
+    {
+        for (; offsetChunk < effectiveChunkLength && bytesRead < 4; offsetChunk++, bytesRead++)
+        {
+            messageLength |= chunk[ offsetChunk ] << (bytesRead * 8);
         }
 
         return bytesRead == 4;
     }
 
-    private boolean readMessageContent(byte[] chunk, int effectiveChunkLength) {
+    private boolean readMessageContent(byte[] chunk, int effectiveChunkLength)
+    {
         int bytesToRead = buffer.length - bytesRead;
         int bytesInChunk = effectiveChunkLength - offsetChunk;
         int end = bytesToRead > bytesInChunk ? effectiveChunkLength : offsetChunk + bytesToRead;
@@ -61,8 +72,9 @@ class Reader {
         return bytesRead == buffer.length;
     }
 
-    private void createBuffer() {
-        buffer = new byte[4 + messageLength];
+    private void createBuffer()
+    {
+        buffer = new byte[ 4 + messageLength ];
         Utils.writeInt(messageLength, buffer, offset);
         offset += 4;
     }

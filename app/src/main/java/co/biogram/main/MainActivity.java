@@ -1,6 +1,7 @@
 package co.biogram.main;
 
 import android.content.res.Configuration;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.os.Bundle;
 import android.os.Build;

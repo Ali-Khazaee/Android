@@ -1,0 +1,37 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/SemiBlack"
+    android:clickable="true"
+    android:focusable="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ConstraintLayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/White"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <co.biogram.main.ui.component.TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:paddingTop="15dp"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontSmall"
+            android:text="@string/SocialProfilePrivateProfile"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/ImageViewClose"
+            android:layout_width="@dimen/ActionBar"
+            android:layout_height="@dimen/ActionBar"
+            android:src="@drawable/general_close"
+            android:padding="18dp"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

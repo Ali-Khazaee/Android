@@ -21,12 +21,21 @@ public class FragmentManager
         Activity = a;
     }
 
-    public void OpenDialog(FragmentDialog Frag, String Tag)
+    public void OpenDialog(FragmentDialog Dialog)
     {
+        Dialog.Activity = Activity;
+        Dialog.OnCreate();
 
+        if (Dialog.ViewMain != null)
+        {
+            FrameLayout FrameLayoutMain = Activity.findViewById(R.id.ContainerFull);
+            FrameLayoutMain.addView(Dialog.ViewMain);
+        }
+
+        FragmentDialogList.add(Dialog);
     }
 
-    public void OpenView(FragmentView Frag, String Tag)
+    public void OpenView(FragmentView FragView, String Tag)
     {
         if (CurrentFrag != null && CurrentFrag.Tag.equals(Tag))
         {
@@ -44,7 +53,7 @@ public class FragmentManager
                 LastFrag.ViewMain.setVisibility(View.GONE);
         }
 
-        CurrentFrag = Frag;
+        CurrentFrag = FragView;
         CurrentFrag.Tag = Tag;
         CurrentFrag.Activity = Activity;
         CurrentFrag.OnCreate();
@@ -59,8 +68,24 @@ public class FragmentManager
         FragmentViewList.add(CurrentFrag);
     }
 
+    public void DismissDialog()
+    {
+        if (FragmentDialogList.size() > 0)
+        {
+            FragmentDialogList.get(FragmentDialogList.size() - 1).OnDestroy();
+            FragmentDialogList.remove(FragmentDialogList.size() - 1);
+        }
+    }
+
     boolean HandleBack()
     {
+        if (FragmentDialogList.size() > 0)
+        {
+            FragmentDialogList.get(FragmentDialogList.size() - 1).OnDestroy();
+            FragmentDialogList.remove(FragmentDialogList.size() - 1);
+            return false;
+        }
+
         if (FragmentViewList.size() > 1)
         {
             FragmentView Frag = FragmentViewList.get(FragmentViewList.size() - 1);

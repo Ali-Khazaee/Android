@@ -68,7 +68,7 @@ public class GalleryViewUI extends FragmentView {
         ImageView ImageViewBack = new ImageView(Activity);
         ImageViewBack.setLayoutParams(ImageViewBackParam);
         ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.z_general_back_blue : R.drawable.z_general_back_blue);
+        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.general_back : R.drawable.general_back);
         ImageViewBack.setId(View.generateViewId());
         ImageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override

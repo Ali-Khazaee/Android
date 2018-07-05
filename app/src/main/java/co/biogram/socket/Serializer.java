@@ -1,9 +1,9 @@
 package co.biogram.socket;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-class Serializer {
+class Serializer
+{
     static final byte VERSION = 1;
 
     static final byte DT_STRING = 1;
@@ -32,14 +32,14 @@ class Serializer {
         int dataLength = data.length;
         int messageLength = 4 + 1 + 1 + 4 + 2 + eventLength + 4 + dataLength;
 
-        byte[] buffer = new byte[4 + messageLength];
+        byte[] buffer = new byte[ 4 + messageLength ];
         int offset = 0;
 
         Utils.writeInt(messageLength, buffer, offset);
         offset += 4;
 
-        buffer[offset++] = dt;
-        buffer[offset++] = mt;
+        buffer[ offset++ ] = dt;
+        buffer[ offset++ ] = mt;
 
         Utils.writeInt(messageId, buffer, offset);
         offset += 4;
@@ -62,8 +62,8 @@ class Serializer {
     {
         int offset = 4;
 
-        byte dt = buffer[offset++];
-        byte mt = buffer[offset++];
+        byte dt = buffer[ offset++ ];
+        byte mt = buffer[ offset++ ];
 
         int messageId = Utils.readInt(buffer, offset);
         offset += 4;
