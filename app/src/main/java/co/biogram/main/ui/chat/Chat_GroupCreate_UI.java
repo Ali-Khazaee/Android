@@ -4,7 +4,9 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -26,8 +28,6 @@ import java.util.List;
 
 public class Chat_GroupCreate_UI extends FragmentView
 {
-
-    private PermissionDialog PermissionRequest;
 
     private List<String> temp = new ArrayList<>();
 
@@ -157,18 +157,17 @@ public class Chat_GroupCreate_UI extends FragmentView
                                     @Override
                                     public void OnSave()
                                     {
-                                        Activity.GetManager().OpenView(new CropViewUI(Path, true, new CropViewUI.OnCropListener()
-                                        {
-                                            @Override
-                                            public void OnCrop(Bitmap bitmap)
-                                            {
-                                                Activity.onBackPressed();
-                                                ((ImageView) imageViewProfile).setImageBitmap(bitmap);
+                                        ((ImageView) view.findViewById(R.id.ImageViewProfile)).setImageBitmap(BitmapFactory.decodeFile(Path));
 
+                                        Activity.GetManager().OpenView(new CropViewUI(Path, false, new CropViewUI.OnCropListener() {
+                                            @Override
+                                            public void OnCrop(Bitmap bitmap) {
                                             }
                                         }), "CropViewUI", true);
+
+                                        Log.d("KIRI","RUN MISHI?");
                                     }
-                                }), "CameraViewUI", true);
+                                }), "GalaryViewUI", true);
                             }
                         });
                     }
@@ -180,7 +179,6 @@ public class Chat_GroupCreate_UI extends FragmentView
                     public void onClick(View v)
                     {
                         dialog.dismiss();
-                        //CircleImageViewProfile.setImageResource(R.drawable.z_social_profile_avatar);
 
                     }
                 });

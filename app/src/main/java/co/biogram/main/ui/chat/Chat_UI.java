@@ -8,9 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.*;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Handler;
+import android.os.*;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
@@ -19,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -185,8 +182,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             @Override
             public void onClick(View v)
             {
-
-                Log.d("sdsad", String.valueOf(Activity));
 
                 Misc.closeKeyboard(Activity);
 
@@ -570,12 +565,25 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     case MotionEvent.ACTION_DOWN:
                     {
 
-                        FABAudio.setVisibility(View.VISIBLE);
+                        if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                            AudioPlayer.load(Activity.getBaseContext(), R.raw.auido_hold, 1);
+                        else
+                        {
+                            Vibrator vib = (Vibrator) Activity.getSystemService(Context.VIBRATOR_SERVICE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                            {
+                                vib.vibrate(VibrationEffect.createOneShot(20, VibrationEffect.DEFAULT_AMPLITUDE));
+                            }
+                            else
+                            {
+                                vib.vibrate(20);
+                            }
+                        }
 
+                        FABAudio.setVisibility(View.VISIBLE);
                         FABAudio.animate().scaleX(1).scaleY(1).alpha(1).setDuration(100).start();
 
                         startRecord();
-                        AudioPlayer.load(Activity.getBaseContext(), R.raw.auido_hold, 1);
 
                         break;
                     }
@@ -586,9 +594,9 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                         FABAudio.setVisibility(View.GONE);
 
                         pauseRecord();
+                        if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                            AudioPlayer.load(Activity.getBaseContext(), R.raw.audio_release, 1);
                         AudioChatModel model = new AudioChatModel(Filename);
-
-                        AudioPlayer.load(Activity.getBaseContext(), R.raw.audio_release, 1);
 
                         EditTextMessage.setText("");
                         if (!model.getLength().equals("00:00"))
@@ -655,6 +663,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             e.printStackTrace();
         }
+
     }
 
     private void pauseRecord()
@@ -985,7 +994,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", false);
+                        Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", true);
 
                     }
                 });
