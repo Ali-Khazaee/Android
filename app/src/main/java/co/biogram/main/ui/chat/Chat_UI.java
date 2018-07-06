@@ -1,15 +1,12 @@
 package co.biogram.main.ui.chat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.SoundPool;
+import android.media.*;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,23 +20,21 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-
+import android.widget.*;
+import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.AudioHandler;
+import co.biogram.main.handler.KeyboardHeightObserver;
+import co.biogram.main.handler.KeyboardHeightProvider;
+import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.general.GalleryViewUI;
+import co.biogram.main.ui.general.ImagePreviewUI;
+import co.biogram.main.ui.general.VideoPreviewUI;
+import co.biogram.main.ui.view.PermissionDialog;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
@@ -51,21 +46,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.R;
-import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.AudioHandler;
-import co.biogram.main.handler.KeyboardHeightObserver;
-import co.biogram.main.handler.KeyboardHeightProvider;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.general.GalleryViewUI;
-import co.biogram.main.ui.general.ImagePreviewUI;
-import co.biogram.main.ui.view.PermissionDialog;
-
-import static android.widget.SeekBar.GONE;
-import static android.widget.SeekBar.OnClickListener;
-import static android.widget.SeekBar.OnSeekBarChangeListener;
-import static android.widget.SeekBar.OnTouchListener;
-import static android.widget.SeekBar.VISIBLE;
+import static android.widget.SeekBar.*;
 
 /**
  * Created by soh_mil97
@@ -87,12 +68,13 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
     private RecyclerView ChatRecyclerView;
     private ChatAdapter ChatAdapter;
+    private AudioManager AudioManager;
 
     private MediaRecorder Recorder;
     private SoundPool AudioPlayer;
     private EmojiPopup Emoji;
     private PermissionDialog PermissionRequest;
-    private int CHAT_MODE ;
+    private int CHAT_MODE;
 
     private String Filename;
 
@@ -121,7 +103,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         ImageButton ImageButtonImage = view.findViewById(R.id.ImageButtonImage);
         ImageButton ImageButtonVideo = view.findViewById(R.id.ImageButtonVideo);
         final ImageView FABAudio = view.findViewById(R.id.ButtonAudio);
-
+        AudioManager = (AudioManager) Activity.getSystemService(Context.AUDIO_SERVICE);
         Emoji = EmojiPopup.Builder.fromRootView(view).build((EmojiEditText) EditTextMessage);
 
         keyboardHeightProvider = new KeyboardHeightProvider(Activity);
@@ -192,7 +174,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     EditTextMessage.setText("");
                     ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
 
-                    AudioPlayer.load(Activity.getBaseContext(), R.raw.message_send, 1);
+                    if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                        AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
                 }
             }
         });
@@ -219,7 +202,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                             ChatAdapter.addChat(new FileChatModel(URL));
                             EditTextMessage.setText("");
                             ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-                            AudioPlayer.load(Activity.getBaseContext(), R.raw.message_send, 1);
+                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
 
                         }
                     }
@@ -345,7 +329,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                                                 ChatAdapter.addChat(chatModel);
                                                 ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
 
-                                                AudioPlayer.load(Activity.getBaseContext(), R.raw.message_send, 1);
+                                                if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                                    AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
 
                                             }
                                         }, 0);
@@ -423,7 +408,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                             ChatAdapter.addChat(new VideoChatModel(VideoURL));
                             ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-                            AudioPlayer.load(Activity.getBaseContext(), R.raw.message_send, 1);
+                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
                             return;
                             //     }
 
@@ -650,15 +636,15 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
     private void startRecord()
     {
         Recorder = new MediaRecorder();
-        Filename = Misc.createFile(Misc.DIR_AUDIO, "Upload",AUDIO_RECORDER_FILE_EXT_MP3);
+        Filename = Misc.createFile(Misc.DIR_AUDIO, "Upload", AUDIO_RECORDER_FILE_EXT_MP3);
 
         Recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        Recorder.setOutputFormat( MediaRecorder.OutputFormat.MPEG_4);
+        Recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         Recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         Recorder.setOutputFile(Filename);
-//        Recorder.setOnErrorListener(errorListener);
-//        Recorder.setOnInfoListener(infoListener);
+        //        Recorder.setOnErrorListener(errorListener);
+        //        Recorder.setOnInfoListener(infoListener);
 
         try
         {
@@ -920,6 +906,19 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     }
 
                 });
+
+                Player.getPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+                {
+                    @Override
+                    public void onCompletion(MediaPlayer mp)
+                    {
+                        ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
+                        SeekBarHandler.removeCallbacks(SeekBarRunnable);
+                        SeekBarVoice.setProgress(0);
+                        isPlaying = false;
+                        isAudioPlaying = false;
+                    }
+                });
                 SeekBarVoice.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
                 {
                     @Override
@@ -1031,7 +1030,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", false);
+                        Activity.GetManager().OpenView(new VideoPreviewUI(((VideoChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), true, true), "VideoPreviewUI", true);
 
                     }
                 });
@@ -1040,7 +1039,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new ImagePreviewUI(((ImageChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), false), "ImagePreviewUI", false);
+                        Activity.GetManager().OpenView(new VideoPreviewUI(((VideoChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), true, true), "VideoPreviewUI", true);
 
                     }
                 });
@@ -1153,7 +1152,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 if (IsSeen)
                     view.findViewById(R.id.ImageViewSeen).setVisibility(View.VISIBLE);
 
-                if (CHAT_MODE == MODE_GROUP){
+                if (CHAT_MODE == MODE_GROUP)
+                {
                     UserNameTextView.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 }
 
@@ -1176,7 +1176,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                 view.findViewById(R.id.ImageViewSeen).setVisibility(View.GONE);
 
-                if (CHAT_MODE == MODE_GROUP){
+                if (CHAT_MODE == MODE_GROUP)
+                {
                     UserNameTextView.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 }
             }

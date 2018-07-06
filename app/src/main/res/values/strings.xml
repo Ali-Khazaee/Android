@@ -384,4 +384,5 @@
     <string name="ChatUIGroupHelp">To create a group, you need to complete the profile</string>
     <string name="ChatUIGroupName">Group name</string>
     <string name="ChatUIGroupMembers">Group members</string>
+    <string name="GroupInfo">Group Info</string>
 </resources>

@@ -20,7 +20,13 @@
 
     <!-- Chat UI -->
     <string name="ChatUIMessage">پیغام شما</string>
-
+    <string name="ChatUISearch">جستجو</string>
+    <string name="ChatUISendMessage">ارسال پیام</string>
+    <string name="ChatUIGroup">اطلاعات گروه</string>
+    <string name="ChatUIGroupHelp">برای تکمیل فرایند لطفا اطلاعات زیر را کامل کنید</string>
+    <string name="ChatUIGroupName">نام گروه</string>
+    <string name="ChatUIGroupMembers">اعضا گروه</string>
+    <string name="GroupInfo">اطلاعات</string>
 
 
     <!-- Social Profile Special Center UI -->
@@ -299,5 +305,6 @@
     <string name="CommentUIDelete">Delete</string>
     <string name="CommentUICancel">Cancel</string>
     <string name="CommentUIComment">Write your comment</string>
+
 
 </resources>

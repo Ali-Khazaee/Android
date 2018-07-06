@@ -1,75 +1,79 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="76dp">
+
+<co.biogram.main.ui.component.CircleImageView
+    android:id="@+id/CircleImageViewProfile"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:src="@drawable/z_social_profile_avatar" />
+
+<TextView
+    android:id="@+id/TextViewUsername"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr">
+    android:layout_alignTop="@id/CircleImageViewProfile"
+    android:layout_toEndOf="@+id/CircleImageViewProfile"
+    android:textColor="@android:color/black"
+    android:layout_marginTop="4dp"
+    android:textSize="14sp"
+    android:textStyle="bold"
+    tools:text="Alireza" />
 
-    <co.biogram.main.ui.component.CircleImageView
-        android:id="@+id/CircleImageViewProfile"
-        android:layout_width="@dimen/ActionBar"
-        android:layout_height="@dimen/ActionBar"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:civ_border_color="@color/Gray"
-        app:civ_border_width="1dp" />
-
-    <TextView
-        android:id="@+id/TextViewUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/CircleImageViewProfile"
-        android:layout_toStartOf="@+id/TextViewTime"
-        android:textSize="14sp"
-        android:textColor="?TextColor"
-        android:textAlignment="viewStart"
-        android:layout_marginTop="10dp" />
+<TextView
+    android:id="@+id/TextViewMessage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/TextViewUsername"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_alignStart="@id/TextViewUsername"
+    android:maxLines="1"
+    android:text="Hi baby I"
+    android:textSize="11sp"  />
 
     <TextView
-        android:id="@+id/TextViewMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/CircleImageViewProfile"
-        android:layout_toStartOf="@+id/TextViewCount"
-        android:textSize="11sp"
-        android:textAlignment="viewStart"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/TextViewUsername" />
+    android:id="@+id/TextViewTime"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:textColor="@color/Gray"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="16dp"
+    android:textSize="10sp"
+    tools:text="Hello"/>
+
 
     <TextView
-        android:id="@+id/TextViewTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/Gray"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:textSize="10sp" />
-
-    <TextView
-        android:id="@+id/TextViewCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/TextViewTime"
-        android:textSize="10sp"
-        android:textColor="@color/White"
-        android:paddingTop="4dp"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:paddingBottom="4dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/xxx_messenger_chat_list_bg" />
+    android:id="@+id/TextViewCount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_below="@id/TextViewTime"
+    android:textSize="10sp"
+    android:textColor="@color/White"
+    android:paddingTop="4dp"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
+    android:paddingBottom="4dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/xxx_messenger_chat_list_bg" />
 
     <View
-        android:id="@+id/ViewLine"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/ActionLine"
-        android:background="?LineColor"
-        android:layout_below="@+id/CircleImageViewProfile" />
+    android:id="@+id/ViewLine"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/ActionLine"
+    android:background="?LineColor"
+    android:layout_below="@+id/CircleImageViewProfile" />
+
 
 </RelativeLayout>

@@ -23,9 +23,7 @@
         android:layout_height="@dimen/ActionBar"
         android:padding="8dp"
         android:layout_toEndOf="@id/ImageButtonBack"
-        android:src="@drawable/z_social_profile_avatar"
-        app:civ_border_color="#838383"
-        app:civ_border_width="0.5dp" />
+        android:src="@drawable/z_social_profile_avatar" />
 
     <TextView
         android:id="@+id/TextViewName"
@@ -69,41 +67,6 @@
         android:maxHeight="300dp"
         android:minHeight="56dp"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical">
-
-            <com.vanniktech.emoji.EmojiEditText
-                android:id="@+id/EditTextMessage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:background="@color/ActionBarWhite"
-                android:hint="@string/ChatUIMessage"
-                android:textColor="@color/TextWhite"
-                android:textColorHint="@color/Gray"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/ImageButtonSend"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@null"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="6dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_back123_bl123ue_fa" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -173,6 +136,44 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical">
+
+            <com.vanniktech.emoji.EmojiEditText
+                android:id="@+id/EditTextMessage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@color/ActionBarWhite"
+                android:hint="@string/ChatUIMessage"
+                android:textColor="@color/TextWhite"
+                android:textColorHint="@color/Gray"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/ImageButtonSend"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="6dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_back123_bl123ue_fa"
+                android:rotation="180"/>
+        </LinearLayout>
+
+
+
     </LinearLayout>
 
     <View
@@ -191,18 +192,18 @@
 
     <co.biogram.main.ui.component.CircleImageView
         android:id="@+id/ButtonAudio"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_profile123_black"
         android:visibility="gone"
+        android:src="@drawable/ic_profile123_black"
         app:civ_background_color="@color/Primary"
         app:civ_border_color="@color/Primary"
         app:civ_border_width="8dp"

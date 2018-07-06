@@ -1,5 +1,6 @@
 <resources>
     <style name="ThemeLight">
+        <item name="GreenColor">#7cb342</item>
         <item name="StatusColor">#ddd</item>
         <item name="ActionColor">#fff</item>
         <item name="LineColor">#eee</item>
@@ -10,7 +11,7 @@
 
     <style name="AppThemeLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
 
-
+        <item name="GreenColor">#7cb342</item>
         <item name="TextColor">#000</item>
         <item name="LineColor">#eee</item>
         <item name="GroundColor">#fff</item>

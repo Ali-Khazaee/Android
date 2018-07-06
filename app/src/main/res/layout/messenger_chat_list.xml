@@ -8,12 +8,13 @@
         android:id="@+id/TextViewToolBar"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/ActionBar"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|start"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@id/ImageViewSearch"
         android:text="@string/ChatListUI"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
+        android:textAlignment="viewStart"
         android:textColor="?TextColor"
         android:textSize="@dimen/FontMedium" />
 
@@ -36,7 +37,8 @@
         android:id="@+id/RecyclerViewMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ViewLine" />
+        android:layout_below="@+id/ViewLine"
+        />
 
     <co.biogram.main.ui.component.CircleImageView
         android:id="@+id/CircleImageViewWrite"
@@ -45,6 +47,7 @@
         android:src="@drawable/xxx_messenger_plus_white"
         android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         app:civ_background_color="@color/Primary"
         app:civ_border_color="@color/Primary"
         app:civ_border_width="8dp" />

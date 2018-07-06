@@ -29,7 +29,7 @@
             android:gravity="start"
             android:visibility="gone"
             android:textColor="@color/ActionBarWhite"
-            android:textSize="8sp"
+            android:textSize="8.4sp"
             tools:text="22:30" />
 
         <LinearLayout
@@ -100,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/ActionBarWhite"
-                        android:textSize="8sp"
+                        android:textSize="8.4sp"
                         tools:text="22:30" />
 
                     <ImageView

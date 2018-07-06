@@ -10,7 +10,7 @@
         android:layout_height="@dimen/ActionBar"
         android:layout_alignParentEnd="true"
         android:background="@null"
-        android:padding="12dp"
+        android:padding="15dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_search_blue" />
 

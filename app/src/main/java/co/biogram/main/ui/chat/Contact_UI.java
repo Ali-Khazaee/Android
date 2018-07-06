@@ -22,7 +22,7 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import de.hdodenhof.circleimageview.CircleImageView;
+import co.biogram.main.ui.component.CircleImageView;
 
 import java.util.ArrayList;
 
@@ -227,10 +227,10 @@ public class Contact_UI extends FragmentView
             public ViewHolder(View itemView)
             {
                 super(itemView);
-                ProfileImage = itemView.findViewById(R.id.ProfileImage);
-                Username = itemView.findViewById(R.id.Username);
-                UserId = itemView.findViewById(R.id.UserID);
-                SelectState = itemView.findViewById(R.id.SelectState);
+                ProfileImage = itemView.findViewById(R.id.CircleImageViewProfile);
+                Username = itemView.findViewById(R.id.TextViewUsername);
+                UserId = itemView.findViewById(R.id.TextViewUserID);
+                SelectState = itemView.findViewById(R.id.ImageViewSelectState);
 
                 Username.setTypeface(Misc.GetTypeface());
                 UserId.setTypeface(Misc.GetTypeface());

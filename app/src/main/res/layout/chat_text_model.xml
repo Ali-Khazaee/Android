@@ -31,7 +31,7 @@
             android:layout_marginTop="4dp"
             android:gravity="start"
             android:textColor="@color/ActionBarWhite"
-            android:textSize="8sp"
+            android:textSize="8.4sp"
             android:visibility="gone"
             tools:text="22:30" />
 
@@ -45,6 +45,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:gravity="start"
+            android:layout_gravity="end"
             android:maxWidth="200dp"
             android:textColor="@color/ActionBarWhite"
             android:textSize="12sp"
@@ -64,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/ActionBarWhite"
-                android:textSize="8sp"
+                android:textSize="8.4sp"
                 tools:text="22:30" />
 
             <ImageView

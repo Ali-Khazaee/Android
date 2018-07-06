@@ -1,28 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layoutDirection="ltr"
-    android:layout_width="match_parent"
-    android:layout_height="75dp">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="75dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ProfileImage"
+    <co.biogram.main.ui.component.CircleImageView
+        android:id="@+id/CircleImageViewProfile"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:src="@drawable/z_social_profile_avatar"
-        app:civ_border_color="#838383"
-        app:civ_border_width="0.5dp" />
+        android:src="@drawable/z_social_profile_avatar" />
 
     <TextView
-        android:id="@+id/Username"
+        android:id="@+id/TextViewUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/ProfileImage"
-        android:layout_toEndOf="@+id/ProfileImage"
+        android:layout_alignTop="@id/CircleImageViewProfile"
+        android:layout_toEndOf="@+id/CircleImageViewProfile"
         android:textColor="@android:color/black"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
@@ -30,20 +27,20 @@
         tools:text="Alireza" />
 
     <TextView
-        android:id="@+id/UserID"
+        android:id="@+id/TextViewUserID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Username"
+        android:layout_below="@id/TextViewUsername"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="4dp"
-        android:layout_alignStart="@id/Username"
+        android:layout_alignStart="@id/TextViewUsername"
         android:maxLines="1"
         android:text="Hi baby I"
         android:textSize="11sp"  />
 
     <ImageView
-        android:id="@+id/SelectState"
+        android:id="@+id/ImageViewSelectState"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentEnd="true"
@@ -53,6 +50,7 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_follow_block"
         android:visibility="invisible"
+
    />
 
 </RelativeLayout>

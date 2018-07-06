@@ -5,17 +5,17 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
+
+import java.util.ArrayList;
 
 public class Message_UI extends FragmentView
 {
@@ -141,7 +141,8 @@ public class Message_UI extends FragmentView
         @Override
         public ViewHolderMain onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
         {
-            return new ViewHolderMain(View.inflate(Activity, R.layout.messenger_chat_list_row, null));
+
+            return new ViewHolderMain(LayoutInflater.from(parent.getContext()).inflate(R.layout.messenger_chat_list_row, parent, false));
         }
 
         @Override
@@ -200,7 +201,7 @@ public class Message_UI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new Chat_UI(Pos%2), "Chat_UI", true);
+                        Activity.GetManager().OpenView(new Chat_UI(Pos % 2), "Chat_UI", true);
                     }
                 });
             }

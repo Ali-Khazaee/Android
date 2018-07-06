@@ -103,6 +103,7 @@ public class SocialActivity extends FragmentActivity
     {
         ImageViewInbox.setImageResource(R.drawable.z_social_activity_inbox);
         ImageViewMoment.setImageResource(R.drawable.z_social_activity_moment);
+        ImageViewChat.setImageResource(R.drawable.z_social_activity_chat);
         ImageViewNotification.setImageResource(NotificationAvailable ? R.drawable.z_social_activity_notification_available : R.drawable.z_social_activity_notification);
         ImageViewProfile.setImageResource(R.drawable.z_social_activity_profile);
 
@@ -124,7 +125,7 @@ public class SocialActivity extends FragmentActivity
             case 3:
                 Tag = "Chat_ListUI";
                 Fragment = new Message_UI();
-                ImageViewChat.setImageResource(R.drawable.z_social_activity_chat);
+                ImageViewChat.setImageResource(R.drawable.z_social_activity_chat_blue);
                 break;
             case 4:
                 Tag = "NotificationUI";

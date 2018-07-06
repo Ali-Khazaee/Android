@@ -192,6 +192,7 @@ public class Chat_GroupCreate_UI extends FragmentView
 
         final EditText EditTextName = view.findViewById(R.id.EditTextName);
         Misc.SetCursorColor(EditTextName, R.color.Primary);
+        EditTextName.setTypeface(Misc.GetTypeface());
         ViewCompat.setBackgroundTintList(EditTextName, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
 
         EditTextName.setOnTouchListener(new View.OnTouchListener()

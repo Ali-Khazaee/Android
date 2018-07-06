@@ -18,16 +18,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import java.io.File;
-import java.util.ArrayList;
-
-import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
-
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.TextView;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class GalleryViewUI extends FragmentView {
     public static int TYPE_IMAGE = 1;
@@ -421,7 +419,7 @@ public class GalleryViewUI extends FragmentView {
                 RelativeLayoutMain.addView(ImageViewIcon);
 
                 RelativeLayout.LayoutParams TextViewNameParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                TextViewNameParam.addRule(RelativeLayout.RIGHT_OF, ID1_FILE);
+                TextViewNameParam.addRule(Misc.AlignTo("R"), ID1_FILE);
                 TextViewNameParam.setMargins(0, Misc.ToDP(12), 0, 0);
 
                 TextView TextViewName = new TextView(Activity, 14, true);
