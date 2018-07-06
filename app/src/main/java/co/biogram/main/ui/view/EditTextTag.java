@@ -24,7 +24,6 @@ import java.util.List;
 
 import co.biogram.main.R;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.component.FlowLayout;
 
 public class EditTextTag extends FrameLayout implements View.OnClickListener, TextView.OnEditorActionListener, View.OnKeyListener {
     private Drawable DrawableTag;

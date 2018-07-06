@@ -1,4 +1,4 @@
-package co.biogram.main.ui.component;
+package co.biogram.main.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

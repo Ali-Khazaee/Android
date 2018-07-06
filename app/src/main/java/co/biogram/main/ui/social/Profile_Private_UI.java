@@ -1,5 +1,6 @@
 package co.biogram.main.ui.social;
 
+import android.Manifest;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.GradientDrawable;
 import android.support.constraint.ConstraintLayout;
@@ -7,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.TextView;
 
 import co.biogram.main.R;
 import co.biogram.main.databinding.SocialProfilePrivateBinding;
@@ -15,6 +15,7 @@ import co.biogram.main.fragment.FragmentDialog;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.component.PermissionDialog;
 
 public class Profile_Private_UI extends FragmentView
 {
@@ -185,9 +186,9 @@ public class Profile_Private_UI extends FragmentView
             }
         });
 
-        FetchUpdate();
-
         ViewMain = Binding.ScrollViewMain;
+
+        FetchUpdate();
     }
 
     @Override
@@ -199,12 +200,9 @@ public class Profile_Private_UI extends FragmentView
     private void FetchUpdate()
     {
         GlideApp.with(Activity).load("http://icons.iconarchive.com/icons/iconarchive/blue-election/128/Election-Badge-Outline-icon.png1").placeholder(R.drawable.social_profile_private).into(Binding.CircleImageViewProfile);
-
         Binding.TextViewName.setText("علی خزایی");
         Binding.TextViewUsername.setText("ali.khazaee");
-
         GlideApp.with(Activity).load("http://icons.iconarchive.com/icons/iconarchive/blue-election/128/Election-Badge-Outline-icon.png").into(Binding.ImageViewBadge);
-
         Binding.TextViewFollower.setText("52.9K");
         Binding.TextViewFollowing.setText("1920");
         Binding.TextViewVisitor.setText("850K");
@@ -217,7 +215,6 @@ public class Profile_Private_UI extends FragmentView
         Binding.TextViewEmail.setTextColor(Misc.Color(R.color.Gray));
         Binding.TextViewLink.setText("https://google.com/");
         Binding.TextViewLink.setTextColor(Misc.Color(R.color.Primary));
-
         Binding.TextViewLocation.setText(Misc.String(R.string.SocialProfilePrivateNone));
         Binding.TextViewLocation.setTextColor(Misc.Color(R.color.Gray));
         Binding.TextViewTag1.setText("Programmer");
@@ -236,18 +233,44 @@ public class Profile_Private_UI extends FragmentView
         @Override
         public void OnCreate()
         {
-            View view = View.inflate(Activity, R.layout.social_profile_private_profile, null);
+            ViewMain = View.inflate(Activity, R.layout.social_profile_private_profile, null);
 
-            view.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { OnDestroy(); } });
+            ViewMain.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { OnDestroy(); } });
 
-            ConstraintLayoutMain = view.findViewById(R.id.ConstraintLayoutMain);
+            ViewMain.findViewById(R.id.TextViewGallery).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    PermissionDialog Dialog = new PermissionDialog(R.drawable.general_permission_storage, R.string.GeneralPermissionMessageStorageRead, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+                    Activity.GetManager().OpenDialog(Dialog);
+                }
+            });
+
+            ViewMain.findViewById(R.id.TextViewCamera).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    OnDestroy();
+                }
+            });
+
+            ViewMain.findViewById(R.id.TextViewRemove).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    OnDestroy();
+                }
+            });
 
             Animation Anim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
             Anim.setDuration(300);
 
+            ConstraintLayoutMain = ViewMain.findViewById(R.id.ConstraintLayoutMain);
             ConstraintLayoutMain.startAnimation(Anim);
-
-            ViewMain = view;
         }
 
         @Override

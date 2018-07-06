@@ -1,0 +1,71 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/SemiBlack"
+    android:clickable="true"
+    android:focusable="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ConstraintLayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/ViewHeader"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/Primary" />
+
+        <ImageView
+            android:id="@+id/ImageViewIcon"
+            android:layout_width="@dimen/ActionBar"
+            android:layout_height="@dimen/ActionBar"
+            app:layout_constraintLeft_toLeftOf="@id/ViewHeader"
+            app:layout_constraintRight_toRightOf="@id/ViewHeader"
+            app:layout_constraintBottom_toBottomOf="@+id/ViewHeader"
+            app:layout_constraintTop_toTopOf="@+id/ViewHeader" />
+
+        <co.biogram.main.ui.component.TextView
+            android:id="@+id/TextViewMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textColor="?TextColor"
+            android:textSize="@dimen/FontSmall"
+            app:layout_constraintTop_toBottomOf="@id/ViewHeader" />
+
+        <co.biogram.main.ui.component.TextView
+            android:id="@+id/TextViewDecline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textColor="@color/Gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/FontMedium"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/GeneralPermissionDialogDecline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/TextViewMessage" />
+
+        <co.biogram.main.ui.component.TextView
+            android:id="@+id/TextViewAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textColor="@color/Primary"
+            android:textStyle="bold"
+            android:textSize="@dimen/FontMedium"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/GeneralPermissionDialogAccept"
+            app:layout_constraintEnd_toStartOf="@id/TextViewDecline"
+            app:layout_constraintTop_toBottomOf="@id/TextViewMessage" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

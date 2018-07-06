@@ -2,6 +2,13 @@
     <!-- Application -->
     <string name="Application">کانال</string>
 
+    <!-- General Permission Dialog -->
+    <string name="GeneralPermissionDialogAccept">قبول</string>
+    <string name="GeneralPermissionDialogDecline">رد کردن</string>
+
+    <!-- General Permission Message -->
+    <string name="GeneralPermissionMessageStorageRead">جهت استفاده از این قسمت باید به برنامه مجوز دسترسی به خوانده اطلاعات را دهید</string>
+
     <!-- Social Profile Private-->
     <string name="SocialProfilePrivate">صفحه شخصی</string>
     <string name="SocialProfilePrivateFollowing">دنبال شدگان</string>
@@ -21,7 +28,11 @@
     <string name="SocialProfilePrivateLocation">موقعیت</string>
     <string name="SocialProfilePrivateTag">برچسب ها</string>
 
+    <!-- Child -->
     <string name="SocialProfilePrivateProfile">انتخاب ها</string>
+    <string name="SocialProfilePrivateProfileGallery">انتخاب عکس از طریق البوم</string>
+    <string name="SocialProfilePrivateProfileCamera">انتخاب عکس از طریق دوربین</string>
+    <string name="SocialProfilePrivateProfileRemove">حذف عکس صفحه شخصی</string>
 
 
 

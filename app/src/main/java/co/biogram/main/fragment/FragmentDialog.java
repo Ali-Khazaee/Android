@@ -3,8 +3,6 @@ package co.biogram.main.fragment;
 import android.view.View;
 import android.view.ViewGroup;
 
-import co.biogram.main.handler.Misc;
-
 public abstract class FragmentDialog
 {
     public FragmentActivity Activity;

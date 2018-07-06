@@ -1,6 +1,7 @@
 package co.biogram.main;
 
 import android.content.res.Configuration;
+import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.os.Bundle;
@@ -43,6 +44,11 @@ public class MainActivity extends FragmentActivity
         setContentView(FrameLayoutMain);
 
         GetManager().OpenView(new Profile_Private_UI(), "Profile_Private_UI");
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        Misc.Debug(dm.widthPixels + " - " + dm.heightPixels);
     }
 }
 

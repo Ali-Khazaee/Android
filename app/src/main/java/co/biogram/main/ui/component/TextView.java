@@ -22,6 +22,10 @@ public class TextView extends android.widget.TextView
     public TextView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
+
+        if (isInEditMode())
+            return;
+
         setTypeface(Misc.GetTypeface());
     }
 }
