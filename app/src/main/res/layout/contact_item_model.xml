@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="75dp">
+                android:layout_height="75dp" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <co.biogram.main.ui.component.CircleImageView
         android:id="@+id/CircleImageViewProfile"
@@ -39,18 +39,18 @@
         android:text="Hi baby I"
         android:textSize="11sp"  />
 
-    <ImageView
-        android:id="@+id/ImageViewSelectState"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_follow_block"
-        android:visibility="invisible"
 
-   />
+    <co.biogram.main.ui.view.CircleCheckBox
+        android:id="@+id/CheckBoxSelectState"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:scaleY="1.3"
+        android:scaleX="1.3"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        app:circleBorderColor="#1e88e5"
+        app:innerCircleColor="#1e88e5"/>
 
 </RelativeLayout>

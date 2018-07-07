@@ -1,28 +1,26 @@
 package co.biogram.main.ui.chat;
 
-import android.content.Context;
+import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import co.biogram.main.BuildConfig;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
+import co.biogram.main.ui.view.CircleCheckBox;
+import co.biogram.main.ui.view.EditTextTag;
 
 import java.util.ArrayList;
 
@@ -32,6 +30,8 @@ import java.util.ArrayList;
 
 public class Contact_UI extends FragmentView
 {
+    private ImageButton SendButton;
+    private EditTextTag editTextSearch;
 
     @Override
     public void OnCreate()
@@ -42,8 +42,9 @@ public class Contact_UI extends FragmentView
 
         RecyclerView RecyclerView = view.findViewById(R.id.RecyclerViewContacts);
 
-        final EditText EditTextSearch = view.findViewById(R.id.EditTextSearch);
-        Button SendButton = view.findViewById(R.id.ButtonNewMessage);
+        editTextSearch = view.findViewById(R.id.EditTextSearch);
+        SendButton = view.findViewById(R.id.ImageButtonCreate);
+
 
         final ContactAdapter ContactAdapter = new ContactAdapter(null);
 
@@ -51,25 +52,18 @@ public class Contact_UI extends FragmentView
         RecyclerView.setLayoutManager(layoutManager);
         RecyclerView.setAdapter(ContactAdapter);
 
-        SendButton.setTypeface(Misc.GetTypeface());
-        EditTextSearch.setTypeface(Misc.GetTypeface());
+        Misc.SetCursorColor(editTextSearch, R.color.Primary);
+        ViewCompat.setBackgroundTintList(editTextSearch, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
+        editTextSearch.setHint(Misc.String(R.string.ChatUISearch));
 
-        view.findViewById(R.id.ImageButtonClear).setOnClickListener(new View.OnClickListener()
+        ((EditText)view.findViewById(R.id.TextViewName)).setTypeface(Misc.GetTypeface());
+
+        view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                EditTextSearch.setText("");
-                ContactAdapter.filter("");
-            }
-        });
-
-        view.findViewById(R.id.ImageButtonSearch).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                ContactAdapter.filter(EditTextSearch.getText().toString());
+                Activity.onBackPressed();
             }
         });
 
@@ -82,7 +76,8 @@ public class Contact_UI extends FragmentView
             }
         });
 
-        EditTextSearch.addTextChangedListener(new TextWatcher()
+
+        editTextSearch.setTextWatcher(new TextWatcher()
         {
 
             @Override
@@ -94,7 +89,8 @@ public class Contact_UI extends FragmentView
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                ContactAdapter.filter(s.toString());
+                ContactAdapter.filter(String.valueOf(s));
+
             }
 
             @Override
@@ -102,12 +98,8 @@ public class Contact_UI extends FragmentView
             {
 
             }
-
         });
 
-        InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(EditTextSearch, InputMethodManager.SHOW_IMPLICIT);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         ViewMain = view;
     }
@@ -118,8 +110,7 @@ public class Contact_UI extends FragmentView
         private ArrayList<ContactEntity> Contacts = new ArrayList<>();
         private ArrayList<ContactEntity> DataCopy = new ArrayList<>();
 
-        //TODO Change It When JSON Format Is Available
-        private SparseBooleanArray CheckState = new SparseBooleanArray();
+        private int count = 0;
 
         public ContactAdapter(ArrayList<ContactEntity> data)
         {
@@ -167,7 +158,7 @@ public class Contact_UI extends FragmentView
         {
             ArrayList<ContactEntity> result = new ArrayList<>();
             for (int i = 0; i < Contacts.size(); i++)
-                if (CheckState.get(i))
+                if (Contacts.get(i).isSelected)
                 {
                     result.add(Contacts.get(i));
                 }
@@ -222,7 +213,7 @@ public class Contact_UI extends FragmentView
             CircleImageView ProfileImage;
             TextView Username;
             TextView UserId;
-            ImageView SelectState;
+            CircleCheckBox SelectState;
 
             public ViewHolder(View itemView)
             {
@@ -230,49 +221,48 @@ public class Contact_UI extends FragmentView
                 ProfileImage = itemView.findViewById(R.id.CircleImageViewProfile);
                 Username = itemView.findViewById(R.id.TextViewUsername);
                 UserId = itemView.findViewById(R.id.TextViewUserID);
-                SelectState = itemView.findViewById(R.id.ImageViewSelectState);
+                SelectState = itemView.findViewById(R.id.CheckBoxSelectState);
 
                 Username.setTypeface(Misc.GetTypeface());
                 UserId.setTypeface(Misc.GetTypeface());
 
-                itemView.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (SelectState.getVisibility() == View.VISIBLE)
-                        {
-                            CheckState.put(getAdapterPosition(), false);
-                            SelectState.setVisibility(View.INVISIBLE);
-                        }
-                        else
-                        {
-                            CheckState.put(getAdapterPosition(), true);
-                            SelectState.setVisibility(View.VISIBLE);
-                        }
-                        if (BuildConfig.DEBUG)
-                            Log.d("BooleanAssertion", "Position:" + getAdapterPosition() + "Value:" + (CheckState.get(getAdapterPosition()) ? CheckState.get(getAdapterPosition()) : "NO VALUE"));
-                    }
-                });
 
             }
 
-            public void bind(int position)
+            public void bind(final int position)
             {
                 ContactEntity model = Contacts.get(position);
 
                 GlideApp.with(Activity).load(model.Profile).placeholder(R.color.Primary).into(ProfileImage);
                 Username.setText(model.Username);
                 UserId.setText(model.UserID);
+                SelectState.setCheckedCode(model.isSelected);
 
-                if (CheckState.size() == 0 || !CheckState.get(position))
+                SelectState.setOnCheckedChangeListener(new CircleCheckBox.OnCheckedChangeListener()
                 {
-                    SelectState.setVisibility(View.INVISIBLE);
-                }
-                else
-                {
-                    SelectState.setVisibility(View.VISIBLE);
-                }
+                    @Override
+                    public void onCheckedChanged(CircleCheckBox view, boolean isChecked)
+                    {
+                        ContactEntity contactEntity = Contacts.get(getAdapterPosition());
+                        contactEntity.isSelected = isChecked;
+
+
+                        if (isChecked){
+                            editTextSearch.Add(contactEntity.Username);
+                            count++;
+                        }
+                        else
+                            count--;
+
+                        // TODO Add Delete
+
+                        if (count>0)
+                            SendButton.setVisibility(View.VISIBLE);
+                        else
+                            SendButton.setVisibility(View.INVISIBLE);
+
+                    }
+                });
 
             }
 
@@ -285,6 +275,7 @@ public class Contact_UI extends FragmentView
         String Profile;
         String Username;
         String UserID;
+        boolean isSelected;
 
         public ContactEntity(String profile, String username, String userID)
         {

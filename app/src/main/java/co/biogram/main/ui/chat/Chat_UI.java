@@ -801,17 +801,18 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
             public void bind(int position)
             {
-                TextViewTime.setText(MessageList.get(position).CurrentTime);
-                ImageViewSeen.setVisibility((MessageList.get(position).IsSeen ? VISIBLE : GONE));
+                ChatModel chatModel = MessageList.get(position);
+                TextViewTime.setText(chatModel.CurrentTime);
+                ImageViewSeen.setVisibility((chatModel.IsSeen ? VISIBLE : GONE));
                 if (CHAT_MODE == MODE_GROUP)
-                    TextViewUserName.setText(MessageList.get(position).UserID);
+                    TextViewUserName.setText(chatModel.UserID);
 
-                if (position > 0 && MessageList.get(position).UserID.equals(MessageList.get(position - 1).UserID))
+                if (position > 0 && chatModel.UserID.equals(MessageList.get(position - 1).UserID))
                 {
                     MessageList.get(position - 1).IsSecond = true;
                 }
 
-                MessageList.get(position).setLayout(itemView);
+                chatModel.setLayout(itemView);
 
             }
         }
@@ -903,7 +904,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     }
                 });
 
-                TextViewLength.setText(((AudioChatModel) MessageList.get(position)).getLength());
+                AudioChatModel audioChatModel = (AudioChatModel) MessageList.get(position);
+                TextViewLength.setText(audioChatModel.getLength());
 
                 Player.getPlayer().setOnPreparedListener(new MediaPlayer.OnPreparedListener()
                 {
@@ -958,7 +960,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     }
                 });
 
-                Player.setData(((AudioChatModel) MessageList.get(position)).getFile().getAbsolutePath());
+                Player.setData(audioChatModel.getFile().getAbsolutePath());
 
             }
 
@@ -980,7 +982,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                 super.bind(position);
 
-                Bitmap bitmap = ((ImageChatModel) MessageList.get(position)).buildBitmap();
+                ImageChatModel imageChatModel = (ImageChatModel) MessageList.get(position);
+                Bitmap bitmap = imageChatModel.buildBitmap();
                 ConstraintLayout.LayoutParams layoutParams;
                 if (bitmap != null)
                     layoutParams = new ConstraintLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
@@ -1025,10 +1028,11 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                 super.bind(position);
 
-                TextViewLength.setText(((VideoChatModel) MessageList.get(position)).getLength());
+                final VideoChatModel videoChatModel = (VideoChatModel) MessageList.get(position);
+                TextViewLength.setText(videoChatModel.getLength());
                 TextViewSize.setText(((AudioChatModel) MessageList.get(position)).getSize());
 
-                Bitmap bitmap = Misc.scale(((VideoChatModel) MessageList.get(position)).buildBitmap());
+                Bitmap bitmap = Misc.scale(videoChatModel.buildBitmap());
 
                 ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
 
@@ -1039,7 +1043,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new VideoPreviewUI(((VideoChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), true, true), "VideoPreviewUI", true);
+                        Activity.GetManager().OpenView(new VideoPreviewUI(videoChatModel.getFile().getAbsolutePath(), true, true), "VideoPreviewUI", true);
 
                     }
                 });
@@ -1048,7 +1052,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new VideoPreviewUI(((VideoChatModel) MessageList.get(getAdapterPosition())).getFile().getAbsolutePath(), true, true), "VideoPreviewUI", true);
+                        Activity.GetManager().OpenView(new VideoPreviewUI(videoChatModel.getFile().getAbsolutePath(), true, true), "VideoPreviewUI", true);
 
                     }
                 });
@@ -1077,16 +1081,17 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                 super.bind(position);
 
-                TextViewName.setText((((FileChatModel) MessageList.get(position)).getFileName()));
-                TextViewDetail.setText((((FileChatModel) MessageList.get(position)).getFileDetail()));
+                final FileChatModel fileChatModel = (FileChatModel) MessageList.get(position);
+                TextViewName.setText((fileChatModel.getFileName()));
+                TextViewDetail.setText((fileChatModel.getFileDetail()));
                 ImageButtonDownload.setOnClickListener(new OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        if (!((BaseFileChatModel) MessageList.get(getAdapterPosition())).IsDownloaded)
+                        if (!fileChatModel.IsDownloaded)
                         {
-                            ((FileChatModel) MessageList.get(getAdapterPosition())).saveFile();
+                            fileChatModel.saveFile();
                         }
 
                         MimeTypeMap map = MimeTypeMap.getSingleton();

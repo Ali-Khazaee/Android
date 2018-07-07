@@ -385,4 +385,5 @@
     <string name="ChatUIGroupName">Group name</string>
     <string name="ChatUIGroupMembers">Group members</string>
     <string name="GroupInfo">Group Info</string>
+    <string name="SelectContact">Select Contacts</string>
 </resources>

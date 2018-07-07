@@ -27,6 +27,8 @@
     <string name="ChatUIGroupName">نام گروه</string>
     <string name="ChatUIGroupMembers">اعضا گروه</string>
     <string name="GroupInfo">اطلاعات</string>
+    <string name="SelectContact">انتخاب کاربر</string>
+
 
 
     <!-- Social Profile Special Center UI -->

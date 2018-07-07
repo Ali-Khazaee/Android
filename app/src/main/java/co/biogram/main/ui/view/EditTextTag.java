@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -18,15 +19,15 @@ import android.view.inputmethod.InputConnectionWrapper;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import co.biogram.main.R;
+import co.biogram.main.handler.Misc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import co.biogram.main.R;
-import co.biogram.main.handler.Misc;
-
 public class EditTextTag extends FrameLayout implements View.OnClickListener, TextView.OnEditorActionListener, View.OnKeyListener {
     private Drawable DrawableTag;
+
     private EditText EditTextMain;
     private FlowLayout FlowLayoutMain;
     private TextView LastSelectTagView;
@@ -155,6 +156,31 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
         return false;
     }
 
+    public boolean Add(String name) {
+        if (TagList.size() > 7)
+            return false;
+
+        String Tag = name;
+
+        if (Tag.length() > 1 && Tag.length() < 32) {
+            TextView TagView = CreateTag(Tag);
+            TagView.setOnClickListener(EditTextTag.this);
+
+            FlowLayoutMain.addView(TagView, FlowLayoutMain.getChildCount() - 1);
+            EditTextMain.getText().clear();
+            EditTextMain.performClick();
+            IsDelAction = false;
+            TagList.add(Tag);
+
+            if (DrawableTag == null)
+                DrawableTag = TagView.getBackground();
+
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getTag() == null) {
@@ -222,6 +248,16 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
             IsDelAction = false;
         }
     }
+
+    public void setTextWatcher(TextWatcher listener)
+    {
+        EditTextMain.addTextChangedListener(listener);
+    }
+
+    public void setHint(String Message){
+        EditTextMain.setHint(Message);
+    }
+
 
     public void hideEditText() {
         EditTextMain.setVisibility(View.GONE);
