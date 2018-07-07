@@ -30,7 +30,8 @@
             android:layout_width="@dimen/ActionBar"
             android:layout_height="@dimen/ActionBar"
             android:src="@drawable/general_close"
-            android:padding="18dp"
+            android:padding="10dp"
+            android:background="?android:attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <co.biogram.main.ui.component.TextView
@@ -50,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/ActionLine"
             android:background="?LineColor"
-            app:layout_constraintBottom_toBottomOf="@+id/TextViewGallery" />
+            app:layout_constraintTop_toBottomOf="@+id/TextViewGallery" />
 
         <co.biogram.main.ui.component.TextView
             android:id="@+id/TextViewCamera"
@@ -69,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/ActionLine"
             android:background="?LineColor"
-            app:layout_constraintBottom_toBottomOf="@+id/TextViewCamera" />
+            app:layout_constraintTop_toBottomOf="@+id/TextViewCamera" />
 
         <co.biogram.main.ui.component.TextView
             android:id="@+id/TextViewRemove"
@@ -78,11 +79,10 @@
             android:padding="15dp"
             android:textColor="?TextColor"
             android:textSize="@dimen/FontSmall"
-              android:background="?android:attr/selectableItemBackground"
+            android:background="?android:attr/selectableItemBackground"
             android:text="@string/SocialProfilePrivateProfileRemove"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ViewLine2" />
-
 
     </android.support.constraint.ConstraintLayout>
 

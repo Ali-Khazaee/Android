@@ -1,0 +1,67 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?BgColor"
+    android:clickable="true"
+    android:focusable="true">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionBar"
+        android:background="?ActionColor" />
+
+    <ImageView
+        android:id="@+id/ImageViewClose"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:padding="10dp"
+        android:src="@drawable/general_back"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <co.biogram.main.ui.component.TextView
+        android:id="@+id/TextViewPage"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/ActionBar"
+        android:textStyle="bold"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textSize="@dimen/FontMedium"
+        android:textColor="?TextColor"
+        android:gravity="center"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintStart_toEndOf="@id/ImageViewClose" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/general_arrow_down"
+        app:layout_constraintTop_toTopOf="@id/ImageViewClose"
+        app:layout_constraintBottom_toBottomOf="@id/ImageViewClose"
+        app:layout_constraintStart_toEndOf="@+id/TextViewPage" />
+
+    <ImageView
+        android:id="@+id/ImageViewDone"
+        android:layout_width="@dimen/ActionBar"
+        android:layout_height="@dimen/ActionBar"
+        android:padding="10dp"
+        android:src="@drawable/general_done"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/ViewLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ActionLine"
+        android:background="?LineColor"
+        app:layout_constraintTop_toBottomOf="@+id/ImageViewClose" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerViewMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/ViewLine" />
+
+</android.support.constraint.ConstraintLayout>

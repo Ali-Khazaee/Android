@@ -5,6 +5,7 @@ import android.content.Intent;
 
 public abstract class FragmentView
 {
+    public long Time = System.currentTimeMillis();
     public FragmentActivity Activity;
     public View ViewMain;
     public String Tag;

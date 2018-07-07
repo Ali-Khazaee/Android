@@ -15,7 +15,8 @@ import co.biogram.main.fragment.FragmentDialog;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.component.PermissionDialog;
+import co.biogram.main.ui.general.Permission_UI;
+import co.biogram.main.ui.general.Gallery_UI;
 
 public class Profile_Private_UI extends FragmentView
 {
@@ -235,16 +236,44 @@ public class Profile_Private_UI extends FragmentView
         {
             ViewMain = View.inflate(Activity, R.layout.social_profile_private_profile, null);
 
-            ViewMain.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { OnDestroy(); } });
+            ViewMain.findViewById(R.id.ImageViewClose).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
             ViewMain.findViewById(R.id.TextViewGallery).setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    PermissionDialog Dialog = new PermissionDialog(R.drawable.general_permission_storage, R.string.GeneralPermissionMessageStorageRead, Manifest.permission.READ_EXTERNAL_STORAGE);
+                    Activity.GetManager().OpenDialog(new Permission_UI(R.drawable.general_permission_storage, R.string.GeneralPermissionMessageStorageRead, Manifest.permission.READ_EXTERNAL_STORAGE, new Permission_UI.OnPermissionListener()
+                    {
+                        @Override
+                        public void OnPermission(boolean Result)
+                        {
+                            if (!Result)
+                                return;
 
-                    Activity.GetManager().OpenDialog(Dialog);
+                            Activity.GetManager().OpenView(new Gallery_UI(1, Gallery_UI.TYPE_IMAGE, new Gallery_UI.OnGalleryListener()
+                            {
+                                @Override
+                                public void OnAdd(String path)
+                                {
+
+                                }
+
+                                @Override
+                                public void OnRemove(String path)
+                                {
+
+                                }
+
+                                @Override
+                                public void OnDone()
+                                {
+
+                                }
+                            }), "Gallery_UI");
+
+                        }
+                    }));
                 }
             });
 
@@ -253,7 +282,7 @@ public class Profile_Private_UI extends FragmentView
                 @Override
                 public void onClick(View v)
                 {
-                    OnDestroy();
+                    Activity.onBackPressed();
                 }
             });
 
@@ -262,7 +291,7 @@ public class Profile_Private_UI extends FragmentView
                 @Override
                 public void onClick(View v)
                 {
-                    OnDestroy();
+                    Activity.onBackPressed();
                 }
             });
 

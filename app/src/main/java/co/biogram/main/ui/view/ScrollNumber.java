@@ -47,7 +47,7 @@ public class ScrollNumber extends LinearLayout {
 
         ImageView Down = new ImageView(c);
         Down.setLayoutParams(new LinearLayout.LayoutParams(Misc.ToDP(32), Misc.ToDP(32)));
-        Down.setImageResource(R.drawable.__general_arrow_blue_down);
+        Down.setImageResource(R.drawable.general_arrow_down);
         Down.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

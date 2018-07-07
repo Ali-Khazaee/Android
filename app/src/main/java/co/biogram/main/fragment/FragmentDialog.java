@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 public abstract class FragmentDialog
 {
+    public long Time = System.currentTimeMillis();
     public FragmentActivity Activity;
     public View ViewMain;
 

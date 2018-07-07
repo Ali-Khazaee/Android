@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 
 import co.biogram.main.R;
+import co.biogram.main.handler.Misc;
 
 public class FragmentManager
 {
@@ -68,25 +69,26 @@ public class FragmentManager
         FragmentViewList.add(CurrentFrag);
     }
 
-    public void DismissDialog()
-    {
-        if (FragmentDialogList.size() > 0)
-        {
-            FragmentDialogList.get(FragmentDialogList.size() - 1).OnDestroy();
-            FragmentDialogList.remove(FragmentDialogList.size() - 1);
-        }
-    }
-
     boolean HandleBack()
     {
-        if (FragmentDialogList.size() > 0)
+        long ViewTime = 0;
+        long DialogTime = 0;
+
+        for (int I = 0; I < FragmentDialogList.size(); I++)
+            if (DialogTime < FragmentDialogList.get(I).Time)
+                DialogTime = FragmentDialogList.get(I).Time;
+
+        for (int I = 0; I < FragmentViewList.size(); I++)
+            if (ViewTime < FragmentViewList.get(I).Time)
+                ViewTime = FragmentViewList.get(I).Time;
+
+        if (DialogTime > ViewTime && FragmentDialogList.size() > 0)
         {
             FragmentDialogList.get(FragmentDialogList.size() - 1).OnDestroy();
             FragmentDialogList.remove(FragmentDialogList.size() - 1);
             return false;
         }
-
-        if (FragmentViewList.size() > 1)
+        else if (DialogTime < ViewTime && FragmentViewList.size() > 1)
         {
             FragmentView Frag = FragmentViewList.get(FragmentViewList.size() - 1);
             Frag.OnPause();

@@ -100,6 +100,10 @@ public class Misc
         return context.getString(ID);
     }
 
+    public static boolean CheckPermission(String p)
+    {
+        return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
+    }
 
 
 
@@ -260,10 +264,7 @@ public class Misc
         return S;
     }
 
-    public static boolean CheckPermission(String p)
-    {
-        return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
-    }
+
 
     public static void SetCursorColor(View view, int Color)
     {
