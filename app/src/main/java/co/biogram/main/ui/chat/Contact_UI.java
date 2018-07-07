@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import co.biogram.main.R;
@@ -56,7 +55,7 @@ public class Contact_UI extends FragmentView
         ViewCompat.setBackgroundTintList(editTextSearch, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
         editTextSearch.setHint(Misc.String(R.string.ChatUISearch));
 
-        ((EditText)view.findViewById(R.id.TextViewName)).setTypeface(Misc.GetTypeface());
+        ((TextView)view.findViewById(R.id.TextViewName)).setTypeface(Misc.GetTypeface());
 
         view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
         {

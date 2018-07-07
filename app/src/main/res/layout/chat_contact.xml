@@ -4,7 +4,6 @@
                 android:layout_height="match_parent">
 
 
-
     <ImageButton
         android:id="@+id/ImageButtonBack"
         android:layout_width="@dimen/ActionBar"
