@@ -85,7 +85,7 @@
 
     <!-- General -->
     <string name="PermissionStorage">To access this section you must allow biogram to get access to your storage</string>
-    <string name="PermissionMic">To use this section you must allow biogram to get access to your microphone</string>
+    <string name="PermissionMic">To access this section you must allow biogram to get access to your microphone</string>
 
     <string name="GeneralNoInternet">Check your connection</string>
 
@@ -281,6 +281,7 @@
     <string name="WriteUICategoryNone">none</string>
     <string name="WriteUIMaximumImage">You have reached to maximum image</string>
     <string name="WriteUIPermissionStorage">Please allow biogram to access your storage, This will help to complete your request</string>
+    <string name="WriteUIPermissionMic">Please allow biogram to access your microphone, This will help to complete your request</string>
     <string name="WriteUIVideoLength">Video length is to high, maximum is 240 seconds</string>
     <string name="WriteUIMB">MB</string>
     <string name="WriteUISeconds">Seconds</string>
@@ -386,4 +387,5 @@
     <string name="ChatUIGroupMembers">Group members</string>
     <string name="GroupInfo">Group Info</string>
     <string name="SelectContact">Select Contacts</string>
+    <string name="Chat_Reciver">To:</string>
 </resources>

@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -159,13 +158,14 @@ public class Chat_GroupCreate_UI extends FragmentView
                                     {
                                         ((ImageView) view.findViewById(R.id.ImageViewProfile)).setImageBitmap(BitmapFactory.decodeFile(Path));
 
-                                        Activity.GetManager().OpenView(new CropViewUI(Path, false, new CropViewUI.OnCropListener() {
+                                        Activity.GetManager().OpenView(new CropViewUI(Path, false, new CropViewUI.OnCropListener()
+                                        {
                                             @Override
-                                            public void OnCrop(Bitmap bitmap) {
+                                            public void OnCrop(Bitmap bitmap)
+                                            {
                                             }
                                         }), "CropViewUI", true);
 
-                                        Log.d("KIRI","RUN MISHI?");
                                     }
                                 }), "GalaryViewUI", true);
                             }
@@ -178,6 +178,8 @@ public class Chat_GroupCreate_UI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
+
+                        ((ImageView) view.findViewById(R.id.ImageViewProfile)).setImageResource(R.drawable.camera_bluegray2);
                         dialog.dismiss();
 
                     }

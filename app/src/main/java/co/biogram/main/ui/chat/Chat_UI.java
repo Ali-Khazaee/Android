@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.*;
 import android.net.Uri;
@@ -34,14 +36,14 @@ import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.EmojiTextView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.widget.SeekBar.*;
 
@@ -135,12 +137,14 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
+
                 if (EditTextMessage.getText().toString().trim().length() > 0)
                 {
                     if (isSendIconGray)
                     {
                         ImageButtonSend.setImageResource(R.drawable.ic_back112323_blue_fa);
                         isSendIconGray = false;
+
                     }
                 }
                 else
@@ -506,7 +510,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                                 if (!Allow)
                                 {
                                     Misc.ToastOld(Misc.String(R.string.PermissionStorage));
-                                    return;
                                 }
                             }
                         });
@@ -535,76 +538,91 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             {
                 Misc.closeKeyboard(Activity);
 
+                if (!Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                {
+                    if (PermissionRequest == null)
+                        PermissionRequest = new PermissionDialog(Activity);
+                    if (!PermissionRequest.isShowing())
+                        PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.WriteUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
+                        {
+                            @Override
+                            public void OnChoice(boolean Result)
+                            {
+                                if (!Result)
+                                {
+                                    Misc.ToastOld(Misc.String(R.string.PermissionStorage));
+                                }
+                            }
+                        });
+                }
+
                 if (!Misc.CheckPermission(Manifest.permission.RECORD_AUDIO))
                 {
                     if (PermissionRequest == null)
                         PermissionRequest = new PermissionDialog(Activity);
                     if (!PermissionRequest.isShowing())
-                        PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.PermissionMic, Manifest.permission.RECORD_AUDIO, new PermissionDialog.OnChoiceListener()
+                        PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.WriteUIPermissionMic, Manifest.permission.RECORD_AUDIO, new PermissionDialog.OnChoiceListener()
                         {
                             @Override
                             public void OnChoice(boolean Result)
                             {
+                                if (!Result)
+                                {
+                                    Misc.ToastOld(Misc.String(R.string.PermissionMic));
+                                }
                             }
                         });
                 }
-
-                //        if (!Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                //            if (PermissionRequest == null)
-                //                PermissionRequest = new PermissionDialog(Activity);
-                //            if (!PermissionRequest.isShowing())
-                //                PermissionRequest.SetContentView(R.drawable.ic_profile123_black, R.string.PermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
-                //                    @Override
-                //                    public void OnChoice(boolean Result) {
-                //                    }
-                //                });
-                //        }
-
-                switch (event.getAction())
+                else
                 {
-                    case MotionEvent.ACTION_DOWN:
-                    {
 
-                        if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                            AudioPlayer.load(Activity.getBaseContext(), R.raw.auido_hold, 1);
-                        else
+                    switch (event.getAction())
+                    {
+                        case MotionEvent.ACTION_DOWN:
                         {
-                            Vibrator vib = (Vibrator) Activity.getSystemService(Context.VIBRATOR_SERVICE);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                            {
-                                vib.vibrate(VibrationEffect.createOneShot(20, VibrationEffect.DEFAULT_AMPLITUDE));
-                            }
+
+                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                AudioPlayer.load(Activity.getBaseContext(), R.raw.auido_hold, 1);
                             else
                             {
-                                vib.vibrate(20);
+                                Vibrator vib = (Vibrator) Activity.getSystemService(Context.VIBRATOR_SERVICE);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                {
+                                    vib.vibrate(VibrationEffect.createOneShot(40, VibrationEffect.DEFAULT_AMPLITUDE));
+                                }
+                                else
+                                {
+                                    vib.vibrate(40);
+                                }
+                            }
+
+                            FABAudio.setVisibility(View.VISIBLE);
+                            FABAudio.animate().scaleX(1).scaleY(1).alpha(1).setDuration(100).start();
+
+                            startRecord();
+
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP:
+                        {
+
+                            FABAudio.animate().scaleX(0).scaleY(0).alpha(0).setDuration(100).start();
+                            FABAudio.setVisibility(View.GONE);
+
+                            pauseRecord();
+                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                AudioPlayer.load(Activity.getBaseContext(), R.raw.audio_release, 1);
+                            AudioChatModel model = new AudioChatModel(Filename);
+
+                            EditTextMessage.setText("");
+                            if (!model.getLength().equals("00:00"))
+                            {
+                                ChatAdapter.addChat(model);
+                                ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
                             }
                         }
-
-                        FABAudio.setVisibility(View.VISIBLE);
-                        FABAudio.animate().scaleX(1).scaleY(1).alpha(1).setDuration(100).start();
-
-                        startRecord();
-
-                        break;
                     }
-                    case MotionEvent.ACTION_UP:
-                    {
 
-                        FABAudio.animate().scaleX(0).scaleY(0).alpha(0).setDuration(100).start();
-                        FABAudio.setVisibility(View.GONE);
-
-                        pauseRecord();
-                        if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                            AudioPlayer.load(Activity.getBaseContext(), R.raw.audio_release, 1);
-                        AudioChatModel model = new AudioChatModel(Filename);
-
-                        EditTextMessage.setText("");
-                        if (!model.getLength().equals("00:00"))
-                        {
-                            ChatAdapter.addChat(model);
-                            ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-                        }
-                    }
                 }
 
                 return true;
@@ -813,14 +831,13 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 }
 
                 chatModel.setLayout(itemView);
-
             }
         }
 
         private class TextViewHolder extends CustomViewHolder
         {
 
-            private TextView TextViewChat;
+            private EmojiTextView TextViewChat;
 
             public TextViewHolder(View itemView)
             {
@@ -834,7 +851,52 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             {
                 super.bind(position);
 
-                TextViewChat.setText(((TextChatModel) MessageList.get(position)).getTextMessage());
+                String textMessage = ((TextChatModel) MessageList.get(position)).getTextMessage();
+                TextViewChat.setEmojiSize(Misc.ToSP(22));
+                TextViewTime.setVisibility(VISIBLE);
+
+                if (CHAT_MODE == MODE_SINGLE)
+                {
+                    try
+                    {
+                        String regexPattern = "^[\uD83C-\uDBFF\uDC00-\uDFFF]+$";
+                        byte[] utf8 = textMessage.getBytes("UTF-8");
+
+                        String text = new String(utf8, "UTF-8");
+
+                        Pattern pattern = Pattern.compile(regexPattern);
+                        Matcher matcher = pattern.matcher(text);
+
+                        if (matcher.find())
+                        {
+                            itemView.findViewById(R.id.ConstraintLayoutChat).setBackground(null);
+                            TextViewTime.setVisibility(GONE);
+
+                            switch (textMessage.length())
+                            {
+                                case 2:
+                                    TextViewChat.setEmojiSize(Misc.ToSP(68));
+                                    break;
+                                case 4:
+                                    TextViewChat.setEmojiSize(Misc.ToSP(50));
+                                    break;
+                                case 6:
+                                    TextViewChat.setEmojiSize(Misc.ToSP(38));
+                                    break;
+                                case 8:
+                                    TextViewChat.setEmojiSize(Misc.ToSP(28));
+                                    break;
+
+                            }
+                        }
+
+                    }
+                    catch (UnsupportedEncodingException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                TextViewChat.setText(textMessage);
 
             }
 
@@ -1131,7 +1193,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             today.setToNow();
             UserID = "SOH_MIL";
             CurrentTime = today.format("%k:%M");
-            IsFromUser = true;
+            IsFromUser = false;
             IsSeen = isSeen;
             ChatType = chatType;
         }
@@ -1342,13 +1404,16 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             super.setLayout(view);
 
+            ImageButton downloadIcon = view.findViewById(R.id.ImageButtonDownload);
+            if (IsDownloaded)
+                downloadIcon.setImageResource(R.drawable.__gallery_file);
+
             if (IsFromUser)
             {
                 ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_white_chat_file_bg);
-                if (IsDownloaded)
-                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable.__gallery_file);
+
                 //                else
                 //                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable._general_download);
 
@@ -1358,8 +1423,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_blue_chat_file_bg);
-                if (IsDownloaded)
-                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable.__gallery_folder);
+                downloadIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
                 //                else
                 //                    ((ImageButton) view.findViewById(R.id.ImageButtonDownload)).setImageResource(R.drawable._general_download);a
             }
@@ -1451,12 +1515,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             return retriever.getFrameAtTime(50);
         }
 
-        @Override
-        public void setLayout(View view)
-        {
-            super.setLayout(view);
-
-        }
     }
 }
 

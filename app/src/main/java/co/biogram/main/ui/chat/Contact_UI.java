@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import co.biogram.main.R;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 public class Contact_UI extends FragmentView
 {
     private ImageButton SendButton;
-    private EditTextTag editTextSearch;
+    private EditTextTag EditTextTaqs;
 
     @Override
     public void OnCreate()
@@ -41,9 +42,9 @@ public class Contact_UI extends FragmentView
 
         RecyclerView RecyclerView = view.findViewById(R.id.RecyclerViewContacts);
 
-        editTextSearch = view.findViewById(R.id.EditTextSearch);
+        EditTextTaqs = view.findViewById(R.id.EditTextTaqContacts);
         SendButton = view.findViewById(R.id.ImageButtonCreate);
-
+        EditText editTextSearch = view.findViewById(R.id.EditTextSearch);
 
         final ContactAdapter ContactAdapter = new ContactAdapter(null);
 
@@ -51,11 +52,14 @@ public class Contact_UI extends FragmentView
         RecyclerView.setLayoutManager(layoutManager);
         RecyclerView.setAdapter(ContactAdapter);
 
+        ((TextView) view.findViewById(R.id.TextViewTo)).setTypeface(Misc.GetTypeface());
+        editTextSearch.setTypeface(Misc.GetTypeface());
         Misc.SetCursorColor(editTextSearch, R.color.Primary);
         ViewCompat.setBackgroundTintList(editTextSearch, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
-        editTextSearch.setHint(Misc.String(R.string.ChatUISearch));
 
-        ((TextView)view.findViewById(R.id.TextViewName)).setTypeface(Misc.GetTypeface());
+        EditTextTaqs.hideEditText();
+
+        ((TextView) view.findViewById(R.id.TextViewName)).setTypeface(Misc.GetTypeface());
 
         view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
         {
@@ -75,8 +79,7 @@ public class Contact_UI extends FragmentView
             }
         });
 
-
-        editTextSearch.setTextWatcher(new TextWatcher()
+        editTextSearch.addTextChangedListener(new TextWatcher()
         {
 
             @Override
@@ -98,7 +101,6 @@ public class Contact_UI extends FragmentView
 
             }
         });
-
 
         ViewMain = view;
     }
@@ -225,7 +227,6 @@ public class Contact_UI extends FragmentView
                 Username.setTypeface(Misc.GetTypeface());
                 UserId.setTypeface(Misc.GetTypeface());
 
-
             }
 
             public void bind(final int position)
@@ -245,21 +246,29 @@ public class Contact_UI extends FragmentView
                         ContactEntity contactEntity = Contacts.get(getAdapterPosition());
                         contactEntity.isSelected = isChecked;
 
-
-                        if (isChecked){
-                            editTextSearch.Add(contactEntity.Username);
+                        if (isChecked)
+                        {
+                            EditTextTaqs.Add(contactEntity.Username);
                             count++;
                         }
                         else
+                        {
+                            EditTextTaqs.RemoveTaq(contactEntity.Username);
                             count--;
+                        }
 
                         // TODO Add Delete
 
-                        if (count>0)
+                        if (count > 0)
+                        {
+                            EditTextTaqs.setVisibility(View.VISIBLE);
                             SendButton.setVisibility(View.VISIBLE);
+                        }
                         else
+                        {
+                            EditTextTaqs.setVisibility(View.GONE);
                             SendButton.setVisibility(View.INVISIBLE);
-
+                        }
                     }
                 });
 

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
 
@@ -187,7 +186,7 @@ public class Message_UI extends FragmentView
             {
                 final ContactEntity Chat = ContactList.get(Pos);
 
-                GlideApp.with(Activity).load(Chat.Profile).placeholder(R.color.Primary).into(CircleImageViewProfile);
+                //GlideApp.with(Activity).load(Chat.Profile).placeholder(R.color.Primary).into(CircleImageViewProfile);
 
                 TextViewUsername.setText(Chat.Username.length() > 19 ? (Chat.Username.substring(0, 19) + "...") : Chat.Username);
                 TextViewMessage.setText(Chat.Message.length() > 24 ? (Chat.Message.substring(0, 24) + "...") : Chat.Message);
@@ -201,7 +200,7 @@ public class Message_UI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new Chat_UI(Pos % 2), "Chat_UI", true);
+                        Activity.GetManager().OpenView(new Chat_UI(0), "Chat_UI", true);
                     }
                 });
             }

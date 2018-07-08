@@ -218,6 +218,10 @@ public class Misc
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
     }
 
+    public static int ToSP(float Value){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, Value, context.getResources().getDisplayMetrics());
+    }
+
     public static void ChangeTheme()
     {
         SharedPreferences.Editor Editor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
@@ -597,15 +601,14 @@ public class Misc
         int height = bitmap.getHeight();
         if (height > width)
         {
-
             if (height > 2000)
-                scale = 2.3f;
+                scale = 2.45f;
             else if (height > 1800)
-                scale = 1.8f;
+                scale = 2.0f;
             else if (height > 1300)
-                scale = 1.5f;
+                scale = 1.8f;
             else if (height > 1000)
-                scale = 1.3f;
+                scale = 1.5f;
             else if (height > 500)
                 scale = 0.7f;
             else if (height <= 250)
@@ -614,7 +617,6 @@ public class Misc
         }
         else
         {
-
             if (width > 3000)
                 scale = 3.5f;
             else if (width > 2400)
