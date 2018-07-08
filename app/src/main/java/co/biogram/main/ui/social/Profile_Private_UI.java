@@ -271,7 +271,6 @@ public class Profile_Private_UI extends FragmentView
 
                                 }
                             }), "Gallery_UI");
-
                         }
                     }));
                 }

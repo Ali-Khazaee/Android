@@ -6,6 +6,8 @@
         <item name="StatusColor">#ccc</item>
         <item name="ActionColor">#fff</item>
         <item name="ReverseTextColor">#fff</item>
+        <item name="ToastColor">#144766</item>
+        <item name="ToastBorderColor">#0a3148</item>
 
         <item name="android:overScrollMode">never</item>
     </style>

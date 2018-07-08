@@ -14,8 +14,10 @@ import android.view.View;
 
 import co.biogram.main.R;
 
-public class TagHandler {
-    public static void Show(TextView tv) {
+public class TagHandler
+{
+    public static void Show(TextView tv)
+    {
         if (tv.getText().length() <= 2)
             return;
 
@@ -26,12 +28,14 @@ public class TagHandler {
         int Index = 0;
         CharSequence Text = tv.getText();
 
-        while (Index < Text.length() - 1) {
+        while (Index < Text.length() - 1)
+        {
             char Sign = Text.charAt(Index);
             char NextSign = Text.charAt(Index + 1);
             int NextChar = Index + 1;
 
-            if ((Sign == '#' || Sign == '@') && (NextSign != '#' && NextSign != '@')) {
+            if ((Sign == '#' || Sign == '@') && (NextSign != '#' && NextSign != '@'))
+            {
                 NextChar = NextValidChar(Text, Index);
 
                 Spannable Span = (Spannable) Text;
@@ -44,14 +48,17 @@ public class TagHandler {
         }
     }
 
-    private static int NextValidChar(CharSequence Text, int Start) {
+    private static int NextValidChar(CharSequence Text, int Start)
+    {
         int CharIndex = -1;
 
-        for (int I = Start + 1; I < Text.length(); I++) {
+        for (int I = Start + 1; I < Text.length(); I++)
+        {
             char Sign = Text.charAt(I);
             boolean IsValidSign = Character.isLetterOrDigit(Sign) || Sign == '_' || Sign == '.';
 
-            if (!IsValidSign) {
+            if (!IsValidSign)
+            {
                 CharIndex = I;
                 break;
             }
@@ -63,37 +70,41 @@ public class TagHandler {
         return CharIndex;
     }
 
-    private static class HashTagSpan extends ClickableSpan {
+    private static class HashTagSpan extends ClickableSpan
+    {
         private Context context;
         private int Type;
 
-        HashTagSpan(int t, Context c) {
+        HashTagSpan(int t, Context c)
+        {
             Type = t;
             context = c;
         }
 
         @Override
-        public void updateDrawState(TextPaint tp) {
+        public void updateDrawState(TextPaint tp)
+        {
             tp.setColor(Misc.Color(R.color.Primary));
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             CharSequence Text = ((TextView) v).getText();
             Spanned Span = (Spanned) Text;
             int Start = Span.getSpanStart(this);
             int End = Span.getSpanEnd(this);
             String Message = Text.subSequence(Start + 1, End).toString();
 
-            if (Type == 1) {
-                Misc.ToastOld(Message + " - HashTag Clicked");
+            if (Type == 1)
+            {
 
                 // TODO Open View
-            } else if (Type == 2) {
+            }
+            else if (Type == 2)
+            {
                 if (Misc.GetString("Username").equalsIgnoreCase(Message))
                     return;
-
-                Misc.ToastOld(Message + " - ID Clicked");
 
                 // TODO Open View
             }

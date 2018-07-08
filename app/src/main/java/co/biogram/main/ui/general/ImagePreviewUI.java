@@ -47,7 +47,15 @@ import co.biogram.main.ui.view.TextView;
 
 public class ImagePreviewUI extends FragmentView
 {
+    @Override
+    public void OnCreate()
+    {
+        ViewMain = View.inflate(Activity, R.layout.general_image_preview, null);
+    }
+
+    /*
     private List<String> UrlList = new ArrayList<>();
+
     private RelativeLayout RelativeLayoutHeader;
     private OnSelectListener SelectListener;
     private ViewPager ViewPagerMain;
@@ -278,7 +286,7 @@ public class ImagePreviewUI extends FragmentView
                         /*DescriptionUI SignUpDescription = (DescriptionUI) Activity.GetManager().FindByTag("DescriptionUI");
 
                         if (SignUpDescription != null)
-                            SignUpDescription.Update(ProfileFile, false);*/
+                            SignUpDescription.Update(ProfileFile, false);/
 
                         Activity.onBackPressed();
                         Activity.onBackPressed();
@@ -319,7 +327,7 @@ public class ImagePreviewUI extends FragmentView
 
                     if (IsMax)
                     {
-                        Misc.ToastOld(Misc.String(R.string.GalleryViewUIReach));
+                        //Misc.ToastOld(Misc.String(R.string.GalleryViewUIReach));
                         return;
                     }
 
@@ -370,7 +378,7 @@ public class ImagePreviewUI extends FragmentView
                                 resource.compress(Bitmap.CompressFormat.PNG, 100, OS);
                                 OS.close();
 
-                                Misc.ToastOld(Misc.String(R.string.ImagePreviewUIDownloaded));
+                                //Misc.ToastOld(Misc.String(R.string.ImagePreviewUIDownloaded));
                             }
                             catch (Exception e)
                             {
@@ -502,5 +510,5 @@ public class ImagePreviewUI extends FragmentView
         {
             return UrlList.size();
         }
-    }
+    }*/
 }

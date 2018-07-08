@@ -7,7 +7,11 @@
     <string name="GeneralPermissionDialogDecline">رد کردن</string>
 
     <!-- General Permission Message -->
-    <string name="GeneralPermissionMessageStorageRead">جهت استفاده از این قسمت باید به برنامه مجوز دسترسی به خوانده اطلاعات را دهید</string>
+    <string name="GeneralPermissionMessageStorageRead">جهت استفاده از این قسمت باید به برنامه مجوز دسترسی به خوانده اطلاعات رسانه را دهید</string>
+
+    <!-- General Gallery UI -->
+    <string name="GeneralGalleryUI">البوم</string>
+    <string name="GeneralGalleryUIMaximum">حداکثر انتخاب رسانه %1$d عدد می باشد</string>
 
     <!-- Social Profile Private-->
     <string name="SocialProfilePrivate">صفحه شخصی</string>

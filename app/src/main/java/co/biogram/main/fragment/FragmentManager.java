@@ -31,9 +31,9 @@ public class FragmentManager
         {
             FrameLayout FrameLayoutMain = Activity.findViewById(R.id.ContainerFull);
             FrameLayoutMain.addView(Dialog.ViewMain);
-        }
 
-        FragmentDialogList.add(Dialog);
+            FragmentDialogList.add(Dialog);
+        }
     }
 
     public void OpenView(FragmentView FragView, String Tag)

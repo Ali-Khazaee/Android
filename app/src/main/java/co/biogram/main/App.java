@@ -1,6 +1,9 @@
 package co.biogram.main;
 
 import android.app.Application;
+import android.content.res.Configuration;
+
+import java.util.Locale;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -18,6 +21,15 @@ public class App extends Application
 
         LeakCanary.install(this);
 
+        Locale locale = new Locale("fa");
+        Locale.setDefault(locale);
+
+        Configuration Config = new Configuration();
+        Config.locale = locale;
+
+        getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
+
+        setTheme(Misc.GetTheme());
         Misc.SetUp(getApplicationContext());
     }
 }

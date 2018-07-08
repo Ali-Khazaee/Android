@@ -64,10 +64,10 @@ public class Misc
         return TempFolder;
     }
 
-    public static int Attr(Context c, int ID)
+    public static int Attr(int ID)
     {
         TypedValue Value = new TypedValue();
-        c.getTheme().resolveAttribute(ID, Value, true);
+        context.getTheme().resolveAttribute(ID, Value, true);
 
         return Value.resourceId != 0 ? Value.resourceId : Value.data;
     }
@@ -104,6 +104,105 @@ public class Misc
     {
         return ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED;
     }
+
+    public static void Toast(String Message)
+    {
+        GradientDrawable DrawableToast = new GradientDrawable();
+        DrawableToast.setStroke(ToDP(2), Attr(R.attr.ToastBorderColor));
+        DrawableToast.setColor(Attr(R.attr.ToastColor));
+        DrawableToast.setCornerRadius(10.0f);
+
+        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
+        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        RelativeLayoutMain.setBackground(DrawableToast);
+
+        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+        TextView TextViewMessage = new TextView(context);
+        TextViewMessage.setLayoutParams(TextViewMessageParam);
+        TextViewMessage.setPadding(ToDP(8), ToDP(8), ToDP(8), ToDP(8));
+        TextViewMessage.setTextColor(Attr(R.attr.ReverseTextColor));
+        TextViewMessage.setTypeface(GetTypeface());
+        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewMessage.setText(Message);
+
+        RelativeLayoutMain.addView(TextViewMessage);
+
+        Toast ToastMain = new Toast(context);
+        ToastMain.setGravity(Gravity.BOTTOM, 0, ToDP(65));
+        ToastMain.setDuration(Toast.LENGTH_SHORT);
+        ToastMain.setView(RelativeLayoutMain);
+        ToastMain.show();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -357,36 +456,6 @@ public class Misc
         IMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public static void ToastOld(int Message)
-    {
-        GradientDrawable drawableToast = new GradientDrawable();
-        drawableToast.setStroke(ToDP(1), Color(R.color.White));
-        drawableToast.setColor(Color(R.color.White));
-        drawableToast.setCornerRadius(10.0f);
-
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackground(drawableToast);
-
-        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        TextView TextViewMessage = new TextView(context);
-        TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setPadding(ToDP(15), ToDP(15), ToDP(15), ToDP(15));
-        TextViewMessage.setTypeface(GetTypeface());
-        TextViewMessage.setText(String(Message));
-        TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        TextViewMessage.setTextColor(Color(R.color.White));
-
-        RelativeLayoutMain.addView(TextViewMessage);
-
-        Toast toast = new Toast(context);
-        toast.setGravity(Gravity.BOTTOM, 0, ToDP(65));
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(RelativeLayoutMain);
-        toast.show();
-    }
 
     public static int generateViewId()
     {
@@ -453,33 +522,7 @@ public class Misc
             return IsRTL() ? Gravity.END : Gravity.START;
     }
 
-    public static void ToastOld(String Message)
-    {
-        GradientDrawable DrawableToast = new GradientDrawable();
-        DrawableToast.setColor(ContextCompat.getColor(context, R.color.White));
-        DrawableToast.setCornerRadius(10.0f);
-        DrawableToast.setStroke(ToDP(1), ContextCompat.getColor(context, R.color.White));
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackground(DrawableToast);
-
-        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-        TextView TextViewMessage = new TextView(context);
-        TextViewMessage.setLayoutParams(TextViewMessageParam);
-        TextViewMessage.setPadding(ToDP(15), ToDP(15), ToDP(15), ToDP(15));
-        TextViewMessage.setText(Message);
-
-        RelativeLayoutMain.addView(TextViewMessage);
-
-        Toast ToastMain = new Toast(context);
-        ToastMain.setGravity(Gravity.BOTTOM, 0, ToDP(65));
-        ToastMain.setDuration(Toast.LENGTH_SHORT);
-        ToastMain.setView(RelativeLayoutMain);
-        ToastMain.show();
-    }
 
     public static void UIThread(Runnable r, long d)
     {
@@ -523,30 +566,7 @@ public class Misc
         System.exit(0);
     }
 
-    public static void GeneralError(int Error)
-    {
-        switch (Error)
-        {
-            case -1:
-                ToastOld(String(R.string.GeneralError1));
-                break;
-            case -2:
-                ToastOld(String(R.string.GeneralError2));
-                break;
-            case -3:
-                ToastOld(String(R.string.GeneralError3));
-                break;
-            case -4:
-                ToastOld(String(R.string.GeneralError4));
-                break;
-            case -6:
-                ToastOld(String(R.string.GeneralError6));
-                break;
-            case -7:
-                ToastOld(String(R.string.GeneralError7));
-                break;
-        }
-    }
+
 
     public static boolean IsDark()
     {

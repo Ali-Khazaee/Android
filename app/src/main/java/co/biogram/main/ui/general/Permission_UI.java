@@ -29,7 +29,6 @@ public class Permission_UI extends FragmentDialog
     {
         if (Misc.CheckPermission(Permission))
         {
-            OnDestroy();
             Listener.OnPermission(true);
             return;
         }
@@ -48,15 +47,7 @@ public class Permission_UI extends FragmentDialog
 
         ViewMain.findViewById(R.id.TextViewDecline).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
-        ViewMain.findViewById(R.id.TextViewAccept).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Activity.RequestPermission(Permission, new FragmentActivity.OnPermissionListener() { @Override public void OnPermission(boolean Result) { Listener.OnPermission(Result); }});
-                Activity.onBackPressed();
-            }
-        });
+        ViewMain.findViewById(R.id.TextViewAccept).setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.RequestPermission(Permission, new FragmentActivity.OnPermissionListener() { @Override public void OnPermission(boolean Result) { Listener.OnPermission(Result); }}); } });
     }
 
     public interface OnPermissionListener

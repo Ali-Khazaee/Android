@@ -1,16 +1,12 @@
 package co.biogram.main;
 
-import android.content.res.Configuration;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.os.Bundle;
 import android.os.Build;
 
-import java.util.Locale;
-
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.social.Profile_Private_UI;
 
 public class MainActivity extends FragmentActivity
@@ -20,35 +16,21 @@ public class MainActivity extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
 
-        Locale locale = new Locale("fa");
-        Locale.setDefault(locale);
-
-        Configuration Config = new Configuration();
-        Config.locale = locale;
-
-        getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
-
-        setTheme(Misc.GetTheme());
-
         if (getActionBar() != null)
             getActionBar().hide();
 
         if (Build.VERSION.SDK_INT > 20)
-            getWindow().setStatusBarColor(Misc.Attr(this, R.attr.StatusColor));
+            getWindow().setStatusBarColor(Misc.Attr(R.attr.StatusColor));
 
         FrameLayout FrameLayoutMain = new FrameLayout(this);
         FrameLayoutMain.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        FrameLayoutMain.setBackgroundColor(Misc.Attr(this, R.attr.BgColor));
+        FrameLayoutMain.setBackgroundColor(Misc.Attr(R.attr.BgColor));
         FrameLayoutMain.setId(R.id.ContainerFull);
 
         setContentView(FrameLayoutMain);
 
-        GetManager().OpenView(new Profile_Private_UI(), "Profile_Private_UI");
-
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        Misc.Debug(dm.widthPixels + " - " + dm.heightPixels);
+        //GetManager().OpenView(new Profile_Private_UI(), "Profile_Private_UI");
+        GetManager().OpenView(new ImagePreviewUI(), "Profile_Private_UI");
     }
 }
 
