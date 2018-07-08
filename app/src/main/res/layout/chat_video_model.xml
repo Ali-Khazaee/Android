@@ -8,16 +8,16 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ConstraintLayoutChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="260dp"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp">
 
 
         <ImageView
             android:id="@+id/ImageViewMainImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -47,6 +47,7 @@
             android:textColor="@color/ActionBarWhite"
             android:textSize="8.4sp"
             android:visibility="gone"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.98"

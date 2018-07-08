@@ -12,7 +12,6 @@ import android.media.*;
 import android.net.Uri;
 import android.os.*;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -123,6 +122,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         ChatRecyclerView.setLayoutManager(new LinearLayoutManager(Activity));
         ChatAdapter = new ChatAdapter();
         ChatRecyclerView.setAdapter(ChatAdapter);
+
+        FABAudio.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
         EditTextMessage.setTypeface(Misc.GetTypeface());
 
@@ -904,7 +905,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
         private class AudioViewHolder extends CustomViewHolder
         {
-            private Button ButtonPlay;
+            private ImageView ButtonPlay;
             private TextView TextViewLength;
             private SeekBar SeekBarVoice;
 
@@ -945,7 +946,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                         if (!isPlaying && !isAudioPlaying)
                         {
-                            ButtonPlay.setBackgroundResource(R.drawable.ic_pause_white_256dp);
+                            ButtonPlay.setImageResource(R.drawable.ic_pause_white_256dp);
 
                             Player.seekTo(SeekBarVoice.getProgress());
 
@@ -957,7 +958,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                         }
                         else
                         {
-                            ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
+                            ButtonPlay.setImageResource(R.drawable.ic_play_arrow_white_256dp);
                             Player.pause();
                             isPlaying = false;
                             isAudioPlaying = false;
@@ -1046,14 +1047,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                 ImageChatModel imageChatModel = (ImageChatModel) MessageList.get(position);
                 Bitmap bitmap = imageChatModel.buildBitmap();
-                ConstraintLayout.LayoutParams layoutParams;
-                if (bitmap != null)
-                    layoutParams = new ConstraintLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
-                else
-                    layoutParams = new ConstraintLayout.LayoutParams(400, 400);
 
-                ImageViewMain.setLayoutParams(layoutParams);
-                ImageViewMain.setBackground(new BitmapDrawable(bitmap));
+                ImageViewMain.setImageDrawable(new BitmapDrawable(bitmap));
                 itemView.setOnClickListener(new OnClickListener()
                 {
                     @Override
@@ -1092,14 +1087,11 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                 final VideoChatModel videoChatModel = (VideoChatModel) MessageList.get(position);
                 TextViewLength.setText(videoChatModel.getLength());
-                TextViewSize.setText(((AudioChatModel) MessageList.get(position)).getSize());
+                TextViewSize.setText(((VideoChatModel) MessageList.get(position)).getSize());
 
                 Bitmap bitmap = Misc.scale(videoChatModel.buildBitmap());
 
-                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
-
-                ImageViewMain.setLayoutParams(layoutParams);
-                ImageViewMain.setBackground(new BitmapDrawable(bitmap));
+                ImageViewMain.setImageDrawable(new BitmapDrawable(bitmap));
                 itemView.setOnClickListener(new OnClickListener()
                 {
                     @Override
@@ -1135,6 +1127,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 TextViewName = itemView.findViewById(R.id.TextViewFileName);
                 TextViewDetail = itemView.findViewById(R.id.TextViewFileDetail);
                 ImageButtonDownload = itemView.findViewById(R.id.ImageButtonDownload);
+
             }
 
             @Override
@@ -1404,14 +1397,20 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             super.setLayout(view);
 
+            TextView fileName = view.findViewById(R.id.TextViewFileName);
+            TextView fileDetail = view.findViewById(R.id.TextViewFileDetail);
+
             ImageButton downloadIcon = view.findViewById(R.id.ImageButtonDownload);
             if (IsDownloaded)
                 downloadIcon.setImageResource(R.drawable.__gallery_file);
 
+            fileName.setTypeface(Misc.GetTypeface());
+            fileDetail.setTypeface(Misc.GetTypeface());
+
             if (IsFromUser)
             {
-                ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
-                ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+                fileName.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+                fileDetail.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_white_chat_file_bg);
 
                 //                else
@@ -1420,8 +1419,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             }
             else
             {
-                ((TextView) view.findViewById(R.id.TextViewFileName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
-                ((TextView) view.findViewById(R.id.TextViewFileDetail)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
+                fileName.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
+                fileDetail.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
                 view.findViewById(R.id.ImageButtonDownload).setBackgroundResource(R.drawable.z_blue_chat_file_bg);
                 downloadIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
                 //                else
@@ -1444,6 +1443,13 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             return BitmapFactory.decodeFile(getFile().getAbsolutePath());
         }
+
+        @Override
+        public void setLayout(View view)
+        {
+            super.setLayout(view);
+
+        }
     }
 
     public class AudioChatModel extends BaseFileChatModel
@@ -1454,27 +1460,28 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             super(audioPath, true, false, AUDIO);
         }
 
-        public AudioChatModel(String audioPath, int type)
-        {
-            super(audioPath, true, false, type);
-        }
-
         @Override
         public void setLayout(View view)
         {
 
             super.setLayout(view);
 
+            TextView lenghtText =  view.findViewById(R.id.TextViewLength);
+            lenghtText.setTypeface(Misc.GetTypeface());
+
             if (IsFromUser)
             {
-                // TODO Change Colors to Attrs
-                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+                lenghtText.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+                ((SeekBar) view.findViewById(R.id.AudioSeekBar)).getThumb().setColorFilter(Color.parseColor("#fff"), PorterDuff.Mode.SRC_ATOP);
+                ((ImageView) view.findViewById(R.id.ButtonPlay)).setColorFilter(Color.parseColor("#fff"), PorterDuff.Mode.SRC_IN);
 
             }
             else
             {
-                // TODO Change Colors to Attrs
-                ((TextView) view.findViewById(R.id.TextViewTime)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
+                lenghtText.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.TextWhite, null));
+                ((SeekBar) view.findViewById(R.id.AudioSeekBar)).getThumb().setColorFilter(Color.parseColor("#49a4ff"), PorterDuff.Mode.SRC_ATOP);
+                ((ImageView) view.findViewById(R.id.ButtonPlay)).setColorFilter(Color.parseColor("#49a4ff"), PorterDuff.Mode.SRC_IN);
+
             }
 
         }
@@ -1498,12 +1505,29 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
     }
 
-    public class VideoChatModel extends AudioChatModel
+    public class VideoChatModel extends BaseFileChatModel
     {
 
         public VideoChatModel(String videoPath)
         {
-            super(videoPath, VIDEO);
+            super(videoPath, true, false, VIDEO);
+        }
+
+        public String getLength()
+        {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(getFile().getPath());
+            String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            long duration = Long.parseLong(time) / 1000;
+            long minutes = duration / 60;
+            long seconds = duration % 60;
+
+            return ((minutes < 10) ? "0" + minutes : minutes) + ":" + ((seconds < 10) ? "0" + seconds : seconds);
+        }
+
+        public String getSize()
+        {
+            return new DecimalFormat("#.##").format((double) getFile().length() / 1048576.0) + "MB";
         }
 
         public Bitmap buildBitmap()
@@ -1515,6 +1539,14 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             return retriever.getFrameAtTime(50);
         }
 
+        @Override
+        public void setLayout(View view)
+        {
+            super.setLayout(view);
+
+            ((TextView)view.findViewById(R.id.TextViewLength)).setTypeface(Misc.GetTypeface());
+            ((TextView)view.findViewById(R.id.TextViewSize)).setTypeface(Misc.GetTypeface());
+        }
     }
 }
 

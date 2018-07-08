@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="start">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="start">
 
     <LinearLayout
         android:id="@+id/ConstraintLayoutChat"
@@ -30,7 +30,7 @@
             android:textColor="@color/ActionBarWhite"
             android:textSize="8sp"
             android:visibility="gone"
-            tools:text="22:30" />
+            tools:text="22:30"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,12 +39,13 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:id="@+id/ButtonPlay"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/ic_play_arrow_white_256dp" />
+                android:src="@drawable/ic_play_arrow_white_256dp"
+                android:background="@null"/>
 
             <SeekBar
                 android:id="@+id/AudioSeekBar"
@@ -52,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
-                android:theme="@style/BarColor" />
+                android:theme="@style/BarColor"/>
 
             <TextView
                 android:id="@+id/TextViewLength"
@@ -63,7 +64,7 @@
                 android:text="2:50"
                 android:textColor="?ActionBarColor"
                 android:textSize="10sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -81,14 +82,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/ActionBarWhite"
                 android:textSize="8sp"
-                tools:text="22:30" />
+                tools:text="22:30"/>
 
             <ImageView
                 android:id="@+id/ImageViewSeen"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="4dp"
-                app:srcCompat="@drawable/ic_follow123_block" />
+                app:srcCompat="@drawable/ic_follow123_block"/>
 
         </LinearLayout>
 

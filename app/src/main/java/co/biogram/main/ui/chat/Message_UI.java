@@ -200,7 +200,7 @@ public class Message_UI extends FragmentView
                     @Override
                     public void onClick(View v)
                     {
-                        Activity.GetManager().OpenView(new Chat_UI(0), "Chat_UI", true);
+                        Activity.GetManager().OpenView(new Chat_UI(Pos % 2), "Chat_UI", true);
                     }
                 });
             }
