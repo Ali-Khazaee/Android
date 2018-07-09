@@ -1,6 +1,7 @@
 package co.biogram.main;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.res.Configuration;
 
 import java.util.Locale;
@@ -8,6 +9,7 @@ import java.util.Locale;
 import com.squareup.leakcanary.LeakCanary;
 
 import co.biogram.main.handler.Misc;
+import co.biogram.main.service.NetworkService;
 
 public class App extends Application
 {
@@ -31,5 +33,7 @@ public class App extends Application
 
         setTheme(Misc.GetTheme());
         Misc.SetUp(getApplicationContext());
+
+        startService(new Intent(this, NetworkService.class));
     }
 }

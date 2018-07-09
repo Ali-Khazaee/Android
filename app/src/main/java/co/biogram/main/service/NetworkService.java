@@ -4,8 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import co.biogram.socket.Socket;
-import co.biogram.socket.Emitter;
+import co.biogram.main.handler.Socket;
 import co.biogram.main.handler.Analyze;
 
 public class NetworkService extends Service
@@ -15,11 +14,9 @@ public class NetworkService extends Service
     @Override
     public int onStartCommand(Intent intent, int Flags, int StartID)
     {
-        Analyze.Debug("NetworkService", "onStartCommand Called");
-
         try
         {
-            socket = new Socket(GetBestServer(), 7000);
+            socket = new Socket("172.17.0.43", 3000);
             socket.Connect();
         }
         catch (Exception e)
@@ -36,13 +33,13 @@ public class NetworkService extends Service
         return null;
     }
 
-    public static void Emit(String Event, String Data, Emitter.Listener Listener)
+    public static void Emit(String Event, String Data, Socket.Listener Listener)
     {
         Analyze.Debug("NetworkService", "Emit: " + Event);
         socket.emit(Event, Data, Listener);
     }
 
-    public void On(String Event, Emitter.Listener Listener)
+    public void On(String Event, Socket.Listener Listener)
     {
         Analyze.Debug("NetworkService", "On: " + Event);
         socket.on(Event, Listener);
