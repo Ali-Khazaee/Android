@@ -141,6 +141,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layoutDirection="ltr"
             android:gravity="center_vertical">
 
             <com.vanniktech.emoji.EmojiEditText
@@ -171,7 +172,7 @@
                 android:padding="6dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_back123_bl123ue_fa"
-                android:rotation="180"/>
+            />
         </LinearLayout>
 
 

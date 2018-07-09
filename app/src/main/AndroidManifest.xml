@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="co.biogram.main">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -37,16 +36,6 @@
 
         <activity
             android:name=".activity.SocialActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.chat.Chat_ListUI"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.chat.ContactUI"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activity.ChatActivity"
             android:screenOrientation="portrait" />
 
         <receiver

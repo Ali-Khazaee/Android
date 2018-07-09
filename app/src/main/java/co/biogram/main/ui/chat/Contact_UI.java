@@ -34,9 +34,19 @@ public class Contact_UI extends FragmentView
     private EditTextTag EditTextTaqs;
 
     @Override
+    public void OnResume()
+    {
+        super.OnResume();
+        Activity.findViewById(R.id.LinearLayoutMenu).setVisibility(View.INVISIBLE);
+        Activity.findViewById(R.id.ViewLine).setVisibility(View.INVISIBLE);
+    }
+
+    @Override
     public void OnCreate()
     {
-        View view = View.inflate(Activity, R.layout.chat_contact, null);
+        final View view = View.inflate(Activity, R.layout.chat_contact, null);
+
+
 
         Activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -75,7 +85,7 @@ public class Contact_UI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                Activity.GetManager().OpenView(new Chat_GroupCreate_UI(ContactAdapter.getSelectedData()), "Chat_Group", false);
+                Activity.GetManager().OpenView(new Chat_GroupCreate_UI(ContactAdapter.getSelectedData()), "Chat_Group", true);
             }
         });
 

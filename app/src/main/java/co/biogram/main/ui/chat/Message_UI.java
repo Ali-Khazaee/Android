@@ -18,6 +18,16 @@ import java.util.ArrayList;
 
 public class Message_UI extends FragmentView
 {
+
+    @Override
+    public void OnResume()
+    {
+        super.OnResume();
+
+        Activity.findViewById(R.id.LinearLayoutMenu).setVisibility(View.VISIBLE);
+        Activity.findViewById(R.id.ViewLine).setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void OnCreate()
     {
@@ -30,8 +40,17 @@ public class Message_UI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                Activity.GetManager().OpenView(new Contact_UI(), "Contact_UI", false);
+                Activity.GetManager().OpenView(new Contact_UI(), "Contact_UI", true);
 
+            }
+        });
+
+        view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Activity.onBackPressed();
             }
         });
 

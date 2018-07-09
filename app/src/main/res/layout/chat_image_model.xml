@@ -14,12 +14,13 @@
         android:layout_marginTop="4dp">
 
 
-        <ImageView
+        <co.biogram.main.ui.component.RoundedImageView
             android:id="@+id/ImageViewMainImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
+            app:riv_corner_radius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

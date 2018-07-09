@@ -51,6 +51,10 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
 
         FlowLayoutMain = new FlowLayout(getContext());
         FlowLayoutMain.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        if (Misc.IsRTL())
+            FlowLayoutMain.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        else
+            FlowLayoutMain.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
 
         addView(FlowLayoutMain);
 
@@ -77,7 +81,9 @@ public class EditTextTag extends FrameLayout implements View.OnClickListener, Te
 
     private TextView CreateTag(String Message)
     {
-        MarginLayoutParams TagParam = new MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.resolveLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        MarginLayoutParams TagParam = new MarginLayoutParams(params);
         TagParam.setMargins(Misc.ToDP(5), 0, Misc.ToDP(5), Misc.ToDP(10));
 
         TextView Tag = new TextView(getContext());

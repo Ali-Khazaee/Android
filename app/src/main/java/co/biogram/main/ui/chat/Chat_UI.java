@@ -306,7 +306,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                                         Bitmap bitmap = BitmapFactory.decodeFile(path, O);
 
-                                        Bitmap finalBitmap = Misc.scale(bitmap);
+                                        Bitmap finalBitmap = Misc.getRoundedCornerBitmap(Misc.scale(bitmap), 100);
 
                                         File selectedFilePath = new File(Misc.Temp(), System.currentTimeMillis() + ".jpg");
                                         selectedFilePath.createNewFile();
@@ -1089,7 +1089,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 TextViewLength.setText(videoChatModel.getLength());
                 TextViewSize.setText(((VideoChatModel) MessageList.get(position)).getSize());
 
-                Bitmap bitmap = Misc.scale(videoChatModel.buildBitmap());
+                Bitmap bitmap = Misc.getRoundedCornerBitmap(Misc.scale(videoChatModel.buildBitmap()), 20);
 
                 ImageViewMain.setImageDrawable(new BitmapDrawable(bitmap));
                 itemView.setOnClickListener(new OnClickListener()
@@ -1449,6 +1449,12 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             super.setLayout(view);
 
+            if (CHAT_MODE == MODE_GROUP)
+            {
+                ((TextView) view.findViewById(R.id.TextViewUserName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+            }
+
+
         }
     }
 
@@ -1466,7 +1472,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
             super.setLayout(view);
 
-            TextView lenghtText =  view.findViewById(R.id.TextViewLength);
+            TextView lenghtText = view.findViewById(R.id.TextViewLength);
             lenghtText.setTypeface(Misc.GetTypeface());
 
             if (IsFromUser)
@@ -1544,8 +1550,8 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             super.setLayout(view);
 
-            ((TextView)view.findViewById(R.id.TextViewLength)).setTypeface(Misc.GetTypeface());
-            ((TextView)view.findViewById(R.id.TextViewSize)).setTypeface(Misc.GetTypeface());
+            ((TextView) view.findViewById(R.id.TextViewLength)).setTypeface(Misc.GetTypeface());
+            ((TextView) view.findViewById(R.id.TextViewSize)).setTypeface(Misc.GetTypeface());
         }
     }
 }
