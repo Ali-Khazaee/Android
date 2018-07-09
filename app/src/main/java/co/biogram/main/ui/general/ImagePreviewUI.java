@@ -1,223 +1,183 @@
 package co.biogram.main.ui.general;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.format.DateFormat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import co.biogram.main.ui.component.ImageViewZoom;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 
-import com.bumptech.glide.request.transition.Transition;
-
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.view.PhotoView;
 import co.biogram.main.ui.view.LoadingView;
-import co.biogram.main.ui.view.TextView;
 
 public class ImagePreviewUI extends FragmentView
 {
+    private List<String> ImageList = new ArrayList<>();
+    private ConstraintLayout ConstraintLayoutMain;
+
+    public ImagePreviewUI()
+    {
+        ImageList.add("https://www.w3schools.com/htmL/img_chania.jpg");
+        ImageList.add("http://via.placeholder.com/350x250");
+        ImageList.add("http://via.placeholder.com/500x500");
+        ImageList.add("https://www.w3schools.com/htmL/img_girl.jpg");
+        ImageList.add("http://via.placeholder.com/100x500");
+        ImageList.add("https://www.w3schools.com/htmL/pic_trulli.jpg");
+    }
+
     @Override
     public void OnCreate()
     {
         ViewMain = View.inflate(Activity, R.layout.general_image_preview, null);
-    }
+        ConstraintLayoutMain = ViewMain.findViewById(R.id.ConstraintLayoutMain);
 
-    /*
-    private List<String> UrlList = new ArrayList<>();
+        ImageView ImageViewClose = ViewMain.findViewById(R.id.ImageViewClose);
+        ImageViewClose.setColorFilter(Misc.Color(R.color.White));
+        ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
-    private RelativeLayout RelativeLayoutHeader;
-    private OnSelectListener SelectListener;
-    private ViewPager ViewPagerMain;
-    private boolean Selected = false;
-    private boolean Anim = false;
-    private Bitmap bitmap = null;
-    private boolean IsMax = false;
-    private int Type = 0;
-
-    ImagePreviewUI(byte[] Data, int O)
-    {
-        try
+        ViewPager ViewPagerMain = new ViewPager(Activity)
         {
-            Type = 1;
+            @Override
+            public boolean onInterceptTouchEvent(MotionEvent ev)
+            {
+                try
+                {
+                    return super.onInterceptTouchEvent(ev);
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        };
+        ViewPagerMain.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        ViewPagerMain.setAdapter(new PreviewAdapter());
 
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-
-            BitmapFactory.decodeByteArray(Data, 0, Data.length, o);
-
-            int Size = Misc.ToDP(150);
-
-            o.inSampleSize = Misc.SampleSize(o, Size, Size);
-            o.inJustDecodeBounds = false;
-
-            bitmap = BitmapFactory.decodeByteArray(Data, 0, Data.length, o);
-
-            Matrix matrix = new Matrix();
-            matrix.postRotate(O);
-
-            if (O == -90)
-                matrix.postScale(-1, 1, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
-
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        }
-        catch (Exception e)
-        {
-            Misc.Debug("ImagePreviewUI: " + e.toString());
-        }
-    }
-
-    public ImagePreviewUI(String URL, boolean anim)
-    {
-        Anim = anim;
-        UrlList.add(URL);
-    }
-
-    public ImagePreviewUI(String URL, String URL2, boolean anim)
-    {
-        Anim = anim;
-        UrlList.add(URL);
-        UrlList.add(URL2);
-    }
-
-    public ImagePreviewUI(String URL, String URL2, String URL3, boolean anim)
-    {
-        Anim = anim;
-        UrlList.add(URL);
-        UrlList.add(URL2);
-        UrlList.add(URL3);
+        ((ViewGroup) ViewMain).addView(ViewPagerMain);
+        ConstraintLayoutMain.bringToFront();
     }
 
     @Override
-    public void OnCreate()
+    public void OnResume()
     {
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        RelativeLayoutMain.setBackgroundResource(R.color.White);
-        RelativeLayoutMain.setClickable(true);
+        Activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 
-        if (bitmap != null)
+    @Override
+    public void OnPause()
+    {
+        Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    private class PreviewAdapter extends PagerAdapter
+    {
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup Container, int Position)
         {
-            PhotoView PhotoViewMain = new PhotoView(Activity);
-            PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            PhotoViewMain.setImageBitmap(bitmap);
-            PhotoViewMain.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (RelativeLayoutHeader.getVisibility() == View.GONE)
-                        RelativeLayoutHeader.setVisibility(View.VISIBLE);
-                    else
-                        RelativeLayoutHeader.setVisibility(View.GONE);
-                }
-            });
+            RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
+            RelativeLayoutMain.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            ImageViewZoom PhotoViewMain = new ImageViewZoom(Activity);
+            PhotoViewMain.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            PhotoViewMain.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { ConstraintLayoutMain.setVisibility(ConstraintLayoutMain.getVisibility() == View.GONE ? View.VISIBLE : View.GONE); } });
 
             RelativeLayoutMain.addView(PhotoViewMain);
-        }
-        else
-        {
-            ViewPagerMain = new ViewPager(Activity)
+
+            RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
+            LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+            final LoadingView LoadingViewMain = new LoadingView(Activity);
+            LoadingViewMain.setLayoutParams(LoadingViewMainParam);
+            LoadingViewMain.SetColor(R.color.White);
+            LoadingViewMain.Start();
+
+            RelativeLayoutMain.addView(LoadingViewMain);
+
+            GlideApp.with(Activity).load(ImageList.get(Position)).listener(new RequestListener<Drawable>()
             {
                 @Override
-                public boolean onTouchEvent(MotionEvent ev)
+                public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)
                 {
-                    try
-                    {
-                        return super.onTouchEvent(ev);
-                    }
-                    catch (Exception e)
-                    {
-                        return false;
-                    }
+                    LoadingViewMain.Stop();
+                    return false;
                 }
 
                 @Override
-                public boolean onInterceptTouchEvent(MotionEvent ev)
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource)
                 {
-                    try
-                    {
-                        return super.onInterceptTouchEvent(ev);
-                    }
-                    catch (Exception e)
-                    {
-                        return false;
-                    }
+                    LoadingViewMain.Stop();
+                    return false;
                 }
-            };
-            ViewPagerMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            ViewPagerMain.setAdapter(new PreviewAdapter());
+            }).into(PhotoViewMain);
 
-            RelativeLayoutMain.addView(ViewPagerMain);
+            Container.addView(RelativeLayoutMain);
+
+            return RelativeLayoutMain;
         }
 
-        RelativeLayoutHeader = new RelativeLayout(Activity);
-        RelativeLayoutHeader.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56)));
-        RelativeLayoutHeader.setBackgroundColor(Color.parseColor("#3f000000"));
-
-        RelativeLayoutMain.addView(RelativeLayoutHeader);
-
-        RelativeLayout.LayoutParams ImageViewBackParam = new RelativeLayout.LayoutParams(Misc.ToDP(56), Misc.ToDP(56));
-        ImageViewBackParam.addRule(Misc.Align("R"));
-
-        ImageView ImageViewBack = new ImageView(Activity);
-        ImageViewBack.setPadding(Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12), Misc.ToDP(12));
-        ImageViewBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        ImageViewBack.setLayoutParams(ImageViewBackParam);
-        ImageViewBack.setImageResource(Misc.IsRTL() ? R.drawable.general_back : R.drawable.general_back);
-        ImageViewBack.setId(Misc.generateViewId());
-        ImageViewBack.setOnClickListener(new View.OnClickListener()
+        @Override
+        public void destroyItem(@NonNull ViewGroup Container, int position, @NonNull Object object)
         {
-            @Override
-            public void onClick(View view)
-            {
-                Activity.onBackPressed();
-            }
-        });
+            Container.removeView((View) object);
+        }
 
-        RelativeLayoutHeader.addView(ImageViewBack);
+        @Override
+        public int getItemPosition(@NonNull Object object)
+        {
+            return POSITION_NONE;
+        }
 
-        RelativeLayout.LayoutParams TextViewTitleParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewTitleParam.addRule(Misc.AlignTo("R"), ImageViewBack.getId());
-        TextViewTitleParam.addRule(RelativeLayout.CENTER_VERTICAL);
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object)
+        {
+            return view == object;
+        }
 
-        TextView TextViewTitle = new TextView(Activity, 16, true);
-        TextViewTitle.setLayoutParams(TextViewTitleParam);
-        TextViewTitle.setPadding(0, Misc.ToDP(6), 0, 0);
-        TextViewTitle.setText(Misc.String(R.string.ImagePreviewUI));
+        @Override
+        public int getCount()
+        {
+            return ImageList.size();
+        }
+    }
 
-        RelativeLayoutHeader.addView(TextViewTitle);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
         if (Type == 1)
         {
             final CropImageView CropImageViewMain = new CropImageView(Activity);
@@ -367,7 +327,7 @@ public class ImagePreviewUI extends FragmentView
                 @Override
                 public void onClick(View v)
                 {
-                    GlideApp.with(Activity).asBitmap().load(UrlList.get(ViewPagerMain.getCurrentItem())).into(new SimpleTarget<Bitmap>()
+                    GlideApp.with(Activity).asBitmap().load(ImageList.get(ViewPagerMain.getCurrentItem())).into(new SimpleTarget<Bitmap>()
                     {
                         @Override
                         public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition)
@@ -430,85 +390,5 @@ public class ImagePreviewUI extends FragmentView
         void OnSelect();
     }
 
-    private class PreviewAdapter extends PagerAdapter
-    {
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup Container, int Position)
-        {
-            RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
-            RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-
-            PhotoView PhotoViewMain = new PhotoView(Activity);
-            PhotoViewMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            PhotoViewMain.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (RelativeLayoutHeader.getVisibility() == View.GONE)
-                        RelativeLayoutHeader.setVisibility(View.VISIBLE);
-                    else
-                        RelativeLayoutHeader.setVisibility(View.GONE);
-                }
-            });
-
-            RelativeLayoutMain.addView(PhotoViewMain);
-
-            RelativeLayout.LayoutParams LoadingViewMainParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Misc.ToDP(56));
-            LoadingViewMainParam.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-            final LoadingView LoadingViewMain = new LoadingView(Activity);
-            LoadingViewMain.setLayoutParams(LoadingViewMainParam);
-            LoadingViewMain.SetColor(R.color.White);
-            LoadingViewMain.Start();
-
-            RelativeLayoutMain.addView(LoadingViewMain);
-
-            GlideApp.with(Activity).load(UrlList.get(Position)).listener(new RequestListener<Drawable>()
-            {
-                @Override
-                public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)
-                {
-                    LoadingViewMain.Stop();
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource)
-                {
-                    LoadingViewMain.Stop();
-                    return false;
-                }
-            }).into(PhotoViewMain);
-
-            Container.addView(RelativeLayoutMain);
-
-            return RelativeLayoutMain;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup Container, int position, @NonNull Object object)
-        {
-            Container.removeView((View) object);
-        }
-
-        @Override
-        public int getItemPosition(@NonNull Object object)
-        {
-            return POSITION_NONE;
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object)
-        {
-            return view == object;
-        }
-
-        @Override
-        public int getCount()
-        {
-            return UrlList.size();
-        }
-    }*/
+    */
 }

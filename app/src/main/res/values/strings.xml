@@ -13,6 +13,9 @@
     <string name="GeneralGalleryUI">البوم</string>
     <string name="GeneralGalleryUIMaximum">حداکثر انتخاب رسانه %1$d عدد می باشد</string>
 
+    <!-- General Image Preview -->
+    <string name="GeneralImagePreview">نمایش عکس</string>
+
     <!-- Social Profile Private-->
     <string name="SocialProfilePrivate">صفحه شخصی</string>
     <string name="SocialProfilePrivateFollowing">دنبال شدگان</string>

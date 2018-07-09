@@ -2,33 +2,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/Black"
+    android:clickable="true"
+    android:focusable="true">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/ViewPagerMain"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ConstraintLayoutMain"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <View
-        android:layout_width="match_parent"
         android:layout_height="@dimen/ActionBar"
-        android:background="#09000000" />
+        android:background="#2f000000">
 
-    <ImageView
-        android:id="@+id/ImageViewClose"
-        android:layout_width="@dimen/ActionBar"
-        android:layout_height="@dimen/ActionBar"
-        android:src="@drawable/general_back"
-        android:padding="10dp"
-        app:layout_constraintStart_toStartOf="parent" />
+        <ImageView
+            android:id="@+id/ImageViewClose"
+            android:layout_width="@dimen/ActionBar"
+            android:layout_height="@dimen/ActionBar"
+            android:src="@drawable/general_back"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <co.biogram.main.ui.component.TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/ActionBar"
-        android:text="@string/SocialProfilePrivate"
-        android:textSize="@dimen/FontMedium"
-        android:textColor="?TextColor"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toEndOf="@+id/ImageViewClose" />
+        <co.biogram.main.ui.component.TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/ActionBar"
+            android:text="@string/GeneralImagePreview"
+            android:textSize="@dimen/FontMedium"
+            android:textColor="?ReverseTextColor"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@+id/ImageViewClose" />
+
+        <View
+            android:id="@+id/ViewSelect"
+            android:layout_width="@dimen/ActionBar"
+            android:layout_height="@dimen/ActionBar"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

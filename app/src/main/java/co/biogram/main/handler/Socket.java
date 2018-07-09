@@ -250,7 +250,7 @@ public class Socket
                 Misc.Debug("Trying To Connect To: " + Host);
 
                 SocketMain = new java.net.Socket();
-                SocketMain.connect(new InetSocketAddress(Host, Port), 60);
+                SocketMain.connect(new InetSocketAddress(Host, Port), 60000);
 
                 InputStream = new BufferedInputStream(SocketMain.getInputStream());
                 OutputStream = new BufferedOutputStream(SocketMain.getOutputStream());
