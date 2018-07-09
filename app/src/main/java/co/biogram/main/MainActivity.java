@@ -6,7 +6,6 @@ import android.os.Build;
 
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.social.Profile_Private_UI;
 
 public class MainActivity extends FragmentActivity
@@ -29,8 +28,7 @@ public class MainActivity extends FragmentActivity
 
         setContentView(FrameLayoutMain);
 
-        //GetManager().OpenView(new Profile_Private_UI(), "Profile_Private_UI");
-        GetManager().OpenView(new ImagePreviewUI(), "Profile_Private_UI");
+        GetManager().OpenView(new Profile_Private_UI(), "Profile_Private_UI");
     }
 }
 

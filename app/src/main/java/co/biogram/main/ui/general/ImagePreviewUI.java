@@ -29,11 +29,22 @@ import co.biogram.main.ui.view.LoadingView;
 
 public class ImagePreviewUI extends FragmentView
 {
-    private List<String> ImageList = new ArrayList<>();
-    private ConstraintLayout ConstraintLayoutMain;
+    public static final int TYPE_NORMAL = 0;
+    public static final int TYPE_GALLERY = 1;
 
-    public ImagePreviewUI()
+    private ConstraintLayout ConstraintLayoutMain;
+    private ArrayList<String> ImageList;
+    private OnChoiceListener Listener;
+    private int CurrentIndex;
+    private int Type;
+
+    public ImagePreviewUI(ArrayList<String> imageList, int currentIndex, int type, OnChoiceListener listener)
     {
+        CurrentIndex = currentIndex;
+        ImageList = imageList;
+        Listener = listener;
+        Type = type;
+
         ImageList.add("https://www.w3schools.com/htmL/img_chania.jpg");
         ImageList.add("http://via.placeholder.com/350x250");
         ImageList.add("http://via.placeholder.com/500x500");
@@ -69,9 +80,28 @@ public class ImagePreviewUI extends FragmentView
         };
         ViewPagerMain.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         ViewPagerMain.setAdapter(new PreviewAdapter());
+        ViewPagerMain.setCurrentItem(CurrentIndex);
 
         ((ViewGroup) ViewMain).addView(ViewPagerMain);
         ConstraintLayoutMain.bringToFront();
+
+        switch (Type)
+        {
+            case TYPE_GALLERY:
+                ViewMain.findViewById(R.id.ViewSelect).setVisibility(View.VISIBLE);
+                ViewMain.findViewById(R.id.ViewSelect).setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (Listener == null)
+                            return;
+
+                        Listener.OnChoice(ImageList.get(CurrentIndex));
+                    }
+                });
+                break;
+        }
     }
 
     @Override
@@ -86,12 +116,19 @@ public class ImagePreviewUI extends FragmentView
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
+    public interface OnChoiceListener
+    {
+        void OnChoice(String Path);
+    }
+
     private class PreviewAdapter extends PagerAdapter
     {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup Container, int Position)
         {
+            CurrentIndex = Position;
+
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 

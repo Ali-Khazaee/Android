@@ -72,26 +72,19 @@
     <string name="SocialProfileUIFeatureTag">Write Your Feature</string>
 
     <!-- General -->
-    <string name="GeneralError1">Please Try again</string> <!-- DataBase -->
-    <string name="GeneralError2">Please Try again later</string> <!-- Exceed -->
-    <string name="GeneralError3">Please Try again</string> <!-- Bcrypt -->
-    <string name="GeneralError4">Something went wrong, Please Try to login again</string> <!-- Auth -->
-    <string name="GeneralError6">Please Try again</string> <!-- Request -->
-    <string name="GeneralError7">Please Try again</string> <!-- Formidable -->
+    <!-- DataBase -->
+    <!-- Exceed -->
+    <!-- Bcrypt -->
+    <!-- Auth -->
+    <!-- Request -->
+    <!-- Formidable -->
 
     <!-- Video Preview UI -->
     <string name="VideoPreviewUI">Video Preview</string>
 
     <!-- Image Preview UI -->
-    <string name="ImagePreviewUI">Image Preview</string>
-    <string name="ImagePreviewUIDownloaded">Image saved on your download directory</string>
 
     <!-- Gallery View UI -->
-    <string name="GalleryViewUIStorage">Storage</string>
-    <string name="GalleryViewUI">Gallery</string>
-    <string name="GalleryViewUI2">Gallery</string>
-    <string name="GalleryViewUIMaximum">Maximum selection is </string>
-    <string name="GalleryViewUIReach">You have been reached maximum selection</string>
 
     <!-- Time Ago -->
     <string name="TimeAgoNow">just now</string>

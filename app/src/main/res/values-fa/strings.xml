@@ -24,13 +24,6 @@
 
     <!-- General -->
 
-    <string name="GeneralError1">لطفا مجددا تلاش کنید</string>
-    <string name="GeneralError2">لطفا زمانی دیگر مراجعه کنید</string>
-    <string name="GeneralError3">لطفا مجددا تلاش کنید</string>
-    <string name="GeneralError4">مشکلی در اهرازحویت شما به وجود آمده است</string>
-    <string name="GeneralError6">اشکالی به وجود آمده است, لطفا زمانی دیگر مراجعه کنید</string>
-    <string name="GeneralError7">لطفا مجددا تلاش کنید</string>
-
     <!-- Welcome UI -->
 
     <!-- Username UI -->
@@ -55,15 +48,8 @@
     <string name="VideoPreviewUI">نمایش ویدیو</string>
 
     <!-- Image Preview UI -->
-    <string name="ImagePreviewUI">نمایش عکس</string>
-    <string name="ImagePreviewUIDownloaded">عکس در محل دنلود ها ذخیره شد</string>
 
     <!-- Gallery View UI -->
-    <string name="GalleryViewUIStorage">محل زخیره</string>
-    <string name="GalleryViewUI">گالری</string>
-    <string name="GalleryViewUI2">Gallery</string>
-    <string name="GalleryViewUIMaximum">حداکثر تعداد انتخاب عکس ها </string>
-    <string name="GalleryViewUIReach">شما به حداکثر انتخاب رسیدید</string>
 
     <!-- Inbox UI -->
 

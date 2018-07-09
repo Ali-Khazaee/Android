@@ -2,7 +2,6 @@
     <dimen name="ActionBar">56dp</dimen>
     <dimen name="ActionLine">1dp</dimen>
 
-    <dimen name="FontLarge">20sp</dimen>
     <dimen name="FontMedium">18sp</dimen>
     <dimen name="FontSmall">16sp</dimen>
     <dimen name="FontVerySmall">14sp</dimen>

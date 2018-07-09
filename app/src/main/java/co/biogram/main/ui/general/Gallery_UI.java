@@ -328,34 +328,46 @@ public class Gallery_UI extends FragmentView
                         }
                         else if (GalleryType == TYPE_IMAGE)
                         {
-                            ImagePreviewUI ImagePreview = new ImagePreviewUI();
-                            /*ip.SetType(ItemList.get(Position).Selection, GalleryCount <= Selection, new ImagePreviewUI.OnSelectListener()
+                            ArrayList<String> Temp = new ArrayList<>();
+
+                            for (Struct Item : ItemList)
+                                Temp.add(Item.Path);
+
+                            ImagePreviewUI ImagePreview = new ImagePreviewUI(Temp, Position, ImagePreviewUI.TYPE_GALLERY, new ImagePreviewUI.OnChoiceListener()
                             {
                                 @Override
-                                public void OnSelect()
+                                public void OnChoice(String Path)
                                 {
-                                    if (ItemList.get(Position).Selection)
+                                    for (Struct Item : ItemList)
                                     {
-                                        Selection--;
-                                        ItemList.get(Position).Selection = false;
-                                        Listener.OnRemove(ItemList.get(Position).Path);
-                                        Holder.ViewCircle.setBackground(DrawableSelect);
-                                    }
-                                    else
-                                    {
-                                        if (GalleryCount <= Selection)
+                                        if (!Item.Path.equals(Path))
+                                            continue;
+
+                                        if (Item.Selection)
                                         {
-                                            Misc.Toast(Activity.getString(R.string.GeneralGalleryUIMaximum, GalleryCount));
-                                            return;
+                                            Selection--;
+                                            Item.Selection = false;
+                                            Listener.OnRemove(Path);
+                                            Holder.ViewCircle.setBackground(DrawableSelect);
+                                        }
+                                        else
+                                        {
+                                            if (GalleryCount <= Selection)
+                                            {
+                                                Misc.Toast(Activity.getString(R.string.GeneralGalleryUIMaximum, GalleryCount));
+                                                return;
+                                            }
+
+                                            Selection++;
+                                            Item.Selection = true;
+                                            Listener.OnAdd(Path);
+                                            Holder.ViewCircle.setBackground(DrawableSelected);
                                         }
 
-                                        Selection++;
-                                        ItemList.get(Position).Selection = true;
-                                        Listener.OnAdd(ItemList.get(Position).Path);
-                                        Holder.ViewCircle.setBackground(DrawableSelected);
+                                        break;
                                     }
                                 }
-                            });*/
+                            });
 
                             Activity.GetManager().OpenView(ImagePreview, "ImagePreviewUI");
                         }
