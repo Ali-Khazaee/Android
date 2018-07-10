@@ -194,9 +194,9 @@ public class Gallery_UI extends FragmentView
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
+    public class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
-        private ArrayList<Struct> ItemList = new ArrayList<>();
+        public ArrayList<Struct> ItemList = new ArrayList<>();
         private int SelectCount = 0;
 
         @Override
@@ -316,7 +316,7 @@ public class Gallery_UI extends FragmentView
 
                             Activity.GetManager().OpenView(ImagePreview, "ImagePreviewUI");
 
-                            ImagePreview.SetForGallery(ItemList, Position, new ImagePreviewUI.OnChoiceListener()
+                            ImagePreview.SetForGallery(AdapterGallery.this, Position, new ImagePreviewUI.OnChoiceListener()
                             {
                                 @Override
                                 public void OnChoice(int Position)

@@ -77,9 +77,9 @@ public class ImagePreviewUI extends FragmentView
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    public void SetForGallery(ArrayList<Gallery_UI.Struct> itemList, int Position, final OnChoiceListener Listener)
+    public void SetForGallery(final Gallery_UI.AdapterGallery Adapter, int Position, final OnChoiceListener Listener)
     {
-        ItemList = itemList;
+        ItemList = Adapter.ItemList;
         CurrentPosition = Position;
 
         View ViewSelect = ViewMain.findViewById(R.id.ViewSelect);
@@ -91,6 +91,8 @@ public class ImagePreviewUI extends FragmentView
             public void onClick(View v)
             {
                 Listener.OnChoice(CurrentPosition);
+                v.setBackgroundResource(ItemList.get(CurrentPosition).Selection ? R.drawable.general_gallery_bg_fill : R.drawable.general_gallery_bg);
+                Adapter.notifyItemChanged(CurrentPosition);
             }
         });
 
