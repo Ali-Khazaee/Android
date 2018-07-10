@@ -312,11 +312,11 @@ public class Gallery_UI extends FragmentView
                         }
                         else if (GalleryType == TYPE_IMAGE)
                         {
-                            ImagePreviewUI ImagePreview = new ImagePreviewUI();
+                            ImagePreview_UI ImagePreview = new ImagePreview_UI();
 
-                            Activity.GetManager().OpenView(ImagePreview, "ImagePreviewUI");
+                            Activity.GetManager().OpenView(ImagePreview, "ImagePreview_UI");
 
-                            ImagePreview.SetForGallery(AdapterGallery.this, Position, new ImagePreviewUI.OnChoiceListener()
+                            ImagePreview.SetForGallery(AdapterGallery.this, Position, new ImagePreview_UI.OnChoiceListener()
                             {
                                 @Override
                                 public void OnChoice(int Position)
