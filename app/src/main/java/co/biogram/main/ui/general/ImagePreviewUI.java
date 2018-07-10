@@ -19,7 +19,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
@@ -29,29 +28,10 @@ import co.biogram.main.ui.view.LoadingView;
 
 public class ImagePreviewUI extends FragmentView
 {
-    public static final int TYPE_NORMAL = 0;
-    public static final int TYPE_GALLERY = 1;
-
+    private ArrayList<Gallery_UI.Struct> ItemList = new ArrayList<>();
     private ConstraintLayout ConstraintLayoutMain;
-    private ArrayList<String> ImageList;
-    private OnChoiceListener Listener;
-    private int CurrentIndex;
-    private int Type;
-
-    public ImagePreviewUI(ArrayList<String> imageList, int currentIndex, int type, OnChoiceListener listener)
-    {
-        CurrentIndex = currentIndex;
-        ImageList = imageList;
-        Listener = listener;
-        Type = type;
-
-        ImageList.add("https://www.w3schools.com/htmL/img_chania.jpg");
-        ImageList.add("http://via.placeholder.com/350x250");
-        ImageList.add("http://via.placeholder.com/500x500");
-        ImageList.add("https://www.w3schools.com/htmL/img_girl.jpg");
-        ImageList.add("http://via.placeholder.com/100x500");
-        ImageList.add("https://www.w3schools.com/htmL/pic_trulli.jpg");
-    }
+    private ViewPager ViewPagerMain;
+    private int CurrentPosition;
 
     @Override
     public void OnCreate()
@@ -63,7 +43,7 @@ public class ImagePreviewUI extends FragmentView
         ImageViewClose.setColorFilter(Misc.Color(R.color.White));
         ImageViewClose.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { Activity.onBackPressed(); } });
 
-        ViewPager ViewPagerMain = new ViewPager(Activity)
+        ViewPagerMain = new ViewPager(Activity)
         {
             @Override
             public boolean onInterceptTouchEvent(MotionEvent ev)
@@ -79,29 +59,10 @@ public class ImagePreviewUI extends FragmentView
             }
         };
         ViewPagerMain.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        ViewPagerMain.setAdapter(new PreviewAdapter());
-        ViewPagerMain.setCurrentItem(CurrentIndex);
+        ViewPagerMain.setAdapter(new ImagePreviewAdapter());
 
         ((ViewGroup) ViewMain).addView(ViewPagerMain);
         ConstraintLayoutMain.bringToFront();
-
-        switch (Type)
-        {
-            case TYPE_GALLERY:
-                ViewMain.findViewById(R.id.ViewSelect).setVisibility(View.VISIBLE);
-                ViewMain.findViewById(R.id.ViewSelect).setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (Listener == null)
-                            return;
-
-                        Listener.OnChoice(ImageList.get(CurrentIndex));
-                    }
-                });
-                break;
-        }
     }
 
     @Override
@@ -116,19 +77,51 @@ public class ImagePreviewUI extends FragmentView
         Activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    public interface OnChoiceListener
+    public void SetForGallery(ArrayList<Gallery_UI.Struct> itemList, int Position, final OnChoiceListener Listener)
     {
-        void OnChoice(String Path);
+        ItemList = itemList;
+        CurrentPosition = Position;
+
+        View ViewSelect = ViewMain.findViewById(R.id.ViewSelect);
+        ViewSelect.setBackgroundResource(ItemList.get(Position).Selection ? R.drawable.general_gallery_bg_fill : R.drawable.general_gallery_bg);
+        ViewSelect.setVisibility(View.VISIBLE);
+        ViewSelect.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Listener.OnChoice(CurrentPosition);
+            }
+        });
+
+        // noinspection all
+        ViewPagerMain.getAdapter().notifyDataSetChanged();
+        ViewPagerMain.setCurrentItem(Position);
+        ViewPagerMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override public void onPageScrollStateChanged(int state) { }
+            @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+
+            @Override
+            public void onPageSelected(int position)
+            {
+                CurrentPosition = position;
+                ViewMain.findViewById(R.id.ViewSelect).setBackgroundResource(ItemList.get(position).Selection ? R.drawable.general_gallery_bg_fill : R.drawable.general_gallery_bg);
+            }
+        });
     }
 
-    private class PreviewAdapter extends PagerAdapter
+    public interface OnChoiceListener
+    {
+        void OnChoice(int Position);
+    }
+
+    private class ImagePreviewAdapter extends PagerAdapter
     {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup Container, int Position)
         {
-            CurrentIndex = Position;
-
             RelativeLayout RelativeLayoutMain = new RelativeLayout(Activity);
             RelativeLayoutMain.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
@@ -148,7 +141,7 @@ public class ImagePreviewUI extends FragmentView
 
             RelativeLayoutMain.addView(LoadingViewMain);
 
-            GlideApp.with(Activity).load(ImageList.get(Position)).listener(new RequestListener<Drawable>()
+            GlideApp.with(Activity).load(ItemList.get(Position).Path).listener(new RequestListener<Drawable>()
             {
                 @Override
                 public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)
@@ -191,7 +184,7 @@ public class ImagePreviewUI extends FragmentView
         @Override
         public int getCount()
         {
-            return ImageList.size();
+            return ItemList.size();
         }
     }
 

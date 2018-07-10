@@ -2,9 +2,7 @@ package co.biogram.main.ui.general;
 
 import android.database.Cursor;
 import android.database.MergeCursor;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.GradientDrawable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -199,21 +197,7 @@ public class Gallery_UI extends FragmentView
     private class AdapterGallery extends RecyclerView.Adapter<AdapterGallery.ViewHolderMain>
     {
         private ArrayList<Struct> ItemList = new ArrayList<>();
-        private GradientDrawable DrawableSelected;
-        private GradientDrawable DrawableSelect;
-        private int Selection = 0;
-
-        AdapterGallery()
-        {
-            DrawableSelect = new GradientDrawable();
-            DrawableSelect.setShape(GradientDrawable.OVAL);
-            DrawableSelect.setStroke(Misc.ToDP(2), Color.WHITE);
-
-            DrawableSelected = new GradientDrawable();
-            DrawableSelected.setShape(GradientDrawable.OVAL);
-            DrawableSelected.setColor(Misc.Color(R.color.Primary));
-            DrawableSelected.setStroke(Misc.ToDP(2), Color.WHITE);
-        }
+        private int SelectCount = 0;
 
         @Override
         public void onBindViewHolder(@NonNull final ViewHolderMain Holder, int position)
@@ -258,7 +242,7 @@ public class Gallery_UI extends FragmentView
             }
             else
             {
-                Holder.ViewCircle.setBackground(ItemList.get(Position).Selection ? DrawableSelected : DrawableSelect);
+                Holder.ViewCircle.setBackgroundResource(ItemList.get(Position).Selection ? R.drawable.general_gallery_bg_fill : R.drawable.general_gallery_bg);
                 Holder.ViewCircle.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -266,23 +250,23 @@ public class Gallery_UI extends FragmentView
                     {
                         if (ItemList.get(Position).Selection)
                         {
-                            Selection--;
+                            SelectCount--;
                             ItemList.get(Position).Selection = false;
                             Listener.OnRemove(ItemList.get(Position).Path);
-                            Holder.ViewCircle.setBackground(DrawableSelect);
+                            Holder.ViewCircle.setBackgroundResource(R.drawable.general_gallery_bg);
                         }
                         else
                         {
-                            if (GalleryCount <= Selection)
+                            if (GalleryCount <= SelectCount)
                             {
                                 Misc.Toast(Activity.getString(R.string.GeneralGalleryUIMaximum, GalleryCount));
                                 return;
                             }
 
-                            Selection++;
+                            SelectCount++;
                             ItemList.get(Position).Selection = true;
                             Listener.OnAdd(ItemList.get(Position).Path);
-                            Holder.ViewCircle.setBackground(DrawableSelected);
+                            Holder.ViewCircle.setBackgroundResource(R.drawable.general_gallery_bg_fill);
                         }
                     }
                 });
@@ -296,30 +280,30 @@ public class Gallery_UI extends FragmentView
                         if (GalleryType == TYPE_VIDEO)
                         {
                             /*VideoPreviewUI vp = new VideoPreviewUI(FileList.get(Position).Path, true, false);
-                            vp.SetType(FileList.get(Position).Selection, new VideoPreviewUI.OnSelectListener()
+                            vp.SetType(FileList.get(Position).SelectCount, new VideoPreviewUI.OnSelectListener()
                             {
                                 @Override
                                 public void OnSelect()
                                 {
-                                    if (FileList.get(Position).Selection)
+                                    if (FileList.get(Position).SelectCount)
                                     {
-                                        Selection--;
+                                        SelectCount--;
                                         Listener.OnRemove(FileList.get(Position).Path);
                                         Holder.ViewCircle.setBackground(DrawableSelect);
-                                        FileList.get(Position).Selection = false;
+                                        FileList.get(Position).SelectCount = false;
                                     }
                                     else
                                     {
-                                        if (Count <= Selection)
+                                        if (Count <= SelectCount)
                                         {
                                             Misc.ToastOld(Misc.String(R.string.GalleryViewUIMaximum) + " " + Count);
                                             return;
                                         }
 
-                                        Selection++;
+                                        SelectCount++;
                                         Listener.OnSelection(FileList.get(Position).Path);
                                         Holder.ViewCircle.setBackground(DrawableSelected);
-                                        FileList.get(Position).Selection = true;
+                                        FileList.get(Position).SelectCount = true;
                                     }
                                 }
                             });
@@ -328,48 +312,37 @@ public class Gallery_UI extends FragmentView
                         }
                         else if (GalleryType == TYPE_IMAGE)
                         {
-                            ArrayList<String> Temp = new ArrayList<>();
+                            ImagePreviewUI ImagePreview = new ImagePreviewUI();
 
-                            for (Struct Item : ItemList)
-                                Temp.add(Item.Path);
+                            Activity.GetManager().OpenView(ImagePreview, "ImagePreviewUI");
 
-                            ImagePreviewUI ImagePreview = new ImagePreviewUI(Temp, Position, ImagePreviewUI.TYPE_GALLERY, new ImagePreviewUI.OnChoiceListener()
+                            ImagePreview.SetForGallery(ItemList, Position, new ImagePreviewUI.OnChoiceListener()
                             {
                                 @Override
-                                public void OnChoice(String Path)
+                                public void OnChoice(int Position)
                                 {
-                                    for (Struct Item : ItemList)
+                                    if (ItemList.get(Position).Selection)
                                     {
-                                        if (!Item.Path.equals(Path))
-                                            continue;
-
-                                        if (Item.Selection)
+                                        SelectCount--;
+                                        ItemList.get(Position).Selection = false;
+                                        Listener.OnRemove(ItemList.get(Position).Path);
+                                        Holder.ViewCircle.setBackgroundResource(R.drawable.general_gallery_bg);
+                                    }
+                                    else
+                                    {
+                                        if (GalleryCount <= SelectCount)
                                         {
-                                            Selection--;
-                                            Item.Selection = false;
-                                            Listener.OnRemove(Path);
-                                            Holder.ViewCircle.setBackground(DrawableSelect);
-                                        }
-                                        else
-                                        {
-                                            if (GalleryCount <= Selection)
-                                            {
-                                                Misc.Toast(Activity.getString(R.string.GeneralGalleryUIMaximum, GalleryCount));
-                                                return;
-                                            }
-
-                                            Selection++;
-                                            Item.Selection = true;
-                                            Listener.OnAdd(Path);
-                                            Holder.ViewCircle.setBackground(DrawableSelected);
+                                            Misc.Toast(Activity.getString(R.string.GeneralGalleryUIMaximum, GalleryCount));
+                                            return;
                                         }
 
-                                        break;
+                                        SelectCount++;
+                                        ItemList.get(Position).Selection = true;
+                                        Listener.OnAdd(ItemList.get(Position).Path);
+                                        Holder.ViewCircle.setBackgroundResource(R.drawable.general_gallery_bg_fill);
                                     }
                                 }
                             });
-
-                            Activity.GetManager().OpenView(ImagePreview, "ImagePreviewUI");
                         }
                     }
                 });
@@ -436,7 +409,7 @@ public class Gallery_UI extends FragmentView
         }
     }
 
-    private class Struct
+    public class Struct
     {
         String Name;
         String Path;

@@ -28,7 +28,7 @@
         android:textStyle="bold"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
-        android:textSize="@dimen/FontMedium"
+        android:textSize="@dimen/FontLarge"
         android:textColor="?TextColor"
         android:gravity="center"
         android:background="?android:attr/selectableItemBackground"

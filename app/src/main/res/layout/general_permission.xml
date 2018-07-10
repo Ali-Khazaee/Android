@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:textColor="?TextColor"
-            android:textSize="@dimen/FontSmall"
+            android:textSize="@dimen/FontMedium"
             app:layout_constraintTop_toBottomOf="@id/ViewHeader" />
 
         <co.biogram.main.ui.component.TextView
@@ -47,7 +47,7 @@
             android:padding="15dp"
             android:textColor="@color/Gray"
             android:textStyle="bold"
-            android:textSize="@dimen/FontMedium"
+            android:textSize="@dimen/FontLarge"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/GeneralPermissionDialogDecline"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
             android:padding="15dp"
             android:textColor="@color/Primary"
             android:textStyle="bold"
-            android:textSize="@dimen/FontMedium"
+            android:textSize="@dimen/FontLarge"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/GeneralPermissionDialogAccept"
             app:layout_constraintEnd_toStartOf="@id/TextViewDecline"

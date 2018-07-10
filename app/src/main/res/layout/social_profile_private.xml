@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/ActionBar"
                 android:text="@string/SocialProfilePrivate"
-                android:textSize="@dimen/FontMedium"
+                android:textSize="@dimen/FontLarge"
                 android:textColor="?TextColor"
                 android:gravity="center_vertical"
                 android:layout_marginStart="15dp"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
-                android:textSize="@dimen/FontSmall"
+                android:textSize="@dimen/FontMedium"
                 android:textStyle="bold"
                 android:textColor="?TextColor"
                 app:layout_constraintTop_toTopOf="@+id/ViewLine"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:layout_marginStart="10dp"
-                android:textSize="@dimen/FontSmall"
+                android:textSize="@dimen/FontMedium"
                 android:textColor="@color/Gray"
                 app:layout_constraintTop_toTopOf="@+id/TextViewName"
                 app:layout_constraintStart_toEndOf="@id/CircleImageViewProfile" />
@@ -108,7 +108,7 @@
                         android:id="@+id/TextViewFollower"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
+                        android:textSize="@dimen/FontMedium"
                         android:textStyle="bold"
                         android:textColor="?TextColor"
                         android:gravity="center" />
@@ -116,7 +116,7 @@
                     <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:textSize="@dimen/FontSmall"
                         android:textColor="@color/Gray"
                         android:gravity="center"
                         android:text="@string/SocialProfilePrivateFollower" />
@@ -134,7 +134,7 @@
                         android:id="@+id/TextViewFollowing"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
+                        android:textSize="@dimen/FontMedium"
                         android:textStyle="bold"
                         android:textColor="?TextColor"
                         android:gravity="center" />
@@ -142,7 +142,7 @@
                     <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:textSize="@dimen/FontSmall"
                         android:textColor="@color/Gray"
                         android:gravity="center"
                         android:text="@string/SocialProfilePrivateFollowing" />
@@ -160,7 +160,7 @@
                         android:id="@+id/TextViewVisitor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
+                        android:textSize="@dimen/FontMedium"
                         android:textStyle="bold"
                         android:textColor="?TextColor"
                         android:gravity="center" />
@@ -168,7 +168,7 @@
                     <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:textSize="@dimen/FontSmall"
                         android:textColor="@color/Gray"
                         android:gravity="center"
                         android:text="@string/SocialProfilePrivateVisitor" />
@@ -186,7 +186,7 @@
                         android:id="@+id/TextViewRating"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontSmall"
+                        android:textSize="@dimen/FontMedium"
                         android:textStyle="bold"
                         android:textColor="?TextColor"
                         android:gravity="center" />
@@ -194,7 +194,7 @@
                     <co.biogram.main.ui.component.TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/FontVerySmall"
+                        android:textSize="@dimen/FontSmall"
                         android:textColor="@color/Gray"
                         android:gravity="center"
                         android:text="@string/SocialProfilePrivateRating" />
@@ -219,7 +219,7 @@
                 android:layout_margin="15dp"
                 android:textStyle="bold"
                 android:textColor="@color/Gray"
-                android:textSize="@dimen/FontSmall"
+                android:textSize="@dimen/FontMedium"
                 android:text="@string/SocialProfilePrivateHolding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ViewLine2" />
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:textColor="@color/Primary"
-                android:textSize="@dimen/FontVerySmall"
+                android:textSize="@dimen/FontSmall"
                 android:textStyle="bold"
                 android:text="@string/SocialProfilePrivateIncrease"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -242,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:textColor="?TextColor"
-                android:textSize="@dimen/FontSmall"
+                android:textSize="@dimen/FontMedium"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TextViewHolding" />
@@ -255,7 +255,7 @@
                 android:layout_marginTop="15dp"
                 android:textStyle="bold"
                 android:textColor="@color/Gray"
-                android:textSize="@dimen/FontVerySmall"
+                android:textSize="@dimen/FontSmall"
                 android:text="@string/SocialProfilePrivateRial"
                 app:layout_constraintTop_toBottomOf="@+id/TextViewHolding"
                 app:layout_constraintStart_toEndOf="@+id/TextViewMoney" />
@@ -268,7 +268,7 @@
                 android:text="@string/SocialProfilePrivateCheckOut"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:textSize="@dimen/FontMedium"
+                android:textSize="@dimen/FontLarge"
                 android:textColor="?ReverseTextColor"
                 app:layout_constraintTop_toBottomOf="@+id/TextViewMoney"
                 app:layout_constraintStart_toStartOf="parent"
@@ -282,7 +282,7 @@
                 android:text="@string/SocialProfilePrivateTransAction"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:textSize="@dimen/FontSmall"
+                android:textSize="@dimen/FontMedium"
                 android:textColor="@color/Gray"
                 app:layout_constraintTop_toBottomOf="@+id/TextViewCheckOut"
                 app:layout_constraintStart_toStartOf="parent"
@@ -301,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateDescription" />
@@ -312,7 +312,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor" />
 
@@ -337,7 +337,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivatePhone" />
@@ -348,7 +348,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor" />
 
@@ -373,7 +373,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateEmail" />
@@ -384,7 +384,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor" />
 
@@ -409,7 +409,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateLink" />
@@ -420,7 +420,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor" />
 
@@ -445,7 +445,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateLocation" />
@@ -456,7 +456,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor" />
 
@@ -482,7 +482,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textSize="@dimen/FontSmall"
+                    android:textSize="@dimen/FontMedium"
                     android:textStyle="bold"
                     android:textColor="?TextColor"
                     android:text="@string/SocialProfilePrivateTag" />
@@ -509,7 +509,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/social_profile_private_tag"
-                        android:textSize="@dimen/FontMinimal"
+                        android:textSize="@dimen/FontTiny"
                         android:textColor="@color/Primary" />
 
                     <co.biogram.main.ui.component.TextView
@@ -524,7 +524,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/social_profile_private_tag"
-                        android:textSize="@dimen/FontMinimal"
+                        android:textSize="@dimen/FontTiny"
                         android:textColor="@color/Primary" />
 
                     <co.biogram.main.ui.component.TextView
@@ -539,7 +539,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/social_profile_private_tag"
-                        android:textSize="@dimen/FontMinimal"
+                        android:textSize="@dimen/FontTiny"
                         android:textColor="@color/Primary" />
 
                     <co.biogram.main.ui.component.TextView
@@ -554,7 +554,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/social_profile_private_tag"
-                        android:textSize="@dimen/FontMinimal"
+                        android:textSize="@dimen/FontTiny"
                         android:textColor="@color/Primary" />
 
                     <co.biogram.main.ui.component.TextView
@@ -569,7 +569,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/social_profile_private_tag"
-                        android:textSize="@dimen/FontMinimal"
+                        android:textSize="@dimen/FontTiny"
                         android:textColor="@color/Primary" />
 
                     <co.biogram.main.ui.component.TextView
@@ -584,7 +584,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/social_profile_private_tag"
-                        android:textSize="@dimen/FontMinimal"
+                        android:textSize="@dimen/FontTiny"
                         android:textColor="@color/Primary" />
 
                     <co.biogram.main.ui.component.TextView
@@ -599,7 +599,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/social_profile_private_tag"
-                        android:textSize="@dimen/FontMinimal"
+                        android:textSize="@dimen/FontTiny"
                         android:textColor="@color/Primary" />
 
                 </com.google.android.flexbox.FlexboxLayout>

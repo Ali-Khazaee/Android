@@ -25,16 +25,20 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/ActionBar"
             android:text="@string/GeneralImagePreview"
-            android:textSize="@dimen/FontMedium"
+            android:textSize="@dimen/FontLarge"
             android:textColor="?ReverseTextColor"
             android:gravity="center_vertical"
             app:layout_constraintStart_toEndOf="@+id/ImageViewClose" />
 
         <View
             android:id="@+id/ViewSelect"
-            android:layout_width="@dimen/ActionBar"
-            android:layout_height="@dimen/ActionBar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/general_gallery_bg"
             android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
