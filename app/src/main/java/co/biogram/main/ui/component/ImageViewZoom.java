@@ -931,7 +931,7 @@ public class ImageViewZoom extends ImageView
 
                             final float vX = mVelocityTracker.getXVelocity(), vY = mVelocityTracker.getYVelocity();
 
-                            // If the velocity is greater than minVelocity, call
+                            // If the velocity is greater than minVelocity, Result
                             // listener
                             if (Math.max(Math.abs(vX), Math.abs(vY)) >= mMinimumVelocity)
                             {

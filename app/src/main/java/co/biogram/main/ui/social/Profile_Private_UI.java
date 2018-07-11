@@ -15,6 +15,7 @@ import co.biogram.main.fragment.FragmentDialog;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.general.Camera_UI;
 import co.biogram.main.ui.general.Permission_UI;
 import co.biogram.main.ui.general.Gallery_UI;
 
@@ -249,7 +250,10 @@ public class Profile_Private_UI extends FragmentView
                         public void OnPermission(boolean Result)
                         {
                             if (!Result)
+                            {
+                                Misc.Toast(Misc.String(R.string.GeneralPermissionMessageStorageRead));
                                 return;
+                            }
 
                             Activity.GetManager().OpenView(new Gallery_UI(1, Gallery_UI.TYPE_IMAGE, new Gallery_UI.OnGalleryListener()
                             {
@@ -281,7 +285,20 @@ public class Profile_Private_UI extends FragmentView
                 @Override
                 public void onClick(View v)
                 {
-                    Activity.onBackPressed();
+                    Activity.GetManager().OpenDialog(new Permission_UI(R.drawable.general_permission_camera, R.string.GeneralPermissionMessageCamera, Manifest.permission.CAMERA, new Permission_UI.OnPermissionListener()
+                    {
+                        @Override
+                        public void OnPermission(boolean Result)
+                        {
+                            if (!Result)
+                            {
+                                Misc.Toast(Misc.String(R.string.GeneralPermissionMessageCamera));
+                                return;
+                            }
+
+                            Activity.GetManager().OpenView(new Camera_UI(150, 150, true, null), "Camera_UI");
+                        }
+                    }));
                 }
             });
 

@@ -8,6 +8,7 @@
 
     <!-- General Permission Message -->
     <string name="GeneralPermissionMessageStorageRead">جهت استفاده از این قسمت باید به برنامه مجوز دسترسی به خوانده اطلاعات رسانه را دهید</string>
+    <string name="GeneralPermissionMessageCamera">جهت استفاده از این قسمت باید به برنامه مجوز دسترسی به دوربین را دهید</string>
 
     <!-- General Gallery UI -->
     <string name="GeneralGalleryUI">البوم</string>
