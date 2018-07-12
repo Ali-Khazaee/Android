@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,10 +26,9 @@ import android.webkit.MimeTypeMap;
 import android.widget.*;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.AudioHandler;
-import co.biogram.main.handler.KeyboardHeightObserver;
-import co.biogram.main.handler.KeyboardHeightProvider;
-import co.biogram.main.handler.Misc;
+import co.biogram.main.handler.*;
+import co.biogram.main.service.NetworkService;
+import co.biogram.main.ui.component.CircularProgressView;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
@@ -36,6 +36,8 @@ import co.biogram.main.ui.view.PermissionDialog;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 import com.vanniktech.emoji.EmojiTextView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -170,14 +172,102 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             @Override
             public void onClick(View v)
             {
-                if (!EditTextMessage.getText().toString().equals(""))
+                final String textMessage = EditTextMessage.getText().toString();
+
+                if (!textMessage.equals(""))
                 {
-                    ChatAdapter.addChat(new TextChatModel(EditTextMessage.getText().toString()));
+
+                    ChatAdapter.addChat(new TextChatModel(textMessage));
                     EditTextMessage.setText("");
                     ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
 
-                    if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                        AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                    AsyncTask.execute(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+
+                            JSONObject uploadObject = NetworkService.createUploadData("5b464e90a2ef1ca5e3a659f8", textMessage, null);
+                            Log.d("DATAFROMSERVER", uploadObject.toString());
+
+                            NetworkService.Emit("SendMessage", uploadObject.toString(), new SocketHandler.Callback()
+                            {
+                                @Override
+                                public void call(Object data)
+                                {
+                                    Log.d("DATAFROMSERVER", data.toString());
+                                    try
+                                    {
+                                        JSONObject result = new JSONObject(data.toString());
+
+                                        if ((int) result.get("Result") == 0)
+
+                                            Misc.UIThread(new Runnable()
+                                            {
+                                                @Override
+                                                public void run()
+                                                {
+                                                    if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                                        AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                                                }
+                                            }, 0);
+
+                                    }
+                                    catch (JSONException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+
+                        }
+                    });
+
+                    //                    new Thread(new Runnable()
+                    //                    {
+                    //                        @Override
+                    //                        public void run()
+                    //                        {
+                    //                            JSONObject uploadObject = new JSONObject();
+                    //                            try
+                    //                            {
+                    //                                uploadObject.put("To", "5b464e90a2ef1ca5e3a659f8");
+                    //                                uploadObject.put("Message", textMessage);
+                    //                                uploadObject.put("ReplyID", null);
+                    //
+                    //                                Log.d("DATAFROMSERVER", uploadObject.toString());
+                    //                            }
+                    //                            catch (JSONException e)
+                    //                            {
+                    //                                e.printStackTrace();
+                    //                            }
+                    //
+                    //                            NetworkService.Emit("SendMessage", uploadObject.toString(), new SocketHandler.Callback()
+                    //                            {
+                    //                                @Override
+                    //                                public void call(Object data)
+                    //                                {
+                    //                                    Log.d("DATAFROMSERVER", data.toString());
+                    //                                    try
+                    //                                    {
+                    //                                        JSONObject result = new JSONObject(data.toString());
+                    //
+                    //                                        if ((int) result.get("Result") == 0)
+                    //
+                    //                                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                    //                                                AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                    //                                    }
+                    //                                    catch (JSONException e)
+                    //                                    {
+                    //                                        e.printStackTrace();
+                    //                                    }
+                    //
+                    //                                }
+                    //                            });
+                    //                        }
+                    //                    }).start();
+
                 }
             }
         });
@@ -194,7 +284,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                 {
 
                     @Override
-                    public void OnSelection(String URL)
+                    public void OnSelection(final String URL)
                     {
                         if (URL != null && !URL.equals(""))
                         {
@@ -202,8 +292,57 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                             ChatAdapter.addChat(new FileChatModel(URL));
                             EditTextMessage.setText("");
                             ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                                AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+
+                            AsyncTask.execute(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    try
+                                    {
+                                        byte[] file = Misc.ReadFile(URL);
+                                        JSONObject uploadObject = NetworkService.createUploadData("5b464e90a2ef1ca5e3a659f8", new String(file));
+                                        Log.d("DATAFROMSERVER", uploadObject.toString());
+
+                                        NetworkService.Emit("SendMessage", file, new SocketHandler.Callback()
+                                        {
+                                            @Override
+                                            public void call(Object data)
+                                            {
+                                                Log.d("DATAFROMSERVER", data.toString());
+                                                try
+                                                {
+                                                    JSONObject result = new JSONObject(data.toString());
+
+                                                    if ((int) result.get("Result") == 0)
+
+                                                        Misc.UIThread(new Runnable()
+                                                        {
+                                                            @Override
+                                                            public void run()
+                                                            {
+                                                                if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                                                    AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                                                            }
+                                                        }, 0);
+
+                                                }
+                                                catch (JSONException e)
+                                                {
+                                                    e.printStackTrace();
+                                                }
+
+                                            }
+                                        });
+
+                                    }
+                                    catch (IOException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
 
                         }
                     }
@@ -1382,6 +1521,20 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             return true;
 
         }
+
+        @Override
+        public void setLayout(View view)
+        {
+            super.setLayout(view);
+
+            CircularProgressView progressView = (CircularProgressView) view.findViewById(R.id.ProgressBar);
+
+            if (IsFromUser)
+                progressView.setColor(Color.parseColor("#000000"));
+            else
+                progressView.setColor(Color.parseColor("#424242"));
+
+        }
     }
 
     public class FileChatModel extends BaseFileChatModel
@@ -1453,7 +1606,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             {
                 ((TextView) view.findViewById(R.id.TextViewUserName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
             }
-
 
         }
     }

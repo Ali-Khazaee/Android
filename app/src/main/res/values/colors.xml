@@ -26,4 +26,7 @@
 
     <color name="colorAccent">#fff</color>
 
+    <color name="cpv_default_color">#2196F3</color>
+
+
 </resources>

@@ -30,6 +30,8 @@ import co.biogram.main.R;
 import co.biogram.main.activity.WelcomeActivity;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
@@ -215,7 +217,8 @@ public class Misc
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Value, context.getResources().getDisplayMetrics());
     }
 
-    public static int ToSP(float Value){
+    public static int ToSP(float Value)
+    {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, Value, context.getResources().getDisplayMetrics());
     }
 
@@ -652,6 +655,33 @@ public class Misc
 
         return Bitmap.createScaledBitmap(bitmap, (int) (width / scale), (int) (height / scale), false);
 
+    }
+
+    public static byte[] ReadFile(String file) throws IOException
+    {
+        return ReadFile(new File(file));
+    }
+
+    public static byte[] ReadFile(File file) throws IOException
+    {
+        // Open file
+        RandomAccessFile f = new RandomAccessFile(file, "r");
+        try
+        {
+            // Get and check length
+            long longlength = f.length();
+            int length = (int) longlength;
+            if (length != longlength)
+                throw new IOException("File size >= 2 GB");
+            // Read file and return data
+            byte[] data = new byte[ length ];
+            f.readFully(data);
+            return data;
+        }
+        finally
+        {
+            f.close();
+        }
     }
 
     //    public static void CreateThumbNail(String fileName, int width, int height) {

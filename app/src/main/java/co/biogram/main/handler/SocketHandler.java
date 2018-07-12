@@ -12,77 +12,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+interface FutureCallback<V>
+{
+    void onSuccess(V result);
+
+    void onFailure(Throwable failure);
+}
+
 public class SocketHandler
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public static final String EVENT_CONNECT = "connect";
     public static final String EVENT_SOCKET_CONNECT = "socket_connect";
@@ -123,7 +61,21 @@ public class SocketHandler
             queue = new LinkedList<>();
         }
     }
-
+    private static boolean sameAs(Listener fn, Listener internal)
+    {
+        if (fn.equals(internal))
+        {
+            return true;
+        }
+        else if (internal instanceof Emitter.OnceListener)
+        {
+            return fn.equals(((Emitter.OnceListener) internal).fn);
+        }
+        else
+        {
+            return false;
+        }
+    }
     public void connect()
     {
         if (connected)
@@ -178,12 +130,10 @@ public class SocketHandler
             }
         });
     }
-
     public void end()
     {
         destroy();
     }
-
     public void destroy()
     {
         if (!connected)
@@ -216,142 +166,110 @@ public class SocketHandler
             }
         });
     }
-
     public void emit(String event, String data) throws IOException
     {
         send(event, data.getBytes(), Serializer.MT_DATA, Serializer.DT_STRING);
     }
-
     public void emit(String event, String data, EmitOpts emitOpts) throws IOException
     {
         emitTo(event, data.getBytes(), Serializer.DT_STRING, emitOpts);
     }
-
     public void emit(String event, String data, Callback cb)
     {
         send(event, data.getBytes(), Serializer.MT_DATA_WITH_ACK, Serializer.DT_STRING, cb);
     }
-
     public void emit(String event, long data) throws IOException
     {
         send(event, Utils.int48ToByteArray(data), Serializer.MT_DATA, Serializer.DT_INT);
     }
-
     public void emit(String event, long data, EmitOpts emitOpts) throws IOException
     {
         emitTo(event, Utils.int48ToByteArray(data), Serializer.DT_INT, emitOpts);
     }
-
     public void emit(String event, long data, Callback cb) throws IOException
     {
         send(event, Utils.int48ToByteArray(data), Serializer.MT_DATA_WITH_ACK, Serializer.DT_INT, cb);
     }
-
     public void emit(String event, double data) throws IOException
     {
         send(event, Utils.doubleToByteArray(data), Serializer.MT_DATA, Serializer.DT_DOUBLE);
     }
-
     public void emit(String event, double data, EmitOpts emitOpts) throws IOException
     {
         emitTo(event, Utils.doubleToByteArray(data), Serializer.DT_DOUBLE, emitOpts);
     }
-
     public void emit(String event, double data, Callback cb) throws IOException
     {
         send(event, Utils.doubleToByteArray(data), Serializer.MT_DATA_WITH_ACK, Serializer.DT_DOUBLE, cb);
     }
-
     public void emit(String event, JSONObject data) throws IOException
     {
         send(event, data.toString().getBytes(), Serializer.MT_DATA, Serializer.DT_OBJECT);
     }
-
     public void emit(String event, JSONObject data, EmitOpts emitOpts) throws IOException
     {
         emitTo(event, data.toString().getBytes(), Serializer.DT_OBJECT, emitOpts);
     }
-
     public void emit(String event, JSONObject data, Callback cb) throws IOException
     {
         send(event, data.toString().getBytes(), Serializer.MT_DATA_WITH_ACK, Serializer.DT_OBJECT, cb);
     }
-
     public void emit(String event, JSONArray data) throws IOException
     {
         send(event, data.toString().getBytes(), Serializer.MT_DATA, Serializer.DT_OBJECT);
     }
-
     public void emit(String event, JSONArray data, EmitOpts emitOpts) throws IOException
     {
         emitTo(event, data.toString().getBytes(), Serializer.DT_OBJECT, emitOpts);
     }
-
     public void emit(String event, JSONArray data, Callback cb) throws IOException
     {
         send(event, data.toString().getBytes(), Serializer.MT_DATA_WITH_ACK, Serializer.DT_OBJECT, cb);
     }
-
     public void emit(String event, byte[] data) throws IOException
     {
         send(event, data, Serializer.MT_DATA, Serializer.DT_BUFFER);
     }
-
     public void emit(String event, byte[] data, EmitOpts emitOpts) throws IOException
     {
         emitTo(event, data, Serializer.DT_BUFFER, emitOpts);
     }
-
     public void emit(String event, byte[] data, Callback cb) throws IOException
     {
         send(event, data, Serializer.MT_DATA_WITH_ACK, Serializer.DT_BUFFER, cb);
     }
-
     public void join(String room) throws IOException
     {
         send("", room.getBytes(), Serializer.MT_JOIN_ROOM, Serializer.DT_STRING);
     }
-
     public void leave(String room) throws IOException
     {
         send("", room.getBytes(), Serializer.MT_LEAVE_ROOM, Serializer.DT_STRING);
     }
-
     public void leaveAll() throws IOException
     {
         send("", new byte[ 0 ], Serializer.MT_LEAVE_ALL_ROOMS, Serializer.DT_STRING);
     }
-
     public int getVersion()
     {
         return Serializer.VERSION;
     }
-
     public void on(String event, Listener fn)
     {
         emitter.on(event, fn);
     }
-
     public void once(String event, Listener fn)
     {
         emitter.once(event, fn);
     }
-
     public void removeListener(String event, Listener fn)
     {
         emitter.removeListener(event, fn);
     }
-
     public void removeAllListeners(String event)
     {
         emitter.removeAllListeners(event);
     }
-
-    public interface Listener
-    {
-        void call(Object... args);
-    }
-
     private void flushQueue() throws IOException
     {
         if (!opts.useQueue || queue.size() == 0)
@@ -430,6 +348,7 @@ public class SocketHandler
         if (cb != null)
         {
             acks.put(messageId, cb);
+
         }
 
         byte[] message = Serializer.serialize(event.getBytes(), data, mt, dt, messageId);
@@ -511,6 +430,11 @@ public class SocketHandler
                 }
             }
         };
+    }
+
+    public interface Listener
+    {
+        void call(Object... args);
     }
 
     public interface Ack
@@ -691,22 +615,6 @@ public class SocketHandler
                 default:
                     throw new RuntimeException("Not implemented message type " + message.mt);
             }
-        }
-    }
-
-    private static boolean sameAs(Listener fn, Listener internal)
-    {
-        if (fn.equals(internal))
-        {
-            return true;
-        }
-        else if (internal instanceof Emitter.OnceListener)
-        {
-            return fn.equals(((Emitter.OnceListener) internal).fn);
-        }
-        else
-        {
-            return false;
         }
     }
 
@@ -1010,8 +918,6 @@ class Message
     }
 }
 
-
-
 class ListenableFuture<V>
 {
     private FutureCallback<V> callback;
@@ -1088,13 +994,6 @@ class FutureExecutor
 
         return future;
     }
-}
-
-interface FutureCallback<V>
-{
-    void onSuccess(V result);
-
-    void onFailure(Throwable failure);
 }
 
 class Utils
