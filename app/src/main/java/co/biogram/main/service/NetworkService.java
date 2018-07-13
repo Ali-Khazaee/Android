@@ -3,20 +3,24 @@ package co.biogram.main.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SocketHandler;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
+import co.biogram.main.handler.Misc;
+import co.biogram.main.handler.SocketHandler;
+
 public class NetworkService extends Service
 {
     private static SocketHandler socket;
+
     public static void Emit(String Event, String Data, SocketHandler.Callback Listener)
     {
         socket.emit(Event, Data, Listener);
     }
+
     public static void Emit(String Event, byte[] Data, SocketHandler.Callback Listener)
     {
         try
@@ -28,18 +32,34 @@ public class NetworkService extends Service
             e.printStackTrace();
         }
     }
+
     public static void On(String Event, SocketHandler.Listener Listener)
     {
         socket.on(Event, Listener);
     }
+
+    private static JSONObject baseCreateUploadData(Object ID, Object data) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("To", ID);
+            json.put("Message", data);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
     public static JSONObject createUploadData(String ID, String data)
     {
         return baseCreateUploadData(ID, data);
     }
+
     public static JSONObject createUploadData(String ID, byte[] data)
     {
         return baseCreateUploadData(ID, data);
     }
+
     public static JSONObject createUploadData(String ID, String data, String replyID)
     {
         JSONObject json = createUploadData(ID, data);
@@ -55,6 +75,7 @@ public class NetworkService extends Service
 
         return json;
     }
+
     public static JSONObject createUploadData(String ID, byte[] data, String replyID)
     {
         JSONObject json = createUploadData(ID, data);
@@ -70,21 +91,11 @@ public class NetworkService extends Service
 
         return json;
     }
-    private static JSONObject baseCreateUploadData(Object ID, Object data)
-    {
-        JSONObject json = new JSONObject();
-        try
-        {
-            json.put("To", ID);
-            json.put("Message", data);
 
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-        return json;
+    public static String GetBestServer() {
+        return "157.119.190.112";
     }
+
     @Override
     public int onStartCommand(Intent intent, int Flags, int StartID)
     {
@@ -166,13 +177,10 @@ public class NetworkService extends Service
 
         return START_STICKY;
     }
+
     @Override
     public IBinder onBind(Intent intent)
     {
         return null;
-    }
-    private String GetBestServer()
-    {
-        return "157.119.190.112";
     }
 }

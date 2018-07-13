@@ -20,11 +20,11 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:riv_corner_radius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="8dp" />
 
         <View
             android:id="@+id/ViewMask"
@@ -67,8 +67,8 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/ActionBarWhite"
             android:textSize="8.4sp"
-            android:visibility="gone"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.98"
@@ -89,6 +89,20 @@
             app:layout_constraintStart_toEndOf="@+id/TextViewTime"
             app:layout_constraintTop_toTopOf="@+id/TextViewTime"
             app:srcCompat="@drawable/ic_follow123_block" />
+
+        <co.biogram.main.ui.component.CircularProgressView
+            android:id="@+id/ProgressBar"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:cpv_animAutostart="true"
+            app:cpv_color="#fff"
+            app:cpv_indeterminate="true"
+            app:cpv_progress="40"
+            app:cpv_thickness="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>

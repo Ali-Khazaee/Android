@@ -20,11 +20,11 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:riv_corner_radius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="8dp" />
 
         <View
             android:id="@+id/ViewMask"
@@ -122,21 +122,35 @@
             app:layout_constraintTop_toTopOf="@+id/TextViewTime"
             app:srcCompat="@drawable/ic_follow123_block" />
 
-        <ImageButton
-            android:id="@+id/ImageButtonPlay"
+
+        <RelativeLayout
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/_general_play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/ImageButtonPlay"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/_general_play"
+                android:visibility="gone" />
+
+            <co.biogram.main.ui.component.CircularProgressView
+                android:id="@+id/ProgressBar"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                app:cpv_animAutostart="true"
+                app:cpv_color="#fff"
+                app:cpv_indeterminate="true"
+                app:cpv_progress="40"
+                app:cpv_thickness="4dp" />
+
+        </RelativeLayout>
 
 
     </android.support.constraint.ConstraintLayout>
