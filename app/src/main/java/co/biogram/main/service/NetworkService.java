@@ -6,6 +6,7 @@ import android.os.IBinder;
 
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.SocketHandler;
+import org.json.JSONObject;
 
 public class NetworkService extends Service
 {
@@ -14,15 +15,7 @@ public class NetworkService extends Service
     @Override
     public int onStartCommand(Intent intent, int Flags, int StartID)
     {
-        try
-        {
-            socket = new SocketHandler(GetBestServer(), 37000);
-            socket.connect();
-        }
-        catch (Exception e)
-        {
-            Misc.Debug("NetworkService: " + e);
-        }
+        socket = new SocketHandler(GetBestServer(), 37000);
 
         new Thread(new Runnable()
         {
@@ -33,60 +26,62 @@ public class NetworkService extends Service
                 {
                     try
                     {
-                        Thread.sleep(5000);
+                        Thread.sleep(10000);
 
-                        Misc.Debug("SendMessage Sent.");
+                        JSONObject Message = new JSONObject();
+                        Message.put("To", "5b464ec7a2ef1ca5e3a65a0d");
+                        Message.put("Message", "0");
 
-                        Emit("SendMessage", "QQ", new SocketHandler.Callback()
+                        Call("SendMessage", Message.toString(), new SocketHandler.Callback()
                         {
                             @Override
-                            public void call(Object Results)
+                            public void Call(Object Param)
                             {
-                                Misc.Debug("SendMessage-Result: " + Results.toString());
+                                Misc.Debug("SendMessage-Call: " + Param);
                             }
                         });
                     }
                     catch (Exception e)
                     {
-                        Misc.Debug("SendMessage-Error: " + e.getMessage());
+                        Misc.Debug("GetMessage-Error: " + e.getMessage());
                     }
                 }
             }
         }).start();
 
-        On("error", new SocketHandler.Listener()
+        Add("SendMessage2", new SocketHandler.Listener()
         {
             @Override
-            public void call(Object... Results)
+            public void Call(Object... Param)
             {
-                Misc.Debug("error-Result: " + Results[0].toString());
+                Misc.Debug("SendMessage2-Result: " + Param[0].toString());
             }
         });
 
-        On("connected", new SocketHandler.Listener()
+        Add(SocketHandler.EVENT_DISCONNECT, new SocketHandler.Listener()
         {
             @Override
-            public void call(Object... Results)
+            public void Call(Object... Param)
             {
-                Misc.Debug("connected-Result: " + Results[0]);
+                Misc.Debug("Disconnect Called");
             }
         });
 
-        On("close", new SocketHandler.Listener()
+        Add(SocketHandler.EVENT_ERROR, new SocketHandler.Listener()
         {
             @Override
-            public void call(Object... Results)
+            public void Call(Object... Param)
             {
-                Misc.Debug("close-Result: " + Results[0]);
+                Misc.Debug("Error Called: " + Param[0]);
             }
         });
 
-        On("reconnecting", new SocketHandler.Listener()
+        Add(SocketHandler.EVENT_CONNECT, new SocketHandler.Listener()
         {
             @Override
-            public void call(Object... Results)
+            public void Call(Object... Param)
             {
-                Misc.Debug("reconnecting-Result: " + Results[0]);
+                Misc.Debug("Connect Called");
             }
         });
 
@@ -99,14 +94,24 @@ public class NetworkService extends Service
         return null;
     }
 
-    public static void Emit(String Event, String Data, SocketHandler.Callback Listener)
+    public static void Add(String Event, SocketHandler.Listener Listener)
     {
-        socket.emit(Event, Data, Listener);
+        socket.Add(Event, Listener);
     }
 
-    public static void On(String Event, SocketHandler.Listener Listener)
+    public static void Call(String Event, String Data)
     {
-        socket.on(Event, Listener);
+        socket.Call(Event, Data);
+    }
+
+    public static void Call(String Event, String Data, SocketHandler.Callback Listener)
+    {
+        socket.Call(Event, Data, Listener);
+    }
+
+    public static void Remove(String Event)
+    {
+        socket.Remove(Event);
     }
 
     private String GetBestServer()
