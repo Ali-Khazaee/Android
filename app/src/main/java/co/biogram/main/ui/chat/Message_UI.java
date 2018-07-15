@@ -31,6 +31,43 @@ public class Message_UI extends FragmentView
     @Override
     public void OnCreate()
     {
+
+        //        Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+        //        NotificationManager nManager = (NotificationManager) Activity.getSystemService(Context.NOTIFICATION_SERVICE);
+        //        Notification.Builder builder = new Notification.Builder(Activity);
+        //        builder.setContentTitle("Lanes");
+        //        builder.setContentText("Notification from Lanes");
+        //        builder.setSmallIcon(R.drawable.ic_launcher);
+        //        builder.setAutoCancel(true);
+        //        inboxStyle.setBigContentTitle("Enter Content Text");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        builder.setStyle(inboxStyle);
+        //                Notification.Builder builder2 = new Notification.Builder(Activity);
+        //        builder2.setContentTitle("Lanes");
+        //        builder2.setContentText("Notification from Lanes");
+        //        builder2.setSmallIcon(R.drawable.ic_launcher);
+        //        builder2.setAutoCancel(true);
+        //        inboxStyle.setBigContentTitle("Enter Content Text");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        inboxStyle.addLine("hi events ");
+        //        builder2.setStyle(inboxStyle);
+        //
+        //
+        //        nManager.notify("App Name",158,builder.build());
+        //        nManager.notify("App Name",159,builder2.build());
+        //
+
         View view = View.inflate(Activity, R.layout.messenger_chat_list, null);
 
         final CircleImageView CircleImageViewWrite = view.findViewById(R.id.CircleImageViewWrite);
