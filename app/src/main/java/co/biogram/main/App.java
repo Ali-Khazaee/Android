@@ -3,40 +3,40 @@ package co.biogram.main;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Build;
-
-import com.androidnetworking.AndroidNetworking;
-
-import com.squareup.leakcanary.LeakCanary;
-
-import okhttp3.OkHttpClient;
-
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import co.biogram.main.handler.Misc;
 import co.biogram.main.service.NetworkService;
+import com.androidnetworking.AndroidNetworking;
+import com.squareup.leakcanary.LeakCanary;
+import okhttp3.OkHttpClient;
 
-public class App extends Application {
+import java.util.concurrent.TimeUnit;
+
+public class App extends Application
+{
     private static volatile OkHttpClient OKClient;
+    private static Context context;
 
-    public static OkHttpClient GetOKClient() {
-        if (OKClient == null) {
-            OKClient = new OkHttpClient()
-                    .newBuilder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .build();
+    public static OkHttpClient GetOKClient()
+    {
+        if (OKClient == null)
+        {
+            OKClient = new OkHttpClient().newBuilder().connectTimeout(60, TimeUnit.SECONDS).writeTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build();
         }
 
         return OKClient;
     }
 
+    public static Context getContext()
+    {
+        return context;
+    }
+
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
+
+        context = getBaseContext();
 
         if (LeakCanary.isInAnalyzerProcess(this))
             return;
@@ -51,7 +51,8 @@ public class App extends Application {
     }
 
     @Override
-    protected void attachBaseContext(Context base) {
+    protected void attachBaseContext(Context base)
+    {
 
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)

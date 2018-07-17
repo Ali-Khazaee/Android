@@ -1,6 +1,10 @@
 package co.biogram.main.ui.chat;
 
+import android.app.Notification;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +17,12 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
+import co.biogram.main.ui.notification.BioNotification;
+import co.biogram.main.ui.notification.Custom;
+import co.biogram.main.ui.notification.helpers.ImageLoader;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 
@@ -28,45 +38,34 @@ public class Message_UI extends FragmentView
         Activity.findViewById(R.id.ViewLine).setVisibility(View.VISIBLE);
     }
 
+
     @Override
     public void OnCreate()
     {
 
-        //        Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
-        //        NotificationManager nManager = (NotificationManager) Activity.getSystemService(Context.NOTIFICATION_SERVICE);
-        //        Notification.Builder builder = new Notification.Builder(Activity);
-        //        builder.setContentTitle("Lanes");
-        //        builder.setContentText("Notification from Lanes");
-        //        builder.setSmallIcon(R.drawable.ic_launcher);
-        //        builder.setAutoCancel(true);
-        //        inboxStyle.setBigContentTitle("Enter Content Text");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        builder.setStyle(inboxStyle);
-        //                Notification.Builder builder2 = new Notification.Builder(Activity);
-        //        builder2.setContentTitle("Lanes");
-        //        builder2.setContentText("Notification from Lanes");
-        //        builder2.setSmallIcon(R.drawable.ic_launcher);
-        //        builder2.setAutoCancel(true);
-        //        inboxStyle.setBigContentTitle("Enter Content Text");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        inboxStyle.addLine("hi events ");
-        //        builder2.setStyle(inboxStyle);
-        //
-        //
-        //        nManager.notify("App Name",158,builder.build());
-        //        nManager.notify("App Name",159,builder2.build());
-        //
+        BioNotification.with(Activity).load().title("Sohrab Shahinfar").message("Baboons Test ...").smallIcon(R.drawable.ic_logo).largeIcon(BitmapFactory.decodeResource(Activity.getResources(), R.drawable.z_social_profile_avatar)).flags(Notification.DEFAULT_ALL).custom().setImageLoader(new ImageLoader()
+        {
+            @Override
+            public void load(int uri, final Custom onCompleted)
+            {
+
+            }
+            @Override
+            public void load(String imageResId, final Custom onCompleted)
+            {
+
+                Glide.with(Activity).load(imageResId).into(new SimpleTarget<Drawable>()
+                {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition)
+                    {
+                        onCompleted.imageLoadingCompleted(Misc.drawableToBitmap(resource));
+                    }
+                });
+
+            }
+        }).background("https://homepages.cae.wisc.edu/~ece533/images/baboon.png").setPlaceholder(R.drawable.ic_follow).build();
+
 
         View view = View.inflate(Activity, R.layout.messenger_chat_list, null);
 
