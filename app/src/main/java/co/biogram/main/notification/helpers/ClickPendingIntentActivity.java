@@ -1,4 +1,4 @@
-package co.biogram.main.ui.notification.helpers;
+package co.biogram.main.notification.helpers;
 
 /**
  * Created by sohrab on 7/17/18.

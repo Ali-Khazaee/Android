@@ -1,4 +1,4 @@
-package co.biogram.main.ui.notification.helpers;
+package co.biogram.main.notification.helpers;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -9,12 +9,12 @@ import co.biogram.main.App;
  * Created by sohrab on 7/17/18.
  */
 
-public class DismissPendingIntentBroadCast implements PendingIntentNotification
+public class ClickPendingIntentBroadCast implements PendingIntentNotification
 {
     private final Bundle mBundle;
     private final int mIdentifier;
 
-    public DismissPendingIntentBroadCast(Bundle bundle, int identifier)
+    public ClickPendingIntentBroadCast(Bundle bundle, int identifier)
     {
         this.mBundle = bundle;
         this.mIdentifier = identifier;
@@ -33,5 +33,5 @@ public class DismissPendingIntentBroadCast implements PendingIntentNotification
 
         return PendingIntent.getBroadcast(App.getContext(), mIdentifier, clickIntentBroadcast, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
 }
+

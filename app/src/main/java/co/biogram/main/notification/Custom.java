@@ -1,4 +1,4 @@
-package co.biogram.main.ui.notification;
+package co.biogram.main.notification;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -9,8 +9,8 @@ import android.text.Spanned;
 import android.widget.RemoteViews;
 import co.biogram.main.App;
 import co.biogram.main.R;
-import co.biogram.main.ui.notification.helpers.ImageLoader;
-import co.biogram.main.ui.notification.helpers.imageLoadingCompleted;
+import co.biogram.main.notification.helpers.ImageLoader;
+import co.biogram.main.notification.helpers.imageLoadingCompleted;
 
 /**
  * Created by sohrab on 7/17/18.

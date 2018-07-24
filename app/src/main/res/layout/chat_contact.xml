@@ -50,14 +50,12 @@
         android:background="#e1e1e1" />
 
 
-    <co.biogram.main.ui.view.EditTextTag
-        android:id="@+id/EditTextTaqContacts"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerViewTaqContacts"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="36dp"
         android:layout_below="@id/view"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:visibility="gone"/>
 
@@ -66,7 +64,7 @@
         android:id="@id/view2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/EditTextTaqContacts"
+        android:layout_below="@id/RecyclerViewTaqContacts"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"

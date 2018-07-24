@@ -18,9 +18,8 @@
 
     <application
         android:name=".App"
-        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/ApplicationName"
+
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppThemeLight">

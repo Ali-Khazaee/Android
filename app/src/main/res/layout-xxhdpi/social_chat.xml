@@ -9,20 +9,20 @@
         android:id="@+id/ImageButtonBack"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentStart="true"
         android:background="@null"
         android:clickable="true"
         android:focusable="true"
         android:padding="12dp"
         android:scaleType="centerCrop"
-        android:layout_alignParentStart="true"
         android:src="@drawable/z_general_back_blue" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ImageViewProfile"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
-        android:padding="8dp"
         android:layout_toEndOf="@id/ImageButtonBack"
+        android:padding="8dp"
         android:src="@drawable/z_social_profile_avatar"
  />
 
@@ -30,24 +30,24 @@
         android:id="@+id/TextViewName"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/ActionBar"
-        android:text="Username"
         android:layout_marginStart="8dp"
-        android:gravity="center_vertical|start"
         android:layout_toEndOf="@id/ImageViewProfile"
-        android:textColor="@color/TextWhite"
+        android:gravity="center_vertical|start"
+        android:text="Username"
         android:textAlignment="viewStart"
+        android:textColor="@color/TextWhite"
         android:textSize="16sp" />
 
     <ImageButton
         android:id="@+id/ImageButtomMore"
         android:layout_width="@dimen/ActionBar"
         android:layout_height="@dimen/ActionBar"
+        android:layout_alignParentEnd="true"
         android:background="@null"
         android:clickable="true"
         android:focusable="true"
         android:padding="12dp"
         android:scaleType="centerCrop"
-        android:layout_alignParentEnd="true"
         android:src="@drawable/ic_profile_blac123k" />
 
 
@@ -139,8 +139,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layoutDirection="ltr"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layoutDirection="ltr">
 
             <com.vanniktech.emoji.EmojiEditText
                 android:id="@+id/EditTextMessage"
@@ -155,6 +155,7 @@
                 android:hint="@string/ChatUIMessage"
                 android:textColor="@color/TextWhite"
                 android:textColorHint="@color/Gray"
+                android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
@@ -203,8 +204,8 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone"
         android:src="@drawable/ic_profile123_black"
+        android:visibility="gone"
         app:civ_background_color="@color/Primary"
         app:civ_border_color="@color/Primary"
         app:civ_border_width="8dp"

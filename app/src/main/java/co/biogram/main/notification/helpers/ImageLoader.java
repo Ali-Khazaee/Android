@@ -1,6 +1,6 @@
-package co.biogram.main.ui.notification.helpers;
+package co.biogram.main.notification.helpers;
 
-import co.biogram.main.ui.notification.Custom;
+import co.biogram.main.notification.Custom;
 
 /**
  * Created by sohrab on 7/17/18.

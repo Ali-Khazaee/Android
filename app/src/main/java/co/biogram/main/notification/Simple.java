@@ -1,4 +1,4 @@
-package co.biogram.main.ui.notification;
+package co.biogram.main.notification;
 
 import android.support.v4.app.NotificationCompat;
 

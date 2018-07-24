@@ -1,4 +1,4 @@
-package co.biogram.main.ui.notification.helpers;
+package co.biogram.main.notification.helpers;
 
 import android.app.PendingIntent;
 

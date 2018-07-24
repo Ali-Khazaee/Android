@@ -1,4 +1,4 @@
-package co.biogram.main.ui.notification;
+package co.biogram.main.notification;
 
 import android.app.NotificationManager;
 import android.content.Context;

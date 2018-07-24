@@ -1159,7 +1159,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                     @Override
                     public void onCompletion(MediaPlayer mp)
                     {
-                        ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
+                        ButtonPlay.setImageResource(R.drawable.ic_play_arrow_white_256dp);
                         SeekBarHandler.removeCallbacks(SeekBarRunnable);
                         SeekBarVoice.setProgress(0);
                         isPlaying = false;
@@ -1175,7 +1175,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                             Player.seekTo(progress);
                         else if (progress == seekBar.getMax())
                         {
-                            ButtonPlay.setBackgroundResource(R.drawable.ic_play_arrow_white_256dp);
+                            ButtonPlay.setImageResource(R.drawable.ic_play_arrow_white_256dp);
                             SeekBarHandler.removeCallbacks(SeekBarRunnable);
                             SeekBarVoice.setProgress(0);
                             isPlaying = false;

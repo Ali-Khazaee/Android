@@ -16,10 +16,10 @@ import android.widget.TextView;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.notification.BioNotification;
+import co.biogram.main.notification.Custom;
+import co.biogram.main.notification.helpers.ImageLoader;
 import co.biogram.main.ui.component.CircleImageView;
-import co.biogram.main.ui.notification.BioNotification;
-import co.biogram.main.ui.notification.Custom;
-import co.biogram.main.ui.notification.helpers.ImageLoader;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -195,7 +195,6 @@ public class Message_UI extends FragmentView
         @Override
         public ViewHolderMain onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
         {
-
             return new ViewHolderMain(LayoutInflater.from(parent.getContext()).inflate(R.layout.messenger_chat_list_row, parent, false));
         }
 

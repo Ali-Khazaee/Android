@@ -6,6 +6,7 @@ import android.content.Intent;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.service.NetworkService;
 import com.androidnetworking.AndroidNetworking;
+import com.devs.acr.AutoErrorReporter;
 import com.squareup.leakcanary.LeakCanary;
 import okhttp3.OkHttpClient;
 
@@ -35,6 +36,8 @@ public class App extends Application
     public void onCreate()
     {
         super.onCreate();
+
+        AutoErrorReporter.get(this).setEmailAddresses("soh.mil98@gmail.com").setEmailSubject("Auto Crash Report").start();
 
         context = getBaseContext();
 

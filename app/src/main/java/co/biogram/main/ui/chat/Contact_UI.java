@@ -20,7 +20,6 @@ import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
 import co.biogram.main.ui.view.CircleCheckBox;
-import co.biogram.main.ui.view.EditTextTag;
 
 import java.util.ArrayList;
 
@@ -31,7 +30,8 @@ import java.util.ArrayList;
 public class Contact_UI extends FragmentView
 {
     private ImageButton SendButton;
-    private EditTextTag EditTextTaqs;
+    private SelectedContactAdapter mSelectedContactAdapter;
+    private RecyclerView mRecyclerViewTaqContacts;
 
     @Override
     public void OnResume()
@@ -47,14 +47,17 @@ public class Contact_UI extends FragmentView
         final View view = View.inflate(Activity, R.layout.chat_contact, null);
 
 
-
         Activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         RecyclerView RecyclerView = view.findViewById(R.id.RecyclerViewContacts);
 
-        EditTextTaqs = view.findViewById(R.id.EditTextTaqContacts);
+        mSelectedContactAdapter = new SelectedContactAdapter();
         SendButton = view.findViewById(R.id.ImageButtonCreate);
         EditText editTextSearch = view.findViewById(R.id.EditTextSearch);
+
+        mRecyclerViewTaqContacts = view.findViewById(R.id.RecyclerViewTaqContacts);
+        mRecyclerViewTaqContacts.setLayoutManager(new LinearLayoutManager(Activity, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerViewTaqContacts.setAdapter(mSelectedContactAdapter);
 
         final ContactAdapter ContactAdapter = new ContactAdapter(null);
 
@@ -66,8 +69,6 @@ public class Contact_UI extends FragmentView
         editTextSearch.setTypeface(Misc.GetTypeface());
         Misc.SetCursorColor(editTextSearch, R.color.Primary);
         ViewCompat.setBackgroundTintList(editTextSearch, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
-
-        EditTextTaqs.hideEditText();
 
         ((TextView) view.findViewById(R.id.TextViewName)).setTypeface(Misc.GetTypeface());
 
@@ -113,6 +114,61 @@ public class Contact_UI extends FragmentView
         });
 
         ViewMain = view;
+    }
+
+    private class SelectedContactAdapter extends RecyclerView.Adapter<SelectedContactAdapter.ViewHolder>
+    {
+
+        private ArrayList<String> SelectedContacts = new ArrayList<>();
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+        {
+            return new SelectedContactAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_selected_contact_layout, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+        {
+            holder.bind(position);
+        }
+
+        @Override
+        public int getItemCount()
+        {
+            return SelectedContacts.size();
+        }
+
+        public void addContact(String contactEntity)
+        {
+            SelectedContacts.add(contactEntity);
+            notifyDataSetChanged();
+        }
+
+        public void removeContact(String contactEntity)
+        {
+            SelectedContacts.remove(contactEntity);
+            notifyDataSetChanged();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder
+        {
+            TextView Username;
+
+            public ViewHolder(View itemView)
+            {
+                super(itemView);
+                Username = itemView.findViewById(R.id.TextViewUsername);
+                Username.setTypeface(Misc.GetTypeface());
+            }
+
+            public void bind(final int position)
+            {
+                Username.setText(SelectedContacts.get(position));
+            }
+
+        }
     }
 
     private class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>
@@ -258,12 +314,12 @@ public class Contact_UI extends FragmentView
 
                         if (isChecked)
                         {
-                            EditTextTaqs.Add(contactEntity.Username);
+                            mSelectedContactAdapter.addContact(contactEntity.Username);
                             count++;
                         }
                         else
                         {
-                            EditTextTaqs.RemoveTaq(contactEntity.Username);
+                            mSelectedContactAdapter.removeContact(contactEntity.Username);
                             count--;
                         }
 
@@ -271,12 +327,12 @@ public class Contact_UI extends FragmentView
 
                         if (count > 0)
                         {
-                            EditTextTaqs.setVisibility(View.VISIBLE);
+                            mRecyclerViewTaqContacts.setVisibility(View.VISIBLE);
                             SendButton.setVisibility(View.VISIBLE);
                         }
                         else
                         {
-                            EditTextTaqs.setVisibility(View.GONE);
+                            mRecyclerViewTaqContacts.setVisibility(View.GONE);
                             SendButton.setVisibility(View.INVISIBLE);
                         }
                     }

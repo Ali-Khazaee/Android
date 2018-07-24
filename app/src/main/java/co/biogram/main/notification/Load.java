@@ -1,4 +1,4 @@
-package co.biogram.main.ui.notification;
+package co.biogram.main.notification;
 
 /**
  * Created by sohrab on 7/17/18.
@@ -18,7 +18,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
 import android.text.Spanned;
 import co.biogram.main.App;
-import co.biogram.main.ui.notification.helpers.*;
+import co.biogram.main.notification.helpers.*;
 
 public class Load
 {
