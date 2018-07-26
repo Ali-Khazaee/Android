@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/notification_img_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="256dp"
         android:adjustViewBounds="true"
         android:contentDescription="Background"
         android:scaleType="fitCenter"/>

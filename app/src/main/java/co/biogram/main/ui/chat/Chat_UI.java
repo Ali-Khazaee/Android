@@ -1571,6 +1571,19 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             super.setLayout(view);
 
+            LinearLayout.LayoutParams params;
+            if (CHAT_MODE == MODE_GROUP)
+                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(100));
+            else
+                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(80));
+
+            if (IsFromUser)
+                params.setMargins(Misc.ToDP(40), Misc.ToDP(8), Misc.ToDP(12), Misc.ToDP(16));
+            else
+                params.setMargins(Misc.ToDP(16), Misc.ToDP(8), Misc.ToDP(12), Misc.ToDP(40));
+
+            view.findViewById(R.id.ConstraintLayoutChat).setLayoutParams(params);
+
             CircularProgressView progressView = view.findViewById(R.id.ProgressBar);
             TextView fileName = view.findViewById(R.id.TextViewFileName);
             TextView fileDetail = view.findViewById(R.id.TextViewFileDetail);
@@ -1628,9 +1641,7 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
             super.setLayout(view);
 
             if (CHAT_MODE == MODE_GROUP)
-            {
                 ((TextView) view.findViewById(R.id.TextViewUserName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
-            }
 
         }
     }
@@ -1729,6 +1740,10 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
             ((TextView) view.findViewById(R.id.TextViewLength)).setTypeface(Misc.GetTypeface());
             ((TextView) view.findViewById(R.id.TextViewSize)).setTypeface(Misc.GetTypeface());
+
+            if (CHAT_MODE == MODE_GROUP)
+                ((TextView) view.findViewById(R.id.TextViewUserName)).setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.ActionBarWhite, null));
+
         }
     }
 }

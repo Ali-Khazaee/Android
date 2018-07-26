@@ -19,7 +19,7 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
-import co.biogram.main.ui.view.CircleCheckBox;
+import co.biogram.main.ui.view.AnimatedCheckBox;
 
 import java.util.ArrayList;
 
@@ -280,7 +280,7 @@ public class Contact_UI extends FragmentView
             CircleImageView ProfileImage;
             TextView Username;
             TextView UserId;
-            CircleCheckBox SelectState;
+            AnimatedCheckBox SelectState;
 
             public ViewHolder(View itemView)
             {
@@ -302,12 +302,12 @@ public class Contact_UI extends FragmentView
                 GlideApp.with(Activity).load(model.Profile).placeholder(R.color.Primary).into(ProfileImage);
                 Username.setText(model.Username);
                 UserId.setText(model.UserID);
-                SelectState.setCheckedCode(model.isSelected);
+                SelectState.setChecked(model.isSelected);
 
-                SelectState.setOnCheckedChangeListener(new CircleCheckBox.OnCheckedChangeListener()
+                SelectState.setOnCheckedChangeListener(new AnimatedCheckBox.OnCheckedChangeListener()
                 {
                     @Override
-                    public void onCheckedChanged(CircleCheckBox view, boolean isChecked)
+                    public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked)
                     {
                         ContactEntity contactEntity = Contacts.get(getAdapterPosition());
                         contactEntity.isSelected = isChecked;

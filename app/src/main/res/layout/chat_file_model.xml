@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/ConstraintLayoutChat"
         android:layout_width="260dp"
-        android:layout_height="76dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:orientation="vertical"
@@ -27,9 +27,9 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:gravity="start"
+            android:visibility="gone"
             android:textColor="@color/ActionBarWhite"
             android:textSize="8.4sp"
-            android:visibility="gone"
             tools:text="22:30" />
 
         <LinearLayout
@@ -61,8 +61,9 @@
 
                 <co.biogram.main.ui.component.CircularProgressView
                     android:id="@+id/ProgressBar"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerInParent="true"
                     app:cpv_animAutostart="true"
                     app:cpv_indeterminate="true"
                     app:cpv_progress="40"

@@ -22,24 +22,13 @@
         <attr name="civ_background_color" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="CircleCheckbox">
-        <attr name="showOuterCircle" format="boolean" />
-
-        <attr name="tickColor" format="string"/>
-        <attr name="outerCircleColor" format="string"/>
-        <attr name="innerCircleColor" format="string"/>
-        <attr name="textColor" format="string"/>
-        <attr name="circleBorderColor" format="string"/>
-
-        <attr name="outerCircleRadius" format="dimension"/>
-        <attr name="innerCircleRadius" format="dimension"/>
-        <attr name="textSize" format="dimension"/>
-        <attr name="borderThickness" format="dimension"/>
-        <attr name="tickThickness" format="dimension"/>
-
-        <attr name="textLeftPadding" format="dimension"/>
-        <attr name="text" format="string"/>
-
+    <declare-styleable name="SmoothCheckBox">
+        <attr name="duration" format="integer"/>
+        <attr name="stroke_width" format="dimension"/>
+        <attr name="color_tick" format="color"/>
+        <attr name="color_checked" format="color"/>
+        <attr name="color_unchecked" format="color"/>
+        <attr name="color_unchecked_stroke" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="RoundedImageView">
