@@ -5,30 +5,29 @@ import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.component.FlowLayoutManager;
 import co.biogram.main.ui.general.CameraViewUI;
 import co.biogram.main.ui.general.CropViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
-import co.biogram.main.ui.view.EditTextTag;
 import co.biogram.main.ui.view.PermissionDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Chat_GroupCreate_UI extends FragmentView
 {
 
-    private List<String> temp = new ArrayList<>();
+    private ArrayList<String> temp = new ArrayList<>();
 
     public Chat_GroupCreate_UI(ArrayList<Contact_UI.ContactEntity> members)
     {
@@ -246,17 +245,74 @@ public class Chat_GroupCreate_UI extends FragmentView
             }
 
         });
-        EditTextTag EditTagMembers = view.findViewById(R.id.MembersList);
-
-        EditTagMembers.hideEditText();
-
-        EditTagMembers.AddTag(temp, null);
+        RecyclerView RecyclerViewMembers = view.findViewById(R.id.MembersList);
+        FlowLayoutManager manager = new FlowLayoutManager();
+        manager.setAutoMeasureEnabled(true);
+        manager = manager.setAlignment(FlowLayoutManager.Alignment.RIGHT);
+        RecyclerViewMembers.setLayoutManager(manager);
+        RecyclerViewMembers.setAdapter(new MembersAdapter(temp));
+        RecyclerViewMembers.addItemDecoration(new RecyclerView.ItemDecoration()
+        {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
+            {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.set(8, 8, 8, 8);
+            }
+        });
 
         Misc.SetCursorColor(EditTextName, R.color.Primary);
         ViewCompat.setBackgroundTintList(EditTextName, ColorStateList.valueOf(Misc.Color(R.color.Primary)));
 
         ViewMain = view;
 
+    }
+
+    private class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHolder>
+    {
+
+        private ArrayList<String> members = new ArrayList<>();
+
+        public MembersAdapter(ArrayList<String> members)
+        {
+            this.members.addAll(members);
+        }
+        @NonNull
+        @Override
+        public MembersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+        {
+            return new MembersAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_selected_contact_layout, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MembersAdapter.ViewHolder holder, int position)
+        {
+            holder.bind(position);
+        }
+
+        @Override
+        public int getItemCount()
+        {
+            return members.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder
+        {
+            TextView Username;
+
+            public ViewHolder(View itemView)
+            {
+                super(itemView);
+                Username = itemView.findViewById(R.id.TextViewUsername);
+                Username.setTypeface(Misc.GetTypeface());
+            }
+
+            public void bind(final int position)
+            {
+                Username.setText(members.get(position));
+            }
+
+        }
     }
 
 }
