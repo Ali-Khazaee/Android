@@ -4,6 +4,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import co.biogram.emoji.core.EmojiManager;
+import co.biogram.emoji.emojibio.IosEmojiProvider;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.fragment.FragmentView;
@@ -13,8 +15,6 @@ import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
 import co.biogram.main.ui.social.Profile_UI;
-import com.vanniktech.emoji.EmojiManager;
-import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 import java.util.Locale;
 

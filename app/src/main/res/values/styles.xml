@@ -1,13 +1,4 @@
 <resources>
-    <style name="ThemeLight">
-        <item name="GreenColor">#7cb342</item>
-        <item name="StatusColor">#ddd</item>
-        <item name="ActionColor">#fff</item>
-        <item name="LineColor">#eee</item>
-        <item name="BgColor">#fff</item>
-        <item name="TextColor">#000</item>
-        <item name="ReverseTextColor">#fff</item>
-    </style>
 
     <style name="AppThemeLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
 
@@ -30,12 +21,6 @@
         <item name="StatusBarColor">#1b2936</item>
         <item name="ToastColor">#144766</item>
         <item name="ToastLineColor">#0a3148</item>
-    </style>
-
-    <style name="WhiteAccentColor" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <item name="colorAccent">#e57373</item>
-
     </style>
 
     <style name="BarColor" parent="@style/Theme.AppCompat.Light.NoActionBar">

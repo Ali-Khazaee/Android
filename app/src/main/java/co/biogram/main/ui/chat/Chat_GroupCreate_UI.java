@@ -2,6 +2,7 @@ package co.biogram.main.ui.chat;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +41,14 @@ public class Chat_GroupCreate_UI extends FragmentView
 
     }
 
+    @Override
+    public void OnPause()
+    {
+        super.OnPause();
+        InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(Activity.findViewById(android.R.id.content).getWindowToken(), 0);
+
+    }
     @Override
     public void OnCreate()
     {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Application -->
-    <string name="ApplicationName">Channel</string>
 
     <!-- Stateful Layout -->
     <string name="StatefulLayoutNoConnection">No Internet Connection</string>
@@ -380,8 +379,6 @@
     <!-- Chat UI -->
     <string name="ChatUISearch">Search</string>
     <string name="ChatUIMessage">Message</string>
-    <string name="ChatUISendMessage">Send Message</string>
-    <string name="ChatUIGroup">Group info</string>
     <string name="ChatUIGroupHelp">To create a group, you need to complete the profile</string>
     <string name="ChatUIGroupName">Group name</string>
     <string name="ChatUIGroupMembers">Group members</string>

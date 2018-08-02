@@ -1,5 +1,6 @@
 package co.biogram.main.ui.chat;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -45,7 +47,6 @@ public class Contact_UI extends FragmentView
     public void OnCreate()
     {
         final View view = View.inflate(Activity, R.layout.chat_contact, null);
-
 
         Activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -86,6 +87,8 @@ public class Contact_UI extends FragmentView
             @Override
             public void onClick(View v)
             {
+                InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(Activity.findViewById(android.R.id.content).getWindowToken(), 0);
                 Activity.GetManager().OpenView(new Chat_GroupCreate_UI(ContactAdapter.getSelectedData()), "Chat_Group", true);
             }
         });
@@ -176,8 +179,6 @@ public class Contact_UI extends FragmentView
 
         private ArrayList<ContactEntity> Contacts = new ArrayList<>();
         private ArrayList<ContactEntity> DataCopy = new ArrayList<>();
-
-        private int count = 0;
 
         public ContactAdapter(ArrayList<ContactEntity> data)
         {
@@ -310,22 +311,22 @@ public class Contact_UI extends FragmentView
                     public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked)
                     {
                         ContactEntity contactEntity = Contacts.get(getAdapterPosition());
-                        contactEntity.isSelected = isChecked;
+                        if (contactEntity.isSelected != isChecked)
+                        {
+                            contactEntity.isSelected = isChecked;
 
-                        if (isChecked)
-                        {
-                            mSelectedContactAdapter.addContact(contactEntity.Username);
-                            count++;
-                        }
-                        else
-                        {
-                            mSelectedContactAdapter.removeContact(contactEntity.Username);
-                            count--;
+                            if (isChecked)
+                            {
+                                mSelectedContactAdapter.addContact(contactEntity.Username);
+                            }
+                            else
+                            {
+                                mSelectedContactAdapter.removeContact(contactEntity.Username);
+                            }
                         }
 
                         // TODO Add Delete
-
-                        if (count > 0)
+                        if (mSelectedContactAdapter.getItemCount() > 0)
                         {
                             mRecyclerViewTaqContacts.setVisibility(View.VISIBLE);
                             SendButton.setVisibility(View.VISIBLE);

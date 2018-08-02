@@ -24,6 +24,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.*;
+import co.biogram.emoji.core.EmojiEditText;
+import co.biogram.emoji.core.EmojiPopup;
+import co.biogram.emoji.core.EmojiTextView;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.*;
@@ -33,9 +36,6 @@ import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
-import com.vanniktech.emoji.EmojiEditText;
-import com.vanniktech.emoji.EmojiPopup;
-import com.vanniktech.emoji.EmojiTextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -223,51 +223,6 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                         }
                     });
-
-                    //                    new Thread(new Runnable()
-                    //                    {
-                    //                        @Override
-                    //                        public void run()
-                    //                        {
-                    //                            JSONObject uploadObject = new JSONObject();
-                    //                            try
-                    //                            {
-                    //                                uploadObject.put("To", "5b464e90a2ef1ca5e3a659f8");
-                    //                                uploadObject.put("Message", textMessage);
-                    //                                uploadObject.put("ReplyID", null);
-                    //
-                    //                                Log.d("DATAFROMSERVER", uploadObject.toString());
-                    //                            }
-                    //                            catch (JSONException e)
-                    //                            {
-                    //                                e.printStackTrace();
-                    //                            }
-                    //
-                    //                            NetworkService.Emit("SendMessage", uploadObject.toString(), new SocketHandler.Callback()
-                    //                            {
-                    //                                @Override
-                    //                                public void call(Object data)
-                    //                                {
-                    //                                    Log.d("DATAFROMSERVER", data.toString());
-                    //                                    try
-                    //                                    {
-                    //                                        JSONObject result = new JSONObject(data.toString());
-                    //
-                    //                                        if ((int) result.get("Result") == 0)
-                    //
-                    //                                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                    //                                                AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
-                    //                                    }
-                    //                                    catch (JSONException e)
-                    //                                    {
-                    //                                        e.printStackTrace();
-                    //                                    }
-                    //
-                    //                                }
-                    //                            });
-                    //                        }
-                    //                    }).start();
-
                 }
             }
         });
@@ -293,90 +248,78 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                             EditTextMessage.setText("");
                             ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
 
-                            AsyncTask.execute(new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    try
-                                    {
-
-                                        //                                    Map<String,File> uploadFile = new HashMap<>() ;
-                                        //                                    uploadFile.put("Message",new File(URL));
-                                        //
-                                        //                                    AndroidNetworking.upload(NetworkService.GetBestServer())
-                                        //                                            .addMultipartParameter("ID", "5b464e90a2ef1ca5e3a659f8")
-                                        //                                            .addMultipartParameter(uploadFile)
-                                        //                                            .build()
-                                        //                                            .setUploadProgressListener(new UploadProgressListener() {
-                                        //                                                @Override
-                                        //                                                public void onProgress(long bytesUploaded, long totalBytes) {
-                                        //                                                    Log.d("TEST", String.valueOf((int) (100 * bytesUploaded / totalBytes)));
-                                        //                                                }
-                                        //                                            })
-                                        //                                            .getAsString(new StringRequestListener() {
-                                        //                                                @Override
-                                        //                                                public void onResponse(String Response) {
-                                        //
-                                        //                                                    try {
-                                        //                                                        JSONObject Result = new JSONObject(Response);
-                                        //
-                                        //                                                        Log.d("TEST", Response);
-                                        //                                                    } catch (Exception e) {
-                                        //                                                        Misc.Debug("WriteUI-RequestPost: " + e.toString());
-                                        //                                                    }
-                                        //                                                }
-                                        //
-                                        //                                                @Override
-                                        //                                                public void onError(ANError e) {
-                                        //                                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                                        //                                                }
-                                        //                                            });
-
-                                        byte[] file = Misc.ReadFile(URL);
-
-                                        JSONObject uploadObject = NetworkService.createUploadData("5b464e90a2ef1ca5e3a659f8", new String(file));
-                                        Log.d("DATAFROMSERVER", uploadObject.toString());
-
-                                        NetworkService.Emit("SendMessage", file, new SocketHandler.Callback()
-                                        {
-                                            @Override
-                                            public void call(Object data)
-                                            {
-                                                Log.d("DATAFROMSERVER", data.toString());
-                                                try
-                                                {
-                                                    JSONObject result = new JSONObject(data.toString());
-
-                                                    if ((int) result.get("Result") == 0)
-
-                                                        Misc.UIThread(new Runnable()
-                                                        {
-                                                            @Override
-                                                            public void run()
-                                                            {
-                                                                if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                                                                    AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
-                                                            }
-                                                        }, 0);
-
-                                                }
-                                                catch (JSONException e)
-                                                {
-                                                    e.printStackTrace();
-                                                }
-
-                                            }
-                                        });
-
-                                    }
-                                    catch (IOException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            });
+                            //                            AsyncTask.execute(new Runnable()
+                            //                            {
+                            //                                @Override
+                            //                                public void run()
+                            //                                {
+                            //                                    try
+                            //                                    {
+                            //                                        AndroidNetworking.upload(NetworkService.GetBestServer())
+                            //                                                .addMultipartParameter("ID", "5b464e90a2ef1ca5e3a659f8")
+                            //                                                .addMultipartParameter("Message", Arrays.toString(Misc.ReadFile(URL)))
+                            //                                                .build()
+                            //                                                .setUploadProgressListener(new UploadProgressListener()
+                            //                                        {
+                            //                                            @Override
+                            //                                            public void onProgress(long bytesUploaded, long totalBytes)
+                            //                                            {
+                            //                                                Log.d("TEST", String.valueOf((int) (100 * bytesUploaded / totalBytes)));
+                            //                                            }
+                            //                                        }).getAsString(new StringRequestListener()
+                            //                                        {
+                            //                                            @Override
+                            //                                            public void onResponse(String Response)
+                            //                                            {
+                            //                                                Log.d("DATAFROMSERVER", Response);
+                            //
+                            //                                                JSONObject result = null;
+                            //                                                try
+                            //                                                {
+                            //                                                    result = new JSONObject(Response);
+                            //                                                    if ((int) result.get("Result") == 0)
+                            //                                                        Misc.UIThread(new Runnable()
+                            //                                                        {
+                            //                                                            @Override
+                            //                                                            public void run()
+                            //                                                            {
+                            //                                                                if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                            //                                                                    AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                            //                                                            }
+                            //                                                        }, 0);
+                            //                                                }
+                            //                                                catch (JSONException e)
+                            //                                                {
+                            //                                                    e.printStackTrace();
+                            //                                                }
+                            //
+                            //                                                try
+                            //                                                {
+                            //                                                    JSONObject Result = new JSONObject(Response);
+                            //
+                            //                                                    Log.d("TEST", Response);
+                            //                                                }
+                            //                                                catch (Exception e)
+                            //                                                {
+                            //                                                    Misc.Debug("WriteUI-RequestPost: " + e.toString());
+                            //                                                }
+                            //                                            }
+                            //
+                            //                                            @Override
+                            //                                            public void onError(ANError e)
+                            //                                            {
+                            //                                                Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                            //                                            }
+                            //                                        });
+                            //
+                            //                                    }
+                            //                                    catch (IOException e)
+                            //                                    {
+                            //                                        e.printStackTrace();
+                            //                                    }
+                            //
+                            //                                }
+                            //                            });
 
                         }
                     }
@@ -501,12 +444,73 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                                             {
                                                 ChatAdapter.addChat(chatModel);
                                                 ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-
-                                                if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                                                    AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
-
                                             }
                                         }, 0);
+
+                                        //                                        try
+                                        //                                        {
+                                        //                                            AndroidNetworking.upload(NetworkService.GetBestServer())
+                                        //                                                    .addMultipartParameter("ID", "5b464e90a2ef1ca5e3a659f8")
+                                        //                                                    .addMultipartParameter("Message", Arrays.toString(Misc.ReadFile(path)))
+                                        //                                                    .build()
+                                        //                                                    .setUploadProgressListener(new UploadProgressListener()
+                                        //                                                    {
+                                        //                                                        @Override
+                                        //                                                        public void onProgress(long bytesUploaded, long totalBytes)
+                                        //                                                        {
+                                        //                                                            Log.d("TEST", String.valueOf((int) (100 * bytesUploaded / totalBytes)));
+                                        //                                                        }
+                                        //                                                    }).getAsString(new StringRequestListener()
+                                        //                                            {
+                                        //                                                @Override
+                                        //                                                public void onResponse(String Response)
+                                        //                                                {
+                                        //                                                    Log.d("DATAFROMSERVER", Response);
+                                        //
+                                        //                                                    JSONObject result = null;
+                                        //                                                    try
+                                        //                                                    {
+                                        //                                                        result = new JSONObject(Response);
+                                        //                                                        if ((int) result.get("Result") == 0)
+                                        //                                                            Misc.UIThread(new Runnable()
+                                        //                                                            {
+                                        //                                                                @Override
+                                        //                                                                public void run()
+                                        //                                                                {
+                                        //                                                                    if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                        //                                                                        AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                                        //                                                                }
+                                        //                                                            }, 0);
+                                        //                                                    }
+                                        //                                                    catch (JSONException e)
+                                        //                                                    {
+                                        //                                                        e.printStackTrace();
+                                        //                                                    }
+                                        //
+                                        //                                                    try
+                                        //                                                    {
+                                        //                                                        JSONObject Result = new JSONObject(Response);
+                                        //
+                                        //                                                        Log.d("TEST", Response);
+                                        //                                                    }
+                                        //                                                    catch (Exception e)
+                                        //                                                    {
+                                        //                                                        Misc.Debug("WriteUI-RequestPost: " + e.toString());
+                                        //                                                    }
+                                        //                                                }
+                                        //
+                                        //                                                @Override
+                                        //                                                public void onError(ANError e)
+                                        //                                                {
+                                        //                                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                                        //                                                }
+                                        //                                            });
+                                        //
+                                        //                                        }
+                                        //                                        catch (IOException e)
+                                        //                                        {
+                                        //                                            e.printStackTrace();
+                                        //                                        }
 
                                     }
                                     catch (Exception e)
@@ -581,8 +585,80 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
                             ChatAdapter.addChat(new VideoChatModel(VideoURL));
                             ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
-                            if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                                AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+
+                            //                            AsyncTask.execute(new Runnable()
+                            //                            {
+                            //                                @Override
+                            //                                public void run()
+                            //                                {
+                            //                                    try
+                            //                                    {
+                            //                                        AndroidNetworking.upload(NetworkService.GetBestServer())
+                            //                                                .addMultipartParameter("ID", "5b464e90a2ef1ca5e3a659f8")
+                            //                                                .addMultipartParameter("Message", Arrays.toString(Misc.ReadFile(VideoURL)))
+                            //                                                .build()
+                            //                                                .setUploadProgressListener(new UploadProgressListener()
+                            //                                                {
+                            //                                                    @Override
+                            //                                                    public void onProgress(long bytesUploaded, long totalBytes)
+                            //                                                    {
+                            //                                                        Log.d("TEST", String.valueOf((int) (100 * bytesUploaded / totalBytes)));
+                            //                                                    }
+                            //                                                }).getAsString(new StringRequestListener()
+                            //                                        {
+                            //                                            @Override
+                            //                                            public void onResponse(String Response)
+                            //                                            {
+                            //                                                Log.d("DATAFROMSERVER", Response);
+                            //
+                            //                                                JSONObject result = null;
+                            //                                                try
+                            //                                                {
+                            //                                                    result = new JSONObject(Response);
+                            //                                                    if ((int) result.get("Result") == 0)
+                            //                                                        Misc.UIThread(new Runnable()
+                            //                                                        {
+                            //                                                            @Override
+                            //                                                            public void run()
+                            //                                                            {
+                            //                                                                if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                            //                                                                    AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                            //                                                            }
+                            //                                                        }, 0);
+                            //                                                }
+                            //                                                catch (JSONException e)
+                            //                                                {
+                            //                                                    e.printStackTrace();
+                            //                                                }
+                            //
+                            //                                                try
+                            //                                                {
+                            //                                                    JSONObject Result = new JSONObject(Response);
+                            //
+                            //                                                    Log.d("TEST", Response);
+                            //                                                }
+                            //                                                catch (Exception e)
+                            //                                                {
+                            //                                                    Misc.Debug("WriteUI-RequestPost: " + e.toString());
+                            //                                                }
+                            //                                            }
+                            //
+                            //                                            @Override
+                            //                                            public void onError(ANError e)
+                            //                                            {
+                            //                                                Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                            //                                            }
+                            //                                        });
+                            //
+                            //                                    }
+                            //                                    catch (IOException e)
+                            //                                    {
+                            //                                        e.printStackTrace();
+                            //                                    }
+                            //                                }
+                            //                            });
+
+
                             return;
                             //     }
 
@@ -786,13 +862,87 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                             pauseRecord();
                             if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
                                 AudioPlayer.load(Activity.getBaseContext(), R.raw.audio_release, 1);
-                            AudioChatModel model = new AudioChatModel(Filename);
+                            final AudioChatModel model = new AudioChatModel(Filename);
 
                             EditTextMessage.setText("");
                             if (!model.getLength().equals("00:00"))
                             {
                                 ChatAdapter.addChat(model);
                                 ChatRecyclerView.scrollToPosition(ChatAdapter.getSizeOfChats() - 1);
+
+                                //                                AsyncTask.execute(new Runnable()
+                                //                                {
+                                //                                    @Override
+                                //                                    public void run()
+                                //                                    {
+                                //                                        try
+                                //                                        {
+                                //                                            AndroidNetworking.upload(NetworkService.GetBestServer())
+                                //                                                    .addMultipartParameter("ID", "5b464e90a2ef1ca5e3a659f8")
+                                //                                                    .addMultipartParameter("Message", Arrays.toString(Misc.ReadFile(model.File.getAbsoluteFile())))
+                                //                                                    .build()
+                                //                                                    .setUploadProgressListener(new UploadProgressListener()
+                                //                                                    {
+                                //                                                        @Override
+                                //                                                        public void onProgress(long bytesUploaded, long totalBytes)
+                                //                                                        {
+                                //                                                            Log.d("TEST", String.valueOf((int) (100 * bytesUploaded / totalBytes)));
+                                //                                                        }
+                                //                                                    }).getAsString(new StringRequestListener()
+                                //                                            {
+                                //                                                @Override
+                                //                                                public void onResponse(String Response)
+                                //                                                {
+                                //                                                    Log.d("DATAFROMSERVER", Response);
+                                //
+                                //                                                    JSONObject result = null;
+                                //                                                    try
+                                //                                                    {
+                                //                                                        result = new JSONObject(Response);
+                                //                                                        if ((int) result.get("Result") == 0)
+                                //                                                            Misc.UIThread(new Runnable()
+                                //                                                            {
+                                //                                                                @Override
+                                //                                                                public void run()
+                                //                                                                {
+                                //                                                                    if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                                //                                                                        AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                                //                                                                }
+                                //                                                            }, 0);
+                                //                                                    }
+                                //                                                    catch (JSONException e)
+                                //                                                    {
+                                //                                                        e.printStackTrace();
+                                //                                                    }
+                                //
+                                //                                                    try
+                                //                                                    {
+                                //                                                        JSONObject Result = new JSONObject(Response);
+                                //
+                                //                                                        Log.d("TEST", Response);
+                                //                                                    }
+                                //                                                    catch (Exception e)
+                                //                                                    {
+                                //                                                        Misc.Debug("WriteUI-RequestPost: " + e.toString());
+                                //                                                    }
+                                //                                                }
+                                //
+                                //                                                @Override
+                                //                                                public void onError(ANError e)
+                                //                                                {
+                                //                                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                                //                                                }
+                                //                                            });
+                                //
+                                //                                        }
+                                //                                        catch (IOException e)
+                                //                                        {
+                                //                                            e.printStackTrace();
+                                //                                        }
+                                //                                    }
+                                //                                });
+
+
                             }
                         }
                     }
@@ -1049,13 +1199,13 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                             switch (textMessage.length())
                             {
                                 case 2:
-                                    TextViewChat.setEmojiSize(Misc.ToSP(68));
+                                    TextViewChat.setEmojiSize(Misc.ToSP(54));
                                     break;
                                 case 4:
-                                    TextViewChat.setEmojiSize(Misc.ToSP(50));
+                                    TextViewChat.setEmojiSize(Misc.ToSP(46));
                                     break;
                                 case 6:
-                                    TextViewChat.setEmojiSize(Misc.ToSP(38));
+                                    TextViewChat.setEmojiSize(Misc.ToSP(34));
                                     break;
                                 case 8:
                                     TextViewChat.setEmojiSize(Misc.ToSP(28));

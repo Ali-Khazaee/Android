@@ -3,6 +3,5 @@
 
 
     <dimen name="padding_icon_chat">17dp</dimen>
-    <dimen name="padding_icon_contact">13dp</dimen>
 
 </resources>

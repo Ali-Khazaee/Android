@@ -144,7 +144,7 @@
             android:gravity="center_vertical"
             android:layoutDirection="ltr">
 
-            <com.vanniktech.emoji.EmojiEditText
+            <co.biogram.emoji.core.EmojiEditText
                 android:id="@+id/EditTextMessage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
