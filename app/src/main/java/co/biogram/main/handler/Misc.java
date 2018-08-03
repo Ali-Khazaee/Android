@@ -18,6 +18,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
@@ -39,9 +41,11 @@ import co.biogram.main.MainActivity;
 
 public class Misc
 {
+    public static final String TAG = "channel";
+
     @SuppressLint("StaticFieldLeak")
     private static volatile Context context;
-    private static volatile Typeface TypeFontCache;
+    private static Typeface TypeFontCache;
 
     public static void SetUp(Context c)
     {
@@ -54,7 +58,7 @@ public class Misc
                 file.delete();
     }
 
-    public static File Temp()
+    private static File Temp()
     {
         File TempFolder = new File(context.getCacheDir(), "Temp");
 
@@ -112,28 +116,38 @@ public class Misc
         DrawableToast.setColor(Attr(R.attr.ToastColor));
         DrawableToast.setCornerRadius(10.0f);
 
-        RelativeLayout RelativeLayoutMain = new RelativeLayout(context);
-        RelativeLayoutMain.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        RelativeLayoutMain.setBackground(DrawableToast);
-
-        RelativeLayout.LayoutParams TextViewMessageParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        TextViewMessageParam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        ConstraintLayout ConstraintLayoutMain = new ConstraintLayout(context);
+        ConstraintLayoutMain.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
+        ConstraintLayoutMain.setId(View.generateViewId());
+        ConstraintLayoutMain.setBackground(DrawableToast);
 
         TextView TextViewMessage = new TextView(context);
-        TextViewMessage.setLayoutParams(TextViewMessageParam);
+        TextViewMessage.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
         TextViewMessage.setPadding(ToDP(8), ToDP(8), ToDP(8), ToDP(8));
         TextViewMessage.setTextColor(Attr(R.attr.ReverseTextColor));
-        TextViewMessage.setTypeface(GetTypeface());
         TextViewMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        TextViewMessage.setId(View.generateViewId());
+        TextViewMessage.setTypeface(GetTypeface());
         TextViewMessage.setText(Message);
 
-        RelativeLayoutMain.addView(TextViewMessage);
+        ConstraintLayoutMain.addView(TextViewMessage);
+
+        ConstraintSet ConstraintSetMain = new ConstraintSet();
+        /*ConstraintSetMain.clone(ConstraintLayoutMain);
+        ConstraintSetMain.connect(TextViewMessage.getId(), ConstraintSet.LEFT, ConstraintLayoutMain.getId(), ConstraintSet.LEFT, 0);
+        ConstraintSetMain.connect(TextViewMessage.getId(), ConstraintSet.LEFT, ConstraintLayoutMain.getId(), ConstraintSet.RIGHT, 0);
+        ConstraintSetMain.applyTo(ConstraintLayoutMain);*/
 
         Toast ToastMain = new Toast(context);
         ToastMain.setGravity(Gravity.BOTTOM, 0, ToDP(65));
         ToastMain.setDuration(Toast.LENGTH_SHORT);
-        ToastMain.setView(RelativeLayoutMain);
+        ToastMain.setView(ConstraintLayoutMain);
         ToastMain.show();
+    }
+
+    public static String GetString(String Key, String Value)
+    {
+        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, Value);
     }
 
 
@@ -282,7 +296,7 @@ public class Misc
 
 
 
-    public static final String TAG = "channel";
+
 
     public static final int DIR_DOWNLOAD = 0;
     public static final int DIR_DOCUMENT = 1;
@@ -404,10 +418,7 @@ public class Misc
         return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, "");
     }
 
-    public static String GetString(String Key, String Value)
-    {
-        return context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getString(Key, Value);
-    }
+
 
     public static void SetBoolean(String Key, boolean Value)
     {

@@ -1,11 +1,11 @@
 package co.biogram.main;
 
-import android.widget.FrameLayout;
-import android.os.Bundle;
 import android.os.Build;
+import android.os.Bundle;
+import android.widget.FrameLayout;
 
-import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.ui.social.Profile_Private_UI;
 
 public class MainActivity extends FragmentActivity
@@ -28,7 +28,23 @@ public class MainActivity extends FragmentActivity
 
         setContentView(FrameLayoutMain);
 
+
+        if (Misc.GetString("Key", "").equals(""))
+        {
+
+        }
+
         GetManager().OpenView(new Profile_Private_UI(), "Profile_Private_UI");
+
+        FrameLayoutMain.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Misc.Toast("Salam Khobi ? chetori che mikoni che khabara? chi shode az invara gozari delo harja mikhaiy mibari");
+            }
+        }, 2000);
+
     }
 }
 

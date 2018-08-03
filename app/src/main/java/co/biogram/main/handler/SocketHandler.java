@@ -328,6 +328,33 @@ public class SocketHandler
         }
     }
 
+    public void QQ()
+    {
+        try
+        {
+            Misc.Debug("QQ");
+
+            String A = "Salam";
+
+            byte[] packet = new byte[ 2 + 2 + 2 + A.length() ];
+
+
+
+            Utils.writeInt(4, packet, 0);
+            Utils.writeInt(9090, packet, 2);
+            Utils.writeInt(A.length(), packet, 4);
+            System.arraycopy(A.getBytes(), 0, packet, 6, A.length());
+
+
+            OutputStream.write(packet);
+            OutputStream.flush();
+        }
+        catch (Exception e)
+        {
+            Misc.Debug("DD: " + e);
+        }
+    }
+
     public void Call(String Event, String Data)
     {
         Send(Event, Data.getBytes(), MESSAGE_TYPE_DATA, DATA_TYPE_STRING, -1, null);

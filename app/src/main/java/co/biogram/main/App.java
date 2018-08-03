@@ -35,5 +35,55 @@ public class App extends Application
         Misc.SetUp(getApplicationContext());
 
         startService(new Intent(this, NetworkService.class));
+
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                while (!Thread.interrupted())
+                {
+                    try
+                    {
+                        Thread.sleep(1000);
+
+                        NetworkService.Send(1, "Salam");
+                    }
+                    catch (Exception e)
+                    {
+                        Misc.Debug("Socket-Send: " + e);
+                    }
+                }
+            }
+        }).start();
+
+        NetworkService.On(NetworkService.PACKET_USERNAME, new NetworkService.Listener()
+        {
+            @Override
+            public void Call(String Message)
+            {
+                Misc.Debug("On1: " + Message);
+            }
+        });
+
+        NetworkService.On(NetworkService.PACKET_USERNAME, new NetworkService.Listener()
+        {
+            @Override
+            public void Call(String Message)
+            {
+                Misc.Debug("On2: " + Message);
+
+                NetworkService.Remove(1, this);
+            }
+        });
+
+        NetworkService.Once(NetworkService.PACKET_USERNAME, new NetworkService.Listener()
+        {
+            @Override
+            public void Call(String Message)
+            {
+                Misc.Debug("Once: " + Message);
+            }
+        });
     }
 }
