@@ -36,7 +36,7 @@ public class App extends Application
 
         startService(new Intent(this, NetworkService.class));
 
-        new Thread(new Runnable()
+       /* new Thread(new Runnable()
         {
             @Override
             public void run()
@@ -84,6 +84,6 @@ public class App extends Application
             {
                 Misc.Debug("Once: " + Message);
             }
-        });
+        });*/
     }
 }

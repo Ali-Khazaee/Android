@@ -76,7 +76,7 @@ public class NetworkService extends Service
         @Override
         public void run()
         {
-            HandlerMain.postDelayed(RunnableMain, 5000);
+            HandlerMain.postDelayed(RunnableMain, 10000);
 
             if (IsConnected)
             {
