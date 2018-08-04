@@ -2,6 +2,7 @@ package co.biogram.main.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 
 import java.util.HashMap;
@@ -17,55 +18,79 @@ import co.biogram.main.handler.Misc;
 
 public class NetworkService extends Service
 {
-    private static Socket SocketMain;
+    private static boolean IsConnected;
     private static BufferedInputStream BIS;
     private static BufferedOutputStream BOS;
+
+    private final class SocketThread extends Thread
+    {
+        @Override
+        public void run()
+        {
+            try
+            {
+                Socket SocketMain = new Socket();
+                SocketMain.connect(new InetSocketAddress(GetBestServer(), 37001), 120000);
+
+                BIS = new BufferedInputStream(SocketMain.getInputStream());
+                BOS = new BufferedOutputStream(SocketMain.getOutputStream());
+
+                IsConnected = true;
+
+                new ReceiveThread().start();
+            }
+            catch (Exception e)
+            {
+                Misc.Debug("NetworkService: " + e);
+            }
+        }
+    }
+
+    private final class ReceiveThread extends Thread
+    {
+        @Override
+        public void run()
+        {
+            try
+            {
+                int Length;
+                byte[] Chunk = new byte[1024];
+
+                while ((Length = BIS.read(Chunk)) != -1)
+                {
+                    Deserialize(Chunk, Length);
+                }
+            }
+            catch (Exception e)
+            {
+                Misc.Debug("NetworkService-Receive: " + e);
+            }
+
+            IsConnected = false;
+        }
+    }
+
+    private final Handler HandlerMain = new Handler();
+    private final Runnable RunnableMain = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            HandlerMain.postDelayed(RunnableMain, 5000);
+
+            if (IsConnected)
+            {
+                return;
+            }
+
+            new SocketThread().start();
+        }
+    };
 
     @Override
     public int onStartCommand(Intent intent, int Flags, int StartID)
     {
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    SocketMain = new Socket();
-                    SocketMain.connect(new InetSocketAddress(GetBestServer(), 37001), 120000);
-
-                    BIS = new BufferedInputStream(SocketMain.getInputStream());
-                    BOS = new BufferedOutputStream(SocketMain.getOutputStream());
-                }
-                catch (Exception e)
-                {
-                    Misc.Debug("Socket: " + e);
-                }
-            }
-        }).start();
-
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    Thread.sleep(2000);
-                    int Length;
-                    byte[] Chunk = new byte[1024];
-
-                    while ((Length = BIS.read(Chunk)) != -1)
-                    {
-                        Deserialize(Chunk, Length);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Misc.Debug("Socket-Receive: " + e);
-                }
-            }
-        }).start();
+        HandlerMain.post(RunnableMain);
 
         return START_STICKY;
     }
@@ -138,6 +163,11 @@ public class NetworkService extends Service
 
         try
         {
+            if (!IsConnected)
+            {
+                return;
+            }
+
             BOS.write(Buffer);
             BOS.flush();
         }
@@ -218,9 +248,17 @@ public class NetworkService extends Service
         On(Packet, new OnceListener(Packet, listener));
     }
 
-    public void RemoveAll(int Packet)
+    public static void RemoveAll(int Packet)
     {
-        ListenerMain.remove(Packet);
+        LinkedList<Listener> ListenerList = ListenerMain.get(Packet);
+
+        if (ListenerList != null)
+        {
+            for (Listener listener : ListenerList)
+            {
+                listener.Remove = true;
+            }
+        }
     }
 
     public static void Remove(int Packet, Listener listener)
@@ -229,15 +267,11 @@ public class NetworkService extends Service
 
         if (ListenerList != null)
         {
-            Iterator<Listener> itr = ListenerList.iterator();
-
-            while (itr.hasNext())
+            for (Listener listener2 : ListenerList)
             {
-                Listener name = itr.next();
-
-                if (SameAs(listener, name))
+                if (SameAs(listener, listener2))
                 {
-                    itr.remove();
+                    listener2.Remove = true;
                 }
             }
         }
@@ -249,9 +283,20 @@ public class NetworkService extends Service
 
         if (ListenerList != null)
         {
-            for (Listener listener : ListenerList)
+            Iterator<Listener> itr = ListenerList.iterator();
+
+            while (itr.hasNext())
             {
-                listener.Call(Message);
+                Listener listener = itr.next();
+
+                if (listener.Remove)
+                {
+                    itr.remove();
+                }
+                else
+                {
+                    listener.Call(Message);
+                }
             }
         }
     }
@@ -261,10 +306,10 @@ public class NetworkService extends Service
         return listener.equals(listener2) || (listener2 instanceof OnceListener && listener.equals(((OnceListener) listener2).ListenerMain));
     }
 
-    private static class OnceListener implements Listener
+    private static class OnceListener extends Listener
     {
-        private int Packet;
-        private Listener ListenerMain;
+        private final int Packet;
+        private final Listener ListenerMain;
 
         private OnceListener(int packet, Listener listener)
         {
@@ -280,9 +325,11 @@ public class NetworkService extends Service
         }
     }
 
-    public interface Listener
+    public static abstract class Listener
     {
-        void Call(String Message);
+        private boolean Remove = false;
+
+        abstract public void Call(String Message);
     }
 
     //
@@ -299,45 +346,8 @@ public class NetworkService extends Service
     //
 
     public static final int PACKET_USERNAME = 1;
+    public static final int PACKET_SIGN_IN = 2;
+    public static final int PACKET_SIGN_IN_VERIFY = 3;
+    public static final int PACKET_SIGN_UP = 4;
+    public static final int PACKET_SIGN_UP_VERIFY = 5;
 }
-
-
-
-    /*
-    public void Send(int Packet, int FileLength, String Message)
-    {
-        byte[] Buffer = new byte[2 + 4 + 4 + Message.length()];
-
-        Write2Byte(Packet, Buffer);
-        Write4Byte(Buffer.length, Buffer, 2);
-        Write4Byte(FileLength, Buffer, 6);
-
-        System.arraycopy(Message.getBytes(), 0, Buffer, 10, Message.length());
-
-        try
-        {
-            BOS.write(Buffer);
-        }
-        catch (Exception e)
-        {
-            Misc.Debug("Send-File: " + e);
-        }
-    }
-
-    public void Send(byte[] Message, boolean Flush)
-    {
-        try
-        {
-            BOS.write(Message);
-
-            if (Flush)
-            {
-                BOS.flush();
-            }
-        }
-        catch (Exception e)
-        {
-            Misc.Debug("Send-Data: " + e);
-        }
-    }
-     */
