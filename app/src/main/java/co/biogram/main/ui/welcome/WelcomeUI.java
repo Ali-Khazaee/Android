@@ -19,7 +19,6 @@ import android.widget.ScrollView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -30,9 +29,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONObject;
 
-import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
@@ -233,7 +232,7 @@ public class WelcomeUI extends FragmentView {
 
                 ScrollViewMain.setAnimation(Anim);
 
-                Activity.GetManager().OpenView(new PhoneUI(true), "PhoneUI", true);
+                Activity.GetManager().OpenView(new DescriptionUI("asdasd"), "PhoneUI", true);
             }
         });
 

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/Primary">
+
+        <ImageButton
+            android:id="@+id/ImageButtonBack"
+            android:layout_width="@dimen/ActionBar"
+            android:layout_height="@dimen/ActionBar"
+            android:layout_alignParentStart="true"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/z_general_back_white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ActionBar"
+            android:layout_toEndOf="@id/ImageButtonBack"
+            android:gravity="start|center_vertical"
+            android:text="@string/DescriptionUI"
+            android:textColor="@color/White"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/profileHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/actionbar"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:padding="4dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ImageViewProfile"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:src="@drawable/camera_bluegray2"
+            app:civ_border_color="#e2e2e2"
+            app:civ_border_width="3dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:hint="@string/DescriptionUIEditName"
+                android:maxLength="32"
+                android:maxLines="1"
+                android:maxWidth="180dp"
+                android:padding="10dp"
+                android:textColor="?TextColor"
+                android:textDirection="rtl"
+                android:textSize="@dimen/FontMedium" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profileHolder"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/DescriptionUIEditName"
+        android:maxLength="32"
+        android:maxLines="1"
+        android:maxWidth="180dp"
+        android:padding="10dp"
+        android:textColor="?TextColor"
+        android:textDirection="rtl"
+        android:textSize="@dimen/FontMedium" />
+
+
+    <TextView
+        android:id="@+id/textViewHelp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextDescription"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/TextWhite"
+        android:textSize="13sp"
+        tools:text="@string/DescriptionUIMessage" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewHelp"
+        android:layout_marginTop="36dp">
+
+        <TextView
+            android:id="@+id/textViewWelcomeUITerm2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="24dp"
+            android:text="@string/WelcomeUITerm2"
+            android:textColor="@color/Primary"
+            android:textSize="13sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/z__welcomeui_button_background"
+            android:text="@string/GeneralNext"
+            android:textColor="@color/White" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
