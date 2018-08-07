@@ -8,17 +8,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.SoundPool;
+import android.media.*;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Handler;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
+import android.os.*;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,37 +18,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import android.widget.*;
 import co.biogram.emoji.core.EmojiEditText;
 import co.biogram.emoji.core.EmojiPopup;
 import co.biogram.emoji.core.EmojiTextView;
@@ -66,19 +32,20 @@ import co.biogram.main.handler.AudioHandler;
 import co.biogram.main.handler.KeyboardHeightObserver;
 import co.biogram.main.handler.KeyboardHeightProvider;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.SocketHandler;
-import co.biogram.main.service.NetworkService;
 import co.biogram.main.ui.component.CircularProgressView;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
 
-import static android.widget.SeekBar.GONE;
-import static android.widget.SeekBar.OnClickListener;
-import static android.widget.SeekBar.OnSeekBarChangeListener;
-import static android.widget.SeekBar.OnTouchListener;
-import static android.widget.SeekBar.VISIBLE;
+import java.io.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static android.widget.SeekBar.*;
 
 /**
  * Created by soh_mil97
@@ -219,39 +186,39 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                         public void run()
                         {
 
-                            JSONObject uploadObject = NetworkService.createUploadData("5b464e90a2ef1ca5e3a659f8", textMessage, null);
-                            Log.d("DATAFROMSERVER", uploadObject.toString());
-
-                            NetworkService.Emit("SendMessage", uploadObject.toString(), new SocketHandler.Callback()
-                            {
-                                @Override
-                                public void call(Object data)
-                                {
-                                    Log.d("DATAFROMSERVER", data.toString());
-                                    try
-                                    {
-                                        JSONObject result = new JSONObject(data.toString());
-
-                                        if ((int) result.get("Result") == 0)
-
-                                            Misc.UIThread(new Runnable()
-                                            {
-                                                @Override
-                                                public void run()
-                                                {
-                                                    if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
-                                                        AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
-                                                }
-                                            }, 0);
-
-                                    }
-                                    catch (JSONException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            });
+                            //                            JSONObject uploadObject = NetworkService.createUploadData("5b464e90a2ef1ca5e3a659f8", textMessage, null);
+                            //                            Log.d("DATAFROMSERVER", uploadObject.toString());
+                            //
+                            //                            NetworkService.Emit("SendMessage", uploadObject.toString(), new SocketHandler.Callback()
+                            //                            {
+                            //                                @Override
+                            //                                public void call(Object data)
+                            //                                {
+                            //                                    Log.d("DATAFROMSERVER", data.toString());
+                            //                                    try
+                            //                                    {
+                            //                                        JSONObject result = new JSONObject(data.toString());
+                            //
+                            //                                        if ((int) result.get("Result") == 0)
+                            //
+                            //                                            Misc.UIThread(new Runnable()
+                            //                                            {
+                            //                                                @Override
+                            //                                                public void run()
+                            //                                                {
+                            //                                                    if (AudioManager.getRingerMode() == android.media.AudioManager.RINGER_MODE_NORMAL)
+                            //                                                        AudioPlayer.load(Activity.getBaseContext(), R.raw.sound_out, 1);
+                            //                                                }
+                            //                                            }, 0);
+                            //
+                            //                                    }
+                            //                                    catch (JSONException e)
+                            //                                    {
+                            //                                        e.printStackTrace();
+                            //                                    }
+                            //
+                            //                                }
+                            //                            });
 
                         }
                     });

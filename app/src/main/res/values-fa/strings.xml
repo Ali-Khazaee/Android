@@ -63,7 +63,7 @@
     <string name="GeneralSignIn">ورود</string>
     <string name="GeneralSignUp">ثبت نام</string>
     <string name="GeneralTerm">شرايط و حريم خصوصي</string>
-    <string name="GeneralEmailAddress">ایمیل آدرس</string>
+    <string name="GeneralEmailAddress">آدرس ایمیل</string>
 
     <string name="GeneralPhone">پیش شماره وارد شده اشتباه است</string>
     <string name="GeneralPhoneCode">شماره موبایل وارد شده اشتباه است</string>

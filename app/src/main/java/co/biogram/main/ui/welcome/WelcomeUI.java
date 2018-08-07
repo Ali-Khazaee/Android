@@ -15,7 +15,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-
+import co.biogram.main.R;
+import co.biogram.main.activity.SocialActivity;
+import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.view.Button;
+import co.biogram.main.ui.view.LoadingView;
+import co.biogram.main.ui.view.TextView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
@@ -26,16 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import org.json.JSONObject;
-
-import co.biogram.main.R;
-import co.biogram.main.activity.SocialActivity;
-import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.view.Button;
-import co.biogram.main.ui.view.LoadingView;
-import co.biogram.main.ui.view.TextView;
 
 public class WelcomeUI extends FragmentView {
     private LoadingView LoadingViewGoogle;
@@ -232,7 +229,7 @@ public class WelcomeUI extends FragmentView {
 
                 ScrollViewMain.setAnimation(Anim);
 
-                Activity.GetManager().OpenView(new DescriptionUI("asdasd"), "PhoneUI", true);
+                Activity.GetManager().OpenView(new PhoneUI(true), "PhoneUI", true);
             }
         });
 

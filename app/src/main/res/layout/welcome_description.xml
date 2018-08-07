@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/actionbar"
@@ -24,6 +23,7 @@
             android:src="@drawable/z_general_back_white" />
 
         <TextView
+            android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ActionBar"
             android:layout_toEndOf="@id/ImageButtonBack"
@@ -87,7 +87,6 @@
         android:layout_marginTop="8dp"
         android:hint="@string/DescriptionUIEditName"
         android:maxLength="32"
-        android:maxLines="1"
         android:maxWidth="180dp"
         android:padding="10dp"
         android:textColor="?TextColor"
@@ -105,7 +104,7 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/TextWhite"
         android:textSize="13sp"
-        tools:text="@string/DescriptionUIMessage" />
+        android:text="@string/DescriptionUIMessage"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -124,6 +123,7 @@
             android:textSize="13sp" />
 
         <Button
+            android:id="@+id/buttonNextStep"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
