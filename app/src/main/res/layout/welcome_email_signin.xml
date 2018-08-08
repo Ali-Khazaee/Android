@@ -54,6 +54,7 @@
                 android:textSize="13sp"/>
 
             <EditText
+                android:id="@+id/EditTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -76,6 +77,7 @@
                 android:textSize="13sp"/>
 
             <EditText
+                android:id="@+id/EditTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -94,9 +96,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:text="@string/EmailSignInUIMessage"
         android:textColor="@color/TextWhite"
-        android:textSize="13sp"
-        android:text="@string/EmailSignInUIMessage"/>
+        android:textSize="13sp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -115,13 +117,13 @@
             android:textSize="13sp"/>
 
         <Button
-            android:id="@+id/buttonNextStep"
+            android:id="@+id/buttonSignup"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="24dp"
             android:background="@drawable/z__welcomeui_button_background"
-            android:text="@string/GeneralNext"
+            android:text="@string/GeneralSignUp"
             android:textColor="@color/White"/>
     </RelativeLayout>
 

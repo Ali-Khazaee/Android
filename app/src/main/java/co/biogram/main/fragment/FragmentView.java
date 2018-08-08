@@ -1,7 +1,7 @@
 package co.biogram.main.fragment;
 
-import android.view.View;
 import android.content.Intent;
+import android.view.View;
 
 public abstract class FragmentView {
     public FragmentActivity Activity;
@@ -11,6 +11,7 @@ public abstract class FragmentView {
     public abstract void OnCreate();
 
     public void OnResume() {
+
     }
 
     public void OnOpen() {

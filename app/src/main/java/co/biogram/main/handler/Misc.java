@@ -21,6 +21,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
@@ -962,6 +963,29 @@ public class Misc
         bitmap.setPixels(Pixel, 0, width, 0, 0, width, height);
 
         return bitmap;
+    }
+
+    public static void fontSetter(View view)
+    {
+        try
+        {
+            if (view instanceof ViewGroup)
+            {
+                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++)
+                {
+                    fontSetter(((ViewGroup) view).getChildAt(i));
+                }
+            }
+            else if (view instanceof TextView)
+            {
+                ((TextView) view).setTypeface(Misc.GetTypeface());
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static Bitmap ChangeBrightness(Bitmap bitmap, int Type)

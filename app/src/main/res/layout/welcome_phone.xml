@@ -55,7 +55,8 @@
                 android:textSize="13sp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/editTextCode"
+                android:layout_width="46dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:maxLines="1"
@@ -65,7 +66,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="24dp"
             android:orientation="vertical">
 
             <TextView
@@ -77,10 +78,12 @@
                 android:textSize="13sp" />
 
             <EditText
+                android:id="@+id/EditTextPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:maxLines="1"
+                android:textDirection="rtl"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -106,7 +109,7 @@
         android:layout_marginTop="36dp">
 
         <TextView
-            android:id="@+id/textViewWelcomeUITerm2"
+            android:id="@+id/textViewTerm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -122,6 +125,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="24dp"
             android:background="@drawable/z__welcomeui_button_background"
+            android:enabled="false"
             android:text="@string/GeneralNext"
             android:textColor="@color/White" />
     </RelativeLayout>

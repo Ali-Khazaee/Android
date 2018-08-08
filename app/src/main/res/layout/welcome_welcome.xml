@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/RelativeLayoutHeader"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="186dp"
         android:background="@color/Primary"
         android:orientation="vertical">
 
@@ -113,19 +113,21 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/google" />
 
-            <TextView
-                android:id="@+id/textViewGoogleLogin"
+            <Button
+                android:id="@+id/buttonGoogleLogin"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:gravity="center"
                 android:text="@string/WelcomeUISignInGoogle"
                 android:textColor="@color/Primary"
@@ -141,50 +143,59 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewWelcomeUITerm"
+        <LinearLayout
+            android:id="@+id/LinearLayoutTerm"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginStart="48dp"
-            android:gravity="center"
-            android:text="@string/WelcomeUITerm"
-            android:textSize="13sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewWelcomeUITerm2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="48dp"
-            android:layout_marginStart="48dp"
-            android:gravity="center"
-            android:text="@string/WelcomeUITerm2"
-            android:textColor="@color/Primary"
-            android:textSize="13sp" />
+            <TextView
+                android:id="@+id/textViewhelpTerm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginStart="48dp"
+                android:gravity="center"
+                android:text="@string/WelcomeUITerm"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/textViewTerm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="48dp"
+                android:layout_marginStart="48dp"
+                android:gravity="center"
+                android:text="@string/WelcomeUITerm2"
+                android:textColor="@color/Primary"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:background="#b3b3b3" />
 
         <LinearLayout
+            android:id="@+id/LinearLayoutSignin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
             android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/WelcomeUISignIn"
                 android:textSize="13sp" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:text="@string/GeneralSignIn"
                 android:textColor="@color/Primary"
