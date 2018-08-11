@@ -141,6 +141,6 @@ public class SocialActivity extends FragmentActivity
                 break;
         }
 
-        GetManager().OpenView(Fragment, "hello", false);
+        GetManager().OpenView(Fragment, Tag, false);
     }
 }
