@@ -33,6 +33,7 @@
             android:textSize="18sp"/>
 
         <TextView
+            android:id="@+id/textViewTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -67,42 +68,52 @@
             android:weightSum="5">
 
             <EditText
+                android:id="@+id/editTextCode1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:maxLines="1"
                 android:textSize="13sp"/>
 
             <EditText
+                android:id="@+id/editTextCode2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:maxLines="1"
                 android:textSize="13sp"/>
 
             <EditText
+                android:id="@+id/editTextCode3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:maxLines="1"
                 android:textSize="13sp"/>
 
             <EditText
+                android:id="@+id/editTextCode4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:maxLines="1"
                 android:textSize="13sp"/>
 
             <EditText
+                android:id="@+id/editTextCode5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:maxLines="1"
                 android:textSize="13sp"/>
         </LinearLayout>
@@ -119,9 +130,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:text="@string/EmailVerifyUIMessage"
         android:textColor="@color/TextWhite"
-        android:textSize="13sp"
-        android:text="@string/EmailVerifyUIMessage"/>
+        android:textSize="13sp"/>
 
     <TextView
         android:id="@+id/textViewEmail"
@@ -131,9 +142,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:text="@string/PhoneUIMessageUp"
         android:textColor="@color/Gray"
-        android:textSize="11sp"
-        android:text="@string/PhoneUIMessageUp"/>
+        android:textSize="11sp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -142,7 +153,7 @@
         android:layout_marginTop="36dp">
 
         <TextView
-            android:id="@+id/textViewWelcomeUITerm2"
+            android:id="@+id/textViewResendCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

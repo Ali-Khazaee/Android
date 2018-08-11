@@ -32,11 +32,13 @@ import co.biogram.main.handler.AudioHandler;
 import co.biogram.main.handler.KeyboardHeightObserver;
 import co.biogram.main.handler.KeyboardHeightProvider;
 import co.biogram.main.handler.Misc;
+import co.biogram.main.service.NetworkService;
 import co.biogram.main.ui.component.CircularProgressView;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -186,10 +188,9 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
                         public void run()
                         {
 
-                            //                            JSONObject uploadObject = NetworkService.createUploadData("5b464e90a2ef1ca5e3a659f8", textMessage, null);
-                            //                            Log.d("DATAFROMSERVER", uploadObject.toString());
+                            JSONObject uploadObject = NetworkService.createUploadData("5b464e90a2ef1ca5e3a659f8", textMessage, null);
                             //
-                            //                            NetworkService.Emit("SendMessage", uploadObject.toString(), new SocketHandler.Callback()
+                            //                            NetworkService.Send(Pac, uploadObject.toString(), new SocketHandler.Callback()
                             //                            {
                             //                                @Override
                             //                                public void call(Object data)

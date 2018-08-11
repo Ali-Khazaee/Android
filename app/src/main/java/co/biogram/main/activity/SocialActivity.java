@@ -4,9 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
-import java.util.Locale;
-
 import co.biogram.emoji.core.EmojiManager;
 import co.biogram.emoji.emojibio.IosEmojiProvider;
 import co.biogram.main.R;
@@ -18,7 +15,8 @@ import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
 import co.biogram.main.ui.social.Profile_UI;
-import co.biogram.main.ui.welcome.WelcomeUI;
+
+import java.util.Locale;
 
 public class SocialActivity extends FragmentActivity
 {
@@ -43,7 +41,7 @@ public class SocialActivity extends FragmentActivity
         getBaseContext().getResources().updateConfiguration(Config, getBaseContext().getResources().getDisplayMetrics());
 
         EmojiManager.install(new IosEmojiProvider());
-        
+
         setTheme(Misc.GetBoolean("ThemeDark") ? R.style.AppThemeDark : R.style.AppThemeLight);
 
         super.onCreate(savedInstanceState);
@@ -143,6 +141,6 @@ public class SocialActivity extends FragmentActivity
                 break;
         }
 
-        GetManager().OpenView(new WelcomeUI(), "hello", false);
+        GetManager().OpenView(Fragment, "hello", false);
     }
 }

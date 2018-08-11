@@ -36,7 +36,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class DescriptionUI extends FragmentView {
+public class DescriptionUI extends FragmentView
+{
     private final String Code;
     private final int Type;
     private CircleImageView CircleImageViewProfile;
@@ -44,19 +45,22 @@ public class DescriptionUI extends FragmentView {
     private File ProfileFile;
     private String Username;
 
-    DescriptionUI(String code) {
+    DescriptionUI(String code)
+    {
         Code = code;
         Type = 2;
     }
 
-    DescriptionUI(String code, String username, int type) {
+    DescriptionUI(String code, String username, int type)
+    {
         Code = code;
         Type = type;
         Username = username;
     }
 
     @Override
-    public void OnCreate() {
+    public void OnCreate()
+    {
 
         View view = View.inflate(Activity, R.layout.welcome_description, null);
 
@@ -66,15 +70,18 @@ public class DescriptionUI extends FragmentView {
         view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Activity.onBackPressed();
             }
         });
 
         CircleImageViewProfile = view.findViewById(R.id.ImageViewProfile);
-        CircleImageViewProfile.setOnClickListener(new View.OnClickListener() {
+        CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 final Dialog DialogProfile = new Dialog(Activity);
                 DialogProfile.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 DialogProfile.setCancelable(true);
@@ -103,16 +110,21 @@ public class DescriptionUI extends FragmentView {
                 TextViewCamera.SetColor(R.color.TextWhite);
                 TextViewCamera.setText(Misc.String(R.string.DescriptionUIProfileCamera));
                 TextViewCamera.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-                TextViewCamera.setOnClickListener(new View.OnClickListener() {
+                TextViewCamera.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v)
+                    {
                         DialogProfile.dismiss();
 
                         PermissionDialog PermissionDialogCamera = new PermissionDialog(Activity);
-                        PermissionDialogCamera.SetContentView(R.drawable.z_general_permission_camera, R.string.DescriptionUIPermissionCamera, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener() {
+                        PermissionDialogCamera.SetContentView(R.drawable.z_general_permission_camera, R.string.DescriptionUIPermissionCamera, Manifest.permission.CAMERA, new PermissionDialog.OnChoiceListener()
+                        {
                             @Override
-                            public void OnChoice(boolean Allow) {
-                                if (!Allow) {
+                            public void OnChoice(boolean Allow)
+                            {
+                                if (!Allow)
+                                {
                                     Misc.ToastOld(Misc.String(R.string.DescriptionUIPermissionCamera));
                                     return;
                                 }
@@ -136,27 +148,34 @@ public class DescriptionUI extends FragmentView {
                 TextViewGallery.SetColor(R.color.TextWhite);
                 TextViewGallery.setText(Misc.String(R.string.DescriptionUIProfileGallery));
                 TextViewGallery.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-                TextViewGallery.setOnClickListener(new View.OnClickListener() {
+                TextViewGallery.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
-                        if (Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    public void onClick(View v)
+                    {
+                        if (Misc.CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
+                        {
                             DialogProfile.dismiss();
 
-                            Activity.GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener() {
+                            Activity.GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
+                            {
                                 String ImageURL;
 
                                 @Override
-                                public void OnSelection(String URL) {
+                                public void OnSelection(String URL)
+                                {
                                     ImageURL = URL;
                                 }
 
                                 @Override
-                                public void OnRemove(String URL) {
+                                public void OnRemove(String URL)
+                                {
                                     ImageURL = "";
                                 }
 
                                 @Override
-                                public void OnSave() {
+                                public void OnSave()
+                                {
 
                                     Update(new File(ImageURL), true);
                                 }
@@ -167,30 +186,37 @@ public class DescriptionUI extends FragmentView {
                         DialogProfile.dismiss();
 
                         PermissionDialog PermissionDialogGallery = new PermissionDialog(Activity);
-                        PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.DescriptionUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener() {
+                        PermissionDialogGallery.SetContentView(R.drawable.z_general_permission_storage, R.string.DescriptionUIPermissionStorage, Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionDialog.OnChoiceListener()
+                        {
                             @Override
-                            public void OnChoice(boolean Allow) {
-                                if (!Allow) {
+                            public void OnChoice(boolean Allow)
+                            {
+                                if (!Allow)
+                                {
 
                                     Misc.ToastOld(Misc.String(R.string.DescriptionUIPermissionStorage));
                                     return;
                                 }
 
-                                Activity.GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener() {
+                                Activity.GetManager().OpenView(new GalleryViewUI(1, 1, new GalleryViewUI.GalleryListener()
+                                {
                                     String ImageURL;
 
                                     @Override
-                                    public void OnSelection(String URL) {
+                                    public void OnSelection(String URL)
+                                    {
                                         ImageURL = URL;
                                     }
 
                                     @Override
-                                    public void OnRemove(String URL) {
+                                    public void OnRemove(String URL)
+                                    {
                                         ImageURL = "";
                                     }
 
                                     @Override
-                                    public void OnSave() {
+                                    public void OnSave()
+                                    {
 
                                         Update(new File(ImageURL), true);
                                     }
@@ -213,9 +239,11 @@ public class DescriptionUI extends FragmentView {
                 TextViewRemove.SetColor(R.color.TextWhite);
                 TextViewRemove.setText(Misc.String(R.string.DescriptionUIProfileRemove));
                 TextViewRemove.setPadding(Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15), Misc.ToDP(15));
-                TextViewRemove.setOnClickListener(new View.OnClickListener() {
+                TextViewRemove.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v)
+                    {
                         CircleImageViewProfile.setImageResource(R.drawable.person_blue);
                         DialogProfile.dismiss();
                         ProfileFile = null;
@@ -232,33 +260,37 @@ public class DescriptionUI extends FragmentView {
         final EditText EditTextName = view.findViewById(R.id.editTextName);
         EditTextName.requestFocus();
         Misc.SetCursorColor(EditTextName, R.color.Primary);
-        EditTextName.setFilters(new InputFilter[]
+        EditTextName.setFilters(new InputFilter[] { new InputFilter.LengthFilter(32), new InputFilter()
+        {
+            @Override
+            public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
+            {
+                for (int I = Start; I < End; I++)
                 {
-                        new InputFilter.LengthFilter(32), new InputFilter() {
-                    @Override
-                    public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de) {
-                        for (int I = Start; I < End; I++) {
-                            int Type = Character.getType(s.charAt(I));
+                    int Type = Character.getType(s.charAt(I));
 
-                            if (Type == Character.SURROGATE || Type == Character.OTHER_SYMBOL)
-                                return "";
-                        }
-
-                        return null;
-                    }
+                    if (Type == Character.SURROGATE || Type == Character.OTHER_SYMBOL)
+                        return "";
                 }
-                });
-        EditTextName.addTextChangedListener(new TextWatcher() {
+
+                return null;
+            }
+        } });
+        EditTextName.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
                 ButtonFinish.setEnabled(s.length() > 1);
             }
         });
@@ -266,11 +298,12 @@ public class DescriptionUI extends FragmentView {
         final EditText EditTextDescription = view.findViewById(R.id.editTextDescription);
         Misc.SetCursorColor(EditTextName, R.color.Primary);
 
-
         ButtonFinish.setLayoutParams(new RelativeLayout.LayoutParams(Misc.ToDP(90), Misc.ToDP(35)));
-        ButtonFinish.setOnClickListener(new View.OnClickListener() {
+        ButtonFinish.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 ButtonFinish.setEnabled(false);
                 LoadingViewFinish.Start();
 
@@ -282,235 +315,237 @@ public class DescriptionUI extends FragmentView {
                 Progress.setProgress(0);
                 Progress.show();
 
-                if (Type == 0) {
-                    AndroidNetworking.upload(Misc.GetRandomServer("SignInGoogleVerify"))
-                            .addMultipartParameter("Token", Code)
-                            .addMultipartParameter("Name", EditTextName.getText().toString())
-                            .addMultipartParameter("Username", Username)
-                            .addMultipartParameter("Description", EditTextDescription.getText().toString())
-                            .addMultipartParameter("Session", Misc.GenerateSession())
-                            .addMultipartFile("Avatar", ProfileFile)
-                            .setTag("DescriptionUI")
-                            .build()
-                            .setUploadProgressListener(new UploadProgressListener() {
-                                @Override
-                                public void onProgress(long u, long t) {
-                                    Progress.setProgress((int) (100 * u / t));
+                if (Type == 0)
+                {
+                    AndroidNetworking.upload(Misc.GetRandomServer("SignInGoogleVerify")).addMultipartParameter("Token", Code).addMultipartParameter("Name", EditTextName.getText().toString()).addMultipartParameter("Username", Username).addMultipartParameter("Description", EditTextDescription.getText().toString()).addMultipartParameter("Session", Misc.GenerateSession()).addMultipartFile("Avatar", ProfileFile).setTag("DescriptionUI").build().setUploadProgressListener(new UploadProgressListener()
+                    {
+                        @Override
+                        public void onProgress(long u, long t)
+                        {
+                            Progress.setProgress((int) (100 * u / t));
+                        }
+                    }).getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setEnabled(true);
+
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                switch (Result.getInt("Message"))
+                                {
+                                    case 0:
+                                        Misc.SetBoolean("IsLogin", true);
+                                        Misc.SetBoolean("IsGoogle", true);
+                                        Misc.SetString("Token", Result.getString("Token"));
+                                        Misc.SetString("ID", Result.getString("ID"));
+                                        Misc.SetString("Username", Result.getString("Username"));
+                                        Misc.SetString("Avatar", Result.getString("Avatar"));
+
+                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
+                                        Activity.finish();
+                                        break;
+                                    case 13:
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
+                                        break;
+                                    case 6:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
+                                        break;
+                                    case 7:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
+                                        break;
+                                    case 8:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
+                                        break;
+                                    case 1:
+                                    case 9:
+                                    case 10:
+                                    case 11:
+                                    case 12:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
+                                        break;
+                                    default:
+                                        Misc.GeneralError(Result.getInt("Message"));
+                                        break;
                                 }
-                            })
-                            .getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String Response) {
-                                    Progress.dismiss();
-                                    LoadingViewFinish.Stop();
-                                    ButtonFinish.setEnabled(true);
+                            }
+                            catch (Exception e)
+                            {
+                                Misc.Debug("DescriptionUI-SignInGoogleVerify: " + e.toString());
+                            }
+                        }
 
-                                    try {
-                                        JSONObject Result = new JSONObject(Response);
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setEnabled(true);
+                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                        }
+                    });
+                }
+                else if (Type == 1)
+                {
+                    AndroidNetworking.upload(Misc.GetRandomServer("SignUpPhoneFinish")).addMultipartParameter("Issue", Code).addMultipartParameter("Name", EditTextName.getText().toString()).addMultipartParameter("Username", Username).addMultipartParameter("Description", EditTextDescription.getText().toString()).addMultipartParameter("Session", Misc.GenerateSession()).addMultipartFile("Avatar", ProfileFile).setTag("DescriptionUI").build().setUploadProgressListener(new UploadProgressListener()
+                    {
+                        @Override
+                        public void onProgress(long u, long t)
+                        {
+                            Progress.setProgress((int) (100 * u / t));
+                        }
+                    }).getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setEnabled(true);
 
-                                        switch (Result.getInt("Message")) {
-                                            case 0:
-                                                Misc.SetBoolean("IsLogin", true);
-                                                Misc.SetBoolean("IsGoogle", true);
-                                                Misc.SetString("Token", Result.getString("Token"));
-                                                Misc.SetString("ID", Result.getString("ID"));
-                                                Misc.SetString("Username", Result.getString("Username"));
-                                                Misc.SetString("Avatar", Result.getString("Avatar"));
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
 
-                                                Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                                                Activity.finish();
-                                                break;
-                                            case 13:
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
-                                                break;
-                                            case 6:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
-                                                break;
-                                            case 7:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
-                                                break;
-                                            case 8:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
-                                                break;
-                                            case 1:
-                                            case 9:
-                                            case 10:
-                                            case 11:
-                                            case 12:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
-                                                break;
-                                            default:
-                                                Misc.GeneralError(Result.getInt("Message"));
-                                                break;
-                                        }
-                                    } catch (Exception e) {
-                                        Misc.Debug("DescriptionUI-SignInGoogleVerify: " + e.toString());
-                                    }
+                                switch (Result.getInt("Message"))
+                                {
+                                    case 0:
+                                        Misc.SetBoolean("IsLogin", true);
+                                        Misc.SetBoolean("IsGoogle", true);
+                                        Misc.SetString("Token", Result.getString("Token"));
+                                        Misc.SetString("ID", Result.getString("ID"));
+                                        Misc.SetString("Username", Result.getString("Username"));
+                                        Misc.SetString("Avatar", Result.getString("Avatar"));
+
+                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
+                                        Activity.finish();
+                                        break;
+                                    case 1:
+                                    case 9:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
+                                        break;
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    case 10:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
+                                        break;
+                                    case 6:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
+                                        break;
+                                    case 7:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
+                                        break;
+                                    case 8:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
+                                        break;
+                                    default:
+                                        Misc.GeneralError(Result.getInt("Message"));
+                                        break;
                                 }
+                            }
+                            catch (Exception e)
+                            {
+                                Misc.Debug("DescriptionUI-SignUpPhoneFinish: " + e.toString());
+                            }
+                        }
 
-                                @Override
-                                public void onError(ANError e) {
-                                    Progress.dismiss();
-                                    LoadingViewFinish.Stop();
-                                    ButtonFinish.setEnabled(true);
-                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setEnabled(true);
+                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                        }
+                    });
+                }
+                else if (Type == 2)
+                {
+                    AndroidNetworking.upload(Misc.GetRandomServer("SignUpEmailFinish")).addMultipartParameter("Issue", Code).addMultipartParameter("Name", EditTextName.getText().toString()).addMultipartParameter("Description", EditTextDescription.getText().toString()).addMultipartParameter("Session", Misc.GenerateSession()).addMultipartFile("Avatar", ProfileFile).setTag("DescriptionUI").build().setUploadProgressListener(new UploadProgressListener()
+                    {
+                        @Override
+                        public void onProgress(long u, long t)
+                        {
+                            Progress.setProgress((int) (100 * u / t));
+                        }
+                    }).getAsString(new StringRequestListener()
+                    {
+                        @Override
+                        public void onResponse(String Response)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setEnabled(true);
+
+                            try
+                            {
+                                JSONObject Result = new JSONObject(Response);
+
+                                switch (Result.getInt("Message"))
+                                {
+                                    case 0:
+
+                                        Misc.SetBoolean("IsLogin", true);
+                                        Misc.SetBoolean("IsGoogle", true);
+                                        Misc.SetString("Token", Result.getString("Token"));
+                                        Misc.SetString("ID", Result.getString("ID"));
+                                        Misc.SetString("Username", Result.getString("Username"));
+                                        Misc.SetString("Avatar", Result.getString("Avatar"));
+
+                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
+                                        Activity.finish();
+                                        break;
+                                    case 1:
+                                    case 9:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
+                                        break;
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    case 10:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
+                                        break;
+                                    case 6:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
+                                        break;
+                                    case 7:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
+                                        break;
+                                    case 8:
+                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
+                                        break;
+                                    default:
+                                        Misc.GeneralError(Result.getInt("Message"));
+                                        break;
                                 }
-                            });
-                } else if (Type == 1) {
-                    AndroidNetworking.upload(Misc.GetRandomServer("SignUpPhoneFinish"))
-                            .addMultipartParameter("Issue", Code)
-                            .addMultipartParameter("Name", EditTextName.getText().toString())
-                            .addMultipartParameter("Username", Username)
-                            .addMultipartParameter("Description", EditTextDescription.getText().toString())
-                            .addMultipartParameter("Session", Misc.GenerateSession())
-                            .addMultipartFile("Avatar", ProfileFile)
-                            .setTag("DescriptionUI")
-                            .build()
-                            .setUploadProgressListener(new UploadProgressListener() {
-                                @Override
-                                public void onProgress(long u, long t) {
-                                    Progress.setProgress((int) (100 * u / t));
-                                }
-                            })
-                            .getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String Response) {
-                                    Progress.dismiss();
-                                    LoadingViewFinish.Stop();
-                                    ButtonFinish.setEnabled(true);
+                            }
+                            catch (Exception e)
+                            {
+                                Misc.Debug("DescriptionUI-SignUpEmailFinish: " + e.toString());
+                            }
+                        }
 
-                                    try {
-                                        JSONObject Result = new JSONObject(Response);
-
-                                        switch (Result.getInt("Message")) {
-                                            case 0:
-                                                Misc.SetBoolean("IsLogin", true);
-                                                Misc.SetBoolean("IsGoogle", true);
-                                                Misc.SetString("Token", Result.getString("Token"));
-                                                Misc.SetString("ID", Result.getString("ID"));
-                                                Misc.SetString("Username", Result.getString("Username"));
-                                                Misc.SetString("Avatar", Result.getString("Avatar"));
-
-                                                Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                                                Activity.finish();
-                                                break;
-                                            case 1:
-                                            case 9:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
-                                                break;
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 10:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
-                                                break;
-                                            case 6:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
-                                                break;
-                                            case 7:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
-                                                break;
-                                            case 8:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
-                                                break;
-                                            default:
-                                                Misc.GeneralError(Result.getInt("Message"));
-                                                break;
-                                        }
-                                    } catch (Exception e) {
-                                        Misc.Debug("DescriptionUI-SignUpPhoneFinish: " + e.toString());
-                                    }
-                                }
-
-                                @Override
-                                public void onError(ANError e) {
-                                    Progress.dismiss();
-                                    LoadingViewFinish.Stop();
-                                    ButtonFinish.setEnabled(true);
-                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                                }
-                            });
-                } else if (Type == 2) {
-                    AndroidNetworking.upload(Misc.GetRandomServer("SignUpEmailFinish"))
-                            .addMultipartParameter("Issue", Code)
-                            .addMultipartParameter("Name", EditTextName.getText().toString())
-                            .addMultipartParameter("Description", EditTextDescription.getText().toString())
-                            .addMultipartParameter("Session", Misc.GenerateSession())
-                            .addMultipartFile("Avatar", ProfileFile)
-                            .setTag("DescriptionUI")
-                            .build()
-                            .setUploadProgressListener(new UploadProgressListener() {
-                                @Override
-                                public void onProgress(long u, long t) {
-                                    Progress.setProgress((int) (100 * u / t));
-                                }
-                            })
-                            .getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String Response) {
-                                    Progress.dismiss();
-                                    LoadingViewFinish.Stop();
-                                    ButtonFinish.setEnabled(true);
-
-
-                                    try {
-                                        JSONObject Result = new JSONObject(Response);
-
-                                        switch (Result.getInt("Message")) {
-                                            case 0:
-
-                                                Misc.SetBoolean("IsLogin", true);
-                                                Misc.SetBoolean("IsGoogle", true);
-                                                Misc.SetString("Token", Result.getString("Token"));
-                                                Misc.SetString("ID", Result.getString("ID"));
-                                                Misc.SetString("Username", Result.getString("Username"));
-                                                Misc.SetString("Avatar", Result.getString("Avatar"));
-
-                                                Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                                                Activity.finish();
-                                                break;
-                                            case 1:
-                                            case 9:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
-                                                break;
-                                            case 2:
-                                            case 3:
-                                            case 4:
-                                            case 5:
-                                            case 10:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
-                                                break;
-                                            case 6:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
-                                                break;
-                                            case 7:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
-                                                break;
-                                            case 8:
-                                                Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
-                                                break;
-                                            default:
-                                                Misc.GeneralError(Result.getInt("Message"));
-                                                break;
-                                        }
-                                    } catch (Exception e) {
-                                        Misc.Debug("DescriptionUI-SignUpEmailFinish: " + e.toString());
-                                    }
-                                }
-
-                                @Override
-                                public void onError(ANError e) {
-                                    Progress.dismiss();
-                                    LoadingViewFinish.Stop();
-                                    ButtonFinish.setEnabled(true);
-                                    Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                                }
-                            });
+                        @Override
+                        public void onError(ANError e)
+                        {
+                            Progress.dismiss();
+                            LoadingViewFinish.Stop();
+                            ButtonFinish.setEnabled(true);
+                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                        }
+                    });
                 }
             }
         });
@@ -539,13 +574,16 @@ public class DescriptionUI extends FragmentView {
         ImageViewDone.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageViewDone.setLayoutParams(ImageViewDoneParam);
         ImageViewDone.setImageResource(R.drawable.___general_done_white);
-        ImageViewDone.setOnClickListener(new View.OnClickListener() {
+        ImageViewDone.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 if (Build.VERSION.SDK_INT > 20)
                     Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.Primary));
 
-                try {
+                try
+                {
                     CropImageViewMain.setVisibility(View.GONE);
 
                     ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
@@ -559,7 +597,9 @@ public class DescriptionUI extends FragmentView {
                     FOS.close();
 
                     Update(ProfileFile, false);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Misc.Debug("DescriptionUI-Crop: " + e.toString());
                 }
             }
@@ -572,20 +612,24 @@ public class DescriptionUI extends FragmentView {
     }
 
     @Override
-    public void OnResume() {
+    public void OnResume()
+    {
     }
 
     @Override
-    public void OnPause() {
+    public void OnPause()
+    {
         Misc.HideSoftKey(Activity);
         AndroidNetworking.forceCancel("DescriptionUI");
     }
 
-    public void Update(File file, boolean Crop) {
+    public void Update(File file, boolean Crop)
+    {
         if (file == null)
             return;
 
-        if (Crop) {
+        if (Crop)
+        {
             if (Build.VERSION.SDK_INT > 20)
                 Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.TextWhite));
 

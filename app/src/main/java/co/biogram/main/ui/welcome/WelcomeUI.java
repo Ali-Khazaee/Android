@@ -6,9 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.fragment.FragmentView;
@@ -26,30 +24,32 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import org.json.JSONObject;
 
-public class WelcomeUI extends FragmentView {
+public class WelcomeUI extends FragmentView
+{
     private LoadingView LoadingViewGoogle;
     private RelativeLayout RelativeLayoutGoogle;
-    private ScrollView ScrollViewMain;
     private GoogleApiClient GoogleApiClient;
     private boolean IsGoogleAvailable;
 
-
     @Override
-    public void OnCreate() {
+    public void OnCreate()
+    {
         View view = View.inflate(Activity, R.layout.welcome_welcome, null);
 
         view.findViewById(R.id.buttonSignup).setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
-                Activity.GetManager().OpenView(new PasswordUI("ASDASDASDASDASD"), "PhoneUI", true);
+            public void onClick(View v)
+            {
+                Activity.GetManager().OpenView(new PhoneUI(true), "PhoneUI", true);
             }
         });
 
         view.findViewById(R.id.buttonGoogleLogin).setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 if (Build.VERSION.SDK_INT > 20)
                     Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.TextWhite));
                 RelativeLayoutGoogle.setVisibility(View.VISIBLE);
@@ -61,7 +61,8 @@ public class WelcomeUI extends FragmentView {
         view.findViewById(R.id.LinearLayoutSignin).setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Activity.GetManager().OpenView(new UsernameUI(), "PhoneUI", true);
             }
         });
@@ -69,7 +70,8 @@ public class WelcomeUI extends FragmentView {
         view.findViewById(R.id.LinearLayoutTerm).setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co")));
             }
         });
@@ -89,11 +91,10 @@ public class WelcomeUI extends FragmentView {
 
         RelativeLayoutGoogle.addView(LoadingViewGoogle);
 
-        ViewMain = ScrollViewMain;
-
         IsGoogleAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Activity) == ConnectionResult.SUCCESS;
 
-        if (IsGoogleAvailable) {
+        if (IsGoogleAvailable)
+        {
             GoogleApiClient = new GoogleApiClient.Builder(Activity.getApplicationContext()).addApi(Auth.GOOGLE_SIGN_IN_API, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().requestIdToken("590625045379-pnhlgdqpr5i8ma705ej7akcggsr08vdf.apps.googleusercontent.com").build()).build();
         }
 
@@ -102,16 +103,19 @@ public class WelcomeUI extends FragmentView {
     }
 
     @Override
-    public void OnResume() {
+    public void OnResume()
+    {
         if (IsGoogleAvailable)
             GoogleApiClient.connect();
     }
 
     @Override
-    public void OnPause() {
+    public void OnPause()
+    {
         AndroidNetworking.forceCancel("WelcomeUI");
 
-        if (IsGoogleAvailable) {
+        if (IsGoogleAvailable)
+        {
             if (GoogleApiClient.isConnected())
                 Auth.GoogleSignInApi.signOut(GoogleApiClient);
 
@@ -120,14 +124,18 @@ public class WelcomeUI extends FragmentView {
     }
 
     @Override
-    public void OnActivityResult(int RequestCode, int ResultCode, Intent intent) {
-        if (RequestCode == 100) {
+    public void OnActivityResult(int RequestCode, int ResultCode, Intent intent)
+    {
+        if (RequestCode == 100)
+        {
             GoogleSignInResult Result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
 
-            if (Result.isSuccess()) {
+            if (Result.isSuccess())
+            {
                 final GoogleSignInAccount Result2 = Result.getSignInAccount();
 
-                if (Result2 != null) {
+                if (Result2 != null)
+                {
                     AndroidNetworking.post(Misc.GetRandomServer("SignInGoogle")).addBodyParameter("Token", Result2.getIdToken()).addBodyParameter("Session", Misc.GenerateSession()).setTag("WelcomeUI").build().getAsString(new StringRequestListener()
                     {
                         @Override
@@ -155,12 +163,6 @@ public class WelcomeUI extends FragmentView {
                                             Activity.finish();
                                             return;
                                         }
-
-                                        TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                                        Anim.setDuration(200);
-
-                                        ScrollViewMain.setAnimation(Anim);
-
                                         Activity.GetManager().OpenView(new UsernameUI(Result2.getIdToken(), 0), "UsernameUI", true);
                                         break;
                                     case 1:
@@ -190,16 +192,21 @@ public class WelcomeUI extends FragmentView {
                             Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
                         }
                     });
-                } else {
+                }
+                else
+                {
                     HideGoogleLoading();
                 }
-            } else {
+            }
+            else
+            {
                 HideGoogleLoading();
             }
         }
     }
 
-    private void HideGoogleLoading() {
+    private void HideGoogleLoading()
+    {
         if (Build.VERSION.SDK_INT > 20)
             Activity.getWindow().setStatusBarColor(ContextCompat.getColor(Activity, R.color.Primary));
 

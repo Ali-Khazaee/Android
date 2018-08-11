@@ -11,22 +11,26 @@ import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 
-class PasswordUI extends FragmentView {
+class PasswordUI extends FragmentView
+{
     private final String Username;
 
-    PasswordUI(String username) {
+    PasswordUI(String username)
+    {
         Username = username;
     }
 
     @Override
-    public void OnCreate() {
+    public void OnCreate()
+    {
         View view = View.inflate(Activity, R.layout.welcome_password, null);
         final Button ButtonNext = view.findViewById(R.id.buttonNextStep);
 
         view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Activity.onBackPressed();
             }
         });
@@ -34,32 +38,40 @@ class PasswordUI extends FragmentView {
         final EditText EditTextPassword = view.findViewById(R.id.EditTextPassword);
         Misc.SetCursorColor(EditTextPassword, R.color.Primary);
         EditTextPassword.requestFocus();
-        EditTextPassword.addTextChangedListener(new TextWatcher() {
+        EditTextPassword.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
                 ButtonNext.setEnabled(s.length() > 5);
             }
         });
 
         android.widget.TextView TextViewPrivacy = view.findViewById(R.id.textViewTerm);
-        TextViewPrivacy.setOnClickListener(new View.OnClickListener() {
+        TextViewPrivacy.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co")));
             }
         });
 
-        ButtonNext.setOnClickListener(new View.OnClickListener() {
+        ButtonNext.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Activity.GetManager().OpenView(new EmailUI(Username, EditTextPassword.getText().toString()), "EmailUI", true);
             }
         });
@@ -68,9 +80,9 @@ class PasswordUI extends FragmentView {
         Misc.fontSetter(view);
     }
 
-
     @Override
-    public void OnPause() {
+    public void OnPause()
+    {
         Misc.HideSoftKey(Activity);
     }
 }

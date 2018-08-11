@@ -2,13 +2,13 @@ package co.biogram.main.fragment;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import co.biogram.main.R;
 
 import java.util.ArrayList;
-
-import co.biogram.main.R;
 
 public class FragmentManager {
     private ArrayList<FragmentView> FragmentList = new ArrayList<>();
@@ -21,9 +21,11 @@ public class FragmentManager {
 
     public void OpenView(FragmentView Frag, String Tag, boolean Full) {
         if (CurrentFrag != null && CurrentFrag.Tag.equals(Tag)) {
+            Log.d("SAGTOGHABRET", "KONIIIII");
             CurrentFrag.OnOpen();
             return;
         }
+        Log.d("SAGTOGHABRET", "KONIIIII2");
 
         // TODO If Exist ReOpen FindByTag(Tag);
 
