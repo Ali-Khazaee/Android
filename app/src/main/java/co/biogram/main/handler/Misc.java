@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.*;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.*;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
@@ -24,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -985,6 +984,29 @@ public class Misc
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+    }
+
+    public static void changeEditTextUnderlineColor(EditText editText, int focusedColor, int normalColor)
+    {
+        LayerDrawable drawable = (LayerDrawable) ContextCompat.getDrawable(editText.getContext(), R.drawable.layer_bg_edittext);
+        GradientDrawable gradientDrawableNormal = (GradientDrawable) drawable.findDrawableByLayerId(R.id.normal_layer);
+        gradientDrawableNormal.setStroke(2, ContextCompat.getColor(editText.getContext(), normalColor));
+
+        LayerDrawable drawableFocused = (LayerDrawable) ContextCompat.getDrawable(editText.getContext(), R.drawable.layer_bg_focused_edittext);
+        GradientDrawable gradientDrawableFocused = (GradientDrawable) drawableFocused.findDrawableByLayerId(R.id.focused_layer);
+        gradientDrawableFocused.setStroke(4, ContextCompat.getColor(editText.getContext(), focusedColor));
+
+        StateListDrawable states = new StateListDrawable();
+        states.addState(new int[] { android.R.attr.state_focused }, drawableFocused);
+        states.addState(new int[] { }, drawable);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+        {
+            editText.setBackgroundDrawable(states);
+        }
+        else
+        {
+            editText.setBackground(states);
         }
     }
 

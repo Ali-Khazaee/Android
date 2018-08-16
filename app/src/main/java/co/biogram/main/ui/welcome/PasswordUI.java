@@ -37,6 +37,8 @@ class PasswordUI extends FragmentView
 
         final EditText EditTextPassword = view.findViewById(R.id.EditTextPassword);
         Misc.SetCursorColor(EditTextPassword, R.color.Primary);
+        Misc.changeEditTextUnderlineColor(EditTextPassword, R.color.Primary, R.color.Gray);
+
         EditTextPassword.requestFocus();
         EditTextPassword.addTextChangedListener(new TextWatcher()
         {

@@ -59,25 +59,24 @@
             android:layout_marginEnd="48dp"
             android:layout_marginStart="48dp"
             android:layout_marginTop="36dp"
-            android:background="@drawable/z__welcomeui_button_background"
+            android:background="@drawable/z__welcomeui_signup_button_background"
             android:text="@string/GeneralSignUp"
             android:textColor="@color/White"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginStart="48dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginStart="36dp"
             android:layout_marginTop="24dp"
-            android:layout_weight="5"
             android:orientation="horizontal">
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="40dp"
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
@@ -96,7 +95,7 @@
                 android:textSize="12sp" />
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="40dp"
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
@@ -116,7 +115,6 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/google" />
 
@@ -127,7 +125,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="16dp"
-                android:layout_marginStart="8dp"
                 android:gravity="center"
                 android:text="@string/WelcomeUISignInGoogle"
                 android:textColor="@color/Primary"
@@ -198,7 +195,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:text="@string/GeneralSignIn"
-                android:textColor="@color/Primary"
+                android:textColor="#64b5f6"
                 android:textSize="13sp" />
 
         </LinearLayout>

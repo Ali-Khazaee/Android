@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
@@ -42,6 +43,9 @@ class PhoneUI extends FragmentView
         final Button ButtonNext = view.findViewById(R.id.buttonNextStep);
         final LoadingView LoadingViewNext = new LoadingView(Activity);
 
+        InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
         TelephonyManager Telephony = (TelephonyManager) Activity.getSystemService(Context.TELEPHONY_SERVICE);
         String CountryCode = Telephony == null ? "" : Telephony.getNetworkCountryIso();
 
@@ -61,6 +65,7 @@ class PhoneUI extends FragmentView
         final EditText EditTextPhoneCode = view.findViewById(R.id.editTextCode);
         EditTextPhoneCode.setText(CountryCode);
         Misc.SetCursorColor(EditTextPhoneCode, R.color.Primary);
+        Misc.changeEditTextUnderlineColor(EditTextPhoneCode, R.color.Primary, R.color.Gray);
         EditTextPhoneCode.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -169,6 +174,7 @@ class PhoneUI extends FragmentView
 
         final EditText EditTextPhone = view.findViewById(R.id.EditTextPhone);
         Misc.SetCursorColor(EditTextPhone, R.color.Primary);
+        Misc.changeEditTextUnderlineColor(EditTextPhone, R.color.Primary, R.color.Gray);
         EditTextPhone.requestFocus();
         EditTextPhone.setFilters(new InputFilter[] { new InputFilter.LengthFilter(16), new InputFilter()
         {
@@ -213,16 +219,28 @@ class PhoneUI extends FragmentView
         android.widget.TextView TextViewMessage = view.findViewById(R.id.textViewHelp);
         TextViewMessage.setText((Misc.String(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + Misc.String(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
 
+        TextViewMessage.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (event.getAction() == MotionEvent.ACTION_DOWN)
+                    if (!IsSignUp)
+                        Activity.GetManager().OpenView(new UsernameUI(), "UsernameUI", true);
+                    else
+                        Activity.GetManager().OpenView(new EmailSignInUI(), "EmailSignupUI", true);
+
+                return true;
+            }
+        });
+
         Spannable Span = (Spannable) TextViewMessage.getText();
         ClickableSpan ClickableSpanMessage = new ClickableSpan()
         {
             @Override
             public void onClick(View v)
             {
-                if (IsSignUp)
-                    Activity.GetManager().OpenView(new UsernameUI(), null, true);
-                else
-                    Activity.GetManager().OpenView(new EmailSignInUI(), null, true);
+
             }
 
             @Override
@@ -249,7 +267,7 @@ class PhoneUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), EditTextPhone.getText().toString(), true), null, true);
+                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), EditTextPhone.getText().toString(), true), "PhoneVerfiyUI", true);
 
                 //                PermissionDialog PermissionDialogSMS = new PermissionDialog(Activity);
                 //                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, new PermissionDialog.OnChoiceListener()

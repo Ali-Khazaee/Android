@@ -13,9 +13,6 @@ import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import org.json.JSONObject;
 
 class EmailVerifyUI extends FragmentView
 {
@@ -271,67 +268,67 @@ class EmailVerifyUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                if (!TextViewResend.isEnabled())
-                    return;
-
-                TextViewResend.setEnabled(false);
-                LoadingViewNext.Start();
-
-                AndroidNetworking.post(Misc.GetRandomServer("SignUpEmail")).addBodyParameter("Username", Username).addBodyParameter("Password", Password).addBodyParameter("Email", Email).setTag("EmailVerifyUI").build().getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewNext.Stop();
-                        TextViewResend.setEnabled(true);
-
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            switch (Result.getInt("Message"))
-                            {
-                                case 0:
-                                    CountDownTimerResend.start();
-                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUIResendDone));
-                                    break;
-                                case 1:
-                                case 2:
-                                case 3:
-                                case 4:
-                                    Misc.ToastOld(Misc.String(R.string.EmailUIError1));
-                                    break;
-                                case 5:
-                                case 6:
-                                case 7:
-                                    Misc.ToastOld(Misc.String(R.string.EmailUIError2));
-                                    break;
-                                case 8:
-                                case 9:
-                                    Misc.ToastOld(Misc.String(R.string.EmailUIError3));
-                                    break;
-                                case 10:
-                                    Misc.ToastOld(Misc.String(R.string.EmailUIError4));
-                                    break;
-                                default:
-                                    Misc.GeneralError(Result.getInt("Message"));
-                                    break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("EmailVerifyUI-SignUpEmail: " + e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError e)
-                    {
-                        LoadingViewNext.Stop();
-                        TextViewResend.setEnabled(true);
-                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                    }
-                });
+                //                if (!TextViewResend.isEnabled())
+                //                    return;
+                //
+                //                TextViewResend.setEnabled(false);
+                //                LoadingViewNext.Start();
+                //
+                //                AndroidNetworking.post(Misc.GetRandomServer("SignUpEmail")).addBodyParameter("Username", Username).addBodyParameter("Password", Password).addBodyParameter("Email", Email).setTag("EmailVerifyUI").build().getAsString(new StringRequestListener()
+                //                {
+                //                    @Override
+                //                    public void onResponse(String Response)
+                //                    {
+                //                        LoadingViewNext.Stop();
+                //                        TextViewResend.setEnabled(true);
+                //
+                //                        try
+                //                        {
+                //                            JSONObject Result = new JSONObject(Response);
+                //
+                //                            switch (Result.getInt("Message"))
+                //                            {
+                //                                case 0:
+                //                                    CountDownTimerResend.start();
+                //                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUIResendDone));
+                //                                    break;
+                //                                case 1:
+                //                                case 2:
+                //                                case 3:
+                //                                case 4:
+                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError1));
+                //                                    break;
+                //                                case 5:
+                //                                case 6:
+                //                                case 7:
+                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError2));
+                //                                    break;
+                //                                case 8:
+                //                                case 9:
+                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError3));
+                //                                    break;
+                //                                case 10:
+                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError4));
+                //                                    break;
+                //                                default:
+                //                                    Misc.GeneralError(Result.getInt("Message"));
+                //                                    break;
+                //                            }
+                //                        }
+                //                        catch (Exception e)
+                //                        {
+                //                            Misc.Debug("EmailVerifyUI-SignUpEmail: " + e.toString());
+                //                        }
+                //                    }
+                //
+                //                    @Override
+                //                    public void onError(ANError e)
+                //                    {
+                //                        LoadingViewNext.Stop();
+                //                        TextViewResend.setEnabled(true);
+                //                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                //                    }
+                //                });
             }
         });
 
@@ -377,54 +374,54 @@ class EmailVerifyUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                ButtonNext.setVisibility(View.GONE);
-                LoadingViewNext.Start();
-
-                final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
-
-                AndroidNetworking.post(Misc.GetRandomServer("SignUpEmailVerify")).addBodyParameter("VerifyCode", VerifyCode).setTag("EmailVerifyUI").build().getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setEnabled(false);
-
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            switch (Result.getInt("Message"))
-                            {
-                                case 0:
-                                    Activity.GetManager().OpenView(new DescriptionUI(VerifyCode), "DescriptionUI", true);
-                                    break;
-                                case 1:
-                                case 2:
-                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUICodeCount));
-                                    break;
-                                case 3:
-                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUICodeWrong));
-                                    break;
-                                default:
-                                    Misc.GeneralError(Result.getInt("Message"));
-                                    break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("EmailVerifyUI-SignUpEmailVerify: " + e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError e)
-                    {
-                        LoadingViewNext.Stop();
-                        ButtonNext.setEnabled(true);
-                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                    }
-                });
+                //                ButtonNext.setVisibility(View.GONE);
+                //                LoadingViewNext.Start();
+                //
+                //                final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
+                //
+                //                AndroidNetworking.post(Misc.GetRandomServer("SignUpEmailVerify")).addBodyParameter("VerifyCode", VerifyCode).setTag("EmailVerifyUI").build().getAsString(new StringRequestListener()
+                //                {
+                //                    @Override
+                //                    public void onResponse(String Response)
+                //                    {
+                //                        LoadingViewNext.Stop();
+                //                        ButtonNext.setEnabled(false);
+                //
+                //                        try
+                //                        {
+                //                            JSONObject Result = new JSONObject(Response);
+                //
+                //                            switch (Result.getInt("Message"))
+                //                            {
+                //                                case 0:
+                //                                    Activity.GetManager().OpenView(new DescriptionUI(VerifyCode), "DescriptionUI", true);
+                //                                    break;
+                //                                case 1:
+                //                                case 2:
+                //                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUICodeCount));
+                //                                    break;
+                //                                case 3:
+                //                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUICodeWrong));
+                //                                    break;
+                //                                default:
+                //                                    Misc.GeneralError(Result.getInt("Message"));
+                //                                    break;
+                //                            }
+                //                        }
+                //                        catch (Exception e)
+                //                        {
+                //                            Misc.Debug("EmailVerifyUI-SignUpEmailVerify: " + e.toString());
+                //                        }
+                //                    }
+                //
+                //                    @Override
+                //                    public void onError(ANError e)
+                //                    {
+                //                        LoadingViewNext.Stop();
+                //                        ButtonNext.setEnabled(true);
+                //                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                //                    }
+                //                });
             }
         });
 

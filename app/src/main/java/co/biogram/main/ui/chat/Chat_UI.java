@@ -1723,9 +1723,9 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
 
             LinearLayout.LayoutParams params;
             if (CHAT_MODE == MODE_GROUP)
-                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(100));
+                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(110));
             else
-                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(80));
+                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(90));
 
             if (IsFromUser)
                 params.setMargins(Misc.ToDP(40), Misc.ToDP(8), Misc.ToDP(12), Misc.ToDP(16));

@@ -13,9 +13,6 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.LoadingView;
 import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import org.json.JSONObject;
 
 class PasswordResetUI extends FragmentView
 {
@@ -74,53 +71,53 @@ class PasswordResetUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                ButtonFinish.setEnabled(false);
-                LoadingViewFinish.Start();
-
-                AndroidNetworking.post(Misc.GetRandomServer("ResetPassword")).addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString()).setTag("PasswordResetUI").build().getAsString(new StringRequestListener()
-                {
-                    @Override
-                    public void onResponse(String Response)
-                    {
-                        LoadingViewFinish.Stop();
-                        ButtonFinish.setEnabled(true);
-
-                        try
-                        {
-                            JSONObject Result = new JSONObject(Response);
-
-                            switch (Result.getInt("Message"))
-                            {
-                                case 0:
-                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError4));
-                                    break;
-                                case 1:
-                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError1));
-                                    break;
-                                case 2:
-                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError2));
-                                    break;
-                                case 3:
-                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError3));
-                                    break;
-                                default:
-                                    Misc.GeneralError(Result.getInt("Message"));
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Misc.Debug("PasswordResetUI: " + e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError e)
-                    {
-                        LoadingViewFinish.Stop();
-                        ButtonFinish.setEnabled(true);
-                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                    }
-                });
+                //                ButtonFinish.setEnabled(false);
+                //                LoadingViewFinish.Start();
+                //
+                //                AndroidNetworking.post(Misc.GetRandomServer("ResetPassword")).addBodyParameter("EmailOrUsername", EditTextEmailOrUsername.getText().toString()).setTag("PasswordResetUI").build().getAsString(new StringRequestListener()
+                //                {
+                //                    @Override
+                //                    public void onResponse(String Response)
+                //                    {
+                //                        LoadingViewFinish.Stop();
+                //                        ButtonFinish.setEnabled(true);
+                //
+                //                        try
+                //                        {
+                //                            JSONObject Result = new JSONObject(Response);
+                //
+                //                            switch (Result.getInt("Message"))
+                //                            {
+                //                                case 0:
+                //                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError4));
+                //                                    break;
+                //                                case 1:
+                //                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError1));
+                //                                    break;
+                //                                case 2:
+                //                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError2));
+                //                                    break;
+                //                                case 3:
+                //                                    Misc.ToastOld(Misc.String(R.string.PasswordResetUIError3));
+                //                                    break;
+                //                                default:
+                //                                    Misc.GeneralError(Result.getInt("Message"));
+                //                            }
+                //                        }
+                //                        catch (Exception e)
+                //                        {
+                //                            Misc.Debug("PasswordResetUI: " + e.toString());
+                //                        }
+                //                    }
+                //
+                //                    @Override
+                //                    public void onError(ANError e)
+                //                    {
+                //                        LoadingViewFinish.Stop();
+                //                        ButtonFinish.setEnabled(true);
+                //                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
+                //                    }
+                //                });
             }
         });
 

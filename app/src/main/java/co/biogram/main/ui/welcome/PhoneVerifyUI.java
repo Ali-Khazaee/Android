@@ -10,11 +10,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import co.biogram.main.R;
-import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.service.NetworkService;
@@ -95,7 +95,11 @@ class PhoneVerifyUI extends FragmentView
             }
         });
 
+        InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
         EditTextCode1 = view.findViewById(R.id.editTextCode1);
+        EditTextCode1.requestFocus();
         Misc.SetCursorColor(EditTextCode1, R.color.Primary);
         EditTextCode1.addTextChangedListener(new TextWatcher()
         {
@@ -301,6 +305,12 @@ class PhoneVerifyUI extends FragmentView
 
         ((android.widget.TextView) view.findViewById(R.id.textViewPhone)).setText(String.format("%s %s", Code, Phone));
 
+        Misc.changeEditTextUnderlineColor(EditTextCode1, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode2, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode3, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode4, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode5, R.color.Primary, R.color.Gray);
+
         final TextView TextViewResend = view.findViewById(R.id.textViewResendCode);
         Misc.SetCursorColor(EditTextCode4, R.color.Primary);
         //        TextViewResend.setOnClickListener(new View.OnClickListener()
@@ -491,8 +501,7 @@ class PhoneVerifyUI extends FragmentView
                         }
                     });
 
-                    Activity.finish();
-                    Activity.startActivity(new Intent(Activity, SocialActivity.class));
+                    Activity.GetManager().OpenView(new UsernameUI(Code, 1), "UsernameUI", true);
 
                     //                    AndroidNetworking.post(Misc.GetRandomServer("SignUpPhoneVerify")).addBodyParameter("Issue", Code).addBodyParameter("Phone", Phone).addBodyParameter("VerifyCode", VerifyCode).setTag("PhoneVerifyUI").build().getAsString(new StringRequestListener()
                     //                    {

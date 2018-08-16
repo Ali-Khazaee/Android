@@ -20,7 +20,7 @@
             android:focusable="true"
             android:padding="12dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/z_general_back_white" />
+            android:src="@drawable/z_general_back_white"/>
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -30,7 +30,7 @@
             android:gravity="start|center_vertical"
             android:text="@string/DescriptionUI"
             android:textColor="@color/White"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -50,7 +50,7 @@
             android:layout_height="76dp"
             android:src="@drawable/camera_bluegray2"
             app:civ_border_color="#e2e2e2"
-            app:civ_border_width="3dp" />
+            app:civ_border_width="3dp"/>
 
 
         <LinearLayout
@@ -70,7 +70,7 @@
                 android:padding="10dp"
                 android:textColor="?TextColor"
                 android:textDirection="rtl"
-                android:textSize="@dimen/FontMedium" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -91,7 +91,7 @@
         android:padding="10dp"
         android:textColor="?TextColor"
         android:textDirection="rtl"
-        android:textSize="@dimen/FontMedium" />
+        android:textSize="14sp"/>
 
 
     <TextView
@@ -113,14 +113,14 @@
         android:layout_marginTop="36dp">
 
         <TextView
-            android:id="@+id/textViewWelcomeUITerm2"
+            android:id="@+id/textViewTerm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="24dp"
             android:text="@string/WelcomeUITerm2"
             android:textColor="@color/Primary"
-            android:textSize="13sp" />
+            android:textSize="13sp"/>
 
         <Button
             android:id="@+id/buttonFinish"
@@ -130,8 +130,7 @@
             android:layout_marginEnd="24dp"
             android:background="@drawable/z__welcomeui_button_background"
             android:text="@string/DescriptionUIFinish"
-            android:textColor="@color/White" />
-
+            android:textColor="@color/White"/>
     </RelativeLayout>
 
 </RelativeLayout>
