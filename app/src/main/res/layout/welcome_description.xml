@@ -66,6 +66,8 @@
                 android:hint="@string/DescriptionUIEditName"
                 android:maxLength="32"
                 android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:maxWidth="180dp"
                 android:padding="10dp"
                 android:textColor="?TextColor"
@@ -110,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewHelp"
-        android:layout_marginTop="36dp">
+        android:layout_marginTop="16dp">
 
         <TextView
             android:id="@+id/textViewTerm"

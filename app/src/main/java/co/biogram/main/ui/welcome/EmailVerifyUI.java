@@ -1,23 +1,24 @@
 package co.biogram.main.ui.welcome;
 
+import android.content.Context;
 import android.os.CountDownTimer;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.view.Button;
 import co.biogram.main.ui.view.LoadingView;
-import co.biogram.main.ui.view.TextView;
 import com.androidnetworking.AndroidNetworking;
 
 class EmailVerifyUI extends FragmentView
 {
-    private final String Username;
-    private final String Password;
     private final String Email;
     private EditText EditTextCode1;
     private EditText EditTextCode2;
@@ -31,10 +32,8 @@ class EmailVerifyUI extends FragmentView
     private boolean Field4 = false;
     private boolean Field5 = false;
 
-    EmailVerifyUI(String username, String password, String email)
+    EmailVerifyUI(String email)
     {
-        Username = username;
-        Password = password;
         Email = email;
     }
 
@@ -43,8 +42,11 @@ class EmailVerifyUI extends FragmentView
     {
         View view = View.inflate(Activity, R.layout.welcome_email_verify, null);
 
-        final Button ButtonNext = new Button(Activity, 16, false);
+        final Button ButtonNext = view.findViewById(R.id.buttonNextStep);
         final LoadingView LoadingViewNext = new LoadingView(Activity);
+
+        InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
         {
@@ -57,6 +59,7 @@ class EmailVerifyUI extends FragmentView
 
         EditTextCode1 = view.findViewById(R.id.editTextCode1);
         Misc.SetCursorColor(EditTextCode1, R.color.Primary);
+        EditTextCode1.requestFocus();
         EditTextCode1.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -79,7 +82,7 @@ class EmailVerifyUI extends FragmentView
                 if (s.length() == 0)
                     return;
 
-                EditText NextField = (EditText) EditTextCode1.focusSearch(View.FOCUS_LEFT);
+                EditText NextField = (EditText) EditTextCode1.focusSearch(View.FOCUS_RIGHT);
                 NextField.requestFocus();
             }
         });
@@ -105,10 +108,10 @@ class EmailVerifyUI extends FragmentView
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
-                EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
+                EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_RIGHT);
 
                 if (s.length() == 0)
-                    NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_RIGHT);
+                    NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
             }
@@ -120,7 +123,7 @@ class EmailVerifyUI extends FragmentView
             {
                 if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode2.getText().length() == 0)
                 {
-                    EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_RIGHT);
+                    EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
 
@@ -149,10 +152,10 @@ class EmailVerifyUI extends FragmentView
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
-                EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
+                EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_RIGHT);
 
                 if (s.length() == 0)
-                    NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_RIGHT);
+                    NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
             }
@@ -164,7 +167,7 @@ class EmailVerifyUI extends FragmentView
             {
                 if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode3.getText().length() == 0)
                 {
-                    EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_RIGHT);
+                    EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
 
@@ -193,10 +196,10 @@ class EmailVerifyUI extends FragmentView
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
-                EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
+                EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_RIGHT);
 
                 if (s.length() == 0)
-                    NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_RIGHT);
+                    NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
 
                 NextField.requestFocus();
             }
@@ -208,7 +211,7 @@ class EmailVerifyUI extends FragmentView
             {
                 if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode4.getText().length() == 0)
                 {
-                    EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_RIGHT);
+                    EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
 
@@ -239,7 +242,7 @@ class EmailVerifyUI extends FragmentView
 
                 if (s.length() == 0)
                 {
-                    EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_RIGHT);
+                    EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
             }
@@ -251,13 +254,19 @@ class EmailVerifyUI extends FragmentView
             {
                 if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode5.getText().length() == 0)
                 {
-                    EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_RIGHT);
+                    EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
 
                 return false;
             }
         });
+
+        Misc.changeEditTextUnderlineColor(EditTextCode1, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode2, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode3, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode4, R.color.Primary, R.color.Gray);
+        Misc.changeEditTextUnderlineColor(EditTextCode5, R.color.Primary, R.color.Gray);
 
         ((android.widget.TextView) view.findViewById(R.id.textViewEmail)).setText(Email);
 
@@ -268,67 +277,7 @@ class EmailVerifyUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                //                if (!TextViewResend.isEnabled())
-                //                    return;
-                //
-                //                TextViewResend.setEnabled(false);
-                //                LoadingViewNext.Start();
-                //
-                //                AndroidNetworking.post(Misc.GetRandomServer("SignUpEmail")).addBodyParameter("Username", Username).addBodyParameter("Password", Password).addBodyParameter("Email", Email).setTag("EmailVerifyUI").build().getAsString(new StringRequestListener()
-                //                {
-                //                    @Override
-                //                    public void onResponse(String Response)
-                //                    {
-                //                        LoadingViewNext.Stop();
-                //                        TextViewResend.setEnabled(true);
-                //
-                //                        try
-                //                        {
-                //                            JSONObject Result = new JSONObject(Response);
-                //
-                //                            switch (Result.getInt("Message"))
-                //                            {
-                //                                case 0:
-                //                                    CountDownTimerResend.start();
-                //                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUIResendDone));
-                //                                    break;
-                //                                case 1:
-                //                                case 2:
-                //                                case 3:
-                //                                case 4:
-                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError1));
-                //                                    break;
-                //                                case 5:
-                //                                case 6:
-                //                                case 7:
-                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError2));
-                //                                    break;
-                //                                case 8:
-                //                                case 9:
-                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError3));
-                //                                    break;
-                //                                case 10:
-                //                                    Misc.ToastOld(Misc.String(R.string.EmailUIError4));
-                //                                    break;
-                //                                default:
-                //                                    Misc.GeneralError(Result.getInt("Message"));
-                //                                    break;
-                //                            }
-                //                        }
-                //                        catch (Exception e)
-                //                        {
-                //                            Misc.Debug("EmailVerifyUI-SignUpEmail: " + e.toString());
-                //                        }
-                //                    }
-                //
-                //                    @Override
-                //                    public void onError(ANError e)
-                //                    {
-                //                        LoadingViewNext.Stop();
-                //                        TextViewResend.setEnabled(true);
-                //                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                //                    }
-                //                });
+
             }
         });
 
@@ -351,7 +300,7 @@ class EmailVerifyUI extends FragmentView
                 {
                     Enabled = false;
                     TextViewResend.setEnabled(false);
-                    TextViewResend.SetColor(R.color.Gray);
+                    TextViewResend.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Gray, null));
                 }
             }
 
@@ -363,7 +312,7 @@ class EmailVerifyUI extends FragmentView
                 Enabled = true;
 
                 TextViewResend.setEnabled(true);
-                TextViewResend.SetColor(R.color.Primary);
+                TextViewResend.setTextColor(ResourcesCompat.getColor(Activity.getResources(), R.color.Primary, null));
                 TextViewTime.setText("");
             }
         };
@@ -374,54 +323,11 @@ class EmailVerifyUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                //                ButtonNext.setVisibility(View.GONE);
-                //                LoadingViewNext.Start();
-                //
-                //                final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
-                //
-                //                AndroidNetworking.post(Misc.GetRandomServer("SignUpEmailVerify")).addBodyParameter("VerifyCode", VerifyCode).setTag("EmailVerifyUI").build().getAsString(new StringRequestListener()
-                //                {
-                //                    @Override
-                //                    public void onResponse(String Response)
-                //                    {
-                //                        LoadingViewNext.Stop();
-                //                        ButtonNext.setEnabled(false);
-                //
-                //                        try
-                //                        {
-                //                            JSONObject Result = new JSONObject(Response);
-                //
-                //                            switch (Result.getInt("Message"))
-                //                            {
-                //                                case 0:
-                //                                    Activity.GetManager().OpenView(new DescriptionUI(VerifyCode), "DescriptionUI", true);
-                //                                    break;
-                //                                case 1:
-                //                                case 2:
-                //                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUICodeCount));
-                //                                    break;
-                //                                case 3:
-                //                                    Misc.ToastOld(Misc.String(R.string.EmailVerifyUICodeWrong));
-                //                                    break;
-                //                                default:
-                //                                    Misc.GeneralError(Result.getInt("Message"));
-                //                                    break;
-                //                            }
-                //                        }
-                //                        catch (Exception e)
-                //                        {
-                //                            Misc.Debug("EmailVerifyUI-SignUpEmailVerify: " + e.toString());
-                //                        }
-                //                    }
-                //
-                //                    @Override
-                //                    public void onError(ANError e)
-                //                    {
-                //                        LoadingViewNext.Stop();
-                //                        ButtonNext.setEnabled(true);
-                //                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                //                    }
-                //                });
+                final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
+
+                Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), "UsernameUI", true);
+
+
             }
         });
 

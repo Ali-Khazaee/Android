@@ -2,6 +2,7 @@ package co.biogram.main.ui.welcome;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
@@ -70,6 +72,9 @@ public class DescriptionUI extends FragmentView
                 Activity.onBackPressed();
             }
         });
+
+        InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         CircleImageViewProfile = view.findViewById(R.id.ImageViewProfile);
         CircleImageViewProfile.setOnClickListener(new View.OnClickListener()
@@ -303,249 +308,7 @@ public class DescriptionUI extends FragmentView
             {
                 Activity.finish();
                 Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                //                ButtonFinish.setEnabled(false);
-                //                LoadingViewFinish.Start();
-                //
-                //                final ProgressDialog Progress = new ProgressDialog(Activity);
-                //                Progress.setMessage(Misc.String(R.string.DescriptionUIUpload));
-                //                Progress.setIndeterminate(false);
-                //                Progress.setCancelable(false);
-                //                Progress.setMax(100);
-                //                Progress.setProgress(0);
-                //                Progress.show();
-                //
-                //                if (Type == 0)
-                //                {
-                //                    AndroidNetworking.upload(Misc.GetRandomServer("SignInGoogleVerify")).addMultipartParameter("Token", Code).addMultipartParameter("Name", EditTextName.getText().toString()).addMultipartParameter("Username", Username).addMultipartParameter("Description", EditTextDescription.getText().toString()).addMultipartParameter("Session", Misc.GenerateSession()).addMultipartFile("Avatar", ProfileFile).setTag("DescriptionUI").build().setUploadProgressListener(new UploadProgressListener()
-                //                    {
-                //                        @Override
-                //                        public void onProgress(long u, long t)
-                //                        {
-                //                            Progress.setProgress((int) (100 * u / t));
-                //                        }
-                //                    }).getAsString(new StringRequestListener()
-                //                    {
-                //                        @Override
-                //                        public void onResponse(String Response)
-                //                        {
-                //                            Progress.dismiss();
-                //                            LoadingViewFinish.Stop();
-                //                            ButtonFinish.setEnabled(true);
-                //
-                //                            try
-                //                            {
-                //                                JSONObject Result = new JSONObject(Response);
-                //
-                //                                switch (Result.getInt("Message"))
-                //                                {
-                //                                    case 0:
-                //                                        Misc.SetBoolean("IsLogin", true);
-                //                                        Misc.SetBoolean("IsGoogle", true);
-                //                                        Misc.SetString("Token", Result.getString("Token"));
-                //                                        Misc.SetString("ID", Result.getString("ID"));
-                //                                        Misc.SetString("Username", Result.getString("Username"));
-                //                                        Misc.SetString("Avatar", Result.getString("Avatar"));
-                //
-                //                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                //                                        Activity.finish();
-                //                                        break;
-                //                                    case 13:
-                //                                    case 2:
-                //                                    case 3:
-                //                                    case 4:
-                //                                    case 5:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
-                //                                        break;
-                //                                    case 6:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
-                //                                        break;
-                //                                    case 7:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
-                //                                        break;
-                //                                    case 8:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
-                //                                        break;
-                //                                    case 1:
-                //                                    case 9:
-                //                                    case 10:
-                //                                    case 11:
-                //                                    case 12:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
-                //                                        break;
-                //                                    default:
-                //                                        Misc.GeneralError(Result.getInt("Message"));
-                //                                        break;
-                //                                }
-                //                            }
-                //                            catch (Exception e)
-                //                            {
-                //                                Misc.Debug("DescriptionUI-SignInGoogleVerify: " + e.toString());
-                //                            }
-                //                        }
-                //
-                //                        @Override
-                //                        public void onError(ANError e)
-                //                        {
-                //                            Progress.dismiss();
-                //                            LoadingViewFinish.Stop();
-                //                            ButtonFinish.setEnabled(true);
-                //                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                //                        }
-                //                    });
-                //                }
-                //                else if (Type == 1)
-                //                {
-                //                    AndroidNetworking.upload(Misc.GetRandomServer("SignUpPhoneFinish")).addMultipartParameter("Issue", Code).addMultipartParameter("Name", EditTextName.getText().toString()).addMultipartParameter("Username", Username).addMultipartParameter("Description", EditTextDescription.getText().toString()).addMultipartParameter("Session", Misc.GenerateSession()).addMultipartFile("Avatar", ProfileFile).setTag("DescriptionUI").build().setUploadProgressListener(new UploadProgressListener()
-                //                    {
-                //                        @Override
-                //                        public void onProgress(long u, long t)
-                //                        {
-                //                            Progress.setProgress((int) (100 * u / t));
-                //                        }
-                //                    }).getAsString(new StringRequestListener()
-                //                    {
-                //                        @Override
-                //                        public void onResponse(String Response)
-                //                        {
-                //                            Progress.dismiss();
-                //                            LoadingViewFinish.Stop();
-                //                            ButtonFinish.setEnabled(true);
-                //
-                //                            try
-                //                            {
-                //                                JSONObject Result = new JSONObject(Response);
-                //
-                //                                switch (Result.getInt("Message"))
-                //                                {
-                //                                    case 0:
-                //                                        Misc.SetBoolean("IsLogin", true);
-                //                                        Misc.SetBoolean("IsGoogle", true);
-                //                                        Misc.SetString("Token", Result.getString("Token"));
-                //                                        Misc.SetString("ID", Result.getString("ID"));
-                //                                        Misc.SetString("Username", Result.getString("Username"));
-                //                                        Misc.SetString("Avatar", Result.getString("Avatar"));
-                //
-                //                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                //                                        Activity.finish();
-                //                                        break;
-                //                                    case 1:
-                //                                    case 9:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
-                //                                        break;
-                //                                    case 2:
-                //                                    case 3:
-                //                                    case 4:
-                //                                    case 5:
-                //                                    case 10:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
-                //                                        break;
-                //                                    case 6:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
-                //                                        break;
-                //                                    case 7:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
-                //                                        break;
-                //                                    case 8:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
-                //                                        break;
-                //                                    default:
-                //                                        Misc.GeneralError(Result.getInt("Message"));
-                //                                        break;
-                //                                }
-                //                            }
-                //                            catch (Exception e)
-                //                            {
-                //                                Misc.Debug("DescriptionUI-SignUpPhoneFinish: " + e.toString());
-                //                            }
-                //                        }
-                //
-                //                        @Override
-                //                        public void onError(ANError e)
-                //                        {
-                //                            Progress.dismiss();
-                //                            LoadingViewFinish.Stop();
-                //                            ButtonFinish.setEnabled(true);
-                //                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                //                        }
-                //                    });
-                //                }
-                //                else if (Type == 2)
-                //                {
-                //                    AndroidNetworking.upload(Misc.GetRandomServer("SignUpEmailFinish")).addMultipartParameter("Issue", Code).addMultipartParameter("Name", EditTextName.getText().toString()).addMultipartParameter("Description", EditTextDescription.getText().toString()).addMultipartParameter("Session", Misc.GenerateSession()).addMultipartFile("Avatar", ProfileFile).setTag("DescriptionUI").build().setUploadProgressListener(new UploadProgressListener()
-                //                    {
-                //                        @Override
-                //                        public void onProgress(long u, long t)
-                //                        {
-                //                            Progress.setProgress((int) (100 * u / t));
-                //                        }
-                //                    }).getAsString(new StringRequestListener()
-                //                    {
-                //                        @Override
-                //                        public void onResponse(String Response)
-                //                        {
-                //                            Progress.dismiss();
-                //                            LoadingViewFinish.Stop();
-                //                            ButtonFinish.setEnabled(true);
-                //
-                //                            try
-                //                            {
-                //                                JSONObject Result = new JSONObject(Response);
-                //
-                //                                switch (Result.getInt("Message"))
-                //                                {
-                //                                    case 0:
-                //
-                //                                        Misc.SetBoolean("IsLogin", true);
-                //                                        Misc.SetBoolean("IsGoogle", true);
-                //                                        Misc.SetString("Token", Result.getString("Token"));
-                //                                        Misc.SetString("ID", Result.getString("ID"));
-                //                                        Misc.SetString("Username", Result.getString("Username"));
-                //                                        Misc.SetString("Avatar", Result.getString("Avatar"));
-                //
-                //                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                //                                        Activity.finish();
-                //                                        break;
-                //                                    case 1:
-                //                                    case 9:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUICode));
-                //                                        break;
-                //                                    case 2:
-                //                                    case 3:
-                //                                    case 4:
-                //                                    case 5:
-                //                                    case 10:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUIUsernameUnavailable));
-                //                                        break;
-                //                                    case 6:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameEmpty));
-                //                                        break;
-                //                                    case 7:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameLess));
-                //                                        break;
-                //                                    case 8:
-                //                                        Misc.ToastOld(Misc.String(R.string.DescriptionUINameGreater));
-                //                                        break;
-                //                                    default:
-                //                                        Misc.GeneralError(Result.getInt("Message"));
-                //                                        break;
-                //                                }
-                //                            }
-                //                            catch (Exception e)
-                //                            {
-                //                                Misc.Debug("DescriptionUI-SignUpEmailFinish: " + e.toString());
-                //                            }
-                //                        }
-                //
-                //                        @Override
-                //                        public void onError(ANError e)
-                //                        {
-                //                            Progress.dismiss();
-                //                            LoadingViewFinish.Stop();
-                //                            ButtonFinish.setEnabled(true);
-                //                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                //                        }
-                //                    });
-                //                }
+
             }
         });
 

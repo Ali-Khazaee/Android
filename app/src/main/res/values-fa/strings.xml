@@ -39,6 +39,10 @@
     <string name="SocialProfileSpecialCenterUICreditIncrease">افزایش اعتبار</string>
     <string name="SocialProfileSpecialCenterUICreditEnter">مقدار اعتبار</string>
     <string name="SocialProfileSpecialCenterUICreditAdd">افزودن اعتبار</string>
+    <string name="SocialProfileUINameHint">نام</string>
+    <string name="SocialProfileUINameMessage">پیام</string>
+    <string name="SocialProfileUIName">نام مورد نظر را وارد نمایید</string>
+    <string name="SocialProfileUISubmit">ثبت</string>
 
 
     <!-- Dialog Permission -->

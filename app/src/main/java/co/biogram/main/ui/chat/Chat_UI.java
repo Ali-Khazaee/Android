@@ -980,6 +980,9 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
     public void OnResume()
     {
         super.OnResume();
+        Activity.findViewById(R.id.LinearLayoutMenu).setVisibility(View.INVISIBLE);
+        Activity.findViewById(R.id.LinearLayoutMenu).setEnabled(false);
+        Activity.findViewById(R.id.ViewLine).setVisibility(View.INVISIBLE);
         keyboardHeightProvider.setKeyboardHeightObserver(this);
     }
 
@@ -1721,18 +1724,18 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         {
             super.setLayout(view);
 
-            LinearLayout.LayoutParams params;
-            if (CHAT_MODE == MODE_GROUP)
-                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(110));
-            else
-                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(90));
-
-            if (IsFromUser)
-                params.setMargins(Misc.ToDP(40), Misc.ToDP(8), Misc.ToDP(12), Misc.ToDP(16));
-            else
-                params.setMargins(Misc.ToDP(16), Misc.ToDP(8), Misc.ToDP(12), Misc.ToDP(40));
-
-            view.findViewById(R.id.ConstraintLayoutChat).setLayoutParams(params);
+            //            LinearLayout.LayoutParams params;
+            //            if (CHAT_MODE == MODE_GROUP)
+            //                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(110));
+            //            else
+            //                params = new LinearLayout.LayoutParams(Misc.ToDP(260), Misc.ToDP(90));
+            //
+            //            if (IsFromUser)
+            //                params.setMargins(Misc.ToDP(40), Misc.ToDP(8), Misc.ToDP(12), Misc.ToDP(16));
+            //            else
+            //                params.setMargins(Misc.ToDP(16), Misc.ToDP(8), Misc.ToDP(12), Misc.ToDP(40));
+            //
+            //            view.findViewById(R.id.ConstraintLayoutChat).setLayoutParams(params);
 
             CircularProgressView progressView = view.findViewById(R.id.ProgressBar);
             TextView fileName = view.findViewById(R.id.TextViewFileName);

@@ -13,7 +13,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:orientation="vertical"
-        android:paddingBottom="12dp"
+        android:paddingBottom="4dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
         android:paddingTop="4dp"
@@ -105,37 +105,35 @@
                     android:textSize="9sp" />
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginStart="4dp"
-                    android:gravity="center_vertical|end"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/TextViewTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/ActionBarWhite"
-                        android:textSize="8.4sp"
-                        tools:text="22:30" />
-
-                    <ImageView
-                        android:id="@+id/ImageViewSeen"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginStart="4dp"
-                        app:srcCompat="@drawable/ic_follow123_block" />
-
-
-                </LinearLayout>
-
             </LinearLayout>
 
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/TextViewTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ActionBarWhite"
+                android:textSize="8.4sp"
+                tools:text="22:30"/>
+
+            <ImageView
+                android:id="@+id/ImageViewSeen"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="4dp"
+                app:srcCompat="@drawable/ic_follow123_block"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

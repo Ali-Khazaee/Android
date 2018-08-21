@@ -228,7 +228,7 @@ class PhoneUI extends FragmentView
                     if (!IsSignUp)
                         Activity.GetManager().OpenView(new UsernameUI(), "UsernameUI", true);
                     else
-                        Activity.GetManager().OpenView(new EmailSignInUI(), "EmailSignupUI", true);
+                        Activity.GetManager().OpenView(new EmailUI(), "EmailUI", true);
 
                 return true;
             }
@@ -299,60 +299,7 @@ class PhoneUI extends FragmentView
 
         if (IsSignUp)
         {
-            //            AndroidNetworking.post(Misc.GetRandomServer("SignUpPhone"))
-            //                    .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
-            //                    .addBodyParameter("Phone", EditTextPhone.getText().toString())
-            //                    .setTag("PhoneUI")
-            //                    .build()
-            //                    .getAsString(new StringRequestListener() {
-            //                        @Override
-            //                        public void onResponse(String Response) {
-            //                            LoadingViewNext.Stop();
-            //                            ButtonNext.setEnabled(true);
-            //
-            //                            try {
-            //                                JSONObject Result = new JSONObject(Response);
-            //
-            //                                switch (Result.getInt("Message")) {
-            //                                    case 0:
-            //
-            //                                        String Phone = EditTextPhone.getText().toString();
-            //
-            //                                        while (Phone.charAt(0) == '0')
-            //                                            Phone = Phone.substring(1);
-            //
-            //                                        Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, true), "PhoneVerifyUI", true);
-            //                                        break;
-            //                                    case 1:
-            //                                    case 2:
-            //                                    case 3:
-            //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
-            //                                        break;
-            //                                    case 4:
-            //                                    case 5:
-            //                                    case 6:
-            //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhone));
-            //                                        break;
-            //                                    case 7:
-            //                                        Misc.ToastOld(Misc.String(R.string.PhoneUIError));
-            //                                        break;
-            //                                    default:
-            //                                        Misc.GeneralError(Result.getInt("Message"));
-            //                                        break;
-            //                                }
-            //                            } catch (Exception e) {
-            //                                Misc.Debug("PhoneUI-SignUpPhone: " + e.toString());
-            //                            }
-            //                        }
-            //
-            //                        @Override
-            //                        public void onError(ANError e) {
-            //                            LoadingViewNext.Stop();
-            //                            ButtonNext.setEnabled(true);
-            //
-            //                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-            //                        }
-            //                    });
+
             JSONObject signupObject = new JSONObject();
             try
             {
@@ -379,60 +326,7 @@ class PhoneUI extends FragmentView
         }
         else
         {
-            //            AndroidNetworking.post(Misc.GetRandomServer("SignInPhone"))
-            //                    .addBodyParameter("Issue", EditTextPhoneCode.getText().toString())
-            //                    .addBodyParameter("Phone", EditTextPhone.getText().toString())
-            //                    .setTag("PhoneUI")
-            //                    .build()
-            //                    .getAsString(new StringRequestListener() {
-            //                        @Override
-            //                        public void onResponse(String Response) {
-            //                            LoadingViewNext.Stop();
-            //                            ButtonNext.setEnabled(true);
-            //
-            //
-            //                            try {
-            //                                JSONObject Result = new JSONObject(Response);
-            //
-            //                                switch (Result.getInt("Message")) {
-            //                                    case 0:
-            //
-            //                                        String Phone = EditTextPhone.getText().toString();
-            //
-            //                                        while (Phone.charAt(0) == '0')
-            //                                            Phone = Phone.substring(1);
-            //
-            //                                        Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), Phone, false), "PhoneVerifyUI", true);
-            //                                        break;
-            //                                    case 1:
-            //                                    case 2:
-            //                                    case 3:
-            //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
-            //                                        break;
-            //                                    case 4:
-            //                                    case 5:
-            //                                    case 6:
-            //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhone));
-            //                                        break;
-            //                                    case 7:
-            //                                        Misc.ToastOld(Misc.String(R.string.PhoneUIError2));
-            //                                        break;
-            //                                    default:
-            //                                        Misc.GeneralError(Result.getInt("Message"));
-            //                                        break;
-            //                                }
-            //                            } catch (Exception e) {
-            //                                Misc.Debug("PhoneUI-SignInPhone: " + e.toString());
-            //                            }
-            //                        }
-            //
-            //                        @Override
-            //                        public void onError(ANError e) {
-            //                            LoadingViewNext.Stop();
-            //                            ButtonNext.setEnabled(true);
-            //                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-            //                        }
-            //                    });
+
         }
     }
 }

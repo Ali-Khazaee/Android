@@ -28,13 +28,13 @@ public class Message_UI extends FragmentView
         super.OnResume();
 
         Activity.findViewById(R.id.LinearLayoutMenu).setVisibility(View.VISIBLE);
+        Activity.findViewById(R.id.LinearLayoutMenu).setEnabled(true);
         Activity.findViewById(R.id.ViewLine).setVisibility(View.VISIBLE);
     }
 
     @Override
     public void OnCreate()
     {
-
         Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
         NotificationManager nManager = (NotificationManager) Activity.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder builder = new Notification.Builder(Activity);

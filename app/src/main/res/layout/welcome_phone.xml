@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/actionbar"
         android:layout_margin="16dp"
-        android:layoutDirection="rtl"
+        android:layoutDirection="ltr"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="right"
+                android:gravity="left"
                 android:text="@string/PhoneUICode"
                 android:textSize="13sp"/>
 
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="right"
+                android:gravity="left"
                 android:text="@string/PhoneUINumber"
                 android:textSize="13sp"/>
 
@@ -85,7 +85,9 @@
                 android:layout_gravity="center"
                 android:inputType="number"
                 android:maxLines="1"
-                android:textDirection="rtl"
+                android:lines="1"
+                android:singleLine="true"
+                android:textDirection="ltr"
                 android:textSize="13sp"/>
         </LinearLayout>
 
@@ -108,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewHelp"
-        android:layout_marginTop="36dp">
+        android:layout_marginTop="16dp">
 
         <TextView
             android:id="@+id/textViewTerm"

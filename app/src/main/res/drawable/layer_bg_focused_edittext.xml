@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:top="-2dp"
-          android:left="-2dp"
-          android:right="-2dp"
-          android:bottom="2dp"
+    <item android:top="-10dp"
+          android:left="-10dp"
+          android:right="-10dp"
+          android:bottom="3dp"
           android:id="@+id/focused_layer">
         <shape>
             <solid android:color="@android:color/transparent"/>

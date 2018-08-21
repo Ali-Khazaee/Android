@@ -117,71 +117,8 @@ class UsernameUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                Activity.GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), Type), "PhoneVerfiyUI", true);
+                Activity.GetManager().OpenView(new PasswordUI(Code, EditTextUsername.getText().toString(), Type), "PhoneVerfiyUI", true);
 
-                //                ButtonNext.setEnabled(false);
-                //                LoadingViewNext.Start();
-                //
-                //                AndroidNetworking.post(Misc.GetRandomServer("Username")).addBodyParameter("Username", EditTextUsername.getText().toString()).setTag("UsernameUI").build().getAsString(new StringRequestListener()
-                //                {
-                //                    @Override
-                //                    public void onResponse(String Response)
-                //                    {
-                //                        LoadingViewNext.Stop();
-                //                        ButtonNext.setEnabled(true);
-                //
-                //                        try
-                //                        {
-                //                            JSONObject Result = new JSONObject(Response);
-                //
-                //                            switch (Result.getInt("Message"))
-                //                            {
-                //                                case 0:
-                //                                    TranslateAnimation Anim = Misc.IsRTL() ? new TranslateAnimation(0f, -1000f, 0f, 0f) : new TranslateAnimation(0f, 1000f, 0f, 0f);
-                //                                    Anim.setDuration(200);
-                //
-                //                                    RelativeLayoutMain.setAnimation(Anim);
-                //
-                //                                    if (Type == 0)
-                //                                        Activity.GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 0), "DescriptionUI", true);
-                //                                    else if (Type == 1)
-                //                                        Activity.GetManager().OpenView(new DescriptionUI(Code, EditTextUsername.getText().toString(), 1), "DescriptionUI", true);
-                //                                    else if (Type == 2)
-                //                                        Activity.GetManager().OpenView(new PasswordUI(EditTextUsername.getText().toString()), "PasswordUI", true);
-                //                                    break;
-                //                                case 1:
-                //                                    Misc.ToastOld(Misc.String(R.string.UsernameUIError1));
-                //                                    break;
-                //                                case 2:
-                //                                    Misc.ToastOld(Misc.String(R.string.UsernameUIError2));
-                //                                    break;
-                //                                case 3:
-                //                                    Misc.ToastOld(Misc.String(R.string.UsernameUIError3));
-                //                                    break;
-                //                                case 4:
-                //                                    Misc.ToastOld(Misc.String(R.string.UsernameUIError4));
-                //                                    break;
-                //                                case 5:
-                //                                    Misc.ToastOld(Misc.String(R.string.UsernameUIError5));
-                //                                    break;
-                //                                default:
-                //                                    Misc.GeneralError(Result.getInt("Message"));
-                //                            }
-                //                        }
-                //                        catch (Exception e)
-                //                        {
-                //                            Misc.Debug("UsernameUI: " + e.toString());
-                //                        }
-                //                    }
-                //
-                //                    @Override
-                //                    public void onError(ANError e)
-                //                    {
-                //                        LoadingViewNext.Stop();
-                //                        ButtonNext.setEnabled(true);
-                //                        Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                //                    }
-                //                });
             }
         });
 

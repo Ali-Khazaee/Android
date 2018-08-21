@@ -242,12 +242,14 @@ public class Chat_GroupCreate_UI extends FragmentView
                         @Override
                         public void onClick(View v)
                         {
-                            dialog.dismiss();
                             InputMethodManager imm = (InputMethodManager) Activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(Activity.findViewById(android.R.id.content).getWindowToken(), 0);
+                            dialog.dismiss();
                             EditTextName.setText(editTextName.getText());
                         }
                     });
+
+                    Misc.fontSetter(dialogView);
 
                     dialog.setContentView(dialogView);
                     dialog.show();

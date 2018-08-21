@@ -64,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layoutDirection="ltr"
             android:orientation="horizontal"
             android:weightSum="5">
 
@@ -73,18 +74,28 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="number"
                 android:gravity="center"
                 android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:textSize="13sp"/>
 
             <EditText
                 android:id="@+id/editTextCode2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:textSize="13sp"/>
 
             <EditText
@@ -94,7 +105,12 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:textSize="13sp"/>
 
             <EditText
@@ -102,9 +118,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:inputType="number"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:textSize="13sp"/>
 
             <EditText
@@ -113,9 +134,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center"
                 android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:textSize="13sp"/>
+
         </LinearLayout>
 
 
@@ -150,7 +177,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewEmail"
-        android:layout_marginTop="36dp">
+        android:layout_marginTop="16dp">
 
         <TextView
             android:id="@+id/textViewResendCode"

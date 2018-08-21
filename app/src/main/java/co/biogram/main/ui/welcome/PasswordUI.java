@@ -14,11 +14,16 @@ import co.biogram.main.handler.Misc;
 class PasswordUI extends FragmentView
 {
     private final String Username;
+    private final int Type;
+    private final String Code;
 
-    PasswordUI(String username)
+    PasswordUI(String code, String username, int type)
     {
         Username = username;
+        Type = type;
+        Code = code;
     }
+
 
     @Override
     public void OnCreate()
@@ -74,7 +79,7 @@ class PasswordUI extends FragmentView
             @Override
             public void onClick(View v)
             {
-                Activity.GetManager().OpenView(new EmailUI(Username, EditTextPassword.getText().toString()), "EmailUI", true);
+                Activity.GetManager().OpenView(new DescriptionUI(Code, Username, Type), "DescriptionUI", true);
             }
         });
 
