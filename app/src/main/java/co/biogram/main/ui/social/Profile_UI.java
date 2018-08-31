@@ -17,17 +17,16 @@ import android.widget.TextView;
 
 import java.util.Random;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.ui.view.EditTextTag;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.general.CameraViewUI;
 import co.biogram.main.ui.general.CropViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
+import co.biogram.main.ui.view.EditTextTag;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.StatefulLayout;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Profile_UI extends FragmentView {
     @Override

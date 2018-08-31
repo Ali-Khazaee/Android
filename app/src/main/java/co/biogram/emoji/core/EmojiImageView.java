@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
+
 import co.biogram.emoji.core.emoji.Emoji;
 import co.biogram.emoji.core.listeners.OnEmojiClickListener;
 import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;

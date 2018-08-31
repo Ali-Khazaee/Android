@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+
 import co.biogram.emoji.core.emoji.Emoji;
 import co.biogram.main.R;
 

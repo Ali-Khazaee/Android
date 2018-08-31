@@ -7,7 +7,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -186,8 +192,7 @@ public class SocketHandler
     {
         emitTo(event, Utils.int48ToByteArray(data), Serializer.DT_INT, emitOpts);
     }
-    public void emit(String event, long data, Callback cb) throws IOException
-    {
+    public void emit(String event, long data, Callback cb) {
         send(event, Utils.int48ToByteArray(data), Serializer.MT_DATA_WITH_ACK, Serializer.DT_INT, cb);
     }
     public void emit(String event, double data) throws IOException
@@ -198,8 +203,7 @@ public class SocketHandler
     {
         emitTo(event, Utils.doubleToByteArray(data), Serializer.DT_DOUBLE, emitOpts);
     }
-    public void emit(String event, double data, Callback cb) throws IOException
-    {
+    public void emit(String event, double data, Callback cb) {
         send(event, Utils.doubleToByteArray(data), Serializer.MT_DATA_WITH_ACK, Serializer.DT_DOUBLE, cb);
     }
     public void emit(String event, JSONObject data) throws IOException
@@ -210,8 +214,7 @@ public class SocketHandler
     {
         emitTo(event, data.toString().getBytes(), Serializer.DT_OBJECT, emitOpts);
     }
-    public void emit(String event, JSONObject data, Callback cb) throws IOException
-    {
+    public void emit(String event, JSONObject data, Callback cb) {
         send(event, data.toString().getBytes(), Serializer.MT_DATA_WITH_ACK, Serializer.DT_OBJECT, cb);
     }
     public void emit(String event, JSONArray data) throws IOException
@@ -222,8 +225,7 @@ public class SocketHandler
     {
         emitTo(event, data.toString().getBytes(), Serializer.DT_OBJECT, emitOpts);
     }
-    public void emit(String event, JSONArray data, Callback cb) throws IOException
-    {
+    public void emit(String event, JSONArray data, Callback cb) {
         send(event, data.toString().getBytes(), Serializer.MT_DATA_WITH_ACK, Serializer.DT_OBJECT, cb);
     }
     public void emit(String event, byte[] data) throws IOException
@@ -234,8 +236,7 @@ public class SocketHandler
     {
         emitTo(event, data, Serializer.DT_BUFFER, emitOpts);
     }
-    public void emit(String event, byte[] data, Callback cb) throws IOException
-    {
+    public void emit(String event, byte[] data, Callback cb) {
         send(event, data, Serializer.MT_DATA_WITH_ACK, Serializer.DT_BUFFER, cb);
     }
     public void join(String room) throws IOException

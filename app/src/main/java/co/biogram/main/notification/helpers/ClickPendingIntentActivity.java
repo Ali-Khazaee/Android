@@ -7,6 +7,7 @@ package co.biogram.main.notification.helpers;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+
 import co.biogram.main.App;
 
 public class ClickPendingIntentActivity implements PendingIntentNotification

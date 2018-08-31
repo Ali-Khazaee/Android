@@ -2,11 +2,12 @@ package co.biogram.main.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+
+import java.util.Locale;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentActivity;
 import co.biogram.main.ui.welcome.WelcomeUI;
-
-import java.util.Locale;
 
 public class WelcomeActivity extends FragmentActivity
 {

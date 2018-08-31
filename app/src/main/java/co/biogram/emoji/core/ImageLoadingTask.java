@@ -5,9 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
-import co.biogram.emoji.core.emoji.Emoji;
 
 import java.lang.ref.WeakReference;
+
+import co.biogram.emoji.core.emoji.Emoji;
 
 final class ImageLoadingTask extends AsyncTask<Emoji, Void, Drawable>
 {

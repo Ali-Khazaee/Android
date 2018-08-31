@@ -21,8 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import co.biogram.main.R;
-import co.biogram.main.handler.Misc;
 import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.Misc;
 
 public class CameraViewUI extends FragmentView {
     private int Width = 0;

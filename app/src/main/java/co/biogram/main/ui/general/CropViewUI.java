@@ -10,8 +10,8 @@ import android.widget.RelativeLayout;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import co.biogram.main.R;
-import co.biogram.main.handler.Misc;
 import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.Misc;
 
 public class CropViewUI extends FragmentView {
     private Bitmap bitmap;

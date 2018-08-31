@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import java.io.IOException;
-import java.net.URI;
 
 /**
  * Created by soh_mil97 on 5/17/18.
@@ -151,7 +150,7 @@ public class AudioHandler {
         State = state;
     }
 
-    public static enum MP_STATES {
+    public enum MP_STATES {
         MPS_IDLE,
         MPS_INITIALIZED,
         MPS_PREPARING,

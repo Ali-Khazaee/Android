@@ -5,9 +5,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import co.biogram.main.R;
 
 import java.util.ArrayList;
+
+import co.biogram.main.R;
 
 public class FragmentManager {
     private ArrayList<FragmentView> FragmentList = new ArrayList<>();

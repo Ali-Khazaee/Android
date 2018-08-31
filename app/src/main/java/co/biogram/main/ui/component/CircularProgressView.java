@@ -16,10 +16,11 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-import co.biogram.main.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import co.biogram.main.R;
 
 /**
  * Created by sohrab on 7/12/18.

@@ -3,9 +3,16 @@ package co.biogram.emoji.core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import co.biogram.emoji.core.emoji.Emoji;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import co.biogram.emoji.core.emoji.Emoji;
 
 public final class RecentEmojiManager implements RecentEmoji
 {

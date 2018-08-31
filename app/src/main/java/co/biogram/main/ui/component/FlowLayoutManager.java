@@ -9,12 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import co.biogram.main.ui.helper.CacheHelper;
-import co.biogram.main.ui.helper.FlowLayoutHelper;
-import co.biogram.main.ui.helper.LayoutHelper;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import co.biogram.main.ui.helper.CacheHelper;
+import co.biogram.main.ui.helper.FlowLayoutHelper;
+import co.biogram.main.ui.helper.LayoutHelper;
 
 /**
  * Layout manager for flow views. support different view height, support item add/removed notification

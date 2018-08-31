@@ -4,13 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
-
-import android.widget.TextView;
-import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.TextView;
 
 import co.biogram.main.R;
 

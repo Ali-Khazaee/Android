@@ -11,11 +11,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.androidnetworking.AndroidNetworking;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.LoadingView;
-import com.androidnetworking.AndroidNetworking;
 
 class EmailVerifyUI extends FragmentView
 {

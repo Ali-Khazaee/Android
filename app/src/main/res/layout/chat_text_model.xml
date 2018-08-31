@@ -40,16 +40,16 @@
             android:id="@+id/TextViewMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:layout_marginBottom="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:gravity="start"
-            android:layout_gravity="end"
             android:maxWidth="200dp"
-            app:emojiSize="22sp"
             android:textColor="@color/ActionBarWhite"
             android:textSize="12sp"
+            app:emojiSize="22sp"
             tools:text="Hello Chat World!" />
 
 

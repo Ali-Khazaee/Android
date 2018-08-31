@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import co.biogram.main.handler.Misc;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+
+import co.biogram.main.handler.Misc;
 
 public class NetworkService extends Service
 {

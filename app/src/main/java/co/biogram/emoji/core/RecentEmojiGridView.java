@@ -3,11 +3,12 @@ package co.biogram.emoji.core;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import java.util.Collection;
+
 import co.biogram.emoji.core.emoji.Emoji;
 import co.biogram.emoji.core.listeners.OnEmojiClickListener;
 import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;
-
-import java.util.Collection;
 
 final class RecentEmojiGridView extends EmojiGridView
 {

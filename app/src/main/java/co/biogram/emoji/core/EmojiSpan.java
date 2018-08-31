@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.style.DynamicDrawableSpan;
+
 import co.biogram.emoji.core.emoji.Emoji;
 
 final class EmojiSpan extends DynamicDrawableSpan

@@ -17,6 +17,7 @@ import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
+
 import co.biogram.main.R;
 import co.biogram.main.handler.Corner;
 import co.biogram.main.handler.RoundedDrawable;

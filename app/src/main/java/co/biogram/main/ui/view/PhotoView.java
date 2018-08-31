@@ -2,21 +2,21 @@ package co.biogram.main.ui.view;
 
 import android.content.Context;
 import android.graphics.Matrix;
+import android.graphics.Matrix.ScaleToFit;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
 import android.view.ScaleGestureDetector;
 import android.view.VelocityTracker;
-import android.view.ViewConfiguration;
-import android.graphics.Matrix.ScaleToFit;
+import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.OverScroller;
 

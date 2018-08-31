@@ -2,15 +2,14 @@ package co.biogram.main.ui.view;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.biogram.main.R;
-import co.biogram.main.handler.Misc;
 import co.biogram.main.fragment.FragmentActivity;
+import co.biogram.main.handler.Misc;
 
 public class PermissionDialog extends Dialog {
     Context Activity;

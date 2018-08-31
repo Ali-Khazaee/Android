@@ -44,8 +44,8 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import java.io.File;
 
 import co.biogram.main.App;
-import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;

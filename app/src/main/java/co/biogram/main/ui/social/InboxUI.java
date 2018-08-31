@@ -15,8 +15,8 @@ import org.json.JSONObject;
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.handler.RecyclerViewOnScroll;
 import co.biogram.main.handler.PostAdapter;
+import co.biogram.main.handler.RecyclerViewOnScroll;
 import co.biogram.main.ui.view.TextView;
 
 public class InboxUI extends FragmentView {

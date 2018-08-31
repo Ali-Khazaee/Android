@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="StatusColor" format="reference|color"/>
-    <attr name="ActionColor" format="reference|color"/>
-    <attr name="LineColor" format="reference|color"/>
-    <attr name="BgColor" format="reference|color"/>
-    <attr name="TextColor" format="reference|color"/>
-    <attr name="ReverseTextColor" format="reference|color"/>
+    <attr name="StatusColor" format="reference|color" />
+    <attr name="ActionColor" format="reference|color" />
+    <attr name="LineColor" format="reference|color" />
+    <attr name="BgColor" format="reference|color" />
+    <attr name="TextColor" format="reference|color" />
+    <attr name="ReverseTextColor" format="reference|color" />
 
-    <attr name="GroundColor" format="reference|color"/>
-    <attr name="ActionBarColor" format="reference|color"/>
-    <attr name="StatusBarColor" format="reference|color"/>
-    <attr name="ToastColor" format="reference|color"/>
-    <attr name="ToastLineColor" format="reference|color"/>
+    <attr name="GroundColor" format="reference|color" />
+    <attr name="ActionBarColor" format="reference|color" />
+    <attr name="StatusBarColor" format="reference|color" />
+    <attr name="ToastColor" format="reference|color" />
+    <attr name="ToastLineColor" format="reference|color" />
 
-    <attr name="GreenColor" format="reference|color"/>
+    <attr name="GreenColor" format="reference|color" />
 
-    <attr name="emojiSize" format="dimension"/>
+    <attr name="emojiSize" format="dimension" />
 
     <declare-styleable name="EmojiEditText">
-        <attr name="emojiSize"/>
+        <attr name="emojiSize" />
     </declare-styleable>
 
     <declare-styleable name="EmojiTextView">
-        <attr name="emojiSize"/>
+        <attr name="emojiSize" />
     </declare-styleable>
 
     <declare-styleable name="CircleImageView">
-        <attr name="civ_border_width" format="dimension"/>
-        <attr name="civ_border_color" format="color"/>
-        <attr name="civ_border_overlay" format="boolean"/>
-        <attr name="civ_background_color" format="color"/>
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_background_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="SmoothCheckBox">
-        <attr name="duration" format="integer"/>
-        <attr name="stroke_width" format="dimension"/>
-        <attr name="color_tick" format="color"/>
-        <attr name="color_checked" format="color"/>
-        <attr name="color_unchecked" format="color"/>
-        <attr name="color_unchecked_stroke" format="color"/>
+        <attr name="duration" format="integer" />
+        <attr name="stroke_width" format="dimension" />
+        <attr name="color_tick" format="color" />
+        <attr name="color_checked" format="color" />
+        <attr name="color_unchecked" format="color" />
+        <attr name="color_unchecked_stroke" format="color" />
     </declare-styleable>
 
     <declare-styleable name="RoundedImageView">
-        <attr name="riv_corner_radius" format="dimension"/>
-        <attr name="riv_corner_radius_top_left" format="dimension"/>
-        <attr name="riv_corner_radius_top_right" format="dimension"/>
-        <attr name="riv_corner_radius_bottom_left" format="dimension"/>
-        <attr name="riv_corner_radius_bottom_right" format="dimension"/>
-        <attr name="riv_border_width" format="dimension"/>
-        <attr name="riv_border_color" format="color"/>
-        <attr name="riv_mutate_background" format="boolean"/>
-        <attr name="riv_oval" format="boolean"/>
-        <attr name="android:scaleType"/>
+        <attr name="riv_corner_radius" format="dimension" />
+        <attr name="riv_corner_radius_top_left" format="dimension" />
+        <attr name="riv_corner_radius_top_right" format="dimension" />
+        <attr name="riv_corner_radius_bottom_left" format="dimension" />
+        <attr name="riv_corner_radius_bottom_right" format="dimension" />
+        <attr name="riv_border_width" format="dimension" />
+        <attr name="riv_border_color" format="color" />
+        <attr name="riv_mutate_background" format="boolean" />
+        <attr name="riv_oval" format="boolean" />
+        <attr name="android:scaleType" />
         <attr name="riv_tile_mode">
-            <enum name="clamp" value="0"/>
-            <enum name="repeat" value="1"/>
-            <enum name="mirror" value="2"/>
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
         </attr>
         <attr name="riv_tile_mode_x">
-            <enum name="clamp" value="0"/>
-            <enum name="repeat" value="1"/>
-            <enum name="mirror" value="2"/>
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
         </attr>
         <attr name="riv_tile_mode_y">
-            <enum name="clamp" value="0"/>
-            <enum name="repeat" value="1"/>
-            <enum name="mirror" value="2"/>
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
         </attr>
     </declare-styleable>
 
     <declare-styleable name="CircularProgressView">
-        <attr name="cpv_progress" format="float"/>
-        <attr name="cpv_maxProgress" format="float"/>
-        <attr name="cpv_animDuration" format="integer"/>
-        <attr name="cpv_animSwoopDuration" format="integer"/>
-        <attr name="cpv_animSyncDuration" format="integer"/>
-        <attr name="cpv_color" format="color"/>
-        <attr name="cpv_thickness" format="dimension"/>
-        <attr name="cpv_indeterminate" format="boolean"/>
-        <attr name="cpv_animAutostart" format="boolean"/>
-        <attr name="cpv_animSteps" format="integer"/>
-        <attr name="cpv_startAngle" format="float"/>
+        <attr name="cpv_progress" format="float" />
+        <attr name="cpv_maxProgress" format="float" />
+        <attr name="cpv_animDuration" format="integer" />
+        <attr name="cpv_animSwoopDuration" format="integer" />
+        <attr name="cpv_animSyncDuration" format="integer" />
+        <attr name="cpv_color" format="color" />
+        <attr name="cpv_thickness" format="dimension" />
+        <attr name="cpv_indeterminate" format="boolean" />
+        <attr name="cpv_animAutostart" format="boolean" />
+        <attr name="cpv_animSteps" format="integer" />
+        <attr name="cpv_startAngle" format="float" />
     </declare-styleable>
 </resources>

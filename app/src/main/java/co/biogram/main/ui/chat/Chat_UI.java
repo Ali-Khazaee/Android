@@ -8,9 +8,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.*;
+import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.media.SoundPool;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,11 +26,35 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import co.biogram.emoji.core.EmojiEditText;
 import co.biogram.emoji.core.EmojiPopup;
 import co.biogram.emoji.core.EmojiTextView;
@@ -38,16 +70,12 @@ import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.general.ImagePreviewUI;
 import co.biogram.main.ui.general.VideoPreviewUI;
 import co.biogram.main.ui.view.PermissionDialog;
-import org.json.JSONObject;
 
-import java.io.*;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static android.widget.SeekBar.*;
+import static android.widget.SeekBar.GONE;
+import static android.widget.SeekBar.OnClickListener;
+import static android.widget.SeekBar.OnSeekBarChangeListener;
+import static android.widget.SeekBar.OnTouchListener;
+import static android.widget.SeekBar.VISIBLE;
 
 /**
  * Created by soh_mil97
@@ -1900,4 +1928,3 @@ public class Chat_UI extends FragmentView implements KeyboardHeightObserver
         }
     }
 }
-

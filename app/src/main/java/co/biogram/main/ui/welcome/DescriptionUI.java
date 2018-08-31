@@ -15,7 +15,19 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.androidnetworking.AndroidNetworking;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
 import co.biogram.main.R;
 import co.biogram.main.activity.SocialActivity;
 import co.biogram.main.fragment.FragmentView;
@@ -25,13 +37,7 @@ import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.TextView;
-import com.androidnetworking.AndroidNetworking;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 
 public class DescriptionUI extends FragmentView
 {

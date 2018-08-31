@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/notification_content_main"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:id="@+id/notification_content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/notification_img_background"
@@ -10,7 +10,7 @@
         android:layout_height="256dp"
         android:adjustViewBounds="true"
         android:contentDescription="Background"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter" />
 
     <RelativeLayout
         android:id="@+id/notification_content_information"
@@ -21,33 +21,33 @@
         android:padding="8dp">
 
         <TextView
-            android:layout_marginEnd="16dp"
             android:id="@+id/notification_text_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textDirection="rtl"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="7dp"
             android:layout_toLeftOf="@+id/notification_img_icon"
             android:layout_toStartOf="@+id/notification_img_icon"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="#fff"
-            android:textSize="18sp"/>
+            android:textDirection="rtl"
+            android:textSize="18sp" />
 
         <TextView
-            android:layout_marginEnd="16dp"
-
             android:id="@+id/notification_text_message"
+
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:textDirection="rtl"
             android:layout_below="@+id/notification_text_title"
+            android:layout_marginEnd="16dp"
             android:layout_toLeftOf="@+id/notification_img_icon"
             android:layout_toStartOf="@+id/notification_img_icon"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="#fff"
-            android:textSize="14sp"/>
+            android:textDirection="rtl"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/notification_img_icon"
@@ -56,7 +56,7 @@
             android:layout_alignParentEnd="false"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:contentDescription="Small Icon"/>
+            android:contentDescription="Small Icon" />
     </RelativeLayout>
 
 </FrameLayout>

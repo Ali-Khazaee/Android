@@ -2,6 +2,7 @@ package co.biogram.emoji.emojibio.category;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+
 import co.biogram.emoji.core.emoji.EmojiCategory;
 import co.biogram.emoji.emojibio.IosEmoji;
 import co.biogram.main.R;

@@ -1,6 +1,7 @@
 package co.biogram.emoji.core;
 
 import android.support.annotation.NonNull;
+
 import co.biogram.emoji.core.emoji.Emoji;
 
 public final class EmojiRange

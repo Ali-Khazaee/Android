@@ -2,6 +2,7 @@ package co.biogram.emoji.core;
 
 import android.support.annotation.DimenRes;
 import android.support.annotation.Px;
+
 import co.biogram.emoji.core.emoji.Emoji;
 
 /**

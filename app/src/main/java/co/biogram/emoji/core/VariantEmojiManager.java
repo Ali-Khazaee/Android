@@ -3,11 +3,12 @@ package co.biogram.emoji.core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import co.biogram.emoji.core.emoji.Emoji;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import co.biogram.emoji.core.emoji.Emoji;
 
 @SuppressWarnings("PMD.ForLoopCanBeForeach")
 public final class VariantEmojiManager implements VariantEmoji

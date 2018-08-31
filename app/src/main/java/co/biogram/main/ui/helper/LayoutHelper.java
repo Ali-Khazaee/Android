@@ -2,6 +2,7 @@ package co.biogram.main.ui.helper;
 
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
+
 import co.biogram.main.ui.component.LayoutContext;
 
 /**

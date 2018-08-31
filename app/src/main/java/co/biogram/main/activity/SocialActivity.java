@@ -4,6 +4,9 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+
+import java.util.Locale;
+
 import co.biogram.emoji.core.EmojiManager;
 import co.biogram.emoji.emojibio.IosEmojiProvider;
 import co.biogram.main.R;
@@ -15,8 +18,6 @@ import co.biogram.main.ui.social.InboxUI;
 import co.biogram.main.ui.social.MomentUI;
 import co.biogram.main.ui.social.NotificationUI;
 import co.biogram.main.ui.social.Profile_UI;
-
-import java.util.Locale;
 
 public class SocialActivity extends FragmentActivity
 {

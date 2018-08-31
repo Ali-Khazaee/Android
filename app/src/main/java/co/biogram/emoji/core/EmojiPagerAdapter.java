@@ -3,6 +3,7 @@ package co.biogram.emoji.core;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+
 import co.biogram.emoji.core.listeners.OnEmojiClickListener;
 import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;
 

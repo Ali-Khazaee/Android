@@ -27,9 +27,9 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:gravity="start"
-            android:visibility="gone"
             android:textColor="@color/ActionBarWhite"
             android:textSize="8.4sp"
+            android:visibility="gone"
             tools:text="22:30" />
 
         <LinearLayout
@@ -124,14 +124,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/ActionBarWhite"
                 android:textSize="8.4sp"
-                tools:text="22:30"/>
+                tools:text="22:30" />
 
             <ImageView
                 android:id="@+id/ImageViewSeen"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="4dp"
-                app:srcCompat="@drawable/ic_follow123_block"/>
+                app:srcCompat="@drawable/ic_follow123_block" />
 
         </LinearLayout>
 

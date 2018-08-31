@@ -7,11 +7,7 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.RelativeLayout;
-import co.biogram.main.R;
-import co.biogram.main.activity.SocialActivity;
-import co.biogram.main.fragment.FragmentView;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.view.LoadingView;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
@@ -22,7 +18,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.json.JSONObject;
+
+import co.biogram.main.R;
+import co.biogram.main.activity.SocialActivity;
+import co.biogram.main.fragment.FragmentView;
+import co.biogram.main.handler.Misc;
+import co.biogram.main.ui.view.LoadingView;
 
 public class WelcomeUI extends FragmentView
 {

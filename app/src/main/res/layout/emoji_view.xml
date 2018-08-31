@@ -5,18 +5,15 @@
         android:id="@+id/emojis_tab"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:orientation="horizontal"
-    />
+        android:orientation="horizontal" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/emoji_divider"
-    />
+        android:background="@color/emoji_divider" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/emojis_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-    />
+        android:layout_height="wrap_content" />
 </merge>

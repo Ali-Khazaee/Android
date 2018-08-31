@@ -7,6 +7,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
 import android.text.Spanned;
 import android.widget.RemoteViews;
+
 import co.biogram.main.App;
 import co.biogram.main.R;
 import co.biogram.main.notification.helpers.ImageLoader;

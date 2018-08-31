@@ -14,8 +14,15 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupWindow;
+
 import co.biogram.emoji.core.emoji.Emoji;
-import co.biogram.emoji.core.listeners.*;
+import co.biogram.emoji.core.listeners.OnEmojiBackspaceClickListener;
+import co.biogram.emoji.core.listeners.OnEmojiClickListener;
+import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;
+import co.biogram.emoji.core.listeners.OnEmojiPopupDismissListener;
+import co.biogram.emoji.core.listeners.OnEmojiPopupShownListener;
+import co.biogram.emoji.core.listeners.OnSoftKeyboardCloseListener;
+import co.biogram.emoji.core.listeners.OnSoftKeyboardOpenListener;
 
 import static co.biogram.emoji.core.Utils.checkNotNull;
 

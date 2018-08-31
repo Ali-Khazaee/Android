@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.GridView;
+
 import co.biogram.emoji.core.emoji.EmojiCategory;
 import co.biogram.emoji.core.listeners.OnEmojiClickListener;
 import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;

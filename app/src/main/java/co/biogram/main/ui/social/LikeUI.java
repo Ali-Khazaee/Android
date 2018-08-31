@@ -28,7 +28,6 @@ import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.handler.RecyclerViewOnScroll;
-
 import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;

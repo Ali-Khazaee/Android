@@ -6,6 +6,7 @@ package co.biogram.main.ui.helper;
 
 import android.graphics.Point;
 import android.util.SparseArray;
+
 import co.biogram.main.ui.component.Line;
 
 public class CacheHelper

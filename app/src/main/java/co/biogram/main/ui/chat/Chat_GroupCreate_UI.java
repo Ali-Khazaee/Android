@@ -10,11 +10,19 @@ import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
@@ -23,8 +31,6 @@ import co.biogram.main.ui.general.CameraViewUI;
 import co.biogram.main.ui.general.CropViewUI;
 import co.biogram.main.ui.general.GalleryViewUI;
 import co.biogram.main.ui.view.PermissionDialog;
-
-import java.util.ArrayList;
 
 public class Chat_GroupCreate_UI extends FragmentView
 {

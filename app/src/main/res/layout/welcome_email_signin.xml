@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/actionbar"
@@ -19,7 +19,7 @@
             android:focusable="true"
             android:padding="12dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/z_general_back_white"/>
+            android:src="@drawable/z_general_back_white" />
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -29,7 +29,7 @@
             android:gravity="start|center_vertical"
             android:text="@string/GeneralEmail"
             android:textColor="@color/White"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <LinearLayout
@@ -51,17 +51,17 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/EmailSignInUIOrUsername"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/EditTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:maxLines="1"
                 android:lines="1"
+                android:maxLines="1"
                 android:singleLine="true"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,17 +76,17 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/GeneralPassword"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/EditTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:maxLines="1"
                 android:lines="1"
+                android:maxLines="1"
                 android:singleLine="true"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -102,7 +102,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/EmailSignInUIMessage"
         android:textColor="@color/TextWhite"
-        android:textSize="13sp"/>
+        android:textSize="13sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -118,7 +118,7 @@
             android:layout_marginStart="24dp"
             android:text="@string/WelcomeUITerm2"
             android:textColor="@color/Primary"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
 
         <Button
             android:id="@+id/buttonSignup"
@@ -128,7 +128,7 @@
             android:layout_marginEnd="24dp"
             android:background="@drawable/z__welcomeui_button_background"
             android:text="@string/GeneralSignUp"
-            android:textColor="@color/White"/>
+            android:textColor="@color/White" />
     </RelativeLayout>
 
 </RelativeLayout>

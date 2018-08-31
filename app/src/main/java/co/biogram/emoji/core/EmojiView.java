@@ -16,14 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import java.util.concurrent.TimeUnit;
+
 import co.biogram.emoji.core.emoji.EmojiCategory;
 import co.biogram.emoji.core.listeners.OnEmojiBackspaceClickListener;
 import co.biogram.emoji.core.listeners.OnEmojiClickListener;
 import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;
 import co.biogram.emoji.core.listeners.RepeatListener;
 import co.biogram.main.R;
-
-import java.util.concurrent.TimeUnit;
 
 @SuppressLint("ViewConstructor")
 public final class EmojiView extends LinearLayout implements ViewPager.OnPageChangeListener

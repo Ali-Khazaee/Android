@@ -17,8 +17,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
 import android.text.Spanned;
+
 import co.biogram.main.App;
-import co.biogram.main.notification.helpers.*;
+import co.biogram.main.notification.helpers.ClickPendingIntentActivity;
+import co.biogram.main.notification.helpers.ClickPendingIntentBroadCast;
+import co.biogram.main.notification.helpers.DismissPendingIntentActivity;
+import co.biogram.main.notification.helpers.DismissPendingIntentBroadCast;
+import co.biogram.main.notification.helpers.PendingIntentNotification;
 
 public class Load
 {

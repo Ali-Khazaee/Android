@@ -3,13 +3,15 @@ package co.biogram.main;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import co.biogram.main.handler.Misc;
-import co.biogram.main.service.NetworkService;
+
 import com.androidnetworking.AndroidNetworking;
 import com.squareup.leakcanary.LeakCanary;
-import okhttp3.OkHttpClient;
 
 import java.util.concurrent.TimeUnit;
+
+import co.biogram.main.handler.Misc;
+import co.biogram.main.service.NetworkService;
+import okhttp3.OkHttpClient;
 
 public class App extends Application
 {

@@ -24,9 +24,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-
 import com.bumptech.glide.request.transition.Transition;
-
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -37,14 +35,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.R;
+import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
-import co.biogram.main.ui.view.PhotoView;
-import co.biogram.main.ui.welcome.DescriptionUI;
 import co.biogram.main.ui.view.LoadingView;
+import co.biogram.main.ui.view.PhotoView;
 import co.biogram.main.ui.view.TextView;
+import co.biogram.main.ui.welcome.DescriptionUI;
 
 public class ImagePreviewUI extends FragmentView {
     private List<String> UrlList = new ArrayList<>();

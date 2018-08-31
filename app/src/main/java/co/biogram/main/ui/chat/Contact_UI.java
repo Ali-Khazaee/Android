@@ -16,14 +16,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.component.CircleImageView;
 import co.biogram.main.ui.view.AnimatedCheckBox;
-
-import java.util.ArrayList;
 
 /**
  * Created by soh_mil97

@@ -18,14 +18,15 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import java.io.File;
+import java.util.ArrayList;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.GlideApp;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.ui.view.TextView;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class GalleryViewUI extends FragmentView {
     public static int TYPE_IMAGE = 1;

@@ -9,6 +9,7 @@ import android.support.annotation.Px;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+
 import co.biogram.emoji.core.emoji.Emoji;
 import co.biogram.main.R;
 

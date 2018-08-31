@@ -9,6 +9,7 @@ import android.support.annotation.Px;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
+
 import co.biogram.main.R;
 
 @SuppressWarnings("CPD-START")

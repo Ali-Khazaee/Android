@@ -1,9 +1,10 @@
 package co.biogram.emoji.core;
 
 import android.support.annotation.NonNull;
-import co.biogram.emoji.core.emoji.Emoji;
 
 import java.util.Collection;
+
+import co.biogram.emoji.core.emoji.Emoji;
 
 /**
  * Interface for providing some custom implementation for recent emojis.

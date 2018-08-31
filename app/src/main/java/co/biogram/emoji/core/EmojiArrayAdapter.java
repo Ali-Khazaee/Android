@@ -7,14 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import co.biogram.emoji.core.emoji.Emoji;
-import co.biogram.emoji.core.listeners.OnEmojiClickListener;
-import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;
-import co.biogram.main.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+
+import co.biogram.emoji.core.emoji.Emoji;
+import co.biogram.emoji.core.listeners.OnEmojiClickListener;
+import co.biogram.emoji.core.listeners.OnEmojiLongClickListener;
+import co.biogram.main.R;
 
 import static co.biogram.emoji.core.Utils.checkNotNull;
 

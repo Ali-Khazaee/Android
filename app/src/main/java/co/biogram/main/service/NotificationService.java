@@ -12,9 +12,10 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.Pair;
-import co.biogram.main.R;
 
 import java.util.ArrayList;
+
+import co.biogram.main.R;
 
 /**
  * Created by sohrab on 7/13/18.

@@ -1,12 +1,18 @@
 package co.biogram.main.ui.welcome;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
-import android.text.*;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.TextWatcher;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,16 +20,25 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+
+import com.androidnetworking.AndroidNetworking;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import co.biogram.main.R;
 import co.biogram.main.fragment.FragmentView;
 import co.biogram.main.handler.Misc;
 import co.biogram.main.service.NetworkService;
 import co.biogram.main.ui.view.LoadingView;
+import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.TextView;
-import com.androidnetworking.AndroidNetworking;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 class PhoneUI extends FragmentView
 {
@@ -269,15 +284,13 @@ class PhoneUI extends FragmentView
             {
                 Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), EditTextPhone.getText().toString(), true), "PhoneVerfiyUI", true);
 
-                //                PermissionDialog PermissionDialogSMS = new PermissionDialog(Activity);
-                //                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, new PermissionDialog.OnChoiceListener()
-                //                {
-                //                    @Override
-                //                    public void OnChoice(boolean Allow)
-                //                    {
-                //                        SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
-                //                    }
-                //                });
+                PermissionDialog PermissionDialogSMS = new PermissionDialog(Activity);
+                PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, new PermissionDialog.OnChoiceListener() {
+                    @Override
+                    public void OnChoice(boolean Allow) {
+                        SendRequest(ButtonNext, LoadingViewNext, EditTextPhone, EditTextPhoneCode);
+                    }
+                });
             }
         });
 
