@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 
@@ -26,8 +27,7 @@ import co.biogram.main.handler.Misc;
 import co.biogram.main.service.NetworkService;
 import co.biogram.main.ui.view.LoadingView;
 
-class PhoneVerifyUI extends FragmentView
-{
+class PhoneVerifyUI extends FragmentView {
     private final String Code;
     private final String Phone;
     private final boolean IsSignUp;
@@ -36,16 +36,13 @@ class PhoneVerifyUI extends FragmentView
     private EditText EditTextCode3;
     private EditText EditTextCode4;
     private EditText EditTextCode5;
-    private final BroadcastReceiver VerifyReceiver = new BroadcastReceiver()
-    {
+    private final BroadcastReceiver VerifyReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             if (intent.getAction() == null || intent.getExtras() == null)
                 return;
 
-            if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Verify"))
-            {
+            if (intent.getAction().equalsIgnoreCase("Biogram.SMS.Verify")) {
                 String VerifyCode = intent.getExtras().getString("Issue", "");
 
                 if (VerifyCode.length() < 4)
@@ -53,16 +50,14 @@ class PhoneVerifyUI extends FragmentView
 
                 final String[] Separated = VerifyCode.split("(?!^)");
 
-                Misc.UIThread(new Runnable()
-                {
+                Misc.UIThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
-                        EditTextCode1.setText(Separated[ 0 ]);
-                        EditTextCode2.setText(Separated[ 1 ]);
-                        EditTextCode3.setText(Separated[ 2 ]);
-                        EditTextCode4.setText(Separated[ 3 ]);
-                        EditTextCode5.setText(Separated[ 4 ]);
+                    public void run() {
+                        EditTextCode1.setText(Separated[0]);
+                        EditTextCode2.setText(Separated[1]);
+                        EditTextCode3.setText(Separated[2]);
+                        EditTextCode4.setText(Separated[3]);
+                        EditTextCode5.setText(Separated[4]);
                     }
                 }, 0);
             }
@@ -75,25 +70,21 @@ class PhoneVerifyUI extends FragmentView
     private boolean Field4 = false;
     private boolean Field5 = false;
 
-    PhoneVerifyUI(String code, String phone, boolean isSignUp)
-    {
+    PhoneVerifyUI(String code, String phone, boolean isSignUp) {
         Code = code;
         Phone = phone;
         IsSignUp = isSignUp;
     }
 
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
         View view = View.inflate(Activity, R.layout.welcome_phone_verify, null);
         final Button ButtonNext = view.findViewById(R.id.buttonNextStep);
         final LoadingView LoadingViewNext = new LoadingView(Activity);
 
-        view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Activity.onBackPressed();
             }
         });
@@ -104,21 +95,17 @@ class PhoneVerifyUI extends FragmentView
         EditTextCode1 = view.findViewById(R.id.editTextCode1);
         EditTextCode1.requestFocus();
         Misc.SetCursorColor(EditTextCode1, R.color.Primary);
-        EditTextCode1.addTextChangedListener(new TextWatcher()
-        {
+        EditTextCode1.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field1 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -133,21 +120,17 @@ class PhoneVerifyUI extends FragmentView
 
         EditTextCode2 = view.findViewById(R.id.editTextCode2);
         Misc.SetCursorColor(EditTextCode2, R.color.Primary);
-        EditTextCode2.addTextChangedListener(new TextWatcher()
-        {
+        EditTextCode2.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field2 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -160,13 +143,10 @@ class PhoneVerifyUI extends FragmentView
                 NextField.requestFocus();
             }
         });
-        EditTextCode2.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode2.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode2.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode2.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode2.focusSearch(View.FOCUS_RIGHT);
                     NextField.requestFocus();
                 }
@@ -177,21 +157,17 @@ class PhoneVerifyUI extends FragmentView
 
         EditTextCode3 = view.findViewById(R.id.editTextCode3);
         Misc.SetCursorColor(EditTextCode3, R.color.Primary);
-        EditTextCode3.addTextChangedListener(new TextWatcher()
-        {
+        EditTextCode3.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field3 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -204,13 +180,10 @@ class PhoneVerifyUI extends FragmentView
                 NextField.requestFocus();
             }
         });
-        EditTextCode3.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode3.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode3.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode3.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode3.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
@@ -221,21 +194,17 @@ class PhoneVerifyUI extends FragmentView
 
         EditTextCode4 = view.findViewById(R.id.editTextCode4);
         Misc.SetCursorColor(EditTextCode4, R.color.Primary);
-        EditTextCode4.addTextChangedListener(new TextWatcher()
-        {
+        EditTextCode4.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field4 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
@@ -248,13 +217,10 @@ class PhoneVerifyUI extends FragmentView
                 NextField.requestFocus();
             }
         });
-        EditTextCode4.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode4.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode4.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode4.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode4.focusSearch(View.FOCUS_LEFT);
                     NextField.requestFocus();
                 }
@@ -265,39 +231,31 @@ class PhoneVerifyUI extends FragmentView
 
         EditTextCode5 = view.findViewById(R.id.editTextCode5);
         Misc.SetCursorColor(EditTextCode4, R.color.Primary);
-        EditTextCode5.addTextChangedListener(new TextWatcher()
-        {
+        EditTextCode5.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Field5 = (s.length() != 0);
 
                 ButtonNext.setEnabled(Field1 && Field2 && Field3 && Field4 && Field5);
 
-                if (s.length() == 0)
-                {
+                if (s.length() == 0) {
                     EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_RIGHT);
                     NextField.requestFocus();
                 }
             }
         });
-        EditTextCode5.setOnKeyListener(new View.OnKeyListener()
-        {
+        EditTextCode5.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode5.getText().length() == 0)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && EditTextCode5.getText().length() == 0) {
                     EditText NextField = (EditText) EditTextCode5.focusSearch(View.FOCUS_RIGHT);
                     NextField.requestFocus();
                 }
@@ -320,20 +278,17 @@ class PhoneVerifyUI extends FragmentView
 
         final TextView TextViewTime = view.findViewById(R.id.textViewTime);
         // TODO Memory Leak
-        CountDownTimerResend = new CountDownTimer(120000, 1000)
-        {
+        CountDownTimerResend = new CountDownTimer(120000, 1000) {
             private boolean Enabled = true;
 
             @Override
-            public void onTick(long Counter)
-            {
+            public void onTick(long Counter) {
                 long Min = (Counter / 1000) / 60;
                 long Sec = (Counter / 1000) - (Min * 60);
 
                 TextViewTime.setText(("0" + Min + ":" + (Sec < 9 ? "0" + String.valueOf(Sec) : String.valueOf(Sec))));
 
-                if (Enabled)
-                {
+                if (Enabled) {
                     Enabled = false;
                     TextViewResend.setEnabled(false);
                     //TextViewResend.SetColor(R.color.Gray);
@@ -341,8 +296,7 @@ class PhoneVerifyUI extends FragmentView
             }
 
             @Override
-            public void onFinish()
-            {
+            public void onFinish() {
                 cancel();
                 Enabled = true;
                 TextViewResend.setEnabled(true);
@@ -352,165 +306,68 @@ class PhoneVerifyUI extends FragmentView
         };
         CountDownTimerResend.start();
 
-        ButtonNext.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ButtonNext.setEnabled(false);
                 LoadingViewNext.Start();
 
                 final String VerifyCode = EditTextCode1.getText().toString() + EditTextCode2.getText().toString() + EditTextCode3.getText().toString() + EditTextCode4.getText().toString() + EditTextCode5.getText().toString();
 
-                if (IsSignUp)
-                {
+                if (IsSignUp) {
 
                     JSONObject signupObject = new JSONObject();
-                    try
-                    {
+                    try {
                         signupObject.put("Code", VerifyCode);
                         signupObject.put("Number", Phone);
-                    }
-                    catch (JSONException e)
-                    {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    NetworkService.Send(NetworkService.PACKET_SIGN_UP, signupObject.toString());
-                    NetworkService.Once(NetworkService.PACKET_SIGN_UP, new NetworkService.Listener()
-                    {
+                    NetworkService.Once(NetworkService.PACKET_SIGN_UP, new NetworkService.Listener() {
                         @Override
-                        public void Call(String Message)
-                        {
-                            Log.d("MESSAGE", Message);
+                        public void Call(String Message) {
+                            try {
+                                JSONObject result = new JSONObject(Message);
+
+                                switch (result.getInt("Result")) {
+                                    case -1:
+                                    case -2:
+                                    case -3:
+                                        Toast.makeText(Activity, "Internal Server Error", Toast.LENGTH_LONG).show();
+                                        break;
+                                    case 1:
+                                        Toast.makeText(Activity, "Code Undefined", Toast.LENGTH_LONG).show();
+                                        break;
+                                    case 2:
+                                        Toast.makeText(Activity, "Number Undefined", Toast.LENGTH_LONG).show();
+                                        break;
+                                    case 3:
+                                        Toast.makeText(Activity, "Request Invalid", Toast.LENGTH_LONG).show();
+                                        break;
+                                    case 4:
+                                        Toast.makeText(Activity, "Number Already Used", Toast.LENGTH_LONG).show();
+                                        break;
+                                    case 5:
+                                        Toast.makeText(Activity, "Username Already Used", Toast.LENGTH_LONG).show();
+                                        break;
+
+                                    default:
+                                        Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), "UsernameUI", true);
+
+
+                                }
+                                Log.d("MESSAGE", Message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
+                    NetworkService.Send(NetworkService.PACKET_SIGN_UP, signupObject.toString());
 
-                    Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), "UsernameUI", true);
 
-                    //                    AndroidNetworking.post(Misc.GetRandomServer("SignUpPhoneVerify")).addBodyParameter("Issue", Code).addBodyParameter("Phone", Phone).addBodyParameter("VerifyCode", VerifyCode).setTag("PhoneVerifyUI").build().getAsString(new StringRequestListener()
-                    //                    {
-                    //                        @Override
-                    //                        public void onResponse(String Response)
-                    //                        {
-                    //                            LoadingViewNext.Stop();
-                    //                            ButtonNext.setEnabled(true);
-                    //
-                    //                            try
-                    //                            {
-                    //                                JSONObject Result = new JSONObject(Response);
-                    //
-                    //                                switch (Result.getInt("Message"))
-                    //                                {
-                    //                                    case 0:
-                    //
-                    //                                        Activity.GetManager().OpenView(new UsernameUI(VerifyCode, 1), "UsernameUI", true);
-                    //                                        break;
-                    //                                    case 1:
-                    //                                    case 2:
-                    //                                    case 3:
-                    //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
-                    //                                        break;
-                    //                                    case 4:
-                    //                                    case 5:
-                    //                                    case 6:
-                    //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhone));
-                    //                                        break;
-                    //                                    case 7:
-                    //                                    case 8:
-                    //                                        Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeCount));
-                    //                                        break;
-                    //                                    case 9:
-                    //                                        Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeWrong));
-                    //                                        break;
-                    //                                    default:
-                    //                                        Misc.GeneralError(Result.getInt("Message"));
-                    //                                        break;
-                    //                                }
-                    //                            }
-                    //                            catch (Exception e)
-                    //                            {
-                    //                                Misc.Debug("PhoneVerifyUI-SignUpPhoneVerify: " + e.toString());
-                    //                            }
-                    //                        }
-                    //
-                    //                        @Override
-                    //                        public void onError(ANError e)
-                    //                        {
-                    //                            LoadingViewNext.Stop();
-                    //                            ButtonNext.setEnabled(true);
-                    //                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                    //                        }
-                    //                    });
                 }
-                //                else
-                //                {
-                //                    AndroidNetworking.post(Misc.GetRandomServer("SignInPhoneVerify")).addBodyParameter("Issue", Code).addBodyParameter("Phone", Phone).addBodyParameter("VerifyCode", VerifyCode).addBodyParameter("Session", Misc.GenerateSession()).setTag("PhoneVerifyUI").build().getAsString(new StringRequestListener()
-                //                    {
-                //                        @Override
-                //                        public void onResponse(String Response)
-                //                        {
-                //                            LoadingViewNext.Stop();
-                //                            ButtonNext.setEnabled(true);
-                //
-                //                            try
-                //                            {
-                //                                JSONObject Result = new JSONObject(Response);
-                //
-                //                                switch (Result.getInt("Message"))
-                //                                {
-                //                                    case 0:
-                //
-                //                                        Misc.SetBoolean("IsLogin", true);
-                //                                        Misc.SetBoolean("IsGoogle", false);
-                //                                        Misc.SetString("Token", Result.getString("Token"));
-                //                                        Misc.SetString("ID", Result.getString("ID"));
-                //                                        Misc.SetString("Username", Result.getString("Username"));
-                //                                        Misc.SetString("Avatar", Result.getString("Avatar"));
-                //
-                //                                        Activity.startActivity(new Intent(Activity, SocialActivity.class));
-                //                                        Activity.finish();
-                //                                        break;
-                //                                    case 1:
-                //                                    case 2:
-                //                                    case 3:
-                //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhoneCode));
-                //                                        break;
-                //                                    case 4:
-                //                                    case 5:
-                //                                    case 6:
-                //                                        Misc.ToastOld(Misc.String(R.string.GeneralPhone));
-                //                                        break;
-                //                                    case 7:
-                //                                    case 8:
-                //                                        Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeCount));
-                //                                        break;
-                //                                    case 9:
-                //                                        Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeWrong));
-                //                                        break;
-                //                                    case 10:
-                //                                        Misc.ToastOld(Misc.String(R.string.PhoneVerifyUICodeNotFound));
-                //                                        break;
-                //                                    default:
-                //                                        Misc.GeneralError(Result.getInt("Message"));
-                //                                        break;
-                //                                }
-                //                            }
-                //                            catch (Exception e)
-                //                            {
-                //                                Misc.Debug("PhoneVerifyUI-SignInPhoneVerify: " + e.toString());
-                //                            }
-                //                        }
-                //
-                //                        @Override
-                //                        public void onError(ANError e)
-                //                        {
-                //                            LoadingViewNext.Stop();
-                //                            ButtonNext.setEnabled(true);
-                //                            Misc.ToastOld(Misc.String(R.string.GeneralNoInternet));
-                //                        }
-                //                    });
-                //                }
+
             }
         });
 
@@ -519,8 +376,7 @@ class PhoneVerifyUI extends FragmentView
     }
 
     @Override
-    public void OnResume()
-    {
+    public void OnResume() {
 
         Intent i = new Intent("Biogram.SMS.Request");
         i.putExtra("SetWaiting", true);
@@ -530,14 +386,12 @@ class PhoneVerifyUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         AndroidNetworking.forceCancel("PhoneVerifyUI");
     }
 
     @Override
-    public void OnDestroy()
-    {
+    public void OnDestroy() {
         Intent i = new Intent("Biogram.SMS.Request");
         i.putExtra("SetWaiting", false);
 

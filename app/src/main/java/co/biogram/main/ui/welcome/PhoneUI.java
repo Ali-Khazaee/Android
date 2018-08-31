@@ -1,6 +1,7 @@
 package co.biogram.main.ui.welcome;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 
@@ -40,18 +42,16 @@ import co.biogram.main.ui.view.LoadingView;
 import co.biogram.main.ui.view.PermissionDialog;
 import co.biogram.main.ui.view.TextView;
 
-class PhoneUI extends FragmentView
-{
+class PhoneUI extends FragmentView {
     private final boolean IsSignUp;
 
-    PhoneUI(boolean isSignUp)
-    {
+    PhoneUI(boolean isSignUp) {
         IsSignUp = isSignUp;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void OnCreate()
-    {
+    public void OnCreate() {
 
         View view = View.inflate(Activity, R.layout.welcome_phone, null);
 
@@ -67,8 +67,7 @@ class PhoneUI extends FragmentView
         if (Telephony != null && (CountryCode == null || CountryCode.equals("")))
             CountryCode = Telephony.getSimCountryIso();
 
-        switch (CountryCode)
-        {
+        switch (CountryCode) {
             case "ir":
                 CountryCode = "+98";
                 break;
@@ -81,13 +80,10 @@ class PhoneUI extends FragmentView
         EditTextPhoneCode.setText(CountryCode);
         Misc.SetCursorColor(EditTextPhoneCode, R.color.Primary);
         Misc.changeEditTextUnderlineColor(EditTextPhoneCode, R.color.Primary, R.color.Gray);
-        EditTextPhoneCode.setOnTouchListener(new View.OnTouchListener()
-        {
+        EditTextPhoneCode.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     final Dialog DialogCode = new Dialog(Activity);
                     DialogCode.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     DialogCode.setCancelable(true);
@@ -115,11 +111,9 @@ class PhoneUI extends FragmentView
                     ImageViewClose.setImageResource(R.drawable.close_blue);
                     ImageViewClose.setPadding(Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9), Misc.ToDP(9));
                     ImageViewClose.setId(Misc.generateViewId());
-                    ImageViewClose.setOnClickListener(new View.OnClickListener()
-                    {
+                    ImageViewClose.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             DialogCode.dismiss();
                         }
                     });
@@ -158,11 +152,9 @@ class PhoneUI extends FragmentView
                     TextViewIran.setText(Iran);
                     TextViewIran.setPadding(Misc.ToDP(10), 0, Misc.ToDP(10), 0);
                     TextViewIran.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                    TextViewIran.setOnClickListener(new View.OnClickListener()
-                    {
+                    TextViewIran.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             DialogCode.dismiss();
                         }
                     });
@@ -178,11 +170,9 @@ class PhoneUI extends FragmentView
             }
         });
 
-        view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.ImageButtonBack).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Activity.onBackPressed();
             }
         });
@@ -191,19 +181,14 @@ class PhoneUI extends FragmentView
         Misc.SetCursorColor(EditTextPhone, R.color.Primary);
         Misc.changeEditTextUnderlineColor(EditTextPhone, R.color.Primary, R.color.Gray);
         EditTextPhone.requestFocus();
-        EditTextPhone.setFilters(new InputFilter[] { new InputFilter.LengthFilter(16), new InputFilter()
-        {
+        EditTextPhone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(16), new InputFilter() {
             @Override
-            public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de)
-            {
-                if (End > Start)
-                {
-                    char[] AllowChar = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            public CharSequence filter(CharSequence s, int Start, int End, Spanned d, int ds, int de) {
+                if (End > Start) {
+                    char[] AllowChar = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-                    for (int I = Start; I < End; I++)
-                    {
-                        if (!new String(AllowChar).contains(String.valueOf(s.charAt(I))))
-                        {
+                    for (int I = Start; I < End; I++) {
+                        if (!new String(AllowChar).contains(String.valueOf(s.charAt(I)))) {
                             return "";
                         }
                     }
@@ -211,22 +196,18 @@ class PhoneUI extends FragmentView
 
                 return null;
             }
-        } });
-        EditTextPhone.addTextChangedListener(new TextWatcher()
-        {
+        }});
+        EditTextPhone.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence a, int b, int c, int d)
-            {
+            public void beforeTextChanged(CharSequence a, int b, int c, int d) {
             }
 
             @Override
-            public void afterTextChanged(Editable a)
-            {
+            public void afterTextChanged(Editable a) {
             }
 
             @Override
-            public void onTextChanged(CharSequence a, int b, int c, int d)
-            {
+            public void onTextChanged(CharSequence a, int b, int c, int d) {
                 ButtonNext.setEnabled(a.length() > 9);
             }
         });
@@ -234,11 +215,9 @@ class PhoneUI extends FragmentView
         android.widget.TextView TextViewMessage = view.findViewById(R.id.textViewHelp);
         TextViewMessage.setText((Misc.String(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn) + " " + Misc.String(IsSignUp ? R.string.PhoneUIMessageUp2 : R.string.PhoneUIMessageIn2)), TextView.BufferType.SPANNABLE);
 
-        TextViewMessage.setOnTouchListener(new View.OnTouchListener()
-        {
+        TextViewMessage.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN)
                     if (!IsSignUp)
                         Activity.GetManager().OpenView(new UsernameUI(), "UsernameUI", true);
@@ -250,17 +229,14 @@ class PhoneUI extends FragmentView
         });
 
         Spannable Span = (Spannable) TextViewMessage.getText();
-        ClickableSpan ClickableSpanMessage = new ClickableSpan()
-        {
+        ClickableSpan ClickableSpanMessage = new ClickableSpan() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
 
             }
 
             @Override
-            public void updateDrawState(TextPaint t)
-            {
+            public void updateDrawState(TextPaint t) {
                 super.updateDrawState(t);
                 t.setColor(ContextCompat.getColor(Activity, R.color.Primary));
                 t.setUnderlineText(false);
@@ -268,21 +244,16 @@ class PhoneUI extends FragmentView
         };
         Span.setSpan(ClickableSpanMessage, Misc.String(IsSignUp ? R.string.PhoneUIMessageUp : R.string.PhoneUIMessageIn).length() + 1, Span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        view.findViewById(R.id.textViewTerm).setOnClickListener(new View.OnClickListener()
-        {
+        view.findViewById(R.id.textViewTerm).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://biogram.co/")));
             }
         });
 
-        ButtonNext.setOnClickListener(new View.OnClickListener()
-        {
+        ButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), EditTextPhone.getText().toString(), true), "PhoneVerfiyUI", true);
+            public void onClick(View v) {
 
                 PermissionDialog PermissionDialogSMS = new PermissionDialog(Activity);
                 PermissionDialogSMS.SetContentView(R.drawable.permission_sms_white, R.string.PhoneUIPermission, Manifest.permission.RECEIVE_SMS, new PermissionDialog.OnChoiceListener() {
@@ -299,46 +270,77 @@ class PhoneUI extends FragmentView
     }
 
     @Override
-    public void OnPause()
-    {
+    public void OnPause() {
         Misc.HideSoftKey(Activity);
         AndroidNetworking.forceCancel("PhoneUI");
     }
 
-    private void SendRequest(final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode)
-    {
+    private void SendRequest(final Button ButtonNext, final LoadingView LoadingViewNext, final EditText EditTextPhone, final EditText EditTextPhoneCode) {
         ButtonNext.setEnabled(false);
         LoadingViewNext.Start();
 
-        if (IsSignUp)
-        {
+        if (IsSignUp) {
 
             JSONObject signupObject = new JSONObject();
-            try
-            {
+            try {
                 signupObject.put("Country", EditTextPhoneCode.getText().toString());
                 signupObject.put("Number", EditTextPhone.getText().toString());
                 signupObject.put("Username", Misc.generateViewId());
-            }
-            catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
 
             }
 
-            NetworkService.Once(NetworkService.PACKET_SIGN_UP, new NetworkService.Listener()
-            {
+            NetworkService.Once(NetworkService.PACKET_SIGN_UP, new NetworkService.Listener() {
                 @Override
-                public void Call(String Message)
-                {
-                    Log.d("MESSAGE", Message);
+                public void Call(String Message) {
+                    try {
+                        JSONObject result = new JSONObject(Message);
+                        switch (result.getInt("Result")) {
+                            case -1:
+                            case -2:
+                            case -3:
+                                Toast.makeText(Activity, "Internal Server Error", Toast.LENGTH_LONG).show();
+                                break;
+                            case 1:
+                                Toast.makeText(Activity, "Country Undefined", Toast.LENGTH_LONG).show();
+                                break;
+                            case 2:
+                                Toast.makeText(Activity, "Number Undefined", Toast.LENGTH_LONG).show();
+                                break;
+                            case 3:
+                                Toast.makeText(Activity, "Username Undefined", Toast.LENGTH_LONG).show();
+                                break;
+                            case 4:
+                                Toast.makeText(Activity, "Not Allowed", Toast.LENGTH_LONG).show();
+                                break;
+                            case 5:
+                                Toast.makeText(Activity, "Not Allowed", Toast.LENGTH_LONG).show();
+                                break;
+                            case 6:
+                                Toast.makeText(Activity, "Username Already Used", Toast.LENGTH_LONG).show();
+                                break;
+                            case 7:
+                                Toast.makeText(Activity, "Username Already Used", Toast.LENGTH_LONG).show();
+                                break;
+
+                            default:
+                                Activity.GetManager().OpenView(new PhoneVerifyUI(EditTextPhoneCode.getText().toString(), EditTextPhone.getText().toString(), true), "PhoneVerfiyUI", true);
+
+
+                        }
+                        Log.d("MESSAGE", Message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             });
             NetworkService.Send(NetworkService.PACKET_SIGN_UP, signupObject.toString());
+
             ButtonNext.setEnabled(true);
-        }
-        else
-        {
+        } else {
 
         }
     }

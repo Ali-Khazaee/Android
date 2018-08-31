@@ -26,6 +26,7 @@ public class NetworkService extends Service
     public static final int PACKET_SIGN_IN_VERIFY = 3;
     public static final int PACKET_SIGN_UP = 4;
     public static final int PACKET_SIGN_UP_VERIFY = 5;
+    public static final int SEND_MESSAGE = 6;
     private static boolean IsConnected;
     private static BufferedInputStream BIS;
     private static BufferedOutputStream BOS;
